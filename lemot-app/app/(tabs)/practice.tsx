@@ -1,0 +1,498 @@
+import { useState, useCallback, useMemo } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  TextInput,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Layers,
+  Volume2,
+  ChevronRight,
+  Check,
+  X,
+  RotateCcw,
+  Globe,
+} from "lucide-react-native";
+import { P } from "@/constants/theme";
+import { FLASH } from "@/data/flashcards";
+import { useApp } from "@/providers/AppProvider";
+import { norm } from "@/lib/normalize";
+import type { FlashCard } from "@/lib/types";
+
+type Mode = "menu" | "flashcard" | "translate";
+
+/* ── Shuffle helper ── */
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+export default function PracticeScreen() {
+  const { say } = useApp();
+  const [mode, setMode] = useState<Mode>("menu");
+
+  /* ═══ Flashcard state ═══ */
+  const [deck, setDeck] = useState<FlashCard[]>([]);
+  const [cardIdx, setCardIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [knownCount, setKnownCount] = useState(0);
+
+  /* ═══ Translate state ═══ */
+  const [transItems, setTransItems] = useState<FlashCard[]>([]);
+  const [transIdx, setTransIdx] = useState(0);
+  const [transInput, setTransInput] = useState("");
+  const [transResult, setTransResult] = useState<"correct" | "wrong" | null>(null);
+  const [transScore, setTransScore] = useState(0);
+
+  const startFlashcards = useCallback(() => {
+    setDeck(shuffle(FLASH));
+    setCardIdx(0);
+    setFlipped(false);
+    setKnownCount(0);
+    setMode("flashcard");
+  }, []);
+
+  const startTranslate = useCallback(() => {
+    setTransItems(shuffle(FLASH).slice(0, 10));
+    setTransIdx(0);
+    setTransInput("");
+    setTransResult(null);
+    setTransScore(0);
+    setMode("translate");
+  }, []);
+
+  /* ═══════════════════════════════
+     MODE MENU
+     ═══════════════════════════════ */
+  if (mode === "menu") {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg">
+        <ScrollView className="flex-1 px-6 pt-4">
+          <View className="items-center mb-5">
+            <Layers color={P.red} size={28} strokeWidth={1.2} />
+            <Text
+              className="font-newsreader text-xl font-bold mt-1.5"
+              style={{ fontStyle: "italic", color: P.ink }}
+            >
+              Pratique
+            </Text>
+            <Text className="text-xs text-lm-ink3 mt-1">
+              Reinforce your vocabulary with flashcards and translation.
+            </Text>
+          </View>
+
+          {/* Flashcard card */}
+          <Pressable
+            onPress={startFlashcards}
+            className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
+            style={{
+              backgroundColor: P.paper,
+              borderWidth: 1,
+              borderColor: P.border,
+              shadowColor: "#2C2825",
+              shadowOpacity: 0.06,
+              shadowRadius: 4,
+              shadowOffset: { width: 0, height: 1 },
+              elevation: 2,
+              gap: 12,
+            }}
+          >
+            <Layers size={22} color={P.red} strokeWidth={1.3} />
+            <View className="flex-1">
+              <Text className="text-sm font-bold" style={{ color: P.ink }}>
+                Flashcards
+              </Text>
+              <Text className="text-xs" style={{ color: P.ink3 }}>
+                {FLASH.length} cards — tap to flip, swipe to know/learn
+              </Text>
+            </View>
+            <ChevronRight size={16} color={P.ink3} />
+          </Pressable>
+
+          {/* Translate card */}
+          <Pressable
+            onPress={startTranslate}
+            className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
+            style={{
+              backgroundColor: P.paper,
+              borderWidth: 1,
+              borderColor: P.border,
+              shadowColor: "#2C2825",
+              shadowOpacity: 0.06,
+              shadowRadius: 4,
+              shadowOffset: { width: 0, height: 1 },
+              elevation: 2,
+              gap: 12,
+            }}
+          >
+            <Globe size={22} color={P.red} strokeWidth={1.3} />
+            <View className="flex-1">
+              <Text className="text-sm font-bold" style={{ color: P.ink }}>
+                Translation Quiz
+              </Text>
+              <Text className="text-xs" style={{ color: P.ink3 }}>
+                10 words — type the French translation
+              </Text>
+            </View>
+            <ChevronRight size={16} color={P.ink3} />
+          </Pressable>
+
+          <View className="h-8" />
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  /* ═══════════════════════════════
+     FLASHCARD MODE
+     ═══════════════════════════════ */
+  if (mode === "flashcard") {
+    const card = deck[cardIdx];
+    const isLast = cardIdx >= deck.length - 1;
+    const done = cardIdx >= deck.length;
+
+    if (done) {
+      return (
+        <SafeAreaView className="flex-1 bg-lm-bg">
+          <View className="flex-1 items-center justify-center px-8">
+            <Text className="text-xl font-bold text-lm-green mb-2">
+              Deck Complete!
+            </Text>
+            <Text className="text-sm text-lm-ink2 text-center mb-1">
+              You marked {knownCount} of {deck.length} cards as known.
+            </Text>
+            <Text className="text-xs text-lm-ink3 text-center mb-6">
+              Keep practicing the ones you're still learning!
+            </Text>
+            <Pressable
+              onPress={startFlashcards}
+              className="flex-row items-center rounded-xl px-5 py-3 mb-3"
+              style={{ backgroundColor: P.red, gap: 6 }}
+            >
+              <RotateCcw size={14} color="#FFFFFF" />
+              <Text className="text-white font-semibold text-sm">
+                Shuffle & Restart
+              </Text>
+            </Pressable>
+            <Pressable onPress={() => setMode("menu")}>
+              <Text className="text-sm font-semibold" style={{ color: P.ink3 }}>
+                Back to Practice
+              </Text>
+            </Pressable>
+          </View>
+        </SafeAreaView>
+      );
+    }
+
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg">
+        {/* Header */}
+        <View className="flex-row items-center justify-between px-6 pt-3 pb-2">
+          <Pressable onPress={() => setMode("menu")}>
+            <Text className="text-xs font-semibold" style={{ color: P.ink3 }}>
+              ← Back
+            </Text>
+          </Pressable>
+          <Text className="text-xs" style={{ color: P.ink3 }}>
+            {cardIdx + 1} / {deck.length}
+          </Text>
+          <Text className="text-xs" style={{ color: P.green }}>
+            {knownCount} known
+          </Text>
+        </View>
+
+        {/* Card */}
+        <View className="flex-1 items-center justify-center px-8">
+          <Pressable
+            onPress={() => setFlipped(!flipped)}
+            className="w-full rounded-2xl items-center justify-center"
+            style={{
+              backgroundColor: P.paper,
+              borderWidth: 1.5,
+              borderColor: flipped ? P.red + "40" : P.border,
+              paddingVertical: 48,
+              paddingHorizontal: 24,
+              shadowColor: "#2C2825",
+              shadowOpacity: 0.08,
+              shadowRadius: 8,
+              shadowOffset: { width: 0, height: 2 },
+              elevation: 3,
+              minHeight: 220,
+            }}
+          >
+            {!flipped ? (
+              <>
+                <Text className="text-xs uppercase mb-2" style={{ color: P.ink3, letterSpacing: 1 }}>
+                  {card.cat}
+                </Text>
+                <Text
+                  className="font-newsreader text-2xl font-bold text-center"
+                  style={{ fontStyle: "italic", color: P.ink }}
+                >
+                  {card.fr}
+                </Text>
+                {card.cog ? (
+                  <Text className="text-xs mt-2" style={{ color: P.purple }}>
+                    {card.cog}
+                  </Text>
+                ) : null}
+                <Text className="text-[10px] mt-4" style={{ color: P.ink3 }}>
+                  Tap to flip
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text className="text-lg font-bold text-center" style={{ color: P.ink }}>
+                  {card.en}
+                </Text>
+                <Text
+                  className="font-newsreader text-sm text-center mt-3"
+                  style={{ fontStyle: "italic", color: P.ink2 }}
+                >
+                  {card.ex}
+                </Text>
+                <Pressable
+                  onPress={() => say(card.fr)}
+                  className="flex-row items-center mt-3 px-2.5 py-1.5 rounded"
+                  style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+                >
+                  <Volume2 size={12} color={P.ink3} />
+                  <Text className="text-[10px]" style={{ color: P.ink3 }}>
+                    Listen
+                  </Text>
+                </Pressable>
+              </>
+            )}
+          </Pressable>
+
+          {/* Action buttons */}
+          <View className="flex-row mt-6" style={{ gap: 16 }}>
+            <Pressable
+              onPress={() => {
+                setFlipped(false);
+                setCardIdx(cardIdx + 1);
+              }}
+              className="flex-row items-center rounded-xl px-5 py-3"
+              style={{ backgroundColor: P.amber + "20", gap: 6 }}
+            >
+              <X size={14} color={P.amber} />
+              <Text className="text-sm font-semibold" style={{ color: P.amber }}>
+                Still Learning
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                setKnownCount(knownCount + 1);
+                setFlipped(false);
+                setCardIdx(cardIdx + 1);
+              }}
+              className="flex-row items-center rounded-xl px-5 py-3"
+              style={{ backgroundColor: P.green + "20", gap: 6 }}
+            >
+              <Check size={14} color={P.green} />
+              <Text className="text-sm font-semibold" style={{ color: P.green }}>
+                Know It
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  /* ═══════════════════════════════
+     TRANSLATE MODE
+     ═══════════════════════════════ */
+  const tItem = transItems[transIdx];
+  const tDone = transIdx >= transItems.length;
+
+  if (tDone) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg">
+        <View className="flex-1 items-center justify-center px-8">
+          <Text className="text-xl font-bold text-lm-green mb-2">
+            Quiz Complete!
+          </Text>
+          <Text className="text-sm text-lm-ink2 text-center mb-1">
+            Score: {transScore} / {transItems.length}
+          </Text>
+          <Text className="text-xs text-lm-ink3 text-center mb-6">
+            {transScore === transItems.length
+              ? "Perfect score! Magnifique!"
+              : transScore >= transItems.length * 0.7
+              ? "Great job! Keep it up."
+              : "Keep practicing, you'll get there!"}
+          </Text>
+          <Pressable
+            onPress={startTranslate}
+            className="flex-row items-center rounded-xl px-5 py-3 mb-3"
+            style={{ backgroundColor: P.red, gap: 6 }}
+          >
+            <RotateCcw size={14} color="#FFFFFF" />
+            <Text className="text-white font-semibold text-sm">Try Again</Text>
+          </Pressable>
+          <Pressable onPress={() => setMode("menu")}>
+            <Text className="text-sm font-semibold" style={{ color: P.ink3 }}>
+              Back to Practice
+            </Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const checkTranslation = () => {
+    const isCorrect = norm(transInput) === norm(tItem.fr);
+    setTransResult(isCorrect ? "correct" : "wrong");
+    if (isCorrect) setTransScore(transScore + 1);
+  };
+
+  const nextTranslation = () => {
+    setTransIdx(transIdx + 1);
+    setTransInput("");
+    setTransResult(null);
+  };
+
+  return (
+    <SafeAreaView className="flex-1 bg-lm-bg">
+      {/* Header */}
+      <View className="flex-row items-center justify-between px-6 pt-3 pb-2">
+        <Pressable onPress={() => setMode("menu")}>
+          <Text className="text-xs font-semibold" style={{ color: P.ink3 }}>
+            ← Back
+          </Text>
+        </Pressable>
+        <Text className="text-xs" style={{ color: P.ink3 }}>
+          {transIdx + 1} / {transItems.length}
+        </Text>
+        <Text className="text-xs" style={{ color: P.green }}>
+          {transScore} correct
+        </Text>
+      </View>
+
+      <View className="flex-1 items-center justify-center px-8">
+        {/* Prompt */}
+        <Text className="text-xs uppercase mb-2" style={{ color: P.ink3, letterSpacing: 1 }}>
+          Translate to French
+        </Text>
+        <Text className="text-xl font-bold text-center mb-1" style={{ color: P.ink }}>
+          {tItem.en}
+        </Text>
+        {tItem.cog ? (
+          <Text className="text-xs mb-4" style={{ color: P.purple }}>
+            Hint: {tItem.cog}
+          </Text>
+        ) : (
+          <View className="mb-4" />
+        )}
+
+        {/* Input */}
+        <TextInput
+          value={transInput}
+          onChangeText={setTransInput}
+          placeholder="Type in French..."
+          placeholderTextColor={P.ink3}
+          editable={!transResult}
+          onSubmitEditing={() => {
+            if (transInput.trim() && !transResult) checkTranslation();
+          }}
+          returnKeyType="done"
+          autoCapitalize="none"
+          className="w-full font-newsreader text-base text-center rounded-xl px-4 py-3"
+          style={{
+            fontStyle: "italic",
+            color: P.ink,
+            backgroundColor: P.paper,
+            borderWidth: 1.5,
+            borderColor: transResult === "correct"
+              ? P.green
+              : transResult === "wrong"
+              ? P.red
+              : P.border,
+          }}
+        />
+
+        {/* Result feedback */}
+        {transResult && (
+          <View className="items-center mt-3">
+            {transResult === "correct" ? (
+              <View className="flex-row items-center" style={{ gap: 4 }}>
+                <Check size={14} color={P.green} />
+                <Text className="text-sm font-semibold" style={{ color: P.green }}>
+                  Correct!
+                </Text>
+              </View>
+            ) : (
+              <View className="items-center">
+                <View className="flex-row items-center" style={{ gap: 4 }}>
+                  <X size={14} color={P.red} />
+                  <Text className="text-sm font-semibold" style={{ color: P.red }}>
+                    Not quite
+                  </Text>
+                </View>
+                <Text className="text-sm mt-1" style={{ color: P.ink2 }}>
+                  Answer:{" "}
+                  <Text
+                    className="font-newsreader font-bold"
+                    style={{ fontStyle: "italic", color: P.ink }}
+                  >
+                    {tItem.fr}
+                  </Text>
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+
+        {/* Action buttons */}
+        <View className="mt-6">
+          {!transResult ? (
+            <Pressable
+              onPress={checkTranslation}
+              disabled={!transInput.trim()}
+              className="rounded-xl px-6 py-3"
+              style={{
+                backgroundColor: transInput.trim() ? P.red : "#F0EEEC",
+                opacity: transInput.trim() ? 1 : 0.5,
+              }}
+            >
+              <Text
+                className="text-sm font-semibold"
+                style={{ color: transInput.trim() ? "#FFFFFF" : P.ink3 }}
+              >
+                Check
+              </Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={nextTranslation}
+              className="rounded-xl px-6 py-3"
+              style={{ backgroundColor: P.red }}
+            >
+              <Text className="text-white text-sm font-semibold">Next</Text>
+            </Pressable>
+          )}
+        </View>
+
+        {/* Listen button */}
+        <Pressable
+          onPress={() => say(tItem.fr)}
+          className="flex-row items-center mt-4 px-3 py-2 rounded"
+          style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+        >
+          <Volume2 size={12} color={P.ink3} />
+          <Text className="text-[10px]" style={{ color: P.ink3 }}>
+            Listen
+          </Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
+  );
+}
