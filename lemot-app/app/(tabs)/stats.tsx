@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   BarChart3,
@@ -17,7 +17,7 @@ import { MILESTONES } from "@/data/milestones";
 import { SECS } from "@/constants/sections";
 
 export default function StatsScreen() {
-  const { xp, prog, streak, errors, weakSpots, dailyRev } = useApp();
+  const { xp, prog, streak, errors, weakSpots, dailyRev, loaded } = useApp();
 
   /* ── Derived stats ── */
   const totalSections = LESSONS.length * SECS.length; // 16 * 11 = 176
@@ -37,8 +37,6 @@ export default function StatsScreen() {
     errors.forEach((e) => {
       wordMap.set(e.w, (wordMap.get(e.w) || 0) + 1);
     });
-    // Words that appeared in errors but aren't weak (< 3 errors) are "learning"
-    // We don't track "mastered" separately — mastered = cards seen without errors
     return { total: wordMap.size, weak: weakSpots.length };
   }, [errors, weakSpots]);
 
@@ -62,6 +60,14 @@ export default function StatsScreen() {
       return { id: l.id, title: l.title, done, total: SECS.length };
     });
   }, [prog]);
+
+  if (!loaded) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
+        <ActivityIndicator size="small" color={P.red} />
+      </SafeAreaView>
+    );
+  }
 
   /* ── Level from XP ── */
   const level = Math.floor(xp / 100) + 1;
@@ -259,45 +265,56 @@ export default function StatsScreen() {
         ))}
 
         {/* ── Weak Spots ── */}
-        {weakSpots.length > 0 && (
-          <>
-            <Text
-              className="text-xs font-bold mt-3 mb-2"
-              style={{ color: P.ink3, letterSpacing: 1, textTransform: "uppercase" }}
-            >
-              Weak Spots
-            </Text>
-            <View
-              className="rounded-xl px-4 py-3 mb-1"
-              style={{
-                backgroundColor: P.amber + "08",
-                borderWidth: 1,
-                borderColor: P.amber + "25",
-              }}
-            >
-              {weakSpots.slice(0, 8).map((ws, i) => (
-                <View
-                  key={i}
-                  className="flex-row items-center justify-between py-1.5"
-                  style={
-                    i < Math.min(weakSpots.length, 8) - 1
-                      ? { borderBottomWidth: 1, borderBottomColor: P.amber + "15" }
-                      : {}
-                  }
+        <Text
+          className="text-xs font-bold mt-3 mb-2"
+          style={{ color: P.ink3, letterSpacing: 1, textTransform: "uppercase" }}
+        >
+          Weak Spots
+        </Text>
+        {weakSpots.length > 0 ? (
+          <View
+            className="rounded-xl px-4 py-3 mb-1"
+            style={{
+              backgroundColor: P.amber + "08",
+              borderWidth: 1,
+              borderColor: P.amber + "25",
+            }}
+          >
+            {weakSpots.slice(0, 8).map((ws, i) => (
+              <View
+                key={i}
+                className="flex-row items-center justify-between py-1.5"
+                style={
+                  i < Math.min(weakSpots.length, 8) - 1
+                    ? { borderBottomWidth: 1, borderBottomColor: P.amber + "15" }
+                    : {}
+                }
+              >
+                <Text
+                  className="font-newsreader text-sm font-bold"
+                  style={{ fontStyle: "italic", color: P.ink }}
                 >
-                  <Text
-                    className="font-newsreader text-sm font-bold"
-                    style={{ fontStyle: "italic", color: P.ink }}
-                  >
-                    {ws.word}
-                  </Text>
-                  <Text className="text-[10px]" style={{ color: P.amber }}>
-                    {ws.count} errors
-                  </Text>
-                </View>
-              ))}
-            </View>
-          </>
+                  {ws.word}
+                </Text>
+                <Text className="text-[10px]" style={{ color: P.amber }}>
+                  {ws.count} errors
+                </Text>
+              </View>
+            ))}
+          </View>
+        ) : (
+          <View
+            className="rounded-xl px-4 py-3 mb-1"
+            style={{
+              backgroundColor: P.green + "10",
+              borderWidth: 1,
+              borderColor: P.green + "25",
+            }}
+          >
+            <Text className="text-sm text-center" style={{ color: P.green }}>
+              No weak spots yet — keep up the great work!
+            </Text>
+          </View>
         )}
 
         {/* ── Lesson Progress Table ── */}

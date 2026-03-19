@@ -70,17 +70,26 @@ export default function ChatScreen() {
     startChat,
     MSG_LIMIT,
   } = useChat();
-  const { say } = useApp();
+  const { say, loaded } = useApp();
   const scrollRef = useRef<ScrollView>(null);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     if (chatMsgs.length > 0) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         scrollRef.current?.scrollToEnd({ animated: true });
       }, 100);
+      return () => clearTimeout(timer);
     }
   }, [chatMsgs.length, chatLoading]);
+
+  if (!loaded) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
+        <ActivityIndicator size="small" color={P.red} />
+      </SafeAreaView>
+    );
+  }
 
   const hasConversation = chatMsgs.length > 0;
   const atLimit = chatMsgCount >= MSG_LIMIT;
@@ -237,7 +246,7 @@ export default function ChatScreen() {
         <ScrollView
           ref={scrollRef}
           className="flex-1 mx-6"
-          contentContainerStyle={{ paddingBottom: 8, gap: 10 }}
+          contentContainerStyle={{ paddingBottom: 56, gap: 10 }}
           showsVerticalScrollIndicator={false}
           style={{
             borderLeftWidth: 2,

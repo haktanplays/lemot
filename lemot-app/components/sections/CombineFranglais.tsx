@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
@@ -15,7 +15,6 @@ interface CombineFranglaisProps {
     word: string,
     given: string,
     correct: string,
-    lessonId?: number,
   ) => void;
 }
 
@@ -128,6 +127,10 @@ export function CombineFranglais({
     };
 
     return (
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
       <View>
         <Text className="text-xs mb-2.5" style={{ color: P.ink3 }}>
           Combine · {combineIndex + 1}/{combine.length}
@@ -239,6 +242,7 @@ export function CombineFranglais({
           )}
         </View>
       </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -286,6 +290,10 @@ export function CombineFranglais({
     const allFound = missed.length === 0 && checked;
 
     return (
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
       <View>
         <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
           Franglais · {franglaisIndex + 1}/{franglais.length}
@@ -487,6 +495,7 @@ export function CombineFranglais({
           )}
         </View>
       </View>
+      </KeyboardAvoidingView>
     );
   }
 

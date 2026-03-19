@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { ArrowRight } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
@@ -37,6 +37,7 @@ export function WriteSection({
   const [score, setScore] = useState(0);
 
   const item = items[currentIndex];
+  if (!item) return null;
   const isLast = currentIndex >= items.length - 1;
 
   const handleCheck = () => {
@@ -67,6 +68,10 @@ export function WriteSection({
     result === "ok" ? P.gl : result === "no" ? P.rl : P.paper;
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
     <View>
       {/* Progress indicator */}
       <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
@@ -163,5 +168,6 @@ export function WriteSection({
         )}
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 }

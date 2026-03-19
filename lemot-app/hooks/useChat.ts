@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import type { ScrollView } from "react-native";
 import { sendAIMessage, buildChatSystem } from "@/lib/ai";
 
 const MSG_LIMIT = 15;
@@ -15,7 +16,7 @@ export function useChat() {
   const [chatMode, setChatMode] = useState("free");
   const [chatScenario, setChatScenario] = useState<string | null>(null);
   const [chatMsgCount, setChatMsgCount] = useState(0);
-  const chatRef = useRef<any>(null);
+  const chatRef = useRef<ScrollView>(null);
 
   const sendChat = useCallback(async () => {
     if (!chatIn.trim() || chatLoading || chatMsgCount >= MSG_LIMIT) return;
@@ -28,11 +29,18 @@ export function useChat() {
     setChatLoading(true);
     setChatMsgCount((c) => c + 1);
 
-    const system = buildChatSystem(chatMode, chatScenario ?? undefined);
-    const reply = await sendAIMessage(newMsgs, system);
-
-    setChatMsgs((prev) => [...prev, { role: "assistant", content: reply }]);
-    setChatLoading(false);
+    try {
+      const system = buildChatSystem(chatMode, chatScenario ?? undefined);
+      const reply = await sendAIMessage(newMsgs, system);
+      setChatMsgs((prev) => [...prev, { role: "assistant", content: reply }]);
+    } catch {
+      setChatMsgs((prev) => [
+        ...prev,
+        { role: "assistant", content: "Problème technique. Réessayez." },
+      ]);
+    } finally {
+      setChatLoading(false);
+    }
   }, [chatIn, chatLoading, chatMsgCount, chatMsgs, chatMode, chatScenario]);
 
   const resetChat = useCallback(() => {

@@ -300,6 +300,17 @@ export default function LessonScreen() {
             <Text className="text-sm text-lm-ink2 text-center mb-4">
               You've completed all sections. Great job!
             </Text>
+            {lessonId < 16 && (
+              <Pressable
+                onPress={() => router.replace(`/lesson/${lessonId + 1}`)}
+                className="rounded-xl px-6 py-3 mb-3"
+                style={{ backgroundColor: P.red }}
+              >
+                <Text className="text-white font-semibold text-center">
+                  Next Lesson
+                </Text>
+              </Pressable>
+            )}
             <Pressable
               onPress={() => router.back()}
               className="bg-lm-green rounded-xl px-6 py-3"
@@ -308,9 +319,8 @@ export default function LessonScreen() {
             </Pressable>
           </View>
         ) : (
-          <ScrollView className="flex-1 px-5 pt-4">
+          <ScrollView className="flex-1 px-5 pt-4" contentContainerStyle={{ paddingBottom: 32 }}>
             {renderSection()}
-            <View className="h-8" />
           </ScrollView>
         )}
       </View>

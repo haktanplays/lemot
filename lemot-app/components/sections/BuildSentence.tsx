@@ -11,7 +11,6 @@ interface BuildSentenceProps {
     word: string,
     given: string,
     correct: string,
-    lessonId?: number,
   ) => void;
 }
 
@@ -35,8 +34,9 @@ export function BuildSentence({
 
   // Shuffle pool when item changes
   const initPool = useCallback(() => {
-    if (!item) return;
-    const allWords = [...item.c, ...(item.trap || [])];
+    const current = items[currentIndex];
+    if (!current) return;
+    const allWords = [...current.c, ...(current.trap || [])];
     // Fisher-Yates shuffle
     for (let i = allWords.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -45,7 +45,7 @@ export function BuildSentence({
     setPool(allWords);
     setSelectedWords([]);
     setChecked(false);
-  }, [item]);
+  }, [currentIndex, items]);
 
   useEffect(() => {
     initPool();
@@ -150,8 +150,9 @@ export function BuildSentence({
               disabled={checked}
               className="rounded-lg"
               style={{
-                paddingVertical: 7,
+                paddingVertical: 12,
                 paddingHorizontal: 12,
+                minHeight: 44,
                 backgroundColor: P.rl,
                 borderWidth: 1,
                 borderColor: P.rb,
@@ -159,7 +160,7 @@ export function BuildSentence({
             >
               <Text
                 className="text-sm font-medium"
-                style={{ color: P.red }}
+                style={{ color: P.red, fontFamily: "serif", fontStyle: "italic" }}
               >
                 {word}
               </Text>
@@ -179,8 +180,9 @@ export function BuildSentence({
               disabled={checked}
               className="rounded-lg"
               style={{
-                paddingVertical: 7,
+                paddingVertical: 12,
                 paddingHorizontal: 12,
+                minHeight: 44,
                 backgroundColor: "#F0EEEC",
                 borderWidth: 1,
                 borderColor: P.border,
@@ -188,7 +190,7 @@ export function BuildSentence({
             >
               <Text
                 className="text-sm font-medium"
-                style={{ color: P.ink }}
+                style={{ color: P.ink, fontFamily: "serif", fontStyle: "italic" }}
               >
                 {word}
               </Text>

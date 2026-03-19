@@ -16,7 +16,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    Outfit: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    Outfit: require("../assets/fonts/Outfit-Variable.ttf"),
+    Newsreader: require("../assets/fonts/Newsreader-Italic-Variable.ttf"),
   });
 
   useEffect(() => {

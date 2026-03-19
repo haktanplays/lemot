@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput, ScrollView } from "react-native";
+import { View, Text, TextInput, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { ArrowRight, Sparkles, Check, X } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
@@ -62,6 +62,10 @@ export function SayItYourWay({ items, onComplete }: SayItYourWayProps) {
   const usedFlags = getUsedWords();
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
     <ScrollView>
       {/* Header */}
       <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
@@ -276,5 +280,6 @@ export function SayItYourWay({ items, onComplete }: SayItYourWayProps) {
         )}
       </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

@@ -5,6 +5,9 @@ import {
   Pressable,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -35,7 +38,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function PracticeScreen() {
-  const { say } = useApp();
+  const { say, loaded } = useApp();
   const [mode, setMode] = useState<Mode>("menu");
 
   /* ═══ Flashcard state ═══ */
@@ -50,6 +53,14 @@ export default function PracticeScreen() {
   const [transInput, setTransInput] = useState("");
   const [transResult, setTransResult] = useState<"correct" | "wrong" | null>(null);
   const [transScore, setTransScore] = useState(0);
+
+  if (!loaded) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
+        <ActivityIndicator size="small" color={P.red} />
+      </SafeAreaView>
+    );
+  }
 
   const startFlashcards = useCallback(() => {
     setDeck(shuffle(FLASH));
@@ -361,6 +372,10 @@ export default function PracticeScreen() {
   };
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
     <SafeAreaView className="flex-1 bg-lm-bg">
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 pt-3 pb-2">
@@ -494,5 +509,6 @@ export default function PracticeScreen() {
         </Pressable>
       </View>
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }

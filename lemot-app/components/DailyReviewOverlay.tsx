@@ -5,7 +5,7 @@ import { Btn } from "./Btn";
 import { P } from "@/constants/theme";
 import { FLASH } from "@/data/flashcards";
 
-interface ReviewQuestion {
+export interface ReviewQuestion {
   q: string;
   a: string;
   o: string[];

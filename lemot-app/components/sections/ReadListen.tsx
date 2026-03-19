@@ -95,13 +95,13 @@ export function ReadListen({ examples, onComplete, say }: ReadListenProps) {
               onPress={() => say(ex.fr)}
               className="rounded-lg items-center justify-center"
               style={{
-                width: 32,
-                height: 32,
+                width: 44,
+                height: 44,
                 backgroundColor: P.rl,
                 flexShrink: 0,
               }}
             >
-              <Volume2 size={14} color={P.red} strokeWidth={1.5} />
+              <Volume2 size={18} color={P.red} strokeWidth={1.5} />
             </Pressable>
           </View>
         </View>

@@ -34,6 +34,7 @@ export function FranglaisFill({
   const [score, setScore] = useState(0);
 
   const item = items[currentIndex];
+  if (!item) return null;
   const isLast = currentIndex >= items.length - 1;
 
   const handleSelect = (opt: string) => {

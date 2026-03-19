@@ -6,6 +6,8 @@ import {
   ScrollView,
   Pressable,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Send, Volume2, Check } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
@@ -49,9 +51,10 @@ export function MiniConversation({
 
   /** Scroll to bottom when messages change */
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       scrollRef.current?.scrollToEnd({ animated: true });
     }, 100);
+    return () => clearTimeout(timer);
   }, [messages, loading]);
 
   /** Send a user message and get AI response */
@@ -81,6 +84,10 @@ export function MiniConversation({
   }
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
     <View className="flex-1">
       {/* Header */}
       <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
@@ -228,5 +235,6 @@ export function MiniConversation({
         </Btn>
       )}
     </View>
+    </KeyboardAvoidingView>
   );
 }

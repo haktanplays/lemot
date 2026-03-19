@@ -39,8 +39,8 @@ export function useStorage() {
           setDailyRev(dr);
           setStreak(str);
         }
-      } catch {
-        // First launch or corrupt data — use defaults
+      } catch (e) {
+        console.warn("[Storage] Load failed:", e);
       }
       setLoaded(true);
     })();
@@ -64,8 +64,8 @@ export function useStorage() {
           streak: str || 0,
         };
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      } catch {
-        // Storage write failed — silent
+      } catch (e) {
+        console.warn("[Storage] Save failed:", e);
       }
     },
     []

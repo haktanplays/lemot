@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
+import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { Headphones, ArrowRight } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { MCQ } from "@/components/MCQ";
@@ -89,6 +89,10 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
   }
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
     <ScrollView>
       {/* Header */}
       <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
@@ -256,6 +260,7 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
         )}
       </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

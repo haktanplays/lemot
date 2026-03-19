@@ -12,7 +12,6 @@ interface QuizProps {
     word: string,
     given: string,
     correct: string,
-    lessonId?: number,
   ) => void;
 }
 

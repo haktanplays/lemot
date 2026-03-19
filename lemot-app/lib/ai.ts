@@ -1,5 +1,9 @@
+import Constants from "expo-constants";
+
 const API_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-4-20250514";
+// MVP: API key from app.json extra config. Move to Supabase Edge Function before release.
+const API_KEY = Constants.expoConfig?.extra?.anthropicApiKey ?? "";
 
 interface AIMessage {
   role: "user" | "assistant";
@@ -16,20 +20,39 @@ export async function sendAIMessage(
   system: string,
   maxTokens: number = 300
 ): Promise<string> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
   try {
     const res = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
       body: JSON.stringify({
         model: MODEL,
         max_tokens: maxTokens,
         system,
-        messages: messages.filter((m) => m.role !== "system" as string),
+        messages,
       }),
     });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      console.warn(`[AI] API error: ${res.status}`);
+      return "Désolé, réessayez.";
+    }
+
     const data = await res.json();
     return data.content?.[0]?.text || "Désolé, réessayez.";
-  } catch {
+  } catch (err: unknown) {
+    clearTimeout(timeout);
+    if (err instanceof Error && err.name === "AbortError") {
+      return "Temps d'attente dépassé. Réessayez.";
+    }
     return "Problème technique.";
   }
 }

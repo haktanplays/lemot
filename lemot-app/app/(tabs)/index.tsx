@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { View, Text, ScrollView, Pressable, FlatList } from "react-native";
+import { View, Text, ScrollView, Pressable, FlatList, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Zap, Target } from "lucide-react-native";
@@ -12,20 +12,29 @@ import { MountainMap } from "@/components/MountainMap";
 import { LessonCard } from "@/components/LessonCard";
 import { MilestoneCard } from "@/components/MilestoneCard";
 import { Btn } from "@/components/Btn";
+import type { ReviewQuestion } from "@/components/DailyReviewOverlay";
 import {
   DailyReviewOverlay,
   genReviewItems,
 } from "@/components/DailyReviewOverlay";
 
 export default function HomeScreen() {
-  const { lp, dailyRev, setDailyRev, streak, setStreak, save, prog, xp, errors, weakSpots } =
+  const { lp, dailyRev, setDailyRev, streak, setStreak, save, prog, xp, errors, weakSpots, loaded } =
     useApp();
 
   // Daily review state
   const [showDR, setShowDR] = useState(false);
   const [drIdx, setDrIdx] = useState(0);
   const [drAns, setDrAns] = useState<string | null>(null);
-  const [drItems, setDrItems] = useState<any[]>([]);
+  const [drItems, setDrItems] = useState<ReviewQuestion[]>([]);
+
+  if (!loaded) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
+        <ActivityIndicator size="small" color={P.red} />
+      </SafeAreaView>
+    );
+  }
 
   const today = () => new Date().toISOString().slice(0, 10);
   const drCount = dailyRev.date === today() ? dailyRev.count : 0;
@@ -35,6 +44,7 @@ export default function HomeScreen() {
     const remaining = 5 - drCount;
     if (remaining <= 0) return;
     const items = genReviewItems(remaining, weakSpots);
+    if (items.length === 0) return;
     setDrItems(items);
     setDrIdx(0);
     setDrAns(null);
@@ -42,7 +52,7 @@ export default function HomeScreen() {
   };
 
   const handleDrNext = () => {
-    const newCount = drCount + drIdx + 1;
+    const newCount = drCount + 1;
     const newDr = { date: today(), count: newCount };
     setDailyRev(newDr);
     if (drIdx >= drItems.length - 1) {
