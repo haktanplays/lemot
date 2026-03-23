@@ -138,7 +138,7 @@ export const lesson12: Lesson = {
       bridge: "Il faut eat, I'm hungry!",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "There [___] a problem.",
       a: "y a",
@@ -304,7 +304,7 @@ export const lesson12: Lesson = {
       accept: ["il faut partir maintenant"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "Actually, I am tired. There is a good restaurant here.",
       known: [
@@ -380,7 +380,7 @@ export const lesson12: Lesson = {
       ctx: "Tell someone you're tired. (être, Lesson 5)",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "Actually, I prefer tea.",
       blanks: [
         { word: "Actually", answer: "En fait" },

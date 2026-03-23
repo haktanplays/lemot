@@ -81,7 +81,7 @@ export interface CombineItem {
   accept: string[];
 }
 
-export interface FranglaisItem {
+export interface CrossingItem {
   en: string;
   known: string[];
   sample: string;
@@ -97,7 +97,7 @@ export interface MiniConvConfig {
   starter: string;
 }
 
-export interface FranglaisBlank {
+export interface CrossingBlank {
   word: string;
   answer: string;
 }
@@ -107,8 +107,8 @@ export type ReviewItem =
   | { type: "odd"; q: string; items: string[]; a: string; reason: string }
   | { type: "context"; situation: string; a: string; o: string[] }
   | { type: "fill_ctx"; s: string; a: string; o: string[]; ctx: string }
-  | { type: "franglais"; en: string; known: string[]; sample: string }
-  | { type: "franglais"; en: string; blanks: FranglaisBlank[]; full: string };
+  | { type: "crossing"; en: string; known: string[]; sample: string }
+  | { type: "crossing"; en: string; blanks: CrossingBlank[]; full: string };
 
 export interface Lesson {
   id: number;
@@ -118,12 +118,12 @@ export interface Lesson {
   level: string;
   grammar: Grammar;
   examples: Example[];
-  fillFG: FillItem[];
+  fillCross: FillItem[];
   fillBlanks: FillItem[];
   buildSentences: BuildItem[];
   quiz: QuizItem[];
   combine: CombineItem[];
-  franglais: FranglaisItem[];
+  crossing: CrossingItem[];
   review: ReviewItem[];
   sayIt: SayItItem[];
   miniConv: MiniConvConfig;

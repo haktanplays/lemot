@@ -152,7 +152,7 @@ export const lesson5: Lesson = {
       bridge: "Il est student, elle est teacher.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "I [___] American.",
       a: "suis",
@@ -318,7 +318,7 @@ export const lesson5: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "I am tired but she is happy and we are ready.",
       known: [

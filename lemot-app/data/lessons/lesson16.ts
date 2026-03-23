@@ -147,7 +147,7 @@ export const lesson16: Lesson = {
       bridge: "La boulangerie est in front le parc.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "The pharmacy is [___] the bank.",
       a: "\u00e0 c\u00f4t\u00e9 de",
@@ -326,7 +326,7 @@ export const lesson16: Lesson = {
       accept: ["la gare est entre le parc et la banque"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "The pharmacy is next to the bank and the bakery is across from the park.",
       known: [
@@ -443,7 +443,7 @@ export const lesson16: Lesson = {
       ctx: "Under the table.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "The bakery is next to the bank.",
       blanks: [
         { word: "bakery", answer: "boulangerie" },

@@ -143,7 +143,7 @@ export const lesson2: Lesson = {
       bridge: "Merci beaucoup, c'est très beautiful.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "The little [___] is here.",
       a: "chat",
@@ -291,7 +291,7 @@ export const lesson2: Lesson = {
       accept: ["elle est française", "elle est francaise"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "The small cat is here and the big hotel is there.",
       known: [

@@ -12,7 +12,7 @@ A French learning app for English speakers. Currently a single-file React compon
   - L5 Être, L6 Avoir, L7 Articles & Gender, L8 Numbers & Time
   - L9 Food & Ordering, L10 Family, L11 Negation, L12 Everyday Phrases
   - L13 Aller & Future, L14 Questions, L15 Daily Routine, L16 Places & Prepositions
-- **11-section lesson flow** (input-first): Read & Listen → Patterns → Franglais Fill → French Fill → Write → Build → Quiz → Combine+Franglais → Say It Your Way → Mini Conversation → Review
+- **11-section lesson flow** (input-first): Read & Listen → Patterns → Crossing Fill → French Fill → Write → Build → Quiz → Combine+Crossing → Say It Your Way → Mini Conversation → Review
 - **Say It Your Way** (sec 8): Free-write response to situation prompts, AI evaluation via Claude API, target word tracking
 - **Mini Conversation** (sec 9): 3-4 turn AI chat locked to lesson topic, negotiation of meaning, listen button per message
 - **AI Chat**: 4 modes (Free, Lesson Focus, Error Correction, Scenarios) with negotiation of meaning
@@ -22,8 +22,8 @@ A French learning app for English speakers. Currently a single-file React compon
 - **Enhanced Progress Tab**: Mastered/Learning/Weak word categories, daily review status, milestone badges, streak display
 - **Storage**: window.storage API (artifact) — key "lm7", structure: `{p, xp, err, dr: {date, count}, streak}`
 
-## Key Differentiator: Franglais Bridge
-Users write sentences mixing English + French. Known words in French, unknown in English. Cognate highlighting (merci ≈ mercy). No other app does this.
+## Key Differentiator: Crossing
+Users write sentences mixing English + French. Known words in French, unknown in English. Cognate highlighting (merci ≈ mercy). No other app does this. Dedicated "Crossing" tab for extra practice outside lessons.
 
 ## Architecture Decisions (see LE-MOT-DECISIONS-v2.md for full details)
 
@@ -53,7 +53,7 @@ Users write sentences mixing English + French. Known words in French, unknown in
 - Color palette in `P` object (red: #C0392B, green: #27AE60, amber: #E67E22, purple: #7C3AED)
 - Fonts: Newsreader (serif, French text), Outfit (sans-serif, UI)
 - Storage key: "lm7"
-- Section keys in SECS array must match mk() calls exactly: read_listen, patterns, fill_fg, fill_fr, fill_write, build, quiz, combine_fg, say_it, mini_conv, review
+- Section keys in SECS array must match mk() calls exactly: read_listen, patterns, fill_cross, fill_fr, fill_write, build, quiz, combine_cross, say_it, mini_conv, review
 - All section progress stored as `{lessonId}-{sectionKey}: true`
 - Lesson data must include `sayIt` (array of {situation, target[]}) and `miniConv` ({topic, starter}) fields
 - `cI2` state variable is shared between Combine and Say It sections — reset to 0 on transitions

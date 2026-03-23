@@ -1,12 +1,12 @@
 export const SECS = [
   "read_listen",
   "patterns",
-  "fill_fg",
+  "fill_cross",
   "fill_fr",
   "fill_write",
   "build",
   "quiz",
-  "combine_fg",
+  "combine_cross",
   "say_it",
   "mini_conv",
   "review",
@@ -15,7 +15,7 @@ export const SECS = [
 export const SEC_NAMES = [
   "Read & Listen",
   "Patterns",
-  "Franglais Fill",
+  "Crossing Fill",
   "French Fill",
   "Write",
   "Build",

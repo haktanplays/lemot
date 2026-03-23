@@ -158,7 +158,7 @@ export const lesson9: Lesson = {
       bridge: "Je voudrais un dessert.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "I'll have [___] chicken, please.",
       a: "le poulet",
@@ -326,7 +326,7 @@ export const lesson9: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "I'll have the chicken and some water, please. The fish is too expensive.",
       known: [
@@ -427,7 +427,7 @@ export const lesson9: Lesson = {
       ctx: "Some cheese — masculine partitive.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "I'll have the fish.",
       blanks: [
         { word: "I'll have", answer: "prends" },

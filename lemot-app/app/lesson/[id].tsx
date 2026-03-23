@@ -12,12 +12,12 @@ import { TransitionScreen } from "@/components/TransitionScreen";
 // Section components
 import { ReadListen } from "@/components/sections/ReadListen";
 import { Patterns } from "@/components/sections/Patterns";
-import { FranglaisFill } from "@/components/sections/FranglaisFill";
+import { CrossingFill } from "@/components/sections/CrossingFill";
 import { FrenchFill } from "@/components/sections/FrenchFill";
 import { WriteSection } from "@/components/sections/WriteSection";
 import { BuildSentence } from "@/components/sections/BuildSentence";
 import { Quiz } from "@/components/sections/Quiz";
-import { CombineFranglais } from "@/components/sections/CombineFranglais";
+import { CombineCrossing } from "@/components/sections/CombineCrossing";
 import { SayItYourWay } from "@/components/sections/SayItYourWay";
 import { MiniConversation } from "@/components/sections/MiniConversation";
 import { Review } from "@/components/sections/Review";
@@ -70,7 +70,7 @@ export default function LessonScreen() {
     logErr(word, "build", given, correct, lessonId);
   };
   const errCombine = (word: string, given: string, correct: string) => {
-    logErr(word, "combine_fg", given, correct, lessonId);
+    logErr(word, "combine_cross", given, correct, lessonId);
   };
   const errReview = (correct: string, given: string) => {
     logErr(correct, "review", given, correct, lessonId);
@@ -98,18 +98,18 @@ export default function LessonScreen() {
             onComplete={() => {
               mk(lessonId, "patterns");
               gx(10);
-              nextSec(0, 0, "Patterns understood! Time to fill in some Franglais...");
+              nextSec(0, 0, "Patterns understood! Time to fill in some Crossing...");
             }}
           />
         );
       case 2:
         return (
-          <FranglaisFill
-            items={lesson.fillFG}
+          <CrossingFill
+            items={lesson.fillCross}
             onComplete={(score, total) => {
-              mk(lessonId, "fill_fg");
+              mk(lessonId, "fill_cross");
               gx(15);
-              nextSec(score, total, "Nice Franglais! Now try fully in French...");
+              nextSec(score, total, "Nice Crossing! Now try fully in French...");
             }}
             onError={errFill}
           />
@@ -164,11 +164,11 @@ export default function LessonScreen() {
         );
       case 7:
         return (
-          <CombineFranglais
+          <CombineCrossing
             combine={lesson.combine}
-            franglais={lesson.franglais}
+            crossing={lesson.crossing}
             onComplete={(score, total) => {
-              mk(lessonId, "combine_fg");
+              mk(lessonId, "combine_cross");
               gx(20);
               nextSec(
                 score,

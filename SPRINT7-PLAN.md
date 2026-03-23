@@ -54,12 +54,12 @@ lemot-app/
 │   └── sections/                 # 11 lesson section components
 │       ├── ReadListen.tsx         # sec 0: Examples + audio
 │       ├── Patterns.tsx           # sec 1: Grammar + quick recall
-│       ├── FranglaisFill.tsx      # sec 2: Franglais MCQ
+│       ├── CrossingFill.tsx      # sec 2: Crossing MCQ
 │       ├── FrenchFill.tsx         # sec 3: French MCQ
 │       ├── WriteSection.tsx       # sec 4: Type from memory
 │       ├── BuildSentence.tsx      # sec 5: Word arrangement
 │       ├── Quiz.tsx               # sec 6: Mixed questions
-│       ├── CombineFranglais.tsx   # sec 7: Translation + Franglais
+│       ├── CombineCrossing.tsx   # sec 7: Translation + Crossing
 │       ├── SayItYourWay.tsx       # sec 8: Free write + AI eval
 │       ├── MiniConversation.tsx   # sec 9: In-lesson AI chat
 │       └── Review.tsx             # sec 10: Mixed review
@@ -121,7 +121,7 @@ lemot-app/
 **Goal**: All lesson data in typed, modular files
 
 **Steps**:
-1. Define TypeScript interfaces in `lib/types.ts`: `Lesson`, `Example`, `FillItem`, `BuildItem`, `QuizItem`, `CombineItem`, `FranglaisItem`, `SayItItem`, `MiniConvConfig`, `ReviewItem`, `DictEntry`, `FlashCard`, `Milestone`
+1. Define TypeScript interfaces in `lib/types.ts`: `Lesson`, `Example`, `FillItem`, `BuildItem`, `QuizItem`, `CombineItem`, `CrossingItem`, `SayItItem`, `MiniConvConfig`, `ReviewItem`, `DictEntry`, `FlashCard`, `Milestone`
 2. Extract DICT → `data/dictionary.ts`
 3. Extract FLASH → `data/flashcards.ts`
 4. Extract MILESTONES → `data/milestones.ts`
@@ -196,15 +196,15 @@ lemot-app/
 2. Port each section component (11 files in `components/sections/`):
    - ReadListen: FrText examples + audio buttons
    - Patterns: GrammarRenderer + quick recall
-   - FranglaisFill: MCQ with context
+   - CrossingFill: MCQ with context
    - FrenchFill: MCQ fully in French
    - WriteSection: TextInput + answer checking via norm()
    - BuildSentence: Pressable word chips (drag not needed, tap to select)
    - Quiz: Mixed MCQ with "spot the mistake" variant
-   - CombineFranglais: Two-phase (translate → franglais)
+   - CombineCrossing: Two-phase (translate → crossing)
    - SayItYourWay: TextInput + AI evaluation call
    - MiniConversation: Chat UI with AI
-   - Review: Mixed review types (listen, odd, context, fill_ctx, franglais)
+   - Review: Mixed review types (listen, odd, context, fill_ctx, crossing)
 3. Section state management: each section manages own state, reports completion up via callback
 4. Progress bar with completion checkmarks
 

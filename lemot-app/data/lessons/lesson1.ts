@@ -149,7 +149,7 @@ export const lesson1: Lesson = {
       bridge: "Good evening! Merci, goodbye.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "I [___] a coffee, please.",
       a: "voudrais",
@@ -305,7 +305,7 @@ export const lesson1: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "I understand and I would still like a coffee, please.",
       known: [

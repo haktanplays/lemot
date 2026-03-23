@@ -143,7 +143,7 @@ export const lesson11: Lesson = {
       bridge: "Il est always en retard.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "I [___] eat meat.",
       a: "ne mange jamais de",
@@ -302,7 +302,7 @@ export const lesson11: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "I never eat meat. She eats nothing. There's no more bread.",
       known: [
@@ -403,7 +403,7 @@ export const lesson11: Lesson = {
       ctx: "I never eat meat.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "She eats nothing.",
       blanks: [
         { word: "eats", answer: "mange" },

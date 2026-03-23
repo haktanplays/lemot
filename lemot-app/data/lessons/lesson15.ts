@@ -164,7 +164,7 @@ export const lesson15: Lesson = {
       bridge: "Il sleeps bien la nuit.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "I [___] at seven o'clock.",
       a: "me l\u00e8ve",
@@ -324,7 +324,7 @@ export const lesson15: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "In the morning, I get up at seven. Then I wash and get dressed.",
       known: [
@@ -422,7 +422,7 @@ export const lesson15: Lesson = {
       ctx: "Reflexive pronoun \u2014 je ME l\u00e8ve.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "I go to bed late.",
       blanks: [
         { word: "go to bed", answer: "couche" },

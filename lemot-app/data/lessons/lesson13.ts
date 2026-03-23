@@ -134,7 +134,7 @@ export const lesson13: Lesson = {
       bridge: "On va take un caf\u00e9?",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "I [___] to the restaurant.",
       a: "vais",
@@ -295,7 +295,7 @@ export const lesson13: Lesson = {
       accept: ["je vais travailler demain matin"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "I'm going to the restaurant tonight. It's straight ahead then to the left.",
       known: [
@@ -398,7 +398,7 @@ export const lesson13: Lesson = {
       ctx: "She's going to eat \u2014 near future.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "I'm going to the park.",
       blanks: [
         { word: "going", answer: "vais" },

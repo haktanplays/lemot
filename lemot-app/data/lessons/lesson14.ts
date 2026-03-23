@@ -149,7 +149,7 @@ export const lesson14: Lesson = {
       bridge: "Tu fais what ce soir?",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "[___] is your name?",
       a: "Comment",
@@ -316,7 +316,7 @@ export const lesson14: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "What's your name? Why are you learning French? Because I love France.",
       known: [
@@ -414,7 +414,7 @@ export const lesson14: Lesson = {
       ctx: "Why are you learning French?",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "Why? Because I love France.",
       blanks: [
         { word: "Why", answer: "Pourquoi" },

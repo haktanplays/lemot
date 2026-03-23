@@ -147,7 +147,7 @@ export const lesson4: Lesson = {
       bridge: "Tu as how old? — Et toi?",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "[___] are French? (asking a friend)",
       a: "Tu es",
@@ -304,7 +304,7 @@ export const lesson4: Lesson = {
       accept: ["on se tutoie"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "You are French, right? And you, are you American?",
       known: [

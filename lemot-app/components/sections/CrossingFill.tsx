@@ -6,7 +6,7 @@ import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import type { FillItem } from "@/lib/types";
 
-interface FranglaisFillProps {
+interface CrossingFillProps {
   items: FillItem[];
   onComplete: (score: number, total: number) => void;
   onError: (
@@ -18,17 +18,17 @@ interface FranglaisFillProps {
 }
 
 /**
- * Section 2: Franglais Fill
+ * Section 2: Crossing Fill
  *
  * Shows sentences that mix English and French with a [___] blank.
  * The user picks the correct French word from multiple choice options.
  * Tracks score and advances through items one at a time.
  */
-export function FranglaisFill({
+export function CrossingFill({
   items,
   onComplete,
   onError,
-}: FranglaisFillProps) {
+}: CrossingFillProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
@@ -42,7 +42,7 @@ export function FranglaisFill({
     if (opt === item.a) {
       setScore((s) => s + 1);
     } else {
-      onError(item.a, "fill_fg", opt, item.a);
+      onError(item.a, "fill_cross", opt, item.a);
     }
   };
 
@@ -61,7 +61,7 @@ export function FranglaisFill({
     <View>
       {/* Progress indicator */}
       <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-        Franglais Fill {"\u00B7"} {currentIndex + 1}/{items.length}
+        Crossing Fill {"\u00B7"} {currentIndex + 1}/{items.length}
       </Text>
       <Text className="text-xs font-medium mb-2.5" style={{ color: P.purple }}>
         Replace the blank with the correct French word.

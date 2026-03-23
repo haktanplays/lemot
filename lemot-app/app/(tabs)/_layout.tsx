@@ -2,6 +2,7 @@ import { Tabs } from "expo-router";
 import {
   Mountain,
   MessageCircle,
+  Shuffle,
   Layers,
   BarChart3,
 } from "lucide-react-native";
@@ -42,6 +43,15 @@ export default function TabLayout() {
           title: "Chat",
           tabBarIcon: ({ color, size }) => (
             <MessageCircle color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="crossing"
+        options={{
+          title: "Crossing",
+          tabBarIcon: ({ color, size }) => (
+            <Shuffle color={color} size={size} />
           ),
         }}
       />

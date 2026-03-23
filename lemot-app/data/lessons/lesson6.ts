@@ -133,7 +133,7 @@ export const lesson6: Lesson = {
       bridge: "J'ai besoin de leave.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "I [___] twenty years old.",
       a: "ai",
@@ -284,7 +284,7 @@ export const lesson6: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "I'm hungry and she's thirsty. We need water.",
       known: [
@@ -371,7 +371,7 @@ export const lesson6: Lesson = {
       ctx: "Happy = description = être, not avoir.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "I'm hungry and I need coffee.",
       blanks: [
         { word: "hungry", answer: "faim" },

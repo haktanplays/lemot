@@ -186,7 +186,7 @@ export const lesson8: Lesson = {
       bridge: "C'est trop expensive!",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "It's [___] o'clock (3:00).",
       a: "trois heures",
@@ -355,7 +355,7 @@ export const lesson8: Lesson = {
       accept: ["il est midi et j'ai faim", "il est midi, j'ai faim"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "It's three o'clock and I'm hungry. How much does a coffee cost?",
       known: [
@@ -452,7 +452,7 @@ export const lesson8: Lesson = {
       ctx: "12:30 PM = midi et demi.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "It costs ten euros.",
       blanks: [
         { word: "costs", answer: "coûte" },

@@ -158,7 +158,7 @@ export const lesson10: Lesson = {
       bridge: "Mes amis sont ici.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "[___] father is a doctor.",
       a: "Mon",
@@ -315,7 +315,7 @@ export const lesson10: Lesson = {
       accept: ["mes amis sont ici et les enfants sont jeunes"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "My father is a doctor and my mother is French. They have three children.",
       known: [
@@ -415,7 +415,7 @@ export const lesson10: Lesson = {
       ctx: "My father — père is masculine.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "My sister is young.",
       blanks: [
         { word: "sister", answer: "sœur" },

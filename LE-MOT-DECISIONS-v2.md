@@ -7,7 +7,7 @@
 
 - Latest working file: **le-mot-v6.jsx** (v7 was lost)
 - 6 lessons exist: 1 (Survival Kit), 2 (Pronunciation I), 3 (Pronunciation II), 4 (Tu vs Vous), 5 (Être), 12 (Everyday Phrases)
-- 10-section lesson structure, AI Chat (4 modes), Franglais DNA, Practice tab, Stats tab
+- 10-section lesson structure, AI Chat (4 modes), Crossing DNA, Practice tab, Stats tab
 - Storage key: lm6
 
 ---
@@ -24,7 +24,7 @@
 - **Semantic Clustering** — Risk of interference when similar-meaning words taught together (souvent/parfois/rarement). Mitigated by embedding in context (McDonald & Reynolds 2023).
 
 ### No Evidence (innovating):
-- Franglais/code-switching as pedagogy — no research, Le Mot is pioneering
+- Crossing/code-switching as pedagogy — no research, Le Mot is pioneering
 - Cognate-based teaching — cognate advantage studied for reading speed, not as teaching method
 - Self-paced app learning — most studies are lab/classroom
 
@@ -43,12 +43,12 @@ Rationale: Flashcards = isolated, decontextualized, passive recognition. Researc
 
 ### What AI generates per lesson (~25 extra exercises):
 - 4 extra Read & Listen sentences (different situations)
-- 4 extra Franglais Fill questions
+- 4 extra Crossing Fill questions
 - 3 extra French Fill questions  
 - 3 extra Build sentences
 - 3 extra Quiz questions
 - 2 extra Combine prompts
-- 2 extra Franglais active sentences
+- 2 extra Crossing active sentences
 - 3 Review questions mixing current + past lesson words
 
 ### Result: Same target words, 8-10 different contexts per word.
@@ -89,12 +89,12 @@ Gemini switch happens at standalone app phase.
 ### Updated 12-section flow:
 1. Read & Listen (strengthened Examples, input-first)
 2. Pattern Discovery (grammar)
-3. Franglais Fill
+3. Crossing Fill
 4. French Fill
 5. Write
 6. Build
 7. Quiz
-8. Combine + Franglais Active (merged)
+8. Combine + Crossing Active (merged)
 9. Say It Your Way (NEW — free production)
 10. Mini Conversation (NEW — in-lesson AI chat)
 11. Review (50% current lesson, 50% past lessons via AI)
@@ -158,7 +158,7 @@ Gemini switch happens at standalone app phase.
 - Grammar spiral between lessons weak (AI Review cross-references help)
 
 ### Investor risks:
-- No moat beyond Franglais brand
+- No moat beyond Crossing brand
 - Retention metrics unknown (needs real user testing)
 - Monetization strategy undefined
 - Single-language, single-developer
@@ -178,7 +178,7 @@ Product promise: "LE-MOT teaches French through meaning, patterns, and real expr
 
 Target audience: English-speaking adults learning French who find Duolingo too gamey, Babbel too dry, and want to understand WHY French works the way it does. Premium, calm, aesthetic experience.
 
-Primary differentiator: Franglais bridge + meaning-first learning
+Primary differentiator: Crossing bridge + meaning-first learning
 Supporting: cognates, etymology, elegant UI
 
 ---

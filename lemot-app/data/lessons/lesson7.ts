@@ -159,7 +159,7 @@ export const lesson7: Lesson = {
       bridge: "La famille is à la maison.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "[___] book is on the table.",
       a: "Le",
@@ -321,7 +321,7 @@ export const lesson7: Lesson = {
       ],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "The book is on the table and the chair is small.",
       known: [
@@ -409,7 +409,7 @@ export const lesson7: Lesson = {
       ctx: "Avoir = to have. Cross-reference L6.",
     },
     {
-      type: "franglais",
+      type: "crossing",
       en: "The family is at home.",
       blanks: [
         { word: "family", answer: "famille" },

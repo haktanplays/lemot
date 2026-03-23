@@ -144,7 +144,7 @@ export const lesson3: Lesson = {
       bridge: "Un blanc and un rouge, please.",
     },
   ],
-  fillFG: [
+  fillCross: [
     {
       s: "It's a [___] restaurant.",
       a: "bon",
@@ -295,7 +295,7 @@ export const lesson3: Lesson = {
       accept: ["du pain et du vin"],
     },
   ],
-  franglais: [
+  crossing: [
     {
       en: "It's a good restaurant. The street is big and beautiful.",
       known: [

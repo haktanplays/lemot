@@ -20,7 +20,7 @@ interface FrenchFillProps {
 /**
  * Section 3: French Fill
  *
- * Same structure as FranglaisFill, but sentences are fully in French.
+ * Same structure as CrossingFill, but sentences are fully in French.
  * Uses underscore _ as the blank marker instead of [___].
  * The user picks the correct word from multiple choice options.
  */
