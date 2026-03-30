@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
-import { ChevronLeft, Check } from "lucide-react-native";
+import { ChevronLeft, Check, Sparkles } from "lucide-react-native";
 import { useApp } from "@/providers/AppProvider";
 import { LESSONS } from "@/data/lessons";
 import { SECS, SEC_NAMES } from "@/constants/sections";
@@ -293,13 +293,36 @@ export default function LessonScreen() {
             onNext={handleTransitionNext}
           />
         ) : sec > 10 ? (
-          <View className="flex-1 items-center justify-center px-8">
-            <Text className="text-xl font-bold text-lm-green mb-2">
-              Lesson Complete!
-            </Text>
-            <Text className="text-sm text-lm-ink2 text-center mb-4">
-              You've completed all sections. Great job!
-            </Text>
+          <ScrollView className="flex-1 px-8" contentContainerStyle={{ paddingTop: 40, paddingBottom: 32 }}>
+            <View className="items-center mb-6">
+              <Text className="text-xl font-bold text-lm-green mb-2">
+                Lesson Complete!
+              </Text>
+              <Text className="text-sm text-lm-ink2 text-center">
+                You've completed all sections. Great job!
+              </Text>
+            </View>
+
+            {/* Summary Card */}
+            {lesson.summary && lesson.summary.length > 0 && (
+              <View className="bg-lm-paper rounded-2xl p-5 mb-6 border border-lm-border">
+                <View className="flex-row items-center gap-2 mb-3">
+                  <Sparkles size={16} color={P.amber} />
+                  <Text className="text-sm font-bold text-lm-ink">
+                    What you learned today
+                  </Text>
+                </View>
+                {lesson.summary.map((item, i) => (
+                  <View key={i} className="flex-row items-start gap-2 mb-2">
+                    <Check size={14} color={P.green} style={{ marginTop: 2 }} />
+                    <Text className="text-xs text-lm-ink2 flex-1 leading-5">
+                      {item}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
             {lessonId < 16 && (
               <Pressable
                 onPress={() => router.replace(`/lesson/${lessonId + 1}`)}
@@ -313,11 +336,11 @@ export default function LessonScreen() {
             )}
             <Pressable
               onPress={() => router.back()}
-              className="bg-lm-green rounded-xl px-6 py-3"
+              className="bg-lm-green rounded-xl px-6 py-3 mb-4"
             >
-              <Text className="text-white font-semibold">Back to Journey</Text>
+              <Text className="text-white font-semibold text-center">Back to Journey</Text>
             </Pressable>
-          </View>
+          </ScrollView>
         ) : (
           <ScrollView className="flex-1 px-5 pt-4" contentContainerStyle={{ paddingBottom: 32 }}>
             {renderSection()}

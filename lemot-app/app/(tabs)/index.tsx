@@ -191,6 +191,7 @@ export default function HomeScreen() {
             id={lesson.id}
             title={lesson.title}
             sub={lesson.sub}
+            difficulty={lesson.difficulty}
             progress={lp(lesson.id)}
             onPress={() => goToLesson(lesson.id)}
           />
