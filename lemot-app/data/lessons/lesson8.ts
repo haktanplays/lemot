@@ -332,6 +332,18 @@ export const lesson8: Lesson = {
       o: ["It's midnight", "It's noon", "It's late", "It's early"],
       ctx: "Minuit = mi (middle) + nuit (night).",
     },
+    {
+      q: "Your friend is leaving for lunch. They say: 'Bon, _______!'",
+      a: "à tout à l'heure",
+      o: ["à tout à l'heure", "tout de suite", "il est temps", "au revoir"],
+      ctx: "The expression meaning 'see you later / see you soon'.",
+    },
+    {
+      q: "A waiter says 'J'arrive _______!' as he rushes to your table.",
+      a: "tout de suite",
+      o: ["tout de suite", "à tout à l'heure", "il est temps", "en fait"],
+      ctx: "The expression meaning 'right away / immediately'.",
+    },
   ],
   combine: [
     {
@@ -467,6 +479,12 @@ export const lesson8: Lesson = {
         "A waiter tells you 'Ça fait vingt-deux euros.' How much is it?",
       a: "22 euros",
       o: ["22 euros", "20 euros", "12 euros", "32 euros"],
+    },
+    {
+      type: "context",
+      situation: "You've been procrastinating all morning. You finally decide to start working.",
+      a: "Il est temps de travailler !",
+      o: ["Il est temps de travailler !", "À tout à l'heure !", "Tout de suite !", "Ça coûte combien ?"],
     },
   ],
   sayIt: [

@@ -288,6 +288,18 @@ export const lesson14: Lesson = {
         "Where are you?",
       ],
     },
+    {
+      q: "You're explaining something and need to rephrase. You say: 'Je suis fatigu\u00e9, _______, j'ai besoin de dormir.'",
+      a: "c'est-\u00e0-dire",
+      o: ["c'est-\u00e0-dire", "au fait", "comment dire", "parce que"],
+      ctx: "The expression meaning 'that is to say / I mean'.",
+    },
+    {
+      q: "You suddenly remember something and change topic: '_______, tu fais quoi ce soir ?'",
+      a: "Au fait",
+      o: ["Au fait", "C'est-\u00e0-dire", "Comment dire", "Pourquoi"],
+      ctx: "The expression meaning 'by the way'.",
+    },
   ],
   combine: [
     {
@@ -422,6 +434,12 @@ export const lesson14: Lesson = {
         { word: "Because", answer: "Parce que" },
       ],
       full: "Pourquoi ? Parce que j'aime la France.",
+    },
+    {
+      type: "context",
+      situation: "You're searching for the right word in French and need to buy time.",
+      a: "Comment dire...",
+      o: ["Comment dire...", "C'est-\u00e0-dire", "Au fait", "Parce que"],
     },
   ],
   sayIt: [

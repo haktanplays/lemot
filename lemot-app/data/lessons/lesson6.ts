@@ -258,6 +258,18 @@ export const lesson6: Lesson = {
       o: ["We have", "We are", "They have", "You have"],
       ctx: "Nous = we, avons = have",
     },
+    {
+      q: "You finally finish a long project. You exclaim: '_______, j'ai fini !'",
+      a: "Ça y est",
+      o: ["Ça y est", "J'en ai marre", "Il y a", "C'est bon"],
+      ctx: "The expression meaning 'that's it / it's done / finally!'",
+    },
+    {
+      q: "It's been raining for days. You say: '_______ de la pluie !'",
+      a: "J'en ai marre",
+      o: ["J'en ai marre", "Ça y est", "Il y a", "C'est pas grave"],
+      ctx: "The expression meaning 'I'm fed up'.",
+    },
   ],
   combine: [
     {
@@ -379,6 +391,12 @@ export const lesson6: Lesson = {
         { word: "need", answer: "besoin" },
       ],
       full: "J'ai faim et j'ai besoin de café.",
+    },
+    {
+      type: "context",
+      situation: "You look in the fridge and see a cat inside. You say:",
+      a: "Il y a un chat dans le frigo !",
+      o: ["Il y a un chat dans le frigo !", "J'en ai marre du chat", "Ça y est, le chat", "J'ai peur du chat"],
     },
   ],
   sayIt: [

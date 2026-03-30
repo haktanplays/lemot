@@ -301,6 +301,18 @@ export const lesson16: Lesson = {
       o: ["Between", "In", "On", "Under"],
       ctx: "Entre \u2248 enter (going between).",
     },
+    {
+      q: "Someone asks where the bakery is. You point and say: 'La boulangerie ? C'est _______!'",
+      a: "par l\u00e0",
+      o: ["par l\u00e0", "quelque part", "juste \u00e0 c\u00f4t\u00e9", "dans"],
+      ctx: "The expression meaning 'that way'.",
+    },
+    {
+      q: "You ask if there's a pharmacy nearby. You say: 'Il y a une pharmacie _______ par ici ?'",
+      a: "quelque part",
+      o: ["quelque part", "par l\u00e0", "juste \u00e0 c\u00f4t\u00e9", "entre"],
+      ctx: "The expression meaning 'somewhere'.",
+    },
   ],
   combine: [
     {
@@ -462,6 +474,12 @@ export const lesson16: Lesson = {
         "Au supermarch\u00e9",
         "\u00c0 la banque",
       ],
+    },
+    {
+      type: "context",
+      situation: "Someone asks where the pharmacy is. It's right next door to where you're standing.",
+      a: "C'est juste \u00e0 c\u00f4t\u00e9 !",
+      o: ["C'est juste \u00e0 c\u00f4t\u00e9 !", "C'est par l\u00e0", "C'est quelque part", "C'est dans la rue"],
     },
   ],
   sayIt: [

@@ -295,6 +295,18 @@ export const lesson7: Lesson = {
         "A family is a house",
       ],
     },
+    {
+      q: "It's cold outside but you're going for a walk _______.",
+      a: "quand même",
+      o: ["quand même", "n'importe quoi", "tout à fait", "en fait"],
+      ctx: "The expression meaning 'still / even so / all the same'.",
+    },
+    {
+      q: "Someone asks 'C'est correct ?' and you want to say 'Absolutely.' You reply:",
+      a: "Tout à fait",
+      o: ["Tout à fait", "Quand même", "N'importe quoi", "C'est ça"],
+      ctx: "The expression meaning 'exactly / absolutely'.",
+    },
   ],
   combine: [
     {
@@ -417,6 +429,12 @@ export const lesson7: Lesson = {
         { word: "home", answer: "maison" },
       ],
       full: "La famille est à la maison.",
+    },
+    {
+      type: "context",
+      situation: "Your friend says something ridiculous. You react dismissively.",
+      a: "N'importe quoi !",
+      o: ["N'importe quoi !", "Tout à fait !", "Quand même !", "C'est vrai !"],
     },
   ],
   sayIt: [

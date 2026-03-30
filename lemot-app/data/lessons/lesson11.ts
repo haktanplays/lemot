@@ -276,6 +276,18 @@ export const lesson11: Lesson = {
       negative: true,
       ctx: "Ne always comes before the verb.",
     },
+    {
+      q: "Someone asks 'Tu es fatigué ?' You're not tired at all. You reply:",
+      a: "Pas du tout !",
+      o: ["Pas du tout !", "Pas encore", "Ce n'est pas la peine", "Peut-être"],
+      ctx: "The expression meaning 'not at all'.",
+    },
+    {
+      q: "A friend asks if you've eaten dinner. You haven't yet. You say:",
+      a: "Pas encore",
+      o: ["Pas encore", "Pas du tout", "Ce n'est pas la peine", "Plus rien"],
+      ctx: "The expression meaning 'not yet'.",
+    },
   ],
   combine: [
     {
@@ -411,6 +423,12 @@ export const lesson11: Lesson = {
         { word: "nothing", answer: "rien" },
       ],
       full: "Elle ne mange rien.",
+    },
+    {
+      type: "context",
+      situation: "A friend wants to come help you clean, but you've already finished. You say:",
+      a: "Ce n'est pas la peine, j'ai déjà fini !",
+      o: ["Ce n'est pas la peine, j'ai déjà fini !", "Pas du tout !", "Pas encore !", "Il n'y a rien !"],
     },
   ],
   sayIt: [

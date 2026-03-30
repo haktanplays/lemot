@@ -292,6 +292,18 @@ export const lesson10: Lesson = {
       ],
       ctx: "Femme has both meanings in French.",
     },
+    {
+      q: "A friend suggests dinner. You reply: 'Super, on mange _______ ?'",
+      a: "chez moi",
+      o: ["chez moi", "ça fait longtemps", "c'est de famille", "en fait"],
+      ctx: "The expression meaning 'at my place'.",
+    },
+    {
+      q: "You run into an old friend on the street. You exclaim: '_______! Comment tu vas ?'",
+      a: "Ça fait longtemps",
+      o: ["Ça fait longtemps", "Chez moi", "C'est de famille", "En tout cas"],
+      ctx: "The expression meaning 'it's been a long time / long time no see'.",
+    },
   ],
   combine: [
     {
@@ -423,6 +435,12 @@ export const lesson10: Lesson = {
         { word: "young", answer: "jeune" },
       ],
       full: "Ma sœur est jeune.",
+    },
+    {
+      type: "context",
+      situation: "Someone asks why your whole family is so tall. You reply:",
+      a: "C'est de famille !",
+      o: ["C'est de famille !", "Chez moi !", "Ça fait longtemps !", "N'importe quoi !"],
     },
   ],
   sayIt: [

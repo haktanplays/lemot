@@ -274,6 +274,18 @@ export const lesson13: Lesson = {
         "faire + infinitive",
       ],
     },
+    {
+      q: "Everyone's ready to leave the caf\u00e9. You say: 'Bon, _______ !'",
+      a: "on y va",
+      o: ["on y va", "je m'en vais", "\u00e7a va aller", "il faut"],
+      ctx: "The expression meaning 'let's go / here we go'.",
+    },
+    {
+      q: "Your friend is stressed about an exam. You reassure them: 'Ne t'inqui\u00e8te pas, _______.'",
+      a: "\u00e7a va aller",
+      o: ["\u00e7a va aller", "on y va", "je m'en vais", "il faut partir"],
+      ctx: "The expression meaning 'it's going to be OK'.",
+    },
   ],
   combine: [
     {
@@ -406,6 +418,12 @@ export const lesson13: Lesson = {
         { word: "park", answer: "parc" },
       ],
       full: "Je vais au parc.",
+    },
+    {
+      type: "context",
+      situation: "It's late and you need to head home. You say goodbye to your friends.",
+      a: "Bon, je m'en vais ! \u00c0 demain !",
+      o: ["Bon, je m'en vais ! \u00c0 demain !", "On y va ! \u00c0 demain !", "\u00c7a va aller ! \u00c0 demain !", "Il faut ! \u00c0 demain !"],
     },
   ],
   sayIt: [

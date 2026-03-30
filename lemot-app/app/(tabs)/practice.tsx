@@ -20,12 +20,13 @@ import {
   Globe,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
+import { SCENARIOS } from "@/data/practiceScenarios";
 import { FLASH } from "@/data/flashcards";
 import { useApp } from "@/providers/AppProvider";
 import { norm } from "@/lib/normalize";
-import type { FlashCard } from "@/lib/types";
+import type { FlashCard, ScenarioCard } from "@/lib/types";
 
-type Mode = "menu" | "flashcard" | "translate";
+type Mode = "menu" | "scenario" | "translate";
 
 /* ── Shuffle helper ── */
 function shuffle<T>(arr: T[]): T[] {
@@ -41,8 +42,8 @@ export default function PracticeScreen() {
   const { say, loaded } = useApp();
   const [mode, setMode] = useState<Mode>("menu");
 
-  /* ═══ Flashcard state ═══ */
-  const [deck, setDeck] = useState<FlashCard[]>([]);
+  /* ═══ Scenario state ═══ */
+  const [deck, setDeck] = useState<ScenarioCard[]>([]);
   const [cardIdx, setCardIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [knownCount, setKnownCount] = useState(0);
@@ -62,12 +63,12 @@ export default function PracticeScreen() {
     );
   }
 
-  const startFlashcards = useCallback(() => {
-    setDeck(shuffle(FLASH));
+  const startScenarios = useCallback(() => {
+    setDeck(shuffle(SCENARIOS));
     setCardIdx(0);
     setFlipped(false);
     setKnownCount(0);
-    setMode("flashcard");
+    setMode("scenario");
   }, []);
 
   const startTranslate = useCallback(() => {
@@ -95,13 +96,13 @@ export default function PracticeScreen() {
               Pratique
             </Text>
             <Text className="text-xs text-lm-ink3 mt-1">
-              Reinforce your vocabulary with flashcards and translation.
+              Practice with real situations and translation.
             </Text>
           </View>
 
-          {/* Flashcard card */}
+          {/* Scenario card */}
           <Pressable
-            onPress={startFlashcards}
+            onPress={startScenarios}
             className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
             style={{
               backgroundColor: P.paper,
@@ -118,10 +119,10 @@ export default function PracticeScreen() {
             <Layers size={22} color={P.red} strokeWidth={1.3} />
             <View className="flex-1">
               <Text className="text-sm font-bold" style={{ color: P.ink }}>
-                Flashcards
+                Scenarios
               </Text>
               <Text className="text-xs" style={{ color: P.ink3 }}>
-                {FLASH.length} cards — tap to flip, swipe to know/learn
+                {SCENARIOS.length} situations — what would you say?
               </Text>
             </View>
             <ChevronRight size={16} color={P.ink3} />
@@ -162,9 +163,9 @@ export default function PracticeScreen() {
   }
 
   /* ═══════════════════════════════
-     FLASHCARD MODE
+     SCENARIO MODE
      ═══════════════════════════════ */
-  if (mode === "flashcard") {
+  if (mode === "scenario") {
     const card = deck[cardIdx];
     const isLast = cardIdx >= deck.length - 1;
     const done = cardIdx >= deck.length;
@@ -174,16 +175,16 @@ export default function PracticeScreen() {
         <SafeAreaView className="flex-1 bg-lm-bg">
           <View className="flex-1 items-center justify-center px-8">
             <Text className="text-xl font-bold text-lm-green mb-2">
-              Deck Complete!
+              Scenarios Complete!
             </Text>
             <Text className="text-sm text-lm-ink2 text-center mb-1">
-              You marked {knownCount} of {deck.length} cards as known.
+              You knew {knownCount} of {deck.length} situations.
             </Text>
             <Text className="text-xs text-lm-ink3 text-center mb-6">
               Keep practicing the ones you're still learning!
             </Text>
             <Pressable
-              onPress={startFlashcards}
+              onPress={startScenarios}
               className="flex-row items-center rounded-xl px-5 py-3 mb-3"
               style={{ backgroundColor: P.red, gap: 6 }}
             >
@@ -241,36 +242,34 @@ export default function PracticeScreen() {
             {!flipped ? (
               <>
                 <Text className="text-xs uppercase mb-2" style={{ color: P.ink3, letterSpacing: 1 }}>
-                  {card.cat}
+                  Lesson {card.lesson}
                 </Text>
                 <Text
-                  className="font-newsreader text-2xl font-bold text-center"
-                  style={{ fontStyle: "italic", color: P.ink }}
+                  className="text-base text-center leading-6"
+                  style={{ color: P.ink }}
                 >
-                  {card.fr}
+                  {card.situation}
                 </Text>
-                {card.cog ? (
-                  <Text className="text-xs mt-2" style={{ color: P.purple }}>
-                    {card.cog}
-                  </Text>
-                ) : null}
                 <Text className="text-[10px] mt-4" style={{ color: P.ink3 }}>
-                  Tap to flip
+                  Tap to reveal
                 </Text>
               </>
             ) : (
               <>
-                <Text className="text-lg font-bold text-center" style={{ color: P.ink }}>
-                  {card.en}
+                <Text
+                  className="font-newsreader text-xl font-bold text-center"
+                  style={{ fontStyle: "italic", color: P.ink }}
+                >
+                  {card.answer}
                 </Text>
                 <Text
-                  className="font-newsreader text-sm text-center mt-3"
-                  style={{ fontStyle: "italic", color: P.ink2 }}
+                  className="text-xs text-center mt-3 leading-4"
+                  style={{ color: P.ink2 }}
                 >
-                  {card.ex}
+                  {card.explanation}
                 </Text>
                 <Pressable
-                  onPress={() => say(card.fr)}
+                  onPress={() => say(card.audio)}
                   className="flex-row items-center mt-3 px-2.5 py-1.5 rounded"
                   style={{ backgroundColor: "#F0EEEC", gap: 4 }}
                 >

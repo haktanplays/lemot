@@ -280,6 +280,18 @@ export const lesson12: Lesson = {
       ctx: "A friend suggests dinner tomorrow.",
       negative: true,
     },
+    {
+      q: "Le restaurant est fermé, _______ on mange chez moi.",
+      a: "du coup",
+      o: ["du coup", "en tout cas", "bref", "en fait"],
+      ctx: "The expression meaning 'so / therefore / as a result'.",
+    },
+    {
+      q: "You've been rambling and want to wrap up. You say: '_______, je suis en retard.'",
+      a: "Bref",
+      o: ["Bref", "Du coup", "En tout cas", "En fait"],
+      ctx: "The expression meaning 'long story short / in short'.",
+    },
   ],
   combine: [
     {
@@ -388,6 +400,12 @@ export const lesson12: Lesson = {
         { word: "prefer", answer: "préfère" },
       ],
       full: "En fait, je préfère le thé.",
+    },
+    {
+      type: "context",
+      situation: "The discussion got complicated, but you want to thank your friend regardless. You say:",
+      a: "En tout cas, merci !",
+      o: ["En tout cas, merci !", "Du coup, merci !", "Bref, merci !", "Il faut, merci !"],
     },
   ],
   sayIt: [

@@ -296,6 +296,18 @@ export const lesson15: Lesson = {
       ],
       ctx: "Il/elle uses 'se'.",
     },
+    {
+      q: "Someone asks about your routine. You say: 'Je me l\u00e8ve \u00e0 sept heures _______.'",
+      a: "tous les jours",
+      o: ["tous les jours", "d'habitude", "en ce moment", "puis"],
+      ctx: "The expression meaning 'every day'.",
+    },
+    {
+      q: "Your schedule changed recently. You explain: '_______, je travaille le soir.'",
+      a: "En ce moment",
+      o: ["En ce moment", "Tous les jours", "D'habitude", "Puis"],
+      ctx: "The expression meaning 'at the moment / currently'.",
+    },
   ],
   combine: [
     {
@@ -430,6 +442,12 @@ export const lesson15: Lesson = {
         { word: "late", answer: "tard" },
       ],
       full: "Je me couche tard.",
+    },
+    {
+      type: "context",
+      situation: "A friend asks if you always go to bed late. You say yes, it's your normal habit.",
+      a: "Oui, d'habitude, je me couche tard.",
+      o: ["Oui, d'habitude, je me couche tard.", "Oui, en ce moment", "Oui, tous les jours je me l\u00e8ve", "Oui, puis je dors"],
     },
   ],
   sayIt: [

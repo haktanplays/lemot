@@ -299,6 +299,18 @@ export const lesson9: Lesson = {
         "A salad entrance",
       ],
     },
+    {
+      q: "The food arrives. Before everyone starts eating, you say:",
+      a: "Bon appétit !",
+      o: ["Bon appétit !", "L'addition !", "Je vais prendre...", "Ça marche !"],
+      ctx: "The expression said before every meal.",
+    },
+    {
+      q: "You're ready to order. You tell the waiter: '_______ le poulet.'",
+      a: "Je vais prendre",
+      o: ["Je vais prendre", "Bon appétit", "L'addition", "Il faut"],
+      ctx: "The expression meaning 'I'll have...' when ordering.",
+    },
   ],
   combine: [
     {
@@ -435,6 +447,12 @@ export const lesson9: Lesson = {
         { word: "fish", answer: "poisson" },
       ],
       full: "Je prends le poisson.",
+    },
+    {
+      type: "context",
+      situation: "You've finished your meal and want to pay. What do you say?",
+      a: "L'addition, s'il vous plaît",
+      o: ["L'addition, s'il vous plaît", "Bon appétit", "Je vais prendre le dessert", "Du pain, s'il vous plaît"],
     },
   ],
   sayIt: [
