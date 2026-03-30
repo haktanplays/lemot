@@ -2,12 +2,14 @@ import { useState } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
-import { ChevronLeft, Check, Sparkles } from "lucide-react-native";
+import { ChevronLeft, Check, Sparkles, Lock } from "lucide-react-native";
 import { useApp } from "@/providers/AppProvider";
 import { LESSONS } from "@/data/lessons";
 import { SECS, SEC_NAMES } from "@/constants/sections";
 import { P } from "@/constants/theme";
-import { TransitionScreen } from "@/components/TransitionScreen";
+import { TransitionScreen, type UnlockData } from "@/components/TransitionScreen";
+import type { Lesson } from "@/lib/types";
+import type { UnlockType } from "@/components/UnlockCard";
 
 // Section components
 import { ReadListen } from "@/components/sections/ReadListen";
@@ -22,11 +24,94 @@ import { SayItYourWay } from "@/components/sections/SayItYourWay";
 import { MiniConversation } from "@/components/sections/MiniConversation";
 import { Review } from "@/components/sections/Review";
 
+type UnlockKey =
+  | "expr1"
+  | "expr2"
+  | "expr3"
+  | "nugget1"
+  | "nugget2"
+  | "fauxAmi"
+  | "culture"
+  | "sound";
+
+interface UnlockRule {
+  key: UnlockKey;
+  afterSec: number; // section index that triggers unlock check
+  threshold: number; // 0 = completion only, otherwise percentage (0-1)
+  type: UnlockType;
+  getData: (lesson: Lesson) => any | null;
+}
+
+const UNLOCK_RULES: UnlockRule[] = [
+  {
+    key: "expr1",
+    afterSec: 0,
+    threshold: 0,
+    type: "expression",
+    getData: (l) => l.expressions?.[0] ?? null,
+  },
+  {
+    key: "nugget1",
+    afterSec: 1,
+    threshold: 0,
+    type: "grammarNugget",
+    getData: (l) => l.grammarNuggets?.[0] ?? null,
+  },
+  {
+    key: "expr2",
+    afterSec: 2,
+    threshold: 0.7,
+    type: "expression",
+    getData: (l) => l.expressions?.[1] ?? null,
+  },
+  {
+    key: "fauxAmi",
+    afterSec: 3,
+    threshold: 0.7,
+    type: "fauxAmi",
+    getData: (l) => l.fauxAmis?.[0] ?? null,
+  },
+  {
+    key: "nugget2",
+    afterSec: 4,
+    threshold: 0.6,
+    type: "grammarNugget",
+    getData: (l) => l.grammarNuggets?.[1] ?? null,
+  },
+  {
+    key: "sound",
+    afterSec: 5,
+    threshold: 0.7,
+    type: "soundPattern",
+    getData: (l) => l.soundPatterns?.[0] ?? null,
+  },
+  {
+    key: "expr3",
+    afterSec: 6,
+    threshold: 0.8,
+    type: "expression",
+    getData: (l) => l.expressions?.[2] ?? null,
+  },
+  {
+    key: "culture",
+    afterSec: 7,
+    threshold: 0.7,
+    type: "cultureBite",
+    getData: (l) => l.cultureBite ?? null,
+  },
+];
+
+/** Count how many unlock slots are available for this lesson (have data) */
+function countAvailable(lesson: Lesson): number {
+  return UNLOCK_RULES.filter((r) => r.getData(lesson) !== null).length;
+}
+
 interface TransitionData {
   score: number;
   total: number;
   msg: string;
   next: number;
+  unlock?: UnlockData | null;
 }
 
 export default function LessonScreen() {
@@ -38,6 +123,7 @@ export default function LessonScreen() {
 
   const [sec, setSec] = useState(0);
   const [trans, setTrans] = useState<TransitionData | null>(null);
+  const [unlocked, setUnlocked] = useState<UnlockKey[]>([]);
 
   if (!lesson) {
     return (
@@ -47,8 +133,36 @@ export default function LessonScreen() {
     );
   }
 
+  const totalAvailable = countAvailable(lesson);
+
+  const checkUnlock = (
+    sectionIndex: number,
+    score: number,
+    total: number
+  ): UnlockData | null => {
+    // Find rule that triggers after this section
+    const rule = UNLOCK_RULES.find(
+      (r) => r.afterSec === sectionIndex && !unlocked.includes(r.key)
+    );
+    if (!rule) return null;
+
+    const data = rule.getData(lesson);
+    if (!data) return null;
+
+    // Check threshold: 0 means always unlock on completion
+    if (rule.threshold > 0 && total > 0) {
+      const pct = score / total;
+      if (pct < rule.threshold) return null;
+    }
+
+    // Unlock it
+    setUnlocked((prev) => [...prev, rule.key]);
+    return { type: rule.type, data };
+  };
+
   const nextSec = (score: number, total: number, msg: string) => {
-    setTrans({ score, total, msg, next: sec + 1 });
+    const unlock = checkUnlock(sec, score, total);
+    setTrans({ score, total, msg, next: sec + 1, unlock });
   };
 
   const handleTransitionNext = () => {
@@ -121,33 +235,33 @@ export default function LessonScreen() {
             onComplete={(score, total) => {
               mk(lessonId, "fill_fr");
               gx(15);
-              nextSec(score, total, "Well done! Now write from memory...");
+              nextSec(score, total, "Well done! Now arrange words into sentences...");
             }}
             onError={errFill}
           />
         );
       case 4:
         return (
-          <WriteSection
-            items={lesson.fillBlanks}
-            onComplete={(score, total) => {
-              mk(lessonId, "fill_write");
-              gx(15);
-              nextSec(score, total, "Great writing! Now build some sentences...");
-            }}
-            onError={errFill}
-          />
-        );
-      case 5:
-        return (
           <BuildSentence
             items={lesson.buildSentences}
             onComplete={(score, total) => {
               mk(lessonId, "build");
               gx(15);
-              nextSec(score, total, "Sentences built! Time for a quiz...");
+              nextSec(score, total, "Sentences built! Now write from memory...");
             }}
             onError={errBuild}
+          />
+        );
+      case 5:
+        return (
+          <WriteSection
+            items={lesson.fillBlanks}
+            onComplete={(score, total) => {
+              mk(lessonId, "fill_write");
+              gx(15);
+              nextSec(score, total, "Great writing! Time for a quiz...");
+            }}
+            onError={errFill}
           />
         );
       case 6:
@@ -242,6 +356,35 @@ export default function LessonScreen() {
           </Text>
           <Text className="text-xs text-lm-ink3">{lesson.level}</Text>
         </View>
+        {/* Unlock progress indicator */}
+        {totalAvailable > 0 && (
+          <View className="flex-row items-center gap-1.5 mr-1">
+            <Lock size={12} color={unlocked.length > 0 ? P.amber : P.ink3} />
+            <Text
+              className="text-xs font-semibold"
+              style={{ color: unlocked.length > 0 ? P.amber : P.ink3 }}
+            >
+              {unlocked.length}/{totalAvailable}
+            </Text>
+            <View className="flex-row gap-1 ml-1">
+              {UNLOCK_RULES.filter((r) => r.getData(lesson) !== null).map(
+                (r, i) => (
+                  <View
+                    key={r.key}
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: 3,
+                      backgroundColor: unlocked.includes(r.key)
+                        ? P.amber
+                        : P.border,
+                    }}
+                  />
+                )
+              )}
+            </View>
+          </View>
+        )}
       </View>
 
       {/* Section tabs */}
@@ -291,6 +434,7 @@ export default function LessonScreen() {
             total={trans.total}
             message={trans.msg}
             onNext={handleTransitionNext}
+            unlock={trans.unlock}
           />
         ) : sec > 10 ? (
           <ScrollView className="flex-1 px-8" contentContainerStyle={{ paddingTop: 40, paddingBottom: 32 }}>

@@ -1623,8 +1623,8 @@ const FLASH=[
 
 const MOTIV=["Every new word is a step. The summit is getting closer.","Made a mistake? Your brain just formed a new connection.","The easy path makes you a tourist. The hard path makes you a speaker.","When you reach the summit, the descent is effortless.","A French person said this exact sentence today."];
 
-const SECS=["read_listen","patterns","fill_fg","fill_fr","fill_write","build","quiz","combine_fg","say_it","mini_conv","review"];
-const SEC_N=["Read & Listen","Patterns","Weave Fill","French Fill","Write","Build","Quiz","Combine","Say It","Mini Chat","Review"];
+const SECS=["read_listen","patterns","fill_fg","fill_fr","build","fill_write","quiz","combine_fg","say_it","mini_conv","review"];
+const SEC_N=["Read & Listen","Patterns","Weave Fill","French Fill","Build","Write","Quiz","Combine","Say It","Mini Chat","Review"];
 const SEC_I=[Headphones,Lightbulb,Type,Pen,Pen,Layers,Target,Globe,Sparkles,MessageCircle,RefreshCw];
 
 export default function App(){
@@ -1990,30 +1990,13 @@ export default function App(){
           <p style={{margin:"0 0 16px",fontSize:17,color:P.ink,textAlign:"center",fontFamily:"'Newsreader',serif",fontWeight:500}}>{fb.s}</p>
           <MCQ options={fb.o} answer={fb.a} answered={a} onAnswer={v=>{setAns(x=>({...x,[`ff${fI}`]:v}));if(v===fb.a)gx(10);else logErr(fb.a,"fill_fr",v,fb.a,lesson.id);}}
             onNext={()=>{if(fI<lesson.fillBlanks.length-1){setFI(fI+1);setAns(x=>{const n={...x};delete n[`ff${fI}`];return n;});}
-              else{mk(lesson.id,"fill_fr");setFI(0);setAns({});nextSec(0,0,"Now write the answers from memory. Same sentences — can you recall?");}}}
+              else{mk(lesson.id,"fill_fr");setFI(0);setAns({});nextSec(0,0,"Now arrange words into full French sentences. Watch out for trap words!");}}}
             nextLabel={fI<lesson.fillBlanks.length-1?"Next":"Done"}/>
         </div>
       </div>);})()}
 
-      {/* SEC 4: WRITE (type from memory) */}
-      {!trans&&sec===4&&(()=>{const fb=lesson.fillBlanks[fI];return(<div>
-        <p style={{fontSize:11,color:P.ink3,marginBottom:4}}>Write · {fI+1}/{lesson.fillBlanks.length}</p>
-        <p style={{fontSize:12,color:P.ink2,marginBottom:10}}>Type the missing word from memory.</p>
-        <div style={{background:P.paper,borderRadius:14,padding:20,boxShadow:P.sh,border:`1px solid ${P.border}`}}>
-          {fb.ctx&&<p style={{margin:"0 0 12px",fontSize:12,color:P.amber,fontStyle:"italic"}}>{fb.ctx}</p>}
-          <p style={{margin:"0 0 16px",fontSize:17,color:P.ink,textAlign:"center",fontFamily:"'Newsreader',serif",fontWeight:500}}>{fb.s}</p>
-          <input type="text" value={typeIn} onChange={e=>setTypeIn(e.target.value)} placeholder="Type the missing word..." disabled={typeRes!==null}
-            style={{width:"100%",padding:"13px 16px",borderRadius:12,border:`1.5px solid ${typeRes==="ok"?P.green:typeRes==="no"?P.red:P.border}`,background:typeRes==="ok"?P.gl:typeRes==="no"?P.rl:P.paper,fontFamily:"'Newsreader',serif",fontSize:15,fontStyle:"italic",color:P.ink,outline:"none",boxSizing:"border-box"}}/>
-          {typeRes==="ok"&&<p style={{textAlign:"center",fontSize:13,color:P.green,fontWeight:600,margin:"8px 0 0"}}>Correct!</p>}
-          {typeRes==="no"&&<p style={{textAlign:"center",fontSize:13,color:P.red,margin:"8px 0 0"}}>Answer: <strong>{fb.a}</strong></p>}
-          {!typeRes&&<Btn onClick={()=>{if(norm(typeIn)===norm(fb.a)){setTypeRes("ok");gx(15);}else{setTypeRes("no");logErr(fb.a,"write",typeIn,fb.a,lesson.id);}}}>Check</Btn>}
-          {typeRes&&<Btn onClick={()=>{if(fI<lesson.fillBlanks.length-1){setFI(fI+1);setTypeIn("");setTypeRes(null);}
-            else{mk(lesson.id,"fill_write");setFI(0);nextSec(0,0,"Now arrange words into full French sentences. Watch out for trap words!");}}}>{fI<lesson.fillBlanks.length-1?"Next":"Done"}</Btn>}
-        </div>
-      </div>);})()}
-
-      {/* SEC 5: BUILD */}
-      {!trans&&sec===5&&(()=>{const sb=lesson.buildSentences[bI];if(bP.length===0&&bAns.length===0){setBP([...sb.c,...(sb.trap||[])].sort(()=>Math.random()-0.5));}const ok=bAns.join(" ")===sb.c.join(" ");return(<div>
+      {/* SEC 4: BUILD */}
+      {!trans&&sec===4&&(()=>{const sb=lesson.buildSentences[bI];if(bP.length===0&&bAns.length===0){setBP([...sb.c,...(sb.trap||[])].sort(()=>Math.random()-0.5));}const ok=bAns.join(" ")===sb.c.join(" ");return(<div>
         <p style={{fontSize:11,color:P.ink3,marginBottom:4}}>Build · {bI+1}/{lesson.buildSentences.length}</p>
         <p style={{fontSize:12,color:P.ink2,marginBottom:10}}>Arrange words into a French sentence. Some words don't belong!</p>
         <div style={{background:P.paper,borderRadius:14,padding:20,boxShadow:P.sh,border:`1px solid ${P.border}`}}>
@@ -2028,7 +2011,24 @@ export default function App(){
           {!bOk&&bAns.length>0&&<Btn onClick={()=>{setBOk(true);if(ok)gx(15);else logErr(sb.c.join(" "),"build",bAns.join(" "),sb.c.join(" "),lesson.id);}}>Check</Btn>}
           {bOk&&<><p style={{textAlign:"center",fontSize:13,color:ok?P.green:P.red,fontWeight:600,margin:"8px 0 0"}}>{ok?"Correct!":"Answer: "+sb.c.join(" ")}</p>
             <Btn onClick={()=>{if(bI<lesson.buildSentences.length-1){setBI(bI+1);setBAns([]);setBP([]);setBOk(false);}
-              else{mk(lesson.id,"build");setBI(0);nextSec(0,0,"Quick quiz — tests understanding, not just translation.");}}}>{bI<lesson.buildSentences.length-1?"Next":"Done"}</Btn></>}
+              else{mk(lesson.id,"build");setBI(0);nextSec(0,0,"Great building! Now write from memory...");}}}>{bI<lesson.buildSentences.length-1?"Next":"Done"}</Btn></>}
+        </div>
+      </div>);})()}
+
+      {/* SEC 5: WRITE */}
+      {!trans&&sec===5&&(()=>{const fb=lesson.fillBlanks[fI];const a=ans[`wt${fI}`];return(<div>
+        <p style={{fontSize:11,color:P.ink3,marginBottom:4}}>Write · {fI+1}/{lesson.fillBlanks.length}</p>
+        <p style={{fontSize:12,color:P.ink2,marginBottom:10}}>Type the missing word from memory.</p>
+        <div style={{background:P.paper,borderRadius:14,padding:20,boxShadow:P.sh,border:`1px solid ${P.border}`}}>
+          {fb.ctx&&<p style={{margin:"0 0 12px",fontSize:12,color:P.amber,fontStyle:"italic"}}>{fb.ctx}</p>}
+          <p style={{margin:"0 0 16px",fontSize:17,color:P.ink,textAlign:"center",fontFamily:"'Newsreader',serif",fontWeight:500}}>{fb.s}</p>
+          <input type="text" value={typeIn} onChange={e=>setTypeIn(e.target.value)} placeholder="Type the missing word..." disabled={typeRes!==null}
+            style={{width:"100%",padding:"13px 16px",borderRadius:12,border:`1.5px solid ${typeRes==="ok"?P.green:typeRes==="no"?P.red:P.border}`,background:typeRes==="ok"?P.gl:typeRes==="no"?P.rl:P.paper,fontFamily:"'Newsreader',serif",fontSize:15,fontStyle:"italic",color:P.ink,outline:"none",boxSizing:"border-box"}}/>
+          {typeRes==="ok"&&<p style={{textAlign:"center",fontSize:13,color:P.green,fontWeight:600,margin:"8px 0 0"}}>Correct!</p>}
+          {typeRes==="no"&&<p style={{textAlign:"center",fontSize:13,color:P.red,margin:"8px 0 0"}}>Answer: <strong>{fb.a}</strong></p>}
+          {!typeRes&&<Btn onClick={()=>{if(norm(typeIn)===norm(fb.a)){setTypeRes("ok");gx(15);}else{setTypeRes("no");logErr(fb.a,"write",typeIn,fb.a,lesson.id);}}}>Check</Btn>}
+          {typeRes&&<Btn onClick={()=>{if(fI<lesson.fillBlanks.length-1){setFI(fI+1);setTypeIn("");setTypeRes(null);}
+            else{mk(lesson.id,"fill_write");setFI(0);nextSec(0,0,"Great writing! Quick quiz time...");}}}>{fI<lesson.fillBlanks.length-1?"Next":"Done"}</Btn>}
         </div>
       </div>);})()}
 
