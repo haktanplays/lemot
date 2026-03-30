@@ -43,6 +43,22 @@ export const SEC_ICONS = [
 
 export type SectionKey = (typeof SECS)[number];
 
+// Mastery thresholds per section — minimum score percentage to "pass"
+// Sections with 0 threshold are completion-only (no scoring)
+export const MASTERY_THRESHOLDS: Record<SectionKey, number> = {
+  read_listen: 0,    // completion only
+  patterns: 0,       // completion only
+  fill_fg: 0.7,      // 70%
+  fill_fr: 0.7,      // 70%
+  build: 0.7,        // 70%
+  fill_write: 0.6,   // 60% (harder — typing from memory)
+  quiz: 0.7,         // 70%
+  combine_fg: 0.6,   // 60% (production — harder)
+  say_it: 0,         // AI-evaluated, no numeric score
+  mini_conv: 0,      // completion only
+  review: 0.7,       // 70%
+};
+
 // Lesson chunks — split 11 sections into 3 digestible parts (~7-8 min each)
 export interface ChunkDef {
   id: number;

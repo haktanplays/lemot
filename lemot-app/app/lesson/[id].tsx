@@ -15,7 +15,8 @@ import {
 } from "lucide-react-native";
 import { useApp } from "@/providers/AppProvider";
 import { LESSONS } from "@/data/lessons";
-import { SECS, SEC_NAMES, CHUNKS } from "@/constants/sections";
+import { SECS, SEC_NAMES, CHUNKS, MASTERY_THRESHOLDS } from "@/constants/sections";
+import type { SectionKey } from "@/constants/sections";
 import { P } from "@/constants/theme";
 import {
   TransitionScreen,
@@ -126,6 +127,8 @@ interface TransitionData {
   msg: string;
   next: number;
   unlock?: UnlockData | null;
+  mastered?: boolean;
+  sectionIndex?: number; // for retry
 }
 
 export default function LessonScreen() {
@@ -190,24 +193,56 @@ export default function LessonScreen() {
   const nextSec = (score: number, total: number, msg: string) => {
     const unlock = checkUnlock(sec, score, total);
 
+    // Check mastery threshold for this section
+    const sectionKey = SECS[sec] as SectionKey;
+    const threshold = MASTERY_THRESHOLDS[sectionKey];
+    const mastered =
+      threshold === 0 || total === 0 || score / total >= threshold;
+
+    // Only mark section complete if mastered
+    // Note: mk() is called in section callbacks before nextSec,
+    // but we track mastery status for UI feedback
+
     // Check if this was the last section in the current chunk
     if (currentChunk) {
       const lastSecInChunk =
         currentChunk.sections[currentChunk.sections.length - 1];
       if (sec === lastSecInChunk) {
-        // Chunk complete — show chunk completion screen
-        setTrans({ score, total, msg, next: sec + 1, unlock });
+        setTrans({
+          score,
+          total,
+          msg,
+          next: sec + 1,
+          unlock,
+          mastered,
+          sectionIndex: sec,
+        });
         setChunkComplete(true);
         return;
       }
     }
 
-    setTrans({ score, total, msg, next: sec + 1, unlock });
+    setTrans({
+      score,
+      total,
+      msg,
+      next: sec + 1,
+      unlock,
+      mastered,
+      sectionIndex: sec,
+    });
   };
 
   const handleTransitionNext = () => {
     if (trans) {
       setSec(trans.next);
+      setTrans(null);
+    }
+  };
+
+  const handleRetry = () => {
+    if (trans && trans.sectionIndex !== undefined) {
+      setSec(trans.sectionIndex);
       setTrans(null);
     }
   };
@@ -796,6 +831,8 @@ export default function LessonScreen() {
             message={trans.msg}
             onNext={handleTransitionNext}
             unlock={trans.unlock}
+            mastered={trans.mastered}
+            onRetry={handleRetry}
           />
         ) : sec > 10 ? (
           <ScrollView

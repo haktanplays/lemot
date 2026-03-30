@@ -15,6 +15,8 @@ interface TransitionScreenProps {
   message: string;
   onNext: () => void;
   unlock?: UnlockData | null;
+  mastered?: boolean; // true = passed mastery threshold, false = below threshold
+  onRetry?: () => void; // callback to retry current section
 }
 
 export function TransitionScreen({
@@ -23,8 +25,11 @@ export function TransitionScreen({
   message,
   onNext,
   unlock,
+  mastered = true,
+  onRetry,
 }: TransitionScreenProps) {
   const perfect = total > 0 && score === total;
+  const belowThreshold = total > 0 && !mastered;
 
   return (
     <ScrollView
@@ -66,9 +71,26 @@ export function TransitionScreen({
           </View>
         )}
 
-        <Btn onPress={onNext} style={{ marginTop: unlock ? 16 : 12 }}>
-          <Text className="text-white text-sm font-semibold">Continue</Text>
-        </Btn>
+        {belowThreshold && (
+          <View className="w-full rounded-lg px-3 py-2 mb-3" style={{ backgroundColor: P.amber + "15" }}>
+            <Text className="text-xs text-center" style={{ color: P.amber }}>
+              You need a bit more practice on this section to master it.
+            </Text>
+          </View>
+        )}
+
+        <View className="w-full" style={{ gap: 8, marginTop: unlock ? 16 : 12 }}>
+          {belowThreshold && onRetry && (
+            <Btn onPress={onRetry} color={P.amber}>
+              <Text className="text-white text-sm font-semibold">Try Again</Text>
+            </Btn>
+          )}
+          <Btn onPress={onNext}>
+            <Text className="text-white text-sm font-semibold">
+              {belowThreshold ? "Continue Anyway" : "Continue"}
+            </Text>
+          </Btn>
+        </View>
       </View>
     </ScrollView>
   );

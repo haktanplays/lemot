@@ -23,6 +23,7 @@ import { P } from "@/constants/theme";
 import { SCENARIOS } from "@/data/practiceScenarios";
 import { FLASH } from "@/data/flashcards";
 import { useApp } from "@/providers/AppProvider";
+import { useSRS } from "@/hooks/useSRS";
 import { norm } from "@/lib/normalize";
 import type { FlashCard, ScenarioCard } from "@/lib/types";
 
@@ -38,12 +39,20 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+// Generate stable card IDs
+const SCENARIO_IDS = SCENARIOS.map(
+  (s, i) => `sc-${s.lesson}-${i}`
+);
+
 export default function PracticeScreen() {
   const { say, loaded } = useApp();
+  const { markKnown, markLearning, getDueCards, getStats, srsLoaded } =
+    useSRS();
   const [mode, setMode] = useState<Mode>("menu");
 
   /* ═══ Scenario state ═══ */
   const [deck, setDeck] = useState<ScenarioCard[]>([]);
+  const [deckIds, setDeckIds] = useState<string[]>([]);
   const [cardIdx, setCardIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [knownCount, setKnownCount] = useState(0);
@@ -55,7 +64,17 @@ export default function PracticeScreen() {
   const [transResult, setTransResult] = useState<"correct" | "wrong" | null>(null);
   const [transScore, setTransScore] = useState(0);
 
-  if (!loaded) {
+  // SRS stats
+  const stats = useMemo(
+    () => getStats(SCENARIO_IDS),
+    [getStats]
+  );
+  const dueCount = useMemo(
+    () => getDueCards(SCENARIO_IDS).length,
+    [getDueCards]
+  );
+
+  if (!loaded || !srsLoaded) {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <ActivityIndicator size="small" color={P.red} />
@@ -64,12 +83,19 @@ export default function PracticeScreen() {
   }
 
   const startScenarios = useCallback(() => {
-    setDeck(shuffle(SCENARIOS));
+    // Prioritize due cards, then add new cards
+    const dueIds = getDueCards(SCENARIO_IDS);
+    const sessionIds = dueIds.slice(0, 20); // max 20 per session
+    const sessionCards = sessionIds.map(
+      (id) => SCENARIOS[SCENARIO_IDS.indexOf(id)]
+    );
+    setDeck(sessionCards);
+    setDeckIds(sessionIds);
     setCardIdx(0);
     setFlipped(false);
     setKnownCount(0);
     setMode("scenario");
-  }, []);
+  }, [getDueCards]);
 
   const startTranslate = useCallback(() => {
     setTransItems(shuffle(FLASH).slice(0, 10));
@@ -100,6 +126,56 @@ export default function PracticeScreen() {
             </Text>
           </View>
 
+          {/* SRS Summary */}
+          <View
+            className="rounded-xl mb-4 px-4 py-3"
+            style={{
+              backgroundColor: P.paper,
+              borderWidth: 1,
+              borderColor: P.border,
+            }}
+          >
+            <View className="flex-row items-center justify-between mb-2">
+              <Text className="text-xs font-semibold" style={{ color: P.ink }}>
+                Your Progress
+              </Text>
+              {dueCount > 0 && (
+                <View
+                  className="px-2 py-0.5 rounded-full"
+                  style={{ backgroundColor: P.red + "15" }}
+                >
+                  <Text
+                    className="text-[10px] font-bold"
+                    style={{ color: P.red }}
+                  >
+                    {dueCount} due
+                  </Text>
+                </View>
+              )}
+            </View>
+            <View className="flex-row" style={{ gap: 8 }}>
+              {[
+                { label: "New", count: stats.new, color: P.ink3 },
+                { label: "Learning", count: stats.learning, color: P.amber },
+                { label: "Familiar", count: stats.familiar, color: "#3498DB" },
+                { label: "Known", count: stats.known, color: P.green },
+                { label: "Mastered", count: stats.mastered, color: P.purple },
+              ].map((s) => (
+                <View key={s.label} className="items-center flex-1">
+                  <Text
+                    className="text-sm font-bold"
+                    style={{ color: s.color }}
+                  >
+                    {s.count}
+                  </Text>
+                  <Text className="text-[9px]" style={{ color: P.ink3 }}>
+                    {s.label}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+
           {/* Scenario card */}
           <Pressable
             onPress={startScenarios}
@@ -107,7 +183,7 @@ export default function PracticeScreen() {
             style={{
               backgroundColor: P.paper,
               borderWidth: 1,
-              borderColor: P.border,
+              borderColor: dueCount > 0 ? P.red + "40" : P.border,
               shadowColor: "#2C2825",
               shadowOpacity: 0.06,
               shadowRadius: 4,
@@ -122,7 +198,9 @@ export default function PracticeScreen() {
                 Scenarios
               </Text>
               <Text className="text-xs" style={{ color: P.ink3 }}>
-                {SCENARIOS.length} situations — what would you say?
+                {dueCount > 0
+                  ? `${dueCount} situations due for review`
+                  : `${SCENARIOS.length} situations — all caught up!`}
               </Text>
             </View>
             <ChevronRight size={16} color={P.ink3} />
@@ -286,6 +364,7 @@ export default function PracticeScreen() {
           <View className="flex-row mt-6" style={{ gap: 16 }}>
             <Pressable
               onPress={() => {
+                markLearning(deckIds[cardIdx]);
                 setFlipped(false);
                 setCardIdx(cardIdx + 1);
               }}
@@ -299,6 +378,7 @@ export default function PracticeScreen() {
             </Pressable>
             <Pressable
               onPress={() => {
+                markKnown(deckIds[cardIdx]);
                 setKnownCount(knownCount + 1);
                 setFlipped(false);
                 setCardIdx(cardIdx + 1);
