@@ -6,6 +6,7 @@ export const lesson4: Lesson = {
   sub: "The art of French formality",
   icon: "BookMarked",
   level: "A1",
+  difficulty: "medium",
   grammar: {
     title: "Tu vs Vous — When Familiarity Matters",
     sections: [
@@ -304,7 +305,7 @@ export const lesson4: Lesson = {
       accept: ["on se tutoie"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "You are French, right? And you, are you American?",
       known: [
@@ -411,4 +412,55 @@ export const lesson4: Lesson = {
     starter:
       "Bonjour ! Vous êtes nouveau ici ? Comment vous appelez-vous ?",
   },
+  expressions: [
+    {
+      fr: "On se tutoie ?",
+      en: "Shall we use tu?",
+      usage: "After chatting for a while: 'On se tutoie ? C'est plus simple.'",
+      literal: "We tu each other?",
+    },
+    {
+      fr: "Dis-moi",
+      en: "Tell me (informal)",
+      usage: "'Dis-moi, tu fais quoi ce soir ?' (Tell me, what are you doing tonight?)",
+      literal: "Say to me",
+    },
+    {
+      fr: "S'il te plaît",
+      en: "Please (informal)",
+      usage: "'Passe-moi le sel, s'il te plaît.' (Pass me the salt, please.)",
+      literal: "If it pleases you",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Vous is also 'you all' — not just formal",
+      insight:
+        "Even best friends who 'tutoient' each other individually switch to 'vous' when addressing the group. 'Tu viens ?' (Are YOU coming?) vs 'Vous venez ?' (Are you ALL coming?). Vous is about number, not just politeness.",
+      example: "To one friend: Tu viens ? To three friends: Vous venez ?",
+    },
+    {
+      title: "Tu/vous changes the VERB, not just the pronoun",
+      insight:
+        "In English, 'you' stays the same whether talking to a friend or the Queen. In French, EVERY verb has different tu and vous forms. The choice ripples through the entire sentence.",
+      example:
+        "Tu es / Vous êtes, Tu viens / Vous venez, Tu fais / Vous faites",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "tu",
+      looksLike: "two",
+      actualMeaning: "you (informal singular)",
+      example: "Tu es mon ami. (You are my friend.)",
+    },
+  ],
+  cultureBite:
+    "President Macron and his wife publicly use 'vous' with each other — unusual even for France. The tu/vous switch is a relationship milestone: 'On se tutoie ?' is like going from last-name to first-name basis, but more emotionally charged.",
+  summary: [
+    "Tu (informal) vs Vous (formal + plural)",
+    "On se tutoie? — the social ritual",
+    "S'il te plaît vs S'il vous plaît",
+    "Tu/vous changes every verb form",
+  ],
 };

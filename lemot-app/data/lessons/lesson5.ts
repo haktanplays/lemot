@@ -6,6 +6,7 @@ export const lesson5: Lesson = {
   sub: "The #1 verb in French",
   icon: "Star",
   level: "A1",
+  difficulty: "medium",
   grammar: {
     title: "Être — To Be",
     sections: [
@@ -318,7 +319,7 @@ export const lesson5: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "I am tired but she is happy and we are ready.",
       known: [
@@ -416,4 +417,67 @@ export const lesson5: Lesson = {
     topic: "Introducing yourself and describing people using être",
     starter: "Salut ! Comment tu t'appelles ? Tu es d'où ?",
   },
+  expressions: [
+    {
+      fr: "C'est pas grave",
+      en: "No big deal / It's not serious",
+      usage: "'Oh pardon !' — 'C'est pas grave.'",
+      literal: "It's not serious",
+    },
+    {
+      fr: "C'est vrai",
+      en: "That's true",
+      usage: "'Paris est belle.' — 'Oui, c'est vrai !'",
+      literal: "It's true",
+    },
+    {
+      fr: "C'est bon",
+      en: "It's good / That's fine / I'm good",
+      usage: "Waiter asks if you want more: 'Non merci, c'est bon.'",
+      literal: "It's good",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "No article with professions — you ARE your job",
+      insight:
+        "English: 'I am A doctor.' French: 'Je suis médecin' — no article. In French thinking, being a doctor isn't something you have, it's something you ARE. The profession fuses with your identity. Same with nationality: 'Je suis français.'",
+      example: "Je suis étudiant (not Je suis un étudiant)",
+    },
+    {
+      title: "C'est is a universal pointer, not just 'it is'",
+      insight:
+        "'C'est' works for ideas (C'est vrai), objects (C'est un livre), situations (C'est pas grave), and people (C'est mon ami). English uses 'it is,' 'that is,' 'this is' — French collapses them all into 'c'est.'",
+      example:
+        "C'est vrai, c'est bon, c'est mon ami, c'est un problème",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "je suis",
+      looksLike: "I sue (legal action)",
+      actualMeaning: "I am / I follow",
+      example: "Je suis fatigué. (I am tired.)",
+    },
+  ],
+  soundPatterns: [
+    {
+      pattern: "é- → s-",
+      examples: [
+        { fr: "étudiant", en: "student" },
+        { fr: "école", en: "school" },
+        { fr: "état", en: "state" },
+        { fr: "éponge", en: "sponge" },
+      ],
+      rule: "French é at the start of a word often corresponds to English s. The Latin 's' became 'es-' then 'é-' in French.",
+    },
+  ],
+  cultureBite:
+    "When French people say 'C'est pas grave,' they drop the 'ne' — this is standard spoken French, not slang. 95% of French speakers skip 'ne' in casual speech. Written: 'Ce n'est pas grave.' Spoken: 'C'est pas grave.'",
+  summary: [
+    "Être conjugation: je suis, tu es, il/elle est...",
+    "C'est = universal pointer (vrai, bon, pas grave)",
+    "No article with professions",
+    "é- = s- pattern: école→school, état→state",
+  ],
 };

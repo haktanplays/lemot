@@ -198,7 +198,7 @@ combine:[
   {hint:"Excuse me + where + station → Ask for directions",answer:"Excusez-moi, où est la gare",accept:["excusez-moi où est la gare","excusez-moi, où est la gare","excusez moi ou est la gare"]},
   {hint:"I don't understand + can you repeat → When you're stuck",answer:"Je ne comprends pas. Pouvez-vous répéter",accept:["je ne comprends pas pouvez-vous répéter","je ne comprends pas. pouvez-vous répéter","je ne comprends pas pouvez vous repeter"]},
 ],
-franglais:[
+weave:[
   {en:"I understand and I would still like a coffee, please.",known:["je","comprends","voudrais","café","s'il vous plaît"],sample:"Je comprends and je voudrais still a café, s'il vous plaît."},
   {en:"Hello, I don't understand. Where is the station?",known:["bonjour","je","ne","comprends","pas","où","est"],sample:"Bonjour, je ne comprends pas. Où est the station?"},
   {en:"Excuse me, I would like a croissant. Thank you, goodbye!",known:["excusez-moi","je","voudrais","merci","au revoir"],sample:"Excusez-moi, je voudrais a croissant. Merci, au revoir!"},
@@ -278,7 +278,7 @@ combine:[
   {hint:"She + être + profession + city → Introduce someone",answer:"Elle est médecin à Paris",accept:["elle est médecin à paris","elle est medecin a paris","elle est docteur à paris"]},
   {hint:"We + être + tired + today → Describe how you feel",answer:"Nous sommes fatigués aujourd'hui",accept:["nous sommes fatigués aujourd'hui","nous sommes fatigues aujourd'hui"]},
 ],
-franglais:[
+weave:[
   {en:"I am tired but she is happy and we are ready.",known:["je","suis","fatigué","elle","est","contente","nous","sommes","prêts"],sample:"Je suis fatigué but elle est contente and nous sommes prêts."},
   {en:"She is a doctor in Paris and he is a student.",known:["elle","est","médecin","à","il","étudiant"],sample:"Elle est médecin à Paris and il est étudiant."},
   {en:"Are you ready? It's no big deal.",known:["vous","êtes","prêts","c'est","pas","grave"],sample:"Vous êtes prêts? C'est pas grave."},
@@ -361,7 +361,7 @@ combine:[
   {hint:"Actually + preference → Politely change your mind",answer:"En fait, je préfère le thé",accept:["en fait je préfère le thé","en fait, je préfère le thé","en fait je prefere le the"]},
   {hint:"Express urgency: must + leave + now",answer:"Il faut partir maintenant",accept:["il faut partir maintenant"]},
 ],
-franglais:[
+weave:[
   {en:"Actually, I am tired. There is a good restaurant here.",known:["en fait","je","suis","fatigué","il y a","bon","restaurant","ici"],sample:"En fait, je suis fatigué. Il y a a bon restaurant ici."},
   {en:"We must leave now. Sounds good, see you tomorrow!",known:["il faut","partir","maintenant","ça marche","demain"],sample:"Il faut partir maintenant. Ça marche, see you demain!"},
   {en:"It depends. Actually, I prefer tea please.",known:["ça dépend","en fait","je","préfère","thé","s'il vous plaît"],sample:"Ça dépend. En fait, je préfère le thé, s'il vous plaît."},
@@ -372,7 +372,7 @@ review:[
   {type:"context",situation:"A friend suggests going to the cinema. You agree.",a:"Ça marche",o:["Ça marche","Il faut","En fait","Il y a"]},
   // Cross-lesson:
   {type:"fill_ctx",s:"Je ___ fatigué.",a:"suis",o:["suis","est","faut","va"],ctx:"Tell someone you're tired. (être, Lesson 5)"},
-  {type:"franglais",en:"Actually, I prefer tea.",blanks:[{word:"Actually",answer:"En fait"},{word:"prefer",answer:"préfère"}],full:"En fait, je préfère le thé."},
+  {type:"weave",en:"Actually, I prefer tea.",blanks:[{word:"Actually",answer:"En fait"},{word:"prefer",answer:"préfère"}],full:"En fait, je préfère le thé."},
 ],
 sayIt:[
   {situation:"A friend proposes dinner tonight but you need to leave now. Respond naturally.",target:["il faut","partir","maintenant","ça marche","en fait"]},
@@ -445,7 +445,7 @@ combine:[
   {hint:"The + small + cat + is + here → Describe what you see",answer:"Le petit chat est ici",accept:["le petit chat est ici"]},
   {hint:"She + is + French → State her nationality",answer:"Elle est française",accept:["elle est française","elle est francaise"]},
 ],
-franglais:[
+weave:[
   {en:"The small cat is here and the big hotel is there.",known:["le","petit","chat","est","ici","grand","hôtel"],sample:"Le petit chat est ici and le grand hôtel est there."},
   {en:"She is French and he is very tired.",known:["elle","est","française","il","très","fatigué"],sample:"Elle est française and il est très fatigué."},
   {en:"It's a big hotel. The small café is closed.",known:["c'est","un","grand","hôtel","le","petit","café"],sample:"C'est un grand hôtel. Le petit café est closed."},
@@ -526,7 +526,7 @@ combine:[
   {hint:"It's + a + good + restaurant → Recommend a place",answer:"C'est un bon restaurant",accept:["c'est un bon restaurant"]},
   {hint:"Some + bread + and + some + wine → Order at a bistro",answer:"Du pain et du vin",accept:["du pain et du vin"]},
 ],
-franglais:[
+weave:[
   {en:"It's a good restaurant. The street is big and beautiful.",known:["c'est","un","bon","restaurant","la","rue","est","grande","et"],sample:"C'est un bon restaurant. La rue est grande et beautiful."},
   {en:"Some bread and some wine, please. He is happy.",known:["du","pain","et","vin","s'il vous plaît","il","est","content"],sample:"Du pain et du vin, s'il vous plaît. Il est content."},
 ],
@@ -609,7 +609,7 @@ combine:[
   {hint:"You (formal) + are + American → Ask politely",answer:"Vous êtes américain",accept:["vous êtes américain","vous etes americain","vous êtes americain"]},
   {hint:"Shall + we + use tu → Suggest informality",answer:"On se tutoie",accept:["on se tutoie"]},
 ],
-franglais:[
+weave:[
   {en:"You are French, right? And you, are you American?",known:["tu","es","français","et","toi","vous","êtes","américain"],sample:"Tu es français, right? Et toi, vous êtes américain?"},
   {en:"Are you coming tonight? She is tired but I am ready.",known:["tu","viens","ce","soir","elle","est","fatigué","je","suis","prêts"],sample:"Tu viens ce soir? Elle est fatigué but je suis ready."},
   {en:"Excuse me, can you repeat please? I don't understand.",known:["excusez-moi","vous","pouvez","répéter","s'il vous plaît","je","ne","comprends","pas"],sample:"Excusez-moi, vous pouvez répéter s'il vous plaît? Je ne comprends pas."},
@@ -696,7 +696,7 @@ combine:[
   {hint:"Your age + right about something → Say your age and agree with someone",answer:"J'ai vingt ans et vous avez raison.",accept:["j'ai vingt ans et vous avez raison","j'ai 20 ans et vous avez raison"]},
   {hint:"Cold + need to leave → Say you're cold and need to leave",answer:"J'ai froid, j'ai besoin de partir.",accept:["j'ai froid j'ai besoin de partir","j'ai froid, j'ai besoin de partir"]},
 ],
-franglais:[
+weave:[
   {en:"I'm hungry and she's thirsty. We need water.",known:["j'ai","faim","elle","a","soif","nous","avons","besoin","eau"],sample:"J'ai faim and elle a soif. Nous avons besoin d'water."},
   {en:"You're right, I'm twenty years old and I'm afraid of dogs.",known:["tu","as","raison","j'ai","vingt","ans","peur"],sample:"Tu as raison, j'ai vingt ans and j'ai peur of dogs."},
   {en:"They have a problem. He's wrong and she's right.",known:["ils","ont","un","problème","il","a","tort","elle","raison"],sample:"Ils ont un problème. Il a tort and elle a raison."},
@@ -708,7 +708,7 @@ review:[
   {type:"fill_ctx",s:"Elle ___ besoin de partir.",a:"a",o:["a","est","ai","ont"],ctx:"She needs to leave. (avoir)"},
   {type:"context",situation:"Someone asks your age. You're 25.",a:"J'ai vingt-cinq ans",o:["J'ai vingt-cinq ans","Je suis vingt-cinq","J'ai vingt-cinq","Je suis vingt-cinq ans"]},
   {type:"fill_ctx",s:"Je ___ content. (Lesson 5 — être)",a:"suis",o:["suis","ai","as","est"],ctx:"Happy = description = être, not avoir."},
-  {type:"franglais",en:"I'm hungry and I need coffee.",blanks:[{word:"hungry",answer:"faim"},{word:"need",answer:"besoin"}],full:"J'ai faim et j'ai besoin de café."},
+  {type:"weave",en:"I'm hungry and I need coffee.",blanks:[{word:"hungry",answer:"faim"},{word:"need",answer:"besoin"}],full:"J'ai faim et j'ai besoin de café."},
 ],
 sayIt:[
   {situation:"You arrive at a friend's place feeling hungry, thirsty, and cold. Tell them how you feel.",target:["j'ai","faim","soif","froid"]},
@@ -787,7 +787,7 @@ combine:[
   {hint:"Car + big + here → Say there's a big car here",answer:"Il y a une grande voiture ici.",accept:["il y a une grande voiture ici","il y a une voiture grande ici"]},
   {hint:"Music + beautiful + house → The music in the house is beautiful",answer:"La musique est belle à la maison.",accept:["la musique est belle a la maison","la musique a la maison est belle"]},
 ],
-franglais:[
+weave:[
   {en:"The book is on the table and the chair is small.",known:["le","livre","est","sur","la","table","chaise","petit"],sample:"Le livre est sur la table and la chaise est petit."},
   {en:"I have a car and a phone. The car is red.",known:["j'ai","une","voiture","un","téléphone","la","est","rouge"],sample:"J'ai une voiture et un téléphone. La voiture est rouge."},
   {en:"The houses are big and the music is beautiful.",known:["les","maisons","sont","grandes","la","musique","est","belle"],sample:"Les maisons sont grandes and la musique est belle."},
@@ -798,7 +798,7 @@ review:[
   {type:"fill_ctx",s:"___ voiture est grande.",a:"La",o:["La","Le","Les","Un"],ctx:"Voiture = feminine."},
   {type:"context",situation:"You want to say 'there are some books'.",a:"Il y a des livres",o:["Il y a des livres","Il y a les livres","Il y a un livres","Il y a la livres"]},
   {type:"fill_ctx",s:"J'___ un problème. (Lesson 6 — avoir)",a:"ai",o:["ai","suis","est","a"],ctx:"Avoir = to have. Cross-reference L6."},
-  {type:"franglais",en:"The family is at home.",blanks:[{word:"family",answer:"famille"},{word:"home",answer:"maison"}],full:"La famille est à la maison."},
+  {type:"weave",en:"The family is at home.",blanks:[{word:"family",answer:"famille"},{word:"home",answer:"maison"}],full:"La famille est à la maison."},
 ],
 sayIt:[
   {situation:"Describe your room: what objects are there? Use articles correctly.",target:["le","la","un","une","sur","table","livre"]},
@@ -882,7 +882,7 @@ combine:[
   {hint:"Price (15 euros) + age (25) → Say something costs 15 euros and you're 25",answer:"Ça coûte quinze euros et j'ai vingt-cinq ans.",accept:["ca coute quinze euros et j'ai vingt-cinq ans","ça coûte quinze euros et j'ai vingt-cinq ans"]},
   {hint:"Noon + hungry → Say it's noon and you're hungry",answer:"Il est midi et j'ai faim.",accept:["il est midi et j'ai faim","il est midi, j'ai faim"]},
 ],
-franglais:[
+weave:[
   {en:"It's three o'clock and I'm hungry. How much does a coffee cost?",known:["il","est","trois","heures","j'ai","faim","combien","coûte","un","café"],sample:"Il est trois heures and j'ai faim. Combien coûte un café?"},
   {en:"It's half past noon. That's too expensive! I have fifteen euros.",known:["il","est","midi","et","demi","c'est","trop","cher","j'ai","quinze","euros"],sample:"Il est midi et demi. C'est trop cher! J'ai quinze euros."},
   {en:"She's twenty years old and he's thirty. It's nine fifteen.",known:["elle","a","vingt","ans","il","trente","est","neuf","heures","quart"],sample:"Elle a vingt ans and il a trente. Il est neuf heures et quart."},
@@ -893,7 +893,7 @@ review:[
   {type:"context",situation:"You're at a market. You want to know the price of bread.",a:"Ça coûte combien ?",o:["Ça coûte combien ?","Il est quelle heure ?","Où est le pain ?","J'ai faim"]},
   {type:"fill_ctx",s:"J'___ trente ans. (Lesson 6 — avoir)",a:"ai",o:["ai","suis","est","as"],ctx:"Age uses avoir. Cross-reference L6."},
   {type:"fill_ctx",s:"Il est ___ et demi.",a:"midi",o:["midi","minuit","douze","heure"],ctx:"12:30 PM = midi et demi."},
-  {type:"franglais",en:"It costs ten euros.",blanks:[{word:"costs",answer:"coûte"},{word:"ten",answer:"dix"}],full:"Ça coûte dix euros."},
+  {type:"weave",en:"It costs ten euros.",blanks:[{word:"costs",answer:"coûte"},{word:"ten",answer:"dix"}],full:"Ça coûte dix euros."},
   {type:"context",situation:"A waiter tells you 'Ça fait vingt-deux euros.' How much is it?",a:"22 euros",o:["22 euros","20 euros","12 euros","32 euros"]},
 ],
 sayIt:[
@@ -971,7 +971,7 @@ combine:[
   {hint:"Water + bread + check → Ask for water, bread, then the check",answer:"De l'eau et du pain, s'il vous plaît. L'addition, s'il vous plaît.",accept:["de l'eau et du pain s'il vous plait l'addition s'il vous plait","de l'eau et du pain, s'il vous plaît. l'addition, s'il vous plaît"]},
   {hint:"Want + dessert + expensive → Say you'd like dessert but it's expensive",answer:"Je voudrais un dessert mais c'est cher.",accept:["je voudrais un dessert mais c'est cher","je voudrais un dessert, mais c'est cher"]},
 ],
-franglais:[
+weave:[
   {en:"I'll have the chicken and some water, please. The fish is too expensive.",known:["je","prends","le","poulet","de","l'","eau","s'il vous plaît","poisson","est","trop","cher"],sample:"Je prends le poulet and de l'eau, s'il vous plaît. Le poisson est trop cher."},
   {en:"For starter, a salad. For main course, the fish. And some bread, please.",known:["comme","entrée","une","salade","plat","le","poisson","du","pain","s'il vous plaît"],sample:"Comme entrée, une salade. Comme plat, le poisson. And du pain, s'il vous plaît."},
   {en:"The check please. It costs twenty euros. That's not expensive.",known:["l'","addition","s'il vous plaît","ça","coûte","vingt","euros","c'est","pas","cher"],sample:"L'addition, s'il vous plaît. Ça coûte vingt euros. C'est pas cher."},
@@ -982,7 +982,7 @@ review:[
   {type:"context",situation:"You want tap water at a French restaurant.",a:"Une carafe d'eau, s'il vous plaît",o:["Une carafe d'eau, s'il vous plaît","De l'eau cher","Du eau","L'eau addition"]},
   {type:"fill_ctx",s:"Ça ___ combien ? (Lesson 8)",a:"coûte",o:["coûte","est","a","fait"],ctx:"How much does it cost? Cross-reference L8."},
   {type:"fill_ctx",s:"___ fromage, s'il vous plaît.",a:"Du",o:["Du","De la","Le","Des"],ctx:"Some cheese — masculine partitive."},
-  {type:"franglais",en:"I'll have the fish.",blanks:[{word:"I'll have",answer:"prends"},{word:"fish",answer:"poisson"}],full:"Je prends le poisson."},
+  {type:"weave",en:"I'll have the fish.",blanks:[{word:"I'll have",answer:"prends"},{word:"fish",answer:"poisson"}],full:"Je prends le poisson."},
 ],
 sayIt:[
   {situation:"You're at a restaurant. Order a full meal: starter, main course, and a drink.",target:["prends","entrée","plat","salade","poulet","eau"]},
@@ -1061,7 +1061,7 @@ combine:[
   {hint:"Sister (20) + brother (tall) → Describe your siblings",answer:"Ma sœur a vingt ans et mon frère est grand.",accept:["ma soeur a vingt ans et mon frere est grand","ma sœur a vingt ans et mon frère est grand"]},
   {hint:"Friends (here) + children (young) → Say your friends are here and the kids are young",answer:"Mes amis sont ici et les enfants sont jeunes.",accept:["mes amis sont ici et les enfants sont jeunes"]},
 ],
-franglais:[
+weave:[
   {en:"My father is a doctor and my mother is French. They have three children.",known:["mon","père","est","médecin","ma","mère","française","ils","ont","trois","enfants"],sample:"Mon père est médecin and ma mère est française. Ils ont trois enfants."},
   {en:"Her brother is tall and young. His sister is twenty years old.",known:["son","frère","est","grand","jeune","sa","sœur","a","vingt","ans"],sample:"Son frère est grand and jeune. Sa sœur a vingt ans."},
   {en:"My friends are here. Your wife is beautiful and your children are small.",known:["mes","amis","sont","ici","ta","femme","est","belle","tes","enfants","petits"],sample:"Mes amis sont ici. Ta femme est belle and tes enfants sont petits."},
@@ -1072,7 +1072,7 @@ review:[
   {type:"context",situation:"Someone asks about your family. Your mom is a doctor.",a:"Ma mère est médecin",o:["Ma mère est médecin","Mon mère est médecin","Ma mère a médecin","Ma mère fait médecin"]},
   {type:"fill_ctx",s:"J'___ trois enfants. (Lesson 6 — avoir)",a:"ai",o:["ai","suis","est","as"],ctx:"I have three children — avoir."},
   {type:"fill_ctx",s:"___ père est grand.",a:"Mon",o:["Mon","Ma","Mes","Le"],ctx:"My father — père is masculine."},
-  {type:"franglais",en:"My sister is young.",blanks:[{word:"sister",answer:"sœur"},{word:"young",answer:"jeune"}],full:"Ma sœur est jeune."},
+  {type:"weave",en:"My sister is young.",blanks:[{word:"sister",answer:"sœur"},{word:"young",answer:"jeune"}],full:"Ma sœur est jeune."},
 ],
 sayIt:[
   {situation:"Introduce your family: parents, siblings. Say their ages and what they do.",target:["mon","ma","père","mère","frère","sœur","ans","est"]},
@@ -1146,7 +1146,7 @@ combine:[
   {hint:"No more + bread + maybe + tomorrow → No more bread, maybe tomorrow",answer:"Il n'y a plus de pain. Peut-être demain.",accept:["il n'y a plus de pain peut-etre demain","il n'y a plus de pain. peut-être demain"]},
   {hint:"Nobody + here + always + late → Nobody's here, he's always late",answer:"Il n'y a personne ici. Il est toujours en retard.",accept:["il n'y a personne ici il est toujours en retard","il n'y a personne ici. il est toujours en retard"]},
 ],
-franglais:[
+weave:[
   {en:"I never eat meat. She eats nothing. There's no more bread.",known:["je","ne","mange","jamais","de","viande","elle","rien","il","n'y","a","plus","pain"],sample:"Je ne mange jamais de viande. Elle ne mange rien. Il n'y a plus de pain."},
   {en:"Maybe tomorrow. I've already eaten and I'm not hungry anymore.",known:["peut-être","demain","j'ai","déjà","mangé","je","ne","ai","plus","faim"],sample:"Peut-être demain. J'ai déjà mangé and je n'ai plus faim."},
   {en:"He's always late. Nobody is here. Me too, I see nothing.",known:["il","est","toujours","en","retard","personne","ici","moi","aussi","je","ne","vois","rien"],sample:"Il est toujours en retard. Personne est ici. Moi aussi, je ne vois rien."},
@@ -1157,7 +1157,7 @@ review:[
   {type:"context",situation:"Your friend offers bread but there's none left.",a:"Il n'y a plus de pain",o:["Il n'y a plus de pain","Il n'y a pas de pain","Il y a du pain","Je ne mange pas"]},
   {type:"fill_ctx",s:"___ fromage, s'il vous plaît. (Lesson 9)",a:"Du",o:["Du","De la","Le","Des"],ctx:"Some cheese — partitive. Cross-reference L9."},
   {type:"fill_ctx",s:"Je ne mange ___ de viande.",a:"jamais",o:["jamais","pas","rien","toujours"],ctx:"I never eat meat."},
-  {type:"franglais",en:"She eats nothing.",blanks:[{word:"eats",answer:"mange"},{word:"nothing",answer:"rien"}],full:"Elle ne mange rien."},
+  {type:"weave",en:"She eats nothing.",blanks:[{word:"eats",answer:"mange"},{word:"nothing",answer:"rien"}],full:"Elle ne mange rien."},
 ],
 sayIt:[
   {situation:"You're at a restaurant. Explain your dietary restrictions: you never eat meat, and you don't want fish anymore.",target:["ne","mange","jamais","viande","plus","poisson"]},
@@ -1234,7 +1234,7 @@ combine:[
   {hint:"Straight + then left + station → Give directions to the station",answer:"C'est tout droit, puis à gauche. La gare est devant.",accept:["c'est tout droit puis a gauche la gare est devant","c'est tout droit, puis à gauche. la gare est devant"]},
   {hint:"Going to work + tomorrow morning → Say you're going to work tomorrow morning",answer:"Je vais travailler demain matin.",accept:["je vais travailler demain matin"]},
 ],
-franglais:[
+weave:[
   {en:"I'm going to the restaurant tonight. It's straight ahead then to the left.",known:["je","vais","au","restaurant","ce","soir","c'est","tout","droit","puis","à","gauche"],sample:"Je vais au restaurant ce soir. C'est tout droit, puis à gauche."},
   {en:"She's going to eat and he's going to work. We're going to take a coffee.",known:["elle","va","manger","il","travailler","nous","allons","prendre","un","café"],sample:"Elle va manger and il va travailler. Nous allons prendre un café."},
   {en:"The station is behind the park. Go right, it's not far.",known:["la","gare","est","derrière","le","parc","à","droite","c'est","pas","loin"],sample:"La gare est derrière le parc. Go à droite, c'est pas loin."},
@@ -1245,7 +1245,7 @@ review:[
   {type:"context",situation:"Someone asks you where the station is. It's straight ahead.",a:"C'est tout droit",o:["C'est tout droit","C'est à gauche","C'est derrière","C'est loin"]},
   {type:"fill_ctx",s:"Je ne mange ___ de viande. (Lesson 11)",a:"jamais",o:["jamais","pas","rien","plus"],ctx:"I never eat meat. Cross-reference L11."},
   {type:"fill_ctx",s:"Elle ___ manger ce soir.",a:"va",o:["va","vais","est","a"],ctx:"She's going to eat — near future."},
-  {type:"franglais",en:"I'm going to the park.",blanks:[{word:"going",answer:"vais"},{word:"park",answer:"parc"}],full:"Je vais au parc."},
+  {type:"weave",en:"I'm going to the park.",blanks:[{word:"going",answer:"vais"},{word:"park",answer:"parc"}],full:"Je vais au parc."},
 ],
 sayIt:[
   {situation:"Give someone directions to the restaurant: it's straight ahead, then left, in front of the station.",target:["tout","droit","gauche","devant","gare","restaurant"]},
@@ -1322,7 +1322,7 @@ combine:[
   {hint:"When + arrive + because → Ask when they arrive and answer because you love France",answer:"Quand est-ce que tu arrives ? Parce que j'aime la France.",accept:["quand est-ce que tu arrives parce que j'aime la france","quand est-ce que tu arrives ? parce que j'aime la france"]},
   {hint:"What + tonight + go to restaurant → Ask what they're doing tonight, suggest the restaurant",answer:"Tu fais quoi ce soir ? On va au restaurant ?",accept:["tu fais quoi ce soir on va au restaurant","tu fais quoi ce soir ? on va au restaurant ?"]},
 ],
-franglais:[
+weave:[
   {en:"What's your name? Why are you learning French? Because I love France.",known:["comment","tu","t'appelles","pourquoi","apprends","le","français","parce","que","j'aime","la","France"],sample:"Comment tu t'appelles? Pourquoi tu apprends le français? Parce que j'aime la France."},
   {en:"When do you arrive? Who is it? Do you speak French?",known:["quand","est-ce que","tu","arrives","qui","est-ce","parles","français"],sample:"Quand est-ce que tu arrives? Qui est-ce? Est-ce que tu parles français?"},
   {en:"What are you doing tonight? I'm going to eat at the restaurant. How much does it cost?",known:["tu","fais","quoi","ce","soir","je","vais","manger","au","restaurant","combien","ça","coûte"],sample:"Tu fais quoi ce soir? Je vais manger au restaurant. Ça coûte combien?"},
@@ -1333,7 +1333,7 @@ review:[
   {type:"context",situation:"You want to know someone's name.",a:"Comment tu t'appelles ?",o:["Comment tu t'appelles ?","Pourquoi tu t'appelles ?","Qui tu t'appelles ?","Quand tu t'appelles ?"]},
   {type:"fill_ctx",s:"Je ___ au restaurant ce soir. (Lesson 13 — aller)",a:"vais",o:["vais","suis","ai","vas"],ctx:"I'm going to the restaurant — aller."},
   {type:"fill_ctx",s:"___ tu apprends le français ?",a:"Pourquoi",o:["Pourquoi","Comment","Quand","Combien"],ctx:"Why are you learning French?"},
-  {type:"franglais",en:"Why? Because I love France.",blanks:[{word:"Why",answer:"Pourquoi"},{word:"Because",answer:"Parce que"}],full:"Pourquoi ? Parce que j'aime la France."},
+  {type:"weave",en:"Why? Because I love France.",blanks:[{word:"Why",answer:"Pourquoi"},{word:"Because",answer:"Parce que"}],full:"Pourquoi ? Parce que j'aime la France."},
 ],
 sayIt:[
   {situation:"You meet someone new. Ask their name, where they're from, and if they speak French.",target:["comment","t'appelles","où","est-ce que","parles","français"]},
@@ -1412,7 +1412,7 @@ combine:[
   {hint:"Work (afternoon) + eat (evening) + sleep (late) → Describe your day",answer:"Je travaille l'après-midi, je mange le soir et je me couche tard.",accept:["je travaille l'apres-midi je mange le soir et je me couche tard","je travaille l'après-midi, je mange le soir et je me couche tard"]},
   {hint:"She gets up (early) + he sleeps (well) → Compare two routines",answer:"Elle se lève tôt et il dort bien.",accept:["elle se leve tot et il dort bien","elle se lève tôt et il dort bien"]},
 ],
-franglais:[
+weave:[
   {en:"In the morning, I get up at seven. Then I wash and get dressed.",known:["le","matin","je","me","lève","à","sept","heures","puis","lave","m'habille"],sample:"Le matin, je me lève à sept heures. Puis je me lave and je m'habille."},
   {en:"I work in the afternoon and eat in the evening with my family.",known:["je","travaille","l'après-midi","mange","le","soir","avec","ma","famille"],sample:"Je travaille l'après-midi and je mange le soir avec ma famille."},
   {en:"She goes to bed late and he gets up early. I sleep well at night.",known:["elle","se","couche","tard","il","lève","tôt","je","dors","bien","la","nuit"],sample:"Elle se couche tard and il se lève tôt. Je dors bien la nuit."},
@@ -1423,7 +1423,7 @@ review:[
   {type:"context",situation:"It's morning. Describe what you do first.",a:"Je me lève et je me lave",o:["Je me lève et je me lave","Je me couche et je dors","Je mange et je travaille","Je pars et je vais"]},
   {type:"fill_ctx",s:"___ tu t'appelles ? (Lesson 14)",a:"Comment",o:["Comment","Pourquoi","Quand","Qui"],ctx:"What's your name? Cross-reference L14."},
   {type:"fill_ctx",s:"Je ___ lève à sept heures.",a:"me",o:["me","se","te","le"],ctx:"Reflexive pronoun — je ME lève."},
-  {type:"franglais",en:"I go to bed late.",blanks:[{word:"go to bed",answer:"couche"},{word:"late",answer:"tard"}],full:"Je me couche tard."},
+  {type:"weave",en:"I go to bed late.",blanks:[{word:"go to bed",answer:"couche"},{word:"late",answer:"tard"}],full:"Je me couche tard."},
 ],
 sayIt:[
   {situation:"Describe your full day: when you get up, what you do during the day, when you go to bed.",target:["me","lève","heures","travaille","mange","couche"]},
@@ -1497,7 +1497,7 @@ combine:[
   {hint:"Go straight + bakery + across from park → Give directions to the bakery",answer:"Allez tout droit, la boulangerie est en face du parc.",accept:["allez tout droit la boulangerie est en face du parc","allez tout droit, la boulangerie est en face du parc"]},
   {hint:"Station + between + park + bank → Describe the station's location",answer:"La gare est entre le parc et la banque.",accept:["la gare est entre le parc et la banque"]},
 ],
-franglais:[
+weave:[
   {en:"The pharmacy is next to the bank and the bakery is across from the park.",known:["la","pharmacie","est","à","côté","de","banque","boulangerie","en","face","du","parc"],sample:"La pharmacie est à côté de la banque and la boulangerie est en face du parc."},
   {en:"The cat is under the table. I'm in the supermarket. The station is between the park and the bank.",known:["le","chat","est","sous","la","table","je","suis","dans","supermarché","gare","entre","parc","et","banque"],sample:"Le chat est sous la table. Je suis dans le supermarché. La gare est entre le parc et la banque."},
   {en:"Go straight. The bakery is in front of the park, next to the pharmacy.",known:["allez","tout","droit","la","boulangerie","est","devant","le","parc","à","côté","de","pharmacie"],sample:"Allez tout droit. La boulangerie est devant le parc, à côté de la pharmacie."},
@@ -1508,7 +1508,7 @@ review:[
   {type:"context",situation:"Someone asks where the bank is. It's next to the park.",a:"La banque est à côté du parc",o:["La banque est à côté du parc","La banque est dans le parc","La banque est sous le parc","La banque est le parc"]},
   {type:"fill_ctx",s:"Je me ___ à sept heures. (Lesson 15)",a:"lève",o:["lève","couche","lave","mange"],ctx:"I get up at seven. Cross-reference L15."},
   {type:"fill_ctx",s:"Le chat est ___ la table.",a:"sous",o:["sous","sur","dans","entre"],ctx:"Under the table."},
-  {type:"franglais",en:"The bakery is next to the bank.",blanks:[{word:"bakery",answer:"boulangerie"},{word:"next to",answer:"à côté de"}],full:"La boulangerie est à côté de la banque."},
+  {type:"weave",en:"The bakery is next to the bank.",blanks:[{word:"bakery",answer:"boulangerie"},{word:"next to",answer:"à côté de"}],full:"La boulangerie est à côté de la banque."},
   {type:"context",situation:"You need medicine. Where do you go?",a:"À la pharmacie",o:["À la pharmacie","À la boulangerie","Au supermarché","À la banque"]},
 ],
 sayIt:[
@@ -1624,7 +1624,7 @@ const FLASH=[
 const MOTIV=["Every new word is a step. The summit is getting closer.","Made a mistake? Your brain just formed a new connection.","The easy path makes you a tourist. The hard path makes you a speaker.","When you reach the summit, the descent is effortless.","A French person said this exact sentence today."];
 
 const SECS=["read_listen","patterns","fill_fg","fill_fr","fill_write","build","quiz","combine_fg","say_it","mini_conv","review"];
-const SEC_N=["Read & Listen","Patterns","Franglais Fill","French Fill","Write","Build","Quiz","Combine","Say It","Mini Chat","Review"];
+const SEC_N=["Read & Listen","Patterns","Weave Fill","French Fill","Write","Build","Quiz","Combine","Say It","Mini Chat","Review"];
 const SEC_I=[Headphones,Lightbulb,Type,Pen,Pen,Layers,Target,Globe,Sparkles,MessageCircle,RefreshCw];
 
 export default function App(){
@@ -1948,12 +1948,12 @@ export default function App(){
             return <button key={o} onClick={()=>{if(ans.qr)return;setAns(a=>({...a,qr:o}));if(ok)gx(5);}} style={{padding:"8px 14px",borderRadius:8,border:`1.5px solid ${bc}`,background:bg,color:cl,fontSize:13,fontWeight:500,cursor:ans.qr?"default":"pointer"}}>{o}</button>;
           })}</div>
         </div>)}
-        <Btn onClick={()=>{mk(lesson.id,"patterns");nextSec(0,0,"Fill in French words inside English sentences — Franglais time!");}}>{ans.qr?"Got it, next":"Continue"} <ArrowRight size={15}/></Btn>
+        <Btn onClick={()=>{mk(lesson.id,"patterns");nextSec(0,0,"Fill in French words inside English sentences — Weave time!");}}>{ans.qr?"Got it, next":"Continue"} <ArrowRight size={15}/></Btn>
       </div>)}
 
       {/* SEC 0: READ & LISTEN */}
       {!trans&&sec===0&&(<div>
-        <p style={{fontSize:12,color:P.ink3,marginBottom:8}}>Tap any French word to see its meaning. Notice the Franglais bridge below each sentence.</p>
+        <p style={{fontSize:12,color:P.ink3,marginBottom:8}}>Tap any French word to see its meaning. Notice the Weave bridge below each sentence.</p>
         {lesson.examples.map((ex,i)=>(<div key={i} style={{background:P.paper,borderRadius:12,padding:"12px 14px",marginBottom:8,boxShadow:P.sh,border:`1px solid ${P.border}`}}>
           <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
             <div style={{flex:1}}>
@@ -1969,7 +1969,7 @@ export default function App(){
 
       {/* SEC 2: FRANGLAIS FILL */}
       {!trans&&sec===2&&(()=>{const fb=lesson.fillFG[fI];const a=ans[`fg${fI}`];return(<div>
-        <p style={{fontSize:11,color:P.ink3,marginBottom:4}}>Franglais Fill · {fI+1}/{lesson.fillFG.length}</p>
+        <p style={{fontSize:11,color:P.ink3,marginBottom:4}}>Weave Fill · {fI+1}/{lesson.fillFG.length}</p>
         <p style={{fontSize:12,color:P.purple,marginBottom:10,fontWeight:500}}>Replace the blank with the correct French word.</p>
         <div style={{background:P.paper,borderRadius:14,padding:20,boxShadow:P.sh,border:`1px solid ${P.border}`}}>
           {fb.ctx&&<p style={{margin:"0 0 12px",fontSize:12,color:P.amber,fontStyle:"italic"}}>Situation: {fb.ctx}</p>}
@@ -2045,7 +2045,7 @@ export default function App(){
           </p>
           <MCQ options={q.o} answer={q.a} answered={a} onAnswer={v=>{setAns(x=>({...x,[`q${qI}`]:v}));if(v===q.a)gx(10);else logErr(q.a,"quiz",v,q.a,lesson.id);}}
             onNext={()=>{if(qI<lesson.quiz.length-1){setQI(qI+1);setAns(x=>{const n={...x};delete n[`q${qI}`];return n;});}
-              else{mk(lesson.id,"quiz");setQI(0);nextSec(0,0,"Write sentences + Franglais — the final push!");}}}
+              else{mk(lesson.id,"quiz");setQI(0);nextSec(0,0,"Write sentences + Weave — the final push!");}}}
             nextLabel={qI<lesson.quiz.length-1?"Next":"Done"}/>
         </div>
       </div>);})()}
@@ -2068,18 +2068,18 @@ export default function App(){
           }}>Check · {3-cA} tries</Btn>}
           {(cR==="ok"||cR==="fail")&&<Btn onClick={()=>{if(cI2<lesson.combine.length-1){setCI2(cI2+1);setCIn("");setCR(null);setCA(0);}
             else{setCI2(0);setCIn("");setCR(null);setCA(0);
-                if(lesson.franglais&&lesson.franglais.length>0){setCfgPhase("franglais");}
+                if(lesson.weave&&lesson.weave.length>0){setCfgPhase("weave");}
                 else{mk(lesson.id,"combine_fg");nextSec(0,0,"Now express yourself freely in French — no hints, just you!");}
               }}}>{cI2<lesson.combine.length-1?"Next":"Done"}</Btn>}
         </div>
       </div>);}
 
-        // Phase 2: Franglais
-        if(cfgPhase==="franglais"&&lesson.franglais){
-        const fg=lesson.franglais[fgI];if(!fg)return null;
+        // Phase 2: Weave
+        if(cfgPhase==="weave"&&lesson.weave){
+        const fg=lesson.weave[fgI];if(!fg)return null;
         const checked=fgBlanks.checked;
         // Check: which known words did the user write in French?
-        const checkFranglais=()=>{
+        const checkWeave=()=>{
           const input=fgBlanks.text||"";
           const inputNorm=norm(input);
           const found=[];const missed=[];
@@ -2090,7 +2090,7 @@ export default function App(){
           gx(found.length*5);
         };
         return(<div>
-          <p style={{fontSize:11,color:P.ink3,marginBottom:4}}>Franglais · {fgI+1}/{lesson.franglais.length}</p>
+          <p style={{fontSize:11,color:P.ink3,marginBottom:4}}>Weave · {fgI+1}/{lesson.weave.length}</p>
           <p style={{fontSize:12,color:P.purple,marginBottom:10,lineHeight:1.4}}>Translate this sentence. Write every word you know in French — leave the rest in English.</p>
           <div style={{background:P.paper,borderRadius:14,padding:20,boxShadow:P.sh,border:`1px solid ${P.border}`}}>
             {/* English sentence */}
@@ -2098,7 +2098,7 @@ export default function App(){
               <p style={{margin:0,fontSize:16,color:P.ink,fontWeight:600,lineHeight:1.5}}>{fg.en}</p>
             </div>
             {/* Input */}
-            <textarea value={fgBlanks.text||""} onChange={e=>setFgBlanks({text:e.target.value})} placeholder="Write your Franglais version..." disabled={checked}
+            <textarea value={fgBlanks.text||""} onChange={e=>setFgBlanks({text:e.target.value})} placeholder="Write your Weave version..." disabled={checked}
               rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,border:`1.5px solid ${checked?(fgBlanks.missed?.length===0?P.green:P.amber):P.border}`,background:checked?(fgBlanks.missed?.length===0?P.gl:P.al):P.paper,fontFamily:"'Newsreader',serif",fontSize:15,fontStyle:"italic",color:P.ink,outline:"none",boxSizing:"border-box",resize:"none",lineHeight:1.6}}/>
             {/* Results */}
             {checked&&(<div style={{marginTop:12}}>
@@ -2122,11 +2122,11 @@ export default function App(){
                 {fgBlanks.found?.length}/{fg.known.length} French words used
               </p>
             </div>)}
-            {!checked&&<Btn onClick={checkFranglais}>Check My Franglais</Btn>}
+            {!checked&&<Btn onClick={checkWeave}>Check My Weave</Btn>}
             {checked&&<Btn onClick={()=>{
-              if(fgI<lesson.franglais.length-1){setFgI(fgI+1);setFgBlanks({});}
+              if(fgI<lesson.weave.length-1){setFgI(fgI+1);setFgBlanks({});}
               else{mk(lesson.id,"combine_fg");setFgI(0);setFgBlanks({});setCI2(0);nextSec(0,0,"Now express yourself freely in French — no hints, just you!");}
-            }} color={fgBlanks.missed?.length===0?P.green:P.red}>{fgI<lesson.franglais.length-1?"Next Sentence":"Done"}</Btn>}
+            }} color={fgBlanks.missed?.length===0?P.green:P.red}>{fgI<lesson.weave.length-1?"Next Sentence":"Done"}</Btn>}
           </div>
         </div>);}
         return null;
@@ -2291,8 +2291,8 @@ export default function App(){
                 nextLabel={rvI<lesson.review.length-1?"Next":"Complete!"}/>
             </div>)}
 
-            {/* Franglais in review */}
-            {rv.type==="franglais"&&(()=>{
+            {/* Weave in review */}
+            {rv.type==="weave"&&(()=>{
               const allDone=rv.blanks.every((_,i)=>fgBlanks[`rv${i}`]);
               return(<div>
                 <p style={{margin:"0 0 10px",fontSize:14,color:P.ink,textAlign:"center"}}>{rv.en}</p>

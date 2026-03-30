@@ -6,6 +6,7 @@ export const lesson14: Lesson = {
   sub: "Who, what, where, when, why, how",
   icon: "HelpCircle",
   level: "A1",
+  difficulty: "hard",
   grammar: {
     title: "Questions in French",
     sections: [
@@ -316,7 +317,7 @@ export const lesson14: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "What's your name? Why are you learning French? Because I love France.",
       known: [
@@ -414,7 +415,7 @@ export const lesson14: Lesson = {
       ctx: "Why are you learning French?",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "Why? Because I love France.",
       blanks: [
         { word: "Why", answer: "Pourquoi" },
@@ -446,4 +447,57 @@ export const lesson14: Lesson = {
     topic: "Getting to know someone by asking questions",
     starter: "Bonjour ! Comment tu t'appelles ? Tu es d'o\u00f9 ?",
   },
+  expressions: [
+    {
+      fr: "C'est-\u00e0-dire",
+      en: "That is to say / I mean",
+      usage: "'Je suis fatigu\u00e9, c'est-\u00e0-dire, j'ai besoin de dormir.'",
+      literal: "That is to say",
+    },
+    {
+      fr: "Au fait",
+      en: "By the way",
+      usage: "'Au fait, tu fais quoi ce soir ?'",
+      literal: "At the fact",
+    },
+    {
+      fr: "Comment dire...",
+      en: "How do I say... / How to put it...",
+      usage: "'C'est... comment dire... compliqu\u00e9.'",
+      literal: "How to say",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Pourquoi/parce que are etymological pairs",
+      insight:
+        "'Pourquoi' = pour + quoi = 'for what.' 'Parce que' = par + ce que = 'by that which.' French Q&A pairs are linked: each question word tells you what kind of answer it expects. Pourquoi asks 'for what reason?' and parce que answers 'by this reason.'",
+      example:
+        "Pourquoi ? (for what?) \u2192 Parce que... (by that which...)",
+    },
+    {
+      title: "3 question forms = 3 formality levels, same meaning",
+      insight:
+        "'Tu parles fran\u00e7ais ?' (intonation \u2014 casual). 'Est-ce que tu parles fran\u00e7ais ?' (marker \u2014 neutral). 'Parles-tu fran\u00e7ais ?' (inversion \u2014 formal). All three mean exactly the same thing. English used to have this: 'Speak you French?' died out, but French kept all three.",
+      example:
+        "Casual: Tu viens ? / Neutral: Est-ce que tu viens ? / Formal: Viens-tu ?",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "comment",
+      looksLike: "comment (remark)",
+      actualMeaning: "how",
+      example:
+        "Comment tu t'appelles ? (What's your name? \u2014 literally: How do you call yourself?)",
+    },
+  ],
+  cultureBite:
+    "In casual French, people mostly use intonation-only questions: 'Tu viens ?' (rising voice = question). 'Est-ce que' is for when you want to be clear. The inverted form ('Viens-tu ?') sounds almost literary \u2014 you'll see it in books more than hear it on the street.",
+  summary: [
+    "Question words: qui, que, o\u00f9, quand, comment, pourquoi",
+    "Three ways to ask: intonation, est-ce que, inversion",
+    "Pourquoi \u2192 parce que (etymological pair)",
+    "Expression: c'est-\u00e0-dire, au fait, comment dire",
+  ],
 };

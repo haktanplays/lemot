@@ -81,7 +81,7 @@ export interface CombineItem {
   accept: string[];
 }
 
-export interface FranglaisItem {
+export interface WeaveItem {
   en: string;
   known: string[];
   sample: string;
@@ -97,7 +97,37 @@ export interface MiniConvConfig {
   starter: string;
 }
 
-export interface FranglaisBlank {
+// ── Content Enrichment ──
+
+export interface Expression {
+  fr: string;
+  en: string;
+  usage: string; // example sentence or context
+  literal?: string; // literal translation if idiomatic
+}
+
+export interface GrammarNugget {
+  title: string;
+  insight: string; // the "aha moment" explanation
+  example?: string; // illustrative example
+}
+
+export interface FauxAmi {
+  fr: string;
+  looksLike: string; // English word it resembles
+  actualMeaning: string;
+  example: string;
+}
+
+export interface SoundPattern {
+  pattern: string; // e.g. "é- → s-"
+  examples: { fr: string; en: string }[];
+  rule: string; // explanation of the pattern
+}
+
+export type Difficulty = "easy" | "medium" | "hard";
+
+export interface WeaveBlank {
   word: string;
   answer: string;
 }
@@ -107,8 +137,8 @@ export type ReviewItem =
   | { type: "odd"; q: string; items: string[]; a: string; reason: string }
   | { type: "context"; situation: string; a: string; o: string[] }
   | { type: "fill_ctx"; s: string; a: string; o: string[]; ctx: string }
-  | { type: "franglais"; en: string; known: string[]; sample: string }
-  | { type: "franglais"; en: string; blanks: FranglaisBlank[]; full: string };
+  | { type: "weave"; en: string; known: string[]; sample: string }
+  | { type: "weave"; en: string; blanks: WeaveBlank[]; full: string };
 
 export interface Lesson {
   id: number;
@@ -116,6 +146,7 @@ export interface Lesson {
   sub: string;
   icon: string; // icon name as string, resolved at component level
   level: string;
+  difficulty: Difficulty;
   grammar: Grammar;
   examples: Example[];
   fillFG: FillItem[];
@@ -123,10 +154,17 @@ export interface Lesson {
   buildSentences: BuildItem[];
   quiz: QuizItem[];
   combine: CombineItem[];
-  franglais: FranglaisItem[];
+  weave: WeaveItem[];
   review: ReviewItem[];
   sayIt: SayItItem[];
   miniConv: MiniConvConfig;
+  // Content enrichment
+  expressions: Expression[];
+  grammarNuggets: GrammarNugget[];
+  fauxAmis?: FauxAmi[];
+  soundPatterns?: SoundPattern[];
+  cultureBite?: string;
+  summary: string[]; // "Bugün öğrendiğin" items for end-of-lesson card
 }
 
 // ── Dictionary ──

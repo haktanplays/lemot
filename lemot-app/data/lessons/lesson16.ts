@@ -6,6 +6,7 @@ export const lesson16: Lesson = {
   sub: "Navigate the city with prepositions",
   icon: "Map",
   level: "A1",
+  difficulty: "hard",
   grammar: {
     title: "Places & Prepositions",
     sections: [
@@ -326,7 +327,7 @@ export const lesson16: Lesson = {
       accept: ["la gare est entre le parc et la banque"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "The pharmacy is next to the bank and the bakery is across from the park.",
       known: [
@@ -443,7 +444,7 @@ export const lesson16: Lesson = {
       ctx: "Under the table.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "The bakery is next to the bank.",
       blanks: [
         { word: "bakery", answer: "boulangerie" },
@@ -494,4 +495,72 @@ export const lesson16: Lesson = {
     starter:
       "Excusez-moi, je cherche la pharmacie. Vous savez o\u00f9 elle est ?",
   },
+  expressions: [
+    {
+      fr: "Par ici / Par l\u00e0",
+      en: "This way / That way",
+      usage:
+        "'La pharmacie ? C'est par l\u00e0 !' (The pharmacy? It's that way!)",
+      literal: "By here / By there",
+    },
+    {
+      fr: "Quelque part",
+      en: "Somewhere",
+      usage:
+        "'Il y a une boulangerie quelque part par ici ?' (Is there a bakery somewhere around here?)",
+      literal: "Some part",
+    },
+    {
+      fr: "Juste \u00e0 c\u00f4t\u00e9",
+      en: "Right next door / Just beside",
+      usage:
+        "'La pharmacie ? C'est juste \u00e0 c\u00f4t\u00e9 !' (Right next door!)",
+      literal: "Just at side",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "'De + le = du' applies to ALL compound prepositions",
+      insight:
+        "'\u00c0 c\u00f4t\u00e9 DE LA banque' but '\u00e0 c\u00f4t\u00e9 DU parc' (de + le = du). 'En face DE LA pharmacie' but 'en face DU supermarch\u00e9.' The contraction rule applies everywhere. Once you internalize 'de + le = du,' every compound preposition becomes predictable.",
+      example:
+        "\u00e0 c\u00f4t\u00e9 du parc, en face du cin\u00e9ma, pr\u00e8s du restaurant",
+    },
+    {
+      title: "French prepositions are more precise than English",
+      insight:
+        "English uses 'at' for everything: at home, at the restaurant, at school. French distinguishes: 'chez moi' (person's place), 'au restaurant' (masculine), '\u00e0 l'\u00e9cole' (vowel), 'dans le parc' (inside). More prepositions = more information per sentence.",
+      example:
+        "chez moi, au restaurant, \u00e0 l'\u00e9cole, dans le parc \u2014 all different",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "coin",
+      looksLike: "coin (money)",
+      actualMeaning: "corner",
+      example:
+        "Le caf\u00e9 est au coin de la rue. (The caf\u00e9 is on the corner of the street.)",
+    },
+  ],
+  soundPatterns: [
+    {
+      pattern: "-tion = same in both languages",
+      examples: [
+        { fr: "station", en: "station" },
+        { fr: "direction", en: "direction" },
+        { fr: "pharmacie", en: "pharmacy" },
+        { fr: "banque", en: "bank" },
+      ],
+      rule: "Many city-related words are cognates. French -tion is pronounced 'see-on' but the word is the same.",
+    },
+  ],
+  cultureBite:
+    "French cities are designed around the 'pharmacie' (green cross), 'boulangerie' (bakery), and 'tabac' (tobacco shop that also sells transit tickets and stamps). These three landmarks are how locals give directions: 'C'est apr\u00e8s la pharmacie, en face de la boulangerie.'",
+  summary: [
+    "Prepositions: dans, sur, sous, devant, derri\u00e8re, \u00e0 c\u00f4t\u00e9 de",
+    "Contractions with compound prepositions: du, au",
+    "Chez = at someone's place (unique to French)",
+    "Expression: par ici, quelque part, juste \u00e0 c\u00f4t\u00e9",
+  ],
 };

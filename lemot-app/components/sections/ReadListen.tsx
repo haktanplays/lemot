@@ -15,14 +15,14 @@ interface ReadListenProps {
  * Section 0: Read & Listen
  *
  * Displays example cards with interactive French text (tap for definitions),
- * English translation, Franglais bridge sentence, and a listen button.
+ * English translation, Weave bridge sentence, and a listen button.
  * Input-first: the learner reads and listens before any exercises.
  */
 export function ReadListen({ examples, onComplete, say }: ReadListenProps) {
   return (
     <View>
       <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-        Tap any French word to see its meaning. Notice the Franglais bridge
+        Tap any French word to see its meaning. Notice the Weave bridge
         below each sentence.
       </Text>
 
@@ -70,7 +70,7 @@ export function ReadListen({ examples, onComplete, say }: ReadListenProps) {
                 {ex.en}
               </Text>
 
-              {/* Franglais bridge */}
+              {/* Weave bridge */}
               {ex.bridge ? (
                 <View
                   className="rounded-md mt-1.5 self-start"

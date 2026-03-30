@@ -3,13 +3,13 @@ import { View, Text, TextInput, KeyboardAvoidingView, Platform } from "react-nat
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
-import type { CombineItem, FranglaisItem } from "@/lib/types";
+import type { CombineItem, WeaveItem } from "@/lib/types";
 
-type Phase = "combine" | "franglais";
+type Phase = "combine" | "weave";
 
-interface CombineFranglaisProps {
+interface CombineWeaveProps {
   combine: CombineItem[];
-  franglais: FranglaisItem[];
+  weave: WeaveItem[];
   onComplete: (score: number, total: number) => void;
   onError: (
     word: string,
@@ -25,8 +25,8 @@ interface CombineState {
   attempts: number;
 }
 
-// ── Franglais sub-component state ──
-interface FranglaisState {
+// ── Weave sub-component state ──
+interface WeaveState {
   text: string;
   checked: boolean;
   found: string[];
@@ -39,7 +39,7 @@ const INITIAL_COMBINE: CombineState = {
   attempts: 0,
 };
 
-const INITIAL_FRANGLAIS: FranglaisState = {
+const INITIAL_WEAVE: WeaveState = {
   text: "",
   checked: false,
   found: [],
@@ -47,23 +47,23 @@ const INITIAL_FRANGLAIS: FranglaisState = {
 };
 
 /**
- * Combine + Franglais section (Section 7).
+ * Combine + Weave section (Section 7).
  *
  * TWO PHASES:
  * 1. Combine: User writes a full French sentence from a hint.
  *    - norm() comparison against accepted answers.
  *    - 3 attempts max; after 3 fails show correct answer.
- * 2. Franglais: User writes mixed French/English sentences.
+ * 2. Weave: User writes mixed French/English sentences.
  *    - Checks which "known" words the user wrote in French.
  *    - Shows sample answer and score (soft grading).
  */
-export function CombineFranglais({
+export function CombineWeave({
   combine,
-  franglais,
+  weave,
   onComplete,
   onError,
-}: CombineFranglaisProps) {
-  const hasFranglais = franglais && franglais.length > 0;
+}: CombineWeaveProps) {
+  const hasWeave = weave && weave.length > 0;
 
   // Phase tracking
   const [phase, setPhase] = useState<Phase>("combine");
@@ -73,10 +73,10 @@ export function CombineFranglais({
   const [combineState, setCombineState] = useState<CombineState>(INITIAL_COMBINE);
   const [combineScore, setCombineScore] = useState(0);
 
-  // Franglais state
-  const [franglaisIndex, setFranglaisIndex] = useState(0);
-  const [franglaisState, setFranglaisState] = useState<FranglaisState>(INITIAL_FRANGLAIS);
-  const [franglaisScore, setFranglaisScore] = useState(0);
+  // Weave state
+  const [weaveIndex, setWeaveIndex] = useState(0);
+  const [weaveState, setWeaveState] = useState<WeaveState>(INITIAL_WEAVE);
+  const [weaveScore, setWeaveScore] = useState(0);
 
   // ══════════════════════════════════════
   // PHASE 1: COMBINE
@@ -117,8 +117,8 @@ export function CombineFranglais({
         setCombineState(INITIAL_COMBINE);
       } else {
         // Done with combine phase
-        if (hasFranglais) {
-          setPhase("franglais");
+        if (hasWeave) {
+          setPhase("weave");
           setCombineState(INITIAL_COMBINE);
         } else {
           onComplete(combineScore, combine.length);
@@ -247,15 +247,15 @@ export function CombineFranglais({
   }
 
   // ══════════════════════════════════════
-  // PHASE 2: FRANGLAIS
+  // PHASE 2: WEAVE
   // ══════════════════════════════════════
-  if (phase === "franglais" && hasFranglais) {
-    const item = franglais[franglaisIndex];
+  if (phase === "weave" && hasWeave) {
+    const item = weave[weaveIndex];
     if (!item) return null;
 
-    const { text, checked, found, missed } = franglaisState;
+    const { text, checked, found, missed } = weaveState;
 
-    const handleCheckFranglais = () => {
+    const handleCheckWeave = () => {
       const inputNorm = norm(text);
       const foundWords: string[] = [];
       const missedWords: string[] = [];
@@ -268,19 +268,19 @@ export function CombineFranglais({
         }
       });
 
-      setFranglaisState({
+      setWeaveState({
         text,
         checked: true,
         found: foundWords,
         missed: missedWords,
       });
-      setFranglaisScore((s) => s + foundWords.length);
+      setWeaveScore((s) => s + foundWords.length);
     };
 
     const handleNext = () => {
-      if (franglaisIndex < franglais.length - 1) {
-        setFranglaisIndex((i) => i + 1);
-        setFranglaisState(INITIAL_FRANGLAIS);
+      if (weaveIndex < weave.length - 1) {
+        setWeaveIndex((i) => i + 1);
+        setWeaveState(INITIAL_WEAVE);
       } else {
         // Both phases complete
         onComplete(combineScore, combine.length);
@@ -296,7 +296,7 @@ export function CombineFranglais({
       >
       <View>
         <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-          Franglais · {franglaisIndex + 1}/{franglais.length}
+          Weave · {weaveIndex + 1}/{weave.length}
         </Text>
         <Text className="text-xs mb-2.5 leading-5" style={{ color: P.purple }}>
           Translate this sentence. Write every word you know in French — leave the rest in
@@ -350,9 +350,9 @@ export function CombineFranglais({
           <TextInput
             value={text}
             onChangeText={(t) =>
-              setFranglaisState((s) => ({ ...s, text: t }))
+              setWeaveState((s) => ({ ...s, text: t }))
             }
-            placeholder="Write your Franglais version..."
+            placeholder="Write your Weave version..."
             placeholderTextColor={P.ink3}
             editable={!checked}
             multiline
@@ -473,9 +473,9 @@ export function CombineFranglais({
 
           {/* Check button */}
           {!checked && (
-            <Btn onPress={handleCheckFranglais}>
+            <Btn onPress={handleCheckWeave}>
               <Text className="text-white text-sm font-semibold">
-                Check My Franglais
+                Check My Weave
               </Text>
             </Btn>
           )}
@@ -487,7 +487,7 @@ export function CombineFranglais({
               color={allFound ? P.green : P.red}
             >
               <Text className="text-white text-sm font-semibold">
-                {franglaisIndex < franglais.length - 1
+                {weaveIndex < weave.length - 1
                   ? "Next Sentence"
                   : "Done"}
               </Text>

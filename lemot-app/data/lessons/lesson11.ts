@@ -6,6 +6,7 @@ export const lesson11: Lesson = {
   sub: "Ne...pas, ne...jamais, ne...rien — master the negative",
   icon: "Ban",
   level: "A1",
+  difficulty: "hard",
   grammar: {
     title: "Negation",
     sections: [
@@ -302,7 +303,7 @@ export const lesson11: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "I never eat meat. She eats nothing. There's no more bread.",
       known: [
@@ -403,7 +404,7 @@ export const lesson11: Lesson = {
       ctx: "I never eat meat.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "She eats nothing.",
       blanks: [
         { word: "eats", answer: "mange" },
@@ -429,4 +430,55 @@ export const lesson11: Lesson = {
     starter:
       "Tu manges de la viande ? Moi, je suis végétarien. Et toi ?",
   },
+  expressions: [
+    {
+      fr: "Pas du tout",
+      en: "Not at all",
+      usage: "'Tu es fatigué ?' — 'Pas du tout !' (Not at all!)",
+      literal: "Not of all",
+    },
+    {
+      fr: "Pas encore",
+      en: "Not yet",
+      usage: "'Tu as mangé ?' — 'Pas encore.' (Not yet.)",
+      literal: "Not still",
+    },
+    {
+      fr: "Ce n'est pas la peine",
+      en: "It's not worth it / Don't bother",
+      usage: "'Ce n'est pas la peine de courir.' (No point in running.)",
+      literal: "It's not the effort",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Dropping 'ne' is normal speech, not laziness",
+      insight:
+        "Written: 'Je ne sais pas.' Spoken: 'Je sais pas' or 'Chais pas.' Dropping 'ne' is not slang — it's how 95% of French speakers actually talk. 'Ne' is becoming like English 'whom' — technically correct, practically extinct in casual speech.",
+      example: "Written: Je ne sais pas → Spoken: J'sais pas / Chais pas",
+    },
+    {
+      title: "'Plus' has two pronunciations and two opposite meanings",
+      insight:
+        "'Ne...plus' (no more) = 'plü' (silent s). 'Plus de pain' (more bread) = 'plüss' (s pronounced). Same spelling, opposite meanings, different sounds. Context and pronunciation are the only difference.",
+      example:
+        "Il n'y a plus de pain /plü/ (no more bread) vs Il y a plus de pain /plüs/ (more bread)",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "rien",
+      looksLike: "rain",
+      actualMeaning: "nothing",
+      example: "Je ne vois rien. (I see nothing.)",
+    },
+  ],
+  cultureBite:
+    "French has an elegant system of double negation: ne...pas (not), ne...jamais (never), ne...plus (no more), ne...rien (nothing). Each pair tells you exactly WHAT is being negated. English lost most of these — 'I don't never...' is an error in English but the SYSTEM in French.",
+  summary: [
+    "Negation: ne...pas, ne...jamais, ne...plus, ne...rien",
+    "Dropping 'ne' in spoken French is standard",
+    "'Plus' — two sounds, two opposite meanings",
+    "Expression: pas du tout, pas encore",
+  ],
 };

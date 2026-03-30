@@ -5,7 +5,7 @@ import { Btn } from "@/components/Btn";
 import { MCQ } from "@/components/MCQ";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
-import type { ReviewItem, FranglaisBlank } from "@/lib/types";
+import type { ReviewItem, WeaveBlank } from "@/lib/types";
 
 interface ReviewProps {
   items: ReviewItem[];
@@ -18,7 +18,7 @@ interface ReviewProps {
  * Section 10: Review
  *
  * Mixed-format final review covering listen, odd-one-out, context match,
- * fill-with-context, and franglais blanks. Tracks score across all items
+ * fill-with-context, and weave blanks. Tracks score across all items
  * and reports it on completion.
  */
 export function Review({ items, onComplete, onError, say }: ReviewProps) {
@@ -26,7 +26,7 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
 
-  // Franglais blanks state: tracks text input and done status per blank
+  // Weave blanks state: tracks text input and done status per blank
   const [fgInputs, setFgInputs] = useState<Record<string, string>>({});
   const [fgDone, setFgDone] = useState<Record<string, boolean>>({});
 
@@ -58,8 +58,8 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
     }
   }
 
-  /** Handle franglais blank check */
-  function checkFranglaisBlank(blank: FranglaisBlank, blankIndex: number) {
+  /** Handle weave blank check */
+  function checkWeaveBlank(blank: WeaveBlank, blankIndex: number) {
     const key = `rv${blankIndex}`;
     const textKey = `rvt${blankIndex}`;
     const userInput = fgInputs[textKey] || "";
@@ -244,16 +244,16 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
           </View>
         )}
 
-        {/* ── Franglais blanks ── */}
-        {current.type === "franglais" && "blanks" in current && (
-          <FranglaisReview
-            item={current as { type: "franglais"; en: string; blanks: FranglaisBlank[]; full: string }}
+        {/* ── Weave blanks ── */}
+        {current.type === "weave" && "blanks" in current && (
+          <WeaveReview
+            item={current as { type: "weave"; en: string; blanks: WeaveBlank[]; full: string }}
             fgInputs={fgInputs}
             fgDone={fgDone}
             onInputChange={(key, value) =>
               setFgInputs((prev) => ({ ...prev, [key]: value }))
             }
-            onCheck={(blank, i) => checkFranglaisBlank(blank, i)}
+            onCheck={(blank, i) => checkWeaveBlank(blank, i)}
             onAdvance={advance}
             isLast={isLast}
           />
@@ -265,20 +265,20 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Franglais sub-component (kept in same file for cohesion)
+// Weave sub-component (kept in same file for cohesion)
 // ─────────────────────────────────────────────────────────────
 
-interface FranglaisReviewProps {
-  item: { type: "franglais"; en: string; blanks: FranglaisBlank[]; full: string };
+interface WeaveReviewProps {
+  item: { type: "weave"; en: string; blanks: WeaveBlank[]; full: string };
   fgInputs: Record<string, string>;
   fgDone: Record<string, boolean>;
   onInputChange: (key: string, value: string) => void;
-  onCheck: (blank: FranglaisBlank, index: number) => void;
+  onCheck: (blank: WeaveBlank, index: number) => void;
   onAdvance: () => void;
   isLast: boolean;
 }
 
-function FranglaisReview({
+function WeaveReview({
   item,
   fgInputs,
   fgDone,
@@ -286,7 +286,7 @@ function FranglaisReview({
   onCheck,
   onAdvance,
   isLast,
-}: FranglaisReviewProps) {
+}: WeaveReviewProps) {
   const allDone = item.blanks.every((_, i) => fgDone[`rv${i}`]);
 
   return (

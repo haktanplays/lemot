@@ -6,6 +6,7 @@ export const lesson2: Lesson = {
   sub: "Silent letters, liaison, and sounds you already know",
   icon: "Volume2",
   level: "A1",
+  difficulty: "easy",
   grammar: {
     title: "French Sounds — Part 1",
     sections: [
@@ -291,7 +292,7 @@ export const lesson2: Lesson = {
       accept: ["elle est française", "elle est francaise"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "The small cat is here and the big hotel is there.",
       known: [
@@ -377,4 +378,54 @@ export const lesson2: Lesson = {
     topic: "Describing things around you using pronunciation patterns",
     starter: "Regarde ! Il y a un petit chat ici. Tu le vois ?",
   },
+  expressions: [
+    {
+      fr: "C'est ça",
+      en: "That's it / That's right",
+      usage: "'Tu veux le rouge ?' — 'Oui, c'est ça !'",
+      literal: "It's that",
+    },
+    {
+      fr: "Ah bon ?",
+      en: "Oh really?",
+      usage: "'Je pars demain.' — 'Ah bon ?'",
+      literal: "Ah good?",
+    },
+    {
+      fr: "Très bien",
+      en: "Very good / Very well",
+      usage: "'Comment ça va ?' — 'Très bien, merci.'",
+      literal: "Very well",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Silent -e is an activator switch",
+      insight:
+        "The silent -e at the end of a word makes the preceding consonant heard. 'Petit' (silent t) → 'petite' (t is pronounced). The -e is not decorative — it's doing a JOB. This is also how French marks feminine.",
+      example: "petit → /pəti/ but petite → /pətit/",
+    },
+    {
+      title: "French spelling is a fossil record",
+      insight:
+        "Every 'silent' letter was once spoken. 'Petit' used to rhyme with 'petite.' English has the same fossils: 'knight' was k-night. French is not randomly difficult — it's historically consistent.",
+      example: "knight = k-night, château = castle (same Latin root)",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "chat",
+      looksLike: "chat (conversation)",
+      actualMeaning: "cat",
+      example: "Le chat est sur la table. (The cat is on the table.)",
+    },
+  ],
+  cultureBite:
+    "French pronunciation is more predictable than English. Once you learn the patterns, you can pronounce ANY word you read — even words you've never seen. English can't say the same: think of cough, through, though, tough.",
+  summary: [
+    "Silent consonant rules: CaReFuL",
+    "The -e activator switch",
+    "Liaison: les\u200Bamis",
+    "Expression: c'est ça, ah bon",
+  ],
 };

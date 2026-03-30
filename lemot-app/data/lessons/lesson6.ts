@@ -6,6 +6,7 @@ export const lesson6: Lesson = {
   sub: "The verb of feelings, age & needs",
   icon: "Heart",
   level: "A1",
+  difficulty: "medium",
   grammar: {
     title: "Avoir — To Have",
     sections: [
@@ -284,7 +285,7 @@ export const lesson6: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "I'm hungry and she's thirsty. We need water.",
       known: [
@@ -371,7 +372,7 @@ export const lesson6: Lesson = {
       ctx: "Happy = description = être, not avoir.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "I'm hungry and I need coffee.",
       blanks: [
         { word: "hungry", answer: "faim" },
@@ -397,4 +398,58 @@ export const lesson6: Lesson = {
     starter:
       "Salut ! Ça va ? Tu as faim ? On peut manger quelque chose.",
   },
+  expressions: [
+    {
+      fr: "J'en ai marre",
+      en: "I'm fed up / I've had it",
+      usage: "'J'en ai marre de la pluie !' (I'm fed up with the rain!)",
+      literal: "I of-it have fed-up",
+    },
+    {
+      fr: "Il y a",
+      en: "There is / There are",
+      usage: "'Il y a un chat dans le jardin.' (There's a cat in the garden.)",
+      literal: "It there has",
+    },
+    {
+      fr: "Ça y est",
+      en: "That's it / It's done / Finally!",
+      usage: "'Ça y est, j'ai fini !' (That's it, I'm done!)",
+      literal: "That there is",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "French POSSESSES feelings, English IDENTIFIES with them",
+      insight:
+        "English: 'I AM hungry' — hunger is your identity. French: 'J'AI faim' — hunger is something you carry. French treats emotions as temporary possessions. You HAVE fear, you HAVE cold, you HAVE hunger. More manageable — they're something you hold, not something you become.",
+      example:
+        "J'ai faim (I have hunger), J'ai peur (I have fear), J'ai froid (I have cold)",
+    },
+    {
+      title: "Je suis chaud ≠ I am hot (temperature)",
+      insight:
+        "This is the most famous avoir-vs-être mistake. 'J'ai chaud' = I feel hot (temperature). 'Je suis chaud' = I'm keen/eager (slang) or has sexual connotations. The être/avoir distinction isn't just grammar — getting it wrong changes meaning dramatically.",
+      example:
+        "J'AI chaud (I feel hot) vs Je SUIS chaud (I'm keen — slang)",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "j'ai chaud",
+      looksLike: "I am hot",
+      actualMeaning:
+        "I feel warm/hot (temperature) — uses avoir, not être",
+      example:
+        "J'ai chaud, ouvre la fenêtre ! (I'm hot, open the window!)",
+    },
+  ],
+  cultureBite:
+    "'Il y a' literally means 'it there has' — French says 'there HAS' where English says 'there IS.' This is because avoir (to have) is the default existence verb in French. If something exists somewhere, French says the place 'has' it.",
+  summary: [
+    "Avoir conjugation: j'ai, tu as, il/elle a...",
+    "Avoir for states: faim, soif, peur, chaud, froid",
+    "Il y a = there is/are",
+    "Expression: j'en ai marre, ça y est",
+  ],
 };

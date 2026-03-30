@@ -6,6 +6,7 @@ export const lesson8: Lesson = {
   sub: "Count, tell time, and handle money",
   icon: "Clock",
   level: "A1",
+  difficulty: "medium",
   grammar: {
     title: "Numbers & Time",
     sections: [
@@ -355,7 +356,7 @@ export const lesson8: Lesson = {
       accept: ["il est midi et j'ai faim", "il est midi, j'ai faim"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "It's three o'clock and I'm hungry. How much does a coffee cost?",
       known: [
@@ -452,7 +453,7 @@ export const lesson8: Lesson = {
       ctx: "12:30 PM = midi et demi.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "It costs ten euros.",
       blanks: [
         { word: "costs", answer: "coûte" },
@@ -485,4 +486,48 @@ export const lesson8: Lesson = {
     starter:
       "Bonjour ! Vous voulez acheter quelque chose ? Ça coûte dix euros.",
   },
+  expressions: [
+    {
+      fr: "À tout à l'heure",
+      en: "See you later / See you soon",
+      usage: "Leaving work: 'Bon, à tout à l'heure !'",
+      literal: "At all at the hour",
+    },
+    {
+      fr: "Tout de suite",
+      en: "Right away / Immediately",
+      usage: "'J'arrive tout de suite !' (I'll be right there!)",
+      literal: "All of following",
+    },
+    {
+      fr: "Il est temps",
+      en: "It's time",
+      usage: "'Il est temps de partir.' (It's time to leave.)",
+      literal: "It is time",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "French counts in 20s after 60",
+      insight:
+        "70 = soixante-dix (60+10), 80 = quatre-vingts (4×20), 90 = quatre-vingt-dix (4×20+10). Not illogical — it's a remnant of Celtic base-20 counting. Belgian French uses septante (70) and nonante (90), proving even francophones find it odd.",
+      example:
+        "75 = soixante-quinze (60+15), 92 = quatre-vingt-douze (4×20+12)",
+    },
+    {
+      title: "Heure is always plural except at 1:00",
+      insight:
+        "'Il est une heure' (1:00) but 'Il est deux heures' (2:00). French is strictly consistent: one = singular, everything else = plural. English says 'two o'clock' with no plural marker. French is actually more logical here.",
+      example:
+        "Il est une heure (1:00) vs Il est trois heures (3:00)",
+    },
+  ],
+  cultureBite:
+    "French people use the 24-hour clock in daily life — not just military/trains. 'On se voit à 20h' (See you at 8 PM) is completely normal. No AM/PM confusion ever.",
+  summary: [
+    "Numbers 1-60",
+    "Telling time: Il est... heure(s)",
+    "24-hour clock in daily life",
+    "Expression: tout de suite, à tout à l'heure",
+  ],
 };

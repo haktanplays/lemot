@@ -6,6 +6,7 @@ export const lesson1: Lesson = {
   sub: "Phrases that work from day one",
   icon: "Compass",
   level: "A1",
+  difficulty: "easy",
   grammar: {
     title: "Survival Phrases",
     sections: [
@@ -305,7 +306,7 @@ export const lesson1: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "I understand and I would still like a coffee, please.",
       known: [
@@ -392,4 +393,56 @@ export const lesson1: Lesson = {
     topic: "Ordering at a café and asking for directions",
     starter: "Bonjour ! Bienvenue. Qu'est-ce que vous voulez ?",
   },
+  expressions: [
+    {
+      fr: "Voilà",
+      en: "There you go / Here it is",
+      usage: "A waiter hands you coffee: 'Voilà, monsieur.'",
+      literal: "See there",
+    },
+    {
+      fr: "Pardon",
+      en: "Sorry / Excuse me",
+      usage: "Bumping into someone on the metro: 'Oh, pardon !'",
+      literal: "Pardon",
+    },
+    {
+      fr: "Comme ci, comme ça",
+      en: "So-so",
+      usage: "'Ça va ?' — 'Comme ci, comme ça.'",
+      literal: "Like this, like that",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Politeness lives in the verb form",
+      insight:
+        "In English, 'please' is just a word you add. In French, the verb FORM carries politeness: 'je veux' (I want — rude) vs 'je voudrais' (I would like — polite). The polite form IS the default.",
+      example:
+        "Je voudrais un café (polite) vs Je veux un café (demanding)",
+    },
+    {
+      title: "Ne...pas is a sandwich",
+      insight:
+        "French negation wraps AROUND the verb like bread around a filling: Je NE comprends PAS. This 'sandwich' pattern is the single most important structural insight in French.",
+      example: "Je ne comprends pas — ne...pas hugs the verb",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "baguette",
+      looksLike: "baguette (just bread)",
+      actualMeaning:
+        "Any stick-shaped object — a magic wand (baguette magique), chopsticks (baguettes), a conductor's baton",
+      example: "Harry Potter a une baguette magique.",
+    },
+  ],
+  cultureBite:
+    "Never start talking to a French person without saying 'bonjour' first. Skipping it is like starting an English conversation with 'Give me a coffee.' It's not optional — it's the social contract.",
+  summary: [
+    "Greetings: bonjour, bonsoir, salut",
+    "Polite ordering: je voudrais + s'il vous plaît",
+    "The ne...pas sandwich for negation",
+    "Expression: voilà, pardon, comme ci comme ça",
+  ],
 };

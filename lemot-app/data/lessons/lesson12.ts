@@ -6,6 +6,7 @@ export const lesson12: Lesson = {
   sub: "What everyone says but textbooks skip",
   icon: "Sparkles",
   level: "A1",
+  difficulty: "easy",
   grammar: {
     title: "Everyday Conversation Phrases",
     sections: [
@@ -304,7 +305,7 @@ export const lesson12: Lesson = {
       accept: ["il faut partir maintenant"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "Actually, I am tired. There is a good restaurant here.",
       known: [
@@ -380,7 +381,7 @@ export const lesson12: Lesson = {
       ctx: "Tell someone you're tired. (être, Lesson 5)",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "Actually, I prefer tea.",
       blanks: [
         { word: "Actually", answer: "En fait" },
@@ -412,4 +413,46 @@ export const lesson12: Lesson = {
       "Making plans and reacting to suggestions using everyday phrases",
     starter: "Salut ! Il y a un bon restaurant ici. On y va ?",
   },
+  expressions: [
+    {
+      fr: "Du coup",
+      en: "So / Therefore / As a result",
+      usage: "'Le restaurant est fermé, du coup on mange chez moi.' (Restaurant's closed, so we eat at my place.)",
+      literal: "Of the hit",
+    },
+    {
+      fr: "En tout cas",
+      en: "In any case / Anyway",
+      usage: "'En tout cas, merci !' (Anyway, thanks!)",
+      literal: "In all case",
+    },
+    {
+      fr: "Bref",
+      en: "In short / Anyway / Long story short",
+      usage: "'Bref, je suis en retard.' (Long story short, I'm late.)",
+      literal: "Brief",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "'Il' in 'il y a' and 'il faut' is not 'he' — it's a placeholder",
+      insight:
+        "French requires a subject for every verb, even when there's no real actor. English does this too: 'It rains' — what rains? In both languages, 'it/il' is a grammatical placeholder. Once you see this, 'il y a' and 'il faut' stop feeling like sentences about 'him.'",
+      example: "Il pleut (it rains) — 'il' = nobody, just grammar",
+    },
+    {
+      title: "'Ça' is abbreviated 'cela' — like 'it' replaced 'that thing'",
+      insight:
+        "'Ça' is the informal version of 'cela' (that). Just as English evolved from 'that works' to 'it works,' French evolved from 'cela marche' to 'ça marche.' 'Ça' isn't slang — it's standard modern French.",
+      example: "Ça va, ça marche, ça dépend — all use ça as 'this/that/it'",
+    },
+  ],
+  cultureBite:
+    "'Du coup' is the most-used filler in modern French. Young French speakers say it every other sentence, like English speakers say 'so' or 'basically.' Some language purists hate it, which makes it even more popular.",
+  summary: [
+    "Il y a = there is/are, Il faut = one must",
+    "Ça as the Swiss Army knife pronoun",
+    "En fait, ça marche, d'accord — reaction toolkit",
+    "Expression: du coup, bref, en tout cas",
+  ],
 };

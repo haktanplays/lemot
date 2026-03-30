@@ -15,7 +15,7 @@ export const SECS = [
 export const SEC_NAMES = [
   "Read & Listen",
   "Patterns",
-  "Franglais Fill",
+  "Weave Fill",
   "French Fill",
   "Write",
   "Build",

@@ -12,12 +12,12 @@ import { TransitionScreen } from "@/components/TransitionScreen";
 // Section components
 import { ReadListen } from "@/components/sections/ReadListen";
 import { Patterns } from "@/components/sections/Patterns";
-import { FranglaisFill } from "@/components/sections/FranglaisFill";
+import { WeaveFill } from "@/components/sections/WeaveFill";
 import { FrenchFill } from "@/components/sections/FrenchFill";
 import { WriteSection } from "@/components/sections/WriteSection";
 import { BuildSentence } from "@/components/sections/BuildSentence";
 import { Quiz } from "@/components/sections/Quiz";
-import { CombineFranglais } from "@/components/sections/CombineFranglais";
+import { CombineWeave } from "@/components/sections/CombineWeave";
 import { SayItYourWay } from "@/components/sections/SayItYourWay";
 import { MiniConversation } from "@/components/sections/MiniConversation";
 import { Review } from "@/components/sections/Review";
@@ -98,18 +98,18 @@ export default function LessonScreen() {
             onComplete={() => {
               mk(lessonId, "patterns");
               gx(10);
-              nextSec(0, 0, "Patterns understood! Time to fill in some Franglais...");
+              nextSec(0, 0, "Patterns understood! Time to fill in some Weave sentences...");
             }}
           />
         );
       case 2:
         return (
-          <FranglaisFill
+          <WeaveFill
             items={lesson.fillFG}
             onComplete={(score, total) => {
               mk(lessonId, "fill_fg");
               gx(15);
-              nextSec(score, total, "Nice Franglais! Now try fully in French...");
+              nextSec(score, total, "Nice Weave! Now try fully in French...");
             }}
             onError={errFill}
           />
@@ -164,9 +164,9 @@ export default function LessonScreen() {
         );
       case 7:
         return (
-          <CombineFranglais
+          <CombineWeave
             combine={lesson.combine}
-            franglais={lesson.franglais}
+            weave={lesson.weave}
             onComplete={(score, total) => {
               mk(lessonId, "combine_fg");
               gx(20);

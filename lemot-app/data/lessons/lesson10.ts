@@ -6,6 +6,7 @@ export const lesson10: Lesson = {
   sub: "Talk about people with possessives",
   icon: "Users",
   level: "A1",
+  difficulty: "medium",
   grammar: {
     title: "Family & Possessive Adjectives",
     sections: [
@@ -315,7 +316,7 @@ export const lesson10: Lesson = {
       accept: ["mes amis sont ici et les enfants sont jeunes"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "My father is a doctor and my mother is French. They have three children.",
       known: [
@@ -415,7 +416,7 @@ export const lesson10: Lesson = {
       ctx: "My father — père is masculine.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "My sister is young.",
       blanks: [
         { word: "sister", answer: "sœur" },
@@ -441,4 +442,55 @@ export const lesson10: Lesson = {
     starter:
       "Salut ! Tu as des frères et sœurs ? Parle-moi de ta famille.",
   },
+  expressions: [
+    {
+      fr: "Chez moi",
+      en: "At my place / At home",
+      usage: "'On mange chez moi ?' (Shall we eat at my place?)",
+      literal: "At home of me",
+    },
+    {
+      fr: "Ça fait longtemps",
+      en: "It's been a long time",
+      usage: "'Ça fait longtemps ! Comment tu vas ?' (Long time no see! How are you?)",
+      literal: "That makes long time",
+    },
+    {
+      fr: "C'est de famille",
+      en: "It runs in the family",
+      usage: "'Il est grand ?' — 'Oui, c'est de famille !'",
+      literal: "It's of family",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Son means BOTH 'his' AND 'her'",
+      insight:
+        "French possessives match the THING OWNED, not the OWNER. 'Son père' = his father AND her father. 'Sa mère' = his mother AND her mother. English possessives match the owner. French ones match the object. Completely opposite logic.",
+      example:
+        "Son livre = his book AND her book (livre is masculine → son)",
+    },
+    {
+      title: "'Ma' becomes 'mon' before vowels — it's a sound rule, not a gender change",
+      insight:
+        "'Ma amie' creates a vowel collision (a-a). French refuses this. So it becomes 'mon amie' — mon + feminine noun. It looks wrong ('mon' = masculine?) but the noun is still feminine. French prioritizes smooth sound over gender marking.",
+      example: "mon amie (my female friend) — mon for sound, not gender",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "parent",
+      looksLike: "parent (mother/father only)",
+      actualMeaning: "parent OR relative (broader meaning)",
+      example: "C'est un parent éloigné. (He's a distant relative.)",
+    },
+  ],
+  cultureBite:
+    "'Chez' is uniquely French — a single preposition meaning 'at the home/place of.' No English equivalent exists. 'Chez moi' (my place), 'chez le docteur' (at the doctor's), 'chez Starbucks' (at Starbucks). It implies belonging and intimacy.",
+  summary: [
+    "Possessives: mon/ma/mes, ton/ta/tes, son/sa/ses",
+    "Son/sa matches the noun, not the owner",
+    "Chez = at someone's place (uniquely French)",
+    "Expression: chez moi, ça fait longtemps",
+  ],
 };

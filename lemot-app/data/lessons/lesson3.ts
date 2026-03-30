@@ -6,6 +6,7 @@ export const lesson3: Lesson = {
   sub: "Nasal vowels, the French r, and sounds that don't exist in English",
   icon: "Languages",
   level: "A1",
+  difficulty: "easy",
   grammar: {
     title: "French Sounds — Part 2",
     sections: [
@@ -295,7 +296,7 @@ export const lesson3: Lesson = {
       accept: ["du pain et du vin"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "It's a good restaurant. The street is big and beautiful.",
       known: [
@@ -385,4 +386,46 @@ export const lesson3: Lesson = {
       "Describing food, places, and things using nasal vowels and French sounds",
     starter: "Bonjour ! Tu connais un bon restaurant ici ?",
   },
+  expressions: [
+    {
+      fr: "Bon...",
+      en: "Well... / Right...",
+      usage: "'Bon, on commence ?' (Well, shall we start?)",
+      literal: "Good",
+    },
+    {
+      fr: "Allez !",
+      en: "Come on! / Let's go!",
+      usage: "Encouraging a friend: 'Allez, on y va !'",
+      literal: "Go",
+    },
+    {
+      fr: "Hein ?",
+      en: "Huh? / Right?",
+      usage: "'C'est bien, hein ?' (It's good, right?)",
+      literal: "Huh",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "N/M after a vowel is a command, not a sound",
+      insight:
+        "When you see 'on,' 'an,' 'in' — the n is NOT a sound you pronounce. It's an instruction: 'nasalize the vowel before me, then disappear.' See n/m as a command, and every nasal word becomes predictable.",
+      example: "bon = /bɔ̃/ — the n disappears, the o becomes nasal",
+    },
+    {
+      title: "U vs OU changes the meaning entirely",
+      insight:
+        "'Tu' (you) vs 'tout' (all), 'rue' (street) vs 'roue' (wheel). This is not a subtle accent — it's a meaning-changing distinction. Lips do the work: 'ee' tongue + 'oo' lips = French U.",
+      example: "dessus (on top) vs dessous (underneath)",
+    },
+  ],
+  cultureBite:
+    "The French R is not rolled (that's Spanish/Italian). It's a soft friction at the back of the throat — like a gentle gargle or the sound before clearing your throat. Parisians barely pronounce it at all.",
+  summary: [
+    "Nasal vowels: on, an, in, un",
+    "The French U sound",
+    "The French R",
+    "Expression: bon, allez, hein",
+  ],
 };

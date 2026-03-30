@@ -6,6 +6,7 @@ export const lesson15: Lesson = {
   sub: "Wake up, work, eat, sleep \u2014 describe your routine",
   icon: "Sun",
   level: "A1",
+  difficulty: "hard",
   grammar: {
     title: "Daily Routine & Reflexive Verbs",
     sections: [
@@ -324,7 +325,7 @@ export const lesson15: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "In the morning, I get up at seven. Then I wash and get dressed.",
       known: [
@@ -422,7 +423,7 @@ export const lesson15: Lesson = {
       ctx: "Reflexive pronoun \u2014 je ME l\u00e8ve.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "I go to bed late.",
       blanks: [
         { word: "go to bed", answer: "couche" },
@@ -463,4 +464,56 @@ export const lesson15: Lesson = {
     starter:
       "Tu te l\u00e8ves \u00e0 quelle heure le matin ? Moi, je me l\u00e8ve \u00e0 six heures.",
   },
+  expressions: [
+    {
+      fr: "Tous les jours",
+      en: "Every day",
+      usage: "'Je me l\u00e8ve \u00e0 sept heures tous les jours.'",
+      literal: "All the days",
+    },
+    {
+      fr: "D'habitude",
+      en: "Usually",
+      usage: "'D'habitude, je me couche tard.'",
+      literal: "Of habit",
+    },
+    {
+      fr: "En ce moment",
+      en: "At the moment / Currently",
+      usage: "'En ce moment, je travaille beaucoup.'",
+      literal: "In this moment",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Reflexive verbs = regular verb + mirror",
+      insight:
+        "'Lever' = to raise (something). 'SE lever' = to raise YOURSELF. 'Laver' = to wash (something). 'SE laver' = to wash YOURSELF. The 'se' is just a mirror. ANY verb can theoretically become reflexive. It's not a new verb type \u2014 it's a regular verb + 'myself.'",
+      example:
+        "lever (to raise) \u2192 se lever (to get up = raise yourself)",
+    },
+    {
+      title: "Reflexive pronoun goes BEFORE the verb, not after",
+      insight:
+        "English: 'I wash myself' \u2014 pronoun AFTER. French: 'Je ME lave' \u2014 pronoun BEFORE. The reflexive pronoun is sandwiched between subject and verb. Je ME l\u00e8ve, tu TE l\u00e8ves, il SE l\u00e8ve. Always before, never after.",
+      example:
+        "Je me r\u00e9veille, tu te l\u00e8ves, il se lave \u2014 pronoun always before verb",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "journ\u00e9e",
+      looksLike: "journey",
+      actualMeaning: "the whole day (duration)",
+      example: "Bonne journ\u00e9e ! (Have a good day!)",
+    },
+  ],
+  cultureBite:
+    "French has two words for 'day': 'jour' (the calendar unit) and 'journ\u00e9e' (the experience of a day). Same for 'soir/soir\u00e9e', 'matin/matin\u00e9e', 'an/ann\u00e9e'. When you want to emphasize the EXPERIENCE or DURATION, use the feminine form: 'Bonne journ\u00e9e !' (Enjoy your day!).",
+  summary: [
+    "Reflexive verbs: se lever, se coucher, se laver",
+    "Reflexive pronoun before the verb: je ME l\u00e8ve",
+    "Jour vs journ\u00e9e (calendar vs experience)",
+    "Expression: tous les jours, d'habitude, en ce moment",
+  ],
 };

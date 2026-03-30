@@ -6,6 +6,7 @@ export const lesson7: Lesson = {
   sub: "Every French noun has a gender — let's crack the code",
   icon: "BookOpen",
   level: "A1",
+  difficulty: "medium",
   grammar: {
     title: "Articles & Gender",
     sections: [
@@ -321,7 +322,7 @@ export const lesson7: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "The book is on the table and the chair is small.",
       known: [
@@ -409,7 +410,7 @@ export const lesson7: Lesson = {
       ctx: "Avoir = to have. Cross-reference L6.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "The family is at home.",
       blanks: [
         { word: "family", answer: "famille" },
@@ -435,4 +436,58 @@ export const lesson7: Lesson = {
     starter:
       "Regarde ! Il y a un livre sur la table. C'est ton livre ?",
   },
+  expressions: [
+    {
+      fr: "Quand même",
+      en: "Still / Even so / All the same",
+      usage: "'Il fait froid mais je sors quand même.' (It's cold but I'm going out anyway.)",
+      literal: "When same",
+    },
+    {
+      fr: "N'importe quoi",
+      en: "Whatever / Nonsense / Anything",
+      usage: "'Tu veux quoi ?' — 'N'importe quoi.' (Anything.)",
+      literal: "It doesn't matter what",
+    },
+    {
+      fr: "Tout à fait",
+      en: "Exactly / Absolutely",
+      usage: "'C'est correct ?' — 'Oui, tout à fait.'",
+      literal: "All to fact",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title:
+        "Gender suffixes cover 80% — learn 6 rules, not 1000 words",
+      insight:
+        "-tion = feminine (100%), -ment = masculine (99%), -ure = feminine, -age = masculine, -ique = feminine, -eur = masculine. You don't need to memorize every noun's gender. Six suffix rules cover the vast majority.",
+      example:
+        "la nation, le moment, la nature, le garage, la musique, le docteur",
+    },
+    {
+      title:
+        "'Des' has no English equivalent — that's why you forget it",
+      insight:
+        "English: 'I have books' — zero article. French: 'J'ai DES livres' — requires 'des.' French doesn't allow naked plural nouns. Every plural needs a determiner. 'J'ai livres' sounds as incomplete as 'I have... book?' in English.",
+      example: "J'ai des livres (I have books) — des is mandatory",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "librairie",
+      looksLike: "library",
+      actualMeaning: "bookshop",
+      example:
+        "Je vais à la librairie acheter un livre. (I'm going to the bookshop.)",
+    },
+  ],
+  cultureBite:
+    "Why is a table feminine (la table) and a book masculine (le livre)? It's not about sex — it's about Latin grammar that French inherited. Most gender assignments follow suffix patterns, not meaning. Once you see the patterns, it stops feeling random.",
+  summary: [
+    "Articles: le/la/les (definite), un/une/des (indefinite)",
+    "Gender suffix patterns: -tion=f, -ment=m, -age=m",
+    "Des = mandatory plural article (English has none)",
+    "Expression: quand même, n'importe quoi",
+  ],
 };

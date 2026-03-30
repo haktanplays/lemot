@@ -6,6 +6,7 @@ export const lesson9: Lesson = {
   sub: "Order food, ask for the check, eat well",
   icon: "UtensilsCrossed",
   level: "A1",
+  difficulty: "medium",
   grammar: {
     title: "Food & Ordering",
     sections: [
@@ -326,7 +327,7 @@ export const lesson9: Lesson = {
       ],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "I'll have the chicken and some water, please. The fish is too expensive.",
       known: [
@@ -427,7 +428,7 @@ export const lesson9: Lesson = {
       ctx: "Some cheese — masculine partitive.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "I'll have the fish.",
       blanks: [
         { word: "I'll have", answer: "prends" },
@@ -453,4 +454,56 @@ export const lesson9: Lesson = {
     starter:
       "Bonsoir ! Bienvenue au restaurant. Voici le menu. Vous avez choisi ?",
   },
+  expressions: [
+    {
+      fr: "Bon appétit",
+      en: "Enjoy your meal",
+      usage: "Said before every meal: 'Bon appétit, tout le monde !'",
+      literal: "Good appetite",
+    },
+    {
+      fr: "L'addition, s'il vous plaît",
+      en: "The check, please",
+      usage: "At a restaurant: 'L'addition, s'il vous plaît.'",
+      literal: "The addition, if it pleases you",
+    },
+    {
+      fr: "Je vais prendre...",
+      en: "I'll have... / I'm going to take...",
+      usage: "Ordering: 'Je vais prendre le poulet.' (I'll have the chicken.)",
+      literal: "I am going to take",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Du/de la = 'some' — a word English dropped but French kept",
+      insight:
+        "English used to say 'I'd like some of the bread.' Over centuries, English dropped 'some of the.' French kept it as 'du' (de + le). 'Du pain' is not weird French grammar — it's old grammar that English lost. Both languages started in the same place.",
+      example:
+        "du pain (some bread), de la viande (some meat), de l'eau (some water)",
+    },
+    {
+      title: "After negation, du/de la collapses to just 'de'",
+      insight:
+        "'Je mange DU fromage' but 'Je ne mange PAS DE fromage.' When you negate, the partitive simplifies. Why? 'Some' implies existence; negation removes existence. No thing = no 'some.'",
+      example: "J'ai du pain → Je n'ai pas de pain",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "entrée",
+      looksLike: "entrée (main course in US English)",
+      actualMeaning: "starter/appetizer",
+      example:
+        "Comme entrée, je prends la soupe. (As a starter, I'll have the soup.)",
+    },
+  ],
+  cultureBite:
+    "In France, the waiter will NEVER bring the check unless you ask. It's considered rude to rush diners. A meal is a social event, not a transaction. 'L'addition, s'il vous plaît' is how you signal you're ready to leave.",
+  summary: [
+    "Partitives: du, de la, de l', des",
+    "Ordering: Je voudrais / Je vais prendre",
+    "Negation changes du/de la → de",
+    "Expression: bon appétit, l'addition s'il vous plaît",
+  ],
 };

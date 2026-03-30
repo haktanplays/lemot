@@ -6,6 +6,7 @@ export const lesson13: Lesson = {
   sub: "Go places and make plans",
   icon: "MapPin",
   level: "A1",
+  difficulty: "hard",
   grammar: {
     title: "Aller \u2014 To Go",
     sections: [
@@ -295,7 +296,7 @@ export const lesson13: Lesson = {
       accept: ["je vais travailler demain matin"],
     },
   ],
-  franglais: [
+  weave: [
     {
       en: "I'm going to the restaurant tonight. It's straight ahead then to the left.",
       known: [
@@ -398,7 +399,7 @@ export const lesson13: Lesson = {
       ctx: "She's going to eat \u2014 near future.",
     },
     {
-      type: "franglais",
+      type: "weave",
       en: "I'm going to the park.",
       blanks: [
         { word: "going", answer: "vais" },
@@ -431,4 +432,56 @@ export const lesson13: Lesson = {
     starter:
       "Pardon, excusez-moi. O\u00f9 est la gare, s'il vous pla\u00eet ?",
   },
+  expressions: [
+    {
+      fr: "On y va !",
+      en: "Let's go! / Here we go!",
+      usage: "Leaving a caf\u00e9: 'Bon, on y va !'",
+      literal: "One there goes",
+    },
+    {
+      fr: "Je m'en vais",
+      en: "I'm leaving / I'm off",
+      usage: "'Bon, je m'en vais ! \u00c0 demain !'",
+      literal: "I take myself from here",
+    },
+    {
+      fr: "\u00c7a va aller",
+      en: "It's going to be OK",
+      usage: "'Ne t'inqui\u00e8te pas, \u00e7a va aller.'",
+      literal: "That is going to go",
+    },
+  ],
+  grammarNuggets: [
+    {
+      title: "Contractions are a sound preference, not a grammar exception",
+      insight:
+        "'\u00c0 le' sounds clunky \u2192 contracts to 'au.' '\u00c0 les' \u2192 'aux.' 'De le' \u2192 'du.' 'De les' \u2192 'des.' French is obsessed with smooth sound flow. Once you see contractions as sound preference, they all become logical.",
+      example:
+        "au restaurant (\u00e0 + le), aux toilettes (\u00e0 + les), du pain (de + le)",
+    },
+    {
+      title: "Aller + infinitive IS the real future tense",
+      insight:
+        "Textbooks teach 'je mangerai' (I will eat) as the future. But in everyday speech, 'je vais manger' (I'm going to eat) is used far more often. Just like English: 'I'm going to eat' beats 'I shall eat.' The near future isn't a stepping stone \u2014 it IS how French people talk.",
+      example:
+        "Je vais partir (everyday) vs Je partirai (formal/written)",
+    },
+  ],
+  fauxAmis: [
+    {
+      fr: "aller",
+      looksLike: "alley",
+      actualMeaning: "to go",
+      example: "Je vais au cin\u00e9ma. (I'm going to the cinema.)",
+    },
+  ],
+  cultureBite:
+    "'On y va' is the French equivalent of 'Let's bounce' or 'Let's roll.' The 'y' means 'there' \u2014 but nobody specifies where. It's the universal signal that it's time to move, whether leaving a restaurant, starting a hike, or beginning a meeting.",
+  summary: [
+    "Aller conjugation: je vais, tu vas, il/elle va...",
+    "Near future: aller + infinitive (je vais manger)",
+    "Contractions: \u00e0+le=au, de+le=du",
+    "Expression: on y va, \u00e7a va aller",
+  ],
 };
