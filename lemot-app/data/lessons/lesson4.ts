@@ -283,6 +283,18 @@ export const lesson4: Lesson = {
         "Old people only",
       ],
     },
+    {
+      q: "You want the salt from a close friend. You say: 'Passe-moi le sel, _______.'",
+      a: "s'il te plaît",
+      o: ["s'il te plaît", "s'il vous plaît", "dis-moi", "on se tutoie"],
+      ctx: "Informal 'please' — you're using tu with this friend.",
+    },
+    {
+      q: "After chatting at a party, someone says '_______ ? C'est plus simple.' They want to:",
+      a: "On se tutoie",
+      o: ["On se tutoie", "Dis-moi", "S'il te plaît", "S'il vous plaît"],
+      ctx: "Suggesting to switch from vous to tu.",
+    },
   ],
   combine: [
     {
@@ -392,6 +404,12 @@ export const lesson4: Lesson = {
       a: "y a",
       o: ["y a", "faut", "est", "va"],
       ctx: "Tell someone there's a good restaurant. (Lesson 12)",
+    },
+    {
+      type: "context",
+      situation: "You want to start a casual conversation with a friend. You say:",
+      a: "Dis-moi, tu fais quoi ce soir ?",
+      o: ["Dis-moi, tu fais quoi ce soir ?", "S'il vous plaît", "On se tutoie ?", "Pardon"],
     },
   ],
   sayIt: [

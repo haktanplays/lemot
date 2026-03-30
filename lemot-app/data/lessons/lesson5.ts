@@ -289,6 +289,18 @@ export const lesson5: Lesson = {
         "Being absent-minded",
       ],
     },
+    {
+      q: "You spill coffee on someone's shirt. They say 'Oh !' You reassure them:",
+      a: "C'est pas grave",
+      o: ["C'est pas grave", "C'est vrai", "C'est bon", "Voilà"],
+      ctx: "The expression meaning 'no big deal'.",
+    },
+    {
+      q: "A waiter asks if you want more water. You're fine. You say: 'Non merci, _______.'",
+      a: "c'est bon",
+      o: ["c'est bon", "c'est vrai", "c'est pas grave", "très bien"],
+      ctx: "The expression meaning 'I'm good / that's fine'.",
+    },
   ],
   combine: [
     {
@@ -392,6 +404,12 @@ export const lesson5: Lesson = {
       a: "Bonjour",
       o: ["Bonjour", "Bonsoir", "Merci", "Salut"],
       ctx: "Morning at a café. Greet first.",
+    },
+    {
+      type: "context",
+      situation: "Someone says 'Paris est belle.' You agree completely.",
+      a: "C'est vrai !",
+      o: ["C'est vrai !", "C'est pas grave", "C'est bon", "Voilà"],
     },
   ],
   sayIt: [

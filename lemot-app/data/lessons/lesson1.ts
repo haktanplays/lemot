@@ -276,6 +276,18 @@ export const lesson1: Lesson = {
         "See you later",
       ],
     },
+    {
+      q: "A waiter brings your coffee and says '_______, monsieur.'",
+      a: "Voilà",
+      o: ["Voilà", "Pardon", "Comme ci, comme ça", "Merci"],
+      ctx: "The expression used when handing something over.",
+    },
+    {
+      q: "Someone asks 'Ça va ?' and you're feeling so-so. You reply:",
+      a: "Comme ci, comme ça",
+      o: ["Comme ci, comme ça", "Voilà", "Pardon", "Bonjour"],
+      ctx: "The expression for 'neither good nor bad'.",
+    },
   ],
   combine: [
     {
@@ -375,6 +387,12 @@ export const lesson1: Lesson = {
         "Au revoir",
         "Merci beaucoup",
       ],
+    },
+    {
+      type: "context",
+      situation: "You bump into someone on the metro.",
+      a: "Pardon !",
+      o: ["Pardon !", "Voilà !", "Comme ci, comme ça", "Bonjour"],
     },
   ],
   sayIt: [

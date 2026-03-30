@@ -279,6 +279,18 @@ export const lesson2: Lesson = {
         "Letters were added later",
       ],
     },
+    {
+      q: "Someone confirms your choice: 'Tu veux le rouge ?' You agree: 'Oui, _______!'",
+      a: "c'est ça",
+      o: ["c'est ça", "ah bon", "très bien", "voilà"],
+      ctx: "The expression meaning 'that's it / that's right'.",
+    },
+    {
+      q: "Your friend tells you surprising news. You react:",
+      a: "Ah bon ?",
+      o: ["Ah bon ?", "C'est ça", "Très bien", "Pardon"],
+      ctx: "The expression for 'oh really?'",
+    },
   ],
   combine: [
     {
@@ -360,6 +372,12 @@ export const lesson2: Lesson = {
       a: "Bonjour",
       o: ["Bonjour", "Bonsoir", "Merci", "Salut"],
       ctx: "It's morning. Greet first. (Lesson 1)",
+    },
+    {
+      type: "context",
+      situation: "Someone asks 'Comment ça va ?' and you're doing great.",
+      a: "Très bien, merci !",
+      o: ["Très bien, merci !", "Ah bon ?", "C'est ça", "Comme ci, comme ça"],
     },
   ],
   sayIt: [

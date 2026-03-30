@@ -283,6 +283,18 @@ export const lesson3: Lesson = {
         "For grammatical reasons",
       ],
     },
+    {
+      q: "You want to encourage your friend to get started. You say: '_______, on commence ?'",
+      a: "Bon",
+      o: ["Bon", "Allez", "Hein", "Ah bon"],
+      ctx: "The filler word meaning 'well / right' to transition.",
+    },
+    {
+      q: "Your team is hesitating. You encourage them: '_______, on y va !'",
+      a: "Allez",
+      o: ["Allez", "Bon", "Hein", "Très bien"],
+      ctx: "The expression meaning 'come on / let's go'.",
+    },
   ],
   combine: [
     {
@@ -367,6 +379,13 @@ export const lesson3: Lesson = {
       a: "suis",
       o: ["suis", "est", "es", "sommes"],
       ctx: "Introduce yourself. (Lesson 5 — être)",
+    },
+    {
+      type: "fill_ctx",
+      s: "C'est bien, ___ ?",
+      a: "hein",
+      o: ["hein", "bon", "allez", "ah bon"],
+      ctx: "Seeking agreement — 'It's good, right?'",
     },
   ],
   sayIt: [

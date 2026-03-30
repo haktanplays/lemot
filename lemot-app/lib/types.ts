@@ -179,6 +179,15 @@ export interface FlashCard {
   cog: string;
 }
 
+// ── Scenario Card (Practice) ──
+export interface ScenarioCard {
+  situation: string;   // English description of a real situation
+  answer: string;      // French response
+  explanation: string; // Why this is the right answer
+  lesson: number;      // Which lesson it relates to
+  audio: string;       // French text for TTS
+}
+
 // ── Milestone ──
 export interface Milestone {
   ids: number[];
