@@ -6,7 +6,7 @@ A French learning app for English speakers. Currently a single-file React compon
 ## Product Promise
 "LE-MOT teaches French through meaning, patterns, and real expression — not memorization."
 
-## Current State (v7 + Sprint 5B + 5C + 6 + 7 + 8 + 8B)
+## Current State (v7 + Sprint 5B + 5C + 6 + 7 + 8 + 8B + 8C)
 - **16 lessons** (full A1 curriculum):
   - L1 Survival Kit, L2 Pronunciation I, L3 Pronunciation II, L4 Tu vs Vous
   - L5 Être, L6 Avoir, L7 Articles & Gender, L8 Numbers & Time
@@ -32,8 +32,11 @@ A French learning app for English speakers. Currently a single-file React compon
 - **Unlockable Enrichment** (Sprint 8B): Expressions, nuggets, faux amis, culture bites unlock based on section performance (gamification)
 - **Contextual Expression Quizzes** (Sprint 8B): Expressions tested in natural situations (fill-in-the-blank in context, NOT "what does X mean?")
 - **Practice Tab → Scenarios** (Sprint 8B): Replaced flashcards with scenario cards ("You walk into a bakery → what do you say?") — meaning-first, not memorization
+- **Lesson Chunking** (Sprint 8C): 11 sections split into 3 parts (Learn/Practice/Produce, ~7-8 min each). Chunk selector screen. "Take a Break" between parts.
+- **SRS Algorithm** (Sprint 8C): Leitner-style 5-box spaced repetition on Practice scenario cards. Due cards prioritized. Progress stats (New/Learning/Familiar/Known/Mastered).
+- **Mastery Criteria** (Sprint 8C): Per-section pass thresholds (60-70%). Below threshold: "Try Again" option. Users can "Continue Anyway" but section not marked mastered.
 - **Expo/React Native app** (Sprint 7): Full migration complete with TypeScript, NativeWind, Expo Router
-- **Storage**: MMKV (Expo app) / window.storage (artifact) — structure: `{p, xp, err, dr: {date, count}, streak}`
+- **Storage**: MMKV (Expo app) / window.storage (artifact) — structure: `{p, xp, err, dr: {date, count}, streak}`, SRS: `lm7_srs`
 
 ## Key Differentiator: Weave
 Users write sentences mixing English + French ("weaving" two languages). Known words in French, unknown in English. Cognate highlighting (merci ≈ mercy). No other app does this. Formerly called "Franglais" — renamed to "Weave" for trademark distinctiveness.
@@ -49,6 +52,7 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 - **7.5 ✅** Polish & QA: 18 issues fixed across 23 files
 - **8 ✅** Content Enrichment: Weave rename, expressions, grammar nuggets, faux amis, sound patterns, culture bites, difficulty indicators, summary cards
 - **8B ✅** Meaning-First Overhaul: Build↔Write reorder, unlockable enrichment system, Practice→scenarios, contextual expression quizzes
+- **8C ✅** Learning Engine v2: Lesson chunking (3 parts), SRS algorithm (Leitner 5-box), mastery criteria per section
 - **9** Backend & AI: Supabase (DB, Edge Functions, Auth), AI exercise generation, Error tracking Phase C
 
 ### Model Routing (for standalone):
@@ -59,7 +63,7 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 | Error analysis | Claude Haiku | Better reasoning |
 
 ### Research Foundation:
-- Spaced repetition (strong evidence, needs expansion in-app)
+- Spaced repetition (strong evidence, implemented via Leitner SRS in Practice tab)
 - Retrieval practice (strong evidence, already implemented)
 - Thematic clustering (good evidence, lesson structure follows this)
 - Semantic clustering AVOIDED (interference risk for similar words)
@@ -76,15 +80,19 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 - Lesson data enrichment fields: `expressions` (Expression[]), `grammarNuggets` (GrammarNugget[]), `fauxAmis?` (FauxAmi[]), `soundPatterns?` (SoundPattern[]), `cultureBite?` (string), `summary` (string[]), `difficulty` (easy|medium|hard)
 - `cI2` state variable is shared between Combine and Say It sections — reset to 0 on transitions
 - "Franglais" renamed to "Weave" everywhere — types: WeaveItem, WeaveBlank; components: WeaveFill, CombineWeave; lesson property: `weave`
+- Lesson chunking: CHUNKS array in `constants/sections.ts` defines 3 parts (Learn[0-3], Practice[4-6], Produce[7-10])
+- Mastery thresholds: MASTERY_THRESHOLDS in `constants/sections.ts` — 60-70% per scored section
+- SRS storage key: `lm7_srs` — Leitner 5-box system, intervals: [0, 1, 3, 7, 30] days
+- Practice tab uses ScenarioCard type (situation → answer → explanation), replaces old FlashCard-based flashcards
 
 ## What Claude Code Should Do Next:
-1. **Lesson chunking**: Split 11 sections into 3 digestible chunks (~7-8 min each)
-2. **SRS algorithm**: ts-fsrs in Practice scenario cards
-3. **Mastery criteria**: Define pass threshold per section (70%? 80%?)
-4. **Sprint 9**: Backend & AI
+1. **Sprint 9**: Backend & AI
    - Supabase backend: DB, Edge Functions (AI proxy), Auth
    - AI exercise generation system (single API call per lesson)
    - Error tracking Phase C (adaptive AI response using weak spots)
+2. **A2 Content**: Plan and add A2-level lessons (L17+)
+3. **Push notifications**: Daily review reminders
+4. **Paywall/monetization**: Define paywall position
 
 ## Important: Do NOT
 - Add separate vocabulary flashcard section (replaced with scenario cards, research-backed)
