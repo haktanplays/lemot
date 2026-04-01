@@ -43,7 +43,7 @@ A French learning app for English speakers. Expo/React Native standalone app (Ty
 ## Key Differentiator: Weave
 Users write sentences mixing English + French ("weaving" two languages). Known words in French, unknown in English. Cognate highlighting (merci ≈ mercy). No other app does this. Formerly called "Franglais" — renamed to "Weave" for trademark distinctiveness.
 
-## Architecture Decisions (see LE-MOT-DECISIONS-v2.md for full details)
+## Architecture Decisions
 
 ### Sprint Plan:
 - **5A ✅** Foundation: input-first reorder, error tracking, example expansion
@@ -73,7 +73,6 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 - Input before output (moderate evidence, implemented via Read & Listen first)
 
 ## Code Conventions
-- Single-file React component with inline styles
 - Color palette in `P` object (red: #C0392B, green: #27AE60, amber: #E67E22, purple: #7C3AED)
 - Fonts: Newsreader (serif, French text), Outfit (sans-serif, UI)
 - Storage key: "lm7"
