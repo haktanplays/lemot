@@ -30,111 +30,146 @@ export const SCENARIOS: ScenarioCard[] = [
     lesson: 1,
     audio: "Bonne soirée ! Au revoir !",
   },
-
-  // ── L2: Pronunciation I ──
   {
     situation: "Someone speaks too fast. You need them to slow down.",
     answer: "Plus lentement, s'il vous plaît.",
     explanation: "\"Plus lentement\" means \"more slowly.\" A survival phrase for real conversations.",
-    lesson: 2,
+    lesson: 1,
     audio: "Plus lentement, s'il vous plaît.",
   },
   {
     situation: "You didn't catch what someone said. How do you ask them to repeat?",
     answer: "Pouvez-vous répéter ?",
     explanation: "\"Pouvez-vous répéter ?\" is the formal way to ask \"Can you repeat?\" — polite and clear.",
-    lesson: 2,
+    lesson: 1,
     audio: "Pouvez-vous répéter ?",
   },
-
-  // ── L3: Pronunciation II ──
   {
     situation: "You don't understand a word someone used. How do you ask what it means?",
     answer: "Qu'est-ce que ça veut dire ?",
     explanation: "Literally \"What does that mean?\" — essential for learning in real conversations.",
-    lesson: 3,
+    lesson: 1,
     audio: "Qu'est-ce que ça veut dire ?",
   },
 
-  // ── L4: Tu vs Vous ──
-  {
-    situation: "Your friend's parents invite you to dinner. How do you address them?",
-    answer: "Vous",
-    explanation: "Use \"vous\" with older people, authority figures, or anyone you don't know well. It shows respect.",
-    lesson: 4,
-    audio: "Vous",
-  },
-  {
-    situation: "You meet a classmate your age at a party. Which form do you use to ask their name?",
-    answer: "Tu t'appelles comment ?",
-    explanation: "With peers your age in casual settings, \"tu\" is natural. \"Vous\" would feel stiff.",
-    lesson: 4,
-    audio: "Tu t'appelles comment ?",
-  },
-
-  // ── L5: Être ──
+  // ── L2: Être ──
   {
     situation: "Someone asks your profession. You're a student.",
     answer: "Je suis étudiant(e).",
     explanation: "\"Je suis\" = I am. French uses être (to be) for professions, just like English.",
-    lesson: 5,
+    lesson: 2,
     audio: "Je suis étudiant.",
   },
   {
     situation: "A French colleague asks how you are. You're doing well.",
     answer: "Je suis bien, merci. Et vous ?",
     explanation: "Respond, thank them, and ask back — that's the polite pattern in French.",
-    lesson: 5,
+    lesson: 2,
     audio: "Je suis bien, merci. Et vous ?",
   },
 
-  // ── L6: Avoir ──
+  // ── L3: Yes No & You ──
+  {
+    situation: "Your friend's parents invite you to dinner. How do you address them?",
+    answer: "Vous",
+    explanation: "Use \"vous\" with older people, authority figures, or anyone you don't know well. It shows respect.",
+    lesson: 3,
+    audio: "Vous",
+  },
+  {
+    situation: "You meet a classmate your age at a party. Which form do you use to ask their name?",
+    answer: "Tu t'appelles comment ?",
+    explanation: "With peers your age in casual settings, \"tu\" is natural. \"Vous\" would feel stiff.",
+    lesson: 3,
+    audio: "Tu t'appelles comment ?",
+  },
+  {
+    situation: "Someone asks if you've eaten. You haven't yet.",
+    answer: "Pas encore.",
+    explanation: "\"Pas encore\" = not yet. Short and natural — the full form would be \"Je n'ai pas encore mangé.\"",
+    lesson: 3,
+    audio: "Pas encore.",
+  },
+
+  // ── L4: Avoir ──
   {
     situation: "It's cold outside and you want to express that you feel cold.",
     answer: "J'ai froid.",
     explanation: "French says \"I have cold\" (j'ai froid), NOT \"I am cold.\" \"Je suis froid\" means you're emotionally cold!",
-    lesson: 6,
+    lesson: 4,
     audio: "J'ai froid.",
   },
   {
     situation: "You skipped lunch and your stomach is rumbling.",
     answer: "J'ai faim.",
     explanation: "\"J'ai faim\" = I'm hungry. French uses \"avoir\" (to have) for physical sensations: hunger, thirst, cold, heat.",
-    lesson: 6,
+    lesson: 4,
     audio: "J'ai faim.",
   },
   {
     situation: "Your friend says something incorrect. You want to say they're wrong.",
     answer: "Tu as tort.",
     explanation: "\"Avoir tort\" = to be wrong (literally \"to have wrong\"). The opposite: \"avoir raison\" = to be right.",
-    lesson: 6,
+    lesson: 4,
     audio: "Tu as tort.",
   },
   {
     situation: "You're really thirsty after a long walk. How do you say it?",
     answer: "J'ai très soif.",
     explanation: "\"J'ai soif\" = I'm thirsty. Add \"très\" for emphasis. Remember: French uses avoir, not être, for thirst.",
-    lesson: 6,
+    lesson: 4,
     audio: "J'ai très soif.",
   },
 
-  // ── L7: Articles & Gender ──
+  // ── L5: Le La Les ──
   {
     situation: "You want to say 'the book is on the table.' Is \"livre\" masculine or feminine?",
     answer: "Le livre est sur la table.",
     explanation: "\"Livre\" is masculine (le livre). \"Table\" is feminine (la table). Articles must match gender.",
-    lesson: 7,
+    lesson: 5,
     audio: "Le livre est sur la table.",
   },
   {
     situation: "Someone asks if you like music. You love it.",
     answer: "J'adore la musique !",
     explanation: "When talking about a general concept (music in general), French uses the definite article: \"la musique.\"",
-    lesson: 7,
+    lesson: 5,
     audio: "J'adore la musique !",
   },
 
-  // ── L8: Numbers & Time ──
+  // ── L6: Aller ──
+  {
+    situation: "A friend asks your plans for tonight. You're going to the restaurant.",
+    answer: "Je vais au restaurant.",
+    explanation: "\"Aller\" + à/au = to go to. \"Au\" = à + le (contraction for masculine places).",
+    lesson: 6,
+    audio: "Je vais au restaurant.",
+  },
+  {
+    situation: "You're giving directions. The pharmacy is on the left.",
+    answer: "La pharmacie est à gauche.",
+    explanation: "\"À gauche\" = on the left. \"À droite\" = on the right. Key direction vocabulary.",
+    lesson: 6,
+    audio: "La pharmacie est à gauche.",
+  },
+
+  // ── L7: Questions I ──
+  {
+    situation: "You want to ask a new acquaintance why they're learning French.",
+    answer: "Pourquoi tu apprends le français ?",
+    explanation: "\"Pourquoi\" = why. In casual conversation, you can form questions just with intonation.",
+    lesson: 7,
+    audio: "Pourquoi tu apprends le français ?",
+  },
+  {
+    situation: "You need to know when the train arrives.",
+    answer: "Le train arrive quand ?",
+    explanation: "\"Quand\" = when. Placing it at the end with rising intonation is natural in spoken French.",
+    lesson: 7,
+    audio: "Le train arrive quand ?",
+  },
+
+  // ── L8: Numbers Time & Money ──
   {
     situation: "Someone asks you what time it is. It's 3 PM.",
     answer: "Il est trois heures.",
@@ -173,136 +208,201 @@ export const SCENARIOS: ScenarioCard[] = [
     audio: "De l'eau, s'il vous plaît.",
   },
 
-  // ── L10: Family ──
+  // ── L10: Faire ──
   {
-    situation: "Someone asks about your family. You have one brother and one sister.",
-    answer: "J'ai un frère et une sœur.",
-    explanation: "\"Frère\" is masculine (un frère), \"sœur\" is feminine (une sœur). \"J'ai\" = I have.",
+    situation: "Someone asks what the weather is like today. It's sunny.",
+    answer: "Il fait beau aujourd'hui.",
+    explanation: "\"Il fait\" + weather adjective is how French describes weather. \"Il fait beau\" = It's nice out.",
     lesson: 10,
-    audio: "J'ai un frère et une sœur.",
+    audio: "Il fait beau aujourd'hui.",
   },
   {
-    situation: "You want to introduce your friend to someone.",
-    answer: "Je vous présente mon ami(e).",
-    explanation: "\"Je vous présente\" = Let me introduce. \"Mon ami\" (male) or \"mon amie\" (female).",
+    situation: "It's raining and cold outside. A friend asks about the weather.",
+    answer: "Il fait froid et il pleut.",
+    explanation: "\"Il fait froid\" = It's cold. \"Il pleut\" = It's raining. Weather uses impersonal \"il.\"",
     lesson: 10,
-    audio: "Je vous présente mon ami.",
+    audio: "Il fait froid et il pleut.",
+  },
+  {
+    situation: "Your friend asks what you do on weekends. You play tennis.",
+    answer: "Je fais du tennis le week-end.",
+    explanation: "\"Faire du/de la\" + activity = to do/play. \"Du\" is the partitive for masculine nouns.",
+    lesson: 10,
+    audio: "Je fais du tennis le week-end.",
+  },
+  {
+    situation: "You want to say you're cooking dinner tonight.",
+    answer: "Je fais la cuisine ce soir.",
+    explanation: "\"Faire la cuisine\" = to cook. \"Faire\" is used in many everyday expressions beyond its literal meaning.",
+    lesson: 10,
+    audio: "Je fais la cuisine ce soir.",
   },
 
-  // ── L11: Negation ──
-  {
-    situation: "Someone asks if you've eaten. You haven't yet.",
-    answer: "Pas encore.",
-    explanation: "\"Pas encore\" = not yet. Short and natural — the full form would be \"Je n'ai pas encore mangé.\"",
-    lesson: 11,
-    audio: "Pas encore.",
-  },
-  {
-    situation: "A friend asks if you eat meat. You never do.",
-    answer: "Je ne mange jamais de viande.",
-    explanation: "\"Ne ... jamais\" = never. Note: after negation, \"de la/du\" becomes just \"de.\"",
-    lesson: 11,
-    audio: "Je ne mange jamais de viande.",
-  },
-  {
-    situation: "You look in the fridge and there's nothing left.",
-    answer: "Il n'y a rien.",
-    explanation: "\"Ne ... rien\" = nothing. \"Il y a\" means \"there is/are\" — negated: \"il n'y a rien.\"",
-    lesson: 11,
-    audio: "Il n'y a rien.",
-  },
-
-  // ── L12: Everyday Phrases ──
+  // ── L11: Everyday Structures ──
   {
     situation: "Your friend suggests having dinner together tonight. You agree enthusiastically.",
     answer: "Ça marche !",
     explanation: "\"Ça marche\" literally means \"that walks\" but is used like \"sounds good!\" or \"works for me!\"",
-    lesson: 12,
+    lesson: 11,
     audio: "Ça marche !",
   },
   {
     situation: "Someone asks whether you prefer tea or coffee. It depends on your mood.",
     answer: "Ça dépend.",
     explanation: "\"Ça dépend\" = it depends. A useful hedge when you don't have a fixed answer.",
-    lesson: 12,
+    lesson: 11,
     audio: "Ça dépend.",
   },
   {
     situation: "You thought the restaurant was close, but actually it's far away.",
     answer: "En fait, c'est loin.",
     explanation: "\"En fait\" = actually/in fact. Use it to correct a previous assumption or add new information.",
-    lesson: 12,
+    lesson: 11,
     audio: "En fait, c'est loin.",
   },
 
-  // ── L13: Aller & Future ──
+  // ── L12: My People ──
   {
-    situation: "A friend asks your plans for tonight. You're going to the restaurant.",
-    answer: "Je vais au restaurant.",
-    explanation: "\"Aller\" + à/au = to go to. \"Au\" = à + le (contraction for masculine places).",
+    situation: "Someone asks about your family. You have one brother and one sister.",
+    answer: "J'ai un frère et une sœur.",
+    explanation: "\"Frère\" is masculine (un frère), \"sœur\" is feminine (une sœur). \"J'ai\" = I have.",
+    lesson: 12,
+    audio: "J'ai un frère et une sœur.",
+  },
+  {
+    situation: "You want to introduce your friend to someone.",
+    answer: "Je vous présente mon ami(e).",
+    explanation: "\"Je vous présente\" = Let me introduce. \"Mon ami\" (male) or \"mon amie\" (female).",
+    lesson: 12,
+    audio: "Je vous présente mon ami.",
+  },
+
+  // ── L13: Questions II ──
+  {
+    situation: "You want to ask who is coming to the party tonight.",
+    answer: "Qui vient à la fête ce soir ?",
+    explanation: "\"Qui\" = who. It can be used as the subject directly: \"Qui vient ?\" = Who is coming?",
     lesson: 13,
-    audio: "Je vais au restaurant.",
+    audio: "Qui vient à la fête ce soir ?",
   },
   {
-    situation: "You're giving directions. The pharmacy is on the left.",
-    answer: "La pharmacie est à gauche.",
-    explanation: "\"À gauche\" = on the left. \"À droite\" = on the right. Key direction vocabulary.",
+    situation: "You see a strange object and want to ask what it is.",
+    answer: "Qu'est-ce que c'est ?",
+    explanation: "\"Qu'est-ce que c'est ?\" = What is it? The most common way to ask about an unknown thing.",
     lesson: 13,
-    audio: "La pharmacie est à gauche.",
+    audio: "Qu'est-ce que c'est ?",
+  },
+  {
+    situation: "A friend cancelled plans. You want to know why.",
+    answer: "Pourquoi tu as annulé ?",
+    explanation: "\"Pourquoi\" = why. In spoken French, question word + subject + verb is the most natural order.",
+    lesson: 13,
+    audio: "Pourquoi tu as annulé ?",
+  },
+  {
+    situation: "You're at a market and want to ask how many apples are in the bag.",
+    answer: "Combien de pommes il y a dans le sac ?",
+    explanation: "\"Combien de\" = how many/how much. Always followed by \"de\" (not \"des\"), then the noun.",
+    lesson: 13,
+    audio: "Combien de pommes il y a dans le sac ?",
   },
 
-  // ── L14: Questions ──
+  // ── L14: More Negation + Y/En ──
   {
-    situation: "You want to ask a new acquaintance why they're learning French.",
-    answer: "Pourquoi tu apprends le français ?",
-    explanation: "\"Pourquoi\" = why. In casual conversation, you can form questions just with intonation.",
+    situation: "A friend asks if you eat meat. You never do.",
+    answer: "Je ne mange jamais de viande.",
+    explanation: "\"Ne ... jamais\" = never. Note: after negation, \"de la/du\" becomes just \"de.\"",
     lesson: 14,
-    audio: "Pourquoi tu apprends le français ?",
+    audio: "Je ne mange jamais de viande.",
   },
   {
-    situation: "You need to know when the train arrives.",
-    answer: "Le train arrive quand ?",
-    explanation: "\"Quand\" = when. Placing it at the end with rising intonation is natural in spoken French.",
+    situation: "You look in the fridge and there's nothing left.",
+    answer: "Il n'y a rien.",
+    explanation: "\"Ne ... rien\" = nothing. \"Il y a\" means \"there is/are\" — negated: \"il n'y a rien.\"",
     lesson: 14,
-    audio: "Le train arrive quand ?",
-  },
-
-  // ── L15: Daily Routine ──
-  {
-    situation: "Someone asks what time you wake up. You get up at 7 AM.",
-    answer: "Je me lève à sept heures.",
-    explanation: "\"Se lever\" is reflexive — \"je me lève\" = I get (myself) up. Reflexive verbs are common for daily routines.",
-    lesson: 15,
-    audio: "Je me lève à sept heures.",
+    audio: "Il n'y a rien.",
   },
   {
-    situation: "You want to say you work in the morning and rest in the evening.",
-    answer: "Je travaille le matin et je me repose le soir.",
-    explanation: "\"Le matin\" / \"le soir\" = in the morning / in the evening. The article \"le\" indicates habitual time.",
-    lesson: 15,
-    audio: "Je travaille le matin et je me repose le soir.",
+    situation: "Someone asks if you know anyone in this city. You don't know anyone.",
+    answer: "Je ne connais personne ici.",
+    explanation: "\"Ne ... personne\" = nobody/no one. \"Personne\" goes where the object would be.",
+    lesson: 14,
+    audio: "Je ne connais personne ici.",
+  },
+  {
+    situation: "A friend asks if you want more coffee. You say you've had enough — you don't want any more.",
+    answer: "Non merci, je n'en veux plus.",
+    explanation: "\"En\" replaces \"du café\" (some coffee). \"Ne ... plus\" = no more/not anymore.",
+    lesson: 14,
+    audio: "Non merci, je n'en veux plus.",
   },
 
-  // ── L16: Places & Prepositions ──
+  // ── L15: Places & Prepositions ──
   {
     situation: "You need bread. Where should you go?",
     answer: "Je vais à la boulangerie.",
     explanation: "\"La boulangerie\" = the bakery. Use \"à la\" before feminine places. This is where the French buy bread daily.",
-    lesson: 16,
+    lesson: 15,
     audio: "Je vais à la boulangerie.",
   },
   {
     situation: "You need to find a pharmacy. You ask someone where the nearest one is.",
     answer: "Où est la pharmacie la plus proche ?",
     explanation: "\"Où est\" = where is. \"La plus proche\" = the nearest. French pharmacies have a green cross sign.",
-    lesson: 16,
+    lesson: 15,
     audio: "Où est la pharmacie la plus proche ?",
   },
   {
     situation: "You want to say the park is behind the supermarket.",
     answer: "Le parc est derrière le supermarché.",
     explanation: "\"Derrière\" = behind. Prepositions of place: devant (in front), derrière (behind), à côté de (next to).",
-    lesson: 16,
+    lesson: 15,
     audio: "Le parc est derrière le supermarché.",
+  },
+
+  // ── L16: Vouloir, Pouvoir, Devoir ──
+  {
+    situation: "You're at a cafe and want to order a croissant.",
+    answer: "Je veux un croissant, s'il vous plaît.",
+    explanation: "\"Je veux\" = I want. \"Vouloir\" is direct — for extra politeness, use \"je voudrais\" instead.",
+    lesson: 16,
+    audio: "Je veux un croissant, s'il vous plaît.",
+  },
+  {
+    situation: "A friend invites you out, but you can't — you have to study.",
+    answer: "Je ne peux pas, je dois étudier.",
+    explanation: "\"Pouvoir\" = can, \"devoir\" = must/have to. \"Je ne peux pas\" = I can't. \"Je dois\" = I must.",
+    lesson: 16,
+    audio: "Je ne peux pas, je dois étudier.",
+  },
+  {
+    situation: "You're lost and want to ask if someone can help you.",
+    answer: "Vous pouvez m'aider ?",
+    explanation: "\"Pouvoir\" = to be able to/can. \"Vous pouvez\" is polite. \"M'aider\" = to help me.",
+    lesson: 16,
+    audio: "Vous pouvez m'aider ?",
+  },
+  {
+    situation: "Your doctor tells you that you must drink more water.",
+    answer: "Vous devez boire plus d'eau.",
+    explanation: "\"Devoir\" = must/to have to. \"Vous devez\" = you must. It expresses obligation or strong advice.",
+    lesson: 16,
+    audio: "Vous devez boire plus d'eau.",
+  },
+
+  // ── L17: My Day ──
+  {
+    situation: "Someone asks what time you wake up. You get up at 7 AM.",
+    answer: "Je me lève à sept heures.",
+    explanation: "\"Se lever\" is reflexive — \"je me lève\" = I get (myself) up. Reflexive verbs are common for daily routines.",
+    lesson: 17,
+    audio: "Je me lève à sept heures.",
+  },
+  {
+    situation: "You want to say you work in the morning and rest in the evening.",
+    answer: "Je travaille le matin et je me repose le soir.",
+    explanation: "\"Le matin\" / \"le soir\" = in the morning / in the evening. The article \"le\" indicates habitual time.",
+    lesson: 17,
+    audio: "Je travaille le matin et je me repose le soir.",
   },
 ];

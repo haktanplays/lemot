@@ -9,25 +9,37 @@ interface MountainMapProps {
 }
 
 const COORDS = [
-  { x: 30, y: 195, id: 1 },
-  { x: 75, y: 188, id: 2 },
-  { x: 120, y: 178, id: 3 },
-  { x: 155, y: 168, id: 4 },
-  { x: 180, y: 155, id: 5 },
-  { x: 210, y: 145, id: 6 },
-  { x: 245, y: 135, id: 7 },
-  { x: 275, y: 122, id: 8 },
-  { x: 300, y: 110, id: 9 },
-  { x: 325, y: 98, id: 10 },
-  { x: 305, y: 88, id: 11 },
-  { x: 275, y: 78, id: 12 },
-  { x: 250, y: 70, id: 13 },
-  { x: 228, y: 62, id: 14 },
-  { x: 214, y: 54, id: 15 },
-  { x: 202, y: 46, id: 16 },
+  // M1: Basic Communicator (L1-L5, FREE)
+  { x: 20, y: 198, id: 1 },
+  { x: 55, y: 192, id: 2 },
+  { x: 90, y: 184, id: 3 },
+  { x: 125, y: 176, id: 4 },
+  { x: 160, y: 168, id: 5 },
+  // M2: Independent Speaker (L6-L11, FREE)
+  { x: 190, y: 158, id: 6 },
+  { x: 220, y: 150, id: 7 },
+  { x: 250, y: 142, id: 8 },
+  { x: 280, y: 134, id: 9 },
+  { x: 310, y: 126, id: 10 },
+  { x: 335, y: 118, id: 11 },
+  // M3: Confident Conversationalist (L12-L17, PAID)
+  { x: 315, y: 108, id: 12 },
+  { x: 290, y: 98, id: 13 },
+  { x: 265, y: 90, id: 14 },
+  { x: 240, y: 82, id: 15 },
+  { x: 218, y: 74, id: 16 },
+  { x: 200, y: 66, id: 17 },
+  // M4: Natural Expression (L18-L24, PAID)
+  { x: 185, y: 58, id: 18 },
+  { x: 175, y: 52, id: 19 },
+  { x: 170, y: 48, id: 20 },
+  { x: 175, y: 44, id: 21 },
+  { x: 183, y: 41, id: 22 },
+  { x: 192, y: 38, id: 23 },
+  { x: 200, y: 35, id: 24 },
 ];
 
-const PEAK = { x: 200, y: 34 };
+const PEAK = { x: 200, y: 24 };
 
 export function MountainMap({ lp, onLessonPress }: MountainMapProps) {
   const totalSecs = SECS.length;
