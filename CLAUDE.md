@@ -6,12 +6,13 @@ A French learning app for English speakers. Currently a single-file React compon
 ## Product Promise
 "LE-MOT teaches French through meaning, patterns, and real expression — not memorization."
 
-## Current State (v7 + Sprint 5B + 5C + 6 + 7 + 8 + 8B + 8C)
-- **16 lessons** (full A1 curriculum):
-  - L1 Survival Kit, L2 Pronunciation I, L3 Pronunciation II, L4 Tu vs Vous
-  - L5 Être, L6 Avoir, L7 Articles & Gender, L8 Numbers & Time
-  - L9 Food & Ordering, L10 Family, L11 Negation, L12 Everyday Phrases
-  - L13 Aller & Future, L14 Questions, L15 Daily Routine, L16 Places & Prepositions
+## Current State (v7 + Sprint 5B + 5C + 6 + 7 + 8 + 8B + 8C + 9-syllabus)
+- **24 lessons** (full A1 curriculum, 4 milestones):
+  - **M1 Basic Communicator (L1-L5, FREE)**: L1 Survival Kit, L2 Être, L3 Yes/No/You, L4 Avoir, L5 Articles
+  - **M2 Independent Speaker (L6-L11, FREE)**: L6 Aller, L7 Questions I, L8 Numbers/Time/Money, L9 Food & Ordering, L10 Faire, L11 Everyday Structures
+  - **PAYWALL ($12.99/mo)**
+  - **M3 Confident Conversationalist (L12-L17, PAID)**: L12 My People, L13 Questions II, L14 More Negation + Y/En, L15 Places & Prepositions, L16 Vouloir/Pouvoir/Devoir, L17 My Day
+  - **M4 Natural Expression (L18-L24, PAID)**: L18 Regular -er Verbs, L19 Past Tense I (avoir), L20 Past Tense II (être), L21 Dire/Voir/Savoir, L22 Opinions & Feelings, L23 Venir/Prendre, L24 Putting It All Together
 - **11-section lesson flow** (input-first, reordered): Read & Listen → Patterns → Weave Fill → French Fill → Build → Write → Quiz → Combine+Weave → Say It Your Way → Mini Conversation → Review
 - **Build before Write** (Sprint 8B): Easier task (arrange tiles) before harder task (write from memory) — progressive difficulty
 - **Say It Your Way** (sec 8): Free-write response to situation prompts, AI evaluation via Claude API, target word tracking
@@ -19,7 +20,8 @@ A French learning app for English speakers. Currently a single-file React compon
 - **AI Chat**: 4 modes (Free, Lesson Focus, Error Correction, Scenarios) with negotiation of meaning
 - **Error tracking**: Every wrong answer logged, weak spots detected (3+ errors = weak)
 - **Daily Review**: Home screen card with 5-word daily goal, weak spot priority, streak tracking, modal quiz overlay
-- **Can-Do Milestones**: 5 milestone tiers (Foundation L1-4, Grammar Power L5-7, Social Ready L8-10, Expression Master L11-13, Independence L14-16)
+- **Can-Do Milestones**: 4 milestone tiers (Basic Communicator L1-5, Independent Speaker L6-11, Confident Conversationalist L12-17, Natural Expression L18-24)
+- **Paywall**: After L11 (M2), $12.99/mo subscription unlocks M3+M4
 - **Enhanced Progress Tab**: Mastered/Learning/Weak word categories, daily review status, milestone badges, streak display
 - **Content Enrichment** (Sprint 8):
   - 3 common expressions per lesson (voilà, du coup, on y va, etc.)
@@ -92,7 +94,7 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
    - Error tracking Phase C (adaptive AI response using weak spots)
 2. **A2 Content**: Plan and add A2-level lessons (L17+)
 3. **Push notifications**: Daily review reminders
-4. **Paywall/monetization**: Define paywall position
+4. **Paywall/monetization**: Implement subscription purchase flow (paywall position defined: after L11)
 
 ## Important: Do NOT
 - Add separate vocabulary flashcard section (replaced with scenario cards, research-backed)

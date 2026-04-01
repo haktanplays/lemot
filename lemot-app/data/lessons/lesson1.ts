@@ -3,7 +3,7 @@ import type { Lesson } from "@/lib/types";
 export const lesson1: Lesson = {
   id: 1,
   title: "Survival Kit",
-  sub: "Phrases that work from day one",
+  sub: "Your first 10 minutes in France",
   icon: "Compass",
   level: "A1",
   difficulty: "easy",
@@ -78,6 +78,32 @@ export const lesson1: Lesson = {
         ],
       },
       {
+        type: "block",
+        label: "Pronunciation: Silent Final Letters & the CaReFuL Rule",
+        items: [
+          {
+            fr: "The CaReFuL Rule",
+            en: "C, R, F, L are usually pronounced at the end of words",
+            note: "Think 'CaReFuL' — these four consonants are the exceptions to the silent-final-letter rule. Examples: avec (C), bonjour (R), actif (F), hôtel (L).",
+          },
+          {
+            fr: "Silent endings",
+            en: "Most other final consonants are silent",
+            note: "The -s, -t, -d, -x, -z, -p at the end of French words are almost always silent: 'beaucoup' (the p is silent), 'est' (the st is silent), 'français' (the s is silent).",
+          },
+          {
+            fr: "bonjour → bon-ZHOOR",
+            en: "The R is pronounced (CaReFuL!)",
+            note: "Final R is pronounced: bonjour, revoir, monsieur. The French R is throaty, like a soft gargle.",
+          },
+          {
+            fr: "avec → ah-VEK",
+            en: "The C is pronounced (CaReFuL!)",
+            note: "Final C is pronounced: avec, parc, lac.",
+          },
+        ],
+      },
+      {
         type: "howToSay",
         words: [
           {
@@ -105,6 +131,10 @@ export const lesson1: Lesson = {
       {
         type: "tip",
         text: "*Je voudrais...* works everywhere — cafés, restaurants, hotels, ticket counters. One pattern, a hundred situations.",
+      },
+      {
+        type: "tip",
+        text: "Remember *CaReFuL*: C, R, F, L are the consonants typically pronounced at the end of French words. All other final consonants are usually silent. This one mnemonic will save you hundreds of pronunciation mistakes.",
       },
     ],
     quickRecall: {
@@ -283,10 +313,10 @@ export const lesson1: Lesson = {
       ctx: "The expression used when handing something over.",
     },
     {
-      q: "Someone asks 'Ça va ?' and you're feeling so-so. You reply:",
-      a: "Comme ci, comme ça",
-      o: ["Comme ci, comme ça", "Voilà", "Pardon", "Bonjour"],
-      ctx: "The expression for 'neither good nor bad'.",
+      q: "Which consonants are usually pronounced at the end of French words? (CaReFuL rule)",
+      a: "C, R, F, L",
+      o: ["C, R, F, L", "S, T, D, X", "B, P, G, M", "N, V, W, Z"],
+      ctx: "The CaReFuL mnemonic helps you remember.",
     },
   ],
   combine: [
@@ -461,6 +491,7 @@ export const lesson1: Lesson = {
     "Greetings: bonjour, bonsoir, salut",
     "Polite ordering: je voudrais + s'il vous plaît",
     "The ne...pas sandwich for negation",
+    "CaReFuL rule: C, R, F, L are pronounced at end of words",
     "Expression: voilà, pardon, comme ci comme ça",
   ],
 };

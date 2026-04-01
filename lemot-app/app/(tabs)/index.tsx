@@ -2,10 +2,10 @@ import { useState, useCallback } from "react";
 import { View, Text, ScrollView, Pressable, FlatList, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { Zap, Target } from "lucide-react-native";
+import { Zap, Target, Lock } from "lucide-react-native";
 import { useApp } from "@/providers/AppProvider";
 import { LESSONS } from "@/data/lessons";
-import { MILESTONES } from "@/data/milestones";
+import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
 import { MountainMap } from "@/components/MountainMap";
@@ -185,17 +185,42 @@ export default function HomeScreen() {
 
         {/* Lessons */}
         <Text className="text-lg font-bold text-lm-ink mb-3">Lessons</Text>
-        {LESSONS.map((lesson) => (
-          <LessonCard
-            key={lesson.id}
-            id={lesson.id}
-            title={lesson.title}
-            sub={lesson.sub}
-            difficulty={lesson.difficulty}
-            progress={lp(lesson.id)}
-            onPress={() => goToLesson(lesson.id)}
-          />
-        ))}
+        {LESSONS.map((lesson) => {
+          const isFree = FREE_LESSON_IDS.includes(lesson.id);
+          const isLocked = !isFree; // TODO: check subscription status
+          return (
+            <>
+              {/* Paywall banner between L11 and L12 */}
+              {lesson.id === 12 && (
+                <View
+                  key="paywall"
+                  className="rounded-xl p-4 mb-3 items-center"
+                  style={{ backgroundColor: P.amber + "15", borderWidth: 1, borderColor: P.amber + "30" }}
+                >
+                  <View className="flex-row items-center gap-2 mb-1">
+                    <Lock size={16} color={P.amber} />
+                    <Text className="text-sm font-bold" style={{ color: P.amber }}>
+                      Premium — $12.99/mo
+                    </Text>
+                  </View>
+                  <Text className="text-xs text-lm-ink3 text-center">
+                    Unlock all lessons and continue your journey
+                  </Text>
+                </View>
+              )}
+              <LessonCard
+                key={lesson.id}
+                id={lesson.id}
+                title={lesson.title}
+                sub={lesson.sub}
+                difficulty={lesson.difficulty}
+                progress={lp(lesson.id)}
+                locked={isLocked}
+                onPress={() => goToLesson(lesson.id)}
+              />
+            </>
+          );
+        })}
 
         <View className="h-6" />
       </ScrollView>

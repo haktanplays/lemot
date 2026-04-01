@@ -20,7 +20,7 @@ export default function StatsScreen() {
   const { xp, prog, streak, errors, weakSpots, dailyRev, loaded } = useApp();
 
   /* ── Derived stats ── */
-  const totalSections = LESSONS.length * SECS.length; // 16 * 11 = 176
+  const totalSections = LESSONS.length * SECS.length; // 24 * 11 = 264
   const completedSections = useMemo(
     () => Object.values(prog).filter(Boolean).length,
     [prog]

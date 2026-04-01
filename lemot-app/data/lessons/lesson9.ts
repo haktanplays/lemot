@@ -2,8 +2,8 @@ import type { Lesson } from "@/lib/types";
 
 export const lesson9: Lesson = {
   id: 9,
-  title: "At the Restaurant",
-  sub: "Order food, ask for the check, eat well",
+  title: "Food & Ordering",
+  sub: "Partitives and restaurant French",
   icon: "UtensilsCrossed",
   level: "A1",
   difficulty: "medium",
@@ -37,6 +37,22 @@ export const lesson9: Lesson = {
             fr: "des",
             en: "some (plural)",
             note: "Des frites = some fries. Plural form.",
+          },
+        ],
+      },
+      {
+        type: "block",
+        label: "Negative: pas de",
+        items: [
+          {
+            fr: "Je ne mange pas de viande.",
+            en: "I don't eat meat.",
+            note: "After negation, du/de la/des ALL become just 'de' (or d'). Not 'pas du'!",
+          },
+          {
+            fr: "Il n'y a pas de pain.",
+            en: "There's no bread.",
+            note: "Same rule: negation removes the partitive. Pas de, never pas du.",
           },
         ],
       },
@@ -107,6 +123,32 @@ export const lesson9: Lesson = {
         text: "In France, water is free if you ask for *une carafe d'eau* (tap water). If you just say 'de l'eau', you might get expensive bottled water!",
       },
       {
+        type: "howToSay",
+        words: [
+          {
+            fr: "croissant",
+            phonetic: "kwah-SAHN",
+            ipa: "/kʁwa.sɑ̃/",
+            notes:
+              "The 'r' is throaty. The -ant is nasal — don't say the 't'. Means 'crescent' (shape of the moon).",
+          },
+          {
+            fr: "baguette",
+            phonetic: "bah-GET",
+            ipa: "/ba.ɡɛt/",
+            notes:
+              "Stress on second syllable. The -ette ending is crisp, not 'et'.",
+          },
+          {
+            fr: "fromage",
+            phonetic: "froh-MAHZH",
+            ipa: "/fʁɔ.maʒ/",
+            notes:
+              "The 'ge' is soft like 'zh' in 'pleasure'. French 'r' is throaty.",
+          },
+        ],
+      },
+      {
         type: "culture",
         text: "French meals are an event. Lunch can last an hour. Never rush. Say *bon appétit* before eating. And the waiter won't bring the check until you ask — it's considered rude to hurry guests.",
       },
@@ -154,9 +196,9 @@ export const lesson9: Lesson = {
       bridge: "Le plat du jour, c'est le poisson.",
     },
     {
-      fr: "Je voudrais un dessert.",
-      en: "I'd like a dessert.",
-      bridge: "Je voudrais un dessert.",
+      fr: "Je ne mange pas de viande.",
+      en: "I don't eat meat.",
+      bridge: "Je ne mange pas de meat.",
     },
   ],
   fillFG: [
@@ -185,10 +227,10 @@ export const lesson9: Lesson = {
       ctx: "Asking for the bill.",
     },
     {
-      s: "For the main course, [___].",
-      a: "le poisson",
-      o: ["le poisson", "la poisson", "du poisson", "un poissons"],
-      ctx: "The fish — ordering a specific dish.",
+      s: "I don't eat [___] meat.",
+      a: "de",
+      o: ["de", "du", "de la", "des"],
+      ctx: "After negation, partitive becomes just 'de'.",
     },
   ],
   fillBlanks: [
@@ -217,10 +259,10 @@ export const lesson9: Lesson = {
       ctx: "The check, please.",
     },
     {
-      s: "Comme ___, le poisson.",
-      a: "plat",
-      o: ["plat", "entrée", "dessert", "addition"],
-      ctx: "As main course, the fish.",
+      s: "Je ne mange pas ___ viande.",
+      a: "de",
+      o: ["de", "du", "de la", "des"],
+      ctx: "Negation: pas de (not pas du!).",
     },
   ],
   buildSentences: [
@@ -240,8 +282,8 @@ export const lesson9: Lesson = {
       trap: ["le", "la"],
     },
     {
-      c: ["De", "l'", "eau", "s'il", "vous", "plaît"],
-      en: "Some water, please.",
+      c: ["Je", "ne", "mange", "pas", "de", "viande"],
+      en: "I don't eat meat.",
       trap: ["du", "la"],
     },
   ],
@@ -253,15 +295,15 @@ export const lesson9: Lesson = {
       ctx: "Du = partitive = some.",
     },
     {
-      q: "What's a false friend here?",
-      a: "Poisson (fish, not poison!)",
+      q: "After 'pas', partitives become...",
+      a: "de (just 'de', not du/de la)",
       o: [
-        "Poisson (fish, not poison!)",
-        "Poulet (chicken)",
-        "Entrée (starter, not entry!)",
-        "Dessert",
+        "de (just 'de', not du/de la)",
+        "du/de la (no change)",
+        "le/la",
+        "un/une",
       ],
-      ctx: "Poisson sounds like 'poison' but means fish.",
+      ctx: "Negation kills the partitive: pas de.",
     },
     {
       q: "How do you ask for the check?",
@@ -290,13 +332,13 @@ export const lesson9: Lesson = {
       ctx: "Entrée = starter, plat = main, dessert = dessert.",
     },
     {
-      q: "'Comme entrée, une salade' means...",
-      a: "For starter, a salad",
+      q: "What's a false friend here?",
+      a: "Poisson (fish, not poison!)",
       o: [
-        "For starter, a salad",
-        "Like an entry, a salad",
-        "The main salad",
-        "A salad entrance",
+        "Poisson (fish, not poison!)",
+        "Poulet (chicken)",
+        "Entrée (starter, not entry!)",
+        "Dessert",
       ],
     },
     {
@@ -331,11 +373,11 @@ export const lesson9: Lesson = {
       ],
     },
     {
-      hint: "Want + dessert + expensive → Say you'd like dessert but it's expensive",
-      answer: "Je voudrais un dessert mais c'est cher.",
+      hint: "Don't eat meat + prefer fish → Say you don't eat meat and prefer fish",
+      answer: "Je ne mange pas de viande. Je préfère le poisson.",
       accept: [
-        "je voudrais un dessert mais c'est cher",
-        "je voudrais un dessert, mais c'est cher",
+        "je ne mange pas de viande je prefere le poisson",
+        "je ne mange pas de viande. je préfère le poisson",
       ],
     },
   ],
@@ -377,21 +419,21 @@ export const lesson9: Lesson = {
         "Comme entrée, une salade. Comme plat, le poisson. And du pain, s'il vous plaît.",
     },
     {
-      en: "The check please. It costs twenty euros. That's not expensive.",
+      en: "I don't eat meat. I'll have some cheese and some bread.",
       known: [
-        "l'",
-        "addition",
-        "s'il vous plaît",
-        "ça",
-        "coûte",
-        "vingt",
-        "euros",
-        "c'est",
+        "je",
+        "ne",
+        "mange",
         "pas",
-        "cher",
+        "de",
+        "viande",
+        "prends",
+        "du",
+        "fromage",
+        "pain",
       ],
       sample:
-        "L'addition, s'il vous plaît. Ça coûte vingt euros. C'est pas cher.",
+        "Je ne mange pas de viande. Je prends du fromage and du pain.",
     },
   ],
   review: [
@@ -427,32 +469,10 @@ export const lesson9: Lesson = {
     },
     {
       type: "fill_ctx",
-      s: "Ça ___ combien ? (Lesson 8)",
-      a: "coûte",
-      o: ["coûte", "est", "a", "fait"],
-      ctx: "How much does it cost? Cross-reference L8.",
-    },
-    {
-      type: "fill_ctx",
-      s: "___ fromage, s'il vous plaît.",
-      a: "Du",
-      o: ["Du", "De la", "Le", "Des"],
-      ctx: "Some cheese — masculine partitive.",
-    },
-    {
-      type: "weave",
-      en: "I'll have the fish.",
-      blanks: [
-        { word: "I'll have", answer: "prends" },
-        { word: "fish", answer: "poisson" },
-      ],
-      full: "Je prends le poisson.",
-    },
-    {
-      type: "context",
-      situation: "You've finished your meal and want to pay. What do you say?",
-      a: "L'addition, s'il vous plaît",
-      o: ["L'addition, s'il vous plaît", "Bon appétit", "Je vais prendre le dessert", "Du pain, s'il vous plaît"],
+      s: "Je ne mange pas ___ viande.",
+      a: "de",
+      o: ["de", "du", "de la", "des"],
+      ctx: "Negation: pas de (not pas du!).",
     },
   ],
   sayIt: [
@@ -463,8 +483,8 @@ export const lesson9: Lesson = {
     },
     {
       situation:
-        "The meal is over. Ask for the check and say the food was good.",
-      target: ["addition", "plaît", "bon", "c'est"],
+        "Tell the waiter you don't eat meat and ask for the check.",
+      target: ["ne", "pas", "de", "viande", "addition", "plaît"],
     },
   ],
   miniConv: {
@@ -520,8 +540,8 @@ export const lesson9: Lesson = {
     "In France, the waiter will NEVER bring the check unless you ask. It's considered rude to rush diners. A meal is a social event, not a transaction. 'L'addition, s'il vous plaît' is how you signal you're ready to leave.",
   summary: [
     "Partitives: du, de la, de l', des",
-    "Ordering: Je voudrais / Je vais prendre",
-    "Negation changes du/de la → de",
-    "Expression: bon appétit, l'addition s'il vous plaît",
+    "Negative: pas de (not pas du!)",
+    "Restaurant vocab: l'entrée, le plat, le dessert, l'addition",
+    "Expression: bon appétit, je vais prendre",
   ],
 };

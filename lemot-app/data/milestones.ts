@@ -2,33 +2,33 @@ import type { Milestone } from "@/lib/types";
 
 export const MILESTONES: Milestone[] = [
   {
-    ids: [1, 2, 3, 4],
-    title: "Foundation Complete",
-    desc: "You can greet, pronounce basics, and navigate formal vs informal French.",
-    icon: "\ud83c\udfd4\ufe0f",
+    ids: [1, 2, 3, 4, 5],
+    title: "Basic Communicator",
+    desc: "You can greet, introduce yourself, say no, express feelings, and use articles.",
+    icon: "🏔️",
   },
   {
-    ids: [5, 6, 7],
-    title: "Grammar Power",
-    desc: "You can describe who you are, what you have, and use articles correctly.",
-    icon: "\u26f0\ufe0f",
+    ids: [6, 7, 8, 9, 10, 11],
+    title: "Independent Speaker",
+    desc: "You can make plans, ask questions, order food, and build compound sentences.",
+    icon: "⛰️",
   },
   {
-    ids: [8, 9, 10],
-    title: "Social Ready",
-    desc: "You can handle numbers, order food, and talk about your family.",
-    icon: "\ud83d\uddfb",
+    ids: [12, 13, 14, 15, 16, 17],
+    title: "Confident Conversationalist",
+    desc: "You can describe people, ask any question, use pronouns, give directions, and express obligation.",
+    icon: "🗻",
   },
   {
-    ids: [11, 12, 13],
-    title: "Expression Master",
-    desc: "You can negate, use everyday phrases, and make future plans.",
-    icon: "\ud83c\udfd5\ufe0f",
-  },
-  {
-    ids: [14, 15, 16],
-    title: "Independence",
-    desc: "You can ask questions, describe your day, and navigate a city.",
-    icon: "\ud83c\udfc1",
+    ids: [18, 19, 20, 21, 22, 23, 24],
+    title: "Natural Expression",
+    desc: "You can conjugate verbs, talk about the past, express opinions, and tell stories.",
+    icon: "🏁",
   },
 ];
+
+/** Lesson IDs that are free (no subscription required) */
+export const FREE_LESSON_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+/** Monthly subscription price */
+export const PAYWALL_PRICE = "$12.99/mo";

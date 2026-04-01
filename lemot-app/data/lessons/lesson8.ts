@@ -2,17 +2,17 @@ import type { Lesson } from "@/lib/types";
 
 export const lesson8: Lesson = {
   id: 8,
-  title: "Numbers & Time",
-  sub: "Count, tell time, and handle money",
+  title: "Numbers, Time & Money",
+  sub: "Count, tell time, and pay",
   icon: "Clock",
   level: "A1",
   difficulty: "medium",
   grammar: {
-    title: "Numbers & Time",
+    title: "Numbers, Time & Money",
     sections: [
       {
         type: "intro",
-        text: "Numbers are the first thing you need at shops, restaurants, and train stations. French numbers are mostly logical... until you hit 70 and 80. We'll start with 1-20 and time.",
+        text: "Numbers are the first thing you need at shops, restaurants, and train stations. French numbers are mostly logical... until you hit 70 and 80. We'll start with 1-60 and time.",
       },
       {
         type: "block",
@@ -110,6 +110,11 @@ export const lesson8: Lesson = {
             fr: "C'est cher !",
             en: "That's expensive!",
             note: "Cher ≈ cherish (something precious costs more).",
+          },
+          {
+            fr: "C'est X euros.",
+            en: "It's X euros.",
+            note: "Quick way to state a price: C'est cinq euros.",
           },
         ],
       },
@@ -452,39 +457,10 @@ export const lesson8: Lesson = {
     },
     {
       type: "fill_ctx",
-      s: "J'___ trente ans. (Lesson 6 — avoir)",
-      a: "ai",
-      o: ["ai", "suis", "est", "as"],
-      ctx: "Age uses avoir. Cross-reference L6.",
-    },
-    {
-      type: "fill_ctx",
       s: "Il est ___ et demi.",
       a: "midi",
       o: ["midi", "minuit", "douze", "heure"],
       ctx: "12:30 PM = midi et demi.",
-    },
-    {
-      type: "weave",
-      en: "It costs ten euros.",
-      blanks: [
-        { word: "costs", answer: "coûte" },
-        { word: "ten", answer: "dix" },
-      ],
-      full: "Ça coûte dix euros.",
-    },
-    {
-      type: "context",
-      situation:
-        "A waiter tells you 'Ça fait vingt-deux euros.' How much is it?",
-      a: "22 euros",
-      o: ["22 euros", "20 euros", "12 euros", "32 euros"],
-    },
-    {
-      type: "context",
-      situation: "You've been procrastinating all morning. You finally decide to start working.",
-      a: "Il est temps de travailler !",
-      o: ["Il est temps de travailler !", "À tout à l'heure !", "Tout de suite !", "Ça coûte combien ?"],
     },
   ],
   sayIt: [
@@ -543,9 +519,9 @@ export const lesson8: Lesson = {
   cultureBite:
     "French people use the 24-hour clock in daily life — not just military/trains. 'On se voit à 20h' (See you at 8 PM) is completely normal. No AM/PM confusion ever.",
   summary: [
-    "Numbers 1-60",
-    "Telling time: Il est... heure(s)",
-    "24-hour clock in daily life",
+    "Numbers 1-60 with cognates (trois/trio, sept/September)",
+    "Telling time: Il est... heure(s), et quart, et demie",
+    "Prices: Ça coûte combien ? C'est X euros",
     "Expression: tout de suite, à tout à l'heure",
   ],
 };
