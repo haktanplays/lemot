@@ -1,7 +1,7 @@
 # LE MOT — French Learning App
 
 ## What This Is
-A French learning app for English speakers. Currently a single-file React component (le-mot-v7.jsx) built as a Claude artifact. Goal: convert to standalone Expo/React Native app.
+A French learning app for English speakers. Expo/React Native standalone app (TypeScript, NativeWind, Expo Router). Also available as a single-file React artifact (le-mot-v7.jsx).
 
 ## Product Promise
 "LE-MOT teaches French through meaning, patterns, and real expression — not memorization."
@@ -49,13 +49,14 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 - **5A ✅** Foundation: input-first reorder, error tracking, example expansion
 - **5B ✅** Learning Engine: daily review goal, can-do milestones, progress upgrade, basic SRS
 - **5C ✅** Production + AI: Say It Your Way (free write + AI eval), Mini Conversation (in-lesson chat)
-- **6 ✅** Content: full A1 curriculum — 16 lessons (added L6-L11, L13-L16)
+- **6 ✅** Content: initial A1 curriculum — 16 lessons (added L6-L11, L13-L16)
 - **7 ✅** Standalone: Expo/React Native migration (TypeScript, NativeWind, Expo Router)
 - **7.5 ✅** Polish & QA: 18 issues fixed across 23 files
 - **8 ✅** Content Enrichment: Weave rename, expressions, grammar nuggets, faux amis, sound patterns, culture bites, difficulty indicators, summary cards
 - **8B ✅** Meaning-First Overhaul: Build↔Write reorder, unlockable enrichment system, Practice→scenarios, contextual expression quizzes
 - **8C ✅** Learning Engine v2: Lesson chunking (3 parts), SRS algorithm (Leitner 5-box), mastery criteria per section
-- **9** Backend & AI: Supabase (DB, Edge Functions, Auth), AI exercise generation, Error tracking Phase C
+- **9-syllabus ✅** Syllabus Restructure: 16→24 lessons, 4 milestones (5-6-6-7), paywall after L11 ($12.99/mo), MountainMap 24 nodes, practice scenarios remapped + new (L10/L13/L14/L16)
+- **10** Backend & AI: Supabase (DB, Edge Functions, Auth), AI exercise generation, Error tracking Phase C
 
 ### Model Routing (for standalone):
 | Task | Model | Why |
@@ -88,13 +89,14 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 - Practice tab uses ScenarioCard type (situation → answer → explanation), replaces old FlashCard-based flashcards
 
 ## What Claude Code Should Do Next:
-1. **Sprint 9**: Backend & AI
+1. **Sprint 10**: Backend & AI
    - Supabase backend: DB, Edge Functions (AI proxy), Auth
    - AI exercise generation system (single API call per lesson)
    - Error tracking Phase C (adaptive AI response using weak spots)
-2. **A2 Content**: Plan and add A2-level lessons (L17+)
+2. **Paywall/monetization**: Implement subscription purchase flow (paywall position defined: after L11, $12.99/mo)
 3. **Push notifications**: Daily review reminders
-4. **Paywall/monetization**: Implement subscription purchase flow (paywall position defined: after L11)
+4. **Dictionary & flashcards**: Update dictionary.ts and flashcards.ts comment labels for new lesson ID mapping
+5. **APK build**: Android APK build config (EAS Build, GitHub Actions) — deferred from earlier branch
 
 ## Important: Do NOT
 - Add separate vocabulary flashcard section (replaced with scenario cards, research-backed)
