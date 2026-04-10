@@ -2,8 +2,9 @@ import { useState, useCallback } from "react";
 import { View, Text, ScrollView, Pressable, FlatList, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { Zap, Target, Lock } from "lucide-react-native";
+import { Zap, Target, Lock, User } from "lucide-react-native";
 import { useApp } from "@/providers/AppProvider";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { MOTIV, P } from "@/constants/theme";
@@ -21,6 +22,7 @@ import {
 export default function HomeScreen() {
   const { lp, dailyRev, setDailyRev, streak, setStreak, save, prog, xp, errors, weakSpots, loaded } =
     useApp();
+  const { user } = useAuthContext();
 
   // Daily review state
   const [showDR, setShowDR] = useState(false);
@@ -84,15 +86,26 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-lm-bg">
-      <ScrollView className="flex-1 px-5">
+      <ScrollView className="flex-1 px-5" decelerationRate="normal">
         {/* Header */}
-        <View className="pt-6 pb-4">
-          <Text className="text-3xl font-bold text-lm-ink tracking-tight">
-            LE MOT
-          </Text>
-          <Text className="text-sm text-lm-ink2 mt-1">
-            Your French learning journey
-          </Text>
+        <View className="pt-6 pb-4 flex-row items-center justify-between">
+          <View>
+            <Text className="text-3xl font-bold text-lm-ink tracking-tight">
+              LE MOT
+            </Text>
+            <Text className="text-sm text-lm-ink2 mt-1">
+              Your French learning journey
+            </Text>
+          </View>
+          <Pressable
+            onPress={() => router.push("/auth")}
+            className="flex-row items-center gap-2 px-3 py-2 rounded-xl bg-lm-paper border border-lm-border"
+          >
+            <User size={16} color={user ? P.green : P.ink3} />
+            <Text className="text-xs font-semibold" style={{ color: user ? P.green : P.ink3 }}>
+              {user ? (user.user_metadata?.display_name ?? "Account") : "Sign In"}
+            </Text>
+          </Pressable>
         </View>
 
         {/* Mountain Map */}
@@ -187,13 +200,12 @@ export default function HomeScreen() {
         <Text className="text-lg font-bold text-lm-ink mb-3">Lessons</Text>
         {LESSONS.map((lesson) => {
           const isFree = FREE_LESSON_IDS.includes(lesson.id);
-          const isLocked = !isFree; // TODO: check subscription status
+          const isLocked = __DEV__ ? false : !isFree; // DEV: all unlocked
           return (
-            <>
+            <View key={lesson.id}>
               {/* Paywall banner between L11 and L12 */}
               {lesson.id === 12 && (
                 <View
-                  key="paywall"
                   className="rounded-xl p-4 mb-3 items-center"
                   style={{ backgroundColor: P.amber + "15", borderWidth: 1, borderColor: P.amber + "30" }}
                 >
@@ -209,7 +221,6 @@ export default function HomeScreen() {
                 </View>
               )}
               <LessonCard
-                key={lesson.id}
                 id={lesson.id}
                 title={lesson.title}
                 sub={lesson.sub}
@@ -218,7 +229,7 @@ export default function HomeScreen() {
                 locked={isLocked}
                 onPress={() => goToLesson(lesson.id)}
               />
-            </>
+            </View>
           );
         })}
 

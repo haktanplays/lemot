@@ -56,7 +56,10 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 - **8B ✅** Meaning-First Overhaul: Build↔Write reorder, unlockable enrichment system, Practice→scenarios, contextual expression quizzes
 - **8C ✅** Learning Engine v2: Lesson chunking (3 parts), SRS algorithm (Leitner 5-box), mastery criteria per section
 - **9-syllabus ✅** Syllabus Restructure: 16→24 lessons, 4 milestones (5-6-6-7), paywall after L11 ($12.99/mo), MountainMap 24 nodes, practice scenarios remapped + new (L10/L13/L14/L16)
-- **10** Backend & AI: Supabase (DB, Edge Functions, Auth), AI exercise generation, Error tracking Phase C
+- **10** (IN PROGRESS) Backend & AI: Supabase (DB, Edge Functions, Auth), AI exercise generation, Error tracking Phase C
+    - Done: Supabase client, Auth hook/provider/screen, DB schema deployed (3 tables + RLS), progress sync in AppProvider, Sign In button on home, AsyncStorage v2.2.0 downgrade
+    - Blocker: Supabase email confirmation must be disabled in Dashboard before testing auth flow
+    - Next: E2E auth test → Edge Functions → AI exercise gen
 
 ### Model Routing (for standalone):
 | Task | Model | Why |

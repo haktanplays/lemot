@@ -1,0 +1,7 @@
+.aidesigner/*
+!.aidesigner/.gitkeep
+.env
+lemot-app/.env
+.mcp.json
+.agents/
+.claude/
