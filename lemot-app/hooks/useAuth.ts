@@ -29,21 +29,28 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, name: string) => {
-    const { error } = await supabase.auth.signUp({
+  const signUp = async (email: string, password: string, name: string): Promise<{ needsConfirmation: boolean }> => {
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { display_name: name } },
     });
     if (error) throw error;
+    // If email confirmation is enabled, session will be null
+    return { needsConfirmation: !data.session };
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) throw error;
+    // Manually set state immediately so navigation sees the user
+    if (data.session) {
+      setSession(data.session);
+      setUser(data.session.user);
+    }
   };
 
   const signOut = async () => {

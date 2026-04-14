@@ -679,6 +679,7 @@ export default function LessonScreen() {
           horizontal
           showsHorizontalScrollIndicator={false}
           className="border-b border-lm-border bg-lm-paper"
+          style={{ flexGrow: 0 }}
           contentContainerStyle={{ paddingHorizontal: 12 }}
         >
           {currentChunk.sections.map((sIdx) => {
@@ -894,8 +895,8 @@ export default function LessonScreen() {
           </ScrollView>
         ) : (
           <ScrollView
-            className="flex-1 px-5 pt-4"
-            contentContainerStyle={{ paddingBottom: 32 }}
+            className="flex-1 px-5"
+            contentContainerStyle={{ paddingTop: 16, paddingBottom: 32 }}
           >
             {renderSection()}
           </ScrollView>

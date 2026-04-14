@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { View, Text, ScrollView, Pressable, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, Pressable, ActivityIndicator, Modal } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Zap, Target, Lock, User } from "lucide-react-native";
@@ -22,7 +23,10 @@ import {
 export default function HomeScreen() {
   const { lp, dailyRev, setDailyRev, streak, setStreak, save, prog, xp, errors, weakSpots, loaded } =
     useApp();
-  const { user } = useAuthContext();
+  const { user, signOut } = useAuthContext();
+
+  // Account modal state
+  const [showAccount, setShowAccount] = useState(false);
 
   // Daily review state
   const [showDR, setShowDR] = useState(false);
@@ -98,7 +102,13 @@ export default function HomeScreen() {
             </Text>
           </View>
           <Pressable
-            onPress={() => router.push("/auth")}
+            onPress={() => {
+              if (user) {
+                setShowAccount(true);
+              } else {
+                router.push("/auth");
+              }
+            }}
             className="flex-row items-center gap-2 px-3 py-2 rounded-xl bg-lm-paper border border-lm-border"
           >
             <User size={16} color={user ? P.green : P.ink3} />
@@ -246,6 +256,40 @@ export default function HomeScreen() {
         onNext={handleDrNext}
         onClose={() => setShowDR(false)}
       />
+
+      {/* Account Modal */}
+      <Modal visible={showAccount} transparent animationType="fade">
+        <Pressable
+          className="flex-1 bg-black/40 justify-center items-center"
+          onPress={() => setShowAccount(false)}
+        >
+          <View className="bg-lm-paper rounded-2xl p-6 mx-8 w-72 border border-lm-border">
+            <Text className="text-lg font-bold text-lm-ink mb-1">
+              {user?.user_metadata?.display_name ?? "Account"}
+            </Text>
+            <Text className="text-sm text-lm-ink3 mb-5">
+              {user?.email ?? ""}
+            </Text>
+            <Pressable
+              onPress={() => {
+                setShowAccount(false);
+                signOut();
+              }}
+              className="rounded-xl py-3 items-center mb-2"
+              style={{ backgroundColor: P.red }}
+            >
+              <Text className="text-white text-sm font-semibold">Sign Out</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setShowAccount(false)}
+              className="rounded-xl py-3 items-center"
+              style={{ backgroundColor: P.border }}
+            >
+              <Text className="text-sm font-semibold text-lm-ink2">Cancel</Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,8 +14,15 @@ import { P } from "@/constants/theme";
 import { useAuthContext } from "@/providers/AuthProvider";
 
 export default function AuthScreen() {
-  const { signIn, signUp } = useAuthContext();
+  const { user, signIn, signUp } = useAuthContext();
   const [mode, setMode] = useState<"login" | "signup">("login");
+
+  // Navigate back when user becomes authenticated
+  useEffect(() => {
+    if (user) {
+      router.replace("/(tabs)");
+    }
+  }, [user]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,10 +44,15 @@ export default function AuthScreen() {
     try {
       if (mode === "login") {
         await signIn(email.trim(), password);
+        // Navigation handled by useEffect watching user state
       } else {
-        await signUp(email.trim(), password, name.trim());
+        const { needsConfirmation } = await signUp(email.trim(), password, name.trim());
+        if (needsConfirmation) {
+          setError("Check your email to confirm your account, then sign in.");
+          setMode("login");
+        }
+        // Navigation handled by useEffect watching user state
       }
-      router.replace("/(tabs)");
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Something went wrong";
       setError(msg);

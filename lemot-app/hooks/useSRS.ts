@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { kvStorage } from "@/lib/storage";
 
 /**
  * Simple Leitner-style SRS (Spaced Repetition System)
@@ -49,7 +49,7 @@ export function useSRS() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(SRS_KEY);
+        const raw = await kvStorage.getItem(SRS_KEY);
         if (raw) setData(JSON.parse(raw));
       } catch (e) {
         console.warn("[SRS] Load failed:", e);
@@ -61,7 +61,7 @@ export function useSRS() {
   // Save
   const save = useCallback(async (newData: SRSData) => {
     try {
-      await AsyncStorage.setItem(SRS_KEY, JSON.stringify(newData));
+      await kvStorage.setItem(SRS_KEY, JSON.stringify(newData));
     } catch (e) {
       console.warn("[SRS] Save failed:", e);
     }

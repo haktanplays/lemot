@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { kvStorage } from "@/lib/storage";
 import type { StorageData, ErrorEntry, DailyReview } from "@/lib/types";
 
 const STORAGE_KEY = "lm7";
@@ -19,7 +19,7 @@ export function useStorage() {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const raw = await kvStorage.getItem(STORAGE_KEY);
         if (raw) {
           const d: StorageData = JSON.parse(raw);
           setProg(d.p || {});
@@ -63,7 +63,7 @@ export function useStorage() {
           dr: dr || { date: "", count: 0 },
           streak: str || 0,
         };
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        await kvStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       } catch (e) {
         console.warn("[Storage] Save failed:", e);
       }
