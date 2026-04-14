@@ -266,8 +266,16 @@ export default function LessonScreen() {
     }
   };
 
+  const safeBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace("/(tabs)");
+    }
+  };
+
   const handleTakeBreak = () => {
-    router.back();
+    safeBack();
   };
 
   // Error wrappers
@@ -475,7 +483,7 @@ export default function LessonScreen() {
       <SafeAreaView className="flex-1 bg-lm-bg">
         {/* Header */}
         <View className="flex-row items-center px-4 py-3 border-b border-lm-border bg-lm-paper">
-          <Pressable onPress={() => router.back()} className="p-2 -ml-2">
+          <Pressable onPress={safeBack} className="p-2 -ml-2">
             <ChevronLeft color={P.ink} size={24} />
           </Pressable>
           <View className="flex-1 ml-2">
@@ -885,7 +893,7 @@ export default function LessonScreen() {
               </Pressable>
             )}
             <Pressable
-              onPress={() => router.back()}
+              onPress={safeBack}
               className="bg-lm-green rounded-xl px-6 py-3 mb-4"
             >
               <Text className="text-white font-semibold text-center">

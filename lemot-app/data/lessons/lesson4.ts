@@ -511,8 +511,13 @@ export const lesson4: Lesson = {
   soundPatterns: [
     {
       pattern: "The French R (/ʁ/)",
-      examples: ["avoir", "revoir", "très", "restaurant"],
-      tip: "The French R is uvular — produced at the back of the throat, not with the tongue tip like English R. Think of it as a soft gargle or the sound you make clearing your throat very gently. Practice with 'rouge' (red) — say 'ooj' with a gentle throat vibration at the start.",
+      examples: [
+        { fr: "avoir", en: "to have" },
+        { fr: "revoir", en: "to see again" },
+        { fr: "très", en: "very" },
+        { fr: "restaurant", en: "restaurant" },
+      ],
+      rule: "The French R is uvular — produced at the back of the throat, not with the tongue tip like English R. Think of it as a soft gargle or the sound you make clearing your throat very gently. Practice with 'rouge' (red) — say 'ooj' with a gentle throat vibration at the start.",
     },
   ],
   cultureBite:
