@@ -1,14 +1,13 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const GEMINI_KEY = Deno.env.get("GEMINI_API_KEY") ?? "";
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent";
+import { callWithFallback } from "../_shared/providers.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
+
+const FALLBACK_TEXT = "Could not evaluate. Try again.";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -40,48 +39,37 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { userText, situation, targetWords } = await req.json();
+    const {
+      userText,
+      situation,
+      targetWords,
+      lang = "fr",
+    }: {
+      userText: string;
+      situation: string;
+      targetWords: string[];
+      lang?: string;
+    } = await req.json();
 
-    const system = `You evaluate A1 French learners' writing. Check: 1) Did they use target words? 2) Basic grammar. 3) Does it fit the situation? Give 2-3 sentences of encouraging feedback in English. Mention specific words they used well.`;
-    const prompt = `Situation: ${situation}\nTarget words: ${targetWords.join(", ")}\nStudent wrote: ${userText}`;
+    const system = `You evaluate an A1 ${lang.toUpperCase()} learner's writing and give feedback DIRECTLY TO THE LEARNER. Always address them as "you" (2nd person). NEVER say "the user", "the student", "the learner", or "they" — always "you". Check: 1) Did you use the target words? 2) Basic grammar. 3) Does it fit the situation? Give 2-3 sentences of encouraging feedback in English. Mention specific words you used well. Example good: "You nailed 'je voudrais' — that's the polite form."`;
+    const prompt = `Situation: ${situation}\nTarget words: ${targetWords.join(", ")}\nYour writing: ${userText}`;
 
-    const res = await fetch(GEMINI_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": GEMINI_KEY,
-      },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: system }] },
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: {
-          maxOutputTokens: 200,
-          temperature: 0.5,
-        },
-      }),
-    });
+    const result = await callWithFallback(
+      [{ role: "user", content: prompt }],
+      system,
+      200,
+      lang,
+      "evaluate",
+    );
 
-    if (!res.ok) {
-      const err = await res.text();
-      console.error("[ai-evaluate] Gemini error:", err);
-      return new Response(
-        JSON.stringify({ text: "Could not evaluate. Try again." }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
-    }
-
-    const data = await res.json();
-    const text =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ??
-      "Could not evaluate. Try again.";
-
-    return new Response(JSON.stringify({ text }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  } catch (err) {
-    console.error("[ai-evaluate] Error:", err);
     return new Response(
-      JSON.stringify({ text: "Technical problem." }),
+      JSON.stringify({ text: result.text, provider: result.provider }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return new Response(
+      JSON.stringify({ text: FALLBACK_TEXT, error: msg }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }

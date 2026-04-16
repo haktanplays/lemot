@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
 
     const { errors } = await req.json();
 
-    const system = `You analyze French A1 learner errors. Given a list of errors (word, section, given answer, correct answer), identify patterns and weak spots. Return JSON: { "weakSpots": [{ "word": string, "count": number, "pattern": string, "tip": string }], "summary": string }. Max 5 weak spots. Tips should be concise (1 sentence). Summary max 2 sentences.`;
+    const system = `You analyze a French A1 learner's errors and write tips DIRECTLY TO THE LEARNER. Always address them as "you" (2nd person). NEVER say "the user", "the student", "the learner", or "they" — always "you". Given a list of errors (word, section, given answer, correct answer), identify patterns and weak spots. Return JSON: { "weakSpots": [{ "word": string, "count": number, "pattern": string, "tip": string }], "summary": string }. Max 5 weak spots. Tips should be concise (1 sentence, addressed to "you"). Summary max 2 sentences, addressed to "you".`;
     const prompt = `Analyze these errors:\n${JSON.stringify(errors)}`;
 
     const res = await fetch(ANTHROPIC_URL, {

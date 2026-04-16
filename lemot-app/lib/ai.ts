@@ -16,6 +16,24 @@ async function callEdgeFunction(
 ): Promise<string> {
   if (!supabaseReady) return fallback;
 
+  // TEMP DIAGNOSTIC
+  try {
+    const { data: sess } = await supabase.auth.getSession();
+    const tok = sess.session?.access_token ?? "";
+    const exp = sess.session?.expires_at ?? 0;
+    const now = Math.floor(Date.now() / 1000);
+    console.log("[AI DIAG] tokenLen:", tok.length, "exp:", exp, "now:", now, "expIn:", exp - now);
+    console.log("[AI DIAG] refreshLen:", (sess.session?.refresh_token ?? "").length);
+
+    const { data: refreshed, error: refreshErr } = await supabase.auth.refreshSession();
+    console.log("[AI DIAG] refreshOK:", !!refreshed.session, "refreshErr:", refreshErr?.message);
+
+    const diagRes = await supabase.functions.invoke("ai-diag", { body: {} });
+    console.log("[AI DIAG] server sees:", JSON.stringify(diagRes.data), "err:", diagRes.error?.message);
+  } catch (e) {
+    console.log("[AI DIAG] diag threw:", (e as Error).message);
+  }
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
 

@@ -893,6 +893,32 @@ export default function LessonScreen() {
               </Pressable>
             )}
             <Pressable
+              onPress={() => router.replace("/(tabs)/practice")}
+              className="rounded-xl px-6 py-3 mb-3"
+              style={{
+                borderWidth: 1,
+                borderColor: P.border,
+                backgroundColor: P.paper,
+              }}
+            >
+              <Text className="font-semibold text-center" style={{ color: P.ink }}>
+                Practice This Lesson
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => router.replace("/(tabs)/chat")}
+              className="rounded-xl px-6 py-3 mb-3"
+              style={{
+                borderWidth: 1,
+                borderColor: P.border,
+                backgroundColor: P.paper,
+              }}
+            >
+              <Text className="font-semibold text-center" style={{ color: P.ink }}>
+                Chat in French
+              </Text>
+            </Pressable>
+            <Pressable
               onPress={safeBack}
               className="bg-lm-green rounded-xl px-6 py-3 mb-4"
             >

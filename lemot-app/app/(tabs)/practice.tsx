@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import {
   Layers,
   Volume2,
@@ -19,6 +20,8 @@ import {
   RotateCcw,
   Globe,
   BookOpen,
+  MessageCircle,
+  AlertCircle,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
 import { SCENARIOS } from "@/data/practiceScenarios";
@@ -47,7 +50,10 @@ const SCENARIO_IDS = SCENARIOS.map(
 );
 
 export default function PracticeScreen() {
-  const { say, loaded } = useApp();
+  const router = useRouter();
+  const { say, loaded, errors, weakSpots } = useApp();
+  const weakCount = weakSpots?.length ?? 0;
+  const errorCount = errors?.length ?? 0;
   const { markKnown, markLearning, getDueCards, getStats, srsLoaded } =
     useSRS();
   const [mode, setMode] = useState<Mode>("menu");
@@ -263,6 +269,66 @@ export default function PracticeScreen() {
             </View>
             <ChevronRight size={16} color={P.ink3} />
           </Pressable>
+
+          {/* AI Chat redirect */}
+          <Pressable
+            onPress={() => router.push("/(tabs)/chat")}
+            className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
+            style={{
+              backgroundColor: P.paper,
+              borderWidth: 1,
+              borderColor: P.border,
+              shadowColor: "#2C2825",
+              shadowOpacity: 0.06,
+              shadowRadius: 4,
+              shadowOffset: { width: 0, height: 1 },
+              elevation: 2,
+              gap: 12,
+            }}
+          >
+            <MessageCircle size={22} color={P.red} strokeWidth={1.3} />
+            <View className="flex-1">
+              <Text className="text-sm font-bold" style={{ color: P.ink }}>
+                Chat with AI
+              </Text>
+              <Text className="text-xs" style={{ color: P.ink3 }}>
+                Free-form conversation in French
+              </Text>
+            </View>
+            <ChevronRight size={16} color={P.ink3} />
+          </Pressable>
+
+          {/* Review Errors — only shows when there are errors or weak spots */}
+          {(errorCount > 0 || weakCount > 0) && (
+            <Pressable
+              onPress={() => router.push("/(tabs)/stats")}
+              className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
+              style={{
+                backgroundColor: P.paper,
+                borderWidth: 1,
+                borderColor: P.red + "40",
+                shadowColor: "#2C2825",
+                shadowOpacity: 0.06,
+                shadowRadius: 4,
+                shadowOffset: { width: 0, height: 1 },
+                elevation: 2,
+                gap: 12,
+              }}
+            >
+              <AlertCircle size={22} color={P.red} strokeWidth={1.3} />
+              <View className="flex-1">
+                <Text className="text-sm font-bold" style={{ color: P.ink }}>
+                  Review Errors
+                </Text>
+                <Text className="text-xs" style={{ color: P.ink3 }}>
+                  {weakCount > 0
+                    ? `${weakCount} weak spot${weakCount === 1 ? "" : "s"} to work on`
+                    : `${errorCount} recent mistake${errorCount === 1 ? "" : "s"}`}
+                </Text>
+              </View>
+              <ChevronRight size={16} color={P.ink3} />
+            </Pressable>
+          )}
 
           <View className="h-8" />
         </ScrollView>

@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import {
   BookOpen,
   ChevronDown,
@@ -10,10 +11,14 @@ import {
   Lock,
   RotateCcw,
   Volume2,
+  MessageCircle,
+  AlertCircle,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES } from "@/data/milestones";
+import { LESSON_POOLS } from "@/data/pools";
+import { extractExposureWords } from "@/data/exposureGlossary";
 import { useApp } from "@/providers/AppProvider";
 import { norm } from "@/lib/normalize";
 import type { FillItem, QuizItem, Lesson } from "@/lib/types";
@@ -36,10 +41,14 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 function buildExercises(lesson: Lesson, count: number): PracticeExercise[] {
+  const staticPool = LESSON_POOLS[lesson.id];
+  const fillFG = staticPool?.fillFG ?? lesson.fillFG;
+  const fillBlanks = staticPool?.fillBlanks ?? lesson.fillBlanks;
+  const quiz = staticPool?.quiz ?? lesson.quiz;
   const pool: PracticeExercise[] = [
-    ...lesson.fillFG.map((item) => ({ type: "fill_fg" as const, item })),
-    ...lesson.fillBlanks.map((item) => ({ type: "fill_fr" as const, item })),
-    ...lesson.quiz.map((item) => ({ type: "quiz" as const, item })),
+    ...fillFG.map((item) => ({ type: "fill_fg" as const, item })),
+    ...fillBlanks.map((item) => ({ type: "fill_fr" as const, item })),
+    ...quiz.map((item) => ({ type: "quiz" as const, item })),
   ];
   return shuffle(pool).slice(0, count);
 }
@@ -49,7 +58,8 @@ interface Props {
 }
 
 export default function LessonPractice({ onBack }: Props) {
-  const { lp, say } = useApp();
+  const router = useRouter();
+  const { lp, say, weakSpots } = useApp();
   const [stage, setStage] = useState<Stage>("select");
   const [expandedMilestone, setExpandedMilestone] = useState(0);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
@@ -59,6 +69,7 @@ export default function LessonPractice({ onBack }: Props) {
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
+  const [multiPicks, setMultiPicks] = useState<string[]>([]);
 
   const completedLessons = useMemo(() => {
     const set = new Set<number>();
@@ -73,6 +84,7 @@ export default function LessonPractice({ onBack }: Props) {
     setExercises(buildExercises(lesson, 8));
     setIdx(0);
     setSelected(null);
+    setMultiPicks([]);
     setScore(0);
     setStage("session");
   }, []);
@@ -146,10 +158,11 @@ export default function LessonPractice({ onBack }: Props) {
                       if (!lesson) return null;
                       const completed = completedLessons.has(lessonId);
                       const progress = lp(lessonId);
+                      const staticPool = LESSON_POOLS[lessonId];
                       const poolSize =
-                        lesson.fillFG.length +
-                        lesson.fillBlanks.length +
-                        lesson.quiz.length;
+                        (staticPool?.fillFG ?? lesson.fillFG).length +
+                        (staticPool?.fillBlanks ?? lesson.fillBlanks).length +
+                        (staticPool?.quiz ?? lesson.quiz).length;
 
                       return (
                         <Pressable
@@ -250,6 +263,43 @@ export default function LessonPractice({ onBack }: Props) {
               Shuffle & Try More
             </Text>
           </Pressable>
+
+          {/* Chat with AI shortcut */}
+          <Pressable
+            onPress={() => router.push("/(tabs)/chat")}
+            className="flex-row items-center rounded-xl px-5 py-3 mb-3"
+            style={{
+              borderWidth: 1,
+              borderColor: P.border,
+              backgroundColor: P.paper,
+              gap: 6,
+            }}
+          >
+            <MessageCircle size={14} color={P.ink2} />
+            <Text className="font-semibold text-sm" style={{ color: P.ink }}>
+              Practice in Chat
+            </Text>
+          </Pressable>
+
+          {/* Error Practice shortcut (only if weak spots exist) */}
+          {weakSpots && weakSpots.length > 0 && (
+            <Pressable
+              onPress={() => router.push("/(tabs)/stats")}
+              className="flex-row items-center rounded-xl px-5 py-3 mb-3"
+              style={{
+                borderWidth: 1,
+                borderColor: P.red + "40",
+                backgroundColor: P.paper,
+                gap: 6,
+              }}
+            >
+              <AlertCircle size={14} color={P.red} />
+              <Text className="font-semibold text-sm" style={{ color: P.ink }}>
+                Review {weakSpots.length} Weak Spot{weakSpots.length === 1 ? "" : "s"}
+              </Text>
+            </Pressable>
+          )}
+
           <Pressable onPress={() => setStage("select")}>
             <Text className="text-sm font-semibold" style={{ color: P.ink3 }}>
               Choose Another Lesson
@@ -272,10 +322,38 @@ export default function LessonPractice({ onBack }: Props) {
     return null;
   }
 
+  const multiBlanks =
+    ex.type !== "quiz" &&
+    Array.isArray(ex.item.blanks) &&
+    Array.isArray(ex.item.blankOpts)
+      ? ex.item.blanks
+      : null;
+  const multiBlankOpts =
+    ex.type !== "quiz" && Array.isArray(ex.item.blankOpts)
+      ? ex.item.blankOpts
+      : null;
+  const isMulti = !!(multiBlanks && multiBlankOpts);
+  const blanks = multiBlanks ?? [];
+  const blankOpts = multiBlankOpts ?? [];
+  const currentBlankIdx = multiPicks.length;
+
   const handleAnswer = (answer: string) => {
     if (selected) return;
+    if (isMulti) {
+      const nextPicks = [...multiPicks, answer];
+      if (nextPicks.length < blanks.length) {
+        setMultiPicks(nextPicks);
+        return;
+      }
+      setMultiPicks(nextPicks);
+      setSelected(answer);
+      const allCorrect = nextPicks.every(
+        (p, i) => norm(p) === norm(blanks[i]),
+      );
+      if (allCorrect) setScore((s) => s + 1);
+      return;
+    }
     setSelected(answer);
-
     if (norm(answer) === norm(ex.item.a)) {
       setScore((s) => s + 1);
     }
@@ -287,11 +365,27 @@ export default function LessonPractice({ onBack }: Props) {
     } else {
       setIdx(idx + 1);
       setSelected(null);
+      setMultiPicks([]);
     }
   };
 
-  const correctAnswer = ex.item.a;
-  const isCorrect = selected ? norm(selected) === norm(correctAnswer) : null;
+  const fillProgressive = (s: string, picks: string[]): string => {
+    let out = s;
+    for (const p of picks) {
+      out = out.replace("[___]", p);
+    }
+    return out;
+  };
+  const fullSentence =
+    isMulti && ex.type !== "quiz"
+      ? fillProgressive(ex.item.s, blanks)
+      : "";
+  const correctAnswer = isMulti ? fullSentence : ex.item.a;
+  const isCorrect = selected
+    ? isMulti
+      ? multiPicks.every((p, i) => norm(p) === norm(blanks[i]))
+      : norm(selected) === norm(correctAnswer)
+    : null;
 
   // Build label & question based on exercise type
   let label = "";
@@ -299,13 +393,21 @@ export default function LessonPractice({ onBack }: Props) {
   let options: string[] = [];
 
   if (ex.type === "fill_fg") {
-    label = "WEAVE FILL";
-    question = ex.item.s;
-    options = ex.item.o ?? [];
+    label = isMulti
+      ? `WEAVE FILL — Blank ${Math.min(currentBlankIdx + 1, blanks.length)}/${blanks.length}`
+      : "WEAVE FILL";
+    question = isMulti ? fillProgressive(ex.item.s, multiPicks) : ex.item.s;
+    options = isMulti
+      ? blankOpts[Math.min(currentBlankIdx, blankOpts.length - 1)] ?? []
+      : ex.item.o ?? [];
   } else if (ex.type === "fill_fr") {
-    label = "FRENCH FILL";
-    question = ex.item.s;
-    options = ex.item.o ?? [];
+    label = isMulti
+      ? `FRENCH FILL — Blank ${Math.min(currentBlankIdx + 1, blanks.length)}/${blanks.length}`
+      : "FRENCH FILL";
+    question = isMulti ? fillProgressive(ex.item.s, multiPicks) : ex.item.s;
+    options = isMulti
+      ? blankOpts[Math.min(currentBlankIdx, blankOpts.length - 1)] ?? []
+      : ex.item.o ?? [];
   } else {
     label = "QUIZ";
     question = ex.item.q;
@@ -348,16 +450,38 @@ export default function LessonPractice({ onBack }: Props) {
 
         {/* Context */}
         {"ctx" in ex.item && ex.item.ctx && (
-          <Text className="text-xs text-center mb-4" style={{ color: P.ink3 }}>
+          <Text className="text-xs text-center mb-2" style={{ color: P.ink3 }}>
             {ex.item.ctx}
           </Text>
         )}
+
+        {/* Exposure glossary — translations for non-L1 words in the sentence */}
+        {(() => {
+          const sentenceText =
+            ex.type === "quiz" ? ex.item.q : ex.item.s;
+          const words = extractExposureWords(sentenceText);
+          if (words.length === 0) return null;
+          return (
+            <Text
+              className="text-[10px] text-center mb-4 px-2"
+              style={{ color: P.ink3, fontStyle: "italic" }}
+            >
+              💡{" "}
+              {words
+                .map((w) => `${w.word} = ${w.meaning}`)
+                .join("  ·  ")}
+            </Text>
+          );
+        })()}
 
         {/* Options */}
         <View className="w-full mt-4" style={{ gap: 10 }}>
           {options.map((opt) => {
             const isThis = selected === opt;
-            const isAnswer = norm(opt) === norm(correctAnswer);
+            const optAnswer = isMulti
+              ? blanks[blanks.length - 1] ?? ""
+              : correctAnswer;
+            const isAnswer = norm(opt) === norm(optAnswer);
             let bg: string = P.paper;
             let borderColor: string = P.border;
 
