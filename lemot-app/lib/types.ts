@@ -52,19 +52,28 @@ export interface Example {
   en: string;
   bridge: string;
   note?: string;
+  diff?: Difficulty;
 }
 
 export interface FillItem {
   s: string;
   a: string;
-  o: string[];
+  /** Options for single-blank exercises. Omit when using blankOpts for multi-blank. */
+  o?: string[];
   ctx: string;
+  /** Multi-blank: ordered correct answers for each [___] in `s` */
+  blanks?: string[];
+  /** Multi-blank: options grouped per blank position — blankOpts[0] = options for 1st blank */
+  blankOpts?: string[][];
+  /** Exercise difficulty tier */
+  diff?: Difficulty;
 }
 
 export interface BuildItem {
   c: string[];
   en: string;
   trap?: string[];
+  diff?: Difficulty;
 }
 
 export interface QuizItem {
@@ -73,6 +82,9 @@ export interface QuizItem {
   o: string[];
   ctx?: string;
   negative?: boolean;
+  diff?: Difficulty;
+  /** Quiz variant: mcq (default), truefalse, order */
+  variant?: "mcq" | "truefalse" | "order";
 }
 
 export interface CombineItem {
@@ -138,7 +150,9 @@ export type ReviewItem =
   | { type: "context"; situation: string; a: string; o: string[] }
   | { type: "fill_ctx"; s: string; a: string; o: string[]; ctx: string }
   | { type: "weave"; en: string; known: string[]; sample: string }
-  | { type: "weave"; en: string; blanks: WeaveBlank[]; full: string };
+  | { type: "weave"; en: string; blanks: WeaveBlank[]; full: string }
+  | { type: "match"; pairs: { fr: string; en: string }[] }
+  | { type: "scramble"; word: string; hint: string };
 
 export interface Lesson {
   id: number;

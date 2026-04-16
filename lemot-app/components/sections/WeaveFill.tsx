@@ -95,7 +95,7 @@ export function WeaveFill({
 
         {/* Multiple choice */}
         <MCQ
-          options={item.o}
+          options={item.o ?? []}
           correct={item.a}
           selected={selected}
           onSelect={handleSelect}

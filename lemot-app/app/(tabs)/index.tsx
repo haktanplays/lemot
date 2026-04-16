@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { View, Text, ScrollView, Pressable, ActivityIndicator, Modal } from "react-native";
+import { View, Text, ScrollView, Pressable, ActivityIndicator, Modal, Image } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -10,7 +10,7 @@ import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
-import { MountainMap } from "@/components/MountainMap";
+import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
 import { LessonCard } from "@/components/LessonCard";
 import { MilestoneCard } from "@/components/MilestoneCard";
 import { Btn } from "@/components/Btn";
@@ -85,6 +85,14 @@ export default function HomeScreen() {
     m.ids.every((id) => lp(id) === SECS.length)
   );
 
+  // Journey image — based on highest completed lesson
+  const highestLesson = LESSONS.reduce(
+    (max, l) => (lp(l.id) > 0 && l.id > max ? l.id : max),
+    0
+  );
+  const journeyPhase = getJourneyPhase(highestLesson);
+  const journeyImage = getJourneyImage(highestLesson);
+
   // Daily quote
   const quote = MOTIV[Math.floor(Date.now() / 86400000) % MOTIV.length];
 
@@ -118,9 +126,22 @@ export default function HomeScreen() {
           </Pressable>
         </View>
 
-        {/* Mountain Map */}
+        {/* Journey Image */}
         <View className="bg-lm-paper rounded-2xl mb-4 border border-lm-border overflow-hidden">
-          <MountainMap lp={lp} onLessonPress={goToLesson} />
+          <Image
+            source={journeyImage}
+            className="w-full"
+            style={{ height: 200 }}
+            resizeMode="contain"
+          />
+          <View className="px-4 py-2.5">
+            <Text className="text-xs font-semibold" style={{ color: P.ink }}>
+              {journeyPhase.label}
+            </Text>
+            <Text className="text-[10px]" style={{ color: P.ink3 }}>
+              {journeyPhase.subtitle}
+            </Text>
+          </View>
         </View>
 
         {/* Motivational quote */}

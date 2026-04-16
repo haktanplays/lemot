@@ -128,7 +128,7 @@ export function Quiz({ items, onComplete, onError }: QuizProps) {
 
         {/* Multiple choice options */}
         <MCQ
-          options={item.o}
+          options={item.o ?? []}
           correct={item.a}
           selected={selected}
           onSelect={handleSelect}

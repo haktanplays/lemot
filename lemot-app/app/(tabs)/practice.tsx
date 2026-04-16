@@ -18,6 +18,7 @@ import {
   X,
   RotateCcw,
   Globe,
+  BookOpen,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
 import { SCENARIOS } from "@/data/practiceScenarios";
@@ -26,8 +27,9 @@ import { useApp } from "@/providers/AppProvider";
 import { useSRS } from "@/hooks/useSRS";
 import { norm } from "@/lib/normalize";
 import type { FlashCard, ScenarioCard } from "@/lib/types";
+import LessonPractice from "@/components/LessonPractice";
 
-type Mode = "menu" | "scenario" | "translate";
+type Mode = "menu" | "scenario" | "translate" | "lesson";
 
 /* ── Shuffle helper ── */
 function shuffle<T>(arr: T[]): T[] {
@@ -74,14 +76,6 @@ export default function PracticeScreen() {
     [getDueCards]
   );
 
-  if (!loaded || !srsLoaded) {
-    return (
-      <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
-        <ActivityIndicator size="small" color={P.red} />
-      </SafeAreaView>
-    );
-  }
-
   const startScenarios = useCallback(() => {
     // Prioritize due cards, then add new cards
     const dueIds = getDueCards(SCENARIO_IDS);
@@ -105,6 +99,14 @@ export default function PracticeScreen() {
     setTransScore(0);
     setMode("translate");
   }, []);
+
+  if (!loaded || !srsLoaded) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
+        <ActivityIndicator size="small" color={P.red} />
+      </SafeAreaView>
+    );
+  }
 
   /* ═══════════════════════════════
      MODE MENU
@@ -206,6 +208,34 @@ export default function PracticeScreen() {
             <ChevronRight size={16} color={P.ink3} />
           </Pressable>
 
+          {/* Lesson Practice card */}
+          <Pressable
+            onPress={() => setMode("lesson")}
+            className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
+            style={{
+              backgroundColor: P.paper,
+              borderWidth: 1,
+              borderColor: P.border,
+              shadowColor: "#2C2825",
+              shadowOpacity: 0.06,
+              shadowRadius: 4,
+              shadowOffset: { width: 0, height: 1 },
+              elevation: 2,
+              gap: 12,
+            }}
+          >
+            <BookOpen size={22} color={P.red} strokeWidth={1.3} />
+            <View className="flex-1">
+              <Text className="text-sm font-bold" style={{ color: P.ink }}>
+                Lesson Practice
+              </Text>
+              <Text className="text-xs" style={{ color: P.ink3 }}>
+                Deepen your skills per lesson
+              </Text>
+            </View>
+            <ChevronRight size={16} color={P.ink3} />
+          </Pressable>
+
           {/* Translate card */}
           <Pressable
             onPress={startTranslate}
@@ -238,6 +268,13 @@ export default function PracticeScreen() {
         </ScrollView>
       </SafeAreaView>
     );
+  }
+
+  /* ═══════════════════════════════
+     LESSON PRACTICE MODE
+     ═══════════════════════════════ */
+  if (mode === "lesson") {
+    return <LessonPractice onBack={() => setMode("menu")} />;
   }
 
   /* ═══════════════════════════════
@@ -400,8 +437,8 @@ export default function PracticeScreen() {
   /* ═══════════════════════════════
      TRANSLATE MODE
      ═══════════════════════════════ */
-  const tItem = transItems[transIdx];
   const tDone = transIdx >= transItems.length;
+  const tItem = transItems[transIdx] as FlashCard | undefined;
 
   if (tDone) {
     return (
@@ -439,6 +476,7 @@ export default function PracticeScreen() {
   }
 
   const checkTranslation = () => {
+    if (!tItem) return;
     const isCorrect = norm(transInput) === norm(tItem.fr);
     setTransResult(isCorrect ? "correct" : "wrong");
     if (isCorrect) setTransScore(transScore + 1);
@@ -449,6 +487,8 @@ export default function PracticeScreen() {
     setTransInput("");
     setTransResult(null);
   };
+
+  if (!tItem) return null;
 
   return (
     <KeyboardAvoidingView

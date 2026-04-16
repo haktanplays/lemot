@@ -90,7 +90,7 @@ export function FrenchFill({ items, onComplete, onError }: FrenchFillProps) {
 
         {/* Multiple choice */}
         <MCQ
-          options={item.o}
+          options={item.o ?? []}
           correct={item.a}
           selected={selected}
           onSelect={handleSelect}
