@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { View, Text } from "react-native";
-import { ArrowRight } from "lucide-react-native";
+import { View, Text, Pressable } from "react-native";
+import { ArrowRight, Volume2 } from "lucide-react-native";
 import { MCQ } from "@/components/MCQ";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
@@ -15,6 +15,7 @@ interface WeaveFillProps {
     given: string,
     correct: string
   ) => void;
+  say: (text: string) => void;
 }
 
 /**
@@ -28,6 +29,7 @@ export function WeaveFill({
   items,
   onComplete,
   onError,
+  say,
 }: WeaveFillProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -100,6 +102,22 @@ export function WeaveFill({
           selected={selected}
           onSelect={handleSelect}
         />
+
+        {/* Listen (feedback state) — Weave sentences are intentionally English+French.
+            Speak the full French equivalent (`fr`) when authored; fall back to just the
+            answer word so fr-FR TTS isn't applied to mixed-language text. */}
+        {selected !== null && (
+          <Pressable
+            onPress={() => say(item.fr ?? item.a)}
+            className="flex-row items-center self-center mt-3 px-2.5 py-1.5 rounded"
+            style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+          >
+            <Volume2 size={12} color={P.ink3} />
+            <Text className="text-[10px]" style={{ color: P.ink3 }}>
+              Listen
+            </Text>
+          </Pressable>
+        )}
 
         {/* Next/Done button (only after answering) */}
         {selected !== null && (

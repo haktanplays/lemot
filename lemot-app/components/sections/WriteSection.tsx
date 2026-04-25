@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { View, Text, TextInput, KeyboardAvoidingView, Platform } from "react-native";
-import { ArrowRight } from "lucide-react-native";
+import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform } from "react-native";
+import { ArrowRight, Volume2 } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
@@ -15,6 +15,7 @@ interface WriteSectionProps {
     given: string,
     correct: string
   ) => void;
+  say: (text: string) => void;
 }
 
 type CheckResult = "ok" | "no" | null;
@@ -30,6 +31,7 @@ export function WriteSection({
   items,
   onComplete,
   onError,
+  say,
 }: WriteSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [input, setInput] = useState("");
@@ -148,6 +150,20 @@ export function WriteSection({
               {item.a}
             </Text>
           </Text>
+        )}
+
+        {/* Listen (feedback state) — speak the full sentence with the blank filled */}
+        {result !== null && (
+          <Pressable
+            onPress={() => say(item.s.replace(/\[___\]|_{2,}/g, item.a))}
+            className="flex-row items-center self-center mt-2 px-2.5 py-1.5 rounded"
+            style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+          >
+            <Volume2 size={12} color={P.ink3} />
+            <Text className="text-[10px]" style={{ color: P.ink3 }}>
+              Listen
+            </Text>
+          </Pressable>
         )}
 
         {/* Check button (before checking) */}

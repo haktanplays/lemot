@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { View, Text, TextInput, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform } from "react-native";
+import { Volume2 } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
@@ -16,6 +17,7 @@ interface CombineWeaveProps {
     given: string,
     correct: string,
   ) => void;
+  say: (text: string) => void;
 }
 
 // ── Combine sub-component state ──
@@ -62,6 +64,7 @@ export function CombineWeave({
   weave,
   onComplete,
   onError,
+  say,
 }: CombineWeaveProps) {
   const hasWeave = weave && weave.length > 0;
 
@@ -230,6 +233,20 @@ export function CombineWeave({
                 Check · {3 - attempts} tries
               </Text>
             </Btn>
+          )}
+
+          {/* Listen (after resolution) — speak the correct French sentence */}
+          {(result === "ok" || result === "fail") && (
+            <Pressable
+              onPress={() => say(item.answer)}
+              className="flex-row items-center self-center mt-2 px-2.5 py-1.5 rounded"
+              style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+            >
+              <Volume2 size={12} color={P.ink3} />
+              <Text className="text-[10px]" style={{ color: P.ink3 }}>
+                Listen
+              </Text>
+            </Pressable>
           )}
 
           {/* Next button (visible after resolution) */}
@@ -478,6 +495,20 @@ export function CombineWeave({
                 Check My Weave
               </Text>
             </Btn>
+          )}
+
+          {/* Listen (checked state) — speak the sample French sentence */}
+          {checked && (
+            <Pressable
+              onPress={() => say(item.sample)}
+              className="flex-row items-center self-center mt-2 px-2.5 py-1.5 rounded"
+              style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+            >
+              <Volume2 size={12} color={P.ink3} />
+              <Text className="text-[10px]" style={{ color: P.ink3 }}>
+                Listen
+              </Text>
+            </Pressable>
           )}
 
           {/* Next button */}

@@ -21,6 +21,7 @@ import { LESSON_POOLS } from "@/data/pools";
 import { extractExposureWords } from "@/data/exposureGlossary";
 import { useApp } from "@/providers/AppProvider";
 import { norm } from "@/lib/normalize";
+import { looksFrench } from "@/lib/looksFrench";
 import type { FillItem, QuizItem, Lesson } from "@/lib/types";
 
 type Stage = "select" | "session" | "done";
@@ -369,17 +370,37 @@ export default function LessonPractice({ onBack }: Props) {
     }
   };
 
+  // Replace blanks one-at-a-time, supporting both [___] and bare ___ markers.
+  // Use first-match (no /g) so each pick fills the next blank in order.
+  const BLANK = /\[_+\]|_{2,}/;
   const fillProgressive = (s: string, picks: string[]): string => {
     let out = s;
     for (const p of picks) {
-      out = out.replace("[___]", p);
+      out = out.replace(BLANK, p);
     }
     return out;
   };
+  // TTS source of truth — always the CORRECT French version so the learner
+  // hears proper French regardless of whether their pick was right:
+  //   - Quiz → the answer string (may be English; gated by looksFrench below).
+  //   - Weave (fill_fg) → the full French equivalent (`fr`), since the visible
+  //     sentence is intentionally English+French and fr-FR TTS would butcher
+  //     the English words. Falls back to the answer word if `fr` isn't set.
+  //   - French Fill (fill_fr) → prefer `fr`; else fill blanks with the CORRECT
+  //     answers so the spoken sentence is always the target French, never the
+  //     learner's wrong picks.
   const fullSentence =
-    isMulti && ex.type !== "quiz"
-      ? fillProgressive(ex.item.s, blanks)
-      : "";
+    ex.type === "quiz"
+      ? ex.item.a
+      : ex.type === "fill_fg"
+        ? ex.item.fr ?? ex.item.a
+        : ex.item.fr ??
+          (isMulti
+            ? fillProgressive(ex.item.s, blanks)
+            : ex.item.s.replace(/\[_+\]|_{2,}/g, ex.item.a));
+  // Hide Listen for non-French answers (English explanations, True/False,
+  // ranking arrows). fr-FR TTS would read those with a French accent.
+  const canSpeak = looksFrench(fullSentence);
   const correctAnswer = isMulti ? fullSentence : ex.item.a;
   const isCorrect = selected
     ? isMulti
@@ -545,17 +566,19 @@ export default function LessonPractice({ onBack }: Props) {
               )}
             </View>
 
-            {/* Listen */}
-            <Pressable
-              onPress={() => say(correctAnswer)}
-              className="flex-row items-center mt-2 px-2.5 py-1.5 rounded"
-              style={{ backgroundColor: "#F0EEEC", gap: 4 }}
-            >
-              <Volume2 size={12} color={P.ink3} />
-              <Text className="text-[10px]" style={{ color: P.ink3 }}>
-                Listen
-              </Text>
-            </Pressable>
+            {/* Listen — hidden for English / ranking / True-False answers */}
+            {canSpeak && (
+              <Pressable
+                onPress={() => say(fullSentence)}
+                className="flex-row items-center mt-2 px-2.5 py-1.5 rounded"
+                style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+              >
+                <Volume2 size={12} color={P.ink3} />
+                <Text className="text-[10px]" style={{ color: P.ink3 }}>
+                  Listen
+                </Text>
+              </Pressable>
+            )}
 
             <Pressable
               onPress={next}

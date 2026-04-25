@@ -338,6 +338,7 @@ export default function LessonScreen() {
         return (
           <WeaveFill
             items={lesson.fillFG}
+            say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_fg");
               gx(15);
@@ -350,6 +351,7 @@ export default function LessonScreen() {
         return (
           <FrenchFill
             items={lesson.fillBlanks}
+            say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_fr");
               gx(15);
@@ -366,6 +368,7 @@ export default function LessonScreen() {
         return (
           <BuildSentence
             items={lesson.buildSentences}
+            say={say}
             onComplete={(score, total) => {
               mk(lessonId, "build");
               gx(15);
@@ -382,6 +385,7 @@ export default function LessonScreen() {
         return (
           <WriteSection
             items={lesson.fillBlanks}
+            say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_write");
               gx(15);
@@ -394,6 +398,7 @@ export default function LessonScreen() {
         return (
           <Quiz
             items={lesson.quiz}
+            say={say}
             onComplete={(score, total) => {
               mk(lessonId, "quiz");
               gx(20);
@@ -411,6 +416,7 @@ export default function LessonScreen() {
           <CombineWeave
             combine={lesson.combine}
             weave={lesson.weave}
+            say={say}
             onComplete={(score, total) => {
               mk(lessonId, "combine_fg");
               gx(20);
@@ -427,6 +433,7 @@ export default function LessonScreen() {
         return (
           <SayItYourWay
             items={lesson.sayIt}
+            say={say}
             onComplete={() => {
               mk(lessonId, "say_it");
               gx(20);

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { View, Text, Pressable } from "react-native";
+import { Volume2 } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import type { BuildItem } from "@/lib/types";
@@ -12,6 +13,7 @@ interface BuildSentenceProps {
     given: string,
     correct: string,
   ) => void;
+  say: (text: string) => void;
 }
 
 /**
@@ -23,6 +25,7 @@ export function BuildSentence({
   items,
   onComplete,
   onError,
+  say,
 }: BuildSentenceProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
@@ -214,6 +217,19 @@ export function BuildSentence({
             >
               {isCorrect ? "Correct!" : `Answer: ${item.c.join(" ")}`}
             </Text>
+
+            {/* Listen — speak the full correct French sentence */}
+            <Pressable
+              onPress={() => say(item.c.join(" "))}
+              className="flex-row items-center self-center mt-2 px-2.5 py-1.5 rounded"
+              style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+            >
+              <Volume2 size={12} color={P.ink3} />
+              <Text className="text-[10px]" style={{ color: P.ink3 }}>
+                Listen
+              </Text>
+            </Pressable>
+
             <Btn onPress={handleNext}>
               <Text className="text-white text-sm font-semibold">
                 {currentIndex < items.length - 1 ? "Next" : "Done"}

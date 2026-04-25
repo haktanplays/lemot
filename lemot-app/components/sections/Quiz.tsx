@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
+import { Volume2 } from "lucide-react-native";
 import { MCQ } from "@/components/MCQ";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
+import { looksFrench } from "@/lib/looksFrench";
 import type { QuizItem } from "@/lib/types";
 
 interface QuizProps {
@@ -13,6 +15,7 @@ interface QuizProps {
     given: string,
     correct: string,
   ) => void;
+  say: (text: string) => void;
 }
 
 /** Highlight keywords like NEVER, WRONG, NOT, DOES NOT in red within question text. */
@@ -53,7 +56,7 @@ function renderQuestion(text: string) {
  * Supports context hints, negative (spot-the-mistake) questions.
  * Tracks score and calls onComplete when all items are done.
  */
-export function Quiz({ items, onComplete, onError }: QuizProps) {
+export function Quiz({ items, onComplete, onError, say }: QuizProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
@@ -133,6 +136,21 @@ export function Quiz({ items, onComplete, onError }: QuizProps) {
           selected={selected}
           onSelect={handleSelect}
         />
+
+        {/* Listen (feedback state) — only when the answer is recognizably French.
+            Hides for English explanations, True/False, and ranking-arrow answers. */}
+        {answered && looksFrench(item.a) && (
+          <Pressable
+            onPress={() => say(item.a)}
+            className="flex-row items-center self-center mt-3 px-2.5 py-1.5 rounded"
+            style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+          >
+            <Volume2 size={12} color={P.ink3} />
+            <Text className="text-[10px]" style={{ color: P.ink3 }}>
+              Listen
+            </Text>
+          </Pressable>
+        )}
 
         {/* Next / Done button after answering */}
         {answered && (

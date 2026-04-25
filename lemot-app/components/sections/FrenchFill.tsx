@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { View, Text } from "react-native";
-import { ArrowRight } from "lucide-react-native";
+import { View, Text, Pressable } from "react-native";
+import { ArrowRight, Volume2 } from "lucide-react-native";
 import { MCQ } from "@/components/MCQ";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
@@ -15,6 +15,7 @@ interface FrenchFillProps {
     given: string,
     correct: string
   ) => void;
+  say: (text: string) => void;
 }
 
 /**
@@ -24,7 +25,7 @@ interface FrenchFillProps {
  * Uses underscore _ as the blank marker instead of [___].
  * The user picks the correct word from multiple choice options.
  */
-export function FrenchFill({ items, onComplete, onError }: FrenchFillProps) {
+export function FrenchFill({ items, onComplete, onError, say }: FrenchFillProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
@@ -95,6 +96,20 @@ export function FrenchFill({ items, onComplete, onError }: FrenchFillProps) {
           selected={selected}
           onSelect={handleSelect}
         />
+
+        {/* Listen (feedback state) — speak the full French sentence with the blank filled */}
+        {selected !== null && (
+          <Pressable
+            onPress={() => say(item.s.replace(/\[___\]|_{2,}/g, item.a))}
+            className="flex-row items-center self-center mt-3 px-2.5 py-1.5 rounded"
+            style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+          >
+            <Volume2 size={12} color={P.ink3} />
+            <Text className="text-[10px]" style={{ color: P.ink3 }}>
+              Listen
+            </Text>
+          </Pressable>
+        )}
 
         {/* Next/Done button (only after answering) */}
         {selected !== null && (

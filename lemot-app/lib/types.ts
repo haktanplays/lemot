@@ -65,6 +65,10 @@ export interface FillItem {
   blanks?: string[];
   /** Multi-blank: options grouped per blank position — blankOpts[0] = options for 1st blank */
   blankOpts?: string[][];
+  /** Full French equivalent for TTS. Required for Weave Fill (fill_fg) so the
+   *  Listen button speaks complete French instead of mixed Eng/Fr with fr-FR accent.
+   *  For French Fill, this is also the source of truth for multi-blank Listen. */
+  fr?: string;
   /** Exercise difficulty tier */
   diff?: Difficulty;
 }

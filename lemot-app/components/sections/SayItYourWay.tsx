@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { View, Text, TextInput, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
-import { ArrowRight, Sparkles, Check, X } from "lucide-react-native";
+import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { ArrowRight, Sparkles, Check, X, Volume2 } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
@@ -10,6 +10,7 @@ import type { SayItItem } from "@/lib/types";
 interface SayItYourWayProps {
   items: SayItItem[];
   onComplete: () => void;
+  say: (text: string) => void;
 }
 
 /**
@@ -19,7 +20,7 @@ interface SayItYourWayProps {
  * with no hints -- only a situation and target words to guide them.
  * AI evaluates the response and checks target word usage.
  */
-export function SayItYourWay({ items, onComplete }: SayItYourWayProps) {
+export function SayItYourWay({ items, onComplete, say }: SayItYourWayProps) {
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -246,6 +247,20 @@ export function SayItYourWay({ items, onComplete }: SayItYourWayProps) {
               </Text>
             </View>
           </View>
+        )}
+
+        {/* Listen (feedback state) — speak the learner's own French response */}
+        {feedback && input.trim().length > 0 && (
+          <Pressable
+            onPress={() => say(input)}
+            className="flex-row items-center self-center mt-2 px-2.5 py-1.5 rounded"
+            style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+          >
+            <Volume2 size={12} color={P.ink3} />
+            <Text className="text-[10px]" style={{ color: P.ink3 }}>
+              Listen to your answer
+            </Text>
+          </Pressable>
         )}
 
         {/* Submit button */}
