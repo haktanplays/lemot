@@ -21,7 +21,7 @@ import { LESSON_POOLS } from "@/data/pools";
 import { extractExposureWords } from "@/data/exposureGlossary";
 import { useApp } from "@/providers/AppProvider";
 import { norm } from "@/lib/normalize";
-import { looksFrench } from "@/lib/looksFrench";
+import { looksFrench, extractFrenchQuote } from "@/lib/looksFrench";
 import type { FillItem, QuizItem, Lesson } from "@/lib/types";
 
 type Stage = "select" | "session" | "done";
@@ -382,7 +382,9 @@ export default function LessonPractice({ onBack }: Props) {
   };
   // TTS source of truth — always the CORRECT French version so the learner
   // hears proper French regardless of whether their pick was right:
-  //   - Quiz → the answer string (may be English; gated by looksFrench below).
+  //   - Quiz → if the answer is French, speak it; otherwise pull the French
+  //     phrase the question or answer is referencing (e.g. `What does 'merci
+  //     beaucoup' mean?` → speak "merci beaucoup"). Falls back to the answer.
   //   - Weave (fill_fg) → the full French equivalent (`fr`), since the visible
   //     sentence is intentionally English+French and fr-FR TTS would butcher
   //     the English words. Falls back to the answer word if `fr` isn't set.
@@ -391,7 +393,15 @@ export default function LessonPractice({ onBack }: Props) {
   //     learner's wrong picks.
   const fullSentence =
     ex.type === "quiz"
-      ? ex.item.a
+      ? // Prefer a French quote inside the answer (handles answers like
+        // "Raise your glass and repeat 'Santé !'" where the answer mixes
+        // English and French). Then a wholly-French answer. Then a quote
+        // from the question stem (English-answer Quiz pattern). Last resort
+        // is the raw answer.
+        extractFrenchQuote(ex.item.a) ??
+        (looksFrench(ex.item.a)
+          ? ex.item.a
+          : extractFrenchQuote(ex.item.q) ?? ex.item.a)
       : ex.type === "fill_fg"
         ? ex.item.fr ?? ex.item.a
         : ex.item.fr ??
@@ -476,10 +486,14 @@ export default function LessonPractice({ onBack }: Props) {
           </Text>
         )}
 
-        {/* Exposure glossary — translations for non-L1 words in the sentence */}
+        {/* Exposure glossary — translations for non-L1 words in the sentence.
+            For fill items, scan the FILLED sentence (fullSentence) so blank
+            answers like "bientôt" get explained — the template `s` only has
+            placeholders. For quiz, scan the question text (already contains
+            any referenced French quote). */}
         {(() => {
           const sentenceText =
-            ex.type === "quiz" ? ex.item.q : ex.item.s;
+            ex.type === "quiz" ? ex.item.q : fullSentence;
           const words = extractExposureWords(sentenceText);
           if (words.length === 0) return null;
           return (

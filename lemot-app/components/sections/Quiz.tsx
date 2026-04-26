@@ -4,7 +4,7 @@ import { Volume2 } from "lucide-react-native";
 import { MCQ } from "@/components/MCQ";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
-import { looksFrench } from "@/lib/looksFrench";
+import { looksFrench, extractFrenchQuote } from "@/lib/looksFrench";
 import type { QuizItem } from "@/lib/types";
 
 interface QuizProps {
@@ -137,20 +137,30 @@ export function Quiz({ items, onComplete, onError, say }: QuizProps) {
           onSelect={handleSelect}
         />
 
-        {/* Listen (feedback state) — only when the answer is recognizably French.
-            Hides for English explanations, True/False, and ranking-arrow answers. */}
-        {answered && looksFrench(item.a) && (
-          <Pressable
-            onPress={() => say(item.a)}
-            className="flex-row items-center self-center mt-3 px-2.5 py-1.5 rounded"
-            style={{ backgroundColor: "#F0EEEC", gap: 4 }}
-          >
-            <Volume2 size={12} color={P.ink3} />
-            <Text className="text-[10px]" style={{ color: P.ink3 }}>
-              Listen
-            </Text>
-          </Pressable>
-        )}
+        {/* Listen (feedback state) — speaks the answer when it's French, or the
+            French phrase the question references (e.g. `What does 'merci
+            beaucoup' mean?` → "merci beaucoup"). Hidden for ranking arrows. */}
+        {answered &&
+          (() => {
+            const speakText =
+              extractFrenchQuote(item.a) ??
+              (looksFrench(item.a)
+                ? item.a
+                : extractFrenchQuote(item.q));
+            if (!speakText) return null;
+            return (
+              <Pressable
+                onPress={() => say(speakText)}
+                className="flex-row items-center self-center mt-3 px-2.5 py-1.5 rounded"
+                style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+              >
+                <Volume2 size={12} color={P.ink3} />
+                <Text className="text-[10px]" style={{ color: P.ink3 }}>
+                  Listen
+                </Text>
+              </Pressable>
+            );
+          })()}
 
         {/* Next / Done button after answering */}
         {answered && (

@@ -189,9 +189,9 @@ export const lesson1: Lesson = {
       fr: "Je voudrais un café, s'il vous plaît.",
     },
     {
-      s: "[___] me, where is the station?",
-      a: "Excusez",
-      o: ["Excusez", "Merci", "Bonjour", "Salut"],
+      s: "[___], where is the station?",
+      a: "Excusez-moi",
+      o: ["Excusez-moi", "Merci", "Bonjour", "Salut"],
       ctx: "You need to get someone's attention on the street.",
       fr: "Excusez-moi, où est la gare ?",
     },
