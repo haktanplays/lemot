@@ -8,6 +8,7 @@ import { useApp } from "@/providers/AppProvider";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
+import { FEATURES } from "@/config/productStage";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
 import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
@@ -220,11 +221,11 @@ export default function HomeScreen() {
         <Text className="text-lg font-bold text-lm-ink mb-3">Lessons</Text>
         {LESSONS.map((lesson) => {
           const isFree = FREE_LESSON_IDS.includes(lesson.id);
-          const isLocked = __DEV__ ? false : !isFree; // DEV: all unlocked
+          const isLocked = FEATURES.paywall && !isFree;
           return (
             <View key={lesson.id}>
-              {/* Paywall banner between L11 and L12 */}
-              {lesson.id === 12 && (
+              {/* Paywall banner between L11 and L12 — only when paywall feature is enabled */}
+              {FEATURES.paywall && lesson.id === 12 && (
                 <View
                   className="rounded-xl p-4 mb-3 items-center"
                   style={{ backgroundColor: P.amber + "15", borderWidth: 1, borderColor: P.amber + "30" }}
