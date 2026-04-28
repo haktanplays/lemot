@@ -8,7 +8,7 @@ import { useApp } from "@/providers/AppProvider";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
-import { FEATURES } from "@/config/productStage";
+import { FEATURES, PRODUCT_STAGE, DEV_APK_LESSON_LIMIT } from "@/config/productStage";
 import { kvStorage } from "@/lib/storage";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
@@ -149,6 +149,14 @@ export default function HomeScreen() {
   // Daily quote
   const quote = MOTIV[Math.floor(Date.now() / 86400000) % MOTIV.length];
 
+  // Lesson scope: dev-apk testers only see L1..DEV_APK_LESSON_LIMIT.
+  // Sandbox/public-beta keep the full curriculum visible.
+  // This is scope control, not monetization — no paywall, no locks, no banners.
+  const visibleLessons =
+    PRODUCT_STAGE === "dev-apk"
+      ? LESSONS.filter((l) => l.id <= DEV_APK_LESSON_LIMIT)
+      : LESSONS;
+
   return (
     <SafeAreaView className="flex-1 bg-lm-bg">
       <ScrollView className="flex-1 px-5" decelerationRate="normal">
@@ -271,7 +279,7 @@ export default function HomeScreen() {
 
         {/* Lessons */}
         <Text className="text-lg font-bold text-lm-ink mb-3">Lessons</Text>
-        {LESSONS.map((lesson) => {
+        {visibleLessons.map((lesson) => {
           const isFree = FREE_LESSON_IDS.includes(lesson.id);
           const isLocked = FEATURES.paywall && !isFree;
           return (
