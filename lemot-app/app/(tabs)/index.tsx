@@ -10,8 +10,6 @@ import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { FEATURES } from "@/config/productStage";
 import { kvStorage } from "@/lib/storage";
-
-const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
 import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
@@ -23,6 +21,36 @@ import {
   DailyReviewOverlay,
   genReviewItems,
 } from "@/components/DailyReviewOverlay";
+
+const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
+const FIRST_USE_DATE_KEY = "lm7_first_use_date";
+
+// Safe to read/write kvStorage here because this is invoked from a
+// useState initializer, which runs exactly once per component mount.
+// Any storage failure falls back to "Day 1 · {Weekday}".
+function computeDateLabel(): string {
+  const now = new Date();
+  const weekday = now.toLocaleDateString("en-US", { weekday: "long" });
+  const today = now.toISOString().slice(0, 10); // YYYY-MM-DD
+
+  let first: string | null;
+  try {
+    first = kvStorage.getItem(FIRST_USE_DATE_KEY);
+    if (!first) {
+      kvStorage.setItem(FIRST_USE_DATE_KEY, today);
+      first = today;
+    }
+  } catch {
+    return `Le Mot · Day 1 · ${weekday}`;
+  }
+
+  const firstDate = new Date(first + "T00:00:00");
+  const day = Math.max(
+    1,
+    Math.floor((now.getTime() - firstDate.getTime()) / 86400000) + 1
+  );
+  return `Le Mot · Day ${day} · ${weekday}`;
+}
 
 export default function HomeScreen() {
   const { lp, dailyRev, setDailyRev, save, prog, errors, weakSpots, loaded } =
@@ -47,6 +75,11 @@ export default function HomeScreen() {
       router.replace("/lesson-zero" as never);
     }
   }, [needsLessonZero]);
+
+  // Top date label — initialized once per mount via useState so the
+  // first-use anchor write happens in a side-effect-safe place
+  // (initializer), not inside useMemo.
+  const [dateLabel] = useState(() => computeDateLabel());
 
   // Account modal state
   const [showAccount, setShowAccount] = useState(false);
@@ -122,11 +155,8 @@ export default function HomeScreen() {
         {/* Header */}
         <View className="pt-6 pb-4 flex-row items-center justify-between">
           <View>
-            <Text className="text-3xl font-bold text-lm-ink tracking-tight">
-              LE MOT
-            </Text>
-            <Text className="text-sm text-lm-ink2 mt-1">
-              Your French learning journey
+            <Text className="text-xs font-medium text-lm-ink3 tracking-wider">
+              {dateLabel}
             </Text>
           </View>
           <Pressable
