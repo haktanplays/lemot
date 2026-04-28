@@ -15,6 +15,9 @@ import { P } from "@/constants/theme";
 import { Btn } from "@/components/Btn";
 import { useSpeech } from "@/hooks/useSpeech";
 import { norm } from "@/lib/normalize";
+import { kvStorage } from "@/lib/storage";
+
+const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 
 type Step =
   | "mcq"
@@ -78,6 +81,13 @@ export default function LessonZeroScreen() {
   );
 
   const finish = () => {
+    // Persist BEFORE navigation so Home's mount-time check sees the flag
+    // and does not redirect back into lesson-zero.
+    try {
+      kvStorage.setItem(SEEN_LESSON_ZERO_KEY, "true");
+    } catch (e) {
+      console.warn("[LessonZero] Failed to save first-use flag:", e);
+    }
     router.replace("/lesson/1");
   };
 

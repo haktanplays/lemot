@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { View, Text, ScrollView, Pressable, ActivityIndicator, Modal, Image } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +9,9 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { FEATURES } from "@/config/productStage";
+import { kvStorage } from "@/lib/storage";
+
+const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
 import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
@@ -26,6 +29,25 @@ export default function HomeScreen() {
     useApp();
   const { user, signOut } = useAuthContext();
 
+  // First-use redirect: read sync from storage on first render so we can hide
+  // Home behind the spinner while expo-router transitions to /lesson-zero,
+  // avoiding a flash of the Home UI before the redirect lands.
+  const [needsLessonZero] = useState(() => {
+    try {
+      return kvStorage.getItem(SEEN_LESSON_ZERO_KEY) !== "true";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    if (needsLessonZero) {
+      // expo-router's typed-routes union regenerates on `expo start`; cast
+      // bypasses the stale literal check until Metro picks up the new file.
+      router.replace("/lesson-zero" as never);
+    }
+  }, [needsLessonZero]);
+
   // Account modal state
   const [showAccount, setShowAccount] = useState(false);
 
@@ -35,7 +57,7 @@ export default function HomeScreen() {
   const [drAns, setDrAns] = useState<string | null>(null);
   const [drItems, setDrItems] = useState<ReviewQuestion[]>([]);
 
-  if (!loaded) {
+  if (!loaded || needsLessonZero) {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <ActivityIndicator size="small" color={P.red} />
