@@ -89,7 +89,7 @@ export default function StatsScreen() {
         <View className="flex-row mb-3" style={{ gap: 8 }}>
           <StatBox
             icon={<BookOpen size={16} color={P.green} />}
-            value={`${completedLessons}/16`}
+            value={`${completedLessons}/${LESSONS.length}`}
             label="Lessons done"
             bg={P.green + "12"}
           />
