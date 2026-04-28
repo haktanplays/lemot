@@ -136,7 +136,7 @@ export default function LessonScreen() {
   const lessonId = parseInt(id || "1", 10);
   const lesson = LESSONS.find((l) => l.id === lessonId);
 
-  const { mk, gx, lp, logErr, say, prog } = useApp();
+  const { mk, lp, logErr, say, prog } = useApp();
 
   const [sec, setSec] = useState(-1); // -1 = chunk selector
   const [activeChunk, setActiveChunk] = useState(-1); // -1 = not selected
@@ -309,7 +309,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={() => {
               mk(lessonId, "read_listen");
-              gx(10);
               nextSec(
                 0,
                 0,
@@ -325,7 +324,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={() => {
               mk(lessonId, "patterns");
-              gx(10);
               nextSec(
                 0,
                 0,
@@ -341,7 +339,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_fg");
-              gx(15);
               nextSec(score, total, "Nice Weave! Now try fully in French...");
             }}
             onError={errFill}
@@ -354,7 +351,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_fr");
-              gx(15);
               nextSec(
                 score,
                 total,
@@ -371,7 +367,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "build");
-              gx(15);
               nextSec(
                 score,
                 total,
@@ -388,7 +383,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_write");
-              gx(15);
               nextSec(score, total, "Great writing! Time for a quiz...");
             }}
             onError={errFill}
@@ -401,7 +395,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "quiz");
-              gx(20);
               nextSec(
                 score,
                 total,
@@ -419,7 +412,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "combine_fg");
-              gx(20);
               nextSec(
                 score,
                 total,
@@ -436,7 +428,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={() => {
               mk(lessonId, "say_it");
-              gx(20);
               nextSec(
                 0,
                 0,
@@ -453,7 +444,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={() => {
               mk(lessonId, "mini_conv");
-              gx(25);
               nextSec(
                 0,
                 0,
@@ -469,7 +459,6 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "review");
-              gx(25);
               nextSec(
                 score,
                 total,

@@ -10,20 +10,17 @@ import type { ErrorEntry, DailyReview } from "@/lib/types";
 interface AppContextType {
   // Storage
   prog: Record<string, boolean>;
-  xp: number;
   errors: ErrorEntry[];
   dailyRev: DailyReview;
   setDailyRev: React.Dispatch<React.SetStateAction<DailyReview>>;
   loaded: boolean;
   save: (
     p: Record<string, boolean>,
-    x: number,
     err: ErrorEntry[],
     dr: DailyReview
   ) => void;
 
   // Progress
-  gx: (n: number) => void;
   mk: (lessonId: number, sectionKey: string) => void;
   lp: (lessonId: number) => number;
 
@@ -43,6 +40,10 @@ interface AppContextType {
 }
 
 const AppContext = createContext<AppContextType | null>(null);
+
+function countCompleted(p: Record<string, boolean>): number {
+  return Object.values(p).filter(Boolean).length;
+}
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuthContext();
@@ -67,17 +68,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const cloud = await pullFromCloud();
       if (!cloud) return;
 
-      // Merge: cloud wins if it has more XP (more progress)
-      if (cloud.xp > s.xp) {
+      // Merge: side with more completed sections wins
+      const cloudCount = countCompleted(cloud.progress);
+      const localCount = countCompleted(s.prog);
+
+      if (cloudCount > localCount) {
         s.setProg(cloud.progress);
-        s.setXp(cloud.xp);
         s.setDailyRev(cloud.dailyReview);
-        s.save(cloud.progress, cloud.xp, s.errors, cloud.dailyReview);
-      } else if (s.xp > cloud.xp) {
-        // Local has more progress — push to cloud
+        s.save(cloud.progress, s.errors, cloud.dailyReview);
+      } else if (localCount > cloudCount) {
         pushToCloud({
           progress: s.prog,
-          xp: s.xp,
           errors: s.errors,
           dailyReview: s.dailyRev,
         });
@@ -87,10 +88,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Wrap save to also push to cloud
   const saveWithSync = useCallback(
-    (p: Record<string, boolean>, x: number, err: ErrorEntry[], dr: DailyReview) => {
-      storageHook.save(p, x, err, dr);
+    (p: Record<string, boolean>, err: ErrorEntry[], dr: DailyReview) => {
+      storageHook.save(p, err, dr);
       if (user) {
-        pushToCloud({ progress: p, xp: x, errors: err, dailyReview: dr });
+        pushToCloud({ progress: p, errors: err, dailyReview: dr });
       }
     },
     [storageHook.save, user, pushToCloud]
@@ -110,7 +111,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const value: AppContextType = {
     // Storage
     prog: storageHook.prog,
-    xp: storageHook.xp,
     errors: storageHook.errors,
     dailyRev: storageHook.dailyRev,
     setDailyRev: storageHook.setDailyRev,
@@ -118,7 +118,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     save: saveWithSync,
 
     // Progress
-    gx: progressHook.gx,
     mk: progressHook.mk,
     lp: progressHook.lp,
 

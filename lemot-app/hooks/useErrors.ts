@@ -5,11 +5,9 @@ interface UseErrorsArgs {
   errors: ErrorEntry[];
   setErrors: React.Dispatch<React.SetStateAction<ErrorEntry[]>>;
   prog: Record<string, boolean>;
-  xp: number;
   dailyRev: DailyReview;
   save: (
     p: Record<string, boolean>,
-    x: number,
     err: ErrorEntry[],
     dr: DailyReview
   ) => void;
@@ -19,7 +17,6 @@ export function useErrors({
   errors,
   setErrors,
   prog,
-  xp,
   dailyRev,
   save,
 }: UseErrorsArgs) {
@@ -42,11 +39,11 @@ export function useErrors({
           t: Date.now(),
         };
         const next = [...prev, entry];
-        save(prog, xp, next, dailyRev);
+        save(prog, next, dailyRev);
         return next;
       });
     },
-    [prog, xp, dailyRev, save, setErrors]
+    [prog, dailyRev, save, setErrors]
   );
 
   /** Compute weak spots (words with 3+ errors) */

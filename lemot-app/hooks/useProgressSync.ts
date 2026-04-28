@@ -4,7 +4,6 @@ import type { ErrorEntry, DailyReview } from "@/lib/types";
 
 interface SyncData {
   progress: Record<string, boolean>;
-  xp: number;
   errors: ErrorEntry[];
   dailyReview: DailyReview;
 }
@@ -20,7 +19,6 @@ export function useProgressSync(userId: string | undefined) {
           {
             user_id: userId,
             progress: data.progress,
-            xp: data.xp,
             daily_review: data.dailyReview,
           },
           { onConflict: "user_id" }
@@ -44,7 +42,6 @@ export function useProgressSync(userId: string | undefined) {
 
     return {
       progress: (data.progress as Record<string, boolean>) ?? {},
-      xp: data.xp ?? 0,
       errors: [],
       dailyReview: (data.daily_review as DailyReview) ?? { date: "", count: 0 },
     };

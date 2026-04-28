@@ -6,7 +6,6 @@ const STORAGE_KEY = "lm7";
 
 export function useStorage() {
   const [prog, setProg] = useState<Record<string, boolean>>({});
-  const [xp, setXp] = useState(0);
   const [errors, setErrors] = useState<ErrorEntry[]>([]);
   const [dailyRev, setDailyRev] = useState<DailyReview>({
     date: "",
@@ -22,7 +21,6 @@ export function useStorage() {
         if (raw) {
           const d: StorageData = JSON.parse(raw);
           setProg(d.p || {});
-          setXp(d.xp || 0);
           setErrors(d.err || []);
           setDailyRev(d.dr || { date: "", count: 0 });
         }
@@ -37,14 +35,12 @@ export function useStorage() {
   const save = useCallback(
     async (
       p: Record<string, boolean>,
-      x: number,
       err: ErrorEntry[],
       dr: DailyReview
     ) => {
       try {
         const data: StorageData = {
           p,
-          xp: x,
           err: err || [],
           dr: dr || { date: "", count: 0 },
         };
@@ -59,8 +55,6 @@ export function useStorage() {
   return {
     prog,
     setProg,
-    xp,
-    setXp,
     errors,
     setErrors,
     dailyRev,

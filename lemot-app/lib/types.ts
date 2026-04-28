@@ -226,7 +226,6 @@ export interface Scenario {
 // ── Storage ──
 export interface StorageData {
   p: Record<string, boolean>;
-  xp: number;
   err: ErrorEntry[];
   dr: DailyReview;
 }

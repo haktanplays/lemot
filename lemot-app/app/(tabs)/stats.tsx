@@ -3,7 +3,6 @@ import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   BarChart3,
-  Zap,
   Star,
   AlertTriangle,
   BookOpen,
@@ -16,7 +15,7 @@ import { MILESTONES } from "@/data/milestones";
 import { SECS } from "@/constants/sections";
 
 export default function StatsScreen() {
-  const { xp, prog, errors, weakSpots, dailyRev, loaded } = useApp();
+  const { prog, errors, weakSpots, dailyRev, loaded } = useApp();
 
   /* ── Derived stats ── */
   const totalSections = LESSONS.length * SECS.length; // 24 * 11 = 264
@@ -68,10 +67,6 @@ export default function StatsScreen() {
     );
   }
 
-  /* ── Level from XP ── */
-  const level = Math.floor(xp / 100) + 1;
-  const xpInLevel = xp % 100;
-
   return (
     <SafeAreaView className="flex-1 bg-lm-bg">
       <ScrollView
@@ -88,65 +83,6 @@ export default function StatsScreen() {
           >
             Tes progrès
           </Text>
-        </View>
-
-        {/* ── XP + Level Card ── */}
-        <View
-          className="rounded-xl px-4 py-4 mb-3"
-          style={{
-            backgroundColor: P.paper,
-            borderWidth: 1,
-            borderColor: P.border,
-          }}
-        >
-          <View className="flex-row items-center justify-between mb-3">
-            <View className="flex-row items-center" style={{ gap: 8 }}>
-              <View
-                className="items-center justify-center"
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 10,
-                  backgroundColor: P.red + "15",
-                }}
-              >
-                <Zap size={18} color={P.red} />
-              </View>
-              <View>
-                <Text className="text-lg font-bold" style={{ color: P.ink }}>
-                  {xp} XP
-                </Text>
-                <Text className="text-[10px]" style={{ color: P.ink3 }}>
-                  Level {level}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          {/* XP progress bar */}
-          <View className="mb-1">
-            <View className="flex-row justify-between mb-1">
-              <Text className="text-[10px]" style={{ color: P.ink3 }}>
-                Level {level}
-              </Text>
-              <Text className="text-[10px]" style={{ color: P.ink3 }}>
-                {xpInLevel}/100 XP
-              </Text>
-            </View>
-            <View
-              className="rounded-full overflow-hidden"
-              style={{ height: 6, backgroundColor: P.border }}
-            >
-              <View
-                className="rounded-full"
-                style={{
-                  height: 6,
-                  width: `${xpInLevel}%`,
-                  backgroundColor: P.red,
-                }}
-              />
-            </View>
-          </View>
         </View>
 
         {/* ── Overview Stats ── */}

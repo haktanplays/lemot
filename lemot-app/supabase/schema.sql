@@ -14,7 +14,6 @@ create table public.user_progress (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references public.profiles on delete cascade not null,
   progress jsonb default '{}'::jsonb not null,
-  xp int default 0 not null,
   daily_review jsonb default '{"date":"","count":0}'::jsonb not null,
   updated_at timestamptz default now() not null,
   unique (user_id)

@@ -21,7 +21,7 @@ import {
 } from "@/components/DailyReviewOverlay";
 
 export default function HomeScreen() {
-  const { lp, dailyRev, setDailyRev, save, prog, xp, errors, weakSpots, loaded } =
+  const { lp, dailyRev, setDailyRev, save, prog, errors, weakSpots, loaded } =
     useApp();
   const { user, signOut } = useAuthContext();
 
@@ -62,14 +62,14 @@ export default function HomeScreen() {
     const newDr = { date: today(), count: newCount };
     setDailyRev(newDr);
     if (drIdx >= drItems.length - 1) {
-      save(prog, xp, errors, newDr);
+      save(prog, errors, newDr);
       setShowDR(false);
       setDrIdx(0);
       setDrAns(null);
     } else {
       setDrIdx(drIdx + 1);
       setDrAns(null);
-      save(prog, xp, errors, newDr);
+      save(prog, errors, newDr);
     }
   };
 
@@ -197,7 +197,7 @@ export default function HomeScreen() {
           )}
           {todayDone && (
             <Text className="text-xs text-lm-green font-semibold">
-              Goal complete! Come back tomorrow.
+              You used French today.
             </Text>
           )}
         </View>
