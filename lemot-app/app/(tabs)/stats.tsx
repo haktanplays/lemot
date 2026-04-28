@@ -3,7 +3,6 @@ import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   BarChart3,
-  Flame,
   Zap,
   Star,
   AlertTriangle,
@@ -17,7 +16,7 @@ import { MILESTONES } from "@/data/milestones";
 import { SECS } from "@/constants/sections";
 
 export default function StatsScreen() {
-  const { xp, prog, streak, errors, weakSpots, dailyRev, loaded } = useApp();
+  const { xp, prog, errors, weakSpots, dailyRev, loaded } = useApp();
 
   /* ── Derived stats ── */
   const totalSections = LESSONS.length * SECS.length; // 24 * 11 = 264
@@ -119,27 +118,6 @@ export default function StatsScreen() {
                 </Text>
                 <Text className="text-[10px]" style={{ color: P.ink3 }}>
                   Level {level}
-                </Text>
-              </View>
-            </View>
-            <View className="flex-row items-center" style={{ gap: 8 }}>
-              <View
-                className="items-center justify-center"
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 10,
-                  backgroundColor: P.amber + "15",
-                }}
-              >
-                <Flame size={18} color={P.amber} />
-              </View>
-              <View>
-                <Text className="text-lg font-bold" style={{ color: P.ink }}>
-                  {streak}
-                </Text>
-                <Text className="text-[10px]" style={{ color: P.ink3 }}>
-                  Day streak
                 </Text>
               </View>
             </View>

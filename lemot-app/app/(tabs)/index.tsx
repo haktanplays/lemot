@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Pressable, ActivityIndicator, Modal, Image } fr
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { Zap, Target, Lock, User } from "lucide-react-native";
+import { Target, Lock, User } from "lucide-react-native";
 import { useApp } from "@/providers/AppProvider";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
@@ -21,7 +21,7 @@ import {
 } from "@/components/DailyReviewOverlay";
 
 export default function HomeScreen() {
-  const { lp, dailyRev, setDailyRev, streak, setStreak, save, prog, xp, errors, weakSpots, loaded } =
+  const { lp, dailyRev, setDailyRev, save, prog, xp, errors, weakSpots, loaded } =
     useApp();
   const { user, signOut } = useAuthContext();
 
@@ -62,17 +62,14 @@ export default function HomeScreen() {
     const newDr = { date: today(), count: newCount };
     setDailyRev(newDr);
     if (drIdx >= drItems.length - 1) {
-      let newStreak = streak;
-      if (newCount >= 5 && drCount < 5) newStreak = streak + 1;
-      setStreak(newStreak);
-      save(prog, xp, errors, newDr, newStreak);
+      save(prog, xp, errors, newDr);
       setShowDR(false);
       setDrIdx(0);
       setDrAns(null);
     } else {
       setDrIdx(drIdx + 1);
       setDrAns(null);
-      save(prog, xp, errors, newDr, streak);
+      save(prog, xp, errors, newDr);
     }
   };
 
@@ -175,14 +172,6 @@ export default function HomeScreen() {
                 Daily Review
               </Text>
             </View>
-            {streak > 0 && (
-              <View className="flex-row items-center gap-1">
-                <Zap size={14} color={P.amber} />
-                <Text className="text-xs font-bold text-lm-amber">
-                  {streak} day streak
-                </Text>
-              </View>
-            )}
           </View>
 
           {/* Progress bar */}

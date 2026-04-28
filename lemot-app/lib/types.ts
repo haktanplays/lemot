@@ -229,7 +229,6 @@ export interface StorageData {
   xp: number;
   err: ErrorEntry[];
   dr: DailyReview;
-  streak: number;
 }
 
 export interface ErrorEntry {

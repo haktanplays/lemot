@@ -7,13 +7,11 @@ interface UseErrorsArgs {
   prog: Record<string, boolean>;
   xp: number;
   dailyRev: DailyReview;
-  streak: number;
   save: (
     p: Record<string, boolean>,
     x: number,
     err: ErrorEntry[],
-    dr: DailyReview,
-    str: number
+    dr: DailyReview
   ) => void;
 }
 
@@ -23,7 +21,6 @@ export function useErrors({
   prog,
   xp,
   dailyRev,
-  streak,
   save,
 }: UseErrorsArgs) {
   /** Log an error */
@@ -45,11 +42,11 @@ export function useErrors({
           t: Date.now(),
         };
         const next = [...prev, entry];
-        save(prog, xp, next, dailyRev, streak);
+        save(prog, xp, next, dailyRev);
         return next;
       });
     },
-    [prog, xp, dailyRev, streak, save, setErrors]
+    [prog, xp, dailyRev, save, setErrors]
   );
 
   /** Compute weak spots (words with 3+ errors) */

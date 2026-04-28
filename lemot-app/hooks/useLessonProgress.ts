@@ -9,13 +9,11 @@ interface UseLessonProgressArgs {
   setXp: React.Dispatch<React.SetStateAction<number>>;
   errors: ErrorEntry[];
   dailyRev: DailyReview;
-  streak: number;
   save: (
     p: Record<string, boolean>,
     x: number,
     err: ErrorEntry[],
-    dr: DailyReview,
-    str: number
+    dr: DailyReview
   ) => void;
 }
 
@@ -26,7 +24,6 @@ export function useLessonProgress({
   setXp,
   errors,
   dailyRev,
-  streak,
   save,
 }: UseLessonProgressArgs) {
   /** Add XP */
@@ -34,11 +31,11 @@ export function useLessonProgress({
     (n: number) => {
       setXp((prev) => {
         const next = prev + n;
-        save(prog, next, errors, dailyRev, streak);
+        save(prog, next, errors, dailyRev);
         return next;
       });
     },
-    [prog, errors, dailyRev, streak, save, setXp]
+    [prog, errors, dailyRev, save, setXp]
   );
 
   /** Mark section complete */
@@ -46,11 +43,11 @@ export function useLessonProgress({
     (lessonId: number, sectionKey: string) => {
       setProg((prev) => {
         const next = { ...prev, [`${lessonId}-${sectionKey}`]: true };
-        save(next, xp, errors, dailyRev, streak);
+        save(next, xp, errors, dailyRev);
         return next;
       });
     },
-    [xp, errors, dailyRev, streak, save, setProg]
+    [xp, errors, dailyRev, save, setProg]
   );
 
   /** Get lesson progress (completed sections count) */

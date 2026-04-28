@@ -7,7 +7,6 @@ interface SyncData {
   xp: number;
   errors: ErrorEntry[];
   dailyReview: DailyReview;
-  streak: number;
 }
 
 export function useProgressSync(userId: string | undefined) {
@@ -22,7 +21,6 @@ export function useProgressSync(userId: string | undefined) {
             user_id: userId,
             progress: data.progress,
             xp: data.xp,
-            streak: data.streak,
             daily_review: data.dailyReview,
           },
           { onConflict: "user_id" }
@@ -49,7 +47,6 @@ export function useProgressSync(userId: string | undefined) {
       xp: data.xp ?? 0,
       errors: [],
       dailyReview: (data.daily_review as DailyReview) ?? { date: "", count: 0 },
-      streak: data.streak ?? 0,
     };
   }, [userId]);
 

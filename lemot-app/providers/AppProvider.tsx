@@ -14,15 +14,12 @@ interface AppContextType {
   errors: ErrorEntry[];
   dailyRev: DailyReview;
   setDailyRev: React.Dispatch<React.SetStateAction<DailyReview>>;
-  streak: number;
-  setStreak: React.Dispatch<React.SetStateAction<number>>;
   loaded: boolean;
   save: (
     p: Record<string, boolean>,
     x: number,
     err: ErrorEntry[],
-    dr: DailyReview,
-    str: number
+    dr: DailyReview
   ) => void;
 
   // Progress
@@ -74,9 +71,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (cloud.xp > s.xp) {
         s.setProg(cloud.progress);
         s.setXp(cloud.xp);
-        s.setStreak(cloud.streak);
         s.setDailyRev(cloud.dailyReview);
-        s.save(cloud.progress, cloud.xp, s.errors, cloud.dailyReview, cloud.streak);
+        s.save(cloud.progress, cloud.xp, s.errors, cloud.dailyReview);
       } else if (s.xp > cloud.xp) {
         // Local has more progress — push to cloud
         pushToCloud({
@@ -84,7 +80,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           xp: s.xp,
           errors: s.errors,
           dailyReview: s.dailyRev,
-          streak: s.streak,
         });
       }
     })();
@@ -92,10 +87,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Wrap save to also push to cloud
   const saveWithSync = useCallback(
-    (p: Record<string, boolean>, x: number, err: ErrorEntry[], dr: DailyReview, str: number) => {
-      storageHook.save(p, x, err, dr, str);
+    (p: Record<string, boolean>, x: number, err: ErrorEntry[], dr: DailyReview) => {
+      storageHook.save(p, x, err, dr);
       if (user) {
-        pushToCloud({ progress: p, xp: x, errors: err, dailyReview: dr, streak: str });
+        pushToCloud({ progress: p, xp: x, errors: err, dailyReview: dr });
       }
     },
     [storageHook.save, user, pushToCloud]
@@ -119,8 +114,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     errors: storageHook.errors,
     dailyRev: storageHook.dailyRev,
     setDailyRev: storageHook.setDailyRev,
-    streak: storageHook.streak,
-    setStreak: storageHook.setStreak,
     loaded: storageHook.loaded,
     save: saveWithSync,
 

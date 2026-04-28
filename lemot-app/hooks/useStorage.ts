@@ -12,7 +12,6 @@ export function useStorage() {
     date: "",
     count: 0,
   });
-  const [streak, setStreak] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
   // Load from AsyncStorage on mount
@@ -25,19 +24,7 @@ export function useStorage() {
           setProg(d.p || {});
           setXp(d.xp || 0);
           setErrors(d.err || []);
-
-          const dr = d.dr || { date: "", count: 0 };
-          let str = d.streak || 0;
-
-          const td = new Date().toISOString().slice(0, 10);
-          const yd = new Date(Date.now() - 86400000)
-            .toISOString()
-            .slice(0, 10);
-          if (dr.date && dr.date !== td && dr.date !== yd) str = 0;
-          if (dr.date === yd && dr.count < 5) str = 0;
-
-          setDailyRev(dr);
-          setStreak(str);
+          setDailyRev(d.dr || { date: "", count: 0 });
         }
       } catch (e) {
         console.warn("[Storage] Load failed:", e);
@@ -52,8 +39,7 @@ export function useStorage() {
       p: Record<string, boolean>,
       x: number,
       err: ErrorEntry[],
-      dr: DailyReview,
-      str: number
+      dr: DailyReview
     ) => {
       try {
         const data: StorageData = {
@@ -61,7 +47,6 @@ export function useStorage() {
           xp: x,
           err: err || [],
           dr: dr || { date: "", count: 0 },
-          streak: str || 0,
         };
         await kvStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       } catch (e) {
@@ -80,8 +65,6 @@ export function useStorage() {
     setErrors,
     dailyRev,
     setDailyRev,
-    streak,
-    setStreak,
     loaded,
     save,
   };
