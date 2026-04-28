@@ -65,12 +65,22 @@ export interface FillItem {
   blanks?: string[];
   /** Multi-blank: options grouped per blank position — blankOpts[0] = options for 1st blank */
   blankOpts?: string[][];
-  /** Full French equivalent for TTS. Required for Weave Fill (fill_fg) so the
-   *  Listen button speaks complete French instead of mixed Eng/Fr with fr-FR accent.
-   *  For French Fill, this is also the source of truth for multi-blank Listen. */
+  /** Optional clean French sentence for TTS. For French Fill items the
+   *  underlying `s` is already French so this is a fallback / clarifier.
+   *  Weave Fill (Eng+Fr hybrid) needs the stricter WeaveFillItem subtype. */
   fr?: string;
   /** Exercise difficulty tier */
   diff?: Difficulty;
+}
+
+/**
+ * Weave Fill items mix English + French in `s`, so TTS cannot read `s`
+ * directly with a French voice. `fr` is REQUIRED — it carries the clean
+ * French equivalent that the Listen button speaks. Enforced at the type
+ * level so missing `fr` becomes a compile error, not a runtime surprise.
+ */
+export interface WeaveFillItem extends FillItem {
+  fr: string;
 }
 
 export interface BuildItem {
@@ -167,6 +177,9 @@ export interface Lesson {
   difficulty: Difficulty;
   grammar: Grammar;
   examples: Example[];
+  // L1-L5 fillFG items include `fr` (Weave needs a clean French TTS line).
+  // L6-L24 fillFG.fr will be populated during content expansion before
+  // those lessons ship — see `WeaveFillItem` for the strict per-item contract.
   fillFG: FillItem[];
   fillBlanks: FillItem[];
   buildSentences: BuildItem[];
