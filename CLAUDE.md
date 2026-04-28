@@ -1,5 +1,7 @@
 # LE MOT — French Learning App
 
+> **Current Dev APK work should follow `docs/DEV_APK_MVP_CANON.md`. If older notes conflict with that document, the MVP canon takes priority.**
+
 ## What This Is
 A French learning app for English speakers. Expo/React Native standalone app (TypeScript, NativeWind, Expo Router). Also available as a single-file React artifact (le-mot-v7.jsx).
 
