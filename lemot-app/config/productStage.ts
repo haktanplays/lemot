@@ -4,19 +4,42 @@
 
 export type ProductStage = "sandbox" | "dev-apk" | "public-beta";
 
+const VALID_PRODUCT_STAGES: readonly ProductStage[] = [
+  "sandbox",
+  "dev-apk",
+  "public-beta",
+];
+
+/**
+ * Resolve the active product stage from env. Local dev defaults to "sandbox";
+ * EAS preview profile sets EXPO_PUBLIC_PRODUCT_STAGE=dev-apk; a future
+ * public beta profile would set "public-beta". Any missing / invalid value
+ * falls back to "sandbox" so emulator runs never break on a typo.
+ */
+function resolveProductStage(value: string | undefined): ProductStage {
+  if (
+    value !== undefined &&
+    (VALID_PRODUCT_STAGES as readonly string[]).includes(value)
+  ) {
+    return value as ProductStage;
+  }
+  return "sandbox";
+}
+
 /**
  * Current product stage.
  *
  * - "sandbox": internal emulator / dev testing — every feature flag on,
- *   nothing locked. Default for local development so you can exercise
- *   the full UX in the emulator.
+ *   nothing locked. Default when no env is set.
  * - "dev-apk": controlled external MVP testing — bare minimum surface
  *   for the first-3-minutes hook. No paywall, no AI/Graph/Carnet.
  *   This is what the tester APK ships with.
  * - "public-beta": future monetized beta — paywall + RevenueCat live,
  *   selected post-MVP features unlocked.
  */
-export const PRODUCT_STAGE: ProductStage = "sandbox";
+export const PRODUCT_STAGE: ProductStage = resolveProductStage(
+  process.env.EXPO_PUBLIC_PRODUCT_STAGE
+);
 
 const FEATURES_BY_STAGE = {
   // Internal emulator / dev testing — everything on for full sandbox exploration.
