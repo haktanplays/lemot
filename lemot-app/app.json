@@ -38,6 +38,12 @@
     "experiments": {
       "typedRoutes": true
     },
-    "extra": {}
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6abbb072-120d-4a93-a0c3-388e6f80e780"
+      }
+    },
+    "owner": "haktanplays"
   }
 }
