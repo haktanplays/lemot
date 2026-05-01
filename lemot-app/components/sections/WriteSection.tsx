@@ -42,10 +42,14 @@ export function WriteSection({
   if (!item) return null;
   const isLast = currentIndex >= items.length - 1;
 
+  // `score` only counts items COMPLETED before the current one. The current
+  // item's contribution is computed in handleNext from `result`, then either
+  // committed via setScore (advancing) or sent directly via onComplete (last).
+  // This avoids the double-count that would occur if handleCheck incremented
+  // score and handleNext also added currentScore on top of a flushed value.
   const handleCheck = () => {
     if (norm(input) === norm(item.a)) {
       setResult("ok");
-      setScore((s) => s + 1);
     } else {
       setResult("no");
       onError(item.a, "write", input, item.a);
@@ -53,10 +57,12 @@ export function WriteSection({
   };
 
   const handleNext = () => {
+    const currentScore = result === "ok" ? 1 : 0;
+    const nextScore = score + currentScore;
     if (isLast) {
-      const finalScore = score;
-      onComplete(finalScore, items.length);
+      onComplete(nextScore, items.length);
     } else {
+      setScore(nextScore);
       setCurrentIndex((i) => i + 1);
       setInput("");
       setResult(null);
