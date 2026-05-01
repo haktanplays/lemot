@@ -105,7 +105,16 @@ export default function HomeScreen() {
   const startDailyReview = () => {
     const remaining = 5 - drCount;
     if (remaining <= 0) return;
-    const items = genReviewItems(remaining, weakSpots);
+    // Daily Review must only draw from lessons the learner has reached.
+    // `lp(id) > 0` = at least one section started in that lesson. Floored
+    // at 1 so a brand-new learner still sees L1 cards via the safe
+    // fallback in genReviewItems, never future-lesson content.
+    const reachedLesson = LESSONS.reduce(
+      (max, l) => (lp(l.id) > 0 && l.id > max ? l.id : max),
+      0,
+    );
+    const maxEligibleLesson = Math.max(reachedLesson, 1);
+    const items = genReviewItems(remaining, weakSpots, maxEligibleLesson);
     if (items.length === 0) return;
     setDrItems(items);
     setDrIdx(0);

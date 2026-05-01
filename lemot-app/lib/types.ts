@@ -208,6 +208,11 @@ export interface FlashCard {
   cat: string;
   ex: string;
   cog: string;
+  /** Lesson this card belongs to. Daily Review filters by this so a
+   *  learner only reviews content from lessons they have completed or
+   *  reached. Required (not optional) to make lesson ownership explicit
+   *  and prevent silent fallthrough. */
+  lessonId: number;
 }
 
 // ── Scenario Card (Practice) ──
