@@ -100,7 +100,7 @@ export function FrenchFill({ items, onComplete, onError, say }: FrenchFillProps)
         {/* Listen (feedback state) — speak the full French sentence with the blank filled */}
         {selected !== null && (
           <Pressable
-            onPress={() => say(item.s.replace(/\[___\]|_{2,}/g, item.a))}
+            onPress={() => say(item.fr ?? item.s.replace(/\[___\]|_{2,}/g, item.a))}
             className="flex-row items-center self-center mt-3 px-2.5 py-1.5 rounded"
             style={{ backgroundColor: "#F0EEEC", gap: 4 }}
           >

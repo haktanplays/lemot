@@ -155,7 +155,7 @@ export function WriteSection({
         {/* Listen (feedback state) — speak the full sentence with the blank filled */}
         {result !== null && (
           <Pressable
-            onPress={() => say(item.s.replace(/\[___\]|_{2,}/g, item.a))}
+            onPress={() => say(item.fr ?? item.s.replace(/\[___\]|_{2,}/g, item.a))}
             className="flex-row items-center self-center mt-2 px-2.5 py-1.5 rounded"
             style={{ backgroundColor: "#F0EEEC", gap: 4 }}
           >
