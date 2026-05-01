@@ -345,7 +345,7 @@ export const lesson1: Lesson = {
     },
     {
       hint: "I don't understand + can you repeat → When you're stuck",
-      answer: "Je ne comprends pas. Pouvez-vous répéter",
+      answer: "Je ne comprends pas. Pouvez-vous répéter ?",
       accept: [
         "je ne comprends pas pouvez-vous répéter",
         "je ne comprends pas. pouvez-vous répéter",
