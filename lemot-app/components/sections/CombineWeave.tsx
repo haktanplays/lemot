@@ -272,6 +272,13 @@ export function CombineWeave({
 
     const { text, checked, found, missed } = weaveState;
 
+    // weaveScore now counts only items COMPLETED before the current one.
+    // The current item's contribution is computed in handleNext from `found`,
+    // then either committed via setWeaveScore (advancing) or sent directly
+    // via onComplete (last). Mirrors the safer WriteSection model and
+    // eliminates the double-count that would occur if handleCheckWeave
+    // incremented weaveScore and handleNext also added current on top of
+    // a flushed value.
     const handleCheckWeave = () => {
       const inputNorm = norm(text);
       const foundWords: string[] = [];
@@ -291,16 +298,25 @@ export function CombineWeave({
         found: foundWords,
         missed: missedWords,
       });
-      setWeaveScore((s) => s + foundWords.length);
     };
 
     const handleNext = () => {
+      const currentWeaveScore = found.length;
+      const nextWeaveScore = weaveScore + currentWeaveScore;
       if (weaveIndex < weave.length - 1) {
+        setWeaveScore(nextWeaveScore);
         setWeaveIndex((i) => i + 1);
         setWeaveState(INITIAL_WEAVE);
       } else {
-        // Both phases complete
-        onComplete(combineScore, combine.length);
+        // weaveScore is per-word (sum of known words found). Denominator
+        // must match: total known words across all weave items, not
+        // weave.length (per-item count) — that would mismatch units and
+        // could push accuracy above 100%.
+        const weaveTotal = weave.reduce((sum, w) => sum + w.known.length, 0);
+        onComplete(
+          combineScore + nextWeaveScore,
+          combine.length + weaveTotal,
+        );
       }
     };
 
