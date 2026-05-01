@@ -10,8 +10,10 @@ export interface UnlockData {
 }
 
 interface TransitionScreenProps {
-  score: number;
-  total: number;
+  /** Items the user got right. */
+  correctCount: number;
+  /** Total items in the section (also the completed count — sections cannot be skipped). */
+  totalCount: number;
   message: string;
   onNext: () => void;
   unlock?: UnlockData | null;
@@ -20,16 +22,19 @@ interface TransitionScreenProps {
 }
 
 export function TransitionScreen({
-  score,
-  total,
+  correctCount,
+  totalCount,
   message,
   onNext,
   unlock,
   mastered = true,
   onRetry,
 }: TransitionScreenProps) {
-  const perfect = total > 0 && score === total;
-  const belowThreshold = total > 0 && !mastered;
+  // Perfect = perfect accuracy, not just completion. Sections cannot be
+  // skipped, so completion is always totalCount/totalCount; accuracy is
+  // the meaningful axis here.
+  const perfect = totalCount > 0 && correctCount === totalCount;
+  const belowThreshold = totalCount > 0 && !mastered;
 
   return (
     <ScrollView
@@ -43,16 +48,21 @@ export function TransitionScreen({
       }}
     >
       <View className="bg-lm-paper rounded-2xl p-8 w-full items-center border border-lm-border">
-        {total > 0 && (
-          <View className="flex-row items-center gap-2 mb-3">
-            <Star
-              size={20}
-              color={perfect ? P.amber : P.ink3}
-              fill={perfect ? P.amber : "transparent"}
-            />
-            <Text className="text-2xl font-bold text-lm-ink">
-              {score}/{total}
+        {totalCount > 0 && (
+          <View className="items-center mb-3" style={{ gap: 2 }}>
+            <Text className="text-sm text-lm-ink3">
+              {totalCount}/{totalCount} done
             </Text>
+            <View className="flex-row items-center gap-2">
+              <Star
+                size={20}
+                color={perfect ? P.amber : P.ink3}
+                fill={perfect ? P.amber : "transparent"}
+              />
+              <Text className="text-2xl font-bold text-lm-ink">
+                {correctCount}/{totalCount} correct
+              </Text>
+            </View>
           </View>
         )}
         <Text className="text-sm text-lm-ink2 text-center leading-6 mb-4">

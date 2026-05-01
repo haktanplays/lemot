@@ -735,9 +735,14 @@ export default function LessonScreen() {
           >
             <View className="bg-lm-paper rounded-2xl p-8 w-full items-center border border-lm-border">
               {trans.total > 0 && (
-                <Text className="text-2xl font-bold text-lm-ink mb-2">
-                  {trans.score}/{trans.total}
-                </Text>
+                <View className="items-center mb-2" style={{ gap: 2 }}>
+                  <Text className="text-sm text-lm-ink3">
+                    {trans.total}/{trans.total} done
+                  </Text>
+                  <Text className="text-2xl font-bold text-lm-ink">
+                    {trans.score}/{trans.total} correct
+                  </Text>
+                </View>
               )}
 
               <View
@@ -831,8 +836,8 @@ export default function LessonScreen() {
           </ScrollView>
         ) : trans ? (
           <TransitionScreen
-            score={trans.score}
-            total={trans.total}
+            correctCount={trans.score}
+            totalCount={trans.total}
             message={trans.msg}
             onNext={handleTransitionNext}
             unlock={trans.unlock}
