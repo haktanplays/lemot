@@ -84,17 +84,15 @@ export function GrammarRenderer({ sections, onSpeak }: GrammarRendererProps) {
                   key={j}
                   className="rounded-xl mb-1.5 border border-lm-border bg-lm-paper px-3.5 py-2.5"
                 >
-                  <View className="flex-row justify-between items-baseline gap-3">
-                    <Text
-                      className="flex-1 text-base font-semibold text-lm-ink italic"
-                      style={{ fontFamily: "serif" }}
-                    >
-                      {it.fr}
-                    </Text>
-                    <Text className="flex-1 text-xs text-lm-ink3 text-right">
-                      {it.en}
-                    </Text>
-                  </View>
+                  <Text
+                    className="text-base font-semibold text-lm-ink italic"
+                    style={{ fontFamily: "serif" }}
+                  >
+                    {it.fr}
+                  </Text>
+                  <Text className="text-xs text-lm-ink3 mt-0.5">
+                    {it.en}
+                  </Text>
                   {it.note && (
                     <Text className="text-xs text-lm-ink2 mt-1.5 leading-5">
                       {it.note}
@@ -194,9 +192,9 @@ export function GrammarRenderer({ sections, onSpeak }: GrammarRendererProps) {
                   onPress={() => onSpeak?.(w.fr)}
                   className="rounded-xl mb-1.5 px-3.5 py-2.5 border border-lm-border bg-lm-paper"
                 >
-                  <View className="flex-row justify-between items-baseline">
+                  <View className="flex-row justify-between items-baseline gap-3">
                     <Text
-                      className="text-sm font-semibold text-lm-ink"
+                      className="flex-1 text-sm font-semibold text-lm-ink"
                       style={{ fontFamily: "serif" }}
                     >
                       {w.fr}
