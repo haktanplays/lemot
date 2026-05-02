@@ -32,8 +32,11 @@ function resolveProductStage(value: string | undefined): ProductStage {
  * - "sandbox": internal emulator / dev testing — every feature flag on,
  *   nothing locked. Default when no env is set.
  * - "dev-apk": controlled external MVP testing — bare minimum surface
- *   for the first-3-minutes hook. No paywall, no AI/Graph/Carnet.
- *   This is what the tester APK ships with.
+ *   for the first-3-minutes hook. No paywall, no Chat tab, no Graph,
+ *   no Carnet. In-lesson AI (Say It Your Way + Mini Conversation) is
+ *   gated by `aiLesson`, kept ON in dev-apk because those sections are
+ *   integral parts of every lesson — only the standalone Chat tab is
+ *   hidden via `aiChat`. This is what the tester APK ships with.
  * - "public-beta": future monetized beta — paywall + RevenueCat live,
  *   selected post-MVP features unlocked.
  */
@@ -41,12 +44,18 @@ export const PRODUCT_STAGE: ProductStage = resolveProductStage(
   process.env.EXPO_PUBLIC_PRODUCT_STAGE
 );
 
+// `aiChat` controls the standalone Chat tab visibility.
+// `aiLesson` controls the in-lesson AI sections (Say It Your Way + Mini
+// Conversation). They are intentionally separate so we can keep the Chat
+// tab hidden in dev-apk while still letting lesson AI run — those
+// sections are part of every lesson, not an optional bonus surface.
 const FEATURES_BY_STAGE = {
   // Internal emulator / dev testing — everything on for full sandbox exploration.
   sandbox: {
     paywall: false,
     revenueCat: false,
     aiChat: true,
+    aiLesson: true,
     wordGraph: true,
     monLexique: true,
     leCarnet: true,
@@ -57,6 +66,7 @@ const FEATURES_BY_STAGE = {
     paywall: false,
     revenueCat: false,
     aiChat: false,
+    aiLesson: true,
     wordGraph: false,
     monLexique: false,
     leCarnet: false,
@@ -67,6 +77,7 @@ const FEATURES_BY_STAGE = {
     paywall: true,
     revenueCat: true,
     aiChat: true,
+    aiLesson: true,
     wordGraph: false,
     monLexique: true,
     leCarnet: false,
