@@ -261,7 +261,7 @@ export const lesson1: Lesson = {
       trap: ["un", "je"],
     },
     {
-      c: ["Merci", "beaucoup", "au", "revoir"],
+      c: ["Merci", "beaucoup", "au revoir"],
       en: "Thank you, goodbye",
       trap: ["bonjour", "est"],
     },
