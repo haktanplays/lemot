@@ -88,6 +88,22 @@ export const lesson5: Lesson = {
         ],
       },
       {
+        type: "block",
+        label: "Words Match Each Other (Agreement)",
+        items: [
+          {
+            fr: "un petit café · une petite maison",
+            en: "Adjectives match the noun's gender",
+            note: "Masculine noun → masculine adjective. Feminine noun → the adjective often gets an extra *e*. *un petit café* (m), *une petite maison* (f). The match is grammatical, invisible to English speakers but constant in French.",
+          },
+          {
+            fr: "il est content · elle est contente",
+            en: "Same word, two endings",
+            note: "Adjectives describing people also match: *il est content* (he is happy) vs *elle est contente* (she is happy). The extra *e* often signals feminine. You'll meet much more agreement in later lessons — for now, just notice the pattern.",
+          },
+        ],
+      },
+      {
         type: "howToSay",
         words: [
           {
