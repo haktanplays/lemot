@@ -77,6 +77,17 @@ export const lesson2: Lesson = {
         ],
       },
       {
+        type: "block",
+        label: "Pronunciation: The French U in tu",
+        items: [
+          {
+            fr: "tu /ty/",
+            en: "Not the English \"too\"",
+            note: "Say *ee* (as in 'see') with your lips rounded as if saying *oo*. Tongue stays in the 'ee' position, lips shape 'oo'. Lesson 3 takes this further with *tu* vs *tout*.",
+          },
+        ],
+      },
+      {
         type: "etymology",
         pairs: [
           {
@@ -107,6 +118,13 @@ export const lesson2: Lesson = {
               "'zh' as in 'vision'. 'ui' like 'we' said quickly.",
           },
           {
+            fr: "Vous êtes",
+            phonetic: "vooz EHT",
+            ipa: "/vu.z‿ɛt/",
+            notes:
+              "Liaison: the silent 's' of vous wakes up as a 'z' before êtes. You hear 'vou-z-êtes', one connected sound.",
+          },
+          {
             fr: "Nous sommes",
             phonetic: "noo SUM",
             ipa: "/nu sɔm/",
@@ -120,6 +138,10 @@ export const lesson2: Lesson = {
               "'sont' is nasal — don't say the 'n' or 't'.",
           },
         ],
+      },
+      {
+        type: "tip",
+        text: "Tiny elision: *c'est* = *ce* + *est*, and *n'est* = *ne* + *est*. French often drops a short vowel before another vowel and marks it with an apostrophe. You'll see this everywhere — *j'ai*, *l'homme*, *n'est pas*.",
       },
       {
         type: "tip",
