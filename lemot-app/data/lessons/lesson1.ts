@@ -104,6 +104,22 @@ export const lesson1: Lesson = {
         ],
       },
       {
+        type: "block",
+        label: "Pronunciation: Accent Marks",
+        items: [
+          {
+            fr: "café · répéter",
+            en: "é sounds like \"ay\" in \"day\"",
+            note: "The accent isn't decoration — it tells you the sound. *café* is *kah-FAY*, *répéter* is *ray-pay-TAY*. Without the é, the letter would sound different.",
+          },
+          {
+            fr: "Other accents you'll meet",
+            en: "è, ê, à, ç",
+            note: "French uses several accents (é, è, ê, à, ç). Each marks a sound or distinguishes meaning. Typing without them is fine while learning — but seeing them tells you how to say the word.",
+          },
+        ],
+      },
+      {
         type: "howToSay",
         words: [
           {
@@ -135,6 +151,10 @@ export const lesson1: Lesson = {
       {
         type: "tip",
         text: "Remember *CaReFuL*: C, R, F, L are the consonants typically pronounced at the end of French words. All other final consonants are usually silent. This one mnemonic will save you hundreds of pronunciation mistakes.",
+      },
+      {
+        type: "tip",
+        text: "Sound bridge: French often connects words with hidden sounds. *vous êtes* sounds like *vou-z-êtes* — a silent *s* wakes up before a vowel. You'll meet this more in Lesson 2. For now, just notice the connecting feel when you listen.",
       },
     ],
     quickRecall: {
