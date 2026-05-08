@@ -378,6 +378,26 @@ export const lesson2: Lesson = {
         "nous sommes fatigues aujourd'hui",
       ],
     },
+    {
+      hint: "You (formal) + être + ready + ? → Ask the group politely",
+      answer: "Vous êtes prêt ?",
+      accept: [
+        "vous êtes prêt",
+        "vous etes pret",
+        "vous êtes prêt ?",
+        "vous êtes prêts",
+        "vous etes prets",
+      ],
+    },
+    {
+      hint: "It is + not + serious → Reassure someone (no big deal)",
+      answer: "C'est pas grave",
+      accept: [
+        "c'est pas grave",
+        "ce n'est pas grave",
+        "cest pas grave",
+      ],
+    },
   ],
   weave: [
     {

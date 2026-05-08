@@ -363,6 +363,11 @@ export const lesson4: Lesson = {
       answer: "Il y a un café ici",
       accept: ["il y a un cafe ici", "il y a un café ici"],
     },
+    {
+      hint: "We + have + thirst → Express that the group is thirsty",
+      answer: "Nous avons soif",
+      accept: ["nous avons soif"],
+    },
   ],
   weave: [
     {

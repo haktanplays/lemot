@@ -385,6 +385,15 @@ export const lesson5: Lesson = {
         "Les enfants aiment les animaux",
       ],
     },
+    {
+      hint: "I + have + a + house + in + Paris → State possession",
+      answer: "J'ai une maison à Paris",
+      accept: [
+        "j'ai une maison à paris",
+        "j'ai une maison a paris",
+        "jai une maison à paris",
+      ],
+    },
   ],
   weave: [
     {

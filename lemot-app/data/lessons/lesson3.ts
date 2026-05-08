@@ -375,6 +375,15 @@ export const lesson3: Lesson = {
         "je mange jamais de viande",
       ],
     },
+    {
+      hint: "No + I + not + be + French → Decline a nationality assumption",
+      answer: "Non, je ne suis pas français",
+      accept: [
+        "non, je ne suis pas français",
+        "non je ne suis pas francais",
+        "non, je ne suis pas francais",
+      ],
+    },
   ],
   weave: [
     {

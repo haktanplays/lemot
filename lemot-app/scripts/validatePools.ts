@@ -240,10 +240,13 @@ for (const lesson of LESSONS) {
 for (const [idStr, pool] of Object.entries(LESSON_POOLS)) {
   const lessonId = parseInt(idStr, 10);
   const requireFr = lessonId <= DEV_APK_MAX_LESSON;
-  pool.fillFG.forEach((item, i) => {
+  // pool.fillFG / fillBlanks are optional in LessonPool: slim per-lesson
+  // pools (e.g. pool2-5) may omit fields they don't override, so the
+  // lesson's own arrays are used via fallback in LessonPractice.
+  pool.fillFG?.forEach((item, i) => {
     checkFillItem(`pool${lessonId}.fillFG[${i}]`, item, requireFr);
   });
-  pool.fillBlanks.forEach((item, i) => {
+  pool.fillBlanks?.forEach((item, i) => {
     checkFillItem(`pool${lessonId}.fillBlanks[${i}]`, item, false);
   });
 }

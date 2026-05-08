@@ -1,48 +1,45 @@
 import type { FlashCard } from "@/lib/types";
 
-// lessonId mapping (Adım 6 — Daily Review lesson-scope fix, second pass):
+// lessonId mapping (Adım 6 — Daily Review lesson-scope fix, third pass):
 //
-// First pass collapsed the "L1-5 core vocabulary" range into lessonId=1 and
-// kept the older 16-lesson group labels verbatim. That can still let a
-// Lesson 1 learner receive Lesson 4-5 content, so this pass cross-references
-// each card against the actual current lesson files (data/lessons/lesson1-5)
-// and applies the obvious L6+ subject shifts the user flagged in review.
+// 2026-05-08 update (Prompt 3 audit + Prompt 4 fix):
+// - L3 was {rue, pain} (2 cards, neither core to L3 negation/yes/no/you).
+//   Replaced with the actual L3 vocabulary: oui, non, si, jamais, plus, rien.
+//   `jamais` and `rien` were lessonId=14 in the previous pass; they are
+//   introduced and practiced in lesson3.ts negation block, so they belong
+//   to L3 first. L14 (More Negation + Y/En) still has personne, toujours,
+//   encore, déjà.
+// - L5 had 5 orphan cards (voiture, téléphone, musique, famille, chaise)
+//   not present in lesson5.ts vocabulary, plus 5 valid cards
+//   (problème, chat, livre, maison, table). Added école, ami, enfant,
+//   homme, animal, croissant — all explicit in lesson5.ts.
+//   `ami` and `enfant` were previously lessonId=12; both now L5 because
+//   lesson5 article block uses them as core examples.
+// - L4 `mal` was [MAPPING-REVIEW] (not in lesson4 grammar). Replaced with
+//   `sommeil`, which is explicit in lesson4 avoir-expressions block
+//   (`J'ai sommeil — I'm sleepy`).
+// - L1 expanded from 5 to 12 cards (au revoir, je voudrais, s'il vous plaît,
+//   pardon, voilà, bonsoir, salut all in lesson1 grammar.sections).
+// - L2 expanded from 5 to 10 cards (américain, étudiant, médecin, français,
+//   prêt all in lesson2 examples and grammar).
+// - Orphan cards (rue, pain, voiture, téléphone, musique, famille, chaise)
+//   moved to lessonId=12 with [GATED] tag — out of Dev APK scope until a
+//   later content audit places them properly.
 //
-// Verification approach:
-//   - L1-5 cards: confirmed by grep against data/lessons/lesson1.ts ... lesson5.ts
-//   - L6+ shifts: applied where the subject obviously matches a different lesson
-//     in the current 24-lesson syllabus (Sprint 9-syllabus, see CLAUDE.md):
-//       L6 Avoir       -> 4   (current L4 Avoir)         — verified in lesson4.ts
-//       L7 Articles    -> 5   (current L5 Articles)      — partial verify
-//       L13 Aller      -> 6   (current L6 Aller)         — subject match
-//       L14 Questions  -> 7   (current L7 Questions I)   — subject match
-//       L10 Family     -> 12  (current L12 My People)    — subject match
-//       L11 Negation   -> 14  (current L14 More Negation)— subject match
-//       L15 Daily Rout.-> 17  (current L17 My Day)       — subject match
-//       L16 Places     -> 15  (current L15 Places)       — subject match
-//       L8 Numbers     -> 8   (current L8 — unchanged)
-//       L9 Food        -> 9   (current L9 — unchanged)
-//
-// Cards flagged MAPPING-REVIEW have not been verified against a specific
-// lesson and are gated to lessonId=12 (out of Dev APK L1-L5 scope) so they
-// never appear in early-learner reviews until a content audit places them.
+// Previous mapping notes (kept for context):
+//   L6 Avoir       -> 4   (current L4 Avoir)
+//   L7 Articles    -> 5   (current L5 Articles)
+//   L13 Aller      -> 6
+//   L14 Questions  -> 7
+//   L10 Family     -> 12
+//   L11 Negation   -> 14
+//   L15 Daily Rout.-> 17
+//   L16 Places     -> 15
 //
 // MAPPING-REVIEW (8 cards, currently lessonId=12):
 //   il faut, en fait, ça marche, ça dépend, d'accord, petit, grand, vin
 //   -> Original group "L1-5, L12: Core vocabulary" but not present in
 //      lessons 1-5; could belong anywhere in L1-L24. Conservatively gated.
-//
-// MAPPING-REVIEW (5 cards, currently lessonId=5 with caveat):
-//   voiture, téléphone, musique, famille, chaise
-//   -> Original group "L7: Articles & Gender", current Articles is L5.
-//      Subject (everyday nouns for article practice) fits L5, but these
-//      five aren't explicitly in the lesson5.ts vocab. Trusted to L5 per
-//      user hint; revisit during content audit.
-//
-// MAPPING-REVIEW (1 card, currently lessonId=4):
-//   mal -> An avoir expression ("j'ai mal"), original group "L6: Avoir"
-//      now mapped to L4. Not literally present in lesson4.ts but pairs
-//      with avoir expressions taught there. Kept at L4 with this note.
 
 export const FLASH: FlashCard[] = [
   // ── L1: Survival Kit ──
@@ -51,6 +48,13 @@ export const FLASH: FlashCard[] = [
   { fr: "comprendre", en: "to understand", cat: "verb", ex: "Je comprends.", cog: "≈ comprehend", lessonId: 1 },
   { fr: "répéter", en: "to repeat", cat: "verb", ex: "Pouvez-vous répéter ?", cog: "≈ repeat", lessonId: 1 },
   { fr: "vous", en: "you (formal/plural)", cat: "pronoun", ex: "Vous êtes américain ?", cog: "", lessonId: 1 },
+  { fr: "au revoir", en: "goodbye", cat: "phrase", ex: "Merci, au revoir !", cog: "lit. 'until seeing again'", lessonId: 1 },
+  { fr: "je voudrais", en: "I would like", cat: "phrase", ex: "Je voudrais un café.", cog: "polite form, ≠ je veux", lessonId: 1 },
+  { fr: "s'il vous plaît", en: "please", cat: "phrase", ex: "Un café, s'il vous plaît.", cog: "lit. 'if it pleases you'", lessonId: 1 },
+  { fr: "pardon", en: "sorry / excuse me", cat: "phrase", ex: "Oh, pardon !", cog: "≈ pardon", lessonId: 1 },
+  { fr: "voilà", en: "there you go", cat: "phrase", ex: "Voilà, monsieur.", cog: "lit. 'see there'", lessonId: 1 },
+  { fr: "bonsoir", en: "good evening", cat: "phrase", ex: "Bonsoir, madame.", cog: "", lessonId: 1 },
+  { fr: "salut", en: "hi (casual)", cat: "phrase", ex: "Salut, ça va ?", cog: "friends only", lessonId: 1 },
 
   // ── L2: Être ──
   { fr: "être", en: "to be", cat: "verb", ex: "Je suis content.", cog: "→ essence, absent, present", lessonId: 2 },
@@ -58,13 +62,22 @@ export const FLASH: FlashCard[] = [
   { fr: "content", en: "happy", cat: "adj", ex: "Je suis content.", cog: "≈ content", lessonId: 2 },
   { fr: "tu", en: "you (informal)", cat: "pronoun", ex: "Tu es français ?", cog: "", lessonId: 2 },
   { fr: "toi", en: "you (emphatic)", cat: "pronoun", ex: "Et toi ?", cog: "", lessonId: 2 },
+  { fr: "américain", en: "American", cat: "adj", ex: "Je suis américain.", cog: "≈ American", lessonId: 2 },
+  { fr: "étudiant", en: "student", cat: "noun", ex: "Il est étudiant.", cog: "≈ student", lessonId: 2 },
+  { fr: "médecin", en: "doctor", cat: "noun", ex: "Elle est médecin.", cog: "≈ medicine", lessonId: 2 },
+  { fr: "français", en: "French", cat: "adj", ex: "Tu es français ?", cog: "", lessonId: 2 },
+  { fr: "prêt", en: "ready", cat: "adj", ex: "Vous êtes prêt ?", cog: "", lessonId: 2 },
 
-  // ── L3: Yes/No/You ──
-  { fr: "rue", en: "street", cat: "noun", ex: "La rue est grande.", cog: "", lessonId: 3 },
-  { fr: "pain", en: "bread", cat: "noun", ex: "Du pain et du vin.", cog: "", lessonId: 3 },
+  // ── L3: Yes / No / You / Negation ──
+  { fr: "oui", en: "yes", cat: "phrase", ex: "Oui, s'il vous plaît.", cog: "", lessonId: 3 },
+  { fr: "non", en: "no", cat: "phrase", ex: "Non, merci.", cog: "", lessonId: 3 },
+  { fr: "si", en: "yes (contradicting a negative)", cat: "phrase", ex: "Tu n'es pas français ? — Si !", cog: "no English equivalent", lessonId: 3 },
+  { fr: "jamais", en: "never", cat: "adv", ex: "Je ne mange jamais de viande.", cog: "", lessonId: 3 },
+  { fr: "plus", en: "no more (in negation)", cat: "adv", ex: "Je ne veux plus de café.", cog: "ne...plus sandwich", lessonId: 3 },
+  { fr: "rien", en: "nothing", cat: "pronoun", ex: "Je ne mange rien.", cog: "ne...rien sandwich", lessonId: 3 },
 
   // ── L4: Avoir (was "L6: Avoir" in old numbering) ──
-  { fr: "il y a", en: "there is/are", cat: "phrase", ex: "Il y a un problème.", cog: "", lessonId: 4 },
+  { fr: "il y a", en: "there is/are", cat: "phrase", ex: "Il y a un problème.", cog: "lit. 'it there has'", lessonId: 4 },
   { fr: "restaurant", en: "restaurant", cat: "noun", ex: "Il y a un bon restaurant.", cog: "≈ restaurant", lessonId: 4 },
   { fr: "avoir", en: "to have", cat: "verb", ex: "J'ai faim.", cog: "", lessonId: 4 },
   { fr: "faim", en: "hunger", cat: "noun", ex: "J'ai faim.", cog: "≈ famine", lessonId: 4 },
@@ -75,7 +88,7 @@ export const FLASH: FlashCard[] = [
   { fr: "tort", en: "wrong", cat: "noun", ex: "Il a tort.", cog: "≈ tort", lessonId: 4 },
   { fr: "chaud", en: "hot", cat: "adj", ex: "J'ai chaud.", cog: "", lessonId: 4 },
   { fr: "froid", en: "cold", cat: "adj", ex: "J'ai froid.", cog: "≈ frigid", lessonId: 4 },
-  { fr: "mal", en: "pain/ache", cat: "noun", ex: "J'ai mal à la tête.", cog: "≈ malady", lessonId: 4 },  // [MAPPING-REVIEW]
+  { fr: "sommeil", en: "sleepiness", cat: "noun", ex: "J'ai sommeil.", cog: "≈ somnolent", lessonId: 4 },
 
   // ── L5: Articles (was "L7: Articles & Gender" in old numbering) ──
   { fr: "problème", en: "problem", cat: "noun", ex: "Pas de problème.", cog: "≈ problem", lessonId: 5 },
@@ -83,11 +96,12 @@ export const FLASH: FlashCard[] = [
   { fr: "livre", en: "book", cat: "noun", ex: "Le livre est sur la table.", cog: "≈ library", lessonId: 5 },
   { fr: "maison", en: "house", cat: "noun", ex: "La maison est grande.", cog: "≈ mansion", lessonId: 5 },
   { fr: "table", en: "table", cat: "noun", ex: "Sur la table.", cog: "≈ table", lessonId: 5 },
-  { fr: "voiture", en: "car", cat: "noun", ex: "La voiture est rouge.", cog: "", lessonId: 5 },                     // [MAPPING-REVIEW]
-  { fr: "téléphone", en: "phone", cat: "noun", ex: "Le téléphone sonne.", cog: "≈ telephone", lessonId: 5 },        // [MAPPING-REVIEW]
-  { fr: "musique", en: "music", cat: "noun", ex: "La musique est belle.", cog: "≈ music", lessonId: 5 },            // [MAPPING-REVIEW]
-  { fr: "famille", en: "family", cat: "noun", ex: "Ma famille est grande.", cog: "≈ family", lessonId: 5 },         // [MAPPING-REVIEW]
-  { fr: "chaise", en: "chair", cat: "noun", ex: "La chaise est petite.", cog: "", lessonId: 5 },                     // [MAPPING-REVIEW]
+  { fr: "école", en: "school", cat: "noun", ex: "L'école est grande.", cog: "≈ school", lessonId: 5 },
+  { fr: "ami", en: "friend", cat: "noun", ex: "Mon ami est ici.", cog: "≈ amicable", lessonId: 5 },
+  { fr: "enfant", en: "child", cat: "noun", ex: "L'enfant est petit.", cog: "≈ infant", lessonId: 5 },
+  { fr: "homme", en: "man", cat: "noun", ex: "L'homme regarde.", cog: "", lessonId: 5 },
+  { fr: "animal", en: "animal", cat: "noun", ex: "Les enfants aiment les animaux.", cog: "≈ animal", lessonId: 5 },
+  { fr: "croissant", en: "croissant", cat: "noun", ex: "Un croissant, s'il vous plaît.", cog: "≈ croissant", lessonId: 5 },
 
   // ── L6: Aller (was "L13: Aller" in old numbering) ──
   { fr: "aller", en: "to go", cat: "verb", ex: "Je vais au restaurant.", cog: "", lessonId: 6 },
@@ -125,10 +139,20 @@ export const FLASH: FlashCard[] = [
   { fr: "mère", en: "mother", cat: "noun", ex: "Ma mère est médecin.", cog: "≈ maternal", lessonId: 12 },
   { fr: "frère", en: "brother", cat: "noun", ex: "Mon frère a vingt ans.", cog: "≈ fraternal", lessonId: 12 },
   { fr: "sœur", en: "sister", cat: "noun", ex: "Ma sœur est étudiante.", cog: "≈ sorority", lessonId: 12 },
-  { fr: "enfant", en: "child", cat: "noun", ex: "L'enfant est petit.", cog: "≈ infant", lessonId: 12 },
-  { fr: "ami", en: "friend", cat: "noun", ex: "Mon ami est ici.", cog: "≈ amicable", lessonId: 12 },
   { fr: "jeune", en: "young", cat: "adj", ex: "Elle est jeune.", cog: "≈ juvenile", lessonId: 12 },
   { fr: "vieux", en: "old", cat: "adj", ex: "Il est vieux.", cog: "", lessonId: 12 },
+
+  // ── L12 (gated): Cards moved here from L3/L5 in 2026-05-08 audit. They
+  // appeared in their original lesson exposure or examples but are not core
+  // vocabulary of any L1-L5 lesson. Gated to L12 (out of Dev APK scope)
+  // until a content pass places each one properly.
+  { fr: "rue", en: "street", cat: "noun", ex: "La rue est grande.", cog: "", lessonId: 12 },                          // [GATED — was L3]
+  { fr: "pain", en: "bread", cat: "noun", ex: "Du pain et du vin.", cog: "", lessonId: 12 },                          // [GATED — was L3]
+  { fr: "voiture", en: "car", cat: "noun", ex: "La voiture est rouge.", cog: "", lessonId: 12 },                      // [GATED — was L5]
+  { fr: "téléphone", en: "phone", cat: "noun", ex: "Le téléphone sonne.", cog: "≈ telephone", lessonId: 12 },         // [GATED — was L5]
+  { fr: "musique", en: "music", cat: "noun", ex: "La musique est belle.", cog: "≈ music", lessonId: 12 },             // [GATED — was L5]
+  { fr: "famille", en: "family", cat: "noun", ex: "Ma famille est grande.", cog: "≈ family", lessonId: 12 },          // [GATED — was L5]
+  { fr: "chaise", en: "chair", cat: "noun", ex: "La chaise est petite.", cog: "", lessonId: 12 },                     // [GATED — was L5]
 
   // ── L12 (gated): MAPPING-REVIEW — original "L1-5, L12: Core vocabulary"
   // cards not found in data/lessons/lesson1-5. Conservatively gated to L12
@@ -143,8 +167,8 @@ export const FLASH: FlashCard[] = [
   { fr: "vin", en: "wine", cat: "noun", ex: "Du vin rouge.", cog: "≈ wine (from Latin vinum)", lessonId: 12 },        // [MAPPING-REVIEW]
 
   // ── L14: More Negation + Y/En (was "L11: Negation" in old numbering) ──
-  { fr: "jamais", en: "never", cat: "adv", ex: "Je ne mange jamais de viande.", cog: "", lessonId: 14 },
-  { fr: "rien", en: "nothing", cat: "pronoun", ex: "Il n'y a rien.", cog: "", lessonId: 14 },
+  // Note 2026-05-08: jamais, rien moved to L3 (introduced and practiced in
+  // lesson3 negation block). L14 still owns personne, toujours, encore, déjà.
   { fr: "personne", en: "nobody", cat: "pronoun", ex: "Il n'y a personne.", cog: "≈ person", lessonId: 14 },
   { fr: "toujours", en: "always", cat: "adv", ex: "Il est toujours en retard.", cog: "", lessonId: 14 },
   { fr: "encore", en: "still/again", cat: "adv", ex: "Tu es encore ici ?", cog: "≈ encore", lessonId: 14 },
