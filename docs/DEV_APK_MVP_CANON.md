@@ -4,6 +4,8 @@
 
 > **Scope**: This document governs Dev APK work only. Public beta and post-launch features are explicitly out of scope here — see the full design at `~/Desktop/ObsidianVault/01 Projeler/LeMot - User Journey.md`.
 
+> **Canon Resolution Notes (2026-05-08)**: Product / UX / pedagogy alignment decisions live at `~/Desktop/Le Mot .md/May/08.05.2026/LeMot_Canon_Resolution_Notes_08052026.md`. Seven locked decisions (A1 Daily Review rotation, A2 mirror split, A3 feedback split + ladder, B1 lesson stage labels, B2 Weave psychology, B3 Home microcopy, C scope note) extend this canon without contradicting it. When the User Journey, BRAND, or HOME sections appear to disagree with the Resolution doc, the Resolution doc is newer and wins.
+
 ---
 
 ## 1. Product Philosophy
