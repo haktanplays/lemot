@@ -122,6 +122,20 @@ export const lesson4: Lesson = {
               "Je + ai contracts to j'ai. The 'zh' is like the 's' in 'pleasure.' Rhymes with English 'bay.'",
           },
           {
+            fr: "nous avons",
+            phonetic: "noo-zah-VOHN",
+            ipa: "/nu.za.vɔ̃/",
+            notes:
+              "Liaison: the silent 's' of nous wakes up as a 'z' before avons. You hear 'nou-z-avons' as one connected sound.",
+          },
+          {
+            fr: "vous avez",
+            phonetic: "voo-zah-VAY",
+            ipa: "/vu.za.ve/",
+            notes:
+              "Liaison: same pattern as nous avons. Silent 's' of vous becomes 'z' before a vowel — 'vou-z-avez', not 'voo avay'.",
+          },
+          {
             fr: "ils ont",
             phonetic: "eel-ZOHN",
             ipa: "/il.z‿ɔ̃/",
