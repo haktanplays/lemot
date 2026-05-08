@@ -8,7 +8,56 @@
  * sentence-level contexts. Article choice forces gender + elision
  * recognition without isolated drilling.
  */
-import type { FillItem } from "@/lib/types";
+import type { FillItem, TypedWeaveItem } from "@/lib/types";
+
+export const typedWeave5: TypedWeaveItem[] = [
+  {
+    prompt: "the book",
+    target: "le livre",
+    fr: "le livre",
+    accepted: ["le livre"],
+    diff: "easy",
+  },
+  {
+    prompt: "a house",
+    target: "une maison",
+    fr: "une maison",
+    accepted: ["une maison"],
+    diff: "easy",
+  },
+  {
+    prompt: "the children",
+    target: "les enfants",
+    fr: "les enfants",
+    accepted: ["les enfants"],
+    diff: "easy",
+  },
+  {
+    prompt: "I have a house",
+    target: "J'ai une maison.",
+    fr: "J'ai une maison.",
+    accepted: ["j'ai une maison", "jai une maison"],
+    diff: "easy",
+  },
+  {
+    prompt: "The man looks at the school",
+    target: "L'homme regarde l'école.",
+    fr: "L'homme regarde l'école.",
+    accepted: [
+      "l'homme regarde l'école",
+      "l'homme regarde l'ecole",
+      "lhomme regarde lecole",
+    ],
+    diff: "medium",
+  },
+  {
+    prompt: "The children like animals",
+    target: "Les enfants aiment les animaux.",
+    fr: "Les enfants aiment les animaux.",
+    accepted: ["les enfants aiment les animaux"],
+    diff: "medium",
+  },
+];
 
 export const fillFG5: FillItem[] = [
   {

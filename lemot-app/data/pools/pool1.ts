@@ -16,7 +16,76 @@ import type {
   WeaveItem,
   ReviewItem,
   Example,
+  TypedWeaveItem,
 } from "@/lib/types";
+
+// ═══════════════════════════════════════════════════════════════════
+// TYPED WEAVE (8) — student types French; LessonPractice reveals target
+// (added 2026-05-08 per Prompt 7: L1 Practice should be productive too)
+// ═══════════════════════════════════════════════════════════════════
+
+export const typedWeave1: TypedWeaveItem[] = [
+  {
+    prompt: "Hello",
+    target: "Bonjour.",
+    fr: "Bonjour.",
+    accepted: ["bonjour"],
+    diff: "easy",
+  },
+  {
+    prompt: "Thank you",
+    target: "Merci.",
+    fr: "Merci.",
+    accepted: ["merci"],
+    diff: "easy",
+  },
+  {
+    prompt: "Goodbye",
+    target: "Au revoir.",
+    fr: "Au revoir.",
+    accepted: ["au revoir"],
+    diff: "easy",
+  },
+  {
+    prompt: "I would like a coffee",
+    target: "Je voudrais un café.",
+    fr: "Je voudrais un café.",
+    accepted: ["je voudrais un cafe", "je voudrais un café"],
+    diff: "easy",
+  },
+  {
+    prompt: "I do not understand",
+    target: "Je ne comprends pas.",
+    fr: "Je ne comprends pas.",
+    accepted: ["je ne comprends pas", "je comprends pas"],
+    diff: "easy",
+  },
+  {
+    prompt: "Could you repeat?",
+    target: "Pouvez-vous répéter ?",
+    fr: "Pouvez-vous répéter ?",
+    accepted: [
+      "pouvez-vous repeter",
+      "pouvez-vous répéter",
+      "pouvez vous repeter",
+    ],
+    diff: "easy",
+  },
+  {
+    prompt: "Please",
+    target: "S'il vous plaît.",
+    fr: "S'il vous plaît.",
+    accepted: ["s'il vous plait", "s'il vous plaît", "sil vous plait"],
+    diff: "easy",
+  },
+  {
+    prompt: "Excuse me",
+    target: "Excusez-moi.",
+    fr: "Excusez-moi.",
+    accepted: ["excusez-moi", "excusez moi"],
+    diff: "easy",
+  },
+];
 
 // ═══════════════════════════════════════════════════════════════════
 // EXAMPLES (20) — graduated difficulty, unique sentences

@@ -7,7 +7,60 @@
  * Style: guided transformation around the negation sandwich, tu/vous
  * choice, and the unique French `si` (yes-to-a-negative).
  */
-import type { FillItem } from "@/lib/types";
+import type { FillItem, TypedWeaveItem } from "@/lib/types";
+
+export const typedWeave3: TypedWeaveItem[] = [
+  {
+    prompt: "I do not understand",
+    target: "Je ne comprends pas.",
+    fr: "Je ne comprends pas.",
+    accepted: ["je ne comprends pas", "je comprends pas"],
+    diff: "easy",
+  },
+  {
+    prompt: "Are you French? (informal)",
+    target: "Tu es français ?",
+    fr: "Tu es français ?",
+    accepted: ["tu es francais", "tu es français", "tu es français ?"],
+    diff: "easy",
+  },
+  {
+    prompt: "No, I am not French",
+    target: "Non, je ne suis pas français.",
+    fr: "Non, je ne suis pas français.",
+    accepted: [
+      "non je ne suis pas francais",
+      "non, je ne suis pas francais",
+      "non, je ne suis pas français",
+    ],
+    diff: "medium",
+  },
+  {
+    prompt: "Yes, I am (contradicting a negative)",
+    target: "Si, je le suis.",
+    fr: "Si, je le suis.",
+    accepted: ["si je le suis", "si, je le suis"],
+    diff: "medium",
+  },
+  {
+    prompt: "I never eat meat",
+    target: "Je ne mange jamais de viande.",
+    fr: "Je ne mange jamais de viande.",
+    accepted: ["je ne mange jamais de viande", "je mange jamais de viande"],
+    diff: "medium",
+  },
+  {
+    prompt: "You are not ready (informal)",
+    target: "Tu n'es pas prêt.",
+    fr: "Tu n'es pas prêt.",
+    accepted: [
+      "tu n'es pas pret",
+      "tu n'es pas prêt",
+      "tu nes pas pret",
+    ],
+    diff: "medium",
+  },
+];
 
 export const fillFG3: FillItem[] = [
   {

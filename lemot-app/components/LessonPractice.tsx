@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import {
@@ -13,6 +13,7 @@ import {
   Volume2,
   MessageCircle,
   AlertCircle,
+  ArrowDown,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
 import { LESSONS } from "@/data/lessons";
@@ -22,7 +23,7 @@ import { extractExposureWords } from "@/data/exposureGlossary";
 import { useApp } from "@/providers/AppProvider";
 import { norm } from "@/lib/normalize";
 import { looksFrench, extractFrenchQuote } from "@/lib/looksFrench";
-import type { FillItem, QuizItem, Lesson } from "@/lib/types";
+import type { FillItem, QuizItem, TypedWeaveItem, Lesson } from "@/lib/types";
 
 type Stage = "select" | "session" | "done";
 
@@ -30,7 +31,8 @@ type Stage = "select" | "session" | "done";
 type PracticeExercise =
   | { type: "fill_fg"; item: FillItem }
   | { type: "fill_fr"; item: FillItem }
-  | { type: "quiz"; item: QuizItem };
+  | { type: "quiz"; item: QuizItem }
+  | { type: "typed_weave"; item: TypedWeaveItem };
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -46,6 +48,25 @@ function buildExercises(lesson: Lesson, count: number): PracticeExercise[] {
   const fillFG = staticPool?.fillFG ?? lesson.fillFG;
   const fillBlanks = staticPool?.fillBlanks ?? lesson.fillBlanks;
   const quiz = staticPool?.quiz ?? lesson.quiz;
+  const typedWeave = staticPool?.typedWeave ?? [];
+
+  // Productive-first mix: when a pool provides typedWeave items (L2-L5),
+  // the session leads with typed Weave and adds a couple of supporting
+  // fillFG / fillBlanks for variety. Quiz is dropped to keep the session
+  // written/productive rather than quiz-heavy. Per Prompt 6 Part E.
+  if (typedWeave.length > 0) {
+    const tw = typedWeave.map((item) => ({ type: "typed_weave" as const, item }));
+    const ff = shuffle(fillFG)
+      .slice(0, 1)
+      .map((item) => ({ type: "fill_fg" as const, item }));
+    const fb = shuffle(fillBlanks)
+      .slice(0, 1)
+      .map((item) => ({ type: "fill_fr" as const, item }));
+    return shuffle([...tw, ...ff, ...fb]).slice(0, count);
+  }
+
+  // Default mix (L1 with pool1, plus any future pool without typedWeave):
+  // unchanged — fillFG + fillBlanks + quiz random shuffle.
   const pool: PracticeExercise[] = [
     ...fillFG.map((item) => ({ type: "fill_fg" as const, item })),
     ...fillBlanks.map((item) => ({ type: "fill_fr" as const, item })),
@@ -71,6 +92,10 @@ export default function LessonPractice({ onBack }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [multiPicks, setMultiPicks] = useState<string[]>([]);
+  // Typed Weave state — independent from the MCQ flow above. `typedResult`
+  // gates between input mode (null) and reveal mode ("ok" | "no").
+  const [typedInput, setTypedInput] = useState("");
+  const [typedResult, setTypedResult] = useState<"ok" | "no" | null>(null);
 
   const completedLessons = useMemo(() => {
     const set = new Set<number>();
@@ -86,6 +111,8 @@ export default function LessonPractice({ onBack }: Props) {
     setIdx(0);
     setSelected(null);
     setMultiPicks([]);
+    setTypedInput("");
+    setTypedResult(null);
     setScore(0);
     setStage("session");
   }, []);
@@ -163,7 +190,8 @@ export default function LessonPractice({ onBack }: Props) {
                       const poolSize =
                         (staticPool?.fillFG ?? lesson.fillFG).length +
                         (staticPool?.fillBlanks ?? lesson.fillBlanks).length +
-                        (staticPool?.quiz ?? lesson.quiz).length;
+                        (staticPool?.quiz ?? lesson.quiz).length +
+                        (staticPool?.typedWeave?.length ?? 0);
 
                       return (
                         <Pressable
@@ -242,15 +270,31 @@ export default function LessonPractice({ onBack }: Props) {
 
   /* ── DONE ── */
   if (stage === "done") {
+    // Split counts so a typedWeave-heavy session never produces a
+    // demoralizing "0/8 score". TypedWeave is completion-based per
+    // Prompt 7 Issue 1; only fill_fg / fill_fr / quiz contribute to
+    // the accuracy score.
+    const typedCount = exercises.filter(
+      (e) => e.type === "typed_weave",
+    ).length;
+    const scoredCount = exercises.length - typedCount;
+
     return (
       <SafeAreaView className="flex-1 bg-lm-bg">
         <View className="flex-1 items-center justify-center px-8">
           <Text className="text-xl font-bold text-lm-green mb-2">
             Practice Complete!
           </Text>
-          <Text className="text-sm text-lm-ink2 text-center mb-1">
-            Score: {score} / {exercises.length}
-          </Text>
+          {scoredCount > 0 && (
+            <Text className="text-sm text-lm-ink2 text-center mb-1">
+              {score} / {scoredCount} correct
+            </Text>
+          )}
+          {typedCount > 0 && (
+            <Text className="text-sm text-lm-ink2 text-center mb-1">
+              {typedCount} sentence{typedCount === 1 ? "" : "s"} typed
+            </Text>
+          )}
           <Text className="text-xs text-lm-ink3 text-center mb-6">
             {selectedLesson?.title} — keep practicing to master every exercise!
           </Text>
@@ -323,6 +367,210 @@ export default function LessonPractice({ onBack }: Props) {
     return null;
   }
 
+  // Hoisted handlers — declared before the typed_weave render block so that
+  // (a) typed_weave can call them, and (b) `ex.type` narrowing inside
+  // handleTypedCheck still includes "typed_weave" (the lexical position
+  // matters for TS control-flow analysis).
+  const next = () => {
+    if (idx + 1 >= exercises.length) {
+      setStage("done");
+    } else {
+      setIdx(idx + 1);
+      setSelected(null);
+      setMultiPicks([]);
+      setTypedInput("");
+      setTypedResult(null);
+    }
+  };
+
+  // Typed Weave check — accent-insensitive via norm(), accepts any of the
+  // canonical target plus optional `accepted` variants.
+  // **Completion-based, not scored**: typedWeave does NOT increment `score`
+  // regardless of correctness. Per Prompt 7 Issue 1, Weave is not a
+  // right/wrong test — the student writes French and sees the full target.
+  // Soft feedback ("That's the sentence." vs "Here's the full French.")
+  // is for awareness only; the done screen displays typed-completion count
+  // separately from the MCQ accuracy score so a typedWeave-heavy session
+  // never produces a demoralizing "0/8" tally.
+  const handleTypedCheck = () => {
+    if (typedResult !== null) return;
+    if (ex.type !== "typed_weave") return;
+    const candidates = [ex.item.target, ...(ex.item.accepted ?? [])];
+    const ok = candidates.some((c) => norm(c) === norm(typedInput));
+    setTypedResult(ok ? "ok" : "no");
+    // Intentionally no setScore — typedWeave is completion-based.
+  };
+
+  /* ── Typed Weave session render ── */
+  // Productive practice — student types the French sentence rather than
+  // tapping options. Always reveals the full French target on submit.
+  // Soft scoring: wrong answers reveal but never block progression.
+  if (ex.type === "typed_weave") {
+    const ttsSource = ex.item.fr ?? ex.item.target;
+    const canSpeakTyped = looksFrench(ttsSource);
+    const inputBorderColor =
+      typedResult === "ok"
+        ? P.green
+        : typedResult === "no"
+          ? P.red
+          : P.border;
+    const inputBgColor =
+      typedResult === "ok" ? P.gl : typedResult === "no" ? P.rl : P.paper;
+
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          {/* Header */}
+          <View className="flex-row items-center justify-between px-6 pt-3 pb-2">
+            <Pressable onPress={() => setStage("select")}>
+              <Text
+                className="text-xs font-semibold"
+                style={{ color: P.ink3 }}
+              >
+                ← Back
+              </Text>
+            </Pressable>
+            <Text className="text-xs" style={{ color: P.ink3 }}>
+              {idx + 1} / {exercises.length}
+            </Text>
+            <Text className="text-xs" style={{ color: P.green }}>
+              {score} correct
+            </Text>
+          </View>
+
+          <View className="flex-1 items-center justify-center px-8">
+            {/* Type label */}
+            <Text
+              className="text-[10px] uppercase mb-2 tracking-widest"
+              style={{ color: P.red }}
+            >
+              TYPED WEAVE
+            </Text>
+
+            {/* English prompt */}
+            <Text
+              className="text-base text-center mb-2"
+              style={{ color: P.ink2 }}
+            >
+              {ex.item.prompt}
+            </Text>
+
+            <ArrowDown size={16} color={P.ink3} style={{ marginVertical: 6 }} />
+
+            {/* Input mode — student types the French sentence */}
+            {typedResult === null ? (
+              <TextInput
+                value={typedInput}
+                onChangeText={setTypedInput}
+                placeholder="Type the French..."
+                placeholderTextColor={P.ink3}
+                autoCapitalize="none"
+                autoCorrect={false}
+                multiline
+                className="w-full rounded-xl text-base"
+                style={{
+                  paddingVertical: 13,
+                  paddingHorizontal: 16,
+                  borderWidth: 1.5,
+                  borderColor: inputBorderColor,
+                  backgroundColor: inputBgColor,
+                  fontFamily: "serif",
+                  fontStyle: "italic",
+                  color: P.ink,
+                  minHeight: 56,
+                  textAlignVertical: "top",
+                }}
+              />
+            ) : (
+              /* Reveal mode — full French target visible regardless of correctness */
+              <View
+                className="w-full rounded-xl px-4 py-4"
+                style={{
+                  backgroundColor: inputBgColor,
+                  borderWidth: 1.5,
+                  borderColor: inputBorderColor,
+                }}
+              >
+                <Text
+                  className="font-newsreader text-lg text-center"
+                  style={{ fontStyle: "italic", color: P.ink }}
+                >
+                  {ex.item.target}
+                </Text>
+              </View>
+            )}
+
+            {/* Soft feedback line — non-punitive when wrong */}
+            {typedResult === "ok" && (
+              <Text
+                className="text-sm font-semibold mt-3"
+                style={{ color: P.green }}
+              >
+                Nice — that&apos;s the sentence.
+              </Text>
+            )}
+            {typedResult === "no" && (
+              <Text
+                className="text-sm mt-3 text-center"
+                style={{ color: P.ink2 }}
+              >
+                Almost — here&apos;s the full French.
+              </Text>
+            )}
+
+            {/* Check button (input mode) */}
+            {typedResult === null && (
+              <Pressable
+                onPress={handleTypedCheck}
+                disabled={typedInput.trim().length === 0}
+                className="rounded-xl px-6 py-3 mt-5"
+                style={{
+                  backgroundColor:
+                    typedInput.trim().length === 0 ? P.border : P.red,
+                }}
+              >
+                <Text className="text-white text-sm font-semibold">Check</Text>
+              </Pressable>
+            )}
+
+            {/* Listen + Next (reveal mode) */}
+            {typedResult !== null && (
+              <View className="items-center mt-3">
+                {canSpeakTyped && (
+                  <Pressable
+                    onPress={() => say(ttsSource)}
+                    className="flex-row items-center px-2.5 py-1.5 rounded"
+                    style={{ backgroundColor: "#F0EEEC", gap: 4 }}
+                  >
+                    <Volume2 size={12} color={P.ink3} />
+                    <Text
+                      className="text-[10px]"
+                      style={{ color: P.ink3 }}
+                    >
+                      Listen
+                    </Text>
+                  </Pressable>
+                )}
+                <Pressable
+                  onPress={next}
+                  className="rounded-xl px-6 py-3 mt-3"
+                  style={{ backgroundColor: P.red }}
+                >
+                  <Text className="text-white text-sm font-semibold">
+                    {idx + 1 >= exercises.length ? "Done" : "Next"}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    );
+  }
+
   const multiBlanks =
     ex.type !== "quiz" &&
     Array.isArray(ex.item.blanks) &&
@@ -360,15 +608,8 @@ export default function LessonPractice({ onBack }: Props) {
     }
   };
 
-  const next = () => {
-    if (idx + 1 >= exercises.length) {
-      setStage("done");
-    } else {
-      setIdx(idx + 1);
-      setSelected(null);
-      setMultiPicks([]);
-    }
-  };
+  // (handleTypedCheck and next are hoisted above the typed_weave render
+  // block so the closure narrowing of `ex.type` covers both flows.)
 
   // Replace blanks one-at-a-time, supporting both [___] and bare ___ markers.
   // Use first-match (no /g) so each pick fills the next blank in order.

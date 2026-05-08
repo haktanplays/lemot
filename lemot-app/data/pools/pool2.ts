@@ -11,7 +11,52 @@
  *
  * Style: guided transformation, sentence-level, clean fr field for TTS.
  */
-import type { FillItem } from "@/lib/types";
+import type { FillItem, TypedWeaveItem } from "@/lib/types";
+
+export const typedWeave2: TypedWeaveItem[] = [
+  {
+    prompt: "I am tired",
+    target: "Je suis fatigué.",
+    fr: "Je suis fatigué.",
+    accepted: ["je suis fatigue", "je suis fatigué"],
+    diff: "easy",
+  },
+  {
+    prompt: "You are ready (formal/plural)",
+    target: "Vous êtes prêt.",
+    fr: "Vous êtes prêt.",
+    accepted: ["vous etes pret", "vous êtes prêt", "vous êtes prêts", "vous etes prets"],
+    diff: "easy",
+  },
+  {
+    prompt: "She is a doctor",
+    target: "Elle est médecin.",
+    fr: "Elle est médecin.",
+    accepted: ["elle est medecin", "elle est médecin"],
+    diff: "easy",
+  },
+  {
+    prompt: "It is not serious",
+    target: "Ce n'est pas grave.",
+    fr: "Ce n'est pas grave.",
+    accepted: ["ce n'est pas grave", "cest pas grave", "c'est pas grave"],
+    diff: "medium",
+  },
+  {
+    prompt: "We are here",
+    target: "Nous sommes ici.",
+    fr: "Nous sommes ici.",
+    accepted: ["nous sommes ici"],
+    diff: "easy",
+  },
+  {
+    prompt: "Are you French? (formal)",
+    target: "Vous êtes français ?",
+    fr: "Vous êtes français ?",
+    accepted: ["vous etes francais", "vous êtes français", "vous êtes français ?"],
+    diff: "easy",
+  },
+];
 
 export const fillFG2: FillItem[] = [
   {

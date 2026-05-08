@@ -113,6 +113,30 @@ export interface WeaveItem {
   sample: string;
 }
 
+/**
+ * Typed Weave practice item — for Lesson Practice (LessonPractice.tsx).
+ *
+ * The learner sees an English-supported or mixed prompt and types the full
+ * French sentence. After submit, the app reveals the full correct French.
+ * No MCQ, no dropdown, no tile selection — student actively produces French.
+ *
+ * Soft scoring: comparison is accent-insensitive (`norm()`); wrong answers
+ * reveal the target but never block progression.
+ */
+export interface TypedWeaveItem {
+  /** English-supported or mixed prompt shown above the input. */
+  prompt: string;
+  /** Canonical French target sentence. Comparison anchor and reveal text. */
+  target: string;
+  /** Optional clean French sentence for TTS if `target` includes punctuation
+   *  or other rendering tokens. Defaults to `target` when omitted. */
+  fr?: string;
+  /** Additional accepted spellings (already-loose; `norm()` strips accents
+   *  and punctuation on top of these for soft acceptance). */
+  accepted?: string[];
+  diff?: Difficulty;
+}
+
 export interface SayItItem {
   situation: string;
   target: string[];

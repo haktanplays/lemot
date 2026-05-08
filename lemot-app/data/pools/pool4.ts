@@ -7,7 +7,52 @@
  * Style: avoir expressions (j'ai faim, j'ai peur), age (j'ai N ans),
  * and il y a — the four core L4 patterns.
  */
-import type { FillItem } from "@/lib/types";
+import type { FillItem, TypedWeaveItem } from "@/lib/types";
+
+export const typedWeave4: TypedWeaveItem[] = [
+  {
+    prompt: "I am hungry (literally: I have hunger)",
+    target: "J'ai faim.",
+    fr: "J'ai faim.",
+    accepted: ["j'ai faim", "jai faim"],
+    diff: "easy",
+  },
+  {
+    prompt: "I am thirsty",
+    target: "J'ai soif.",
+    fr: "J'ai soif.",
+    accepted: ["j'ai soif", "jai soif"],
+    diff: "easy",
+  },
+  {
+    prompt: "We are cold",
+    target: "Nous avons froid.",
+    fr: "Nous avons froid.",
+    accepted: ["nous avons froid"],
+    diff: "easy",
+  },
+  {
+    prompt: "There is a restaurant here",
+    target: "Il y a un restaurant ici.",
+    fr: "Il y a un restaurant ici.",
+    accepted: ["il y a un restaurant ici"],
+    diff: "easy",
+  },
+  {
+    prompt: "I need water",
+    target: "J'ai besoin d'eau.",
+    fr: "J'ai besoin d'eau.",
+    accepted: ["j'ai besoin d'eau", "jai besoin d'eau", "j'ai besoin de l'eau"],
+    diff: "medium",
+  },
+  {
+    prompt: "They are sleepy",
+    target: "Ils ont sommeil.",
+    fr: "Ils ont sommeil.",
+    accepted: ["ils ont sommeil"],
+    diff: "easy",
+  },
+];
 
 export const fillFG4: FillItem[] = [
   {
