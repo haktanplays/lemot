@@ -13,9 +13,24 @@ export function useAuth() {
       return;
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) {
+        // Dev APK: auto-create anonymous session so AI calls (which require
+        // a JWT with `sub` claim) work without forcing the user to sign up.
+        // The Sign In button on Home still upgrades to a real account when
+        // the user wants sync / paywall later.
+        const { data: anonData, error: anonError } =
+          await supabase.auth.signInAnonymously();
+        if (anonError) {
+          console.warn("[Auth] anonymous sign-in failed:", anonError.message);
+        }
+        setSession(anonData.session ?? null);
+        setUser(anonData.session?.user ?? null);
+        setLoading(false);
+        return;
+      }
       setSession(session);
-      setUser(session?.user ?? null);
+      setUser(session.user);
       setLoading(false);
     });
 
