@@ -38,6 +38,11 @@ export const lesson3: Lesson = {
             en: "nothing",
             note: "Je NE mange RIEN. = I eat nothing.",
           },
+          {
+            fr: "n'est pas",
+            en: "is not (with elision)",
+            note: "When *ne* meets a verb starting with a vowel, *ne* drops its 'e' and gets an apostrophe: *n'est pas* = *ne* + *est* + *pas*. Same idea as *j'ai* and *c'est*. You'll see it whenever *ne* meets a vowel: *Je n'ai pas faim.*",
+          },
         ],
       },
       {
