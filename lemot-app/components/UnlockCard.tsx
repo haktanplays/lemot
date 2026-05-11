@@ -8,6 +8,7 @@ import {
   Unlock,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
+import { upperEn } from "@/lib/text";
 import type {
   Expression,
   GrammarNugget,
@@ -53,10 +54,10 @@ export function UnlockCard({ type, data }: UnlockCardProps) {
       <View className="flex-row items-center gap-2 mb-3">
         <Unlock size={14} color={cfg.color} />
         <Text
-          className="text-xs font-bold uppercase tracking-wider"
+          className="text-xs font-bold tracking-wider"
           style={{ color: cfg.color }}
         >
-          {cfg.label} Unlocked
+          {upperEn(`${cfg.label} Unlocked`)}
         </Text>
         <Icon size={14} color={cfg.color} />
       </View>

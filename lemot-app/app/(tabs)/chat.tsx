@@ -21,6 +21,7 @@ import {
   ArrowRight,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
+import { upperEn } from "@/lib/text";
 import { useChat } from "@/hooks/useChat";
 import { SCENARIOS } from "@/data/scenarios";
 import { useApp } from "@/providers/AppProvider";
@@ -161,10 +162,9 @@ export default function ChatScreen() {
             style={{
               color: P.ink3,
               letterSpacing: 1,
-              textTransform: "uppercase",
             }}
           >
-            Scenarios
+            {upperEn("Scenarios")}
           </Text>
 
           {/* Scenario cards */}

@@ -16,6 +16,7 @@ import {
   ArrowDown,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
+import { upperEn } from "@/lib/text";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES } from "@/data/milestones";
 import { LESSON_POOLS } from "@/data/pools";
@@ -706,10 +707,10 @@ export default function LessonPractice({ onBack }: Props) {
       <View className="flex-1 items-center justify-center px-8">
         {/* Type label */}
         <Text
-          className="text-[10px] uppercase mb-2 tracking-widest"
+          className="text-[10px] mb-2 tracking-widest"
           style={{ color: P.red }}
         >
-          {label}
+          {upperEn(label)}
         </Text>
 
         {/* Question */}

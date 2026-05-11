@@ -9,6 +9,7 @@ import {
   Check,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
+import { upperEn } from "@/lib/text";
 import { useApp } from "@/providers/AppProvider";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES } from "@/data/milestones";
@@ -145,9 +146,9 @@ export default function StatsScreen() {
         {/* ── Milestones ── */}
         <Text
           className="text-xs font-bold mt-2 mb-2"
-          style={{ color: P.ink3, letterSpacing: 1, textTransform: "uppercase" }}
+          style={{ color: P.ink3, letterSpacing: 1 }}
         >
-          Milestones
+          {upperEn("Milestones")}
         </Text>
         {milestoneProgress.map((m, i) => (
           <View
@@ -181,9 +182,9 @@ export default function StatsScreen() {
         {/* ── Weak Spots ── */}
         <Text
           className="text-xs font-bold mt-3 mb-2"
-          style={{ color: P.ink3, letterSpacing: 1, textTransform: "uppercase" }}
+          style={{ color: P.ink3, letterSpacing: 1 }}
         >
-          Weak Spots
+          {upperEn("Weak Spots")}
         </Text>
         {weakSpots.length > 0 ? (
           <View
@@ -234,9 +235,9 @@ export default function StatsScreen() {
         {/* ── Lesson Progress Table ── */}
         <Text
           className="text-xs font-bold mt-3 mb-2"
-          style={{ color: P.ink3, letterSpacing: 1, textTransform: "uppercase" }}
+          style={{ color: P.ink3, letterSpacing: 1 }}
         >
-          Lesson Progress
+          {upperEn("Lesson Progress")}
         </Text>
         <View
           className="rounded-xl overflow-hidden mb-4"

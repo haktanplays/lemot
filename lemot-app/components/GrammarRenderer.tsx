@@ -2,6 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import { Lightbulb, Globe, Volume2 } from "lucide-react-native";
 import { FrMix } from "./FrMix";
 import { P } from "@/constants/theme";
+import { upperEn } from "@/lib/text";
 import type { GrammarSection } from "@/lib/types";
 
 interface GrammarRendererProps {
@@ -76,8 +77,8 @@ export function GrammarRenderer({ sections, onSpeak }: GrammarRendererProps) {
         if (s.type === "block") {
           return (
             <View key={i} className="my-3.5">
-              <Text className="text-xs font-bold text-lm-red tracking-wider mb-2 uppercase">
-                {s.label}
+              <Text className="text-xs font-bold text-lm-red tracking-wider mb-2">
+                {upperEn(s.label)}
               </Text>
               {s.items.map((it, j) => (
                 <View
@@ -111,8 +112,8 @@ export function GrammarRenderer({ sections, onSpeak }: GrammarRendererProps) {
               className="my-3.5 rounded-xl border border-lm-border overflow-hidden"
             >
               <View className="bg-lm-red-light px-3.5 py-2">
-                <Text className="text-xs font-bold text-lm-red tracking-wider uppercase">
-                  {s.verb}
+                <Text className="text-xs font-bold text-lm-red tracking-wider">
+                  {upperEn(s.verb)}
                 </Text>
               </View>
               {s.rows.map((r, j) => (
@@ -150,8 +151,8 @@ export function GrammarRenderer({ sections, onSpeak }: GrammarRendererProps) {
         if (s.type === "etymology") {
           return (
             <View key={i} className="my-3.5">
-              <Text className="text-xs font-bold text-lm-purple tracking-wider mb-2 uppercase">
-                Word Roots
+              <Text className="text-xs font-bold text-lm-purple tracking-wider mb-2">
+                {upperEn("Word Roots")}
               </Text>
               {s.pairs.map((pair, j) => (
                 <View
@@ -183,8 +184,8 @@ export function GrammarRenderer({ sections, onSpeak }: GrammarRendererProps) {
         if (s.type === "howToSay") {
           return (
             <View key={i} className="my-3.5">
-              <Text className="text-xs font-bold text-lm-green tracking-wider mb-2 uppercase">
-                Pronunciation Guide
+              <Text className="text-xs font-bold text-lm-green tracking-wider mb-2">
+                {upperEn("Pronunciation Guide")}
               </Text>
               {s.words.map((w, j) => (
                 <Pressable

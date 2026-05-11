@@ -29,6 +29,7 @@ import { FLASH } from "@/data/flashcards";
 import { useApp } from "@/providers/AppProvider";
 import { useSRS } from "@/hooks/useSRS";
 import { norm } from "@/lib/normalize";
+import { upperEn } from "@/lib/text";
 import type { FlashCard, ScenarioCard } from "@/lib/types";
 import LessonPractice from "@/components/LessonPractice";
 
@@ -422,8 +423,8 @@ export default function PracticeScreen() {
           >
             {!flipped ? (
               <>
-                <Text className="text-xs uppercase mb-2" style={{ color: P.ink3, letterSpacing: 1 }}>
-                  Lesson {card.lesson}
+                <Text className="text-xs mb-2" style={{ color: P.ink3, letterSpacing: 1 }}>
+                  {upperEn(`Lesson ${card.lesson}`)}
                 </Text>
                 <Text
                   className="text-base text-center leading-6"
@@ -579,8 +580,8 @@ export default function PracticeScreen() {
 
       <View className="flex-1 items-center justify-center px-8">
         {/* Prompt */}
-        <Text className="text-xs uppercase mb-2" style={{ color: P.ink3, letterSpacing: 1 }}>
-          Translate to French
+        <Text className="text-xs mb-2" style={{ color: P.ink3, letterSpacing: 1 }}>
+          {upperEn("Translate to French")}
         </Text>
         <Text className="text-xl font-bold text-center mb-1" style={{ color: P.ink }}>
           {tItem.en}

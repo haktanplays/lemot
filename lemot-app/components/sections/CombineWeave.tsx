@@ -4,6 +4,7 @@ import { Volume2 } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
+import { upperEn } from "@/lib/text";
 import type { CombineItem, WeaveItem } from "@/lib/types";
 
 type Phase = "combine" | "weave";
@@ -427,10 +428,9 @@ export function CombineWeave({
                   style={{
                     color: P.purple,
                     letterSpacing: 0.5,
-                    textTransform: "uppercase",
                   }}
                 >
-                  Sample answer
+                  {upperEn("Sample answer")}
                 </Text>
                 <Text
                   className="text-sm leading-6"
