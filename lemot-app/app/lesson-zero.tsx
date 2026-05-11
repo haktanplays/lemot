@@ -88,7 +88,7 @@ export default function LessonZeroScreen() {
     } catch (e) {
       console.warn("[LessonZero] Failed to save first-use flag:", e);
     }
-    router.replace("/lesson/1");
+    router.replace("/how-weave-works" as never);
   };
 
   // ─── Step renders ───
