@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { ArrowRight, Sparkles, Check, X, Volume2 } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
+import { FEATURES } from "@/config/productStage";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
 import { evaluateSayIt } from "@/lib/ai";
@@ -21,6 +22,8 @@ interface SayItYourWayProps {
  * AI evaluates the response and checks target word usage.
  */
 export function SayItYourWay({ items, onComplete, say }: SayItYourWayProps) {
+  if (!FEATURES.aiLesson) return null;
+
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);

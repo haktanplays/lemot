@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Send, Volume2, Check } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
+import { FEATURES } from "@/config/productStage";
 import { P } from "@/constants/theme";
 import { sendMiniConv } from "@/lib/ai";
 
@@ -39,6 +40,8 @@ export function MiniConversation({
   onComplete,
   say,
 }: MiniConversationProps) {
+  if (!FEATURES.aiLesson) return null;
+
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: starter },
   ]);
