@@ -17,10 +17,31 @@ export const P = {
   sh: "0 1px 4px rgba(44,40,37,0.06)",
 } as const;
 
-export const MOTIV = [
-  "Each word you learn is a door opening to a new world.",
-  "French isn't learned in a day, but every day brings you closer.",
-  "Mistakes are proof you're trying — keep going!",
-  "You're not just learning words, you're learning to think differently.",
-  "Petit à petit, l'oiseau fait son nid. — Little by little, the bird builds its nest.",
+// Home motivation rotation — 3 layers interleaved so the daily index
+// naturally cycles through proverb → soft reflection → path reflection.
+// Reward / cheerleader / pressure tones are intentionally absent
+// (no XP, no streak, no "keep going", no "great job"). Tone is passive
+// mirror: sit beside the learner, do not push.
+const MOTIV_PROVERBS = [
+  "Petit à petit, l'oiseau fait son nid.",
+  "On ne voit bien qu'avec le cœur.",
+  "Le temps fait toute chose.",
 ];
+
+const MOTIV_SOFT_REFLECTIONS = [
+  "Some French is starting to feel less distant.",
+  "A few pieces are becoming familiar.",
+  "Little by little, the language starts to answer back.",
+];
+
+const MOTIV_PATH_REFLECTIONS = [
+  "The path is quieter when you return to it gently.",
+  "You do not need to rush what is becoming yours.",
+  "You are not behind. You are on the path.",
+];
+
+export const MOTIV = MOTIV_PROVERBS.flatMap((p, i) => [
+  p,
+  MOTIV_SOFT_REFLECTIONS[i],
+  MOTIV_PATH_REFLECTIONS[i],
+]);
