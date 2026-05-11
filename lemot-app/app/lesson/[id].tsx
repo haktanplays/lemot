@@ -312,7 +312,7 @@ export default function LessonScreen() {
               nextSec(
                 0,
                 0,
-                "Great listening! Now let's look at the patterns..."
+                "Now look at the patterns behind what you heard."
               );
             }}
           />
@@ -327,7 +327,7 @@ export default function LessonScreen() {
               nextSec(
                 0,
                 0,
-                "Patterns understood! Time to fill in some Weave sentences..."
+                "Now try the pieces in a Weave sentence."
               );
             }}
           />
@@ -339,7 +339,7 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_fg");
-              nextSec(score, total, "Nice Weave! Now try fully in French...");
+              nextSec(score, total, "Now try the same pieces fully in French.");
             }}
             onError={errFill}
           />
@@ -354,7 +354,7 @@ export default function LessonScreen() {
               nextSec(
                 score,
                 total,
-                "Now arrange words into sentences..."
+                "Now arrange the pieces into sentences."
               );
             }}
             onError={errFill}
@@ -370,7 +370,7 @@ export default function LessonScreen() {
               nextSec(
                 score,
                 total,
-                "Sentences built! Now write from memory..."
+                "Now try writing from memory."
               );
             }}
             onError={errBuild}
@@ -383,7 +383,7 @@ export default function LessonScreen() {
             say={say}
             onComplete={(score, total) => {
               mk(lessonId, "fill_write");
-              nextSec(score, total, "Great writing! Time for a quiz...");
+              nextSec(score, total, "Stay with the pattern once more.");
             }}
             onError={errFill}
           />
@@ -398,7 +398,7 @@ export default function LessonScreen() {
               nextSec(
                 score,
                 total,
-                "Quiz complete! Now combine everything..."
+                "Now combine the pieces."
               );
             }}
             onError={errQuiz}
@@ -415,7 +415,7 @@ export default function LessonScreen() {
               nextSec(
                 score,
                 total,
-                "Now express yourself freely in French \u2014 no hints, just you!"
+                "Now use it in a small moment."
               );
             }}
             onError={errCombine}
@@ -431,7 +431,7 @@ export default function LessonScreen() {
               nextSec(
                 0,
                 0,
-                "Great writing! Now let's have a quick conversation..."
+                "Now use it in a small conversation."
               );
             }}
           />
@@ -447,7 +447,7 @@ export default function LessonScreen() {
               nextSec(
                 0,
                 0,
-                "Conversation complete! Let's review what you've learned."
+                "Now revisit what stayed with you today."
               );
             }}
           />
