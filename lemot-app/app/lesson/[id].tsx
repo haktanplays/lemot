@@ -462,7 +462,7 @@ export default function LessonScreen() {
               nextSec(
                 score,
                 total,
-                "Lesson complete! You're making great progress."
+                "You stayed with the lesson today."
               );
             }}
             onError={errReview}
@@ -734,17 +734,6 @@ export default function LessonScreen() {
             }}
           >
             <View className="bg-lm-paper rounded-2xl p-8 w-full items-center border border-lm-border">
-              {trans.total > 0 && (
-                <View className="items-center mb-2" style={{ gap: 2 }}>
-                  <Text className="text-sm text-lm-ink3">
-                    {trans.total}/{trans.total} done
-                  </Text>
-                  <Text className="text-2xl font-bold text-lm-ink">
-                    {trans.score}/{trans.total} correct
-                  </Text>
-                </View>
-              )}
-
               <View
                 className="items-center justify-center mb-3"
                 style={{
@@ -757,12 +746,12 @@ export default function LessonScreen() {
                 <Check size={24} color={P.green} />
               </View>
 
-              <Text className="text-lg font-bold text-lm-green mb-1">
-                Part {activeChunk + 1} Complete!
+              <Text className="text-lg font-bold text-lm-ink mb-1">
+                Part {activeChunk + 1} — done
               </Text>
               <Text className="text-sm text-lm-ink2 text-center leading-6 mb-5">
                 {activeChunk < CHUNKS.length - 1
-                  ? "Great work! You can continue or take a break."
+                  ? "You can continue or come back later."
                   : "You used French in every section today."}
               </Text>
 
@@ -850,11 +839,11 @@ export default function LessonScreen() {
             contentContainerStyle={{ paddingTop: 40, paddingBottom: 32 }}
           >
             <View className="items-center mb-6">
-              <Text className="text-xl font-bold text-lm-green mb-2">
-                Lesson Complete!
+              <Text className="text-xl font-bold text-lm-ink mb-2">
+                You used French today.
               </Text>
               <Text className="text-sm text-lm-ink2 text-center">
-                All sections done. The pattern is settling.
+                Some of it is starting to feel familiar.
               </Text>
             </View>
 
