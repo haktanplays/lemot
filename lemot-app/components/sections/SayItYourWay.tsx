@@ -43,7 +43,7 @@ export function SayItYourWay({ items, onComplete, say }: SayItYourWayProps) {
       setFeedback(result);
     } catch {
       setFeedback(
-        "Well done for writing in French! Try to use the target words naturally in your sentences."
+        "You stayed inside the language. Try fitting one of the target words next."
       );
     }
     setLoading(false);

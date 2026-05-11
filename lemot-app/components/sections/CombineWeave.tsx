@@ -213,7 +213,7 @@ export function CombineWeave({
               className="text-sm font-semibold text-center mt-2"
               style={{ color: P.green }}
             >
-              Perfect!
+              Got it.
             </Text>
           )}
 

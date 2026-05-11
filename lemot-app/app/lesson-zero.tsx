@@ -269,7 +269,7 @@ export default function LessonZeroScreen() {
 
   const renderWriteFeedback = () => (
     <View style={center}>
-      {writeCorrect && <Badge label="Nailed it" />}
+      {writeCorrect && <Badge label="You used it" />}
       <Text style={sentenceStyle}>
         &quot;Bonjour, je voudrais un café&quot;
       </Text>

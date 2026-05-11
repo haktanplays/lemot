@@ -81,7 +81,7 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
     return (
       <Btn onPress={advance}>
         <Text className="text-white text-sm font-semibold">
-          {isLast ? "Complete!" : "Next"}
+          {isLast ? "Done" : "Next"}
         </Text>
         <ArrowRight size={15} color="#fff" />
       </Btn>
@@ -377,7 +377,7 @@ function WeaveReview({
       {allDone && (
         <Btn onPress={onAdvance} color={P.green}>
           <Text className="text-white text-sm font-semibold">
-            {isLast ? "Complete!" : "Next"}
+            {isLast ? "Done" : "Next"}
           </Text>
           <ArrowRight size={15} color="#fff" />
         </Btn>

@@ -519,10 +519,10 @@ export default function PracticeScreen() {
           </Text>
           <Text className="text-xs text-lm-ink3 text-center mb-6">
             {transScore === transItems.length
-              ? "Perfect score! Magnifique!"
+              ? "Every one returned today."
               : transScore >= transItems.length * 0.7
-              ? "Great job! Keep it up."
-              : "Keep practicing, you'll get there!"}
+              ? "Most of these are settling."
+              : "Some still need a little settling."}
           </Text>
           <Pressable
             onPress={startTranslate}

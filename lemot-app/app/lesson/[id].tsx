@@ -354,7 +354,7 @@ export default function LessonScreen() {
               nextSec(
                 score,
                 total,
-                "Well done! Now arrange words into sentences..."
+                "Now arrange words into sentences..."
               );
             }}
             onError={errFill}
@@ -763,7 +763,7 @@ export default function LessonScreen() {
               <Text className="text-sm text-lm-ink2 text-center leading-6 mb-5">
                 {activeChunk < CHUNKS.length - 1
                   ? "Great work! You can continue or take a break."
-                  : "Amazing! You've completed the entire lesson!"}
+                  : "You used French in every section today."}
               </Text>
 
               {trans.unlock && (
@@ -854,7 +854,7 @@ export default function LessonScreen() {
                 Lesson Complete!
               </Text>
               <Text className="text-sm text-lm-ink2 text-center">
-                You've completed all sections. Great job!
+                All sections done. The pattern is settling.
               </Text>
             </View>
 

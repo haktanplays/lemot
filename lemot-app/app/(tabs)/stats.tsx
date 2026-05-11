@@ -227,7 +227,7 @@ export default function StatsScreen() {
             }}
           >
             <Text className="text-sm text-center" style={{ color: P.green }}>
-              No weak spots yet — keep up the great work!
+              Nothing flagged yet. The path is open.
             </Text>
           </View>
         )}
