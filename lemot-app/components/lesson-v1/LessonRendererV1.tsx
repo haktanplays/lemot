@@ -1,24 +1,16 @@
 import { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text } from "react-native";
 import { router } from "expo-router";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
-import type { Lesson, LessonScreen } from "@/content/lessonTypes";
+import type { Lesson } from "@/content/lessonTypes";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
 import { FillWithTraps } from "./screens/FillWithTraps";
 import { Weave } from "./screens/Weave";
 import { NaturalReveal } from "./screens/NaturalReveal";
-
-const SCREEN_LABELS: Record<LessonScreen["type"], string> = {
-  "meet-card": "Meet Card",
-  "insight-card": "Insight Card",
-  "fill-with-traps": "Fill With Traps",
-  weave: "Weave",
-  "say-it-your-way": "Say It Your Way",
-  "natural-reveal": "Natural Reveal",
-  recap: "Recap",
-};
+import { SayItYourWayV1 } from "./screens/SayItYourWayV1";
+import { RecapCard } from "./screens/RecapCard";
 
 export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
   const [screenIndex, setScreenIndex] = useState(0);
@@ -29,17 +21,6 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
   }
 
   const goNext = () => setScreenIndex((n) => n + 1);
-  const total = lesson.screens.length;
-
-  const placeholder = (
-    <PlaceholderScreen
-      lessonTitle={lesson.title}
-      screen={screen}
-      index={screenIndex}
-      total={total}
-      onContinue={goNext}
-    />
-  );
 
   switch (screen.type) {
     case "meet-card":
@@ -51,85 +32,16 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
     case "weave":
       return <Weave screen={screen} onContinue={goNext} />;
     case "say-it-your-way":
-      return placeholder;
+      return <SayItYourWayV1 screen={screen} onContinue={goNext} />;
     case "natural-reveal":
       return <NaturalReveal screen={screen} onContinue={goNext} />;
     case "recap":
-      return placeholder;
+      return <RecapCard screen={screen} onContinue={goNext} />;
     default: {
       const _exhaustive: never = screen;
       return null;
     }
   }
-}
-
-function PlaceholderScreen({
-  lessonTitle,
-  screen,
-  index,
-  total,
-  onContinue,
-}: {
-  lessonTitle: string;
-  screen: LessonScreen;
-  index: number;
-  total: number;
-  onContinue: () => void;
-}) {
-  const targetIds = screen.targetItemIds ?? [];
-  const tags = screen.weakPointTags ?? [];
-
-  return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: P.bg }}
-      contentContainerStyle={{ padding: 20 }}
-    >
-      <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-        v1 lesson scaffold
-      </Text>
-      <Text className="text-lg mb-4" style={{ color: P.ink }}>
-        {lessonTitle}
-      </Text>
-
-      <View
-        className="rounded-xl border"
-        style={{
-          backgroundColor: P.paper,
-          borderColor: P.border,
-          padding: 16,
-        }}
-      >
-        <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-          {SCREEN_LABELS[screen.type]}
-        </Text>
-        <Text className="text-base mb-3" style={{ color: P.ink }}>
-          This screen type is ready for implementation.
-        </Text>
-
-        <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-          Screen {index + 1} of {total}
-        </Text>
-        <Text className="text-xs mb-3" style={{ color: P.ink3 }}>
-          id: {screen.id}
-        </Text>
-
-        {targetIds.length > 0 && (
-          <Text className="text-xs mb-1" style={{ color: P.ink2 }}>
-            target items: {targetIds.join(", ")}
-          </Text>
-        )}
-        {tags.length > 0 && (
-          <Text className="text-xs mb-1" style={{ color: P.ink2 }}>
-            weak-point tags: {tags.join(", ")}
-          </Text>
-        )}
-      </View>
-
-      <Btn onPress={onContinue}>
-        <Text style={{ color: P.paper, fontSize: 15 }}>Continue</Text>
-      </Btn>
-    </ScrollView>
-  );
 }
 
 function CompletionView() {
