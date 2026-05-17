@@ -163,7 +163,16 @@ export function Weave({
 
       {isRevealed && (
         <View className="mt-3">
-          <NaturalRevealView reveal={payload.reveal} />
+          <NaturalRevealView
+            reveal={payload.reveal}
+            mode={
+              match === "exact"
+                ? "exact"
+                : match === "alternative"
+                  ? "alternative"
+                  : "no-match"
+            }
+          />
         </View>
       )}
 

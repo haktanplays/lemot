@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { View, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
-import type { Lesson } from "@/content/lessonTypes";
+import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
 import { FillWithTraps } from "./screens/FillWithTraps";
@@ -15,28 +16,34 @@ import { RecapCard } from "./screens/RecapCard";
 export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
   const [screenIndex, setScreenIndex] = useState(0);
   const screen = lesson.screens[screenIndex];
-
-  if (!screen) {
-    return <CompletionView />;
-  }
-
   const goNext = () => setScreenIndex((n) => n + 1);
 
+  return (
+    <SafeAreaView
+      edges={["top"]}
+      style={{ flex: 1, backgroundColor: P.bg }}
+    >
+      {screen ? pickScreen(screen, goNext) : <CompletionView />}
+    </SafeAreaView>
+  );
+}
+
+function pickScreen(screen: LessonScreen, onContinue: () => void) {
   switch (screen.type) {
     case "meet-card":
-      return <MeetCard screen={screen} onContinue={goNext} />;
+      return <MeetCard screen={screen} onContinue={onContinue} />;
     case "insight-card":
-      return <InsightCard screen={screen} onContinue={goNext} />;
+      return <InsightCard screen={screen} onContinue={onContinue} />;
     case "fill-with-traps":
-      return <FillWithTraps screen={screen} onContinue={goNext} />;
+      return <FillWithTraps screen={screen} onContinue={onContinue} />;
     case "weave":
-      return <Weave screen={screen} onContinue={goNext} />;
+      return <Weave screen={screen} onContinue={onContinue} />;
     case "say-it-your-way":
-      return <SayItYourWayV1 screen={screen} onContinue={goNext} />;
+      return <SayItYourWayV1 screen={screen} onContinue={onContinue} />;
     case "natural-reveal":
-      return <NaturalReveal screen={screen} onContinue={goNext} />;
+      return <NaturalReveal screen={screen} onContinue={onContinue} />;
     case "recap":
-      return <RecapCard screen={screen} onContinue={goNext} />;
+      return <RecapCard screen={screen} onContinue={onContinue} />;
     default: {
       const _exhaustive: never = screen;
       return null;

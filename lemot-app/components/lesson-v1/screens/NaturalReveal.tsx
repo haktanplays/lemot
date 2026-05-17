@@ -15,15 +15,48 @@ const NOTICE_KEYS = [
   "ifBetterThanExpected",
 ] as const;
 
+export type NaturalRevealMode = "general" | "exact" | "alternative" | "no-match";
+
 export function NaturalRevealView({
   reveal,
+  mode = "general",
 }: {
   reveal: NaturalRevealPayload;
+  mode?: NaturalRevealMode;
 }) {
-  const notices = NOTICE_KEYS.map((k) => reveal[k]).filter(
-    (v): v is string => typeof v === "string" && v.length > 0
-  );
   const alternatives = reveal.naturalAlternatives ?? [];
+
+  let notices: string[];
+  let showIfCorrect: boolean;
+  let showCompareFallback: boolean;
+
+  switch (mode) {
+    case "exact":
+      notices = [];
+      showIfCorrect = !!reveal.ifCorrect;
+      showCompareFallback = false;
+      break;
+    case "alternative":
+      notices = reveal.ifCorrectButFlat ? [reveal.ifCorrectButFlat] : [];
+      showIfCorrect = false;
+      showCompareFallback = false;
+      break;
+    case "no-match":
+      notices = reveal.ifUnderstandableButWrong
+        ? [reveal.ifUnderstandableButWrong]
+        : [];
+      showIfCorrect = false;
+      showCompareFallback = !reveal.modelAnswer;
+      break;
+    case "general":
+    default:
+      notices = NOTICE_KEYS.map((k) => reveal[k]).filter(
+        (v): v is string => typeof v === "string" && v.length > 0
+      );
+      showIfCorrect = !!reveal.ifCorrect;
+      showCompareFallback = false;
+      break;
+  }
 
   return (
     <View>
@@ -53,7 +86,22 @@ export function NaturalRevealView({
         </View>
       )}
 
-      {reveal.ifCorrect && (
+      {showCompareFallback && (
+        <View
+          className="rounded-xl border mt-3"
+          style={{
+            backgroundColor: P.bg,
+            borderColor: P.border,
+            padding: 12,
+          }}
+        >
+          <Text className="text-sm" style={{ color: P.ink2 }}>
+            Compare your answer with the model answer.
+          </Text>
+        </View>
+      )}
+
+      {showIfCorrect && reveal.ifCorrect && (
         <View
           className="rounded-xl border mt-3"
           style={{

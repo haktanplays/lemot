@@ -77,23 +77,28 @@ export function MeetCard({
         </View>
 
         {highlights.length > 0 && (
-          <View className="flex-row flex-wrap gap-2 mt-4">
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 8,
+              marginTop: 16,
+            }}
+          >
             {highlights.map((h, i) => (
               <View
                 key={`${h.text}-${i}`}
-                className="rounded-full"
                 style={{
+                  alignSelf: "flex-start",
                   backgroundColor: P.rl,
                   borderWidth: 1,
                   borderColor: P.rb,
+                  borderRadius: 9999,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
                 }}
               >
-                <Text
-                  className="text-xs"
-                  style={{ color: P.ink2 }}
-                >
+                <Text style={{ fontSize: 12, color: P.ink2 }}>
                   {h.text}
                 </Text>
               </View>
