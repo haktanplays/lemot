@@ -49,6 +49,8 @@ export const PRODUCT_STAGE: ProductStage = resolveProductStage(
 // Conversation). They are intentionally separate so we can keep the Chat
 // tab hidden in dev-apk while still letting lesson AI run — those
 // sections are part of every lesson, not an optional bonus surface.
+// `v1LessonEngine` is a WS.3 scaffold flag for the v1 typed content engine.
+// Not consumed anywhere in Sprint 12 yet — gates the future v1 surface only.
 const FEATURES_BY_STAGE = {
   // Internal emulator / dev testing — everything on for full sandbox exploration.
   sandbox: {
@@ -60,6 +62,7 @@ const FEATURES_BY_STAGE = {
     monLexique: true,
     leCarnet: true,
     practice: true,
+    v1LessonEngine: true,
   },
   // Controlled external MVP testing — minimal surface, no paywall.
   "dev-apk": {
@@ -71,6 +74,7 @@ const FEATURES_BY_STAGE = {
     monLexique: false,
     leCarnet: false,
     practice: true,
+    v1LessonEngine: false,
   },
   // Future monetized beta — paywall + RevenueCat live, selected features open.
   "public-beta": {
@@ -82,6 +86,7 @@ const FEATURES_BY_STAGE = {
     monLexique: true,
     leCarnet: false,
     practice: true,
+    v1LessonEngine: false,
   },
 } as const;
 
