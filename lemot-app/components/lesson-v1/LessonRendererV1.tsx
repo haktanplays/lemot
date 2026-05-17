@@ -7,6 +7,8 @@ import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
 import { FillWithTraps } from "./screens/FillWithTraps";
+import { Weave } from "./screens/Weave";
+import { NaturalReveal } from "./screens/NaturalReveal";
 
 const SCREEN_LABELS: Record<LessonScreen["type"], string> = {
   "meet-card": "Meet Card",
@@ -47,11 +49,11 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
     case "fill-with-traps":
       return <FillWithTraps screen={screen} onContinue={goNext} />;
     case "weave":
-      return placeholder;
+      return <Weave screen={screen} onContinue={goNext} />;
     case "say-it-your-way":
       return placeholder;
     case "natural-reveal":
-      return placeholder;
+      return <NaturalReveal screen={screen} onContinue={goNext} />;
     case "recap":
       return placeholder;
     default: {
