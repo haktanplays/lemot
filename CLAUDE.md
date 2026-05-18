@@ -1,8 +1,12 @@
 # LE MOT — French Learning App
 
+@docs/MASTER_PIPELINE_v1.2.1.md
+
+> **Cloud sessions must follow `docs/MASTER_PIPELINE_v1.2.1.md`. Local-only Obsidian/mempalace/GSD steps become Sync Queue items in `docs/CLOUD_SYNC_QUEUE.md`.**
+>
 > **Current Dev APK work should follow `docs/DEV_APK_MVP_CANON.md`. If older notes conflict with that document, the MVP canon takes priority.**
 >
-> **Merged product canon (2026-05-11)** lives at `~/Desktop/Le Mot .md/May/11.05.2026/LeMot_Product_Canon_Merged_2026-05-11.md`. Decision Log + locked decisions in `~/Desktop/ObsidianVault/01 Projeler/LeMot/LeMot - User Journey.md` (v6 pending). When this CLAUDE.md and the merged canon disagree, the canon wins.
+> **Merged product canon (2026-05-11)** lives at `~/Desktop/Le Mot .md/May/11.05.2026/LeMot_Product_Canon_Merged_2026-05-11.md` (operator-vault, not readable from cloud). Decision Log + locked decisions in `~/Desktop/ObsidianVault/01 Projeler/LeMot/LeMot - User Journey.md` (v6 pending, operator-vault). When this CLAUDE.md and the merged canon disagree, the canon wins; cloud sessions surface the gap and queue any sync action in `docs/CLOUD_SYNC_QUEUE.md`.
 
 ## What This Is
 A French learning app for English speakers. Expo/React Native standalone app (TypeScript, NativeWind, Expo Router). Also available as a single-file React artifact (le-mot-v7.jsx).
