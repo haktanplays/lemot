@@ -118,7 +118,6 @@ export default function LessonZeroScreen() {
     const isCorrect = mcqPick === MCQ_CORRECT;
     return (
       <View style={center}>
-        {isCorrect && <Badge label="You got it" />}
         <Text style={titleStyle}>
           Correct answer:{" "}
           <Text style={{ fontStyle: "italic" }}>voudrais</Text>

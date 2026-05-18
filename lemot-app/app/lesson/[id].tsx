@@ -760,7 +760,7 @@ export default function LessonScreen() {
                   <View className="flex-row items-center justify-center gap-1.5 mb-1">
                     <Sparkles size={14} color={P.amber} />
                     <Text className="text-xs font-bold text-lm-amber">
-                      Unlocked!
+                      Added.
                     </Text>
                   </View>
                   {/* Inline unlock display */}
@@ -773,7 +773,7 @@ export default function LessonScreen() {
                         ? trans.unlock.data
                         : trans.unlock.data?.fr ||
                           trans.unlock.data?.title ||
-                          "Bonus content unlocked!"}
+                          "Extra piece added."}
                     </Text>
                   </View>
                 </View>
