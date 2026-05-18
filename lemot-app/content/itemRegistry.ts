@@ -217,7 +217,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-je-suis-ici",
     type: "chunk",
     text: "je suis ici",
-    status: "recognition",
+    status: "active",
     fr: "je suis ici",
     en: "I am here",
     meaning:

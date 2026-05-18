@@ -92,4 +92,10 @@ const FEATURES_BY_STAGE = {
 
 export const FEATURES = FEATURES_BY_STAGE[PRODUCT_STAGE];
 
+// LEGACY TEST BUILD — frozen for Dev APK (Tier B locked 2026-05-16).
+// Filter assumes 24-lesson syllabus (L1-L24, L1=Survival Kit). v1 Canon §5 has
+// a different L1-L150 syllabus (L1=Je suis, paywall L24+Campfire, 150 core).
+// Dev APK SHIPS WITH LIMIT=5 AS-IS — limit semantics change Sprint 12 when
+// v1 syllabus migration happens. See:
+//   ~/Desktop/ObsidianVault/01 Projeler/LeMot/Canon Merge Report 2026-05-16.md
 export const DEV_APK_LESSON_LIMIT = 5;

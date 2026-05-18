@@ -284,7 +284,7 @@ export default function LessonPractice({ onBack }: Props) {
       <SafeAreaView className="flex-1 bg-lm-bg">
         <View className="flex-1 items-center justify-center px-8">
           <Text className="text-xl font-bold text-lm-green mb-2">
-            Practice Complete!
+            Practice done.
           </Text>
           {scoredCount > 0 && (
             <Text className="text-sm text-lm-ink2 text-center mb-1">
