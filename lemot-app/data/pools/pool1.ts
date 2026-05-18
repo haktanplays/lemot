@@ -1,4 +1,14 @@
 /**
+ * LEGACY TEST BUILD — frozen for Dev APK (Tier B locked 2026-05-16).
+ * Pool 1 (~270 items) is tied to L1 = "Survival Kit" (Bonjour / Excusez-moi /
+ * Pouvez-vous répéter / je voudrais). v1 Canon §5 redefines L1 = "Je suis"
+ * (être conjugation), but Dev APK SHIPS WITH THIS FILE AS-IS.
+ *
+ * Migration to v1 L1=Je suis is deferred to Sprint 12 — do NOT rewrite this
+ * pool in Sprint 11. Greetings will move to recycled chunks across v1 L1-L24
+ * when Sprint 12 syllabus migration happens. See:
+ *   ~/Desktop/ObsidianVault/01 Projeler/LeMot/Canon Merge Report 2026-05-16.md
+ *
  * Exercise Pool — Lesson 1: Survival Kit
  *
  * DESIGN PRINCIPLES:

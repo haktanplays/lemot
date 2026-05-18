@@ -1,3 +1,16 @@
+// LEGACY TEST BUILD — frozen for Dev APK (Tier B locked 2026-05-16).
+// These 24 lessons implement the Obsidian 24-lesson syllabus (L1 Survival Kit,
+// L4 Avoir, L14 More Negation+Y/En, paywall L15). v1 Canon §5 has a different
+// L1-L24 syllabus (L1 Je suis, L4 Être Integration, L14 Je voudrais, no past
+// tense until L25, paywall L24 + Campfire).
+//
+// Dev APK SHIPS WITH THESE FILES AS-IS. Lesson content migration to v1
+// syllabus is Sprint 12 scope — do NOT rewrite lesson1-24.ts in Sprint 11.
+// Sprint 11 active workstreams (WS.2/3/6/9/10 + mid-flight commits) touch
+// surrounding infrastructure but not lesson content. See:
+//   ~/Desktop/ObsidianVault/01 Projeler/LeMot/Canon Merge Report 2026-05-16.md
+//   ~/Desktop/Le Mot .md/May/16.05.2026/Le_Mot_Locked_Canon_and_Claude_Prompts_v1.md §5
+
 import { lesson1 } from "./lesson1";
 import { lesson2 } from "./lesson2";
 import { lesson3 } from "./lesson3";

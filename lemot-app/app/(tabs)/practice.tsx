@@ -357,7 +357,7 @@ export default function PracticeScreen() {
         <SafeAreaView className="flex-1 bg-lm-bg">
           <View className="flex-1 items-center justify-center px-8">
             <Text className="text-xl font-bold text-lm-green mb-2">
-              Scenarios Complete!
+              Scenarios done.
             </Text>
             <Text className="text-sm text-lm-ink2 text-center mb-1">
               You knew {knownCount} of {deck.length} situations.
@@ -512,7 +512,7 @@ export default function PracticeScreen() {
       <SafeAreaView className="flex-1 bg-lm-bg">
         <View className="flex-1 items-center justify-center px-8">
           <Text className="text-xl font-bold text-lm-green mb-2">
-            Quiz Complete!
+            Quiz done.
           </Text>
           <Text className="text-sm text-lm-ink2 text-center mb-1">
             Score: {transScore} / {transItems.length}

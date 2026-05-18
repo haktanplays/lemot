@@ -171,7 +171,7 @@ export default function StatsScreen() {
               </Text>
               <Text className="text-[10px]" style={{ color: P.ink3 }}>
                 {m.done
-                  ? "Completed!"
+                  ? "Done."
                   : `${m.partial} of ${m.ids.length} lessons started`}
               </Text>
             </View>
