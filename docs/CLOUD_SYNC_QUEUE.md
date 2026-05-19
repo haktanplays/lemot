@@ -73,15 +73,29 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 - Status: PENDING
 - Operator notes:
 
+### 2026-05-19 — PR #5 WS9 v1 Lab entry landed
+
+- Date: 2026-05-19
+- Cloud branch: `claude/sprint12-ws9-v1-lab-entry`
+- Decision/change: Home now has a sandbox-only "v1 Lab" section below the main Lessons list. Gated by `FEATURES.v1LessonEngine && PRODUCT_STAGE === "sandbox"` (belt-and-braces). Tapping the tile navigates to `/v1-lesson/v1-lesson-001`. `v1LessonEngine` now has its first code-side consumer — was scaffold-only before this PR. `dev-apk` and `public-beta` still hide the section; no flag flip happened; no tester-APK visibility change. Spec at `docs/workstreams/Sprint12_WS9_v1-navigation-entry.md`.
+- Source PR or commit: PR #5 / merge `64b9d5d` (feature commit `7275802`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: WS9 landed @ `64b9d5d`); `LeMot - User Journey.md` (optional — record that the v1 surface now has a discoverable sandbox entry but remains hidden in dev-apk/public-beta)
+- Mempalace action: optional `add_drawer` — durable workflow/product milestone if operator treats "v1LessonEngine first consumer + sandbox-only v1 discoverability" as a locked decision; otherwise `n/a`.
+- Operator action: docs sync (`LeMot.md` Sprint 12 status); run sandbox smoke for v1 Lesson 001 via Home → v1 Lab → tile; decide later whether v1 should remain sandbox-only, move to dev-apk, or wait for additional v1 lessons before broadening visibility.
+- Status: PENDING
+- Operator notes:
+
 ### 2026-05-18 — Merged Claude branches need operator-side deletion
 
 - Date: 2026-05-18
-- Cloud branch: n/a (housekeeping for three already-merged branches)
-- Decision/change: Three Claude branches were merged into `main` but remain on the remote because the cloud git proxy returned HTTP 403 on `git push --delete` from this session. The merge commits themselves are intact on `main`; only the source branches linger.
-  - `claude/docs-pipeline-migration-v1.2.1` @ `953e39e` (merged via PR #1)
-  - `claude/sprint12-ws8-lesson-001-path-a` @ `9139cf4` (merged via PR #2)
-  - `claude/sprint12-prc-passive-mirror-copy-cleanup` @ `ba76d68` (merged via PR #3)
-- Source PR or commit: PRs #1, #2, #3 (all merged)
+- Cloud branch: n/a (housekeeping for five already-merged branches)
+- Decision/change: (Updated 2026-05-19 to include PR #4 and PR #5 branches.) Five Claude branches were merged into `main` but remain on the remote because the cloud git proxy returned HTTP 403 on `git push --delete` from this session. The merge commits themselves are intact on `main`; only the source branches linger.
+  - `claude/docs-pipeline-migration-v1.2.1` @ `953e39e` (merged via PR #1, merge `b155fc5`)
+  - `claude/sprint12-ws8-lesson-001-path-a` @ `9139cf4` (merged via PR #2, merge `ff35013`)
+  - `claude/sprint12-prc-passive-mirror-copy-cleanup` @ `ba76d68` (merged via PR #3, merge `ac9d41b`)
+  - `claude/sprint12-cloud-sync-queue-backfill` @ `603cbe6` (merged via PR #4, merge `bb9ce9c`)
+  - `claude/sprint12-ws9-v1-lab-entry` @ `7275802` (merged via PR #5, merge `64b9d5d`)
+- Source PR or commit: PRs #1, #2, #3, #4, #5 (all merged)
 - Obsidian target: n/a
 - Mempalace action: n/a
 - Operator action: branch cleanup — either delete via GitHub UI (Branches → trash icon for each) or via local CLI (`git push origin --delete <branch>` for each). No code change required.
