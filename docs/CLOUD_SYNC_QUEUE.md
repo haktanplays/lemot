@@ -85,17 +85,70 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 - Status: PENDING
 - Operator notes:
 
+### 2026-05-19 — PR #7 SW10A pullFromCloud error semantics landed
+
+- Date: 2026-05-19
+- Cloud branch: `claude/sprint12-sw10a-pull-error-semantics`
+- Decision/change: `pullFromCloud` in `useProgressSync.ts` switched from `.single()` to `.maybeSingle()`. New-user / no-row case still returns `null` quietly. Real Supabase failures (RLS denial, network, schema drift, JWT invalid) now log `[sync] pullFromCloud failed: { code, message, details, hint }` for operator diagnostics. Caller contract preserved — `AppProvider.tsx` merge effect still exits via `if (!cloud) return` on either failure mode.
+- Source PR or commit: PR #7 / merge `5e7ada6` (feature commit `5f97863`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: SW10A landed @ `5e7ada6`)
+- Mempalace action: n/a — observability fix, not a durable product decision. Skip unless operator chooses otherwise.
+- Operator action: docs sync; expect new `[sync] pullFromCloud failed` log lines on next APK build (diagnostic surfacing, not regression — pre-existing silent failures now become visible).
+- Status: PENDING
+- Operator notes:
+
+### 2026-05-19 — PR #8 SW10B storage comment drift landed
+
+- Date: 2026-05-19
+- Cloud branch: `claude/sprint12-sw10b-storage-comment-drift`
+- Decision/change: `useStorage.ts` comments corrected from `AsyncStorage` to `kvStorage`. `lib/storage.ts` local binding renamed `AsyncStorage` → `kvStore` (lexical only — import path `expo-sqlite/kv-store` unchanged; exported `kvStorage` unchanged). Root `CLAUDE.md` storage note updated from `MMKV (Expo app)` to `\`expo-sqlite/kv-store\` on native, \`window.localStorage\` on web (Expo app)`. Zero runtime change.
+- Source PR or commit: PR #8 / merge `21bf810` (feature commit `559fdf5`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: SW10B landed @ `21bf810`); optionally note that the phantom `react-native-mmkv` dependency still lives in `lemot-app/package.json` line 32 — separate chore PR if cleanup desired.
+- Mempalace action: n/a — documentation correction, not a durable decision.
+- Operator action: docs sync only.
+- Status: PENDING
+- Operator notes:
+
+### 2026-05-19 — PR #9 SW10C schema.sql idempotency landed
+
+- Date: 2026-05-19
+- Cloud branch: `claude/sprint12-sw10c-schema-idempotency`
+- Decision/change: `lemot-app/supabase/schema.sql` rewritten as an idempotent setup script. 3 `create table` and 2 `create index` statements gained `if not exists`; 8 policies paired with `drop policy if exists`; 3 triggers paired with `drop trigger if exists`; 2 `create or replace function` blocks and 3 `enable row level security` statements unchanged. Zero schema shape change. **No deploy in this PR** — operator decides when to apply via Supabase Dashboard SQL Editor.
+- Source PR or commit: PR #9 / merge `4c3e16f` (feature commit `48a4b0f`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: SW10C landed @ `4c3e16f`); if the operator-vault Canon Merge Report tracks schema changes, mirror the note there.
+- Mempalace action: optional `add_drawer` — durable infrastructure decision: "`lemot-app/supabase/schema.sql` is a re-runnable idempotent setup script as of `4c3e16f`; future re-apply on an existing DB is safe."
+- Operator action: docs sync; decide when to apply via Supabase Dashboard SQL Editor; dry-run on a Supabase branch DB or local Postgres before production application if possible. For higher-traffic deploys, wrap the drop+create policy/trigger pairs in `begin; ... commit;` to avoid even a brief gap.
+- Status: PENDING
+- Operator notes:
+
+### 2026-05-19 — PR #10 SW10D-1 merge union + latest dailyReview landed
+
+- Date: 2026-05-19
+- Cloud branch: `claude/sprint12-sw10d1-merge-union-and-latest`
+- Decision/change: `AppProvider.tsx` merge effect now uses `mergeProgress` (set-union of completed keys) and `mergeDailyReview` (latest ISO date wins, tie = max count). Storage snapshot read **after** `pullFromCloud()` resolves (mitigation B) so in-flight local edits aren't merged from a stale snapshot. `hasPulled.current = true` moved to end of success path. New `[sync] merged progress/dailyReview` log line fires only on actual divergence. F1 (cloud-count-wins overwrites today's dailyReview), F2 (equal-count different-section split-brain), and F6 (equal-count clobber) all eliminated. F3 (errors round-trip) → SW10F; F4 (anonymous-to-real upgrade) → SW10E; F5 (push-during-pull race) partially mitigated, full serialization → SW10D-3.
+- Source PR or commit: PR #10 / merge `fed57a6` (feature commit `8e9082d`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: SW10D-1 landed @ `fed57a6`); `LeMot - User Journey.md` (optional — record that multi-device merge is now union-safe with latest-date dailyReview).
+- Mempalace action: `add_drawer` recommended — durable sync policy: "Le Mot progress merge = union(local, cloud). DailyReview merge = latest ISO date (tie = max count). Errors local-only until SW10F. Anonymous-to-real migration deferred to SW10E."
+- Operator action: docs sync; run F1 and F2 simulations per the SW10D-1 spec manual QA section on a real device before broad rollout; monitor `[sync] merged progress/dailyReview` log frequency on the first APK build that includes PR #10 to confirm expected patterns.
+- Status: PENDING
+- Operator notes:
+
 ### 2026-05-18 — Merged Claude branches need operator-side deletion
 
 - Date: 2026-05-18
-- Cloud branch: n/a (housekeeping for five already-merged branches)
-- Decision/change: (Updated 2026-05-19 to include PR #4 and PR #5 branches.) Five Claude branches were merged into `main` but remain on the remote because the cloud git proxy returned HTTP 403 on `git push --delete` from this session. The merge commits themselves are intact on `main`; only the source branches linger.
+- Cloud branch: n/a (housekeeping for ten already-merged branches)
+- Decision/change: (Updated 2026-05-19 to include PR #4, PR #5, PR #7, PR #8, PR #9, and PR #10 branches.) Ten Claude branches were merged into `main` but remain on the remote because the cloud git proxy returned HTTP 403 on `git push --delete` from this session. The merge commits themselves are intact on `main`; only the source branches linger.
   - `claude/docs-pipeline-migration-v1.2.1` @ `953e39e` (merged via PR #1, merge `b155fc5`)
   - `claude/sprint12-ws8-lesson-001-path-a` @ `9139cf4` (merged via PR #2, merge `ff35013`)
   - `claude/sprint12-prc-passive-mirror-copy-cleanup` @ `ba76d68` (merged via PR #3, merge `ac9d41b`)
   - `claude/sprint12-cloud-sync-queue-backfill` @ `603cbe6` (merged via PR #4, merge `bb9ce9c`)
   - `claude/sprint12-ws9-v1-lab-entry` @ `7275802` (merged via PR #5, merge `64b9d5d`)
-- Source PR or commit: PRs #1, #2, #3, #4, #5 (all merged)
+  - `claude/sprint12-cloud-sync-queue-pr5-backfill` @ `c93b6b2` (merged via PR #6, merge `e23c3c2`)
+  - `claude/sprint12-sw10a-pull-error-semantics` @ `5f97863` (merged via PR #7, merge `5e7ada6`)
+  - `claude/sprint12-sw10b-storage-comment-drift` @ `559fdf5` (merged via PR #8, merge `21bf810`)
+  - `claude/sprint12-sw10c-schema-idempotency` @ `48a4b0f` (merged via PR #9, merge `4c3e16f`)
+  - `claude/sprint12-sw10d1-merge-union-and-latest` @ `8e9082d` (merged via PR #10, merge `fed57a6`)
+- Source PR or commit: PRs #1, #2, #3, #4, #5, #6, #7, #8, #9, #10 (all merged)
 - Obsidian target: n/a
 - Mempalace action: n/a
 - Operator action: branch cleanup — either delete via GitHub UI (Branches → trash icon for each) or via local CLI (`git push origin --delete <branch>` for each). No code change required.
