@@ -1,10 +1,10 @@
-import AsyncStorage from "expo-sqlite/kv-store";
+import kvStore from "expo-sqlite/kv-store";
 import { Platform } from "react-native";
 
 const nativeStorage = {
-  getItem: (key: string) => AsyncStorage.getItemSync(key),
-  setItem: (key: string, value: string) => AsyncStorage.setItemSync(key, value),
-  removeItem: (key: string) => AsyncStorage.removeItemSync(key),
+  getItem: (key: string) => kvStore.getItemSync(key),
+  setItem: (key: string, value: string) => kvStore.setItemSync(key, value),
+  removeItem: (key: string) => kvStore.removeItemSync(key),
 };
 
 const webStorage = {

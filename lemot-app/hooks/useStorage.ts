@@ -13,7 +13,7 @@ export function useStorage() {
   });
   const [loaded, setLoaded] = useState(false);
 
-  // Load from AsyncStorage on mount
+  // Load from kvStorage on mount
   useEffect(() => {
     (async () => {
       try {
@@ -31,7 +31,7 @@ export function useStorage() {
     })();
   }, []);
 
-  // Save to AsyncStorage
+  // Save to kvStorage
   const save = useCallback(
     async (
       p: Record<string, boolean>,
