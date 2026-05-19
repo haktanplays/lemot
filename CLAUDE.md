@@ -47,7 +47,7 @@ A French learning app for English speakers. Expo/React Native standalone app (Ty
 - **SRS Algorithm** (Sprint 8C): Leitner-style 5-box spaced repetition on Practice scenario cards. Due cards prioritized. Progress stats (New/Learning/Familiar/Known/Mastered).
 - **Mastery Criteria** (Sprint 8C): Per-section pass thresholds (60-70%). Below threshold: "Try Again" option. Users can "Continue Anyway" but section not marked mastered.
 - **Expo/React Native app** (Sprint 7): Full migration complete with TypeScript, NativeWind, Expo Router
-- **Storage**: MMKV (Expo app) / window.storage (artifact) — structure: `{p, err, dr: {date, count}}` (`xp` + `streak` fields removed per Sprint commit `a883b2a`; schema migration on deployed Supabase DB deferred to public beta). SRS: `lm7_srs`
+- **Storage**: `expo-sqlite/kv-store` on native, `window.localStorage` on web (Expo app) / `window.storage` (artifact) — structure: `{p, err, dr: {date, count}}` (`xp` + `streak` fields removed per Sprint commit `a883b2a`; schema migration on deployed Supabase DB deferred to public beta). SRS: `lm7_srs`
 
 ## Key Differentiator: Weave
 Users write sentences mixing English + French ("weaving" two languages). Known words in French, unknown in English. Cognate highlighting (merci ≈ mercy). No other app does this. Formerly called "Franglais" — renamed to "Weave" for trademark distinctiveness.
