@@ -41,8 +41,50 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | null>(null);
 
-function countCompleted(p: Record<string, boolean>): number {
-  return Object.values(p).filter(Boolean).length;
+/**
+ * Merge two progress maps as a set-union of completed keys.
+ * Section completion is monotonic — once a section is done, it stays done —
+ * so a key present in either side survives. Both sides only ever store
+ * truthy values (per useLessonProgress.mk), so the spread direction does
+ * not matter for collision resolution; local comes last as a tiebreaker.
+ */
+function mergeProgress(
+  local: Record<string, boolean>,
+  cloud: Record<string, boolean>
+): Record<string, boolean> {
+  return { ...cloud, ...local };
+}
+
+/**
+ * Pick the DailyReview entry with the most recent date.
+ * On tie (same date), pick the higher count. On full equality, local wins.
+ * ISO `YYYY-MM-DD` date strings are safe to lexicographically compare.
+ */
+function mergeDailyReview(
+  local: DailyReview,
+  cloud: DailyReview
+): DailyReview {
+  if (local.date > cloud.date) return local;
+  if (cloud.date > local.date) return cloud;
+  return local.count >= cloud.count ? local : cloud;
+}
+
+/** Shallow equality on progress maps: same key set + same boolean values. */
+function progressEqual(
+  a: Record<string, boolean>,
+  b: Record<string, boolean>
+): boolean {
+  const aKeys = Object.keys(a);
+  if (aKeys.length !== Object.keys(b).length) return false;
+  for (const k of aKeys) {
+    if (a[k] !== b[k]) return false;
+  }
+  return true;
+}
+
+/** Shallow equality on DailyReview. */
+function dailyReviewEqual(a: DailyReview, b: DailyReview): boolean {
+  return a.date === b.date && a.count === b.count;
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -58,31 +100,70 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const storageRef = useRef(storageHook);
   storageRef.current = storageHook;
 
-  // Pull from cloud on first login
+  // Pull from cloud on first login, then merge.
+  // Progress = union(local, cloud) — section completion is monotonic.
+  // DailyReview = whichever date is newer (same date => higher count wins).
+  // Errors stay local-only here; cloud round-trip is SW10F's scope.
+  // hasPulled is set after the async pull/merge resolves so the effect can
+  // re-run cleanly if its material dependencies change mid-flight.
   useEffect(() => {
     if (!user || !storageHook.loaded || hasPulled.current) return;
-    hasPulled.current = true;
 
-    const s = storageRef.current;
     (async () => {
       const cloud = await pullFromCloud();
-      if (!cloud) return;
 
-      // Merge: side with more completed sections wins
-      const cloudCount = countCompleted(cloud.progress);
-      const localCount = countCompleted(s.prog);
+      if (!cloud) {
+        hasPulled.current = true;
+        return;
+      }
 
-      if (cloudCount > localCount) {
-        s.setProg(cloud.progress);
-        s.setDailyRev(cloud.dailyReview);
-        s.save(cloud.progress, s.errors, cloud.dailyReview);
-      } else if (localCount > cloudCount) {
+      // Read storage AFTER pullFromCloud resolves so any in-flight local
+      // changes (mk, daily review tap, error log) are reflected in the
+      // merge inputs. Capturing before the await would let the merge
+      // overwrite fresh local state with stale-snapshot-derived values.
+      const s = storageRef.current;
+
+      const mergedProgress = mergeProgress(s.prog, cloud.progress);
+      const mergedDailyReview = mergeDailyReview(s.dailyRev, cloud.dailyReview);
+
+      const localProgressDiffers = !progressEqual(mergedProgress, s.prog);
+      const localDailyReviewDiffers = !dailyReviewEqual(
+        mergedDailyReview,
+        s.dailyRev
+      );
+      const cloudProgressDiffers = !progressEqual(
+        mergedProgress,
+        cloud.progress
+      );
+      const cloudDailyReviewDiffers = !dailyReviewEqual(
+        mergedDailyReview,
+        cloud.dailyReview
+      );
+
+      if (localProgressDiffers || localDailyReviewDiffers) {
+        if (localProgressDiffers) s.setProg(mergedProgress);
+        if (localDailyReviewDiffers) s.setDailyRev(mergedDailyReview);
+        s.save(mergedProgress, s.errors, mergedDailyReview);
+      }
+
+      if (cloudProgressDiffers || cloudDailyReviewDiffers) {
         pushToCloud({
-          progress: s.prog,
+          progress: mergedProgress,
           errors: s.errors,
-          dailyReview: s.dailyRev,
+          dailyReview: mergedDailyReview,
         });
       }
+
+      if (
+        localProgressDiffers ||
+        localDailyReviewDiffers ||
+        cloudProgressDiffers ||
+        cloudDailyReviewDiffers
+      ) {
+        console.log("[sync] merged progress/dailyReview");
+      }
+
+      hasPulled.current = true;
     })();
   }, [user, storageHook.loaded, pullFromCloud, pushToCloud]);
 
