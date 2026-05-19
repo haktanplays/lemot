@@ -2,7 +2,7 @@
 -- Run this in Supabase SQL Editor
 
 -- 1. User profiles (extends auth.users)
-create table public.profiles (
+create table if not exists public.profiles (
   id uuid references auth.users on delete cascade primary key,
   display_name text,
   created_at timestamptz default now() not null,
@@ -10,7 +10,7 @@ create table public.profiles (
 );
 
 -- 2. User progress (synced from local)
-create table public.user_progress (
+create table if not exists public.user_progress (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references public.profiles on delete cascade not null,
   progress jsonb default '{}'::jsonb not null,
@@ -20,7 +20,7 @@ create table public.user_progress (
 );
 
 -- 3. Error tracking (for adaptive AI)
-create table public.user_errors (
+create table if not exists public.user_errors (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references public.profiles on delete cascade not null,
   word text not null,
@@ -32,8 +32,8 @@ create table public.user_errors (
 );
 
 -- Index for weak spot queries
-create index idx_user_errors_user on public.user_errors (user_id);
-create index idx_user_errors_word on public.user_errors (user_id, word);
+create index if not exists idx_user_errors_user on public.user_errors (user_id);
+create index if not exists idx_user_errors_word on public.user_errors (user_id, word);
 
 -- 4. RLS Policies (CRITICAL)
 alter table public.profiles enable row level security;
@@ -41,36 +41,44 @@ alter table public.user_progress enable row level security;
 alter table public.user_errors enable row level security;
 
 -- Profiles: users can only read/update their own
+drop policy if exists "Users can view own profile" on public.profiles;
 create policy "Users can view own profile"
   on public.profiles for select
   using (auth.uid() = id);
 
+drop policy if exists "Users can update own profile" on public.profiles;
 create policy "Users can update own profile"
   on public.profiles for update
   using (auth.uid() = id);
 
+drop policy if exists "Users can insert own profile" on public.profiles;
 create policy "Users can insert own profile"
   on public.profiles for insert
   with check (auth.uid() = id);
 
 -- Progress: users can only access their own
+drop policy if exists "Users can view own progress" on public.user_progress;
 create policy "Users can view own progress"
   on public.user_progress for select
   using (auth.uid() = user_id);
 
+drop policy if exists "Users can upsert own progress" on public.user_progress;
 create policy "Users can upsert own progress"
   on public.user_progress for insert
   with check (auth.uid() = user_id);
 
+drop policy if exists "Users can update own progress" on public.user_progress;
 create policy "Users can update own progress"
   on public.user_progress for update
   using (auth.uid() = user_id);
 
 -- Errors: users can only access their own
+drop policy if exists "Users can view own errors" on public.user_errors;
 create policy "Users can view own errors"
   on public.user_errors for select
   using (auth.uid() = user_id);
 
+drop policy if exists "Users can insert own errors" on public.user_errors;
 create policy "Users can insert own errors"
   on public.user_errors for insert
   with check (auth.uid() = user_id);
@@ -85,6 +93,7 @@ begin
 end;
 $$ language plpgsql security definer;
 
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
@@ -98,10 +107,12 @@ begin
 end;
 $$ language plpgsql;
 
+drop trigger if exists update_profiles_updated_at on public.profiles;
 create trigger update_profiles_updated_at
   before update on public.profiles
   for each row execute function public.update_updated_at();
 
+drop trigger if exists update_progress_updated_at on public.user_progress;
 create trigger update_progress_updated_at
   before update on public.user_progress
   for each row execute function public.update_updated_at();
