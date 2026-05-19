@@ -36,9 +36,22 @@ export function useProgressSync(userId: string | undefined) {
       .from("user_progress")
       .select("*")
       .eq("user_id", userId)
-      .single();
+      .maybeSingle();
 
-    if (error || !data) return null;
+    if (error) {
+      console.warn("[sync] pullFromCloud failed:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      return null;
+    }
+
+    if (!data) {
+      // Expected new-user / no-cloud-row path; nothing to merge yet.
+      return null;
+    }
 
     return {
       progress: (data.progress as Record<string, boolean>) ?? {},
