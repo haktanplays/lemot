@@ -323,6 +323,31 @@ export default function HomeScreen() {
           );
         })}
 
+        {/* v1 Lab — sandbox-only; any flag flip of v1LessonEngine must
+            review this consumer. Dev-apk and public-beta keep it hidden. */}
+        {FEATURES.v1LessonEngine && PRODUCT_STAGE === "sandbox" && (
+          <View className="mt-2 mb-3">
+            <Text className="text-sm font-bold text-lm-ink mb-2">v1 Lab</Text>
+            <Pressable
+              onPress={() =>
+                router.push("/v1-lesson/v1-lesson-001" as never)
+              }
+              className="bg-lm-paper rounded-xl p-4 border"
+              style={{ borderColor: P.border }}
+            >
+              <Text
+                className="text-sm font-semibold mb-0.5"
+                style={{ color: P.ink }}
+              >
+                Je suis
+              </Text>
+              <Text className="text-xs" style={{ color: P.ink3 }}>
+                5 min
+              </Text>
+            </Pressable>
+          </View>
+        )}
+
         <View className="h-6" />
       </ScrollView>
 
