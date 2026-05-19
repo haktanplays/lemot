@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { Redirect } from "expo-router";
 import {
   View,
   Text,
@@ -25,6 +26,7 @@ import { upperEn } from "@/lib/text";
 import { useChat } from "@/hooks/useChat";
 import { SCENARIOS } from "@/data/scenarios";
 import { useApp } from "@/providers/AppProvider";
+import { FEATURES } from "@/config/productStage";
 
 /* ── Icon resolver for scenario icon strings ── */
 const SCENARIO_ICONS: Record<string, typeof Coffee> = {
@@ -83,6 +85,16 @@ export default function ChatScreen() {
       return () => clearTimeout(timer);
     }
   }, [chatMsgs.length, chatLoading]);
+
+  // Dev APK canon defense-in-depth: even if some surface pushes to
+  // /(tabs)/chat (deep link, restored nav state), do not expose the AI
+  // Chat UI when FEATURES.aiChat is false. Redirect to Home instead.
+  // Placed after all hook calls so React's Rules of Hooks are respected
+  // (FEATURES.aiChat is a module-level constant; hook order stays stable
+  // across renders).
+  if (!FEATURES.aiChat) {
+    return <Redirect href={"/" as never} />;
+  }
 
   if (!loaded) {
     return (
