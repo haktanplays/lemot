@@ -24,6 +24,7 @@ import { extractExposureWords } from "@/data/exposureGlossary";
 import { useApp } from "@/providers/AppProvider";
 import { norm } from "@/lib/normalize";
 import { looksFrench, extractFrenchQuote } from "@/lib/looksFrench";
+import { FEATURES } from "@/config/productStage";
 import type { FillItem, QuizItem, TypedWeaveItem, Lesson } from "@/lib/types";
 
 type Stage = "select" | "session" | "done";
@@ -310,22 +311,25 @@ export default function LessonPractice({ onBack }: Props) {
             </Text>
           </Pressable>
 
-          {/* Chat with AI shortcut */}
-          <Pressable
-            onPress={() => router.push("/(tabs)/chat")}
-            className="flex-row items-center rounded-xl px-5 py-3 mb-3"
-            style={{
-              borderWidth: 1,
-              borderColor: P.border,
-              backgroundColor: P.paper,
-              gap: 6,
-            }}
-          >
-            <MessageCircle size={14} color={P.ink2} />
-            <Text className="font-semibold text-sm" style={{ color: P.ink }}>
-              Practice in Chat
-            </Text>
-          </Pressable>
+          {/* Practice in Chat — gated to stages where FEATURES.aiChat is true.
+              Dev APK keeps the Chat surface hidden per docs/DEV_APK_MVP_CANON.md §2. */}
+          {FEATURES.aiChat && (
+            <Pressable
+              onPress={() => router.push("/(tabs)/chat")}
+              className="flex-row items-center rounded-xl px-5 py-3 mb-3"
+              style={{
+                borderWidth: 1,
+                borderColor: P.border,
+                backgroundColor: P.paper,
+                gap: 6,
+              }}
+            >
+              <MessageCircle size={14} color={P.ink2} />
+              <Text className="font-semibold text-sm" style={{ color: P.ink }}>
+                Practice in Chat
+              </Text>
+            </Pressable>
+          )}
 
           {/* Error Practice shortcut (only if weak spots exist) */}
           {weakSpots && weakSpots.length > 0 && (

@@ -32,6 +32,7 @@ import { norm } from "@/lib/normalize";
 import { upperEn } from "@/lib/text";
 import type { FlashCard, ScenarioCard } from "@/lib/types";
 import LessonPractice from "@/components/LessonPractice";
+import { FEATURES } from "@/config/productStage";
 
 type Mode = "menu" | "scenario" | "translate" | "lesson";
 
@@ -271,33 +272,36 @@ export default function PracticeScreen() {
             <ChevronRight size={16} color={P.ink3} />
           </Pressable>
 
-          {/* AI Chat redirect */}
-          <Pressable
-            onPress={() => router.push("/(tabs)/chat")}
-            className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
-            style={{
-              backgroundColor: P.paper,
-              borderWidth: 1,
-              borderColor: P.border,
-              shadowColor: "#2C2825",
-              shadowOpacity: 0.06,
-              shadowRadius: 4,
-              shadowOffset: { width: 0, height: 1 },
-              elevation: 2,
-              gap: 12,
-            }}
-          >
-            <MessageCircle size={22} color={P.red} strokeWidth={1.3} />
-            <View className="flex-1">
-              <Text className="text-sm font-bold" style={{ color: P.ink }}>
-                Chat with AI
-              </Text>
-              <Text className="text-xs" style={{ color: P.ink3 }}>
-                Free-form conversation in French
-              </Text>
-            </View>
-            <ChevronRight size={16} color={P.ink3} />
-          </Pressable>
+          {/* AI Chat redirect — gated to stages where FEATURES.aiChat is true.
+              Dev APK keeps the Chat surface hidden per docs/DEV_APK_MVP_CANON.md §2. */}
+          {FEATURES.aiChat && (
+            <Pressable
+              onPress={() => router.push("/(tabs)/chat")}
+              className="flex-row items-center rounded-xl mb-2.5 px-4 py-4"
+              style={{
+                backgroundColor: P.paper,
+                borderWidth: 1,
+                borderColor: P.border,
+                shadowColor: "#2C2825",
+                shadowOpacity: 0.06,
+                shadowRadius: 4,
+                shadowOffset: { width: 0, height: 1 },
+                elevation: 2,
+                gap: 12,
+              }}
+            >
+              <MessageCircle size={22} color={P.red} strokeWidth={1.3} />
+              <View className="flex-1">
+                <Text className="text-sm font-bold" style={{ color: P.ink }}>
+                  Chat with AI
+                </Text>
+                <Text className="text-xs" style={{ color: P.ink3 }}>
+                  Free-form conversation in French
+                </Text>
+              </View>
+              <ChevronRight size={16} color={P.ink3} />
+            </Pressable>
+          )}
 
           {/* Review Errors — only shows when there are errors or weak spots */}
           {(errorCount > 0 || weakCount > 0) && (

@@ -23,6 +23,7 @@ import {
   type UnlockData,
 } from "@/components/TransitionScreen";
 import type { Lesson } from "@/lib/types";
+import { FEATURES } from "@/config/productStage";
 import type { UnlockType } from "@/components/UnlockCard";
 
 // Section components
@@ -895,19 +896,23 @@ export default function LessonScreen() {
                 Practice This Lesson
               </Text>
             </Pressable>
-            <Pressable
-              onPress={() => router.replace("/(tabs)/chat")}
-              className="rounded-xl px-6 py-3 mb-3"
-              style={{
-                borderWidth: 1,
-                borderColor: P.border,
-                backgroundColor: P.paper,
-              }}
-            >
-              <Text className="font-semibold text-center" style={{ color: P.ink }}>
-                Chat in French
-              </Text>
-            </Pressable>
+            {/* Chat in French — gated to stages where FEATURES.aiChat is true.
+                Dev APK keeps the Chat surface hidden per Dev APK canon. */}
+            {FEATURES.aiChat && (
+              <Pressable
+                onPress={() => router.replace("/(tabs)/chat")}
+                className="rounded-xl px-6 py-3 mb-3"
+                style={{
+                  borderWidth: 1,
+                  borderColor: P.border,
+                  backgroundColor: P.paper,
+                }}
+              >
+                <Text className="font-semibold text-center" style={{ color: P.ink }}>
+                  Chat in French
+                </Text>
+              </Pressable>
+            )}
             <Pressable
               onPress={safeBack}
               className="bg-lm-green rounded-xl px-6 py-3 mb-4"
