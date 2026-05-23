@@ -6,6 +6,8 @@
 >
 > **Current Dev APK work should follow `docs/DEV_APK_MVP_CANON.md`. If older notes conflict with that document, the MVP canon takes priority.**
 >
+> **Pedagogical / syllabus planning should follow `docs/learning-engine-v1.md`** — the learning-object spec defining how lessons work and how content stays compatible with Practice Pool, Daily Review, Natural Reveal, Mon Lexique, and Word Graph. Canon/spec layer, not runtime code.
+>
 > **Merged product canon (2026-05-11)** lives at `~/Desktop/Le Mot .md/May/11.05.2026/LeMot_Product_Canon_Merged_2026-05-11.md` (operator-vault, not readable from cloud). Decision Log + locked decisions in `~/Desktop/ObsidianVault/01 Projeler/LeMot/LeMot - User Journey.md` (v6 pending, operator-vault). When this CLAUDE.md and the merged canon disagree, the canon wins; cloud sessions surface the gap and queue any sync action in `docs/CLOUD_SYNC_QUEUE.md`.
 
 ## What This Is
