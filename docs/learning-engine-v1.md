@@ -271,7 +271,7 @@ This document is canon/spec only. The following are explicitly **out of scope** 
 - **No backend learner-memory implementation now.**
 - **No full Mon Lexique implementation now** (compatibility contract only — §14).
 - **No Word Graph implementation now** (§15).
-- **No AI-generator dependency now.** The engine must be sound without AI; AI is a supporting layer.
+- **No AI-generator dependency now.** The engine must be sound without AI; AI is a supporting layer. *If/when AI is eventually built, it must obey `docs/syllabus/ai-generation-contract-v1.md` (generate variation inside a lesson spec, never curriculum).*
 - **No RAG / user-upload feature.** (DeepTutor's upload/RAG model is *not* imported.)
 - **No multi-agent tutor system.** (DeepTutor's TutorBot / multi-agent runtime is *not* imported.)
 
