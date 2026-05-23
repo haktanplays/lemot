@@ -5,10 +5,9 @@ import {
   AlertTriangle,
   Globe2,
   Music,
-  Unlock,
+  Plus,
 } from "lucide-react-native";
 import { P } from "@/constants/theme";
-import { upperEn } from "@/lib/text";
 import type {
   Expression,
   GrammarNugget,
@@ -52,12 +51,12 @@ export function UnlockCard({ type, data }: UnlockCardProps) {
     >
       {/* Header */}
       <View className="flex-row items-center gap-2 mb-3">
-        <Unlock size={14} color={cfg.color} />
+        <Plus size={14} color={cfg.color} />
         <Text
           className="text-xs font-bold tracking-wider"
           style={{ color: cfg.color }}
         >
-          {upperEn(`${cfg.label} Unlocked`)}
+          {`${cfg.label} added`}
         </Text>
         <Icon size={14} color={cfg.color} />
       </View>

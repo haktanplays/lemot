@@ -6,6 +6,7 @@ import {
   ChevronLeft,
   Check,
   Sparkles,
+  Plus,
   Lock,
   BookOpen,
   Dumbbell,
@@ -759,7 +760,7 @@ export default function LessonScreen() {
               {trans.unlock && (
                 <View className="w-full mb-4">
                   <View className="flex-row items-center justify-center gap-1.5 mb-1">
-                    <Sparkles size={14} color={P.amber} />
+                    <Plus size={14} color={P.amber} />
                     <Text className="text-xs font-bold text-lm-amber">
                       Added.
                     </Text>
