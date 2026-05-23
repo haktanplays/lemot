@@ -20,6 +20,14 @@ This template gives every lesson spec one shape so that:
 
 A lesson spec built from this template is a **planning document**. It does not define data models, components, flags, or API calls. It declares *intent and structure* that future runtime work may implement.
 
+> **Use this together with the archetype templates.** Every individual lesson spec must use **this global template** *and* `docs/syllabus/lesson-archetype-templates-v1.md`:
+> - **This global template** defines the *required fields and QA* every lesson must fill.
+> - **The archetype template** defines *weighting, section emphasis, depth, budget tendency, and typical risks* for the lesson's kind.
+> - A lesson may have **one primary archetype** and **optionally one secondary** archetype.
+> - **Bespoke lessons require explicit justification** (archetype doc §13).
+>
+> Navigation chain: `CLAUDE.md → docs/learning-engine-v1.md → docs/syllabus/lesson-spec-template-v1.1.md → docs/syllabus/lesson-archetype-templates-v1.md`.
+
 ---
 
 ## 2. Lesson Identity
