@@ -22,6 +22,8 @@ This is **not** a runtime engine. It defines *how lessons should be built and ho
 
 The killer trinity (**Weave**, **Say It Your Way**, **Natural Reveal**) is the production surface this engine feeds. Everything below is in service of getting the learner to produce natural French and then see *why* it was natural.
 
+> **Companion template**: `docs/syllabus/lesson-spec-template-v1.1.md` operationalizes this engine into the required per-lesson spec structure. Use it for all syllabus work.
+
 ---
 
 ## 2. Core Loop
