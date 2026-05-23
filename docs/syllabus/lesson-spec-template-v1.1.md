@@ -66,6 +66,13 @@ A lesson spec built from this template is a **planning document**. It does not d
 - **Secondary engine(s)**: _…_
 - **Ambient engine(s)**: _…_
 
+> **Architecture-verb guardrail.** A lesson whose target is a major verb (être, avoir, aller, faire, pouvoir, vouloir, devoir/falloir, …) must **not** teach the full conjugation paradigm as equal active production.
+> - Keep **one dominant active production core** (typically one person-form / one frame).
+> - Additional forms may be **active only** when they are high-frequency chunks, required by the sentence family, or necessary for a natural production target.
+> - Remaining forms are **supported or recognition-only**.
+> - Prefer **sentence families, chunk engines, and micro-contrasts over conjugation tables.** Never present a full conjugation grid as the teaching surface.
+> - Show inflection (person, gender, number) through **recognition**, not drills.
+
 ---
 
 ## 5. Opening Sentence Family
@@ -133,7 +140,9 @@ _(complete natural target sentences — anchor + variations)_
 _(named patterns the items participate in; tag, not a drilled table)_
 
 ### 7.6 Sound / writing tags
-_(pronunciation/orthography facts; feeds TTS + listening traps)_
+_(pronunciation/orthography facts; feeds TTS + listening traps)._ Future lesson specs should explicitly consider, where relevant: **elision** · **apostrophe use** · **liaison** · **silent final letters** · **accents / special letters** · **nasal vowels** · **French `u` / `r`** · **rhythm groups** · **spelling-sound bridges** (e.g. `é-→s-`).
+
+> **Sound/writing guardrail.** This is a **recurring insight layer, not a standalone grammar lecture** by default. A normal lesson should usually carry **0–1 major** sound/writing insight and **at most 1 minor** note. Only an explicitly sound-focused lesson may exceed this, and only with stated justification. Do not turn a verb or vocabulary lesson into a pronunciation lecture.
 
 ### 7.7 Trap tags
 _(deliberate confusables; add column: **distractor for** — may be option text only, no production target)_
@@ -143,6 +152,17 @@ _(stickiness bridges, e.g. `merci ≈ mercy`)_
 
 ### 7.9 Faux ami / culture items
 _(false-friend warnings, cultural usage bites)_
+
+### 7.10 French-specific contrast / transfer trap
+_(where an English-speaker's instinct produces unnatural or wrong French)._ Capture, per relevant item: **English→French trap** · **literal-translation trap** · **natural French alternative** · **register / naturalness contrast**. Examples:
+- "I am hungry" → **`j'ai faim`**, not *je suis faim* (avoir-sensation vs être-state)
+- `je suis fatigué` (être-state) vs `j'ai faim` (avoir-sensation)
+- `c'est` vs `il est` / `elle est` (pointer vs attribution)
+- `être grand` vs `être en haut` / `être debout` (tall vs up-high vs standing)
+- "I would like doctor" → **`je voudrais être médecin`** (missing infinitive)
+- profession article: **`je suis médecin`**, not *je suis un médecin* (at the right level)
+
+> **Contrast guardrail.** LearnCraft (and similar Spanish/contrast-harvest sources) may **inspire** which contrasts to harvest, but **French-specific explanations always win** — do **not** port another language's syllabus wholesale. Use these contrasts as **micro-contrast / "Why This Works" / Natural Reveal fuel**, not as a heavy grammar detour in every lesson.
 
 ---
 
