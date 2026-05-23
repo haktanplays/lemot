@@ -124,7 +124,7 @@ A lesson spec built from this template is a **planning document**. It does not d
 
 ## 7. Item Tables
 
-> Every item carries a **canonical identity** so the same item is one thing across lesson content, Weave, Practice Pool, Daily Review, Natural Reveal, Mon Lexique, and Word Graph (engine §14). The canonical-ID convention is **not yet locked** (§17) — use a clear placeholder (e.g. `chunk-je-suis`, `frame-je-suis-slot`) and keep it stable within the spec.
+> Every item carries a **canonical identity** so the same item is one thing across lesson content, Weave, Practice Pool, Daily Review, Natural Reveal, Mon Lexique, and Word Graph (engine §14). Use the **`prefix:slug` convention in `docs/syllabus/canonical-item-id-convention-v0.1.md`** (e.g. `chunk:je-voudrais`, `frame:je-voudrais-plus-noun`). Existing specs use a provisional `type-slug` hyphen style (`chunk-je-suis`); both are acceptable until the post-smoke migration — keep IDs stable within a spec.
 
 **Shared row format** (all tables):
 
