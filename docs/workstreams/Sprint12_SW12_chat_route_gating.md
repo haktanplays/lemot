@@ -7,13 +7,14 @@ Sprint 12 SW12 — Make AI Chat unreachable from dev-apk UI and add route-level 
 `claude/sprint12-sw12-chat-route-gating` (branched from `origin/main` at `68cb7f3`).
 
 ## Tier
-LM-2 / LM-3 — small frontend canon fix. Three files + spec.
+LM-2 / LM-3 — small frontend canon fix. Four files + spec (originally three; `LessonPractice.tsx` added in the SW12 review fixup).
 
 ## Problem statement
-A focused Dev APK Chat Reachability Check confirmed that despite `FEATURES.aiChat = false` in `dev-apk` (per `productStage.ts:70`) and the bottom-tab being hidden via `href: FEATURES.aiChat ? undefined : null` in `(tabs)/_layout.tsx:47`, AI Chat remains user-reachable inside the tester APK through two visible CTAs:
+A focused Dev APK Chat Reachability Check confirmed that despite `FEATURES.aiChat = false` in `dev-apk` (per `productStage.ts:70`) and the bottom-tab being hidden via `href: FEATURES.aiChat ? undefined : null` in `(tabs)/_layout.tsx:47`, AI Chat remains user-reachable inside the tester APK through three visible CTAs (the first two found in the initial check; the third surfaced during PR #12 review and gated in the SW12 fixup before merge):
 
 - `lemot-app/app/(tabs)/practice.tsx:274-300` — "Chat with AI" card on the Practice tab, `onPress` calls `router.push("/(tabs)/chat")`.
 - `lemot-app/app/lesson/[id].tsx:898-910` — "Chat in French" CTA on the lesson completion screen, `onPress` calls `router.replace("/(tabs)/chat")`.
+- `lemot-app/components/LessonPractice.tsx:313-328` — "Practice in Chat" shortcut on the Lesson Practice "done" screen, `onPress` calls `router.push("/(tabs)/chat")`.
 
 Even if those two CTAs were hidden, the chat route itself (`lemot-app/app/(tabs)/chat.tsx`) has no runtime gate. A deep link, a saved navigation state, or any future surface that pushes to `/(tabs)/chat` would still render the standalone AI Chat UI.
 
@@ -24,6 +25,7 @@ This violates `docs/DEV_APK_MVP_CANON.md` §2 ("No standalone AI Chat surface in
 |---|---|---|
 | Practice tab CTA "Chat with AI" | `(tabs)/practice.tsx:274-300` | Always visible regardless of `FEATURES.aiChat`. Visible in dev-apk. Tap navigates to `/(tabs)/chat`. |
 | Lesson completion CTA "Chat in French" | `lesson/[id].tsx:898-910` | Always visible regardless of `FEATURES.aiChat`. Visible in dev-apk on every lesson outro. Tap replaces stack to `/(tabs)/chat`. |
+| Lesson Practice CTA "Practice in Chat" | `LessonPractice.tsx:313-328` | Always visible regardless of `FEATURES.aiChat`. Visible in dev-apk on the Lesson Practice "done" screen. Tap navigates to `/(tabs)/chat`. **Found during PR #12 review; gated in SW12 fixup.** |
 | Chat tab in bottom bar | `(tabs)/_layout.tsx:47` | Hidden in dev-apk via `href:null`. ✅ correct since PR #5 era. |
 | Chat route runtime gate | `(tabs)/chat.tsx:62` | None. Direct route push renders full Chat UI regardless of stage. |
 
@@ -34,6 +36,7 @@ Single product intention: ensure no visible UI in dev-apk leads to `/(tabs)/chat
 - `lemot-app/app/(tabs)/practice.tsx` — wrap "Chat with AI" Pressable in `{FEATURES.aiChat && (...)}`.
 - `lemot-app/app/lesson/[id].tsx` — wrap "Chat in French" Pressable in `{FEATURES.aiChat && (...)}`.
 - `lemot-app/app/(tabs)/chat.tsx` — add runtime gate via `<Redirect href={"/" as never} />` when `FEATURES.aiChat` is false.
+- `lemot-app/components/LessonPractice.tsx` — wrap "Practice in Chat" Pressable in `{FEATURES.aiChat && (...)}` (SW12 review fixup; not in the original PR #12 commit).
 - `docs/workstreams/Sprint12_SW12_chat_route_gating.md` — this spec.
 
 ## Forbidden scope
@@ -95,7 +98,7 @@ Plus `git diff --check` and the static grep above.
 5. **No behavior change in sandbox or public-beta stages.** The conditional rendering and the redirect only short-circuit when `FEATURES.aiChat === false`.
 6. **`useChat` hook is still called** in `ChatScreen` even when the gate fires (Rules of Hooks). The hook itself only does state setup; it does not auto-call any Edge Function. Calling `useChat()` once during the gate-redirect render is a no-op from the backend perspective.
 7. **`docs/CLOUD_SYNC_QUEUE.md` will need a follow-up row** after SW12 merges. Out of scope for this PR per task rules.
-8. **Future workstreams that add new chat-reachable surfaces** (e.g., a new tile or notification deep-link) must apply the same `FEATURES.aiChat` gate at every entry point. SW12 covers the two current visible CTAs + the route entry; the lint discipline going forward is "every navigation to `/(tabs)/chat` must be wrapped in `FEATURES.aiChat`".
+8. **Future workstreams that add new chat-reachable surfaces** (e.g., a new tile or notification deep-link) must apply the same `FEATURES.aiChat` gate at every entry point. SW12 covers all three current visible CTAs (Practice card, lesson outro CTA, and the LessonPractice "Practice in Chat" shortcut found during PR #12 review) + the route entry; the lint discipline going forward is "every navigation to `/(tabs)/chat` must be wrapped in `FEATURES.aiChat`".
 
 ## Review status
 - Spec: this file, applied to working tree, pending operator approval.
@@ -103,3 +106,4 @@ Plus `git diff --check` and the static grep above.
 - Verification: `npm run typecheck`, `npm run validate:pools`, `git diff --check`, static grep to be run before reporting.
 - PR: not yet opened.
 - Commit: pending operator approval phrase.
+- **SW12 review fixup (PR #12 → REQUEST CHANGES):** a third visible Chat CTA in `components/LessonPractice.tsx` ("Practice in Chat") was found ungated during review. Gated with the same `{FEATURES.aiChat && (...)}` pattern before merge. All three current `/(tabs)/chat` navigations are now flag-gated; the `chat.tsx` route gate remains the defense-in-depth backstop.
