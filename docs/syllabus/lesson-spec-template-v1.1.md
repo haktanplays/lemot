@@ -118,6 +118,8 @@ A lesson spec built from this template is a **planning document**. It does not d
 
 > **Chunk-dense social / survival lessons.** Lessons built mostly from fixed social chunks (greetings, polite formulas, rescue phrases) may legitimately sit at the **lower end of the active-new band** — roughly **~8–12 active-new** is acceptable for them, *provided* total exposure, supported items, recognition input, and production targets all remain strong. **Do not inflate the active-new count by forcing fixed social phrases into full active production** — that produces a phrasebook, the failure mode the engine warns against (engine §11, anti-scope). Prefer a generative *frame* (e.g. `je voudrais ___`) carrying the active load over a long list of memorized phrases.
 
+> **Budget interaction — don't max every tier.** In **transformation-heavy lessons** (negation/question, review, tense-doorway), **recycled / carry-in items naturally run high** because the lesson *operates on* prior engines. When recycled is high, **active-new should sit at the lower end** of its band. The per-tier bands **cannot all be maximized at once** — maxing active-new + supported-new + recognition + recycled simultaneously blows the total-exposure band. **Total exposure (~30–45) and production quality matter more than hitting every tier maximum.**
+
 ---
 
 ## 7. Item Tables

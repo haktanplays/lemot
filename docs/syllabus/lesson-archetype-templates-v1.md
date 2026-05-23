@@ -87,7 +87,15 @@
 - **Sound/Writing**: intonation of questions (1 note max); `ne`-drop in speech (recognition).
 - **French-specific contrast**: yes/no answer patterns, tu/vous register, `si` vs `oui` (recognition).
 - **QA risks**: too many abstract grammar labels · too much social explanation · **overloading tu/vous + negation + question formation in one lesson** (split if it bloats).
-- **Likely lessons**: likely **L3**.
+- **Likely lessons**: **L3 Negation / Yes-No / Tu-Vous (pilot)**.
+
+> **L3 pilot guardrail** (from `docs/syllabus/L03-negation-you-questions.lesson-spec.md`):
+> - **Own one dominant transformation target, not the whole grammar system.** For an early L3-style lesson, that target is **`ne…pas`**.
+> - **`ne…plus` / `ne…jamais` / `ne…rien` are recognition-only or deferred** unless a later lesson explicitly promotes them.
+> - **Yes-no intonation belongs here** as the first question doorway. **Full question formation — `est-ce que` expansion, question words, inversion — is deferred** to later question-focused lessons.
+> - **Tu/vous = social choice using already-known verbs/forms** (e.g. `tu es` / `vous êtes`), **not** an excuse to expand conjugation.
+> - **Do not pull in prerequisite-unsafe verbs** just to demonstrate grammar.
+> - **Avoid partitive / object-negation overload** — use safe alternatives like `ça` when needed and leave article pressure for the object/article lesson.
 
 ---
 
