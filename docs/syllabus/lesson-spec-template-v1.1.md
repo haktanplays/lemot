@@ -101,6 +101,8 @@ A lesson spec built from this template is a **planning document**. It does not d
 
 > **L0 vs L1.** **L0 / Lesson Zero** may intentionally sit *below* the normal early-lesson item budget — it is an onboarding moment, not a full lesson. **L1** should normally target the early-lesson planning budget (the bands above) unless a future explicit canon decision says otherwise. The **L1 pilot** should be used precisely to test whether the ~30–45 total exposure / ~8–15 active / ~8–15 supported / ~10–20 recognition range is workable for a *first full lesson*. Document any deliberate underweight in §17 reasoning, not as a failure.
 
+> **Chunk-dense social / survival lessons.** Lessons built mostly from fixed social chunks (greetings, polite formulas, rescue phrases) may legitimately sit at the **lower end of the active-new band** — roughly **~8–12 active-new** is acceptable for them, *provided* total exposure, supported items, recognition input, and production targets all remain strong. **Do not inflate the active-new count by forcing fixed social phrases into full active production** — that produces a phrasebook, the failure mode the engine warns against (engine §11, anti-scope). Prefer a generative *frame* (e.g. `je voudrais ___`) carrying the active load over a long list of memorized phrases.
+
 ---
 
 ## 7. Item Tables
@@ -301,7 +303,7 @@ For **each** section fill: purpose · input used · learner action · expected o
 - [ ] Are **active / supported / recognition** items clearly separated?
 - [ ] Is **every production item prerequisite-safe** (§3)?
 - [ ] Are all **unseen forms** marked supported or recognition-only (never unscaffolded active)?
-- [ ] Does the lesson **grow at least 2–3 older engines** (carry-in)?
+- [ ] Does the lesson **grow available prior engines** where possible? (For **L1**, the only prior engine is L0 — the requirement is to **expand L0 deliberately**, not to grow 2–3 older engines. For **later lessons**, target **2–3 older-engine returns** unless the lesson has a justified exception.)
 - [ ] Does it **avoid introducing too many full-cycle engines** (ideally one early)?
 - [ ] Does it include **at least one meaningful production moment**?
 - [ ] Does it produce **Mon Lexique-compatible metadata** (§14)?
@@ -455,7 +457,7 @@ For **each** section fill: purpose · input used · learner action · expected o
 - [ ] Active/supported/recognition separated
 - [ ] Every production item prerequisite-safe
 - [ ] Unseen forms supported/recognition only
-- [ ] Grows 2–3 older engines
+- [ ] Grows available prior engines (L1: expand L0; later lessons: 2–3 older-engine returns unless justified)
 - [ ] Not too many full-cycle engines
 - [ ] At least one meaningful production moment
 - [ ] Mon Lexique-compatible metadata
