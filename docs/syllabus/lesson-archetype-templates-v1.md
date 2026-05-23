@@ -241,7 +241,15 @@
 - **Sound/Writing**: revisit a prior note only if a weak point demands it.
 - **French-specific contrast**: re-test prior contrasts that caused errors.
 - **QA risks**: **feels like a test · too little novelty · reward/gamification language** (it must still feel like calm practice, never a graded exam — no streak/XP/score).
-- **Likely lessons**: periodic integration lessons (e.g. before a milestone).
+- **Likely lessons**: **L6 Foundation Integration / Human Context (pilot)**; periodic integration lessons (e.g. before a milestone).
+
+> **L6 pilot guardrail** (from `docs/syllabus/L06-foundation-integration-human-context.lesson-spec.md`):
+> - **May include 1–2 low-risk new words as a freshness hook**, but **no new grammar system.** The main value is **recombination, not acquisition.**
+> - **Lean heavily on Weave It, Say It Your Way, and Natural Reveal** rather than new explanation.
+> - **Avoid feeling like a quiz/test.** Use **human-context framing** ("you can now express yourself") — never score/reward framing.
+> - **Use after a difficulty spike or after several system-heavy lessons** to consolidate and rebuild confidence.
+> - **Reduce overused context patterns** (e.g. café/transactional centricity) by moving old engines into **more human situations**.
+> - **AI generation must stay inside allowed prior engines/items** and must **not** freely add new grammar (even if the French is valid).
 
 ---
 
