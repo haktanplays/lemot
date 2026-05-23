@@ -134,8 +134,8 @@
 - **When to use**: lesson introduces the article/object system (un/une/le/la/les/des) and noun slots.
 - **Teaches best**: gender/number **as usage**, not as a taxonomy lecture; filling object slots in known frames.
 - **Section weighting**: **Strong** — Notice the Pieces (slot logic), Weave It / Shape It (slot replacement), visual contrast. **Light** — exhaustive article tables.
-- **Item budget**: total ~32–42. **Active-new ~10–13** (nouns + article usage). Production targets ~5–6.
-- **Active/supported/recognition split**: roughly active 30% / supported 25% / recognition 30% / recycled 15%.
+- **Item budget**: for a **first** object/article lesson, keep it light — total ~36–39, **active-new ~7–9** (the indefinite articles + 1 noun), supported-new ~8–10. Production targets ~5–6. (Carry-in runs high since the lesson rides known frames.)
+- **Active/supported/recognition split**: roughly active 20% / supported 25% / recognition 20% / recycled 35% (very high carry-in — operates on prior object engines).
 - **Carry-in / carry-out**: carry-in `je voudrais ___` / `c'est un …` (L1/L2 frames already hold articles); carries out toward pronouns (L6: le/la/les → object pronouns) and quantity.
 - **Mon Lexique**: nouns enter **with their article/gender** baked into the example, not as a separate gender field shown to the learner.
 - **Practice Pool**: slot replacement (swap nouns in a frame); gender-pair listening.
@@ -143,7 +143,15 @@
 - **Sound/Writing**: elision (`l'`), liaison (`les_amis`); 1 note max.
 - **French-specific contrast**: article presence/absence (profession no-article callback), `un` vs `le`.
 - **QA risks**: **article-taxonomy lecture** · too many nouns without production frames · **gender overload** (show, don't drill).
-- **Likely lessons**: likely **L5**.
+- **Likely lessons**: **L5 Objects / Articles (pilot)**.
+
+> **L5 pilot load guardrail** (from `docs/syllabus/L05-objects-articles.lesson-spec.md`):
+> - **A first object/article lesson must not teach adjective agreement, plural, partitive, and elision as concurrent targets.** These appear as **future hooks / recognition only**.
+> - **Prioritize object-package control over article-system completeness.** Own `un`/`une` as **noun packages** (`un café`, `une baguette`); the noun carries its gender — no masculine/feminine rule set.
+> - **Active**: `un`, `une`. **Supported**: `le`, `la` (identification only — `c'est le/la …`; **no `… est bon/bonne`**, which opens agreement). **Recognition/deferred**: `les`, `des`, `du`/`de la`/`de l'`.
+> - **`pas de`** (negation → `de`) is a **supported bridge** that absorbs pressure handed off from the avoir lesson, **not** a partitive system.
+> - **`l'` elision** is recognition only; the gender-clue endings table is at most **one cognate note** (`-tion→fem`).
+> - Teach articles **inside already-known frames** (`je voudrais` / `j'ai` / `c'est`); introduce almost no new frames. Carry-in is naturally very high.
 
 ---
 
