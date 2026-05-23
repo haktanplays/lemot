@@ -104,8 +104,8 @@
 - **When to use**: lesson teaches French "have"-states and the être/avoir boundary.
 - **Teaches best**: `j'ai faim`, `j'ai besoin de`, `j'ai envie de`, `j'ai peur`; the contrast with être.
 - **Section weighting**: **Strong** — Why This Works (French-specific contrast), Opening Sentence Family, Say It Your Way (emotionally useful). **Light** — abstract grammar.
-- **Item budget**: total ~30–42. **Active-new ~10–13.** Production targets ~5–7.
-- **Active/supported/recognition split**: roughly active 30% / supported 25% / recognition 30% / recycled 15% (être carry-in is heavy).
+- **Item budget**: for a **first** avoir-state lesson, keep it light — total ~35–38, **active-new ~8–10**, supported-new ~8–10. Production targets ~5–7. (Later avoir lessons may run larger once the contrast is solid.)
+- **Active/supported/recognition split**: roughly active 25% / supported 25% / recognition 30% / recycled 20% (être carry-in is heavy; paradigm sits in recognition).
 - **Carry-in / carry-out**: strong carry-in from L2 (`je suis fatigué` sits beside `j'ai faim`); carries out to article system (L5: `j'ai un …`) and later idiomatic avoir.
 - **Mon Lexique**: avoir + its state chunks; each entry links to its être counterpart where one exists.
 - **Practice Pool**: contrast repair (être vs avoir), state-chunk Build/Stretch.
@@ -113,7 +113,19 @@
 - **Sound/Writing**: elision (`j'ai`); 1 note max.
 - **French-specific contrast**: **central** — "I am hungry" → `j'ai faim` (not *je suis faim*), the literal-transfer trap (template §7.10).
 - **QA risks**: **literal English "I am hungry" transfer** · too many avoir chunks at once · **not enough continuity with être** (the contrast is the point — keep L2 present).
-- **Likely lessons**: likely **L4**.
+- **Likely lessons**: **L4 Avoir / Human States (pilot)**.
+
+> **L4 pilot load / sequence guardrail** (from `docs/syllabus/L04-avoir-human-states.lesson-spec.md`):
+> - **Own the human-state contrast, not every useful avoir chunk.** Conceptual clarity beats maxing the item budget.
+> - **Narrow owned core**: `j'ai faim` · `j'ai soif` · `j'ai besoin de` + noun · `je n'ai pas faim`.
+> - **`j'ai peur`** may be **light active or supported** if the load stays manageable.
+> - **`j'ai envie de`** should usually be **recognition / deferred** in a first avoir-state lesson, unless there is a strong reason to promote it.
+> - **Avoir + possession** (`j'ai un café`) is a short **L5 bridge**, **not** a second full engine.
+> - **Age** (`j'ai vingt ans`) requires **number prerequisites** → **defer** until after numbers.
+> - **`il y a`** is an **existential structure** → usually gets its **own doorway/lesson**, not the avoir-state core.
+> - **`ne…plus`** stays **recognition/preview** in early avoir-state lessons unless a later lesson promotes it (L3 owns `ne…pas`).
+> - **`pas de` / partitive** pressure → **hand off to the article/object lesson** (use `ça` to avoid it) unless explicitly supported.
+> - **Never teach the full avoir paradigm as equal active production** (architecture-verb guardrail §4): only one person-form active, the rest recognition.
 
 ---
 
