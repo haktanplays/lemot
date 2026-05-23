@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
-import { Star, Sparkles } from "lucide-react-native";
+import { Star, Plus } from "lucide-react-native";
 import { Btn } from "./Btn";
 import { P } from "@/constants/theme";
 import { UnlockCard, type UnlockType } from "./UnlockCard";
@@ -72,9 +72,9 @@ export function TransitionScreen({
         {unlock && (
           <View className="w-full">
             <View className="flex-row items-center justify-center gap-1.5 mb-1">
-              <Sparkles size={14} color={P.amber} />
+              <Plus size={14} color={P.amber} />
               <Text className="text-xs font-bold text-lm-amber">
-                Unlocked!
+                Added.
               </Text>
             </View>
             <UnlockCard type={unlock.type} data={unlock.data} />
