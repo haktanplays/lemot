@@ -194,7 +194,7 @@ Recognition-only or deferred — never production targets in L15:
 - **AI must NOT turn L15 into a full modal / obligation lesson** — light contrast only, passive mirror (contract §10/§11).
 - **Traps** come from `trap:il-faut-que-too-early` / `trap:subjunctive-too-early` / `trap:conditionnel-advice-too-early` / `trap:devoir-owe-too-early` / `trap:full-devoir-paradigm-overload` / `trap:il-me-faut-too-early` / `trap:je-dois-y-aller-too-early`; Natural Reveal stays passive-mirror.
 
-**Proposed AI-contract §15 L15 row (propose for review — do NOT auto-apply):**
+**Applied to AI-contract §15 in commit `b04ab00`** (review approved). The **canonical applied row lives in `docs/syllabus/ai-generation-contract-v1.md` §15**. Original proposal kept below for traceability:
 
 | Lesson | ✅ Allowed | 🚫 Blocked | Why blocked |
 |---|---|---|---|
@@ -231,11 +231,11 @@ Recognition-only or deferred — never production targets in L15:
 - **Should L16 be Integration + A Small Moment seed, as the band map says?** **Yes** — L14 (`y`) + L15 (devoir) are 2 consecutive new-engine lessons → **L16 integration** follows (rhythm rule). L15 sets up obligation for recombination + the first reading-response ritual.
 - **Top risks:** (1) **`il faut que` + subjunctive** (the #1 leak — `il faut` invites a `que`-clause); (2) **conditionnel/advice slide** (`devrais`/`faudrait`, coaching tone); (3) **full `devoir` paradigm**; (4) **`je faut`/`il dois` form-mixing**; (5) **`je dois y aller`** (y+devoir) + **`devoir`=owe** / **`il me faut`** sense confusion. All guarded by §3/§9/§10 + seven traps.
 
-**Docs that need patching (propose for review — do NOT auto-apply in this step):**
-- **`docs/syllabus/ai-generation-contract-v1.md` §15** — add the **L15 row** (§10 above), same pattern as L6–L14.
-- **`docs/syllabus/lesson-archetype-templates-v1.md` #2** — cite L15 as the **4th split-sense instance** (after L7/L9/L11); note `il faut` as the **invariable / zero-paradigm anchor**.
-- **`docs/syllabus/L10-L20-band-map-v0.md`** — annotate L15 row "asymmetric: `il faut + inf.` primary, `je dois + inf.` supported; subjunctive/conditionnel deferred"; resolve decision-gate 7.
-- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — optional: flag the **`devoir`-obligation vs `devoir`-owe** future sense-suffix (apply only if "owe" is later opened) and the **`chunk:il-faut` ↔ `word:falloir`** lexeme link.
+**Docs patched in commit `b04ab00`** (applied):
+- **`docs/syllabus/ai-generation-contract-v1.md` §15** — **applied (`b04ab00`)**: L15 allowed/blocked row + L15 note added (canonical version — see §10).
+- **`docs/syllabus/lesson-archetype-templates-v1.md` #2** — **applied (`b04ab00`)**: L15 cited as the **4th split-sense instance** (`il faut` as the invariable / zero-paradigm anchor).
+- **`docs/syllabus/L10-L20-band-map-v0.md`** — **applied (`b04ab00`)**: L15 row annotated (asymmetric: `il faut + inf.` primary, `je dois + inf.` supported) + **decision-gate 7 resolved**.
+- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — **applied (`b04ab00`)**: `devoir`-obligation vs `devoir`-owe future sense-suffix flag + `chunk:il-faut` ↔ `word:falloir` lexeme link.
 - **No L11/L14 patch needed** — L11 provides the contrast; L14 unaffected (`je dois y aller` recognition-only).
 
 ---
