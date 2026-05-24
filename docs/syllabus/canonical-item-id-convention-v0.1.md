@@ -29,7 +29,7 @@ Canonical IDs give every learning object **one stable identity** across systems.
 - **Lowercase kebab-case slug.** `je-voudrais`, `je-ne-comprends-pas`.
 - **Prefix-based.** `prefix:slug` — the prefix names the *kind* of object (§3).
 - **ASCII IDs.** No accents or apostrophes *in IDs*: `café → cafe`, `s'il vous plaît → s-il-vous-plait`, `j'ai → j-ai`. Accents/apostrophes belong in **learner-facing labels**, never in IDs.
-- **Homograph disambiguation (sense suffix).** When ASCII/accent normalization **collides two different meanings** into the same slug, add a short, semantic, **stable sense suffix**. Examples: `où` (where) → `word:ou-where`, `ou` (or) → `word:ou-or`; `là` (there) → `word:la-there`, the article `la` → `word:la-article` (or its existing article ID if already defined). This is a **going-forward** convention — older specs are **not** retroactively rewritten in this step (§11). **Learner-facing labels keep correct French spelling** (`où`, `ou`, `là`, `la`); the disambiguation lives **only** in the internal ID.
+- **Homograph disambiguation (sense suffix).** When ASCII/accent normalization **collides two different meanings** into the same slug, add a short, semantic, **stable sense suffix**. Examples: `où` (where) → `word:ou-where`, `ou` (or) → `word:ou-or`; `là` (there) → `word:la-there`, the article `la` → `word:la-article` (or its existing article ID if already defined); **`y` (place pronoun) → `word:y-place`** (reserve `word:y-*` for other senses — keep existential **`il y a` as a frozen `chunk:il-y-a`**, and `j'y pense` for a later sense; `j'y vais` → `chunk:j-y-vais`, `on y va` → `chunk:on-y-va`). This is a **going-forward** convention — older specs are **not** retroactively rewritten in this step (§11). **Learner-facing labels keep correct French spelling** (`où`, `ou`, `là`, `la`); the disambiguation lives **only** in the internal ID.
 - **One concept, multiple linked IDs at different granularity.** `je voudrais` is a chunk (`chunk:je-voudrais`); "`je voudrais` + noun" is a frame (`frame:je-voudrais-plus-noun`); the politeness it carries is a phenomenon (`phen:polite-request`). These are linked, not merged (§4).
 - **Do not expose technical IDs to learners.** (Repeated because it is the most important rule.)
 
@@ -111,7 +111,7 @@ Aligned with the engine's production-maturity ladder (engine §6):
 
 Clarifications:
 - **`transformed` and `expected` are planning states**, not necessarily distinct *runtime* enum values today (the runtime `itemRegistry.status` field currently uses a subset: `recognition` / `supported` / `active`). See engine §6 reconciliation.
-- **Status is lesson-specific.** The same item can be `recognition` in one lesson and `active` later — record it via `status_by_lesson`. Example: `word:tu` is `recognition` in L2 and `active` in L3.
+- **Status is lesson-specific.** The same item can be `recognition` in one lesson and `active` later — record it via `status_by_lesson`. Example: `word:tu` is `recognition` in L2 and `active` in L3. A recognition chunk graduates to active **only when a later lesson explicitly status-marks it** — e.g. `frame:est-ce-que-je-peux-plus-infinitive` (recognition L11 → active L12) and `chunk:j-y-vais` (recognition L13 → active L14).
 
 ---
 

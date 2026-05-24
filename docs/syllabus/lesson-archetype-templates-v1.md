@@ -196,6 +196,16 @@
 - **QA risks**: **too abstract too early** · **pronoun stacking overload** · **production before recognition** (recognize first).
 - **Likely lessons**: mid-spine pronoun lessons (e.g. L6+).
 
+> **L14 pilot guardrail — narrow chunk-first pronoun doorway** (from `docs/syllabus/L14-y-light-place-pronoun.compact-spec.md`):
+> - **Early pronoun/particle lessons must be recognition-first and chunk-first.** L14 owns **only one pronoun/particle meaning** — `y` as **place-`y`** in near-chunks — **not** a "replace any `à + place` with `y`" rule.
+> - **Safe owned chunks:** `j'y vais` and `on y va`. **Optional/supportive:** `je n'y vais pas` and a light `subject + y + aller` frame.
+> - **Recognition before production is non-negotiable** (the archetype's core risk): `y` is met in the fixed expressions many times before it is produced; production targets stay low (~3–5).
+> - **Word-order is learned in-expression** (`j'y vais`, not `je vais y`), **not** generalized as a placement rule.
+> - **Do not introduce** `en`, the `y`/`en` contrast, object-pronoun stacking, `il y a` as a system, `j'y suis` production, broad `à+place` replacement, `y`+pouvoir chains, or `y`+`est-ce que` production.
+> - **Keep `il y a` separate** — a frozen `chunk:il-y-a` (existential), its own later doorway, **not** the place-`y` pronoun.
+> - **Preview hook ≠ ownership:** L13's `j'y vais` recognition hook becomes **narrowly active only because L14 explicitly owns it**; later pronoun ownership requires later explicit lessons.
+> - **Use a sense-suffixed ID** (`word:y-place`) to reserve room for other `y` senses (convention §2 homograph rule).
+
 ---
 
 ## 7. Tense / Aspect / Mood Doorway
