@@ -75,6 +75,7 @@
 > - Very large verbs (`aller`, `faire`, later `pouvoir` / `vouloir` / `devoir`) carry **several adjacent high-value senses**. A lesson may **own one narrow sense while deferring the adjacent senses** as recognition / future-hook only. (Contrast: `être`/`avoir` were opened broadly early because their core *is* the foundation.)
 > - **L7 example:** `aller` owns **movement / next-step**; **futur proche** (`je vais + infinitive`) ownership is **deferred** (recognition only).
 > - **L9 example:** `faire` owns **small action / pause**; **weather** (`il fait froid`), **sport/activity** (`faire du sport`), **idioms** (`faire attention`), **`se faire` / `ça se fait`**, and the **full `faire` paradigm** are **deferred** (recognition only).
+> - **L11 example (third instance):** `pouvoir` owns **help / permission** (`vous pouvez m'aider ?`, `je peux faire une pause ?`, `je ne peux pas faire ça`); **broad ability**, **possibility/probability** (`il se peut`, `peut-être`), the **conditionnel** (`je pourrais`), the **full `pouvoir` paradigm**, and the **subjunctive lane** are **deferred** (recognition only).
 > - **Do not let a useful adjacent sense silently become an active production target** — this protects both pedagogy (prerequisite-safety) and **commercial depth** (high-value senses are held for later / paid lessons).
 > - **Later ownership of a held sense requires a later explicit lesson.**
 > - When a verb is opened on a single sense this way, the **active-new count sits at the low end** of the Architecture-Verb band.

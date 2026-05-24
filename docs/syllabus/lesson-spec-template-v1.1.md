@@ -206,6 +206,8 @@ _(where an English-speaker's instinct produces unnatural or wrong French)._ Capt
 
 > **Question word inside a frozen chunk (bounded early use).** A question word may appear **inside a frozen chunk** before its full question system is taught. Examples: `tu vas où ?` (L8) and `tu fais quoi ?` (L9) may be **supported/recognition chunks** — this does **not** mean `où` / `quoi` / `est-ce que` is owned as a full question system. Such chunks must be **status-marked**, must **not** trigger broader question-word generation, and AI must **respect the chunk boundary** (generate the chunk, not the system).
 
+> **Object pronoun inside a frozen chunk (bounded early use).** A pronoun-like element (e.g. an object pronoun) may appear **inside a frozen chunk** before its full pronoun system is taught — the companion to the question-word case above. Example: `m'` in `vous pouvez m'aider ?` (L11) may be a **supported/frozen help chunk** — this does **not** mean object pronouns (`me` / `te` / `le` / `la` / `lui` …) are owned. Such chunks must be **status-marked**, must **not** trigger broader object-pronoun generation, and AI must **respect the frozen chunk boundary** (generate the chunk, not the system). **Later pronoun ownership requires an explicit pronoun lesson.**
+
 ---
 
 ## 9. Tense / Aspect / Mood Doorway
