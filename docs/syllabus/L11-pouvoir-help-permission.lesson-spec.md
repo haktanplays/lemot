@@ -429,7 +429,7 @@ Explicit L11 constraints:
 - `est-ce que je peux …?` and `je pourrais …` may appear as **recognition input only**. Natural Reveal redirects, not teaches, when a learner reaches for deferred forms (contract §11).
 - **Traps** come from `trap:pouvoir-full-paradigm-overload` / `trap:pouvoir-conditionnel-too-early` / `trap:est-ce-que-je-peux-overload` / `trap:pouvoir-broad-possibility-too-early`; repair targets the lesson's `weak:` tags. Natural Reveal stays passive-mirror (contract §10).
 
-**Proposed addition to the contract's §15 allowed/blocked table (propose for review — do NOT auto-apply):**
+**Applied to the contract's §15 allowed/blocked table in commit `a198310`** (review approved). The applied row **expands** this original proposal — it adds `Pouvez-vous répéter ?` to allowed, and `Peut-être.`, `J'ai pu faire ça.` (past), and `Je peux le faire.` (object pronoun) to blocked. See contract §15 for the canonical version; the original proposal is kept below for traceability:
 
 | Lesson | ✅ Allowed | 🚫 Blocked | Why blocked |
 |---|---|---|---|
@@ -475,11 +475,11 @@ Explicit L11 constraints:
 
 **Should L12 be question expansion 1, as the band map suggests?** **Leaning yes — L11 builds the bridge.** `est-ce que je peux …?` recognition is a natural lead-in to **owning `est-ce que`** at L12 (with L8 `où`). But the band map's L12 gate is still open; **re-map before writing L12**. The can/can't engine also **pairs with `devoir`/`il faut`** (ability ↔ obligation) at the L15 candidate.
 
-**Does L11 reveal any required patch to template / archetype / AI contract / ID convention?** Minor, **non-blocking** (propose for review, do **not** auto-apply):
-- **AI Generation Contract v1 §15** should gain the **L11 row** proposed in §16.
-- **Object-pronoun-in-chunk precedent** — `m'aider` is the first object pronoun admitted inside a frozen chunk (companion to L8 `quoi`, L9 `tu fais quoi`). Worth a one-line note (template/archetype) that **object pronouns, like question words, may enter as frozen-chunk pieces before their system is owned.**
-- **Archetype #2** — `pouvoir` is the **third** split-sense instance; the "repeatable pattern" note already covers it (could cite pouvoir as a third example).
-- **ID convention** — flag the **`peut` / `peut-être` split** and the `peux`/`peut`/`peu` homophone for when possibility/`peut-être` is opened; no collision now (distinct slugs). Apply the L8 sense-suffix rule then.
+**Does L11 reveal any required patch to template / archetype / AI contract / ID convention?** Minor, **non-blocking**. The contract, template, and archetype patches were **applied in commit `a198310`** (review approved); the ID-convention item remains open:
+- **AI Generation Contract v1 §15** — the **L11 allowed/blocked row** was **added (applied `a198310`)**. The canonical applied row lives in `docs/syllabus/ai-generation-contract-v1.md` §15; it expands the §16 proposal.
+- **Object-pronoun-in-chunk precedent** — `m'aider` is the first object pronoun admitted inside a frozen chunk (companion to L8 `quoi`, L9 `tu fais quoi`). The one-line note — **object pronouns, like question words, may enter as frozen-chunk pieces before their system is owned** — was **added to `docs/syllabus/lesson-spec-template-v1.1.md` §8 (applied `a198310`)**.
+- **Archetype #2** — `pouvoir` is the **third** split-sense instance; **now cited as the third example in the split-sense note of `docs/syllabus/lesson-archetype-templates-v1.md` §2 (applied `a198310`)**.
+- **ID convention** *(still open — see §19)* — flag the **`peut` / `peut-être` split** and the `peux`/`peut`/`peu` homophone for when possibility/`peut-être` is opened; no collision now (distinct slugs). Apply the L8 sense-suffix rule then.
 
 **Does L11 preserve commercial depth before Campfire ~L24?** **Yes.** It owns only the **help/permission** slice; the genuinely deep, broadly-applicable pouvoir — conditionnel softening (`je pourrais`), possibility/probability (`il se peut que` + subjonctif), the full paradigm, and the polite-softening-of-everything register — is **reserved** for later/paid lessons. L11 gives strong free usefulness without spending pouvoir's deeper value.
 
@@ -499,7 +499,7 @@ Explicit L11 constraints:
 - **Broad pouvoir slot(s)** — when possibility (`il se peut que` + subjonctif), `peut-être`, formal `puis-je` get owned.
 - **Devoir/falloir pairing** — confirm L15 owns obligation as the ability↔obligation partner.
 - **`peut-être` homophone/ID handling** — apply the L8 sense-suffix rule when opened.
-- **AI contract §15 L11 row** — whether to add the proposed allowed/blocked row.
+- ~~**AI contract §15 L11 row** — whether to add the proposed allowed/blocked row.~~ **Resolved (applied `a198310`)** — the L11 allowed/blocked row was added; canonical version in `docs/syllabus/ai-generation-contract-v1.md` §15.
 
 ---
 
