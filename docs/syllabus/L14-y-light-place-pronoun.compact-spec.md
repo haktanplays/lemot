@@ -188,7 +188,7 @@ Recognition-only or deferred — never production targets in L14:
 - **AI must NOT drift into generic chatbot conversation** (contract §11).
 - **Traps** come from `trap:y-en-confusion` / `trap:il-y-a-too-early` / `trap:full-pronoun-system-overload` / `trap:object-pronoun-stacking-too-early` / `trap:je-vais-y-word-order` / `trap:je-peux-y-aller-too-early`; Natural Reveal stays passive-mirror.
 
-**Proposed AI-contract §15 L14 row (propose for review — do NOT auto-apply):**
+**Applied to AI-contract §15 in commit `2f3c94d`** (review approved). The **canonical applied row lives in `docs/syllabus/ai-generation-contract-v1.md` §15** — it differs slightly from (and supersedes) the proposal below (the applied row lists the word-order set `Je vais y.` / `On va y.` / `Je y vais.` and `Je peux le faire.` as the object-pronoun example). Original proposal kept below for traceability:
 
 | Lesson | ✅ Allowed | 🚫 Blocked | Why blocked |
 |---|---|---|---|
@@ -220,13 +220,13 @@ Recognition-only or deferred — never production targets in L14:
 - **Does it preserve paid-depth value?** **Yes** — `en`, the object-pronoun system + stacking, and the productive replacement rule stay reserved; L14 spends only the `j'y vais`/`on y va` slice (pronoun analogue of L11/L12 slices).
 - **Does it feel test-like?** **No** — short movement scene + a capability close ("say 'let's go' the French way"), passive mirror. The recognition weighting (Notice/Why-This-Works) keeps it exploratory, not a quiz.
 - **Should L15 be Devoir/Falloir-light, as the band map says?** **Yes** — L14 (`y`) + L15 (devoir) are 2 consecutive new-engine lessons → **L16 integration** follows (rhythm rule). L14 does not pre-empt L15.
-- **Top risks:** (1) **pronoun-system over-opening** (`en`/object pronouns/stacking) off `y`; (2) **word-order** `je vais y`; (3) **`il y a` conflation**; (4) **production-before-recognition** (forcing `y` before it's been met enough). All guarded by §3/§9/§10 + five traps + recognition-first weighting.
+- **Top risks:** (1) **pronoun-system over-opening** (`en`/object pronouns/stacking) off `y`; (2) **word-order** `je vais y`; (3) **`il y a` conflation**; (4) **production-before-recognition** (forcing `y` before it's been met enough). All guarded by §3/§9/§10 + six traps + recognition-first weighting.
 
-**Docs that need patching (propose for review — do NOT auto-apply in this step):**
-- **`docs/syllabus/ai-generation-contract-v1.md` §15** — add the **L14 row** (§10 above), same pattern as L6–L13.
-- **`docs/syllabus/lesson-archetype-templates-v1.md` #6** — optional L14 pilot note: *"a pronoun doorway may own a single pronoun's single sense as near-chunks, recognition-first, before the productive replacement system; word-order is learned in-expression, not generalized."*
-- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — apply the **`word:y-place` sense-suffix** (homograph guard, band map §9 action) + note the **second `status_by_lesson` graduation** (`chunk:j-y-vais`, after L12's `est-ce que je peux`).
-- **`docs/syllabus/L10-L20-band-map-v0.md`** — optional: annotate the L14 row "near-chunks + recognition-first" (depth tightening from the gate review); no structural change.
+**Docs patched in commit `2f3c94d`** (applied):
+- **`docs/syllabus/ai-generation-contract-v1.md` §15** — **applied (`2f3c94d`)**: L14 allowed/blocked row + L14 note added (canonical version — see §10).
+- **`docs/syllabus/lesson-archetype-templates-v1.md` #6** — **applied (`2f3c94d`)**: L14 chunk-first / recognition-first pronoun-doorway guardrail added.
+- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — **applied (`2f3c94d`)**: `word:y-place` sense-suffix + `il y a` kept as `chunk:il-y-a` (homograph guard, band map §9 action), plus the second `status_by_lesson` graduation note (`chunk:j-y-vais`, after L12's `est-ce que je peux`).
+- **`docs/syllabus/L10-L20-band-map-v0.md`** — **applied (`2f3c94d`)**: L14 row annotated "near-chunks + recognition-first" (depth tightening); no structural arc change.
 - **No L13 patch needed** — L13 §7 already routes `j'y vais` → L14.
 
 ---
