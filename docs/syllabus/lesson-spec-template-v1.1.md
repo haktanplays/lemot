@@ -204,6 +204,8 @@ _(where an English-speaker's instinct produces unnatural or wrong French)._ Capt
 
 > **Chunk/phrase → word/frame promotion (continuity move).** A known **chunk** may later **promote one of its pieces** into its own `word:`/`frame:` entry once the syllabus is ready. Examples: `comprendre` first appears inside the rescue chunk `je ne comprends pas`, then is promoted to `word:comprendre` (infinitive use) in L6; `ici`/`là` appear inside earlier chunks (e.g. `je suis ici`), then become controlled location words in L8. **Promotion must be explicit and status-marked** (recognition → supported/active) — do **not** silently treat earlier chunk exposure as full word ownership.
 
+> **Question word inside a frozen chunk (bounded early use).** A question word may appear **inside a frozen chunk** before its full question system is taught. Examples: `tu vas où ?` (L8) and `tu fais quoi ?` (L9) may be **supported/recognition chunks** — this does **not** mean `où` / `quoi` / `est-ce que` is owned as a full question system. Such chunks must be **status-marked**, must **not** trigger broader question-word generation, and AI must **respect the chunk boundary** (generate the chunk, not the system).
+
 ---
 
 ## 9. Tense / Aspect / Mood Doorway

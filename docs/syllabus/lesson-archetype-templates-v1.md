@@ -71,12 +71,12 @@
 - **QA risks** (per template §4 guardrail): **full paradigm drilling · conjugation-table smell · too many person-forms active · too little real production.** Keep **one dominant active core**.
 - **Likely lessons**: **L2 Être (pilot)**; later avoir, aller, faire, pouvoir, vouloir, devoir/falloir.
 
-> **L7 pilot guardrail — split-sense opening** (from `docs/syllabus/L07-aller-movement-next-step.lesson-spec.md`):
-> - Some architecture verbs have **adjacent high-value senses** (e.g. *aller* = movement/next-step vs `aller + infinitive` = futur proche).
-> - A lesson may **own one sense while holding the adjacent sense as recognition / future-hook only.**
-> - Example: **L7 owns *aller* as movement / next-step, but does not own futur proche** (`je vais + infinitive` stays recognition; futur-proche ownership = 0).
-> - **Do not let a high-value adjacent sense silently become an active production target** — this protects both pedagogy (prerequisite-safety) and **commercial depth** (the high-value future engine is held for the paid zone).
-> - **Future ownership of the held sense requires a later explicit lesson** (likely paywalled).
+> **Split-sense opening — a repeatable pattern for very large architecture verbs** (from `docs/syllabus/L07-aller-movement-next-step.lesson-spec.md` + `docs/syllabus/L09-faire-small-actions-pause.lesson-spec.md`):
+> - Very large verbs (`aller`, `faire`, later `pouvoir` / `vouloir` / `devoir`) carry **several adjacent high-value senses**. A lesson may **own one narrow sense while deferring the adjacent senses** as recognition / future-hook only. (Contrast: `être`/`avoir` were opened broadly early because their core *is* the foundation.)
+> - **L7 example:** `aller` owns **movement / next-step**; **futur proche** (`je vais + infinitive`) ownership is **deferred** (recognition only).
+> - **L9 example:** `faire` owns **small action / pause**; **weather** (`il fait froid`), **sport/activity** (`faire du sport`), **idioms** (`faire attention`), **`se faire` / `ça se fait`**, and the **full `faire` paradigm** are **deferred** (recognition only).
+> - **Do not let a useful adjacent sense silently become an active production target** — this protects both pedagogy (prerequisite-safety) and **commercial depth** (high-value senses are held for later / paid lessons).
+> - **Later ownership of a held sense requires a later explicit lesson.**
 > - When a verb is opened on a single sense this way, the **active-new count sits at the low end** of the Architecture-Verb band.
 
 ---

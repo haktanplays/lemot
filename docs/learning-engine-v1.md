@@ -127,6 +127,8 @@ Lessons are not islands. The engine connects them through an explicit **carry sy
 
 > **Continuity principle.** Every lesson must **introduce something new, grow something old, and prepare something future.** A lesson that only introduces is overloaded; a lesson that only reviews is inert; a lesson that prepares nothing leaves the next lesson stranded.
 
+> **Pacing guardrail — integration rhythm.** Avoid running **more than ~3 consecutive new-engine lessons** without an **integration / review beat** (archetype #10). This is a **planning heuristic, not a hard validator.** A run of system-heavy lessons (each opening a new verb/structure) accumulates load faster than the learner consolidates it — the L1–L5 retrospective and the L6 integration pilot demonstrated this. Concretely: after **L7 Aller, L8 Où, L9 Faire-light**, the next new-engine lesson (e.g. **L10 pouvoir-light**) should be **followed by or paired with an integration beat** — **L11 should be strongly considered as Review / Integration** if L10 introduces a major engine.
+
 ---
 
 ## 9. Transformation Types
