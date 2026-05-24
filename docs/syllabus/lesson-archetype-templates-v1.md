@@ -284,6 +284,11 @@
 > - **Preview hooks must remain recognition / future-hook only** unless the lesson explicitly owns them.
 > - **Frame as capability** — "you can now use what you know" — never as a quiz / test / reward.
 
+> **L13 finding — integration preview-hook pattern (confirmed across three pilots)** (from `docs/syllabus/L13-can-do-asking-integration.compact-spec.md`):
+> - An integration lesson **may carry a recognition-only preview hook** for the next planned engine. Confirmed by: **L6 → previewed L7** (aller/movement) · **L10 → previewed L11** (pouvoir-light) · **L13 → previews L14** (`y`-light, `j'y vais`).
+> - **Preview hooks must remain recognition / future-hook only — a preview hook is NOT ownership.** The **next** lesson must **explicitly own** the previewed system before AI or exercises may require its production.
+> - **Do not force every integration lesson to include a preview hook** — use it only when it strengthens continuity **without** increasing cognitive load.
+
 ---
 
 ## 11. Milestone / Transition
