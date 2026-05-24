@@ -105,6 +105,14 @@
 > - **Do not pull in prerequisite-unsafe verbs** just to demonstrate grammar.
 > - **Avoid partitive / object-negation overload** — use safe alternatives like `ça` when needed and leave article pressure for the object/article lesson.
 
+> **L8 pilot guardrail — Question / Location Control** (from `docs/syllabus/L08-ou-location-movement-questions.lesson-spec.md`):
+> - **Own one question word / one question-control function at a time.** L8 owns **`où`** as a practical where-control.
+> - **Safe early question shapes** (no `est-ce que`, no inversion): `où est … ?` · `c'est où ?` · spoken end-placement `tu vas où ?` / `vous allez où ?` / `on va où ?` — the last only when the verb-forms are **prerequisite-safe** (reuse recognition/supported forms; do not expand conjugation).
+> - **Full question formation stays deferred**: `est-ce que` expansion, inversion, and other question words (`comment` / `pourquoi` / `quand` / `qui` / `que`) are **recognition-only or later**.
+> - **Do not let a location-question lesson become a location-preposition lesson** — answer with deictic `ici` / `là`, not a `dans/sur/sous/devant/derrière` system.
+> - **Do not introduce `y` as a place pronoun** until a later explicit lesson.
+> - **Reuse known nouns/places and prior movement frames** (L5 nouns, L7 `aller` movement); **avoid travel-vocabulary dumps.**
+
 ---
 
 ## 4. Avoir-State / Human State

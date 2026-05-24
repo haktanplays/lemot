@@ -29,6 +29,7 @@ Canonical IDs give every learning object **one stable identity** across systems.
 - **Lowercase kebab-case slug.** `je-voudrais`, `je-ne-comprends-pas`.
 - **Prefix-based.** `prefix:slug` — the prefix names the *kind* of object (§3).
 - **ASCII IDs.** No accents or apostrophes *in IDs*: `café → cafe`, `s'il vous plaît → s-il-vous-plait`, `j'ai → j-ai`. Accents/apostrophes belong in **learner-facing labels**, never in IDs.
+- **Homograph disambiguation (sense suffix).** When ASCII/accent normalization **collides two different meanings** into the same slug, add a short, semantic, **stable sense suffix**. Examples: `où` (where) → `word:ou-where`, `ou` (or) → `word:ou-or`; `là` (there) → `word:la-there`, the article `la` → `word:la-article` (or its existing article ID if already defined). This is a **going-forward** convention — older specs are **not** retroactively rewritten in this step (§11). **Learner-facing labels keep correct French spelling** (`où`, `ou`, `là`, `la`); the disambiguation lives **only** in the internal ID.
 - **One concept, multiple linked IDs at different granularity.** `je voudrais` is a chunk (`chunk:je-voudrais`); "`je voudrais` + noun" is a frame (`frame:je-voudrais-plus-noun`); the politeness it carries is a phenomenon (`phen:polite-request`). These are linked, not merged (§4).
 - **Do not expose technical IDs to learners.** (Repeated because it is the most important rule.)
 
@@ -193,6 +194,7 @@ A generator (examples, variations, Practice Pool, Daily Review, Natural Reveal, 
 - Use `trap:je-voudrais-medecin` for the missing-infinitive trap.
 - Link granularities (`chunk:` ↔ `frame:` ↔ `phen:`) via relationship fields.
 - Keep one `sent:` and list surface variants as accepted alternatives.
+- Disambiguate accent/ASCII-collision homographs with a sense suffix (`word:ou-where` vs `word:ou-or`; `word:la-there` vs `word:la-article`).
 
 **Don't**
 - Expose IDs to learners.
