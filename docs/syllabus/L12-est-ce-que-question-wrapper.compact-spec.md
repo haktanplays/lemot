@@ -184,7 +184,7 @@ All of the following are **recognition-only or deferred** — never production t
 - **AI must NOT drift into generic chatbot conversation** — Say It Your Way stays a scoped production-and-mirror moment (contract §11).
 - **Traps** come from `trap:full-question-system-overload` / `trap:inversion-too-early` / `trap:question-word-dump` / `trap:qu-est-ce-que-overload`; repair targets the lesson's `weak:` tags; Natural Reveal stays passive-mirror.
 
-**Proposed AI-contract §15 L12 row (propose for review — do NOT auto-apply):**
+**Applied to AI-contract §15 in commit `728353d`** (review approved). The **canonical applied row lives in `docs/syllabus/ai-generation-contract-v1.md` §15** — it differs slightly from (and supersedes) the proposal below (e.g. the applied row lists `Est-ce que tu vas où ?` (stacking) and `Est-ce que je peux le faire ?` (object pronoun) as blocked). Original proposal kept below for traceability:
 
 | Lesson | ✅ Allowed | 🚫 Blocked | Why blocked |
 |---|---|---|---|
@@ -218,11 +218,11 @@ All of the following are **recognition-only or deferred** — never production t
 - **Should L13 be Integration, as the band map says?** **Yes** — Option C cadence (L11–L12 → **L13 integration**) holds; L11+L12 are 2 consecutive new-engine/control lessons, so an integration beat at L13 respects the Integration Rhythm Rule and consolidates pouvoir + the est-ce que wrapper before L14 `y`.
 - **Highest-risk leak:** the **full question system spilling out of `est-ce que`** (inversion + question-word dump) — guarded by §3/§9/§10 + four traps; AI is the most likely vector.
 
-**Docs that need patching (propose for review — do NOT auto-apply in this step):**
-- **`docs/syllabus/L10-L20-band-map-v0.md`** — trim the L12 row + decision gates 3/5 from "*`est-ce que` + `comment`/`combien` (light)*" → "**`est-ce que` yes/no wrapper only**"; route question words to a later **"Question Expansion 2"** lesson. (Band map is `v0`, expected to revise as specs land.)
-- **`docs/syllabus/ai-generation-contract-v1.md` §15** — add the **L12 row** (§10 above), same pattern as L6–L11.
-- **`docs/syllabus/lesson-archetype-templates-v1.md` #3** — optional one-line L12 note: *"also covers 'Question Expansion / Register-Upgrade Control' — owning the `est-ce que` yes/no wrapper over owned statements; question words + inversion stay deferred"* (companion to the L8 note).
-- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — optional one-line note: L12 is the first lesson to **graduate a recognition frame to active via `status_by_lesson`** (`frame:est-ce-que-je-peux-plus-infinitive`), exercising convention §6.
+**Docs patched in commit `728353d`** (applied) — plus one still-open optional item:
+- **`docs/syllabus/L10-L20-band-map-v0.md`** — **applied (`728353d`)**: L12 row + decision gates 3/5 trimmed from "*`est-ce que` + `comment`/`combien` (light)*" → "**`est-ce que` yes/no wrapper only**"; question words routed to a later **"Question Expansion 2"** lesson.
+- **`docs/syllabus/ai-generation-contract-v1.md` §15** — **applied (`728353d`)**: L12 allowed/blocked row + L12 note added (canonical version — see §10).
+- **`docs/syllabus/lesson-archetype-templates-v1.md` #3** — **applied (`728353d`)**: L12 "Question Expansion / Register-Upgrade Control" guardrail added (companion to the L8 note).
+- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** *(still open — optional)* — one-line note: L12 is the first lesson to **graduate a recognition frame to active via `status_by_lesson`** (`frame:est-ce-que-je-peux-plus-infinitive`), exercising convention §6. **Not applied in `728353d`.**
 - **No L11 patch needed** — L11 §7 already routes `est-ce que je peux …?` → L12.
 
 ---
