@@ -71,6 +71,14 @@
 - **QA risks** (per template §4 guardrail): **full paradigm drilling · conjugation-table smell · too many person-forms active · too little real production.** Keep **one dominant active core**.
 - **Likely lessons**: **L2 Être (pilot)**; later avoir, aller, faire, pouvoir, vouloir, devoir/falloir.
 
+> **L7 pilot guardrail — split-sense opening** (from `docs/syllabus/L07-aller-movement-next-step.lesson-spec.md`):
+> - Some architecture verbs have **adjacent high-value senses** (e.g. *aller* = movement/next-step vs `aller + infinitive` = futur proche).
+> - A lesson may **own one sense while holding the adjacent sense as recognition / future-hook only.**
+> - Example: **L7 owns *aller* as movement / next-step, but does not own futur proche** (`je vais + infinitive` stays recognition; futur-proche ownership = 0).
+> - **Do not let a high-value adjacent sense silently become an active production target** — this protects both pedagogy (prerequisite-safety) and **commercial depth** (the high-value future engine is held for the paid zone).
+> - **Future ownership of the held sense requires a later explicit lesson** (likely paywalled).
+> - When a verb is opened on a single sense this way, the **active-new count sits at the low end** of the Architecture-Verb band.
+
 ---
 
 ## 3. Negation / Question / Social Choice
@@ -188,6 +196,8 @@
 - **French-specific contrast**: aspect contrasts (passé composé vs imparfait), `aller`+inf vs futur simple — at the right level.
 - **QA risks**: **heavy grammar lecture · too many forms · too little usage context.** Open *one* doorway; chunk-first.
 - **Likely lessons**: the tense/aspect/mood ladder lessons across the spine.
+
+> **Split-sense note** (see Architecture Verb §2 L7 guardrail): a tense/aspect/mood form may be **previewed as recognition / future-hook by an earlier non-doorway lesson** before its own doorway lesson owns it. Example: **L7 previews `je vais + infinitive` (futur proche) as recognition only** while owning *aller*-movement; futur-proche ownership waits for a later (likely paywalled) doorway lesson. A preview must **never** become a production target.
 
 ---
 

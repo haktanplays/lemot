@@ -110,7 +110,7 @@ AI must **not** introduce any of these unless the **current lesson spec explicit
 - `je voudrais` is allowed as a **chunk / conditionnel seed** (not a productive conditional).
 - `je voudrais comprendre` is allowed in **L6** as a light **infinitive-chain** promotion.
 - `aller` / futur proche is **recognition future-hook only** in L6 (`je voudrais aller …`) — never produced.
-- **No past or future production before a lesson owns it.** (The first time-doorway is planned for L7.)
+- **No past or future production before a lesson owns it.** (L7 opens *aller* as **movement / next-step**; **futur proche ownership is deferred** to a later lesson — `je vais + infinitive` stays recognition-only.)
 
 > A generator that emits `j'ai mangé`, `je vais manger`, `quand j'étais…`, or `il faut que…` for an L1–L6 learner has **leaked tense** (§16) — a contract violation regardless of correctness.
 
@@ -223,6 +223,9 @@ Rules:
 | **L4** | `J'ai faim.` · `Je n'ai pas faim.` | `Je n'ai plus envie de manger.` | `ne…plus` + `envie de` + `manger` infinitive — deferred |
 | **L5** | `Je voudrais une baguette.` · `Je n'ai pas de café.` | `Je voudrais du café et des croissants.` | partitive `du` + plural `des` — recognition/deferred |
 | **L6** | `J'ai besoin d'aide.` · `Je voudrais comprendre.` | `Je vais demander de l'aide.` · `Hier, j'ai demandé de l'aide.` | `aller`/futur proche (hook only) ; passé composé + `hier` — tense leak |
+| **L7** | `Je vais à la maison.` · `On va à Paris.` · `Je voudrais aller à la maison.` · `Je ne vais pas au café.` *(supported)* | `Je vais comprendre.` *(recognition/future-hook only — not required production)* · `Je vais demander de l'aide.` · `Hier, je suis allé à Paris.` · `Où est-ce que tu vas ?` · `Je partirai demain.` | `je vais + infinitive` (futur proche) is recognition-only, never produced ; past movement (`je suis allé` / `hier`), question-word + `est-ce que`, and futur simple (`je partirai`) are all deferred |
+
+> **L7 note (movement vs future).** L7 owns **`aller` as movement / next-step** (`je vais à + place`, `on va à + place`, `je voudrais aller à + place`, supported `je ne vais pas + place`). L7 **does not** allow **futur proche ownership**. AI may show `je vais + infinitive` **only** when the lesson spec marks it `recognition`/future-hook — never as required production. AI must **not** turn L7 into a **travel-vocabulary** or **future-tense** lesson (closed place set; no itinerary/directions vocab; no owned future).
 
 > Pattern: every blocked line is **valid French** the learner can't yet have produced. The contract blocks it on **prerequisite-safety**, not correctness.
 
