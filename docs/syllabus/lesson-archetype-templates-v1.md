@@ -114,6 +114,14 @@
 > - **Do not introduce `y` as a place pronoun** until a later explicit lesson.
 > - **Reuse known nouns/places and prior movement frames** (L5 nouns, L7 `aller` movement); **avoid travel-vocabulary dumps.**
 
+> **L12 pilot guardrail — Question Expansion / Register-Upgrade Control** (from `docs/syllabus/L12-est-ce-que-question-wrapper.compact-spec.md`):
+> - **Early question expansion may own one narrow control layer at a time.** L12 owns **`est-ce que` as a yes/no *wrapper*** over **already-owned clauses** (`est-ce que c'est ici ?`, `est-ce que vous pouvez m'aider ?`) — not the question system.
+> - **`est-ce que` is a register/control wrapper, not the full question system.** The known sentence core is unchanged; `est-ce que` is simply prepended.
+> - **Do not combine `est-ce que` ownership with new question words in the same first wrapper lesson** — `comment` / `combien` / `pourquoi` / `quand` / `qui` / `que` go to a later "Question Expansion 2".
+> - **Do not introduce** inversion (`vas-tu` / `puis-je`), `qu'est-ce que`, the question-word family, `y` / `en`, or object-pronoun questions.
+> - **`est-ce que` may upgrade a previously-seeded recognition question** (e.g. L11's `est-ce que je peux …?`) **only if the base sentence is already owned.**
+> - **AI generation must treat `est-ce que` as a wrapper over allowed clauses only** — never as permission to generate the full French question system.
+
 ---
 
 ## 4. Avoir-State / Human State
