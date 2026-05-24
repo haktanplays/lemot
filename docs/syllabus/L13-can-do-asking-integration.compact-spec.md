@@ -192,7 +192,7 @@ Recognition-only or deferred — never production targets in L13:
 - **AI must NOT drift into generic chatbot conversation** — Say It Your Way stays a scoped recombination moment (contract §11).
 - **Traps** come from `trap:full-question-system-overload` / `trap:pouvoir-broad-possibility-too-early` / `trap:y-pronoun-too-early`; Natural Reveal stays passive-mirror.
 
-**Proposed AI-contract §15 L13 row (propose for review — do NOT auto-apply):**
+**Applied to AI-contract §15 in commit `dd138a4`** (review approved). The **canonical applied row lives in `docs/syllabus/ai-generation-contract-v1.md` §15** — it differs slightly from (and supersedes) the proposal below (e.g. the applied row adds `Je peux y aller.` (y+pouvoir chain) and `Hier, j'ai fait une pause.` (past) to blocked, and lists `J'y vais.` as recognition-allowed / production-blocked). Original proposal kept below for traceability:
 
 | Lesson | ✅ Allowed | 🚫 Blocked | Why blocked |
 |---|---|---|---|
@@ -229,10 +229,10 @@ Recognition-only or deferred — never production targets in L13:
 - **Should L14 remain `y`-light as the band map suggests?** **Yes** — L13 seeds `y` (place sense) cleanly; L14 should own **place `y` only** (`j'y vais` / `on y va`), deferring `en` and other `y` senses (band map §5/§7). L13 does not pre-empt it.
 - **Top risks:** (1) **`y` leaking to production** off the hook (guarded by `trap:y-pronoun-too-early` + recognition-only); (2) **est-ce que over-stacking / on already-questions**; (3) **broad-pouvoir creep** (`pourrais`) via the reused `je peux`. All guarded by §3/§9/§10 traps.
 
-**Docs that need patching (propose for review — do NOT auto-apply in this step):**
-- **`docs/syllabus/ai-generation-contract-v1.md` §15** — add the **L13 row** (§10 above), same pattern as L6–L12.
-- **`docs/syllabus/lesson-archetype-templates-v1.md` #10** — optional one-line note: L13 is the **third integration pilot** (after L6→aller hook, L10→pouvoir hook); **L13 → `y` hook** — confirming the "integration lesson carries a forward preview hook" pattern across three instances (candidate to promote from "may" to a standing convention).
-- **`docs/syllabus/L10-L20-band-map-v0.md`** — no change needed (L13 row already = "Integration / Can-do + Asking, recombine L11–L12 + movement, previews `y`"); optionally annotate the `y`-preview hook.
+**Docs patched in commit `dd138a4`** (applied) — plus one optional/no-change item:
+- **`docs/syllabus/ai-generation-contract-v1.md` §15** — **applied (`dd138a4`)**: L13 allowed/blocked row + L13 note added (canonical version — see §10).
+- **`docs/syllabus/lesson-archetype-templates-v1.md` #10** — **applied (`dd138a4`)**: integration **preview-hook pattern** note added, confirmed across three pilots (L6→L7, L10→L11, L13→L14 `y`).
+- **`docs/syllabus/L10-L20-band-map-v0.md`** *(no change needed)* — L13 row already = "Integration / Can-do + Asking, recombine L11–L12 + movement, previews `y`"; the optional `y`-preview annotation remains **open/optional, not applied in `dd138a4`**.
 - **No L11/L12 patch needed** — L11 §7 + L12 already route their carry-outs here.
 
 ---
