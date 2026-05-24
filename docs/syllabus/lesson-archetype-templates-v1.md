@@ -269,6 +269,12 @@
 > - **Reduce overused context patterns** (e.g. café/transactional centricity) by moving old engines into **more human situations**.
 > - **AI generation must stay inside allowed prior engines/items** and must **not** freely add new grammar (even if the French is valid).
 
+> **L10 pilot guardrail — integration rhythm + preview hook** (from `docs/syllabus/L10-after-class-integration.lesson-spec.md`):
+> - **Integration lessons should recur rhythmically** after several new-engine/control lessons — a useful heuristic is **roughly every 4–5 lessons**, or **after ~3 consecutive new-engine/control lessons** (see the **Integration Rhythm Rule**, `docs/learning-engine-v1.md` §8).
+> - An integration lesson may carry a **forward preview hook** for the next engine to reduce the "too little novelty" risk. **L6** integrated L1–L5 and previewed **L7** (aller/movement via `je voudrais aller`, recognition); **L10** integrates L7–L9 and previews **L11 pouvoir-light** via recognition-only help/permission chunks (`vous pouvez m'aider ?`).
+> - **Preview hooks must remain recognition / future-hook only** unless the lesson explicitly owns them.
+> - **Frame as capability** — "you can now use what you know" — never as a quiz / test / reward.
+
 ---
 
 ## 11. Milestone / Transition
