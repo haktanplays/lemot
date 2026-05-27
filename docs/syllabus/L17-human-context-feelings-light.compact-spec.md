@@ -203,7 +203,9 @@ Recognition-only or deferred — never production targets in L17:
 - **AI must NOT personalize emotionally or act as a counselor.**
 - **Deep emotional / social feedback remains paid-zone**; the L17 reveal is **hardcoded/static**.
 
-> **New contract row needed (when the spec is applied):** §15 **L17 row** — **Allowed:** `Ça va ?` · `Ça va.` · `Ça ne va pas.` · `Je suis content(e).` · `Je suis fatigué.` · `Je ne comprends pas. Vous pouvez répéter ?` · `C'est pas grave.` · `Il faut faire une pause.` (obligation). **Blocked:** `Tu devrais…` / `Il faudrait…` (advice/conditionnel) · `Je me sens…` (se sentir) · `Hier j'étais…` / `Demain ça ira…` / `Ça va aller.` (past/future) · emotion word-lists / new adjectives beyond the cap · therapy/coaching tone · `Je peux vous aider.` (object pronoun) · `Je vais bien.` (aller-state, recognition) · personalized/free emotional chat.
+**Applied to AI-contract §15 in commit `6b9506f`** (review approved; on `main` via merge `f09c0fd`). The **canonical applied row + L17 note live in `docs/syllabus/ai-generation-contract-v1.md` §15**. Original proposal kept below for traceability:
+
+> **L17 row** — **Allowed:** `Ça va ?` · `Ça va.` · `Ça ne va pas.` · `Je suis content(e).` · `Je suis fatigué.` · `Je ne comprends pas. Vous pouvez répéter ?` · `C'est pas grave.` · `Il faut faire une pause.` (obligation). **Blocked:** `Tu devrais…` / `Il faudrait…` (advice/conditionnel) · `Je me sens…` (se sentir) · `Hier j'étais…` / `Demain ça ira…` / `Ça va aller.` (past/future) · emotion word-lists / new adjectives beyond the cap · therapy/coaching tone · `Je peux vous aider.` (object pronoun) · `Je vais bien.` (aller-state, recognition) · personalized/free emotional chat.
 
 ---
 
@@ -236,11 +238,11 @@ Recognition-only or deferred — never production targets in L17:
 - **Should L18 remain Futur-proche stronger preview?** **Yes** — L17's `je vais + inf.` recognition hook sets it up; L17 does **not** own futur proche.
 - **Top risks:** (1) **emotion-vocabulary dump** (the #1 leak — capped at `content`/`contente`); (2) **advice/therapy tone** (deferred); (3) **`ça va` → `aller`/futur confusion** (frozen-chunk guard + trap); (4) **`se sentir`** (recognition only); (5) **past/future feeling narrative + object-pronoun pressure**. All guarded by §3/§6/§9/§10 + six traps.
 
-**Docs that should be patched (propose — do NOT auto-apply now):**
-- **`docs/syllabus/ai-generation-contract-v1.md` §15** — add the **L17 row** (§10).
-- **`docs/syllabus/lesson-archetype-templates-v1.md` #9** — note L17 as a thematic lesson run with **integration restraint** (recycle-dominant; feelings in owned frames; cap new adjectives; **advice is a separate later/paid register, not a thematic add-on**).
-- **`docs/syllabus/L10-L20-band-map-v0.md`** — **annotate the L17 row**: active-new **~3–5 (not 7–9)**; **"feelings" = owned frames + `ça va ?` + 1 positive adjective**; **"advice" demoted/deferred to paid-zone**.
-- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — optional note: `chunk:ca-va` frozen-chunk / `aller` homograph guard.
+**Docs patched in commit 6b9506f (applied; on main via merge f09c0fd):**
+- **`docs/syllabus/ai-generation-contract-v1.md` §15** — **applied (`6b9506f`)**: L17 allowed/blocked row + L17 note added (canonical version — see §10).
+- **`docs/syllabus/lesson-archetype-templates-v1.md` #9** — **applied (`6b9506f`)**: L17 noted as a thematic lesson run with **integration restraint** (recycle-dominant; feelings in owned frames; cap new adjectives; **advice is a separate later/paid register, not a thematic add-on**).
+- **`docs/syllabus/L10-L20-band-map-v0.md`** — **applied (`6b9506f`)**: L17 row annotated *(RESOLVED — Step 23A/23B)* — active-new **~3–5 (not 7–9)**; **"feelings" = owned frames + `ça va ?` + 1 positive adjective**; **"advice" demoted/deferred to paid-zone**.
+- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — **applied (`6b9506f`)**: `chunk:ca-va` frozen-chunk / `aller` homograph guard added to the §2 homograph rule. **The reading-passage / future-prefix granularity remains an open future convention question.**
 - **No L15/L16 patch needed** — they already route their carry-outs to L17.
 
 ---
