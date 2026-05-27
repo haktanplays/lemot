@@ -1,0 +1,4 @@
+# Away-agent run reports stay local by default.
+# Dated subfolders (YYYY-MM-DD/) hold per-run reports and are not committed.
+# The scaffold files in this directory (README.md, .gitignore) remain tracked.
+*/
