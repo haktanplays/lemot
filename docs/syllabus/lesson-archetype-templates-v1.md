@@ -263,6 +263,13 @@
 - **QA risks**: **vocabulary dump · too little grammar/engine continuity · low production** (every word needs a frame to live in).
 - **Likely lessons**: thematic lessons across the spine.
 
+> **L17 finding — thematic lesson run with integration restraint** (from `docs/syllabus/L17-human-context-feelings-light.compact-spec.md`):
+> - **A thematic lesson early in the spine can be run recycle-dominant, not as a word-list.** L17 (Human Context / Feelings Light) is the worked example: **"feelings" does NOT mean a vocabulary list.**
+> - **L17 owns social check-in chunks** (`ça va ?` / `ça va` / `ça ne va pas`, frozen) **+ one capped positive adjective** (`content`/`contente`), while **most states are recycled** (fatigué/prêt/faim/peur/besoin/c'est pas grave).
+> - **Active-new should be ~3–5, not the thematic band's ~10–14**, for this early human-context slot (the learner already owns a wide state band — a 7–9-word feelings lesson would be the vocabulary dump this archetype warns against).
+> - **Advice is a later / paid register, NOT part of this first feelings lesson** (`tu devrais` / `il faudrait` deferred; obligation `il faut`/`je dois` is not advice).
+> - **`se sentir` / reflexive emotional language, broad emotion lexis, the adjective gender-agreement *system*, past/future emotional narrative, therapy/coach tone, and deep AI emotional feedback remain deferred** (later/paid).
+
 ---
 
 ## 10. Review / Integration
