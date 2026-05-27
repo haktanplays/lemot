@@ -300,6 +300,13 @@
 > - **Preview hooks must remain recognition / future-hook only — a preview hook is NOT ownership.** The **next** lesson must **explicitly own** the previewed system before AI or exercises may require its production.
 > - **Do not force every integration lesson to include a preview hook** — use it only when it strengthens continuity **without** increasing cognitive load.
 
+> **L16 finding — integration novelty device / A Small Moment seed** (from `docs/syllabus/L16-integration-small-moment-seed.compact-spec.md`):
+> - An integration lesson **may carry a very small novelty device** if it strengthens recombination **without opening a new grammar system** (a second pure-integration beat too close to a prior one risks the archetype's "too little novelty" flag — L13 was pure integration only three lessons before L16).
+> - **L16 introduces A Small Moment only as a bounded reading-response *seed*** — **`model-answer-only`, present-only, known-items-only, and ≤2–3 lines**, with **one short scaffolded response** and a **deterministic reveal**.
+> - The seed is **not** generic AI chat, **not** Mini Mission, **not** Mini Conversation, **not** live AI evaluation, **not** personalization, and **not** paid-depth feedback.
+> - **Use A Small Moment to make integration feel human** — a small situation the learner reads, understands, and answers — **not to launch a full feature.** The deep, AI-driven A Small Moment is **paid-zone**.
+> - **If live AI is required, the fallback is pure integration** (the seed only earns its place because it can stay `model-answer-only`).
+
 ---
 
 ## 11. Milestone / Transition

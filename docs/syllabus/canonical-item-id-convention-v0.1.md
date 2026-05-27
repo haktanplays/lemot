@@ -214,6 +214,7 @@ A generator (examples, variations, Practice Pool, Daily Review, Natural Reveal, 
 - **Sentence-ID lesson prefixing** — confirm `sent:l01-…` (lesson-prefixed) vs an unprefixed scheme; lesson-prefix recommended here for traceability.
 - **Homographs / multiple meanings** — how to ID a word with two senses (e.g. `baguette` = bread / wand / baton): one `word:baguette` with sense tags, or `word:baguette-bread` etc. (leaning: one ID + sense metadata).
 - **Word Graph edge detail** — how rich `future_word_graph_edges` should be (typed edges vs simple adjacency); deferred to the Word Graph design (post-beta).
+- **Reading-passage granularity (A Small Moment, from L16)** — a multi-line reading passage exceeds the `sent:` granularity (*"a specific full sentence"*). For now, **compose a short read from linked `sent:l16-small-moment-reading-*` IDs** (no new prefix). **Do not coin a new `read:` / `passage:` prefix yet** — only if later lessons (L19+ / paid A Small Moment) prove the need. Represent the ritual itself as **`phen:a-small-moment-seed`** (a lesson pattern), **not** as a vocabulary item; **`frame:small-moment-reading-response` should not be treated as a normal slotted grammar frame** unless the convention is later expanded. Keep this an **open future convention question** (no mass-rename of existing docs).
 - **Version bump trigger** — what change promotes this from v0.1 to v1.0 (likely: runtime adoption + itemRegistry migration).
 
 ---
