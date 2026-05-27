@@ -219,7 +219,9 @@ Recognition-only or deferred — never production targets / never built in L16:
 - **AI must NOT personalize or adapt** the reading/response in L16.
 - **AI must NOT introduce an advice/therapy/coach tone** or a generic chatbot register.
 
-> **New contract row needed (when applied):** §15 **L16 row** — **Allowed:** the present-only recombination reading (`Je suis fatigué. Il faut faire une pause. Je vais à la maison.`) + scaffolded owned responses (`Je dois faire une pause.` · `Il faut faire une pause.` · `J'y vais.` · `Est-ce que je peux faire une pause ?`). **Blocked:** free-text AI response / open chat · past/future (`Hier, j'ai…`) · advice/conditionnel (`Tu devrais…`/`Il faudrait…`) · `il faut que` + subjunctive · `je dois y aller`/`je peux y aller` (y+modal) · `Je peux vous aider.` (object pronoun) · new emotional vocab · `Après,…` / connectors (new vocab) · personalized/adaptive generation.
+**Applied to AI-contract §15 in commit `f47d62f`** (review approved). The **canonical applied row + L16 note live in `docs/syllabus/ai-generation-contract-v1.md` §15**. Original proposal kept below for traceability:
+
+> **L16 row** — **Allowed:** the present-only recombination reading (`Je suis fatigué. Il faut faire une pause. Je vais à la maison.`) + scaffolded owned responses (`Je dois faire une pause.` · `Il faut faire une pause.` · `J'y vais.` · `Est-ce que je peux faire une pause ?`). **Blocked:** free-text AI response / open chat · past/future (`Hier, j'ai…`) · advice/conditionnel (`Tu devrais…`/`Il faudrait…`) · `il faut que` + subjunctive · `je dois y aller`/`je peux y aller` (y+modal) · `Je peux vous aider.` (object pronoun) · new emotional vocab · `Après,…` / connectors (new vocab) · personalized/adaptive generation.
 
 ---
 
@@ -251,11 +253,11 @@ Recognition-only or deferred — never production targets / never built in L16:
 - **Should L17 remain Human Context / Feelings?** **Yes** — L16's forward hook lands on feelings (carried by owned `fatigué`, no new lexis); L17 then owns feelings-in-frames. L16 does not pre-empt it (no emotional-vocab dump here).
 - **Top risks:** (1) **A Small Moment scope-creep into free-text / generic AI chat** (the #1 leak — guarded by `model-answer-only` + `trap:generic-ai-chat-drift`/`trap:mini-mission-resurrection`); (2) **past/future tense in the reading** (`trap:past-future-reading-leak`); (3) **new-vocab leak in the read** (the demoted `Après,`); (4) **object-pronoun pressure** (`vous aider`); (5) **obligation→advice slide** (`tu devrais`). All guarded by §3/§6/§9/§10 + seven traps.
 
-**Docs that should be patched (propose — do NOT auto-apply now):**
-- **`docs/syllabus/ai-generation-contract-v1.md` §15** — add the **L16 row** (§10).
-- **`docs/syllabus/lesson-archetype-templates-v1.md` #10** — note A Small Moment as the integration **novelty device** (a `model-answer-only` reading-response beat that differentiates a second integration beat without adding grammar).
-- **`docs/syllabus/L10-L20-band-map-v0.md`** — annotate the L16 row ("seed = `model-answer-only`, present-only, known-items-only ≤2–3 line read + scaffolded response; deep AI version paid-zone") and **resolve decision-gate 8** (A Small Moment first owned at L16 seed, recurs L19).
-- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — optional note flagging the **reading-passage granularity** open question (compose from `sent:` now; possible `read:`/`passage:` prefix later).
+**Docs patched in commit `f47d62f` (applied):**
+- **`docs/syllabus/ai-generation-contract-v1.md` §15** — **applied (`f47d62f`)**: L16 allowed/blocked row + L16 note added (canonical version — see §10).
+- **`docs/syllabus/lesson-archetype-templates-v1.md` #10** — **applied (`f47d62f`)**: A Small Moment seed noted as the integration **novelty device** (a `model-answer-only` reading-response beat that differentiates a second integration beat without adding grammar).
+- **`docs/syllabus/L10-L20-band-map-v0.md`** — **applied (`f47d62f`)**: L16 row annotated ("seed = `model-answer-only`, present-only, known-items-only ≤2–3 line read + scaffolded response; deep AI version paid-zone") + **decision-gate 8 resolved** (A Small Moment first owned at L16 seed, recurs L19).
+- **`docs/syllabus/canonical-item-id-convention-v0.1.md`** — **applied (`f47d62f`)**: reading-passage granularity open note added (compose from `sent:` now; possible `read:`/`passage:` prefix later; ritual = `phen:a-small-moment-seed`). **The granularity itself remains an open future convention question.**
 - **No L11–L15 patch needed** — they already route their carry-outs to L16.
 
 ---
