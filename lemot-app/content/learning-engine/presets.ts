@@ -45,6 +45,17 @@ export const PRESETS: Record<PresetId, PresetDefinition> = {
     practicePool: false,
     oldItemBudget: "minimal_weight",
   },
+  // A recognition-only hook: grammar pieces and future-system chunks a lesson
+  // shows or acknowledges but never asks the learner to produce.
+  recognition_only_hook: {
+    id: "recognition_only_hook",
+    ownership: "recognitionOnly",
+    lessonProduction: false,
+    contextCards: true,
+    monLexiqueVisible: false,
+    practicePool: false,
+    oldItemBudget: "minimal_weight",
+  },
 };
 
 export function resolvePreset(id: PresetId): PresetDefinition {
