@@ -41,7 +41,7 @@ export const L1_ITEMS: Record<string, RawItem> = {
     firstIntroducedIn: "L1",
     tags: ["polite_request", "register_polite"],
     pronunciationProfile: {
-      respelling: "zhuh voo-DRAY",
+      respelling: "zhuh voo-DREH",
       ipa: "/ʒə vu.dʁɛ/",
       audioText: "je voudrais",
       soundNotes: ["Soft, polite request frame — more natural than 'I want'."],

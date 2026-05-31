@@ -150,8 +150,10 @@ export function validateContent(input: ValidationInput): Finding[] {
           });
           continue;
         }
-        // 3. recognition_only_used_as_production_target
-        if (recognitionOnly.has(id)) {
+        // 3. recognition_only_used_as_production_target — only meaningful for
+        // production-like operations. Recognition/reveal steps may legitimately
+        // show a recognition-only item without requiring its production.
+        if (isProductionOp && recognitionOnly.has(id)) {
           findings.push({
             severity: "error",
             code: "recognition_only_used_as_production_target",
