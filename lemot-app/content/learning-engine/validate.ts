@@ -9,7 +9,13 @@
  * deliberately shallow on French itself — ownership is verified via item ids,
  * not by parsing sentences.
  */
-import type { Finding, OperationId, ValidationInput } from "./types";
+import type {
+  Finding,
+  ItemId,
+  OperationId,
+  Ownership,
+  ValidationInput,
+} from "./types";
 
 const PLACEHOLDER_RE = /\[_+\]|_{2,}/;
 
@@ -28,6 +34,25 @@ const PRODUCTION_OPERATIONS: ReadonlySet<OperationId> = new Set([
   "register_switch",
   "context_chain",
 ]);
+
+/**
+ * Production-relevant ownership buckets mapped to the preset ownership each one
+ * implies. `recycled` is intentionally excluded — recycling is a lesson-level
+ * decision and does not imply an intrinsic preset ownership.
+ */
+const OWNERSHIP_BUCKETS: {
+  bucket: "activeNew" | "supported" | "recognitionOnly";
+  ownership: Ownership;
+  isProductionBucket: boolean;
+}[] = [
+  { bucket: "activeNew", ownership: "active", isProductionBucket: true },
+  { bucket: "supported", ownership: "supported", isProductionBucket: true },
+  {
+    bucket: "recognitionOnly",
+    ownership: "recognitionOnly",
+    isProductionBucket: false,
+  },
+];
 
 export function validateContent(input: ValidationInput): Finding[] {
   const findings: Finding[] = [];
@@ -104,6 +129,94 @@ export function validateContent(input: ValidationInput): Finding[] {
           itemId: id,
           message: `Contract "${lessonId}" references item "${id}", which is not in the item registry.`,
           suggestion: "Add the item to the registry or fix the id.",
+        });
+      }
+    }
+
+    // ── Contract consistency checks ──────────────────────────────────────
+    // item_bucket_overlap — an item must live in exactly one ownership bucket.
+    const bucketsOf = new Map<ItemId, string[]>();
+    const allBuckets: [string, ItemId[]][] = [
+      ["activeNew", contract.items.activeNew],
+      ["supported", contract.items.supported],
+      ["recognitionOnly", contract.items.recognitionOnly],
+      ["recycled", contract.items.recycled],
+    ];
+    for (const [bucketName, ids] of allBuckets) {
+      for (const id of ids) {
+        const seen = bucketsOf.get(id);
+        if (seen) seen.push(bucketName);
+        else bucketsOf.set(id, [bucketName]);
+      }
+    }
+    for (const [id, buckets] of bucketsOf) {
+      if (buckets.length > 1) {
+        findings.push({
+          severity: "error",
+          code: "item_bucket_overlap",
+          lessonId,
+          itemId: id,
+          message: `Item "${id}" appears in multiple ownership buckets: ${buckets.join(
+            ", "
+          )}.`,
+          suggestion: "Place each item in exactly one ownership bucket.",
+        });
+      }
+    }
+
+    // allowed_production_not_owned / blocked_production_not_owned — production
+    // lists may only reference items the lesson owns. Unknown ids are already
+    // covered by unknown_item_id, so only known-but-unowned ids are flagged here
+    // (avoids double-reporting).
+    for (const id of contract.production.allowedProduction) {
+      if (knownItemIds.has(id) && !owned.has(id)) {
+        findings.push({
+          severity: "error",
+          code: "allowed_production_not_owned",
+          lessonId,
+          itemId: id,
+          message: `production.allowedProduction lists "${id}", which lesson "${lessonId}" does not own (not in any ownership bucket).`,
+          suggestion:
+            "Declare the item in an ownership bucket, or remove it from allowedProduction.",
+        });
+      }
+    }
+    for (const id of contract.production.blockedProduction) {
+      if (knownItemIds.has(id) && !owned.has(id)) {
+        findings.push({
+          severity: "error",
+          code: "blocked_production_not_owned",
+          lessonId,
+          itemId: id,
+          message: `production.blockedProduction lists "${id}", which lesson "${lessonId}" does not own (not in any ownership bucket).`,
+          suggestion:
+            "Declare the item in an ownership bucket, or remove it from blockedProduction.",
+        });
+      }
+    }
+
+    // preset_contract_ownership_mismatch — item preset default ownership vs the
+    // bucket it is placed in. Recognition-only preset in a production bucket is a
+    // hard error; other mismatches are warnings (lesson-level ownership overrides
+    // are allowed but worth surfacing). `recycled` is not checked.
+    for (const { bucket, ownership, isProductionBucket } of OWNERSHIP_BUCKETS) {
+      for (const id of contract.items[bucket]) {
+        const item = items[id];
+        if (!item) continue; // unknown_item_id covers a missing registry entry
+        const preset = presets[item.preset];
+        if (!preset) continue; // invalid_preset covers an unknown preset
+        if (preset.ownership === ownership) continue;
+        const recognitionInProduction =
+          preset.ownership === "recognitionOnly" && isProductionBucket;
+        findings.push({
+          severity: recognitionInProduction ? "error" : "warning",
+          code: "preset_contract_ownership_mismatch",
+          lessonId,
+          itemId: id,
+          message: `Item "${id}" preset "${item.preset}" defaults to ownership "${preset.ownership}", but it is placed in the "${bucket}" bucket (expects "${ownership}").`,
+          suggestion: recognitionInProduction
+            ? "A recognition-only item must not sit in a production bucket. Move it to recognitionOnly or change its preset."
+            : "Confirm this lesson-level ownership override is intentional, or align the preset with the bucket.",
         });
       }
     }
@@ -196,12 +309,13 @@ export function validateContent(input: ValidationInput): Finding[] {
       }
 
       // 7. tts_audio_text_contains_placeholder (revealed / spoken exercise text)
-      const spoken = [
-        exercise.targetText,
-        exercise.directForm,
-        exercise.politeForm,
-        ...(exercise.steps?.map((s) => s.answer) ?? []),
-      ];
+      const spoken: (string | undefined)[] = [exercise.targetText];
+      if (exercise.operation === "register_switch") {
+        spoken.push(exercise.directForm, exercise.politeForm);
+      }
+      if (exercise.operation === "context_chain") {
+        spoken.push(...exercise.steps.map((s) => s.answer));
+      }
       for (const text of spoken) {
         if (hasPlaceholder(text)) {
           findings.push({

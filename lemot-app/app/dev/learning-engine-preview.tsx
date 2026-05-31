@@ -283,7 +283,7 @@ export default function LearningEnginePreviewScreen() {
                   {ex.targetText}
                 </Text>
               ) : null}
-              {ex.directForm || ex.politeForm ? (
+              {ex.operation === "register_switch" ? (
                 <Text className="mt-0.5 font-outfit text-xs text-lm-ink3">
                   {ex.directForm} → {ex.politeForm}
                 </Text>
@@ -291,7 +291,7 @@ export default function LearningEnginePreviewScreen() {
               <Text className="mt-1 font-outfit text-xs text-lm-ink3">
                 targets: {ex.targetItemIds.join(", ")}
               </Text>
-              {ex.steps?.length ? (
+              {ex.operation === "context_chain" ? (
                 <View className="mt-1">
                   {ex.steps.map((s, i) => (
                     <Text
