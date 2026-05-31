@@ -44,7 +44,8 @@ export type PresetId =
   | "early_active_chunk"
   | "contextual_noun_phrase"
   | "culture_social_ritual"
-  | "sound_pattern";
+  | "sound_pattern"
+  | "recognition_only_hook";
 
 export type Ownership = "active" | "supported" | "recognitionOnly" | "recycled";
 
