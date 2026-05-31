@@ -14,6 +14,15 @@
  * value, or comment.
  */
 
+// ── Shared ids ───────────────────────────────────────────────────────────────
+
+/**
+ * Canonical learning-engine item id, colon-namespaced (e.g. "chunk:bonjour").
+ * A plain string alias for now — documents intent without locking in branded
+ * ids. A branded id can come later if the registry grows enough to need it.
+ */
+export type ItemId = string;
+
 // ── Source hygiene (generic, source-agnostic) ──────────────────────────────
 
 export type SourceRisk = "none" | "low" | "medium" | "high";
@@ -64,7 +73,7 @@ export type PronunciationProfile = {
 
 export type RawItem = {
   /** Colon-namespaced id, e.g. "chunk:bonjour". */
-  id: string;
+  id: ItemId;
   preset: PresetId;
   text: {
     fr: string;
@@ -110,14 +119,14 @@ export type LessonContract = {
     notGoal: string[];
   };
   items: {
-    activeNew: string[];
-    supported: string[];
-    recognitionOnly: string[];
-    recycled: string[];
+    activeNew: ItemId[];
+    supported: ItemId[];
+    recognitionOnly: ItemId[];
+    recycled: ItemId[];
   };
   production: {
-    allowedProduction: string[];
-    blockedProduction: string[];
+    allowedProduction: ItemId[];
+    blockedProduction: ItemId[];
     allowedOperations: OperationId[];
     blockedOperations: OperationId[];
   };
@@ -134,47 +143,96 @@ export type LessonContract = {
   sourceHygiene: SourceHygiene;
 };
 
-// ── Exercise blueprints ──────────────────────────────────────────────────────
+// ── Exercise blueprints (discriminated union by operation) ───────────────────
 
 export type ContextChainStep = {
   prompt: string;
   answer: string;
 };
 
-export type ExerciseBlueprint = {
+/** Fields shared by every exercise variant. */
+type ExerciseBase = {
   id: string;
   lessonId: string;
-  operation: OperationId;
   prompt?: string;
   /** Canonical French target answer (revealed / TTS-bound). */
   targetText?: string;
   /** Item ids the answer exercises — used for ownership checks. */
-  targetItemIds: string[];
-  /** register_switch only: the too-direct form the learner moves away from. */
-  directForm?: string;
-  /** register_switch only: the polite target form. */
-  politeForm?: string;
-  /** context_chain only: ordered prompt→answer steps. */
-  steps?: ContextChainStep[];
+  targetItemIds: ItemId[];
   validationMode?: ValidationMode;
 };
+
+/** Learner recognizes / selects — no production required. */
+export type RecognitionExercise = ExerciseBase & {
+  operation: "recognition";
+};
+
+/** Learner fills a blank inside a target phrase. */
+export type FillExercise = ExerciseBase & {
+  operation: "fill";
+  blankLabel?: string;
+  blankCount?: number;
+};
+
+/** Learner assembles the target from pieces. */
+export type BuildExercise = ExerciseBase & {
+  operation: "build";
+  tiles?: string[];
+};
+
+/** Learner moves a too-direct form to a polite one — both forms required. */
+export type RegisterSwitchExercise = ExerciseBase & {
+  operation: "register_switch";
+  directForm: string;
+  politeForm: string;
+};
+
+/** Learner works through an ordered prompt → answer chain. */
+export type ContextChainExercise = ExerciseBase & {
+  operation: "context_chain";
+  steps: ContextChainStep[];
+};
+
+export type ExerciseBlueprint =
+  | RecognitionExercise
+  | FillExercise
+  | BuildExercise
+  | RegisterSwitchExercise
+  | ContextChainExercise;
 
 // ── Validation findings ──────────────────────────────────────────────────────
 
 export type FindingSeverity = "error" | "warning" | "info";
 
+export type FindingCode =
+  // referential / per-item / per-exercise checks
+  | "unknown_item_id"
+  | "invalid_preset"
+  | "recognition_only_used_as_production_target"
+  | "blocked_operation_used"
+  | "target_answer_contains_unowned_item"
+  | "source_hygiene_blocked"
+  | "tts_audio_text_contains_placeholder"
+  | "target_answer_not_in_allowed_production"
+  | "operation_not_declared_allowed"
+  // contract consistency checks
+  | "item_bucket_overlap"
+  | "allowed_production_not_owned"
+  | "blocked_production_not_owned"
+  | "preset_contract_ownership_mismatch";
+
 export type Finding = {
   severity: FindingSeverity;
-  code: string;
+  code: FindingCode;
   lessonId?: string;
   exerciseId?: string;
-  itemId?: string;
+  itemId?: ItemId;
   message: string;
   suggestion?: string;
 };
 
 export type ValidationInput = {
-  items: Record<string, RawItem>;
+  items: Record<ItemId, RawItem>;
   presets: Record<PresetId, PresetDefinition>;
   contracts: LessonContract[];
   exercises: ExerciseBlueprint[];
