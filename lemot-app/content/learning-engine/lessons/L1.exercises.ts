@@ -40,6 +40,15 @@ export const L1_EXERCISES: ExerciseBlueprint[] = [
       "chunk:je-voudrais",
       "noun_phrase:un-cafe",
     ],
+    // Interactive build tiles (v0.2): three answer tiles in order + one owned
+    // distractor (chunk:je-veux — the direct-register form, supported &
+    // allowedProduction in L1, never recognition-only / blocked).
+    tiles: [
+      { itemId: "chunk:bonjour", answerIndex: 0 },
+      { itemId: "chunk:je-voudrais", answerIndex: 1 },
+      { itemId: "noun_phrase:un-cafe", answerIndex: 2 },
+      { itemId: "chunk:je-veux" },
+    ],
     validationMode: "expected-bank",
   },
   {

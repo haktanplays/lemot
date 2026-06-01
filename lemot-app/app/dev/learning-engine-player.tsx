@@ -2,10 +2,12 @@
  * Dev-only INTERACTIVE renderer slice (v0.1) for the learning-engine L1 fixture.
  *
  * This is a dev experiment, NOT the live lesson renderer. It mounts ONLY the L1
- * contract fixture and makes four operations interactive — `recognition`
+ * contract fixture and makes five operations interactive — `recognition`
  * (tap-to-reveal), `fill` and `register_switch` (type-and-check against a
- * normalized target), and `context_chain` (a per-step type-and-check stepper).
- * `build` renders as a read-only card for now (needs tile data).
+ * normalized target), `context_chain` (a per-step type-and-check stepper), and
+ * `build` (assemble item tiles in order — surface text resolved from the item
+ * registry; the answer is checked as a tile sequence, not by parsing targetText).
+ * A `build` with no tiles still renders read-only.
  *
  * Hard boundaries (kept deliberately):
  *  - Imports ONLY React / React Native, Expo Router, and @/content/learning-engine.
@@ -25,6 +27,7 @@ import {
   L1_CONTENT_FIXTURE,
   checkAnswer,
   type ExerciseBlueprint,
+  type RawItem,
 } from "@/content/learning-engine";
 
 type RecognitionEx = Extract<ExerciseBlueprint, { operation: "recognition" }>;
@@ -34,6 +37,10 @@ type RegisterSwitchEx = Extract<
   ExerciseBlueprint,
   { operation: "register_switch" }
 >;
+type BuildEx = Extract<ExerciseBlueprint, { operation: "build" }>;
+
+/** Item-id → registry item, for resolving tile surface text (`text.fr`). */
+type ItemMap = Record<string, RawItem>;
 
 type Tone = "neutral" | "green" | "amber" | "red" | "purple";
 
@@ -345,7 +352,110 @@ function RegisterSwitchCard({ ex }: { ex: RegisterSwitchEx }) {
   );
 }
 
-/** build — shown read-only for now (needs tile data). */
+/**
+ * build — assemble item tiles in order, then check the assembled SEQUENCE
+ * against the answer tiles (tiles with answerIndex, sorted). Surface text is
+ * resolved from the item registry; targetText is never parsed. Local state only.
+ */
+function BuildCard({ ex, items }: { ex: BuildEx; items: ItemMap }) {
+  const tiles = ex.tiles ?? [];
+  const surface = (id: string): string => items[id]?.text.fr ?? id;
+
+  // Correct answer = answer tiles (answerIndex defined) sorted by answerIndex.
+  const answerIds = tiles
+    .filter((t) => t.answerIndex !== undefined)
+    .slice()
+    .sort((a, b) => (a.answerIndex as number) - (b.answerIndex as number))
+    .map((t) => t.itemId);
+
+  // `picked` holds indices into `tiles` (display order) in the order tapped.
+  const [picked, setPicked] = useState<number[]>([]);
+  const [checked, setChecked] = useState(false);
+
+  const pickedIds = picked.map((i) => tiles[i].itemId);
+  const correct =
+    pickedIds.length === answerIds.length &&
+    pickedIds.every((id, i) => id === answerIds[i]);
+  const showResult = checked && picked.length > 0;
+  const available = tiles.map((_, i) => i).filter((i) => !picked.includes(i));
+  const expected = answerIds.map(surface).join(" ");
+
+  return (
+    <CardShell ex={ex}>
+      <Text className="mb-1 font-outfit text-xs text-lm-ink3">your answer</Text>
+      <View className="min-h-[44px] flex-row flex-wrap gap-2 rounded-xl border border-lm-border bg-lm-bg p-2">
+        {picked.length === 0 ? (
+          <Text className="font-outfit text-sm text-lm-ink3">
+            tap tiles below…
+          </Text>
+        ) : (
+          picked.map((tileIdx, pos) => (
+            <Pressable
+              key={`picked-${tileIdx}`}
+              onPress={() => {
+                setPicked(picked.filter((_, p) => p !== pos));
+                setChecked(false);
+              }}
+              className="rounded-lg border border-lm-purple bg-lm-purple-light px-3 py-1.5"
+            >
+              <Text className="font-newsreader text-base text-lm-ink">
+                {surface(tiles[tileIdx].itemId)}
+              </Text>
+            </Pressable>
+          ))
+        )}
+      </View>
+
+      <Text className="mb-1 mt-3 font-outfit text-xs text-lm-ink3">tiles</Text>
+      <View className="flex-row flex-wrap gap-2">
+        {available.map((i) => (
+          <Pressable
+            key={`tile-${i}`}
+            onPress={() => {
+              setPicked([...picked, i]);
+              setChecked(false);
+            }}
+            className="rounded-lg border border-lm-border bg-lm-paper px-3 py-1.5"
+          >
+            <Text className="font-newsreader text-base text-lm-ink">
+              {surface(tiles[i].itemId)}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+
+      <View className="mt-3 flex-row gap-2">
+        <Pressable
+          onPress={() => setChecked(true)}
+          className="self-start rounded-full border border-lm-red px-4 py-1.5"
+        >
+          <Text className="font-outfit text-sm text-lm-red">Check</Text>
+        </Pressable>
+        {picked.length > 0 ? (
+          <Pressable
+            onPress={() => {
+              setPicked([]);
+              setChecked(false);
+            }}
+            className="self-start rounded-full border border-lm-border px-4 py-1.5"
+          >
+            <Text className="font-outfit text-sm text-lm-ink2">Reset</Text>
+          </Pressable>
+        ) : null}
+      </View>
+
+      {showResult ? (
+        <ResultBox
+          correct={correct}
+          successText="Built correctly."
+          expected={expected}
+        />
+      ) : null}
+    </CardShell>
+  );
+}
+
+/** build without tiles — shown read-only (e.g. L14/L15/L18 in this slice). */
 function ReadOnlyCard({ ex }: { ex: ExerciseBlueprint }) {
   return (
     <CardShell ex={ex}>
@@ -357,14 +467,14 @@ function ReadOnlyCard({ ex }: { ex: ExerciseBlueprint }) {
       ) : null}
       {ex.operation === "build" ? (
         <Text className="mt-1 font-outfit text-xs text-lm-ink3">
-          build interaction needs tile data — deferred to a later slice.
+          build has no tiles in this fixture — read-only here.
         </Text>
       ) : null}
     </CardShell>
   );
 }
 
-function ExerciseCard({ ex }: { ex: ExerciseBlueprint }) {
+function ExerciseCard({ ex, items }: { ex: ExerciseBlueprint; items: ItemMap }) {
   switch (ex.operation) {
     case "recognition":
       return <RecognitionCard ex={ex} />;
@@ -374,6 +484,13 @@ function ExerciseCard({ ex }: { ex: ExerciseBlueprint }) {
       return <ContextChainCard ex={ex} />;
     case "register_switch":
       return <RegisterSwitchCard ex={ex} />;
+    case "build":
+      // Interactive only when the build carries tiles; otherwise read-only.
+      return ex.tiles && ex.tiles.length > 0 ? (
+        <BuildCard ex={ex} items={items} />
+      ) : (
+        <ReadOnlyCard ex={ex} />
+      );
     default:
       return <ReadOnlyCard ex={ex} />;
   }
@@ -394,6 +511,7 @@ export default function LearningEnginePlayerScreen() {
 
   const contract = L1_CONTENT_FIXTURE.contracts[0];
   const exercises = L1_CONTENT_FIXTURE.exercises;
+  const items = L1_CONTENT_FIXTURE.items;
 
   return (
     <SafeAreaView className="flex-1 bg-lm-bg" edges={["top"]}>
@@ -418,9 +536,9 @@ export default function LearningEnginePlayerScreen() {
           </Text>
           <Text className="mt-1 font-outfit text-xs text-lm-ink3">
             Dev-only interactive slice. Not the live lesson renderer. Recognition
-            (reveal), fill, context chain (stepper), and register switch (type /
-            check) are interactive; build is read-only for now (needs tile data).
-            Local state only — nothing is saved.
+            (reveal), fill, register switch (type / check), context chain
+            (stepper), and build (assemble tiles) are interactive; a build with no
+            tiles stays read-only. Local state only — nothing is saved.
           </Text>
         </View>
 
@@ -434,7 +552,7 @@ export default function LearningEnginePlayerScreen() {
         </View>
 
         {exercises.map((ex) => (
-          <ExerciseCard key={ex.id} ex={ex} />
+          <ExerciseCard key={ex.id} ex={ex} items={items} />
         ))}
       </ScrollView>
     </SafeAreaView>
