@@ -269,3 +269,171 @@ export const L14_ITEMS: Record<string, RawItem> = {
     sourceHygiene: CLEAN_ORIGINAL,
   },
 };
+
+/**
+ * L15 item registry fixture (v0.1) — devoir/falloir-light Obligation Doorway.
+ *
+ * A narrow, chunk-first obligation slice: the impersonal «il faut + infinitive»
+ * doorway (active), a personal «je dois + infinitive» doorway (supported), and
+ * recognition-only hooks for everything L15 must NOT open yet — «il faut que» +
+ * subjunctive, the full devoir paradigm, conditional advice ("je devrais"), and
+ * softened obligation ("il faudrait que"). Deliberately avoids «il faut y aller»
+ * so it does not re-open the L14 'y' pronoun.
+ */
+export const L15_ITEMS: Record<string, RawItem> = {
+  // ── Active: the «il faut + infinitive» obligation doorway ──
+  "chunk:il-faut-faire-ca": {
+    id: "chunk:il-faut-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "il faut faire ça", en: "you have to do that / it needs doing" },
+    firstIntroducedIn: "L15",
+    tags: ["obligation", "il_faut", "infinitive", "doorway"],
+    pronunciationProfile: {
+      respelling: "eel foh fehr SAH",
+      ipa: "/il fo fɛʁ sa/",
+      audioText: "il faut faire ça",
+      soundNotes: ["«il faut» is a frozen impersonal — said as one obligation chunk."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:il-faut-faire-une-pause": {
+    id: "chunk:il-faut-faire-une-pause",
+    preset: "early_active_chunk",
+    text: {
+      fr: "il faut faire une pause",
+      en: "you need to take a break",
+    },
+    firstIntroducedIn: "L15",
+    tags: ["obligation", "il_faut", "infinitive", "faire_carry_in", "doorway"],
+    pronunciationProfile: {
+      respelling: "eel foh fehr ün POHZ",
+      ipa: "/il fo fɛʁ yn poz/",
+      audioText: "il faut faire une pause",
+      soundNotes: ["Reuses the known «faire une pause» behind the «il faut» doorway."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // ── Supported: the personal «je dois + infinitive» doorway (devoir-light) ──
+  // early_active_chunk by default; carried in the supported bucket on purpose —
+  // a narrow devoir doorway, NOT the full paradigm.
+  "chunk:je-dois": {
+    id: "chunk:je-dois",
+    preset: "early_active_chunk",
+    text: { fr: "je dois", en: "I have to / I must" },
+    firstIntroducedIn: "L15",
+    tags: ["obligation", "devoir_light", "personal", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh DWAH",
+      ipa: "/ʒə dwa/",
+      audioText: "je dois",
+      soundNotes: ["The personal obligation opener — one devoir form, not the paradigm."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:je-dois-faire-ca": {
+    id: "chunk:je-dois-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "je dois faire ça", en: "I have to do that" },
+    firstIntroducedIn: "L15",
+    tags: ["obligation", "devoir_light", "infinitive", "personal", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh dwah fehr SAH",
+      ipa: "/ʒə dwa fɛʁ sa/",
+      audioText: "je dois faire ça",
+      soundNotes: ["«je dois» + known infinitive — the supported personal doorway."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // ── Recognition-only hooks / future systems (never produced in L15) ──
+  "grammar_piece:il-faut-que-subjunctive": {
+    id: "grammar_piece:il-faut-que-subjunctive",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "il faut que + subjonctif",
+      en: "after «il faut que» the verb shifts to the subjunctive — a later system, not opened in L15.",
+    },
+    firstIntroducedIn: "L15",
+    tags: ["grammar_hook", "subjunctive", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:il-faut-que-j-aille": {
+    id: "chunk:il-faut-que-j-aille",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "il faut que j'aille",
+      en: "I have to go (subjunctive «aille») — recognized only in L15, not produced.",
+    },
+    firstIntroducedIn: "L15",
+    tags: [
+      "grammar_hook",
+      "subjunctive",
+      "boundary",
+      "il_faut_que",
+      "recognition_only",
+    ],
+    pronunciationProfile: {
+      respelling: "eel foh kuh ZHAH-yuh",
+      ipa: "/il fo kə ʒaj/",
+      audioText: "il faut que j'aille",
+      soundNotes: ["Shown for recognition only; the subjunctive «aille» opens in a later lesson."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "grammar_piece:devoir-full-paradigm": {
+    id: "grammar_piece:devoir-full-paradigm",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "devoir (conjugaison complète)",
+      en: "the full devoir paradigm (je dois, tu dois, il doit, nous devons…) — a later system, not opened in L15.",
+    },
+    firstIntroducedIn: "L15",
+    tags: ["grammar_hook", "devoir", "full_paradigm", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:je-devrais": {
+    id: "chunk:je-devrais",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "je devrais",
+      en: "I should / I ought to (conditional advice) — a later, softer modal; recognized only, not produced in L15.",
+    },
+    firstIntroducedIn: "L15",
+    tags: ["grammar_hook", "conditional", "advice", "boundary", "recognition_only"],
+    pronunciationProfile: {
+      respelling: "zhuh duh-VREH",
+      ipa: "/ʒə də.vʁɛ/",
+      audioText: "je devrais",
+      soundNotes: ["Conditional advice; recognized here, produced in a later lesson."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "grammar_piece:il-faudrait-que": {
+    id: "grammar_piece:il-faudrait-que",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "il faudrait que…",
+      en: "«il faudrait que» + subjunctive (softened obligation) — a later system, not opened in L15.",
+    },
+    firstIntroducedIn: "L15",
+    tags: ["grammar_hook", "conditional", "subjunctive", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // Not a usable chunk — a boundary marker for the classic «il faut que» error
+  // (plain present instead of the subjunctive). No audioText: never spoken.
+  "error_pattern:il-faut-que-indicative": {
+    id: "error_pattern:il-faut-que-indicative",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "il faut que + indicatif (erreur)",
+      en: "the common mistake of using the plain present after «il faut que» instead of the subjunctive — a boundary marker, never produced or spoken.",
+    },
+    firstIntroducedIn: "L15",
+    tags: [
+      "boundary_trap",
+      "subjunctive_error",
+      "blocked_production",
+      "recognition_only",
+    ],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+};
