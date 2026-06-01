@@ -23,6 +23,24 @@ function hasPlaceholder(text: string | undefined): boolean {
 }
 
 /**
+ * Build-only reconstruction normalization: case / accent / whitespace AND
+ * internal-punctuation insensitive. DISTINCT from answer-check.normalizeAnswer
+ * (which preserves internal punctuation) — used ONLY to verify a build's answer
+ * tiles reconstruct its targetText, never to grade a learner's typed answer.
+ * Lets "Bonjour je voudrais un café" match targetText "Bonjour, je voudrais un café".
+ */
+const BUILD_PUNCT_RE = /[.,;:!?…'’‘ʼ´"«»()\-]/g;
+function normalizeForBuild(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(BUILD_PUNCT_RE, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
  * Operations that require the learner to PRODUCE an answer. Recognition /
  * reveal-only steps are deliberately excluded — they show an item, they do not
  * require producing it.
@@ -98,6 +116,7 @@ export function validateContent(input: ValidationInput): Finding[] {
     ]);
     const recognitionOnly = new Set(contract.items.recognitionOnly);
     const allowedProduction = new Set(contract.production.allowedProduction);
+    const blockedProduction = new Set(contract.production.blockedProduction);
     const blockedOperations = new Set(contract.production.blockedOperations);
     const allowedOperations = new Set(contract.production.allowedOperations);
 
@@ -310,6 +329,110 @@ export function validateContent(input: ValidationInput): Finding[] {
             message: `Exercise "${exercise.id}" has a revealed/TTS string with a placeholder: "${text}".`,
             suggestion: "Revealed answers and TTS text must be complete strings.",
           });
+        }
+      }
+
+      // ── build-tile checks (only when a build carries explicit tiles) ────
+      if (exercise.operation === "build" && exercise.tiles) {
+        const tiles = exercise.tiles;
+        const answerTiles = tiles.filter((t) => t.answerIndex !== undefined);
+        const distractorTiles = tiles.filter(
+          (t) => t.answerIndex === undefined
+        );
+        const answerItemIds = new Set(answerTiles.map((t) => t.itemId));
+        const targetSet = new Set(exercise.targetItemIds);
+
+        // 1. answer tile item ids must equal targetItemIds (as a set).
+        const sameMembers =
+          answerItemIds.size === targetSet.size &&
+          [...answerItemIds].every((id) => targetSet.has(id));
+        if (!sameMembers) {
+          findings.push({
+            severity: "error",
+            code: "build_answer_tiles_mismatch_target",
+            lessonId,
+            exerciseId: exercise.id,
+            message: `Build "${exercise.id}" answer tiles {${[
+              ...answerItemIds,
+            ].join(", ")}} do not match targetItemIds {${exercise.targetItemIds.join(
+              ", "
+            )}}.`,
+            suggestion:
+              "Answer tiles (those with answerIndex) must be exactly the items in targetItemIds.",
+          });
+        }
+
+        // 2. answerIndex values must be a contiguous 0..n-1 permutation.
+        const indices = answerTiles
+          .map((t) => t.answerIndex as number)
+          .sort((a, b) => a - b);
+        const contiguous = indices.every((v, i) => v === i);
+        if (!contiguous) {
+          findings.push({
+            severity: "error",
+            code: "build_answer_index_invalid",
+            lessonId,
+            exerciseId: exercise.id,
+            message: `Build "${exercise.id}" answerIndex values [${answerTiles
+              .map((t) => t.answerIndex)
+              .join(", ")}] are not a contiguous 0..${
+              answerTiles.length - 1
+            } sequence.`,
+            suggestion: "Number answer tiles 0,1,2,… with no gaps or duplicates.",
+          });
+        }
+
+        // 3. answer tiles must reconstruct targetText (build-normalized). Only
+        //    checked once the answer set + ordering are themselves valid.
+        if (exercise.targetText !== undefined && contiguous && sameMembers) {
+          const reconstructed = answerTiles
+            .slice()
+            .sort(
+              (a, b) => (a.answerIndex as number) - (b.answerIndex as number)
+            )
+            .map((t) => items[t.itemId]?.text.fr ?? "")
+            .join(" ");
+          if (
+            normalizeForBuild(reconstructed) !==
+            normalizeForBuild(exercise.targetText)
+          ) {
+            findings.push({
+              severity: "error",
+              code: "build_reconstruction_mismatch",
+              lessonId,
+              exerciseId: exercise.id,
+              message: `Build "${exercise.id}" answer tiles reconstruct "${reconstructed}", which does not match targetText "${exercise.targetText}" (build-normalized).`,
+              suggestion:
+                "Fix tile order/items so the assembled tiles reproduce targetText.",
+            });
+          }
+        }
+
+        // 4. distractors must be safe: known, owned, not recognition-only, not
+        //    an error_pattern item, not blocked, and not also an answer item.
+        for (const tile of distractorTiles) {
+          const id = tile.itemId;
+          const reasons: string[] = [];
+          if (!knownItemIds.has(id)) reasons.push("unknown");
+          else if (!owned.has(id)) reasons.push("not owned by lesson");
+          if (recognitionOnly.has(id)) reasons.push("recognition-only");
+          if (id.startsWith("error_pattern:")) reasons.push("error_pattern item");
+          if (blockedProduction.has(id)) reasons.push("blocked from production");
+          if (answerItemIds.has(id)) reasons.push("also an answer item");
+          if (reasons.length > 0) {
+            findings.push({
+              severity: "error",
+              code: "build_distractor_not_allowed",
+              lessonId,
+              exerciseId: exercise.id,
+              itemId: id,
+              message: `Build "${exercise.id}" distractor "${id}" is not allowed: ${reasons.join(
+                "; "
+              )}.`,
+              suggestion:
+                "Use a distractor the lesson owns and may produce (active / supported / recycled) — never recognition-only, error_pattern, blocked, or an answer item.",
+            });
+          }
         }
       }
     }

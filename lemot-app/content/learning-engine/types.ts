@@ -184,10 +184,25 @@ export type FillExercise = ExerciseBase & {
   blankCount?: number;
 };
 
+/**
+ * One selectable tile in a build exercise. References a registry item by id —
+ * the surface text is resolved from `items[itemId].text.fr`, so multi-word
+ * chunks ("un café", "s'il vous plaît") stay atomic and never drift.
+ */
+export type BuildTile = {
+  itemId: ItemId;
+  /**
+   * 0-based position in the CORRECT answer. Omit to mark the tile a distractor.
+   * Answer sequence = tiles with answerIndex defined, sorted by answerIndex.
+   */
+  answerIndex?: number;
+};
+
 /** Learner assembles the target from pieces. */
 export type BuildExercise = ExerciseBase & {
   operation: "build";
-  tiles?: string[];
+  /** When present, the build is interactive; absent => read-only. */
+  tiles?: BuildTile[];
 };
 
 /** Learner moves a too-direct form to a polite one — both forms required. */
@@ -225,6 +240,11 @@ export type FindingCode =
   | "tts_audio_text_contains_placeholder"
   | "target_answer_not_in_allowed_production"
   | "operation_not_declared_allowed"
+  // build-tile checks (only when a build exercise carries `tiles`)
+  | "build_answer_tiles_mismatch_target"
+  | "build_answer_index_invalid"
+  | "build_reconstruction_mismatch"
+  | "build_distractor_not_allowed"
   // contract consistency checks
   | "item_bucket_overlap"
   | "allowed_production_not_owned"
