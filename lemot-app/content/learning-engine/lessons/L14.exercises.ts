@@ -25,6 +25,13 @@ export const L14_EXERCISES: ExerciseBlueprint[] = [
     prompt: "Say you're heading there.",
     targetText: "j'y vais",
     targetItemIds: ["chunk:j-y-vais"],
+    // Interactive build (v0.3): answer + one owned, producible distractor.
+    // «je vais» (supported, allowedProduction) is the un-y contrast — never a
+    // recognition-only / blocked item.
+    tiles: [
+      { itemId: "chunk:j-y-vais", answerIndex: 0 },
+      { itemId: "chunk:je-vais" },
+    ],
     validationMode: "expected-bank",
   },
   {
@@ -34,6 +41,12 @@ export const L14_EXERCISES: ExerciseBlueprint[] = [
     prompt: "Say 'let's go'.",
     targetText: "on y va",
     targetItemIds: ["chunk:on-y-va"],
+    // Interactive build (v0.3): answer + one owned, producible distractor.
+    // «on va» (supported, allowedProduction) is the un-y contrast.
+    tiles: [
+      { itemId: "chunk:on-y-va", answerIndex: 0 },
+      { itemId: "chunk:on-va" },
+    ],
     validationMode: "expected-bank",
   },
   {
