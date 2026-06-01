@@ -21,6 +21,7 @@ import {
   L1_CONTENT_FIXTURE,
   L14_CONTENT_FIXTURE,
   L15_CONTENT_FIXTURE,
+  L18_CONTENT_FIXTURE,
   validateContent,
   formatReport,
   type RawItem,
@@ -31,6 +32,7 @@ const FIXTURES: ValidationInput[] = [
   L1_CONTENT_FIXTURE,
   L14_CONTENT_FIXTURE,
   L15_CONTENT_FIXTURE,
+  L18_CONTENT_FIXTURE,
 ];
 
 type Tone = "neutral" | "green" | "amber" | "red" | "purple";
