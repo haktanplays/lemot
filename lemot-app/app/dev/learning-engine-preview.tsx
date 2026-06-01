@@ -251,6 +251,11 @@ function LessonFixtureView({ fixture }: { fixture: ValidationInput }) {
                 {ex.targetText}
               </Text>
             ) : null}
+            {ex.operation === "recognition" && ex.displayAnswer ? (
+              <Text className="mt-0.5 font-outfit text-sm text-lm-ink2">
+                meaning: {ex.displayAnswer}
+              </Text>
+            ) : null}
             {ex.operation === "register_switch" ? (
               <Text className="mt-0.5 font-outfit text-xs text-lm-ink3">
                 {ex.directForm} → {ex.politeForm}
