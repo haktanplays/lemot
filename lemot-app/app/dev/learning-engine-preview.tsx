@@ -20,13 +20,18 @@ import { router } from "expo-router";
 import {
   L1_CONTENT_FIXTURE,
   L14_CONTENT_FIXTURE,
+  L15_CONTENT_FIXTURE,
   validateContent,
   formatReport,
   type RawItem,
   type ValidationInput,
 } from "@/content/learning-engine";
 
-const FIXTURES: ValidationInput[] = [L1_CONTENT_FIXTURE, L14_CONTENT_FIXTURE];
+const FIXTURES: ValidationInput[] = [
+  L1_CONTENT_FIXTURE,
+  L14_CONTENT_FIXTURE,
+  L15_CONTENT_FIXTURE,
+];
 
 type Tone = "neutral" | "green" | "amber" | "red" | "purple";
 
