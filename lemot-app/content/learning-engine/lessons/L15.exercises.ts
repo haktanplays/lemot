@@ -26,6 +26,13 @@ export const L15_EXERCISES: ExerciseBlueprint[] = [
     prompt: "Say that this needs to be done.",
     targetText: "il faut faire ça",
     targetItemIds: ["chunk:il-faut-faire-ca"],
+    // Interactive build (v0.3): answer + one owned, producible distractor.
+    // «je dois faire ça» (supported, allowedProduction) is the impersonal↔personal
+    // obligation contrast — never a recognition-only / blocked item.
+    tiles: [
+      { itemId: "chunk:il-faut-faire-ca", answerIndex: 0 },
+      { itemId: "chunk:je-dois-faire-ca" },
+    ],
     validationMode: "expected-bank",
   },
   {
@@ -58,6 +65,13 @@ export const L15_EXERCISES: ExerciseBlueprint[] = [
     prompt: "Make the obligation personal: 'I have to do that.'",
     targetText: "je dois faire ça",
     targetItemIds: ["chunk:je-dois-faire-ca"],
+    // Interactive build (v0.3): answer + one owned, producible distractor.
+    // «il faut faire ça» (active, allowedProduction) is the personal↔impersonal
+    // obligation contrast.
+    tiles: [
+      { itemId: "chunk:je-dois-faire-ca", answerIndex: 0 },
+      { itemId: "chunk:il-faut-faire-ca" },
+    ],
     validationMode: "expected-bank",
   },
   {

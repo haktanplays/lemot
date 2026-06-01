@@ -26,6 +26,13 @@ export const L18_EXERCISES: ExerciseBlueprint[] = [
     prompt: "Say you're going to do that (soon).",
     targetText: "je vais faire ça",
     targetItemIds: ["chunk:je-vais-faire-ca"],
+    // Interactive build (v0.3): answer + one owned, producible distractor.
+    // «on va faire ça» (active, allowedProduction) is the je/on subject contrast
+    // within the near-future frame — never a recognition-only / blocked item.
+    tiles: [
+      { itemId: "chunk:je-vais-faire-ca", answerIndex: 0 },
+      { itemId: "chunk:on-va-faire-ca" },
+    ],
     validationMode: "expected-bank",
   },
   {
@@ -45,6 +52,12 @@ export const L18_EXERCISES: ExerciseBlueprint[] = [
     prompt: "Say 'we're going to do that'.",
     targetText: "on va faire ça",
     targetItemIds: ["chunk:on-va-faire-ca"],
+    // Interactive build (v0.3): answer + one owned, producible distractor.
+    // «je vais faire ça» (active, allowedProduction) is the je/on subject contrast.
+    tiles: [
+      { itemId: "chunk:on-va-faire-ca", answerIndex: 0 },
+      { itemId: "chunk:je-vais-faire-ca" },
+    ],
     validationMode: "expected-bank",
   },
   {
