@@ -14,7 +14,7 @@ export const L14_EXERCISES: ExerciseBlueprint[] = [
     lessonId: "L14",
     operation: "recognition",
     prompt: "In «j'y vais», what does the little 'y' stand for?",
-    targetText: "there / to that place",
+    displayAnswer: "there / to that place",
     targetItemIds: ["grammar_piece:y-place-light"],
     validationMode: "expected-bank",
   },
@@ -65,7 +65,7 @@ export const L14_EXERCISES: ExerciseBlueprint[] = [
     operation: "recognition",
     prompt:
       "You may SEE «je peux y aller», but L14 doesn't ask you to build it yet — just recognize the meaning.",
-    targetText: "I can go there",
+    displayAnswer: "I can go there",
     targetItemIds: ["chunk:je-peux-y-aller"],
     validationMode: "expected-bank",
   },

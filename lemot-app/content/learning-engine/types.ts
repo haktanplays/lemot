@@ -53,8 +53,12 @@ export type OldItemBudget = "full_weight" | "reduced_weight" | "minimal_weight";
 
 export type PresetDefinition = {
   id: PresetId;
-  /** Default ownership for an item carrying this preset. */
-  ownership: Ownership;
+  /**
+   * Default ownership for an item carrying this preset. A DEFAULT, not a strict
+   * per-lesson truth — a lesson may legitimately carry an item in a different
+   * bucket (e.g. an active item used as supported carry-in).
+   */
+  defaultOwnership: Ownership;
   lessonProduction: boolean;
   contextCards: boolean;
   monLexiqueVisible: boolean;
@@ -166,6 +170,11 @@ type ExerciseBase = {
 /** Learner recognizes / selects — no production required. */
 export type RecognitionExercise = ExerciseBase & {
   operation: "recognition";
+  /**
+   * Meaning / display answer for a recognition step (e.g. an English gloss).
+   * NOT a French production target — production exercises use `targetText`.
+   */
+  displayAnswer?: string;
 };
 
 /** Learner fills a blank inside a target phrase. */

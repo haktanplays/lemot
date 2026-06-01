@@ -11,7 +11,7 @@ import type { PresetDefinition, PresetId } from "./types";
 export const PRESETS: Record<PresetId, PresetDefinition> = {
   early_active_chunk: {
     id: "early_active_chunk",
-    ownership: "active",
+    defaultOwnership: "active",
     lessonProduction: true,
     contextCards: true,
     monLexiqueVisible: true,
@@ -20,7 +20,7 @@ export const PRESETS: Record<PresetId, PresetDefinition> = {
   },
   contextual_noun_phrase: {
     id: "contextual_noun_phrase",
-    ownership: "active",
+    defaultOwnership: "active",
     lessonProduction: true,
     contextCards: true,
     monLexiqueVisible: true,
@@ -29,7 +29,7 @@ export const PRESETS: Record<PresetId, PresetDefinition> = {
   },
   culture_social_ritual: {
     id: "culture_social_ritual",
-    ownership: "recognitionOnly",
+    defaultOwnership: "recognitionOnly",
     lessonProduction: false,
     contextCards: true,
     monLexiqueVisible: true,
@@ -38,7 +38,7 @@ export const PRESETS: Record<PresetId, PresetDefinition> = {
   },
   sound_pattern: {
     id: "sound_pattern",
-    ownership: "recognitionOnly",
+    defaultOwnership: "recognitionOnly",
     lessonProduction: false,
     contextCards: true,
     monLexiqueVisible: false,
@@ -49,7 +49,7 @@ export const PRESETS: Record<PresetId, PresetDefinition> = {
   // shows or acknowledges but never asks the learner to produce.
   recognition_only_hook: {
     id: "recognition_only_hook",
-    ownership: "recognitionOnly",
+    defaultOwnership: "recognitionOnly",
     lessonProduction: false,
     contextCards: true,
     monLexiqueVisible: false,

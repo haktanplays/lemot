@@ -13,7 +13,6 @@ import type {
   Finding,
   ItemId,
   OperationId,
-  Ownership,
   ValidationInput,
 } from "./types";
 
@@ -36,23 +35,11 @@ const PRODUCTION_OPERATIONS: ReadonlySet<OperationId> = new Set([
 ]);
 
 /**
- * Production-relevant ownership buckets mapped to the preset ownership each one
- * implies. `recycled` is intentionally excluded — recycling is a lesson-level
- * decision and does not imply an intrinsic preset ownership.
+ * Buckets whose items the learner is expected to PRODUCE. A recognition-only
+ * default item must never sit here. (`recognitionOnly` and `recycled` buckets
+ * are non-production and are not checked for this.)
  */
-const OWNERSHIP_BUCKETS: {
-  bucket: "activeNew" | "supported" | "recognitionOnly";
-  ownership: Ownership;
-  isProductionBucket: boolean;
-}[] = [
-  { bucket: "activeNew", ownership: "active", isProductionBucket: true },
-  { bucket: "supported", ownership: "supported", isProductionBucket: true },
-  {
-    bucket: "recognitionOnly",
-    ownership: "recognitionOnly",
-    isProductionBucket: false,
-  },
-];
+const PRODUCTION_BUCKETS = ["activeNew", "supported"] as const;
 
 export function validateContent(input: ValidationInput): Finding[] {
   const findings: Finding[] = [];
@@ -195,28 +182,25 @@ export function validateContent(input: ValidationInput): Finding[] {
       }
     }
 
-    // preset_contract_ownership_mismatch — item preset default ownership vs the
-    // bucket it is placed in. Recognition-only preset in a production bucket is a
-    // hard error; other mismatches are warnings (lesson-level ownership overrides
-    // are allowed but worth surfacing). `recycled` is not checked.
-    for (const { bucket, ownership, isProductionBucket } of OWNERSHIP_BUCKETS) {
+    // preset_contract_ownership_mismatch — preset defaultOwnership is a DEFAULT,
+    // overridable per lesson, so ordinary active↔supported carry-in is NOT
+    // flagged. The one dangerous case remains a hard error: a recognition-only
+    // default item must never sit in a production bucket (activeNew / supported).
+    for (const bucket of PRODUCTION_BUCKETS) {
       for (const id of contract.items[bucket]) {
         const item = items[id];
         if (!item) continue; // unknown_item_id covers a missing registry entry
         const preset = presets[item.preset];
         if (!preset) continue; // invalid_preset covers an unknown preset
-        if (preset.ownership === ownership) continue;
-        const recognitionInProduction =
-          preset.ownership === "recognitionOnly" && isProductionBucket;
+        if (preset.defaultOwnership !== "recognitionOnly") continue;
         findings.push({
-          severity: recognitionInProduction ? "error" : "warning",
+          severity: "error",
           code: "preset_contract_ownership_mismatch",
           lessonId,
           itemId: id,
-          message: `Item "${id}" preset "${item.preset}" defaults to ownership "${preset.ownership}", but it is placed in the "${bucket}" bucket (expects "${ownership}").`,
-          suggestion: recognitionInProduction
-            ? "A recognition-only item must not sit in a production bucket. Move it to recognitionOnly or change its preset."
-            : "Confirm this lesson-level ownership override is intentional, or align the preset with the bucket.",
+          message: `Item "${id}" preset "${item.preset}" is recognition-only by default but is placed in the production bucket "${bucket}".`,
+          suggestion:
+            "A recognition-only item must not sit in a production bucket. Move it to recognitionOnly, or change its preset.",
         });
       }
     }
