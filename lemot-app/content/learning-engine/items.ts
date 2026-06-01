@@ -437,3 +437,160 @@ export const L15_ITEMS: Record<string, RawItem> = {
     sourceHygiene: CLEAN_ORIGINAL,
   },
 };
+
+/**
+ * L18 item registry fixture (v0.1) — futur-proche doorway / strong preview.
+ *
+ * A narrow, chunk-first near-future slice: the «aller + known chunk» doorway
+ * ("je vais faire ça" / "on va faire ça", active) and recognition-only hooks for
+ * everything L18 must NOT open yet — the full futur simple ("je ferai", "j'irai"),
+ * the near-future↔simple-future contrast, complex time expressions, and the
+ * y + future pronoun chain ("je vais y aller").
+ *
+ * NOTE ON CARRY-IN: the aller carry-in items «chunk:je-vais» / «chunk:on-va»
+ * already live in L14_ITEMS and are NOT redefined here — re-authoring them would
+ * create a silent duplicate-id collision in the aggregate spread. L18's standalone
+ * fixture pulls them by reference from L14_ITEMS (see index.ts). This fixture
+ * holds only items first introduced in L18.
+ */
+export const L18_ITEMS: Record<string, RawItem> = {
+  // ── Active: the «aller + known chunk» near-future doorway ──
+  "chunk:je-vais-faire-ca": {
+    id: "chunk:je-vais-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "je vais faire ça", en: "I'm going to do that (near future)" },
+    firstIntroducedIn: "L18",
+    tags: ["near_future", "futur_proche", "aller_doorway", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh vah fehr SAH",
+      ipa: "/ʒə va fɛʁ sa/",
+      audioText: "je vais faire ça",
+      soundNotes: ["«je vais» + known infinitive — said as one near-future chunk."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:on-va-faire-ca": {
+    id: "chunk:on-va-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "on va faire ça", en: "we're going to do that (near future)" },
+    firstIntroducedIn: "L18",
+    tags: ["near_future", "futur_proche", "aller_doorway", "doorway"],
+    pronunciationProfile: {
+      respelling: "oh vah fehr SAH",
+      ipa: "/ɔ̃ va fɛʁ sa/",
+      audioText: "on va faire ça",
+      soundNotes: ["Plural/collective near-future doorway, same «aller + chunk» shape."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // ── Recognition-only hooks / future systems (never produced in L18) ──
+  "grammar_piece:futur-simple-system": {
+    id: "grammar_piece:futur-simple-system",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "le futur simple (système complet)",
+      en: "the full simple-future tense (je ferai, tu feras, il fera…) — a later system, not opened in L18.",
+    },
+    firstIntroducedIn: "L18",
+    tags: ["grammar_hook", "futur_simple", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:je-ferai": {
+    id: "chunk:je-ferai",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "je ferai",
+      en: "I will do (simple future) — recognized only in L18, not produced.",
+    },
+    firstIntroducedIn: "L18",
+    tags: ["grammar_hook", "futur_simple", "boundary", "recognition_only"],
+    pronunciationProfile: {
+      respelling: "zhuh fuh-REH",
+      ipa: "/ʒə fə.ʁe/",
+      audioText: "je ferai",
+      soundNotes: ["Shown for recognition only; the simple future opens in a later lesson."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:j-irai": {
+    id: "chunk:j-irai",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "j'irai",
+      en: "I will go (simple future of aller) — recognized only in L18, not produced.",
+    },
+    firstIntroducedIn: "L18",
+    tags: ["grammar_hook", "futur_simple", "aller", "boundary", "recognition_only"],
+    pronunciationProfile: {
+      respelling: "zhee-REH",
+      ipa: "/ʒi.ʁe/",
+      audioText: "j'irai",
+      soundNotes: ["Irregular simple future of aller; recognized here, produced later."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "grammar_piece:vais-faire-vs-ferai": {
+    id: "grammar_piece:vais-faire-vs-ferai",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "« je vais faire » vs « je ferai »",
+      en: "near-future vs simple-future contrast — shown for awareness; the contrast system is not opened in L18.",
+    },
+    firstIntroducedIn: "L18",
+    tags: ["grammar_hook", "future_contrast", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "grammar_piece:complex-time-expressions": {
+    id: "grammar_piece:complex-time-expressions",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "expressions de temps complexes",
+      en: "complex time markers (dans deux semaines, l'année prochaine…) — a later system, not opened in L18.",
+    },
+    firstIntroducedIn: "L18",
+    tags: ["grammar_hook", "time_expressions", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:je-vais-y-aller": {
+    id: "chunk:je-vais-y-aller",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "je vais y aller",
+      en: "I'm going to go (there) — near-future chained with the 'y' pronoun; recognized only, not produced in L18.",
+    },
+    firstIntroducedIn: "L18",
+    tags: [
+      "grammar_hook",
+      "near_future",
+      "pronoun_chain",
+      "y_future",
+      "boundary",
+      "recognition_only",
+    ],
+    pronunciationProfile: {
+      respelling: "zhuh vah zee a-LAY",
+      ipa: "/ʒə va zi a.le/",
+      audioText: "je vais y aller",
+      soundNotes: ["Chains near-future with the L14 'y' pronoun; recognition only, not built in L18."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // Not a usable chunk — a boundary marker for swapping near-future and simple
+  // future. No audioText: never spoken.
+  "error_pattern:futur-proche-vs-simple-confusion": {
+    id: "error_pattern:futur-proche-vs-simple-confusion",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "futur proche confondu avec futur simple (erreur)",
+      en: "the mistake of swapping near-future «je vais faire» for simple-future «je ferai» — a boundary marker, never produced or spoken.",
+    },
+    firstIntroducedIn: "L18",
+    tags: [
+      "boundary_trap",
+      "future_confusion",
+      "blocked_production",
+      "recognition_only",
+    ],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+};
