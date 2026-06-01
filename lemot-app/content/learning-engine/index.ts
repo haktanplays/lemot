@@ -23,6 +23,7 @@ export { L18_EXERCISES } from "./lessons/L18.exercises";
 export { validateContent, formatReport } from "./validate";
 export { mergeItemMapsStrict } from "./registry";
 export type { NamedItemMap } from "./registry";
+export { normalizeAnswer, checkAnswer } from "./answer-check";
 
 import { PRESETS } from "./presets";
 import {
