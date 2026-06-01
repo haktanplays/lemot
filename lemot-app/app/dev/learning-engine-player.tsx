@@ -1,5 +1,5 @@
 /**
- * Dev-only INTERACTIVE renderer slice (v0) for the learning-engine L1 fixture.
+ * Dev-only INTERACTIVE renderer slice (v0.1) for the learning-engine L1 fixture.
  *
  * This is a dev experiment, NOT the live lesson renderer. It mounts ONLY the L1
  * contract fixture and makes four operations interactive — `recognition`
@@ -345,11 +345,11 @@ function RegisterSwitchCard({ ex }: { ex: RegisterSwitchEx }) {
   );
 }
 
-/** build — shown read-only in v0 (needs tile data). */
+/** build — shown read-only for now (needs tile data). */
 function ReadOnlyCard({ ex }: { ex: ExerciseBlueprint }) {
   return (
     <CardShell ex={ex}>
-      <Badge label="read-only in v0" tone="neutral" />
+      <Badge label="read-only for now" tone="neutral" />
       {ex.targetText ? (
         <Text className="mt-2 font-newsreader text-base text-lm-ink2">
           {ex.targetText}
