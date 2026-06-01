@@ -1,8 +1,9 @@
 /**
- * Dev-only INTERACTIVE renderer slice (v0.1) for the learning-engine L1 fixture.
+ * Dev-only INTERACTIVE renderer slice for the learning-engine fixtures.
  *
- * This is a dev experiment, NOT the live lesson renderer. It mounts ONLY the L1
- * contract fixture and makes five operations interactive — `recognition`
+ * This is a dev experiment, NOT the live lesson renderer. It mounts a dev-only
+ * selectable fixture (L1 / L14 / L15 / L18 — default L1) and makes five
+ * operations interactive — `recognition`
  * (tap-to-reveal), `fill` and `register_switch` (type-and-check against a
  * normalized target), `context_chain` (a per-step type-and-check stepper), and
  * `build` (assemble item tiles in order — surface text resolved from the item
@@ -25,6 +26,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import {
   L1_CONTENT_FIXTURE,
+  L14_CONTENT_FIXTURE,
+  L15_CONTENT_FIXTURE,
+  L18_CONTENT_FIXTURE,
   checkAnswer,
   type ExerciseBlueprint,
   type RawItem,
@@ -41,6 +45,19 @@ type BuildEx = Extract<ExerciseBlueprint, { operation: "build" }>;
 
 /** Item-id → registry item, for resolving tile surface text (`text.fr`). */
 type ItemMap = Record<string, RawItem>;
+
+/**
+ * Dev-only fixture menu. Lets this one player mount L1 / L14 / L15 / L18 so each
+ * lesson's interactive exercises (incl. build tiles) can be smoked without a
+ * separate screen. These are validateable fixtures, not the live lesson runtime.
+ */
+const FIXTURES = [
+  { id: "L1", fixture: L1_CONTENT_FIXTURE },
+  { id: "L14", fixture: L14_CONTENT_FIXTURE },
+  { id: "L15", fixture: L15_CONTENT_FIXTURE },
+  { id: "L18", fixture: L18_CONTENT_FIXTURE },
+] as const;
+type FixtureId = (typeof FIXTURES)[number]["id"];
 
 type Tone = "neutral" | "green" | "amber" | "red" | "purple";
 
@@ -509,9 +526,14 @@ export default function LearningEnginePlayerScreen() {
     );
   }
 
-  const contract = L1_CONTENT_FIXTURE.contracts[0];
-  const exercises = L1_CONTENT_FIXTURE.exercises;
-  const items = L1_CONTENT_FIXTURE.items;
+  // Dev-only local fixture selection (default L1). Switching fixtures re-keys the
+  // cards below so each card's local state (revealed / input / picked tiles)
+  // resets cleanly. No persistence.
+  const [selectedId, setSelectedId] = useState<FixtureId>("L1");
+  const active = FIXTURES.find((f) => f.id === selectedId) ?? FIXTURES[0];
+  const contract = active.fixture.contracts[0];
+  const exercises = active.fixture.exercises;
+  const items = active.fixture.items;
 
   return (
     <SafeAreaView className="flex-1 bg-lm-bg" edges={["top"]}>
@@ -542,6 +564,34 @@ export default function LearningEnginePlayerScreen() {
           </Text>
         </View>
 
+        <View className="mb-4">
+          <Text className="mb-1 font-outfit text-xs text-lm-ink3">fixture</Text>
+          <View className="flex-row flex-wrap gap-2">
+            {FIXTURES.map((f) => {
+              const isActive = f.id === selectedId;
+              return (
+                <Pressable
+                  key={f.id}
+                  onPress={() => setSelectedId(f.id)}
+                  className={`rounded-full border px-4 py-1.5 ${
+                    isActive
+                      ? "border-lm-red bg-lm-red-light"
+                      : "border-lm-border bg-lm-paper"
+                  }`}
+                >
+                  <Text
+                    className={`font-outfit text-sm ${
+                      isActive ? "text-lm-red" : "text-lm-ink2"
+                    }`}
+                  >
+                    {f.id}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+
         <View className="mb-4 rounded-2xl border border-lm-border bg-lm-paper p-4">
           <Text className="font-outfit text-xs font-semibold text-lm-ink2">
             canDo
@@ -552,7 +602,7 @@ export default function LearningEnginePlayerScreen() {
         </View>
 
         {exercises.map((ex) => (
-          <ExerciseCard key={ex.id} ex={ex} items={items} />
+          <ExerciseCard key={`${selectedId}-${ex.id}`} ex={ex} items={items} />
         ))}
       </ScrollView>
     </SafeAreaView>
