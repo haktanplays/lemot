@@ -19,6 +19,46 @@ const CLEAN_ORIGINAL: SourceHygiene = {
   reviewStatus: "passed",
 };
 
+/**
+ * Shared carry-in item registry — items that are reused across more than one
+ * lesson fixture and therefore must be defined EXACTLY ONCE. Per-lesson maps
+ * (L14_ITEMS, L18_ITEMS, …) reference these by id in their contracts and merge
+ * them in via `mergeItemMapsStrict` (see index.ts) instead of re-authoring them.
+ *
+ * This is the minimal shared/carry-in registry layer. Add an item here only when
+ * a second lesson genuinely reuses it; do not duplicate it back into a lesson map.
+ */
+export const SHARED_ITEMS: Record<string, RawItem> = {
+  // aller movement chunks — first taught in L07, scaffolding in L14 (place
+  // pronoun) and L18 (near future). Defined once here, owned by both lessons.
+  "chunk:je-vais": {
+    id: "chunk:je-vais",
+    preset: "early_active_chunk",
+    text: { fr: "je vais", en: "I go / I'm going" },
+    firstIntroducedIn: "L07",
+    tags: ["movement", "aller", "carry_in"],
+    pronunciationProfile: {
+      respelling: "zhuh VEH",
+      ipa: "/ʒə vɛ/",
+      audioText: "je vais",
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:on-va": {
+    id: "chunk:on-va",
+    preset: "early_active_chunk",
+    text: { fr: "on va", en: "we go / we're going" },
+    firstIntroducedIn: "L07",
+    tags: ["movement", "aller", "carry_in"],
+    pronunciationProfile: {
+      respelling: "oh VAH",
+      ipa: "/ɔ̃ va/",
+      audioText: "on va",
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+};
+
 export const L1_ITEMS: Record<string, RawItem> = {
   "chunk:bonjour": {
     id: "chunk:bonjour",
@@ -147,9 +187,10 @@ export const L1_ITEMS: Record<string, RawItem> = {
 /**
  * L14 item registry fixture (v0.1) — y-light / place-pronoun doorway.
  *
- * A narrow, chunk-first slice: two active doorway chunks, a couple of aller
- * carry-in chunks (supported), and recognition-only grammar hooks / future
- * systems that L14 must never ask the learner to produce.
+ * A narrow, chunk-first slice: two active doorway chunks plus recognition-only
+ * grammar hooks / future systems that L14 must never ask the learner to produce.
+ * The aller carry-in chunks (supported) live in SHARED_ITEMS — L14 owns them via
+ * its contract but does not redefine them here.
  */
 export const L14_ITEMS: Record<string, RawItem> = {
   // ── Active: the y-light doorway ──
@@ -181,33 +222,9 @@ export const L14_ITEMS: Record<string, RawItem> = {
     },
     sourceHygiene: CLEAN_ORIGINAL,
   },
-  // ── Supported carry-in (aller, taught earlier; scaffolding in L14) ──
-  "chunk:je-vais": {
-    id: "chunk:je-vais",
-    preset: "early_active_chunk",
-    text: { fr: "je vais", en: "I go / I'm going" },
-    firstIntroducedIn: "L07",
-    tags: ["movement", "aller", "carry_in"],
-    pronunciationProfile: {
-      respelling: "zhuh VEH",
-      ipa: "/ʒə vɛ/",
-      audioText: "je vais",
-    },
-    sourceHygiene: CLEAN_ORIGINAL,
-  },
-  "chunk:on-va": {
-    id: "chunk:on-va",
-    preset: "early_active_chunk",
-    text: { fr: "on va", en: "we go / we're going" },
-    firstIntroducedIn: "L07",
-    tags: ["movement", "aller", "carry_in"],
-    pronunciationProfile: {
-      respelling: "oh VAH",
-      ipa: "/ɔ̃ va/",
-      audioText: "on va",
-    },
-    sourceHygiene: CLEAN_ORIGINAL,
-  },
+  // Carry-in «chunk:je-vais» / «chunk:on-va» now live in SHARED_ITEMS (also
+  // reused by L18). L14 owns them via its contract; the merged fixtures in
+  // index.ts supply them. They are NOT redefined here.
   // ── Recognition-only hooks / future systems (never produced in L14) ──
   "grammar_piece:y-place-light": {
     id: "grammar_piece:y-place-light",
