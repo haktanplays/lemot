@@ -1,10 +1,11 @@
 /**
- * Dev-only INTERACTIVE renderer slice (v0) for the learning-engine L1 fixture.
+ * Dev-only INTERACTIVE renderer slice (v0.1) for the learning-engine L1 fixture.
  *
  * This is a dev experiment, NOT the live lesson renderer. It mounts ONLY the L1
- * contract fixture and makes two operations interactive — `recognition`
- * (tap-to-reveal) and `fill` (type-and-check against a normalized targetText).
- * `build` / `register_switch` / `context_chain` render as read-only cards for now.
+ * contract fixture and makes four operations interactive — `recognition`
+ * (tap-to-reveal), `fill` and `register_switch` (type-and-check against a
+ * normalized target), and `context_chain` (a per-step type-and-check stepper).
+ * `build` renders as a read-only card for now (needs tile data).
  *
  * Hard boundaries (kept deliberately):
  *  - Imports ONLY React / React Native, Expo Router, and @/content/learning-engine.
@@ -28,6 +29,11 @@ import {
 
 type RecognitionEx = Extract<ExerciseBlueprint, { operation: "recognition" }>;
 type FillEx = Extract<ExerciseBlueprint, { operation: "fill" }>;
+type ContextChainEx = Extract<ExerciseBlueprint, { operation: "context_chain" }>;
+type RegisterSwitchEx = Extract<
+  ExerciseBlueprint,
+  { operation: "register_switch" }
+>;
 
 type Tone = "neutral" | "green" | "amber" | "red" | "purple";
 
@@ -168,32 +174,186 @@ function FillCard({ ex }: { ex: FillEx }) {
   );
 }
 
-/** build / register_switch / context_chain — shown read-only in v0. */
+/** Shared green/amber verdict box for the type-and-check operations. */
+function ResultBox({
+  correct,
+  successText,
+  expected,
+}: {
+  correct: boolean;
+  successText: string;
+  expected?: string;
+}) {
+  return (
+    <View
+      className={`mt-2 rounded-xl border p-3 ${
+        correct
+          ? "border-lm-green bg-lm-green-light"
+          : "border-lm-amber bg-lm-amber-light"
+      }`}
+    >
+      <Text
+        className={`font-outfit text-sm ${
+          correct ? "text-lm-green" : "text-lm-amber"
+        }`}
+      >
+        {correct ? successText : "Not a match yet."}
+      </Text>
+      {!correct && expected ? (
+        <Text className="mt-1 font-outfit text-xs text-lm-ink3">
+          expected: {expected}
+        </Text>
+      ) : null}
+    </View>
+  );
+}
+
+/** context_chain — one step at a time; type/check each, then complete. */
+function ContextChainCard({ ex }: { ex: ContextChainEx }) {
+  const [idx, setIdx] = useState(0);
+  const [input, setInput] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [completed, setCompleted] = useState(false);
+
+  const steps = ex.steps;
+  const step = steps[idx];
+  const isLast = idx >= steps.length - 1;
+  const correct = step ? checkAnswer(input, step.answer) : false;
+  const showResult = checked && input.trim().length > 0;
+
+  const advance = () => {
+    if (isLast) {
+      setCompleted(true);
+    } else {
+      setIdx(idx + 1);
+      setInput("");
+      setChecked(false);
+    }
+  };
+
+  if (completed) {
+    return (
+      <CardShell ex={ex}>
+        <View className="rounded-xl border border-lm-green bg-lm-green-light p-3">
+          <Text className="font-outfit text-sm text-lm-green">
+            Complete — all {steps.length} steps done.
+          </Text>
+          {ex.targetText ? (
+            <Text className="mt-1 font-newsreader text-base text-lm-ink">
+              {ex.targetText}
+            </Text>
+          ) : null}
+        </View>
+      </CardShell>
+    );
+  }
+
+  return (
+    <CardShell ex={ex}>
+      <Text className="mb-1 font-outfit text-xs font-semibold text-lm-ink2">
+        Step {idx + 1} / {steps.length}
+      </Text>
+      {step ? (
+        <Text className="mb-2 font-newsreader text-base text-lm-ink">
+          {step.prompt}
+        </Text>
+      ) : null}
+      <TextInput
+        value={input}
+        onChangeText={(text) => {
+          setInput(text);
+          setChecked(false);
+        }}
+        placeholder="Type this step…"
+        autoCapitalize="none"
+        autoCorrect={false}
+        className="rounded-xl border border-lm-border bg-lm-bg px-3 py-2 font-newsreader text-lg text-lm-ink"
+      />
+      <View className="mt-2 flex-row gap-2">
+        <Pressable
+          onPress={() => setChecked(true)}
+          className="self-start rounded-full border border-lm-red px-4 py-1.5"
+        >
+          <Text className="font-outfit text-sm text-lm-red">Check</Text>
+        </Pressable>
+        {showResult && correct ? (
+          <Pressable
+            onPress={advance}
+            className="self-start rounded-full border border-lm-green px-4 py-1.5"
+          >
+            <Text className="font-outfit text-sm text-lm-green">
+              {isLast ? "Finish" : "Next step"}
+            </Text>
+          </Pressable>
+        ) : null}
+      </View>
+      {showResult ? (
+        <ResultBox
+          correct={correct}
+          successText="Step matches — continue."
+          expected={step?.answer}
+        />
+      ) : null}
+    </CardShell>
+  );
+}
+
+/** register_switch — read the too-direct form, type the polite form, check it. */
+function RegisterSwitchCard({ ex }: { ex: RegisterSwitchEx }) {
+  const [input, setInput] = useState("");
+  const [checked, setChecked] = useState(false);
+
+  const correct = checkAnswer(input, ex.politeForm);
+  const showResult = checked && input.trim().length > 0;
+
+  return (
+    <CardShell ex={ex}>
+      <View className="mb-2 rounded-xl border border-lm-border bg-lm-bg p-3">
+        <Text className="font-outfit text-xs text-lm-ink3">too direct</Text>
+        <Text className="mt-0.5 font-newsreader text-base text-lm-ink2">
+          {ex.directForm}
+        </Text>
+      </View>
+      <Text className="mb-1 font-outfit text-xs text-lm-ink3">
+        Type the polite form:
+      </Text>
+      <TextInput
+        value={input}
+        onChangeText={(text) => {
+          setInput(text);
+          setChecked(false);
+        }}
+        placeholder="Type the polite form…"
+        autoCapitalize="none"
+        autoCorrect={false}
+        className="rounded-xl border border-lm-border bg-lm-bg px-3 py-2 font-newsreader text-lg text-lm-ink"
+      />
+      <Pressable
+        onPress={() => setChecked(true)}
+        className="mt-2 self-start rounded-full border border-lm-red px-4 py-1.5"
+      >
+        <Text className="font-outfit text-sm text-lm-red">Check</Text>
+      </Pressable>
+      {showResult ? (
+        <ResultBox
+          correct={correct}
+          successText="Matches the polite form."
+          expected={ex.politeForm}
+        />
+      ) : null}
+    </CardShell>
+  );
+}
+
+/** build — shown read-only for now (needs tile data). */
 function ReadOnlyCard({ ex }: { ex: ExerciseBlueprint }) {
   return (
     <CardShell ex={ex}>
-      <Badge label="read-only in v0" tone="neutral" />
+      <Badge label="read-only for now" tone="neutral" />
       {ex.targetText ? (
         <Text className="mt-2 font-newsreader text-base text-lm-ink2">
           {ex.targetText}
         </Text>
-      ) : null}
-      {ex.operation === "register_switch" ? (
-        <Text className="mt-1 font-outfit text-xs text-lm-ink3">
-          {ex.directForm} → {ex.politeForm}
-        </Text>
-      ) : null}
-      {ex.operation === "context_chain" ? (
-        <View className="mt-1">
-          {ex.steps.map((step, i) => (
-            <Text
-              key={`${ex.id}-step-${i}`}
-              className="font-outfit text-xs text-lm-ink2"
-            >
-              {i + 1}. {step.prompt} → {step.answer}
-            </Text>
-          ))}
-        </View>
       ) : null}
       {ex.operation === "build" ? (
         <Text className="mt-1 font-outfit text-xs text-lm-ink3">
@@ -210,6 +370,10 @@ function ExerciseCard({ ex }: { ex: ExerciseBlueprint }) {
       return <RecognitionCard ex={ex} />;
     case "fill":
       return <FillCard ex={ex} />;
+    case "context_chain":
+      return <ContextChainCard ex={ex} />;
+    case "register_switch":
+      return <RegisterSwitchCard ex={ex} />;
     default:
       return <ReadOnlyCard ex={ex} />;
   }
@@ -254,9 +418,9 @@ export default function LearningEnginePlayerScreen() {
           </Text>
           <Text className="mt-1 font-outfit text-xs text-lm-ink3">
             Dev-only interactive slice. Not the live lesson renderer. Recognition
-            (reveal) and fill (type / check) are interactive; build, register
-            switch, and context chain are read-only for now. Local state only —
-            nothing is saved.
+            (reveal), fill, context chain (stepper), and register switch (type /
+            check) are interactive; build is read-only for now (needs tile data).
+            Local state only — nothing is saved.
           </Text>
         </View>
 
