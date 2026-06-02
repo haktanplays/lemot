@@ -2,7 +2,7 @@
  * Dev-only INTERACTIVE renderer slice for the learning-engine fixtures.
  *
  * This is a dev experiment, NOT the live lesson renderer. It mounts a dev-only
- * selectable fixture (L1 / L11 / L12 / L14 / L15 / L18 — default L1) and makes five
+ * selectable fixture (L1 / L11 / L12 / L14 / L15 / L16 / L18 — default L1) and makes five
  * operations interactive — `recognition`
  * (tap-to-reveal), `fill` and `register_switch` (type-and-check against a
  * normalized target), `context_chain` (a per-step type-and-check stepper), and
@@ -30,6 +30,7 @@ import {
   L12_CONTENT_FIXTURE,
   L14_CONTENT_FIXTURE,
   L15_CONTENT_FIXTURE,
+  L16_CONTENT_FIXTURE,
   L18_CONTENT_FIXTURE,
   checkAnswer,
   type ExerciseBlueprint,
@@ -49,7 +50,7 @@ type BuildEx = Extract<ExerciseBlueprint, { operation: "build" }>;
 type ItemMap = Record<string, RawItem>;
 
 /**
- * Dev-only fixture menu. Lets this one player mount L1 / L11 / L12 / L14 / L15 / L18 so
+ * Dev-only fixture menu. Lets this one player mount L1 / L11 / L12 / L14 / L15 / L16 / L18 so
  * each lesson's interactive exercises (incl. build tiles) can be smoked without a
  * separate screen. These are validateable fixtures, not the live lesson runtime.
  */
@@ -59,6 +60,7 @@ const FIXTURES = [
   { id: "L12", fixture: L12_CONTENT_FIXTURE },
   { id: "L14", fixture: L14_CONTENT_FIXTURE },
   { id: "L15", fixture: L15_CONTENT_FIXTURE },
+  { id: "L16", fixture: L16_CONTENT_FIXTURE },
   { id: "L18", fixture: L18_CONTENT_FIXTURE },
 ] as const;
 type FixtureId = (typeof FIXTURES)[number]["id"];
