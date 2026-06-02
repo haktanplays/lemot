@@ -239,6 +239,7 @@ export type FindingCode =
   | "source_hygiene_blocked"
   | "tts_audio_text_contains_placeholder"
   | "target_answer_not_in_allowed_production"
+  | "blocked_production_used_as_target"
   | "operation_not_declared_allowed"
   // build-tile checks (only when a build exercise carries `tiles`)
   | "build_answer_tiles_mismatch_target"
@@ -253,6 +254,7 @@ export type FindingCode =
   | "item_bucket_overlap"
   | "allowed_production_not_owned"
   | "blocked_production_not_owned"
+  | "production_allow_block_overlap"
   | "preset_contract_ownership_mismatch";
 
 export type Finding = {

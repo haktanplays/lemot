@@ -250,6 +250,24 @@ export function validateContent(input: ValidationInput): Finding[] {
       }
     }
 
+    // production_allow_block_overlap — an item must not sit in BOTH
+    // allowedProduction and blockedProduction: the two lists contradict each
+    // other (one permits producing the item, the other forbids it). Iterating
+    // the deduped allowedProduction Set reports each overlapping id once.
+    for (const id of allowedProduction) {
+      if (blockedProduction.has(id)) {
+        findings.push({
+          severity: "error",
+          code: "production_allow_block_overlap",
+          lessonId,
+          itemId: id,
+          message: `Item "${id}" is listed in BOTH production.allowedProduction and production.blockedProduction for lesson "${lessonId}".`,
+          suggestion:
+            "An item cannot be both allowed and blocked from production. Remove it from one of the two lists.",
+        });
+      }
+    }
+
     // preset_contract_ownership_mismatch — preset defaultOwnership is a DEFAULT,
     // overridable per lesson, so ordinary active↔supported carry-in is NOT
     // flagged. The one dangerous case remains a hard error: a recognition-only
@@ -340,6 +358,24 @@ export function validateContent(input: ValidationInput): Finding[] {
             message: `Exercise "${exercise.id}" targets item "${id}", which lesson "${lessonId}" does not own.`,
             suggestion:
               "Declare the item in the lesson contract, or remove it from the target.",
+          });
+        } else if (isProductionOp && blockedProduction.has(id)) {
+          // blocked_production_used_as_target — a production-like exercise must
+          // not require producing an item the contract explicitly blocks.
+          // Recognition / reveal steps are exempt (isProductionOp is false).
+          // This is the DIRECT signal; placed before the generic
+          // target_answer_not_in_allowed_production so a blocked-but-owned
+          // target reports its real reason ("blocked") rather than the weaker
+          // "not in allowedProduction".
+          findings.push({
+            severity: "error",
+            code: "blocked_production_used_as_target",
+            lessonId,
+            exerciseId: exercise.id,
+            itemId: id,
+            message: `Exercise "${exercise.id}" (operation "${exercise.operation}") requires producing item "${id}", which lesson "${lessonId}" lists in production.blockedProduction.`,
+            suggestion:
+              "Remove the item from production.blockedProduction, or change the exercise so it does not require producing it.",
           });
         } else if (isProductionOp && !allowedProduction.has(id)) {
           // 8. target_answer_not_in_allowed_production
