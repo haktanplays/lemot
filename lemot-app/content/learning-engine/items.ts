@@ -57,6 +57,39 @@ export const SHARED_ITEMS: Record<string, RawItem> = {
     },
     sourceHygiene: CLEAN_ORIGINAL,
   },
+  // pouvoir-light base clauses — FIRST TAUGHT in L11 (Pouvoir-light), where they
+  // are active production targets, and REUSED in L12 (est-ce que wrapper) as
+  // supported carry-in. Defined exactly once here so neither lesson redefines
+  // them (the duplicate-id guard would otherwise throw). Each lesson's contract
+  // decides its ownership bucket: L11 activeNew, L12 supported.
+  "chunk:je-peux-faire-ca": {
+    id: "chunk:je-peux-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "je peux faire ça", en: "I can do that" },
+    firstIntroducedIn: "L11",
+    tags: ["ability", "pouvoir_light", "base_clause", "carry_in"],
+    pronunciationProfile: {
+      respelling: "zhuh puh fehr SAH",
+      ipa: "/ʒə pø fɛʁ sa/",
+      audioText: "je peux faire ça",
+      soundNotes: ["The plain ability clause; L12 later wraps it with «est-ce que»."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:vous-pouvez-m-aider": {
+    id: "chunk:vous-pouvez-m-aider",
+    preset: "early_active_chunk",
+    text: { fr: "vous pouvez m'aider", en: "you can help me (formal)" },
+    firstIntroducedIn: "L11",
+    tags: ["ability", "pouvoir_light", "help", "base_clause", "carry_in"],
+    pronunciationProfile: {
+      respelling: "voo poo-VAY meh-DAY",
+      ipa: "/vu pu.ve mɛ.de/",
+      audioText: "vous pouvez m'aider",
+      soundNotes: ["The plain help clause; L12 later fronts it with «est-ce que»."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
 };
 
 export const L1_ITEMS: Record<string, RawItem> = {
@@ -680,44 +713,12 @@ export const L12_ITEMS: Record<string, RawItem> = {
     },
     sourceHygiene: CLEAN_ORIGINAL,
   },
-  // ── Supported: already-owned base clauses that sit inside the wrapper ──
-  // early_active_chunk by default; carried as supported (the clause is assumed
-  // already known, the lesson teaches the WRAPPER, not the clause).
-  //
-  // L11 CARRY-IN PROXIES: these pouvoir-light base clauses pedagogically belong
-  // to L11 (Pouvoir-light), which has no executable fixture yet. They are
-  // authored here ONLY as wrapper-building / contrast material — not as broad
-  // L12 pouvoir ownership. `firstIntroducedIn` is "L11" to mark their true
-  // origin (cf. SHARED_ITEMS je-vais/on-va → "L07"); move/reconcile them into the
-  // L11 executable fixture when it exists.
-  "chunk:je-peux-faire-ca": {
-    id: "chunk:je-peux-faire-ca",
-    preset: "early_active_chunk",
-    text: { fr: "je peux faire ça", en: "I can do that" },
-    firstIntroducedIn: "L11", // L11 carry-in proxy; reconcile when L11 fixture exists.
-    tags: ["ability", "pouvoir_light", "base_clause", "carry_in"],
-    pronunciationProfile: {
-      respelling: "zhuh puh fehr SAH",
-      ipa: "/ʒə pø fɛʁ sa/",
-      audioText: "je peux faire ça",
-      soundNotes: ["The plain clause; the wrapper «est-ce que» turns it into a question."],
-    },
-    sourceHygiene: CLEAN_ORIGINAL,
-  },
-  "chunk:vous-pouvez-m-aider": {
-    id: "chunk:vous-pouvez-m-aider",
-    preset: "early_active_chunk",
-    text: { fr: "vous pouvez m'aider", en: "you can help me (formal)" },
-    firstIntroducedIn: "L11", // L11 carry-in proxy; reconcile when L11 fixture exists.
-    tags: ["ability", "pouvoir_light", "help", "base_clause", "carry_in"],
-    pronunciationProfile: {
-      respelling: "voo poo-VAY meh-DAY",
-      ipa: "/vu pu.ve mɛ.de/",
-      audioText: "vous pouvez m'aider",
-      soundNotes: ["The plain help clause; «est-ce que» fronts it for a question."],
-    },
-    sourceHygiene: CLEAN_ORIGINAL,
-  },
+  // ── Supported base clauses (now in SHARED_ITEMS) ──
+  // «chunk:je-peux-faire-ca» / «chunk:vous-pouvez-m-aider» are FIRST TAUGHT in L11
+  // (Pouvoir-light, active there) and reused here as supported carry-in. They were
+  // moved to SHARED_ITEMS (defined exactly once) when the L11 fixture was authored;
+  // L12 owns them via its contract and the merged fixture supplies them. They are
+  // NOT redefined here — re-adding them would trip the duplicate-id guard.
   // ── Recognition-only hooks / future systems (never produced in L12) ──
   "grammar_piece:inversion-questions": {
     id: "grammar_piece:inversion-questions",
@@ -788,6 +789,152 @@ export const L12_ITEMS: Record<string, RawItem> = {
     tags: [
       "boundary_trap",
       "question_formation_error",
+      "blocked_production",
+      "recognition_only",
+    ],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+};
+
+/**
+ * L11 item registry fixture (v0.1) — Pouvoir-light (Ability / Permission / Help).
+ *
+ * A narrow modal doorway: fixed «je peux» / «vous pouvez» chunks for ability,
+ * permission, and help/repeat requests (active), plus recognition-only hooks for
+ * everything L11 must NOT open yet — the conditional («je pourrais», «vous
+ * pourriez»), the full pouvoir paradigm, the possibility/probability nuance, and
+ * pouvoir over-generalization. The two base clauses «chunk:je-peux-faire-ca» and
+ * «chunk:vous-pouvez-m-aider» live in SHARED_ITEMS (first taught here, carried
+ * into L12 as supported) and are owned by this contract, not redefined here.
+ */
+export const L11_ITEMS: Record<string, RawItem> = {
+  // ── Active: the «je ne peux pas» negative + the intonation permission asks ──
+  "chunk:je-ne-peux-pas-faire-ca": {
+    id: "chunk:je-ne-peux-pas-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "je ne peux pas faire ça", en: "I can't do that" },
+    firstIntroducedIn: "L11",
+    tags: ["ability", "pouvoir_light", "negation", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh nuh puh pah fehr SAH",
+      ipa: "/ʒə nə pø pa fɛʁ sa/",
+      audioText: "je ne peux pas faire ça",
+      soundNotes: ["The affirmative «je peux» negated with the known ne…pas frame."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:je-peux-faire-ca-q": {
+    id: "chunk:je-peux-faire-ca-q",
+    preset: "early_active_chunk",
+    text: { fr: "je peux faire ça ?", en: "can I do that? (asking permission)" },
+    firstIntroducedIn: "L11",
+    tags: ["permission", "pouvoir_light", "intonation_question", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh puh fehr SAH",
+      ipa: "/ʒə pø fɛʁ sa/",
+      audioText: "je peux faire ça ?",
+      soundNotes: ["Same words as the statement, asked as a permission question by rising intonation."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:je-peux-faire-une-pause-q": {
+    id: "chunk:je-peux-faire-une-pause-q",
+    preset: "early_active_chunk",
+    text: { fr: "je peux faire une pause ?", en: "can I take a break?" },
+    firstIntroducedIn: "L11",
+    tags: ["permission", "pouvoir_light", "intonation_question", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh puh fehr ün POHZ",
+      ipa: "/ʒə pø fɛʁ yn poz/",
+      audioText: "je peux faire une pause ?",
+      soundNotes: ["«je peux» + the known «faire une pause», asked as a permission question."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:vous-pouvez-repeter": {
+    id: "chunk:vous-pouvez-repeter",
+    preset: "early_active_chunk",
+    text: { fr: "vous pouvez répéter", en: "can you repeat? (formal)" },
+    firstIntroducedIn: "L11",
+    tags: ["help", "pouvoir_light", "request", "doorway"],
+    pronunciationProfile: {
+      respelling: "voo poo-VAY ray-pay-TAY",
+      ipa: "/vu pu.ve ʁe.pe.te/",
+      audioText: "vous pouvez répéter",
+      soundNotes: ["The classroom repair request — «vous pouvez» + a known infinitive."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // ── Recognition-only hooks / future systems (never produced in L11) ──
+  "chunk:je-pourrais": {
+    id: "chunk:je-pourrais",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "je pourrais",
+      en: "I could / would be able to (conditional) — a softer, later modal; recognized only in L11, not produced.",
+    },
+    firstIntroducedIn: "L11",
+    tags: ["grammar_hook", "conditional", "politeness", "boundary", "recognition_only"],
+    pronunciationProfile: {
+      respelling: "zhuh poo-REH",
+      ipa: "/ʒə pu.ʁɛ/",
+      audioText: "je pourrais",
+      soundNotes: ["Conditional of pouvoir; recognized here, produced in a later lesson."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:vous-pourriez": {
+    id: "chunk:vous-pourriez",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "vous pourriez",
+      en: "you could / would be able to (polite conditional) — a later, softer request form; recognized only, not produced in L11.",
+    },
+    firstIntroducedIn: "L11",
+    tags: ["grammar_hook", "conditional", "politeness", "boundary", "recognition_only"],
+    pronunciationProfile: {
+      respelling: "voo poo-RYAY",
+      ipa: "/vu pu.ʁje/",
+      audioText: "vous pourriez",
+      soundNotes: ["Polite conditional; recognized here, produced in a later lesson."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "grammar_piece:pouvoir-full-paradigm": {
+    id: "grammar_piece:pouvoir-full-paradigm",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "pouvoir (conjugaison complète)",
+      en: "the full pouvoir paradigm (tu peux, il peut, nous pouvons, vous pouvez, ils peuvent) — a later system, not opened in L11.",
+    },
+    firstIntroducedIn: "L11",
+    tags: ["grammar_hook", "pouvoir", "full_paradigm", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "grammar_piece:pouvoir-possibility-nuance": {
+    id: "grammar_piece:pouvoir-possibility-nuance",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "pouvoir = possibilité",
+      en: "pouvoir used for possibility/probability ('it may be possible / it can happen') — a later nuance, not opened in L11.",
+    },
+    firstIntroducedIn: "L11",
+    tags: ["grammar_hook", "possibility", "modal_nuance", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // Not a usable chunk — a boundary marker for over-using pouvoir for every
+  // "can / may". No audioText: never spoken.
+  "error_pattern:pouvoir-overgeneralization": {
+    id: "error_pattern:pouvoir-overgeneralization",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "pouvoir surgénéralisé (erreur)",
+      en: "the mistake of reaching for pouvoir for every English 'can / may' (ability, possibility, permission, request) — a boundary marker, never produced or spoken.",
+    },
+    firstIntroducedIn: "L11",
+    tags: [
+      "boundary_trap",
+      "pouvoir_overgeneralization",
       "blocked_production",
       "recognition_only",
     ],

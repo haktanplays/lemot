@@ -19,6 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import {
   L1_CONTENT_FIXTURE,
+  L11_CONTENT_FIXTURE,
   L12_CONTENT_FIXTURE,
   L14_CONTENT_FIXTURE,
   L15_CONTENT_FIXTURE,
@@ -31,6 +32,7 @@ import {
 
 const FIXTURES: ValidationInput[] = [
   L1_CONTENT_FIXTURE,
+  L11_CONTENT_FIXTURE,
   L12_CONTENT_FIXTURE,
   L14_CONTENT_FIXTURE,
   L15_CONTENT_FIXTURE,

@@ -14,6 +14,7 @@ export { PRESETS, resolvePreset, isKnownPreset } from "./presets";
 export {
   SHARED_ITEMS,
   L1_ITEMS,
+  L11_ITEMS,
   L12_ITEMS,
   L14_ITEMS,
   L15_ITEMS,
@@ -21,6 +22,8 @@ export {
 } from "./items";
 export { L1_CONTRACT } from "./lessons/L1.contract";
 export { L1_EXERCISES } from "./lessons/L1.exercises";
+export { L11_CONTRACT } from "./lessons/L11.contract";
+export { L11_EXERCISES } from "./lessons/L11.exercises";
 export { L12_CONTRACT } from "./lessons/L12.contract";
 export { L12_EXERCISES } from "./lessons/L12.exercises";
 export { L14_CONTRACT } from "./lessons/L14.contract";
@@ -38,6 +41,7 @@ import { PRESETS } from "./presets";
 import {
   SHARED_ITEMS,
   L1_ITEMS,
+  L11_ITEMS,
   L12_ITEMS,
   L14_ITEMS,
   L15_ITEMS,
@@ -45,6 +49,8 @@ import {
 } from "./items";
 import { L1_CONTRACT } from "./lessons/L1.contract";
 import { L1_EXERCISES } from "./lessons/L1.exercises";
+import { L11_CONTRACT } from "./lessons/L11.contract";
+import { L11_EXERCISES } from "./lessons/L11.exercises";
 import { L12_CONTRACT } from "./lessons/L12.contract";
 import { L12_EXERCISES } from "./lessons/L12.exercises";
 import { L14_CONTRACT } from "./lessons/L14.contract";
@@ -65,12 +71,32 @@ export const L1_CONTENT_FIXTURE: ValidationInput = {
 };
 
 /**
- * L12 fixture only — the «est-ce que» yes/no question wrapper. Self-contained:
- * its base clauses live in L12_ITEMS (no SHARED carry-in), so it merges a single
- * map.
+ * L11 fixture only — Pouvoir-light (ability / permission / help). Its two base
+ * clauses («je-peux-faire-ca» / «vous-pouvez-m-aider») live in SHARED_ITEMS
+ * (first taught here, reused by L12), merged in strictly so the standalone
+ * fixture validates clean with each id defined exactly once.
+ */
+export const L11_CONTENT_FIXTURE: ValidationInput = {
+  items: mergeItemMapsStrict([
+    { name: "SHARED_ITEMS", items: SHARED_ITEMS },
+    { name: "L11_ITEMS", items: L11_ITEMS },
+  ]),
+  presets: PRESETS,
+  contracts: [L11_CONTRACT],
+  exercises: L11_EXERCISES,
+};
+
+/**
+ * L12 fixture only — the «est-ce que» yes/no question wrapper. Its two base
+ * clauses («je-peux-faire-ca» / «vous-pouvez-m-aider») are L11 carry-in and now
+ * live in SHARED_ITEMS (no longer redefined in L12_ITEMS), merged in strictly so
+ * the standalone fixture still resolves them with each id defined exactly once.
  */
 export const L12_CONTENT_FIXTURE: ValidationInput = {
-  items: mergeItemMapsStrict([{ name: "L12_ITEMS", items: L12_ITEMS }]),
+  items: mergeItemMapsStrict([
+    { name: "SHARED_ITEMS", items: SHARED_ITEMS },
+    { name: "L12_ITEMS", items: L12_ITEMS },
+  ]),
   presets: PRESETS,
   contracts: [L12_CONTRACT],
   exercises: L12_EXERCISES,
@@ -117,7 +143,7 @@ export const L18_CONTENT_FIXTURE: ValidationInput = {
 /**
  * Aggregate of every lesson fixture — one shared item registry, all contracts,
  * all exercises. The validator runner checks this so a single pass covers L1,
- * L14, L15, and L18 together.
+ * L11, L12, L14, L15, and L18 together.
  *
  * `mergeItemMapsStrict` HARD-FAILS at import if any item id is defined in more
  * than one map (e.g. a lesson accidentally redefining a SHARED_ITEMS carry-in),
@@ -127,15 +153,24 @@ export const LEARNING_ENGINE_FIXTURE: ValidationInput = {
   items: mergeItemMapsStrict([
     { name: "SHARED_ITEMS", items: SHARED_ITEMS },
     { name: "L1_ITEMS", items: L1_ITEMS },
+    { name: "L11_ITEMS", items: L11_ITEMS },
     { name: "L12_ITEMS", items: L12_ITEMS },
     { name: "L14_ITEMS", items: L14_ITEMS },
     { name: "L15_ITEMS", items: L15_ITEMS },
     { name: "L18_ITEMS", items: L18_ITEMS },
   ]),
   presets: PRESETS,
-  contracts: [L1_CONTRACT, L12_CONTRACT, L14_CONTRACT, L15_CONTRACT, L18_CONTRACT],
+  contracts: [
+    L1_CONTRACT,
+    L11_CONTRACT,
+    L12_CONTRACT,
+    L14_CONTRACT,
+    L15_CONTRACT,
+    L18_CONTRACT,
+  ],
   exercises: [
     ...L1_EXERCISES,
+    ...L11_EXERCISES,
     ...L12_EXERCISES,
     ...L14_EXERCISES,
     ...L15_EXERCISES,
