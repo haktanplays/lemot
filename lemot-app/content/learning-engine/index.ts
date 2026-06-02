@@ -11,9 +11,18 @@
  */
 export * from "./types";
 export { PRESETS, resolvePreset, isKnownPreset } from "./presets";
-export { SHARED_ITEMS, L1_ITEMS, L14_ITEMS, L15_ITEMS, L18_ITEMS } from "./items";
+export {
+  SHARED_ITEMS,
+  L1_ITEMS,
+  L12_ITEMS,
+  L14_ITEMS,
+  L15_ITEMS,
+  L18_ITEMS,
+} from "./items";
 export { L1_CONTRACT } from "./lessons/L1.contract";
 export { L1_EXERCISES } from "./lessons/L1.exercises";
+export { L12_CONTRACT } from "./lessons/L12.contract";
+export { L12_EXERCISES } from "./lessons/L12.exercises";
 export { L14_CONTRACT } from "./lessons/L14.contract";
 export { L14_EXERCISES } from "./lessons/L14.exercises";
 export { L15_CONTRACT } from "./lessons/L15.contract";
@@ -29,12 +38,15 @@ import { PRESETS } from "./presets";
 import {
   SHARED_ITEMS,
   L1_ITEMS,
+  L12_ITEMS,
   L14_ITEMS,
   L15_ITEMS,
   L18_ITEMS,
 } from "./items";
 import { L1_CONTRACT } from "./lessons/L1.contract";
 import { L1_EXERCISES } from "./lessons/L1.exercises";
+import { L12_CONTRACT } from "./lessons/L12.contract";
+import { L12_EXERCISES } from "./lessons/L12.exercises";
 import { L14_CONTRACT } from "./lessons/L14.contract";
 import { L14_EXERCISES } from "./lessons/L14.exercises";
 import { L15_CONTRACT } from "./lessons/L15.contract";
@@ -50,6 +62,18 @@ export const L1_CONTENT_FIXTURE: ValidationInput = {
   presets: PRESETS,
   contracts: [L1_CONTRACT],
   exercises: L1_EXERCISES,
+};
+
+/**
+ * L12 fixture only — the «est-ce que» yes/no question wrapper. Self-contained:
+ * its base clauses live in L12_ITEMS (no SHARED carry-in), so it merges a single
+ * map.
+ */
+export const L12_CONTENT_FIXTURE: ValidationInput = {
+  items: mergeItemMapsStrict([{ name: "L12_ITEMS", items: L12_ITEMS }]),
+  presets: PRESETS,
+  contracts: [L12_CONTRACT],
+  exercises: L12_EXERCISES,
 };
 
 /**
@@ -103,14 +127,16 @@ export const LEARNING_ENGINE_FIXTURE: ValidationInput = {
   items: mergeItemMapsStrict([
     { name: "SHARED_ITEMS", items: SHARED_ITEMS },
     { name: "L1_ITEMS", items: L1_ITEMS },
+    { name: "L12_ITEMS", items: L12_ITEMS },
     { name: "L14_ITEMS", items: L14_ITEMS },
     { name: "L15_ITEMS", items: L15_ITEMS },
     { name: "L18_ITEMS", items: L18_ITEMS },
   ]),
   presets: PRESETS,
-  contracts: [L1_CONTRACT, L14_CONTRACT, L15_CONTRACT, L18_CONTRACT],
+  contracts: [L1_CONTRACT, L12_CONTRACT, L14_CONTRACT, L15_CONTRACT, L18_CONTRACT],
   exercises: [
     ...L1_EXERCISES,
+    ...L12_EXERCISES,
     ...L14_EXERCISES,
     ...L15_EXERCISES,
     ...L18_EXERCISES,

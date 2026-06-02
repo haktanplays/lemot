@@ -611,3 +611,186 @@ export const L18_ITEMS: Record<string, RawItem> = {
     sourceHygiene: CLEAN_ORIGINAL,
   },
 };
+
+/**
+ * L12 item registry fixture (v0.1) — Est-ce que / Yes-No Question Wrapper.
+ *
+ * A narrow "wrapper / gateway grammar" slice: the «est-ce que + already-owned
+ * clause» yes/no question doorway (active), the base clauses that sit inside the
+ * wrapper carried as supported, and recognition-only hooks for everything L12
+ * must NOT open yet — inversion questions, «qu'est-ce que», and the broader
+ * question-word system. The wrapper only ever fronts a clause the learner
+ * already owns; it never opens question formation, inversion, or y/en.
+ */
+export const L12_ITEMS: Record<string, RawItem> = {
+  // ── Active: the «est-ce que + clause» yes/no wrapper doorway ──
+  "chunk:est-ce-que": {
+    id: "chunk:est-ce-que",
+    preset: "early_active_chunk",
+    text: { fr: "est-ce que", en: "(yes/no question marker — fronts a statement)" },
+    firstIntroducedIn: "L12",
+    tags: ["question", "est_ce_que", "yes_no", "wrapper", "doorway"],
+    pronunciationProfile: {
+      respelling: "ess kuh",
+      ipa: "/ɛs kə/",
+      audioText: "est-ce que",
+      soundNotes: ["A frozen yes/no marker — placed in front of a clause you already know."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:est-ce-que-je-peux-faire-ca": {
+    id: "chunk:est-ce-que-je-peux-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "est-ce que je peux faire ça", en: "can I do that?" },
+    firstIntroducedIn: "L12",
+    tags: ["question", "est_ce_que", "yes_no", "wrapper", "doorway"],
+    pronunciationProfile: {
+      respelling: "ess kuh zhuh puh fehr SAH",
+      ipa: "/ɛs kə ʒə pø fɛʁ sa/",
+      audioText: "est-ce que je peux faire ça",
+      soundNotes: ["«est-ce que» + the known «je peux faire ça» — said as one yes/no question."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:est-ce-que-tu-peux-faire-ca": {
+    id: "chunk:est-ce-que-tu-peux-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "est-ce que tu peux faire ça", en: "can you do that?" },
+    firstIntroducedIn: "L12",
+    tags: ["question", "est_ce_que", "yes_no", "wrapper", "doorway"],
+    pronunciationProfile: {
+      respelling: "ess kuh tü puh fehr SAH",
+      ipa: "/ɛs kə ty pø fɛʁ sa/",
+      audioText: "est-ce que tu peux faire ça",
+      soundNotes: ["Same wrapper, «tu» clause — the casual 'can you…?'."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:est-ce-que-vous-pouvez-m-aider": {
+    id: "chunk:est-ce-que-vous-pouvez-m-aider",
+    preset: "early_active_chunk",
+    text: { fr: "est-ce que vous pouvez m'aider", en: "can you help me? (formal)" },
+    firstIntroducedIn: "L12",
+    tags: ["question", "est_ce_que", "yes_no", "wrapper", "help", "doorway"],
+    pronunciationProfile: {
+      respelling: "ess kuh voo poo-VAY meh-DAY",
+      ipa: "/ɛs kə vu pu.ve mɛ.de/",
+      audioText: "est-ce que vous pouvez m'aider",
+      soundNotes: ["The polite help request, wrapped as a yes/no question."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // ── Supported: already-owned base clauses that sit inside the wrapper ──
+  // early_active_chunk by default; carried as supported (the clause is assumed
+  // already known, the lesson teaches the WRAPPER, not the clause).
+  //
+  // L11 CARRY-IN PROXIES: these pouvoir-light base clauses pedagogically belong
+  // to L11 (Pouvoir-light), which has no executable fixture yet. They are
+  // authored here ONLY as wrapper-building / contrast material — not as broad
+  // L12 pouvoir ownership. `firstIntroducedIn` is "L11" to mark their true
+  // origin (cf. SHARED_ITEMS je-vais/on-va → "L07"); move/reconcile them into the
+  // L11 executable fixture when it exists.
+  "chunk:je-peux-faire-ca": {
+    id: "chunk:je-peux-faire-ca",
+    preset: "early_active_chunk",
+    text: { fr: "je peux faire ça", en: "I can do that" },
+    firstIntroducedIn: "L11", // L11 carry-in proxy; reconcile when L11 fixture exists.
+    tags: ["ability", "pouvoir_light", "base_clause", "carry_in"],
+    pronunciationProfile: {
+      respelling: "zhuh puh fehr SAH",
+      ipa: "/ʒə pø fɛʁ sa/",
+      audioText: "je peux faire ça",
+      soundNotes: ["The plain clause; the wrapper «est-ce que» turns it into a question."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:vous-pouvez-m-aider": {
+    id: "chunk:vous-pouvez-m-aider",
+    preset: "early_active_chunk",
+    text: { fr: "vous pouvez m'aider", en: "you can help me (formal)" },
+    firstIntroducedIn: "L11", // L11 carry-in proxy; reconcile when L11 fixture exists.
+    tags: ["ability", "pouvoir_light", "help", "base_clause", "carry_in"],
+    pronunciationProfile: {
+      respelling: "voo poo-VAY meh-DAY",
+      ipa: "/vu pu.ve mɛ.de/",
+      audioText: "vous pouvez m'aider",
+      soundNotes: ["The plain help clause; «est-ce que» fronts it for a question."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // ── Recognition-only hooks / future systems (never produced in L12) ──
+  "grammar_piece:inversion-questions": {
+    id: "grammar_piece:inversion-questions",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "questions par inversion (verbe-sujet)",
+      en: "forming questions by inverting verb and subject (peux-tu… ?) — a later system, not opened in L12.",
+    },
+    firstIntroducedIn: "L12",
+    tags: ["grammar_hook", "inversion", "question_formation", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:peux-tu-faire-ca": {
+    id: "chunk:peux-tu-faire-ca",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "peux-tu faire ça",
+      en: "can you do that? (inversion) — recognized only in L12; L12 uses «est-ce que» instead.",
+    },
+    firstIntroducedIn: "L12",
+    tags: ["grammar_hook", "inversion", "boundary", "recognition_only"],
+    pronunciationProfile: {
+      respelling: "puh-tü fehr SAH",
+      ipa: "/pø ty fɛʁ sa/",
+      audioText: "peux-tu faire ça",
+      soundNotes: ["Shown for recognition only; inversion is produced in a later lesson."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:qu-est-ce-que": {
+    id: "chunk:qu-est-ce-que",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "qu'est-ce que…",
+      en: "'what…?' — an information question word, NOT the yes/no «est-ce que» wrapper; recognized only, not produced in L12.",
+    },
+    firstIntroducedIn: "L12",
+    tags: ["grammar_hook", "question_word", "information_question", "boundary", "recognition_only"],
+    pronunciationProfile: {
+      respelling: "kess kuh",
+      ipa: "/kɛs kə/",
+      audioText: "qu'est-ce que",
+      soundNotes: ["Looks like «est-ce que» but asks 'what' — a question word, opened later."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "grammar_piece:question-words": {
+    id: "grammar_piece:question-words",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "les mots interrogatifs (comment, pourquoi, quand, qui, que, combien)",
+      en: "the question-word system (how, why, when, who, what, how much) — a later system, not opened in L12.",
+    },
+    firstIntroducedIn: "L12",
+    tags: ["grammar_hook", "question_words", "future_system", "recognition_only"],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  // Not a usable chunk — a boundary marker for mixing «est-ce que» with inversion
+  // (e.g. «est-ce que peux-tu…»). No audioText: never spoken.
+  "error_pattern:est-ce-que-inversion-mix": {
+    id: "error_pattern:est-ce-que-inversion-mix",
+    preset: "recognition_only_hook",
+    text: {
+      fr: "est-ce que + inversion mélangés (erreur)",
+      en: "the mistake of combining «est-ce que» with inversion in one question — a boundary marker, never produced or spoken.",
+    },
+    firstIntroducedIn: "L12",
+    tags: [
+      "boundary_trap",
+      "question_formation_error",
+      "blocked_production",
+      "recognition_only",
+    ],
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+};
