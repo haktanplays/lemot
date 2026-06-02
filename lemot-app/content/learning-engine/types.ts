@@ -245,6 +245,10 @@ export type FindingCode =
   | "build_answer_index_invalid"
   | "build_reconstruction_mismatch"
   | "build_distractor_not_allowed"
+  // fixture-wiring checks (structural — orphaned / duplicate ids)
+  | "exercise_without_contract"
+  | "duplicate_exercise_id"
+  | "duplicate_contract_id"
   // contract consistency checks
   | "item_bucket_overlap"
   | "allowed_production_not_owned"
