@@ -15,6 +15,7 @@ import type {
   OperationId,
   ValidationInput,
 } from "./types";
+import { buildItemGraph } from "./graph";
 
 const PLACEHOLDER_RE = /\[_+\]|_{2,}/;
 
@@ -518,6 +519,82 @@ export function validateContent(input: ValidationInput): Finding[] {
                 "Use a distractor the lesson owns and may produce (active / supported / recycled) — never recognition-only, error_pattern, blocked, or an answer item.",
             });
           }
+        }
+      }
+    }
+  }
+
+  // ── Graph-dependent audit (P0.2) ──────────────────────────────────────────
+  // Defense-in-depth over the per-contract target checks above, driven by the
+  // derived item/lesson graph (./graph.ts). PRODUCTION operations only —
+  // recognition / reveal steps are exempt (they may show an item without
+  // requiring its production). These intentionally OVERLAP the more specific
+  // per-contract findings (recognition_only_used_as_production_target /
+  // blocked_production_used_as_target / target_answer_contains_unowned_item): the
+  // graph view is a backstop, so a genuinely bad target may surface both its
+  // specific finding and a graph finding. With the conservative P0.2 definitions
+  // (no cross-lesson ordering inference) these checks are strict backstops, so on
+  // a clean fixture they add nothing and the aggregate stays 0/0/0. The two NEW
+  // codes are mutually exclusive per (exercise, item): `unsafe` is checked first,
+  // and a flagged target is not also reported as `unseen`.
+  const graph = buildItemGraph(input);
+  for (const contract of contracts) {
+    const lessonId = contract.id;
+    const lessonNode = graph.lessons[lessonId];
+    if (!lessonNode) continue;
+
+    const recognitionOnlyHere = new Set(lessonNode.recognitionOnly);
+    const blockedHere = new Set(lessonNode.blockedProduction);
+    // Reachable for this lesson (conservative, per-lesson — NO numeric ordering):
+    // owned in any of the four buckets, first-introduced here, or ownedIn graph set.
+    const reachableHere = new Set<string>([
+      ...lessonNode.activeNew,
+      ...lessonNode.supported,
+      ...lessonNode.recycled,
+      ...lessonNode.recognitionOnly,
+    ]);
+
+    for (const exercise of exercises.filter((e) => e.lessonId === lessonId)) {
+      if (!PRODUCTION_OPERATIONS.has(exercise.operation)) continue;
+      for (const id of exercise.targetItemIds) {
+        // Unknown ids are covered by unknown_item_id; the graph audit stays quiet.
+        if (!knownItemIds.has(id)) continue;
+        const itemNode = graph.items[id];
+
+        const unsafe =
+          recognitionOnlyHere.has(id) ||
+          blockedHere.has(id) ||
+          (itemNode?.recognitionOnlyIn.includes(lessonId) ?? false) ||
+          (itemNode?.blockedProductionIn.includes(lessonId) ?? false);
+        if (unsafe) {
+          findings.push({
+            severity: "error",
+            code: "unsafe_production_target",
+            lessonId,
+            exerciseId: exercise.id,
+            itemId: id,
+            message: `Exercise "${exercise.id}" (operation "${exercise.operation}") targets item "${id}", which the graph shows is recognition-only / blocked for lesson "${lessonId}" — it must not be a production target.`,
+            suggestion:
+              "Recognition-only / blocked forms may be shown, not required as answers. Produce only owned, allowed items.",
+          });
+          continue; // unsafe and unseen are mutually exclusive — prefer the safety signal.
+        }
+
+        const reachable =
+          reachableHere.has(id) ||
+          itemNode?.firstIntroducedIn === lessonId ||
+          (itemNode?.ownedIn.includes(lessonId) ?? false);
+        if (!reachable) {
+          findings.push({
+            severity: "error",
+            code: "unseen_form_used",
+            lessonId,
+            exerciseId: exercise.id,
+            itemId: id,
+            message: `Exercise "${exercise.id}" (operation "${exercise.operation}") requires producing item "${id}", which is not reachable for lesson "${lessonId}" (not owned here and not first-introduced here).`,
+            suggestion:
+              "Declare the item in the lesson contract (an ownership bucket), or remove it from the production target.",
+          });
         }
       }
     }

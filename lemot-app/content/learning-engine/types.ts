@@ -255,7 +255,11 @@ export type FindingCode =
   | "allowed_production_not_owned"
   | "blocked_production_not_owned"
   | "production_allow_block_overlap"
-  | "preset_contract_ownership_mismatch";
+  | "preset_contract_ownership_mismatch"
+  // graph-dependent audit checks (P0.2) — defense-in-depth over the per-contract
+  // target checks, driven by the derived item/lesson graph (./graph.ts).
+  | "unseen_form_used"
+  | "unsafe_production_target";
 
 export type Finding = {
   severity: FindingSeverity;
