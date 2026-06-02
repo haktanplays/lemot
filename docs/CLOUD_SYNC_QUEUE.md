@@ -155,6 +155,18 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 - Status: PENDING
 - Operator notes:
 
+### 2026-06-02 — PR #39 L11→L12→L16 chain smoke baseline merged
+
+- Date: 2026-06-02
+- Cloud branch: `claude/merge-pr-39-main-MH7Mq`
+- Decision/change: PR #39 (docs-only) squash-merged into `main`. Records the first connected executable lesson **chain** — L11 (Pouvoir-light) → L12 (Est-ce que wrapper) → L16 (Integration + A Small Moment seed) — all on-device smoke PASS (Pixel_8 AVD / Android 15 SDK 35 / Expo Go 55.0.5, route `/dev/learning-engine-player`). L11 owns the pouvoir-light base clauses + SHARED carry-in (`chunk:je-peux-faire-ca` / `chunk:vous-pouvez-m-aider` defined once in `SHARED_ITEMS`, `firstIntroducedIn: "L11"`); L12 consumes them `supported`; L16 is the first ZERO-new-item cross-lesson recombination fixture (no `L16_ITEMS` map; `items.ts` untouched). Single new file: `docs/status/learning-engine-l11-l12-l16-chain-smoke-baseline.md`. No code / runtime / player / schema / fixture change; learning-engine stays a dev-only experiment parallel to live v7. Verified post-merge in cloud: `npm run validate:content` → 0 hard errors / 0 warnings / 0 info; `npm run typecheck` → clean.
+- Source PR or commit: PR #39 / squash merge `ebf328c` (base `5b4470c`)
+- Obsidian target: `LeMot.md` (status log: PR #39 chain smoke baseline landed @ `ebf328c`); optionally `LeMot - User Journey.md` to note the L11→L12→L16 chain is dev-only-validated, not adopted.
+- Mempalace action: optional `add_drawer` — durable status milestone: "L11→L12→L16 first connected executable lesson chain smoke-verified PASS; L16 first zero-new-item recombination fixture; learning-engine remains dev-only parallel to v7."
+- Operator action: docs sync (`LeMot.md` status); product insight to carry forward — the L16 `context_chain` / A Small Moment seed prefigures the future chained context-card / enriched-flashcard learner UI (debug surface ≠ learner UI).
+- Status: PENDING
+- Operator notes:
+
 ## Archive
 
 (drained rows older than the current sprint can be moved here in a docs-only PR)
