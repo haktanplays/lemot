@@ -65,6 +65,55 @@ export function validateContent(input: ValidationInput): Finding[] {
 
   const knownItemIds = new Set(Object.keys(items));
 
+  // ── Fixture-wiring checks (structural — run BEFORE the per-contract loop) ──
+  // The per-contract loop below filters exercises by lessonId, so an exercise
+  // whose lessonId has no matching contract would be silently skipped (its
+  // targets / operations never validated). These checks fail loudly on that and
+  // on duplicate contract / exercise ids.
+  const contractIds = new Set<string>();
+  for (const contract of contracts) {
+    if (contractIds.has(contract.id)) {
+      findings.push({
+        severity: "error",
+        code: "duplicate_contract_id",
+        lessonId: contract.id,
+        message: `Contract id "${contract.id}" is defined more than once in the validation input.`,
+        suggestion:
+          "Each lesson contract id must be unique. Remove or rename the duplicate.",
+      });
+    } else {
+      contractIds.add(contract.id);
+    }
+  }
+
+  const seenExerciseIds = new Set<string>();
+  for (const exercise of exercises) {
+    if (seenExerciseIds.has(exercise.id)) {
+      findings.push({
+        severity: "error",
+        code: "duplicate_exercise_id",
+        lessonId: exercise.lessonId,
+        exerciseId: exercise.id,
+        message: `Exercise id "${exercise.id}" is defined more than once in the validation input.`,
+        suggestion:
+          "Each exercise id must be unique. Remove or rename the duplicate.",
+      });
+    } else {
+      seenExerciseIds.add(exercise.id);
+    }
+    if (!contractIds.has(exercise.lessonId)) {
+      findings.push({
+        severity: "error",
+        code: "exercise_without_contract",
+        lessonId: exercise.lessonId,
+        exerciseId: exercise.id,
+        message: `Exercise "${exercise.id}" has lessonId "${exercise.lessonId}", which has no matching contract — it would be silently skipped by validation.`,
+        suggestion:
+          "Add a contract with this id, or fix the exercise's lessonId.",
+      });
+    }
+  }
+
   // ── Item-level checks ──────────────────────────────────────────────────
   for (const item of Object.values(items)) {
     // 2. invalid_preset
