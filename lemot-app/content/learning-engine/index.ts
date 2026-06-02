@@ -30,6 +30,8 @@ export { L14_CONTRACT } from "./lessons/L14.contract";
 export { L14_EXERCISES } from "./lessons/L14.exercises";
 export { L15_CONTRACT } from "./lessons/L15.contract";
 export { L15_EXERCISES } from "./lessons/L15.exercises";
+export { L16_CONTRACT } from "./lessons/L16.contract";
+export { L16_EXERCISES } from "./lessons/L16.exercises";
 export { L18_CONTRACT } from "./lessons/L18.contract";
 export { L18_EXERCISES } from "./lessons/L18.exercises";
 export { validateContent, formatReport } from "./validate";
@@ -57,6 +59,8 @@ import { L14_CONTRACT } from "./lessons/L14.contract";
 import { L14_EXERCISES } from "./lessons/L14.exercises";
 import { L15_CONTRACT } from "./lessons/L15.contract";
 import { L15_EXERCISES } from "./lessons/L15.exercises";
+import { L16_CONTRACT } from "./lessons/L16.contract";
+import { L16_EXERCISES } from "./lessons/L16.exercises";
 import { L18_CONTRACT } from "./lessons/L18.contract";
 import { L18_EXERCISES } from "./lessons/L18.exercises";
 import { mergeItemMapsStrict } from "./registry";
@@ -125,6 +129,29 @@ export const L15_CONTENT_FIXTURE: ValidationInput = {
 };
 
 /**
+ * L16 fixture only — Integration + A Small Moment (Pause & Ask). Pure
+ * recombination: L16 defines NO items of its own, so this standalone fixture
+ * merges the source maps that DEFINE the chunks it reuses — SHARED_ITEMS
+ * (je-peux-faire-ca / vous-pouvez-m-aider), L11_ITEMS (je-peux-faire-une-pause-q),
+ * L12_ITEMS (est-ce-que-je-peux-faire-ca / est-ce-que-vous-pouvez-m-aider), and
+ * L15_ITEMS (il-faut-faire-une-pause). Each id is still defined exactly once
+ * across those maps, so the duplicate-id guard holds; their unreferenced hooks
+ * come along harmlessly (the validator only checks referenced items). L14/L18 are
+ * deliberately NOT merged — L16 reopens no y-light / futur scope.
+ */
+export const L16_CONTENT_FIXTURE: ValidationInput = {
+  items: mergeItemMapsStrict([
+    { name: "SHARED_ITEMS", items: SHARED_ITEMS },
+    { name: "L11_ITEMS", items: L11_ITEMS },
+    { name: "L12_ITEMS", items: L12_ITEMS },
+    { name: "L15_ITEMS", items: L15_ITEMS },
+  ]),
+  presets: PRESETS,
+  contracts: [L16_CONTRACT],
+  exercises: L16_EXERCISES,
+};
+
+/**
  * L18 fixture only — the futur-proche doorway boundary lesson. Its aller
  * carry-in («je-vais» / «on-va») now comes from SHARED_ITEMS (no longer reached
  * out of L14_ITEMS), merged in strictly so the standalone fixture validates
@@ -143,7 +170,8 @@ export const L18_CONTENT_FIXTURE: ValidationInput = {
 /**
  * Aggregate of every lesson fixture — one shared item registry, all contracts,
  * all exercises. The validator runner checks this so a single pass covers L1,
- * L11, L12, L14, L15, and L18 together.
+ * L11, L12, L14, L15, L16, and L18 together. L16 adds no item map — it is a pure
+ * integration fixture over items already defined by the other maps.
  *
  * `mergeItemMapsStrict` HARD-FAILS at import if any item id is defined in more
  * than one map (e.g. a lesson accidentally redefining a SHARED_ITEMS carry-in),
@@ -166,6 +194,7 @@ export const LEARNING_ENGINE_FIXTURE: ValidationInput = {
     L12_CONTRACT,
     L14_CONTRACT,
     L15_CONTRACT,
+    L16_CONTRACT,
     L18_CONTRACT,
   ],
   exercises: [
@@ -174,6 +203,7 @@ export const LEARNING_ENGINE_FIXTURE: ValidationInput = {
     ...L12_EXERCISES,
     ...L14_EXERCISES,
     ...L15_EXERCISES,
+    ...L16_EXERCISES,
     ...L18_EXERCISES,
   ],
 };
