@@ -7,29 +7,39 @@ import {
   type TextStyle,
 } from "react-native";
 import { P } from "@/constants/theme";
-import type { ExerciseBlueprint } from "@/content/learning-engine";
+import type { ExerciseBlueprint, RawItem } from "@/content/learning-engine";
 import { LearnerLessonHeader } from "./LearnerLessonHeader";
 import { RecognitionCard } from "./RecognitionCard";
 import { FillCard } from "./FillCard";
+import { BuildCard } from "./BuildCard";
+import { RegisterSwitchCard } from "./RegisterSwitchCard";
 import { UnsupportedCard } from "./UnsupportedCard";
 
 /**
- * Learner renderer shell (P3.3).
+ * Learner renderer shell (P3.4).
  *
  * Calm, premium, LABEL-FREE surface over a learning-engine fixture. It holds the
- * card-progression cursor and renders one card at a time: recognition + fill are
- * interactive (P3.3); build / register_switch / context_chain show a learner-safe
- * placeholder until later P3 PRs. The exercise id is used only as a React key
- * (never shown). No events, NO LocalRepository, NO scoreEvents()/mastery, NO
- * storage / network / AI — `grade()` (inside FillCard) drives on-screen feedback
- * only.
+ * card-progression cursor and renders one card at a time: recognition, fill,
+ * build, and register_switch are interactive (P3.3 + P3.4); context_chain (and a
+ * tile-less build) show a learner-safe placeholder until later P3 PRs. The
+ * exercise id is used only as a React key (never shown). No events, NO
+ * LocalRepository, NO scoreEvents()/mastery, NO storage / network / AI — `grade()`
+ * (inside the input cards) drives on-screen feedback only.
  */
-function renderCard(ex: ExerciseBlueprint) {
+function renderCard(ex: ExerciseBlueprint, items: Record<string, RawItem>) {
   switch (ex.operation) {
     case "recognition":
       return <RecognitionCard key={ex.id} exercise={ex} />;
     case "fill":
       return <FillCard key={ex.id} exercise={ex} />;
+    case "build":
+      return ex.tiles && ex.tiles.length > 0 ? (
+        <BuildCard key={ex.id} exercise={ex} items={items} />
+      ) : (
+        <UnsupportedCard key={ex.id} />
+      );
+    case "register_switch":
+      return <RegisterSwitchCard key={ex.id} exercise={ex} />;
     default:
       return <UnsupportedCard key={ex.id} />;
   }
@@ -38,9 +48,11 @@ function renderCard(ex: ExerciseBlueprint) {
 export function LearnerRendererShell({
   canDo,
   exercises,
+  items,
 }: {
   canDo: string;
   exercises: ExerciseBlueprint[];
+  items: Record<string, RawItem>;
 }) {
   const [idx, setIdx] = useState(0);
   const total = exercises.length;
@@ -57,7 +69,7 @@ export function LearnerRendererShell({
               Card {idx + 1} of {total}
             </Text>
 
-            <View style={{ flex: 1 }}>{renderCard(current)}</View>
+            <View style={{ flex: 1 }}>{renderCard(current, items)}</View>
 
             <View style={navRow}>
               <Pressable
