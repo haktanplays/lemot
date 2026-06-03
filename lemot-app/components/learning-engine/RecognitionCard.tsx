@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { View, Text, Pressable, type ViewStyle, type TextStyle } from "react-native";
 import { P } from "@/constants/theme";
 import type { ExerciseBlueprint } from "@/content/learning-engine";
@@ -24,10 +24,16 @@ export function RecognitionCard({
   onReveal?: () => void;
 }) {
   const [revealed, setRevealed] = useState(false);
+  // Record the reveal exactly once for the card's lifetime — a later hide/show
+  // must NOT append another recognition event.
+  const hasRecordedReveal = useRef(false);
   const meaning = exercise.displayAnswer ?? exercise.targetText ?? "";
 
   const toggle = () => {
-    if (!revealed) onReveal?.(); // fire once, on first reveal (not on hide)
+    if (!revealed && !hasRecordedReveal.current) {
+      hasRecordedReveal.current = true;
+      onReveal?.();
+    }
     setRevealed((r) => !r);
   };
 
