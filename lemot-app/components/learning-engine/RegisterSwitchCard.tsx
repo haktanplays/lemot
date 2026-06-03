@@ -11,6 +11,7 @@ import { P } from "@/constants/theme";
 import type { ExerciseBlueprint } from "@/content/learning-engine";
 import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
+import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
 
 /**
@@ -21,22 +22,32 @@ import { friendlyFeedback, isPositive } from "./feedbackCopy";
  * `grade()` (operation "register_switch") against the exercise's target form and
  * shows CALM feedback. The technical operation name is never shown.
  *
- * No events, NO LocalRepository, NO mastery — `grade()` drives on-screen
- * feedback only.
+ * The card does NOT import `LocalRepository`, construct events, or update
+ * mastery — `grade()` drives on-screen feedback, and on Check it hands the result
+ * up via the optional `onGradedAttempt` callback (the session controller builds +
+ * appends the event upstream, P3.6).
  */
 type RegisterSwitchEx = Extract<ExerciseBlueprint, { operation: "register_switch" }>;
 
-export function RegisterSwitchCard({ exercise }: { exercise: RegisterSwitchEx }) {
+export function RegisterSwitchCard({
+  exercise,
+  onGradedAttempt,
+}: {
+  exercise: RegisterSwitchEx;
+  onGradedAttempt?: GradedAttemptHandler;
+}) {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<ErrorTagCode | null>(null);
 
   const onCheck = () => {
+    const expectedAnswer = exercise.politeForm;
     const graded = grade({
       operation: "register_switch",
       userAnswer: input,
-      expectedAnswer: exercise.politeForm,
+      expectedAnswer,
     });
     setResult(graded.result);
+    onGradedAttempt?.({ userAnswer: input, expectedAnswer, gradeResult: graded });
   };
 
   const feedback = result ? friendlyFeedback(result) : null;

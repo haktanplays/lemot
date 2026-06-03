@@ -10,6 +10,7 @@ import { P } from "@/constants/theme";
 import type { ExerciseBlueprint, RawItem } from "@/content/learning-engine";
 import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
+import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
 
 /**
@@ -21,18 +22,22 @@ import { friendlyFeedback, isPositive } from "./feedbackCopy";
  * exercise's `targetText`, showing CALM, learner-friendly feedback. Tile surface
  * text is resolved from the item registry (`items[itemId].text.fr`).
  *
- * No events, NO LocalRepository, NO mastery — `grade()` drives on-screen
- * feedback only. NEVER shows operation labels, exercise ids, ownership-bucket
- * names, validator language, or raw tag names.
+ * The card does NOT import `LocalRepository`, construct events, or update
+ * mastery — `grade()` drives on-screen feedback, and on Check it hands the result
+ * up via the optional `onGradedAttempt` callback (the session controller builds +
+ * appends the event upstream, P3.6). NEVER shows operation labels, exercise ids,
+ * ownership-bucket names, validator language, or raw tag names.
  */
 type BuildEx = Extract<ExerciseBlueprint, { operation: "build" }>;
 
 export function BuildCard({
   exercise,
   items,
+  onGradedAttempt,
 }: {
   exercise: BuildEx;
   items: Record<string, RawItem>;
+  onGradedAttempt?: GradedAttemptHandler;
 }) {
   const tiles = exercise.tiles ?? [];
   // Learner-safe fallback: never leak a raw item id into the UI. The validator
@@ -46,12 +51,10 @@ export function BuildCard({
 
   const onCheck = () => {
     const userAnswer = picked.map((i) => surface(tiles[i].itemId)).join(" ");
-    const graded = grade({
-      operation: "build",
-      userAnswer,
-      expectedAnswer: exercise.targetText ?? null,
-    });
+    const expectedAnswer = exercise.targetText ?? null;
+    const graded = grade({ operation: "build", userAnswer, expectedAnswer });
     setResult(graded.result);
+    onGradedAttempt?.({ userAnswer, expectedAnswer, gradeResult: graded });
   };
 
   const reset = () => {

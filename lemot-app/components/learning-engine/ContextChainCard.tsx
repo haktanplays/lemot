@@ -11,6 +11,7 @@ import { P } from "@/constants/theme";
 import type { ExerciseBlueprint } from "@/content/learning-engine";
 import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
+import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
 
 /**
@@ -24,11 +25,20 @@ import { friendlyFeedback, isPositive } from "./feedbackCopy";
  * "context_chain") for friendly, local on-screen feedback. Advancing requires a
  * positive result; the last step leads to a calm completion state.
  *
- * No events, NO LocalRepository, NO mastery, NO persistence — nothing is saved.
+ * The card does NOT import `LocalRepository`, construct events, or update mastery.
+ * On each step Check it hands the result up via the optional `onGradedAttempt`
+ * callback (the session controller builds + appends the event upstream, P3.6);
+ * the completion state itself is local-only and writes nothing.
  */
 type ContextChainEx = Extract<ExerciseBlueprint, { operation: "context_chain" }>;
 
-export function ContextChainCard({ exercise }: { exercise: ContextChainEx }) {
+export function ContextChainCard({
+  exercise,
+  onGradedAttempt,
+}: {
+  exercise: ContextChainEx;
+  onGradedAttempt?: GradedAttemptHandler;
+}) {
   const steps = exercise.steps;
   const [idx, setIdx] = useState(0);
   const [input, setInput] = useState("");
@@ -43,12 +53,14 @@ export function ContextChainCard({ exercise }: { exercise: ContextChainEx }) {
 
   const onCheck = () => {
     if (!step) return;
+    const expectedAnswer = step.answer;
     const graded = grade({
       operation: "context_chain",
       userAnswer: input,
-      expectedAnswer: step.answer,
+      expectedAnswer,
     });
     setResult(graded.result);
+    onGradedAttempt?.({ userAnswer: input, expectedAnswer, gradeResult: graded });
   };
 
   const onAdvance = () => {
