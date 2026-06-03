@@ -13,18 +13,20 @@ import { RecognitionCard } from "./RecognitionCard";
 import { FillCard } from "./FillCard";
 import { BuildCard } from "./BuildCard";
 import { RegisterSwitchCard } from "./RegisterSwitchCard";
+import { ContextChainCard } from "./ContextChainCard";
 import { UnsupportedCard } from "./UnsupportedCard";
 
 /**
- * Learner renderer shell (P3.4).
+ * Learner renderer shell (P3.5).
  *
  * Calm, premium, LABEL-FREE surface over a learning-engine fixture. It holds the
  * card-progression cursor and renders one card at a time: recognition, fill,
- * build, and register_switch are interactive (P3.3 + P3.4); context_chain (and a
- * tile-less build) show a learner-safe placeholder until later P3 PRs. The
- * exercise id is used only as a React key (never shown). No events, NO
- * LocalRepository, NO scoreEvents()/mastery, NO storage / network / AI — `grade()`
- * (inside the input cards) drives on-screen feedback only.
+ * build, register_switch, and context_chain ("A small moment") are all
+ * interactive (P3.3–P3.5); a tile-less build (and any future/unknown operation)
+ * shows a learner-safe placeholder. The exercise id is used only as a React key
+ * (never shown). No events, NO LocalRepository, NO scoreEvents()/mastery, NO
+ * storage / network / AI — `grade()` (inside the input cards) drives on-screen
+ * feedback only.
  */
 function renderCard(ex: ExerciseBlueprint, items: Record<string, RawItem>) {
   switch (ex.operation) {
@@ -40,8 +42,12 @@ function renderCard(ex: ExerciseBlueprint, items: Record<string, RawItem>) {
       );
     case "register_switch":
       return <RegisterSwitchCard key={ex.id} exercise={ex} />;
+    case "context_chain":
+      return <ContextChainCard key={ex.id} exercise={ex} />;
     default:
-      return <UnsupportedCard key={ex.id} />;
+      // Defensive: all current ExerciseBlueprint operations are handled above
+      // (so `ex` is `never` here). Guards against a future operation variant.
+      return <UnsupportedCard key="unsupported" />;
   }
 }
 
