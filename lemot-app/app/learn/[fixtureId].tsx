@@ -84,5 +84,10 @@ export default function LearnRoute() {
     return <Fallback message="This lesson isn't ready yet." />;
   }
 
-  return <LearnerRendererShell canDo={contract.goal.canDo} />;
+  return (
+    <LearnerRendererShell
+      canDo={contract.goal.canDo}
+      exercises={fixture.exercises}
+    />
+  );
 }
