@@ -14,39 +14,42 @@ import type { ErrorTagCode } from "@/content/learning-engine/events";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
 
 /**
- * Learner-facing fill / input card (P3.3).
+ * Learner-facing "say it more clearly" card (P3.4) — the soft register-shift.
  *
- * Local input only. On "Check" it runs the deterministic `grade()` and shows
- * CALM, learner-friendly feedback (shared `feedbackCopy`). Does NOT create a
- * LearningEvent, write to LocalRepository, or update mastery — grading is purely
- * for on-screen feedback. Raw ErrorTagCode names are never shown.
+ * Shows the casual/too-direct phrase and invites the learner to type the
+ * clearer / more standard version. On "Check" it runs the deterministic
+ * `grade()` (operation "register_switch") against the exercise's target form and
+ * shows CALM feedback. The technical operation name is never shown.
  *
- * Expected answer comes from the exercise's `targetText`. Accepted-variant /
- * boundary-form lists are intentionally omitted (not safely resolvable here
- * without extra graph wiring) — `grade()` defaults apply.
+ * No events, NO LocalRepository, NO mastery — `grade()` drives on-screen
+ * feedback only.
  */
-type FillEx = Extract<ExerciseBlueprint, { operation: "fill" }>;
+type RegisterSwitchEx = Extract<ExerciseBlueprint, { operation: "register_switch" }>;
 
-export function FillCard({ exercise }: { exercise: FillEx }) {
+export function RegisterSwitchCard({ exercise }: { exercise: RegisterSwitchEx }) {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<ErrorTagCode | null>(null);
 
   const onCheck = () => {
     const graded = grade({
-      operation: "fill",
+      operation: "register_switch",
       userAnswer: input,
-      expectedAnswer: exercise.targetText ?? null,
+      expectedAnswer: exercise.politeForm,
     });
     setResult(graded.result);
   };
 
   const feedback = result ? friendlyFeedback(result) : null;
-  const positive = result ? isPositive(result) : false;
-  const accent = positive ? P.green : P.amber;
+  const accent = result && isPositive(result) ? P.green : P.amber;
 
   return (
     <View style={card}>
       {exercise.prompt ? <Text style={promptText}>{exercise.prompt}</Text> : null}
+
+      <View style={sourceBox}>
+        <Text style={sourceLabel}>You hear</Text>
+        <Text style={sourceText}>{exercise.directForm}</Text>
+      </View>
 
       <TextInput
         value={input}
@@ -54,7 +57,7 @@ export function FillCard({ exercise }: { exercise: FillEx }) {
           setInput(t);
           setResult(null);
         }}
-        placeholder="Type your answer…"
+        placeholder="Say it more clearly…"
         placeholderTextColor={P.ink3}
         autoCapitalize="none"
         autoCorrect={false}
@@ -88,6 +91,24 @@ const promptText: TextStyle = {
   color: P.ink,
   fontSize: 18,
   lineHeight: 26,
+  fontFamily: "Newsreader",
+};
+const sourceBox: ViewStyle = {
+  borderRadius: 12,
+  borderWidth: 1,
+  borderColor: P.border,
+  backgroundColor: P.bg,
+  padding: 14,
+  gap: 2,
+};
+const sourceLabel: TextStyle = {
+  color: P.ink3,
+  fontSize: 12,
+  fontFamily: "Outfit",
+};
+const sourceText: TextStyle = {
+  color: P.ink2,
+  fontSize: 16,
   fontFamily: "Newsreader",
 };
 const inputBox: TextStyle = {

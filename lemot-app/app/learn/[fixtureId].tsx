@@ -91,6 +91,7 @@ export default function LearnRoute() {
     <LearnerRendererShell
       canDo={contract.goal.canDo}
       exercises={fixture.exercises}
+      items={fixture.items}
     />
   );
 }
