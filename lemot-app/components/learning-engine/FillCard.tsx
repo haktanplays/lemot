@@ -11,15 +11,18 @@ import { P } from "@/constants/theme";
 import type { ExerciseBlueprint } from "@/content/learning-engine";
 import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
+import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
 
 /**
  * Learner-facing fill / input card (P3.3).
  *
  * Local input only. On "Check" it runs the deterministic `grade()` and shows
- * CALM, learner-friendly feedback (shared `feedbackCopy`). Does NOT create a
- * LearningEvent, write to LocalRepository, or update mastery — grading is purely
- * for on-screen feedback. Raw ErrorTagCode names are never shown.
+ * CALM, learner-friendly feedback (shared `feedbackCopy`). The card itself does
+ * NOT import `LocalRepository`, construct events, or update mastery — on Check it
+ * hands the result up via the optional `onGradedAttempt` callback (the session
+ * controller builds + appends the event upstream, P3.6). Raw ErrorTagCode names
+ * are never shown.
  *
  * Expected answer comes from the exercise's `targetText`. Accepted-variant /
  * boundary-form lists are intentionally omitted (not safely resolvable here
@@ -27,17 +30,25 @@ import { friendlyFeedback, isPositive } from "./feedbackCopy";
  */
 type FillEx = Extract<ExerciseBlueprint, { operation: "fill" }>;
 
-export function FillCard({ exercise }: { exercise: FillEx }) {
+export function FillCard({
+  exercise,
+  onGradedAttempt,
+}: {
+  exercise: FillEx;
+  onGradedAttempt?: GradedAttemptHandler;
+}) {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<ErrorTagCode | null>(null);
 
   const onCheck = () => {
+    const expectedAnswer = exercise.targetText ?? null;
     const graded = grade({
       operation: "fill",
       userAnswer: input,
-      expectedAnswer: exercise.targetText ?? null,
+      expectedAnswer,
     });
     setResult(graded.result);
+    onGradedAttempt?.({ userAnswer: input, expectedAnswer, gradeResult: graded });
   };
 
   const feedback = result ? friendlyFeedback(result) : null;

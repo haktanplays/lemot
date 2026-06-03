@@ -15,9 +15,21 @@ import type { ExerciseBlueprint } from "@/content/learning-engine";
  */
 type RecognitionEx = Extract<ExerciseBlueprint, { operation: "recognition" }>;
 
-export function RecognitionCard({ exercise }: { exercise: RecognitionEx }) {
+export function RecognitionCard({
+  exercise,
+  onReveal,
+}: {
+  exercise: RecognitionEx;
+  /** Called once, when the learner first reveals the meaning (not on hide). */
+  onReveal?: () => void;
+}) {
   const [revealed, setRevealed] = useState(false);
   const meaning = exercise.displayAnswer ?? exercise.targetText ?? "";
+
+  const toggle = () => {
+    if (!revealed) onReveal?.(); // fire once, on first reveal (not on hide)
+    setRevealed((r) => !r);
+  };
 
   return (
     <View style={card}>
@@ -29,7 +41,7 @@ export function RecognitionCard({ exercise }: { exercise: RecognitionEx }) {
         </View>
       ) : null}
 
-      <Pressable onPress={() => setRevealed((r) => !r)} style={primaryBtn}>
+      <Pressable onPress={toggle} style={primaryBtn}>
         <Text style={primaryBtnText}>{revealed ? "Hide" : "Show me"}</Text>
       </Pressable>
     </View>

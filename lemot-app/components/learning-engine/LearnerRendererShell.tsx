@@ -15,35 +15,81 @@ import { BuildCard } from "./BuildCard";
 import { RegisterSwitchCard } from "./RegisterSwitchCard";
 import { ContextChainCard } from "./ContextChainCard";
 import { UnsupportedCard } from "./UnsupportedCard";
+import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
 /**
- * Learner renderer shell (P3.5).
+ * Learner renderer shell (P3.6).
  *
  * Calm, premium, LABEL-FREE surface over a learning-engine fixture. It holds the
- * card-progression cursor and renders one card at a time: recognition, fill,
- * build, register_switch, and context_chain ("A small moment") are all
- * interactive (P3.3–P3.5); a tile-less build (and any future/unknown operation)
+ * card-progression cursor and renders one card at a time (recognition, fill,
+ * build, register_switch, context_chain); a tile-less build / future operation
  * shows a learner-safe placeholder. The exercise id is used only as a React key
- * (never shown). No events, NO LocalRepository, NO scoreEvents()/mastery, NO
- * storage / network / AI — `grade()` (inside the input cards) drives on-screen
- * feedback only.
+ * (never shown).
+ *
+ * P3.6 wires the first event loop: on each Check (and on a recognition reveal),
+ * the card hands its result up to the session controller, which builds a full
+ * `LearningEvent` and appends it through a SERIALIZED queue. Cards never touch
+ * `LocalRepository` directly. NO scoreEvents()/mastery (P3.7), NO Mon Lexique /
+ * Practice Pool, NO Supabase / network / AI. `grade()` still drives the visible
+ * feedback.
  */
-function renderCard(ex: ExerciseBlueprint, items: Record<string, RawItem>) {
+function renderCard(
+  ex: ExerciseBlueprint,
+  items: Record<string, RawItem>,
+  session: LearnerSession,
+) {
   switch (ex.operation) {
     case "recognition":
-      return <RecognitionCard key={ex.id} exercise={ex} />;
+      return (
+        <RecognitionCard
+          key={ex.id}
+          exercise={ex}
+          onReveal={() => session.recordRecognitionReveal({ exercise: ex })}
+        />
+      );
     case "fill":
-      return <FillCard key={ex.id} exercise={ex} />;
+      return (
+        <FillCard
+          key={ex.id}
+          exercise={ex}
+          onGradedAttempt={(p) =>
+            session.recordGradedAttempt({ exercise: ex, ...p })
+          }
+        />
+      );
     case "build":
       return ex.tiles && ex.tiles.length > 0 ? (
-        <BuildCard key={ex.id} exercise={ex} items={items} />
+        <BuildCard
+          key={ex.id}
+          exercise={ex}
+          items={items}
+          onGradedAttempt={(p) =>
+            session.recordGradedAttempt({ exercise: ex, ...p })
+          }
+        />
       ) : (
         <UnsupportedCard key={ex.id} />
       );
     case "register_switch":
-      return <RegisterSwitchCard key={ex.id} exercise={ex} />;
+      return (
+        <RegisterSwitchCard
+          key={ex.id}
+          exercise={ex}
+          onGradedAttempt={(p) =>
+            session.recordGradedAttempt({ exercise: ex, ...p })
+          }
+        />
+      );
     case "context_chain":
-      return <ContextChainCard key={ex.id} exercise={ex} />;
+      return (
+        <ContextChainCard
+          key={ex.id}
+          exercise={ex}
+          onGradedAttempt={(p) =>
+            session.recordGradedAttempt({ exercise: ex, ...p })
+          }
+        />
+      );
     default:
       // Defensive: all current ExerciseBlueprint operations are handled above
       // (so `ex` is `never` here). Guards against a future operation variant.
@@ -55,11 +101,16 @@ export function LearnerRendererShell({
   canDo,
   exercises,
   items,
+  lessonId,
+  contentVersion,
 }: {
   canDo: string;
   exercises: ExerciseBlueprint[];
   items: Record<string, RawItem>;
+  lessonId: string;
+  contentVersion: string;
 }) {
+  const session = useLearningEngineSession({ lessonId, contentVersion });
   const [idx, setIdx] = useState(0);
   const total = exercises.length;
   const current = total > 0 ? exercises[idx] : undefined;
@@ -75,7 +126,7 @@ export function LearnerRendererShell({
               Card {idx + 1} of {total}
             </Text>
 
-            <View style={{ flex: 1 }}>{renderCard(current, items)}</View>
+            <View style={{ flex: 1 }}>{renderCard(current, items, session)}</View>
 
             <View style={navRow}>
               <Pressable
