@@ -35,7 +35,9 @@ export function BuildCard({
   items: Record<string, RawItem>;
 }) {
   const tiles = exercise.tiles ?? [];
-  const surface = (id: string): string => items[id]?.text.fr ?? id;
+  // Learner-safe fallback: never leak a raw item id into the UI. The validator
+  // normally guarantees every tile resolves, so "…" should not appear in practice.
+  const surface = (id: string): string => items[id]?.text.fr ?? "…";
 
   const [picked, setPicked] = useState<number[]>([]);
   const [result, setResult] = useState<ErrorTagCode | null>(null);
