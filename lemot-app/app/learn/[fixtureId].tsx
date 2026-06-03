@@ -15,15 +15,18 @@ import {
 import { LearnerRendererShell } from "@/components/learning-engine/LearnerRendererShell";
 
 /**
- * Founder learner-renderer route (P3.2 skeleton).
+ * Founder learner-renderer route (Sprint13 SW.2).
  *
- * Sandbox/founder-only surface (Sprint13 SW.2). It is NOT wired into public
- * navigation and must never render its learner shell in dev-apk / public-beta —
- * a manual deep link in a disallowed stage gets a safe "unavailable" fallback.
- * The dev player (`app/dev/learning-engine-player.tsx`) stays the debug surface.
+ * Sandbox/founder-only surface. It is NOT wired into public navigation and must
+ * never render its learner shell in dev-apk / public-beta — a manual deep link
+ * in a disallowed stage gets a safe "unavailable" fallback. The dev player
+ * (`app/dev/learning-engine-player.tsx`) stays the debug surface.
  *
- * P3.2 scope: gated route + label-free shell + fixture metadata only. NO events,
- * NO LocalRepository, NO grade()/scoreEvents()/mastery, NO storage/network/AI.
+ * P3.3 scope: gated route + label-free shell rendering recognition + fill cards.
+ * `FillCard` may call `grade()` for local, deterministic on-screen feedback.
+ * Still NO events, NO LearningEvent creation, NO LocalRepository, NO storage,
+ * NO scoreEvents()/mastery, NO network/AI. This route file itself writes nothing
+ * — it only gates the stage and loads a fixture.
  */
 
 // Founder gate: only the sandbox stage with the v1 engine flag may render this.
