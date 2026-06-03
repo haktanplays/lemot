@@ -1,61 +1,140 @@
-import { View, Text } from "react-native";
+import { useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  type ViewStyle,
+  type TextStyle,
+} from "react-native";
 import { P } from "@/constants/theme";
+import type { ExerciseBlueprint } from "@/content/learning-engine";
 import { LearnerLessonHeader } from "./LearnerLessonHeader";
+import { RecognitionCard } from "./RecognitionCard";
+import { FillCard } from "./FillCard";
+import { UnsupportedCard } from "./UnsupportedCard";
 
 /**
- * Learner renderer shell (P3.2 skeleton).
+ * Learner renderer shell (P3.3).
  *
- * The first learner-facing surface over the learning-engine contracts — calm,
- * premium, and LABEL-FREE (no exercise/lesson ids, no operation labels, no
- * ownership-bucket names, no validator language). P3.2 renders only the lesson
- * header + a placeholder card area; real operation cards arrive in P3.3+.
- *
- * Pure presentation: NO events, NO LocalRepository, NO grade()/scoreEvents(),
- * NO storage / network / AI. It receives the lesson's learner-friendly `canDo`
- * string and nothing else.
+ * Calm, premium, LABEL-FREE surface over a learning-engine fixture. It holds the
+ * card-progression cursor and renders one card at a time: recognition + fill are
+ * interactive (P3.3); build / register_switch / context_chain show a learner-safe
+ * placeholder until later P3 PRs. The exercise id is used only as a React key
+ * (never shown). No events, NO LocalRepository, NO scoreEvents()/mastery, NO
+ * storage / network / AI — `grade()` (inside FillCard) drives on-screen feedback
+ * only.
  */
-export function LearnerRendererShell({ canDo }: { canDo: string }) {
+function renderCard(ex: ExerciseBlueprint) {
+  switch (ex.operation) {
+    case "recognition":
+      return <RecognitionCard key={ex.id} exercise={ex} />;
+    case "fill":
+      return <FillCard key={ex.id} exercise={ex} />;
+    default:
+      return <UnsupportedCard key={ex.id} />;
+  }
+}
+
+export function LearnerRendererShell({
+  canDo,
+  exercises,
+}: {
+  canDo: string;
+  exercises: ExerciseBlueprint[];
+}) {
+  const [idx, setIdx] = useState(0);
+  const total = exercises.length;
+  const current = total > 0 ? exercises[idx] : undefined;
+
   return (
-    <View style={{ flex: 1, backgroundColor: P.bg, paddingTop: 64 }}>
-      <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 24, gap: 16 }}>
+    <View style={screen}>
+      <View style={body}>
         <LearnerLessonHeader canDo={canDo} />
 
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              width: "100%",
-              borderRadius: 16,
-              borderWidth: 1,
-              borderColor: P.border,
-              backgroundColor: P.paper,
-              padding: 24,
-              gap: 6,
-            }}
-          >
-            <Text
-              style={{ color: P.ink3, fontSize: 13, fontFamily: "Outfit" }}
-            >
-              Coming up
+        {current ? (
+          <>
+            <Text style={countText}>
+              Card {idx + 1} of {total}
             </Text>
-            <Text
-              style={{
-                color: P.ink2,
-                fontSize: 16,
-                lineHeight: 24,
-                fontFamily: "Newsreader",
-              }}
-            >
-              Your first card will appear here.
-            </Text>
+
+            <View style={{ flex: 1 }}>{renderCard(current)}</View>
+
+            <View style={navRow}>
+              <Pressable
+                disabled={idx === 0}
+                onPress={() => setIdx((i) => Math.max(0, i - 1))}
+                style={[navBtn, idx === 0 ? dimmed : null]}
+              >
+                <Text style={navText}>Back</Text>
+              </Pressable>
+              <Pressable
+                disabled={idx >= total - 1}
+                onPress={() => setIdx((i) => Math.min(total - 1, i + 1))}
+                style={[navBtn, idx >= total - 1 ? dimmed : null]}
+              >
+                <Text style={navText}>Next</Text>
+              </Pressable>
+            </View>
+          </>
+        ) : (
+          <View style={placeholderArea}>
+            <View style={placeholderCard}>
+              <Text style={placeholderKicker}>Coming up</Text>
+              <Text style={placeholderBody}>
+                Your first card will appear here.
+              </Text>
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </View>
   );
 }
+
+const screen: ViewStyle = { flex: 1, backgroundColor: P.bg, paddingTop: 64 };
+const body: ViewStyle = {
+  flex: 1,
+  paddingHorizontal: 20,
+  paddingBottom: 24,
+  gap: 16,
+};
+const countText: TextStyle = {
+  color: P.ink3,
+  fontSize: 13,
+  fontFamily: "Outfit",
+};
+const navRow: ViewStyle = { flexDirection: "row", justifyContent: "space-between" };
+const navBtn: ViewStyle = {
+  borderRadius: 999,
+  borderWidth: 1,
+  borderColor: P.border,
+  paddingHorizontal: 20,
+  paddingVertical: 9,
+};
+const dimmed: ViewStyle = { opacity: 0.4 };
+const navText: TextStyle = { color: P.ink2, fontSize: 14, fontFamily: "Outfit" };
+const placeholderArea: ViewStyle = {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+};
+const placeholderCard: ViewStyle = {
+  width: "100%",
+  borderRadius: 16,
+  borderWidth: 1,
+  borderColor: P.border,
+  backgroundColor: P.paper,
+  padding: 24,
+  gap: 6,
+};
+const placeholderKicker: TextStyle = {
+  color: P.ink3,
+  fontSize: 13,
+  fontFamily: "Outfit",
+};
+const placeholderBody: TextStyle = {
+  color: P.ink2,
+  fontSize: 16,
+  lineHeight: 24,
+  fontFamily: "Newsreader",
+};
