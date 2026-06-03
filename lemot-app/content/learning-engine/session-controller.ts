@@ -1,5 +1,6 @@
 /**
- * Learner session controller (P3.6) — event creation + SERIALIZED local append.
+ * Learner session controller (P3.6 + P3.7) — event creation, SERIALIZED local
+ * append, and local MasterySnapshot derivation.
  *
  * Framework-agnostic core for the learner renderer. It turns a card result into a
  * full `LearningEvent` and appends it to a `LearningRepository` through an
@@ -8,18 +9,28 @@
  * `LocalRepository` writes must be serialized). UI components call this
  * controller — they must NEVER call `repository.appendEvent` directly.
  *
- * Boundaries (P3.6):
- *  - No mastery / scoreEvents (that is P3.7), no Mon Lexique / Practice Pool, no
- *    Supabase / RemoteRepository / network / AI.
+ * P3.7 closes the local loop: once an append SETTLES inside the serialized queue,
+ * the controller reads ALL events back (`readAllEvents`), folds them with the pure
+ * `scoreEvents()` reducer into a `MasterySnapshot`, and emits the new snapshot
+ * through `onUpdate`. Reading after the append settles (never before) keeps the
+ * derived snapshot consistent with what was just written, and reusing the
+ * serialized `tail` keeps the read ordered behind its own write.
+ *
+ * Boundaries (P3.7):
+ *  - The derived `MasterySnapshot` lives only in caller state. NO Mon Lexique /
+ *    Practice Pool / Daily Review surfaces, NO Supabase / RemoteRepository /
+ *    network / AI, NO snapshot persistence (the local snapshot is recomputed from
+ *    events each time, so `writeSnapshot` is not called here).
  *  - The ONE allowed impurity is event construction time: `now()` (default
  *    `Date.now`) stamps `timestamp` / `queuedAt`. `grade()`, the mastery reducer,
  *    and the repository stay pure — they never call `Date.now`.
- *  - `now` and `makeClientEventId` are injectable so the serialization can be
- *    unit-tested deterministically with a fake repository.
+ *  - `now` and `makeClientEventId` are injectable so the serialization + derivation
+ *    can be unit-tested deterministically with a fake repository.
  */
 import type { ExerciseBlueprint, ItemId } from "./types";
 import type { DeviceInfo, ErrorTagCode, LearningEvent } from "./events";
 import type { LearningRepository } from "./repository/types";
+import { scoreEvents, type MasterySnapshot } from "./mastery";
 
 /** Minimal grade-result shape the controller needs (a `GradeResult` satisfies it). */
 export type GradeResultLike = {
@@ -44,6 +55,24 @@ export type RecordRecognitionRevealInput = {
   exercise: ExerciseBlueprint;
 };
 
+/** Where the local save/derive loop currently is, for a calm learner hint. */
+export type SessionStatus = "idle" | "saving" | "saved" | "error";
+
+/**
+ * Observable session state the controller emits through `onUpdate`. The derived
+ * `MasterySnapshot` is held here (and, by the caller, in React state) — it is a
+ * pure projection of the locally stored events, never a persisted source.
+ */
+export type SessionState = {
+  status: SessionStatus;
+  /** Latest snapshot derived from ALL local events after the last settled append. */
+  latestSnapshot: MasterySnapshot | null;
+  /** Event count behind `latestSnapshot` (for founder-local sanity, not a learner label). */
+  lastEventCount: number;
+  /** Event-time of the last settled save (controller clock), or null before the first. */
+  lastSavedAt: number | null;
+};
+
 export type SessionControllerOptions = {
   repository: LearningRepository;
   sessionId: string;
@@ -55,6 +84,8 @@ export type SessionControllerOptions = {
   now?: () => number;
   /** Injectable id factory. Default is a founder-local id (NOT a remote-grade UUID). */
   makeClientEventId?: (timestamp: number) => string;
+  /** Notified whenever session state changes (saving → saved / error). */
+  onUpdate?: (state: SessionState) => void;
 };
 
 /**
@@ -77,11 +108,19 @@ export class LearningSessionController {
   private readonly deviceInfo: DeviceInfo;
   private readonly now: () => number;
   private readonly makeClientEventId: (timestamp: number) => string;
+  private readonly onUpdate?: (state: SessionState) => void;
 
   /** Serialized write queue — every append chains off the previous one. */
   private tail: Promise<void> = Promise.resolve();
   /** Per-exercise attempt counter (increments on each recorded action). */
   private readonly attempts = new Map<string, number>();
+  /** Last emitted state; the snapshot lives here until React state mirrors it. */
+  private current: SessionState = {
+    status: "idle",
+    latestSnapshot: null,
+    lastEventCount: 0,
+    lastSavedAt: null,
+  };
 
   constructor(opts: SessionControllerOptions) {
     this.repo = opts.repository;
@@ -92,6 +131,7 @@ export class LearningSessionController {
     this.deviceInfo = opts.deviceInfo ?? { platform: "founder-local" };
     this.now = opts.now ?? (() => Date.now());
     this.makeClientEventId = opts.makeClientEventId ?? makeLocalClientEventId;
+    this.onUpdate = opts.onUpdate;
   }
 
   /** Record one graded attempt (one event per Check, correct or wrong). */
@@ -101,6 +141,7 @@ export class LearningSessionController {
       input.gradeResult.errorTags.length > 0
         ? input.gradeResult.errorTags
         : [input.gradeResult.result];
+    this.emitSaving();
     this.enqueue(
       this.buildEvent({
         exercise: input.exercise,
@@ -111,6 +152,7 @@ export class LearningSessionController {
         result: input.gradeResult.result,
         errorTags,
       }),
+      timestamp,
     );
   }
 
@@ -122,6 +164,7 @@ export class LearningSessionController {
       (ex.operation === "recognition"
         ? ex.displayAnswer ?? ex.targetText
         : ex.targetText) ?? null;
+    this.emitSaving();
     this.enqueue(
       this.buildEvent({
         exercise: ex,
@@ -132,6 +175,7 @@ export class LearningSessionController {
         result: "correct",
         errorTags: ["correct"],
       }),
+      timestamp,
     );
   }
 
@@ -180,12 +224,42 @@ export class LearningSessionController {
     };
   }
 
-  private enqueue(event: LearningEvent): void {
+  private enqueue(event: LearningEvent, savedAt: number): void {
     this.tail = this.tail
       .then(() => this.repo.appendEvent(event))
+      // Derive ONLY after the append settles, and reuse the serialized tail so
+      // the read is ordered behind its own write (never a stale pre-append read).
+      .then(() => this.deriveAndNotify(savedAt))
       .catch(() => {
-        // Swallow append errors so the serialized chain keeps draining.
-        // (Founder-local; observability is added with the remote phase.)
+        // Append or derive failed — surface a calm error status, keep the chain
+        // draining. (Founder-local; richer observability lands with the remote phase.)
+        this.emit({ ...this.current, status: "error" });
       });
+  }
+
+  /**
+   * Read ALL local events back and fold them into a fresh `MasterySnapshot` with
+   * the pure `scoreEvents()` reducer, then emit it. Runs inside the serialized
+   * queue, after the triggering append has settled.
+   */
+  private async deriveAndNotify(savedAt: number): Promise<void> {
+    const events = await this.repo.readAllEvents();
+    const snapshot = scoreEvents(events);
+    this.emit({
+      status: "saved",
+      latestSnapshot: snapshot,
+      lastEventCount: events.length,
+      lastSavedAt: savedAt,
+    });
+  }
+
+  /** Mark the loop as in-flight without disturbing the last derived snapshot. */
+  private emitSaving(): void {
+    this.emit({ ...this.current, status: "saving" });
+  }
+
+  private emit(next: SessionState): void {
+    this.current = next;
+    this.onUpdate?.(next);
   }
 }
