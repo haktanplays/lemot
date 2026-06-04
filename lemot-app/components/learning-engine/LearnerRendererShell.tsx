@@ -18,7 +18,7 @@ import { UnsupportedCard } from "./UnsupportedCard";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
 /**
- * Learner renderer shell (P3.6).
+ * Learner renderer shell (P3.6 + P3.7).
  *
  * Calm, premium, LABEL-FREE surface over a learning-engine fixture. It holds the
  * card-progression cursor and renders one card at a time (recognition, fill,
@@ -26,13 +26,22 @@ import { useLearningEngineSession, type LearnerSession } from "./useLearningEngi
  * shows a learner-safe placeholder. The exercise id is used only as a React key
  * (never shown).
  *
- * P3.6 wires the first event loop: on each Check (and on a recognition reveal),
+ * P3.6 wired the first event loop: on each Check (and on a recognition reveal),
  * the card hands its result up to the session controller, which builds a full
- * `LearningEvent` and appends it through a SERIALIZED queue. Cards never touch
- * `LocalRepository` directly. NO scoreEvents()/mastery (P3.7), NO Mon Lexique /
- * Practice Pool, NO Supabase / network / AI. `grade()` still drives the visible
- * feedback.
+ * `LearningEvent` and appends it through a SERIALIZED queue. P3.7 closes the loop
+ * locally — after each append settles the controller derives a `MasterySnapshot`
+ * from all stored events and the hook mirrors it into `session.state`. The shell
+ * surfaces only a tiny, non-technical save hint from `session.state.status`;
+ * it NEVER renders the snapshot, item ids, counts, tags, or any mastery label.
+ * Cards never touch `LocalRepository`. NO Mon Lexique / Practice Pool / Daily
+ * Review, NO Supabase / network / AI. `grade()` still drives the visible feedback.
  */
+const SAVE_HINT: Record<string, string | null> = {
+  idle: null,
+  saving: "Saving…",
+  saved: "Progress saved locally.",
+  error: "Couldn't save just now.",
+};
 function renderCard(
   ex: ExerciseBlueprint,
   items: Record<string, RawItem>,
@@ -144,6 +153,10 @@ export function LearnerRendererShell({
                 <Text style={navText}>Next</Text>
               </Pressable>
             </View>
+
+            {SAVE_HINT[session.state.status] ? (
+              <Text style={saveHint}>{SAVE_HINT[session.state.status]}</Text>
+            ) : null}
           </>
         ) : (
           <View style={placeholderArea}>
@@ -182,6 +195,12 @@ const navBtn: ViewStyle = {
 };
 const dimmed: ViewStyle = { opacity: 0.4 };
 const navText: TextStyle = { color: P.ink2, fontSize: 14, fontFamily: "Outfit" };
+const saveHint: TextStyle = {
+  color: P.ink3,
+  fontSize: 12,
+  fontFamily: "Outfit",
+  textAlign: "center",
+};
 const placeholderArea: ViewStyle = {
   flex: 1,
   justifyContent: "center",
