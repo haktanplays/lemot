@@ -21,6 +21,7 @@ import { ContextChainCard } from "./ContextChainCard";
 import { BoundaryLaterFormCard } from "./BoundaryLaterFormCard";
 import { isBoundaryLaterForm } from "@/content/learning-engine/boundary";
 import { UnsupportedCard } from "./UnsupportedCard";
+import { MonLexiqueShell } from "./MonLexiqueShell";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
 /**
@@ -47,6 +48,10 @@ import { useLearningEngineSession, type LearnerSession } from "./useLearningEngi
  * calm "A form for later" card instead of a normal reveal — inline, never
  * gradeable, never asking the learner to produce the form. Its acknowledge reuses
  * the SAME recognition-reveal event path (no new event shape/operation).
+ *
+ * P4.3 surfaces a small `MonLexiqueShell` preview below the lesson, derived from
+ * the session's `latestSnapshot` via the pure Mon Lexique selector — read-only,
+ * writes nothing, and reuses the existing snapshot (no new store / no extra read).
  */
 const SAVE_HINT: Record<string, string | null> = {
   idle: null,
@@ -185,6 +190,8 @@ export function LearnerRendererShell({
             {SAVE_HINT[session.state.status] ? (
               <Text style={saveHint}>{SAVE_HINT[session.state.status]}</Text>
             ) : null}
+
+            <MonLexiqueShell items={items} snapshot={session.state.latestSnapshot} />
           </>
         ) : (
           <View style={placeholderArea}>
