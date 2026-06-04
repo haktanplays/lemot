@@ -23,6 +23,8 @@ import { isBoundaryLaterForm } from "@/content/learning-engine/boundary";
 import { UnsupportedCard } from "./UnsupportedCard";
 import { MonLexiqueShell } from "./MonLexiqueShell";
 import { selectMonLexiqueEntries } from "@/content/learning-engine/mon-lexique";
+import { PracticePoolShell } from "./PracticePoolShell";
+import { selectPracticePoolBuckets } from "@/content/learning-engine/practice-pool";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
 /**
@@ -55,6 +57,11 @@ import { useLearningEngineSession, type LearnerSession } from "./useLearningEngi
  * `latestSnapshot` and hands learner-safe entries to the DUMB `MonLexiqueShell`.
  * Read-only — it writes nothing and reuses the existing snapshot (no new store /
  * no extra read). A null snapshot yields the calm empty state.
+ *
+ * P4.5 adds a Practice Pool preview the same way: the shell runs the pure
+ * `selectPracticePoolBuckets` over the same snapshot and hands Build / Stretch /
+ * Challenge buckets to the DUMB `PracticePoolShell`. Read-only preview only — no
+ * practice execution, no event writing (P4.6 handles interaction).
  */
 const SAVE_HINT: Record<string, string | null> = {
   idle: null,
@@ -165,6 +172,20 @@ export function LearnerRendererShell({
     () => (snapshot ? selectMonLexiqueEntries({ items, snapshot }) : []),
     [items, snapshot],
   );
+  // Practice Pool preview (read-only). `now` comes from the snapshot's own
+  // `updatedAt` (a stable, deterministic value already in state) so due-ordering
+  // works without ever calling `Date.now` here or in the selector.
+  const practiceBuckets = useMemo(
+    () =>
+      snapshot
+        ? selectPracticePoolBuckets({
+            snapshot,
+            items,
+            now: snapshot.updatedAt ?? undefined,
+          })
+        : { build: [], stretch: [], challenge: [] },
+    [items, snapshot],
+  );
 
   return (
     <View style={screen}>
@@ -203,6 +224,7 @@ export function LearnerRendererShell({
             ) : null}
 
             <MonLexiqueShell entries={monLexiqueEntries} />
+            <PracticePoolShell buckets={practiceBuckets} />
           </>
         ) : (
           <View style={placeholderArea}>
