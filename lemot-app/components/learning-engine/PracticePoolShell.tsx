@@ -16,14 +16,24 @@ import { PracticePoolItemRow } from "./PracticePoolItemRow";
  * derives nothing, writes no events, calls no `scoreEvents`, and never touches
  * `LocalRepository`.
  *
- * P4.5 is READ-ONLY: it previews suggestions only — no practice/exercise
- * execution, no "start" interaction (that is P4.6). The Challenge path is framed
- * gently ("Needs another look"), never "failed" / "wrong" / "weakness". No
- * gamification / streak / XP. No Daily Review / Word Graph / notes.
+ * P4.6 makes rows tappable when the orchestration layer can find a reusable
+ * exercise: the shell forwards an `onSelectItem` callback to each row's
+ * `onPress`. The shell itself still selects/derives/writes nothing — it never
+ * resolves exercises or routes events; that all stays in the orchestration layer.
+ * The Challenge path is framed gently ("Needs another look"), never "failed" /
+ * "wrong" / "weakness". No gamification / streak / XP. No Daily Review / Word
+ * Graph / notes.
  */
 const PREVIEW_LIMIT = 3;
 
-export function PracticePoolShell({ buckets }: { buckets: PracticePoolBuckets }) {
+export function PracticePoolShell({
+  buckets,
+  onSelectItem,
+}: {
+  buckets: PracticePoolBuckets;
+  /** Tapping a row calls this with the item; the orchestration layer resolves it. */
+  onSelectItem?: (item: PracticePoolItem) => void;
+}) {
   const total =
     buckets.build.length + buckets.stretch.length + buckets.challenge.length;
 
@@ -36,12 +46,13 @@ export function PracticePoolShell({ buckets }: { buckets: PracticePoolBuckets })
         </Text>
       ) : (
         <View style={paths}>
-          <PathBlock label="Build" items={buckets.build} accent={P.ink2} />
-          <PathBlock label="Stretch" items={buckets.stretch} accent={P.purple} />
+          <PathBlock label="Build" items={buckets.build} accent={P.ink2} onSelectItem={onSelectItem} />
+          <PathBlock label="Stretch" items={buckets.stretch} accent={P.purple} onSelectItem={onSelectItem} />
           <PathBlock
             label="Needs another look"
             items={buckets.challenge}
             accent={P.amber}
+            onSelectItem={onSelectItem}
           />
         </View>
       )}
@@ -54,10 +65,12 @@ function PathBlock({
   label,
   items,
   accent,
+  onSelectItem,
 }: {
   label: string;
   items: PracticePoolItem[];
   accent: string;
+  onSelectItem?: (item: PracticePoolItem) => void;
 }) {
   if (items.length === 0) return null; // hide empty paths; overall empty state covers all-empty
   const preview = items.slice(0, PREVIEW_LIMIT);
@@ -69,7 +82,11 @@ function PathBlock({
       </Text>
       <View style={list}>
         {preview.map((item) => (
-          <PracticePoolItemRow key={item.itemId} item={item} />
+          <PracticePoolItemRow
+            key={item.itemId}
+            item={item}
+            onPress={onSelectItem ? () => onSelectItem(item) : undefined}
+          />
         ))}
       </View>
       {extra > 0 ? <Text style={more}>+{extra} more</Text> : null}
