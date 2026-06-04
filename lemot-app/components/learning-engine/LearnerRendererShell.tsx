@@ -7,13 +7,19 @@ import {
   type TextStyle,
 } from "react-native";
 import { P } from "@/constants/theme";
-import type { ExerciseBlueprint, RawItem } from "@/content/learning-engine";
+import type {
+  ExerciseBlueprint,
+  LessonContract,
+  RawItem,
+} from "@/content/learning-engine";
 import { LearnerLessonHeader } from "./LearnerLessonHeader";
 import { RecognitionCard } from "./RecognitionCard";
 import { FillCard } from "./FillCard";
 import { BuildCard } from "./BuildCard";
 import { RegisterSwitchCard } from "./RegisterSwitchCard";
 import { ContextChainCard } from "./ContextChainCard";
+import { BoundaryLaterFormCard } from "./BoundaryLaterFormCard";
+import { isBoundaryLaterForm } from "@/content/learning-engine/boundary";
 import { UnsupportedCard } from "./UnsupportedCard";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
@@ -35,6 +41,12 @@ import { useLearningEngineSession, type LearnerSession } from "./useLearningEngi
  * it NEVER renders the snapshot, item ids, counts, tags, or any mastery label.
  * Cards never touch `LocalRepository`. NO Mon Lexique / Practice Pool / Daily
  * Review, NO Supabase / network / AI. `grade()` still drives the visible feedback.
+ *
+ * P3.8 adds the soft boundary path: a `recognition` exercise whose targets are
+ * recognition-only + production-blocked (see `isBoundaryLaterForm`) renders as a
+ * calm "A form for later" card instead of a normal reveal — inline, never
+ * gradeable, never asking the learner to produce the form. Its acknowledge reuses
+ * the SAME recognition-reveal event path (no new event shape/operation).
  */
 const SAVE_HINT: Record<string, string | null> = {
   idle: null,
@@ -45,11 +57,22 @@ const SAVE_HINT: Record<string, string | null> = {
 function renderCard(
   ex: ExerciseBlueprint,
   items: Record<string, RawItem>,
+  contract: LessonContract,
   session: LearnerSession,
 ) {
   switch (ex.operation) {
     case "recognition":
-      return (
+      // Boundary "later form" objects (recognition-only + production-blocked)
+      // render as a soft preview, not a normal reveal — never gradeable. The
+      // acknowledge reuses the same recognition-reveal event path, once.
+      return isBoundaryLaterForm(ex, contract) ? (
+        <BoundaryLaterFormCard
+          key={ex.id}
+          exercise={ex}
+          items={items}
+          onAcknowledge={() => session.recordRecognitionReveal({ exercise: ex })}
+        />
+      ) : (
         <RecognitionCard
           key={ex.id}
           exercise={ex}
@@ -110,12 +133,15 @@ export function LearnerRendererShell({
   canDo,
   exercises,
   items,
+  contract,
   lessonId,
   contentVersion,
 }: {
   canDo: string;
   exercises: ExerciseBlueprint[];
   items: Record<string, RawItem>;
+  /** Contract for the fixture — used to classify boundary "later form" cards (P3.8). */
+  contract: LessonContract;
   lessonId: string;
   contentVersion: string;
 }) {
@@ -135,7 +161,9 @@ export function LearnerRendererShell({
               Card {idx + 1} of {total}
             </Text>
 
-            <View style={{ flex: 1 }}>{renderCard(current, items, session)}</View>
+            <View style={{ flex: 1 }}>
+              {renderCard(current, items, contract, session)}
+            </View>
 
             <View style={navRow}>
               <Pressable
