@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ import { BoundaryLaterFormCard } from "./BoundaryLaterFormCard";
 import { isBoundaryLaterForm } from "@/content/learning-engine/boundary";
 import { UnsupportedCard } from "./UnsupportedCard";
 import { MonLexiqueShell } from "./MonLexiqueShell";
+import { selectMonLexiqueEntries } from "@/content/learning-engine/mon-lexique";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
 /**
@@ -49,9 +50,11 @@ import { useLearningEngineSession, type LearnerSession } from "./useLearningEngi
  * gradeable, never asking the learner to produce the form. Its acknowledge reuses
  * the SAME recognition-reveal event path (no new event shape/operation).
  *
- * P4.3 surfaces a small `MonLexiqueShell` preview below the lesson, derived from
- * the session's `latestSnapshot` via the pure Mon Lexique selector — read-only,
- * writes nothing, and reuses the existing snapshot (no new store / no extra read).
+ * P4.3 surfaces a small Mon Lexique preview below the lesson: this shell (the
+ * orchestration layer) runs the pure `selectMonLexiqueEntries` over the session's
+ * `latestSnapshot` and hands learner-safe entries to the DUMB `MonLexiqueShell`.
+ * Read-only — it writes nothing and reuses the existing snapshot (no new store /
+ * no extra read). A null snapshot yields the calm empty state.
  */
 const SAVE_HINT: Record<string, string | null> = {
   idle: null,
@@ -155,6 +158,14 @@ export function LearnerRendererShell({
   const total = exercises.length;
   const current = total > 0 ? exercises[idx] : undefined;
 
+  // Orchestration-only: derive learner-safe Mon Lexique entries from the existing
+  // session snapshot (null → empty state) and hand them to the dumb shell.
+  const snapshot = session.state.latestSnapshot;
+  const monLexiqueEntries = useMemo(
+    () => (snapshot ? selectMonLexiqueEntries({ items, snapshot }) : []),
+    [items, snapshot],
+  );
+
   return (
     <View style={screen}>
       <View style={body}>
@@ -191,7 +202,7 @@ export function LearnerRendererShell({
               <Text style={saveHint}>{SAVE_HINT[session.state.status]}</Text>
             ) : null}
 
-            <MonLexiqueShell items={items} snapshot={session.state.latestSnapshot} />
+            <MonLexiqueShell entries={monLexiqueEntries} />
           </>
         ) : (
           <View style={placeholderArea}>

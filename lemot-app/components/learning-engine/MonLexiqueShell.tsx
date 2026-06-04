@@ -1,40 +1,21 @@
-import { useMemo } from "react";
 import { View, Text, type ViewStyle, type TextStyle } from "react-native";
 import { P } from "@/constants/theme";
-import type { RawItem } from "@/content/learning-engine";
-import type { MasterySnapshot } from "@/content/learning-engine/mastery";
-import {
-  selectMonLexiqueEntries,
-  type MonLexiqueEntry,
-} from "@/content/learning-engine/mon-lexique";
+import type { MonLexiqueEntry } from "@/content/learning-engine/mon-lexique";
 import { MonLexiqueEntryCard } from "./MonLexiqueEntryCard";
 
 /**
- * Mon Lexique learner shell (P4.3) — calm, label-free view of collected words.
+ * Mon Lexique learner shell (P4.3) — DUMB, learner-facing presentation.
  *
- * SELECTION lives here (the shell layer), not in the entry cards: it derives
- * learner-safe entries with the pure `selectMonLexiqueEntries({ items, snapshot })`
- * and hands each to a presentation-only `MonLexiqueEntryCard`. Mon Lexique is a
- * VIEW over the item registry + derived `MasterySnapshot` — it owns no store,
- * writes no events, calls no `scoreEvents`, and touches no `LocalRepository`.
+ * Receives already-selected, learner-safe `entries` (the orchestration layer —
+ * `LearnerRendererShell` — runs the pure `selectMonLexiqueEntries` and hands them
+ * down) and renders them as a calm section, or a calm empty state when there are
+ * none. It owns no store, derives nothing, writes no events, calls no
+ * `scoreEvents`, and never touches `LocalRepository`.
  *
- * When there is no snapshot yet (or no added/weak items), it shows a calm empty
- * state. No Word Graph, no notes/notebook, no Practice Pool / Daily Review, no
+ * No Word Graph, no notes/notebook, no Practice Pool / Daily Review, no
  * gamification / streak / XP language (P4.3 scope).
  */
-export function MonLexiqueShell({
-  items,
-  snapshot,
-}: {
-  items: Record<string, RawItem>;
-  /** Latest derived snapshot (from the session). Null before the first event. */
-  snapshot: MasterySnapshot | null;
-}) {
-  const entries: MonLexiqueEntry[] = useMemo(
-    () => (snapshot ? selectMonLexiqueEntries({ items, snapshot }) : []),
-    [items, snapshot],
-  );
-
+export function MonLexiqueShell({ entries }: { entries: MonLexiqueEntry[] }) {
   return (
     <View style={section}>
       <Text style={title}>Mon Lexique</Text>
