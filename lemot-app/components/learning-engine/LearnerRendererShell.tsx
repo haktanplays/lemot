@@ -24,7 +24,9 @@ import { UnsupportedCard } from "./UnsupportedCard";
 import { MonLexiqueShell } from "./MonLexiqueShell";
 import { selectMonLexiqueEntries } from "@/content/learning-engine/mon-lexique";
 import { PracticePoolShell } from "./PracticePoolShell";
-import { selectPracticePoolBuckets } from "@/content/learning-engine/practice-pool";
+import { PracticePoolPracticePanel } from "./PracticePoolPracticePanel";
+import { selectPracticePoolBuckets, type PracticePoolItem } from "@/content/learning-engine/practice-pool";
+import { selectReusablePracticeExercise } from "@/content/learning-engine/practice-reuse";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
 /**
@@ -60,8 +62,16 @@ import { useLearningEngineSession, type LearnerSession } from "./useLearningEngi
  *
  * P4.5 adds a Practice Pool preview the same way: the shell runs the pure
  * `selectPracticePoolBuckets` over the same snapshot and hands Build / Stretch /
- * Challenge buckets to the DUMB `PracticePoolShell`. Read-only preview only — no
- * practice execution, no event writing (P4.6 handles interaction).
+ * Challenge buckets to the DUMB `PracticePoolShell`.
+ *
+ * P4.6 makes Practice Pool rows interactive WITHOUT generating content: tapping a
+ * row resolves an EXISTING fixture exercise (pure `selectReusablePracticeExercise`)
+ * and renders it with the SAME `renderCard` + session callbacks as the main
+ * lesson flow, so graded attempts / reveals append through the existing serialized
+ * controller. No new event shape, no new store, no direct `LocalRepository`. If no
+ * existing exercise targets the item, a calm "not ready to practice yet" note
+ * shows (no crash, no id leak). Selecting a row, closing the panel, and typing
+ * never write events.
  */
 const SAVE_HINT: Record<string, string | null> = {
   idle: null,
@@ -187,6 +197,26 @@ export function LearnerRendererShell({
     [items, snapshot],
   );
 
+  // P4.6: a tapped Practice Pool row resolves an EXISTING fixture exercise to
+  // reuse; selecting/closing writes no events (only the reused card does, via
+  // the same session callbacks the lesson flow uses).
+  const [practiceExercise, setPracticeExercise] =
+    useState<ExerciseBlueprint | null>(null);
+  const [practiceUnavailable, setPracticeUnavailable] = useState(false);
+  const openPractice = (item: PracticePoolItem) => {
+    const reused = selectReusablePracticeExercise({
+      item,
+      exercises,
+      path: item.path,
+    });
+    setPracticeExercise(reused);
+    setPracticeUnavailable(reused === null);
+  };
+  const closePractice = () => {
+    setPracticeExercise(null);
+    setPracticeUnavailable(false);
+  };
+
   return (
     <View style={screen}>
       <View style={body}>
@@ -224,7 +254,25 @@ export function LearnerRendererShell({
             ) : null}
 
             <MonLexiqueShell entries={monLexiqueEntries} />
-            <PracticePoolShell buckets={practiceBuckets} />
+            <PracticePoolShell
+              buckets={practiceBuckets}
+              onSelectItem={openPractice}
+            />
+
+            {practiceExercise ? (
+              <PracticePoolPracticePanel onClose={closePractice}>
+                {renderCard(practiceExercise, items, contract, session)}
+              </PracticePoolPracticePanel>
+            ) : practiceUnavailable ? (
+              <View style={practiceNote}>
+                <Text style={saveHint}>
+                  This one isn&rsquo;t ready to practice yet.
+                </Text>
+                <Pressable onPress={closePractice} style={navBtn}>
+                  <Text style={navText}>Close</Text>
+                </Pressable>
+              </View>
+            ) : null}
           </>
         ) : (
           <View style={placeholderArea}>
@@ -269,6 +317,7 @@ const saveHint: TextStyle = {
   fontFamily: "Outfit",
   textAlign: "center",
 };
+const practiceNote: ViewStyle = { gap: 8, alignItems: "flex-start" };
 const placeholderArea: ViewStyle = {
   flex: 1,
   justifyContent: "center",
