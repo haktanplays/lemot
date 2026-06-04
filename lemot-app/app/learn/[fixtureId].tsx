@@ -92,6 +92,7 @@ export default function LearnRoute() {
       canDo={contract.goal.canDo}
       exercises={fixture.exercises}
       items={fixture.items}
+      contract={contract}
       lessonId={contract.id}
       contentVersion={contract.versions.contentVersion}
     />
