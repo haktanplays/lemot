@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Pressable,
+  ScrollView,
   type ViewStyle,
   type TextStyle,
 } from "react-native";
@@ -219,7 +220,17 @@ export function LearnerRendererShell({
 
   return (
     <View style={screen}>
-      <View style={body}>
+      {/* M-1: scrollable body so the card + nav + Mon Lexique + Practice Pool +
+          practice panel all stay reachable on small viewports. Children must NOT
+          use flex:1 inside a vertical ScrollView; the card area sizes to content
+          and `contentContainerStyle` (flexGrow:1 + bottom padding) lets the
+          placeholder still center when content is short. `keyboardShouldPersistTaps`
+          keeps Check/Next tappable while a TextInput keyboard is open. */}
+      <ScrollView
+        style={scroll}
+        contentContainerStyle={bodyContent}
+        keyboardShouldPersistTaps="handled"
+      >
         <LearnerLessonHeader canDo={canDo} />
 
         {current ? (
@@ -228,9 +239,7 @@ export function LearnerRendererShell({
               Card {idx + 1} of {total}
             </Text>
 
-            <View style={{ flex: 1 }}>
-              {renderCard(current, items, contract, session)}
-            </View>
+            <View>{renderCard(current, items, contract, session)}</View>
 
             <View style={navRow}>
               <Pressable
@@ -284,17 +293,21 @@ export function LearnerRendererShell({
             </View>
           </View>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 }
 
 const screen: ViewStyle = { flex: 1, backgroundColor: P.bg, paddingTop: 64 };
-const body: ViewStyle = {
-  flex: 1,
+const scroll: ViewStyle = { flex: 1 };
+const bodyContent: ViewStyle = {
   paddingHorizontal: 20,
-  paddingBottom: 24,
+  // Extra bottom padding so the last element (Practice Pool panel / its Check
+  // button) is comfortably scrollable into view above the screen edge.
+  paddingBottom: 48,
   gap: 16,
+  // Fill the viewport when content is short so the placeholder can still center.
+  flexGrow: 1,
 };
 const countText: TextStyle = {
   color: P.ink3,
