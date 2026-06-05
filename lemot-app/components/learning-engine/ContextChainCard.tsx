@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
 import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
+import { fingerprintAnswer } from "./gradedAttemptGuard";
 
 /**
  * Learner-facing "A small moment" card (P3.5) — the context_chain.
@@ -44,6 +45,10 @@ export function ContextChainCard({
   const [input, setInput] = useState("");
   const [result, setResult] = useState<ErrorTagCode | null>(null);
   const [completed, setCompleted] = useState(false);
+  // H-1: per-STEP guard — fingerprint includes the step index, so the same
+  // unchanged answer on a step records once, while advancing to the next step
+  // (different index) can record again.
+  const lastRecorded = useRef<string | null>(null);
 
   const step = steps[idx];
   const isLast = idx >= steps.length - 1;
@@ -60,7 +65,11 @@ export function ContextChainCard({
       expectedAnswer,
     });
     setResult(graded.result);
-    onGradedAttempt?.({ userAnswer: input, expectedAnswer, gradeResult: graded });
+    const fp = `${idx}|${fingerprintAnswer(input)}`;
+    if (lastRecorded.current !== fp) {
+      lastRecorded.current = fp;
+      onGradedAttempt?.({ userAnswer: input, expectedAnswer, gradeResult: graded });
+    }
   };
 
   const onAdvance = () => {
