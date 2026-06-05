@@ -30,6 +30,7 @@ import { PracticePoolShell } from "./PracticePoolShell";
 import { PracticePoolPracticePanel } from "./PracticePoolPracticePanel";
 import { selectPracticePoolBuckets, type PracticePoolItem } from "@/content/learning-engine/practice-pool";
 import { selectReusablePracticeExercise } from "@/content/learning-engine/practice-reuse";
+import { PrivacyDataControls } from "./PrivacyDataControls";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 
 /**
@@ -302,6 +303,11 @@ export function LearnerRendererShell({
                 </Pressable>
               </View>
             ) : null}
+
+            {/* P5.4C: calm local privacy & data controls, low in the surface
+                (after Practice Pool). Self-contained — local export-summary +
+                two-step reset wired to merged primitives; no remote/nav/AI. */}
+            <PrivacyDataControls />
           </>
         ) : (
           <View style={placeholderArea}>
