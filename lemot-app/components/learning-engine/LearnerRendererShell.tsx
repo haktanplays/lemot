@@ -22,6 +22,8 @@ import { ContextChainCard } from "./ContextChainCard";
 import { BoundaryLaterFormCard } from "./BoundaryLaterFormCard";
 import { isBoundaryLaterForm } from "@/content/learning-engine/boundary";
 import { UnsupportedCard } from "./UnsupportedCard";
+import { FounderPrivacyNotice } from "./FounderPrivacyNotice";
+import { useLocalPrivacyDisclosure } from "./useLocalPrivacyDisclosure";
 import { MonLexiqueShell } from "./MonLexiqueShell";
 import { selectMonLexiqueEntries } from "@/content/learning-engine/mon-lexique";
 import { PracticePoolShell } from "./PracticePoolShell";
@@ -171,6 +173,9 @@ export function LearnerRendererShell({
   lessonId: string;
   contentVersion: string;
 }) {
+  // P5.4B: founder-local privacy disclosure — shown once before practice in this
+  // gated route until acknowledged. Soft local-first notice, not a remote gate.
+  const disclosure = useLocalPrivacyDisclosure();
   const session = useLearningEngineSession({ lessonId, contentVersion });
   const [idx, setIdx] = useState(0);
   const total = exercises.length;
@@ -217,6 +222,21 @@ export function LearnerRendererShell({
     setPracticeExercise(null);
     setPracticeUnavailable(false);
   };
+
+  // While the disclosure state loads, render a calm blank (avoids flashing the
+  // lesson before the one-time notice). Then show the notice or the lesson.
+  if (disclosure.status === "loading") {
+    return <View style={screen} />;
+  }
+  if (disclosure.shouldShow) {
+    return (
+      <FounderPrivacyNotice
+        saving={disclosure.saving}
+        error={disclosure.error}
+        onAcknowledge={disclosure.acknowledge}
+      />
+    );
+  }
 
   return (
     <View style={screen}>
