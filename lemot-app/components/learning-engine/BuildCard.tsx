@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
 import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
+import { fingerprintAnswer } from "./gradedAttemptGuard";
 
 /**
  * Learner-facing build card (P3.4).
@@ -46,6 +47,9 @@ export function BuildCard({
 
   const [picked, setPicked] = useState<number[]>([]);
   const [result, setResult] = useState<ErrorTagCode | null>(null);
+  // H-1: fingerprint the last RECORDED tile selection — re-checking the same
+  // sequence records no duplicate event; changing the selection records again.
+  const lastRecorded = useRef<string | null>(null);
 
   const available = tiles.map((_, i) => i).filter((i) => !picked.includes(i));
 
@@ -54,7 +58,13 @@ export function BuildCard({
     const expectedAnswer = exercise.targetText ?? null;
     const graded = grade({ operation: "build", userAnswer, expectedAnswer });
     setResult(graded.result);
-    onGradedAttempt?.({ userAnswer, expectedAnswer, gradeResult: graded });
+    // Tile-selection signature (index order), not the surface text — reordering
+    // identical-surface tiles still counts as a changed answer.
+    const fp = fingerprintAnswer(picked.join(","));
+    if (lastRecorded.current !== fp) {
+      lastRecorded.current = fp;
+      onGradedAttempt?.({ userAnswer, expectedAnswer, gradeResult: graded });
+    }
   };
 
   const reset = () => {

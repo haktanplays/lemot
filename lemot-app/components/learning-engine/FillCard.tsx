@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
 import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
+import { fingerprintAnswer } from "./gradedAttemptGuard";
 
 /**
  * Learner-facing fill / input card (P3.3).
@@ -39,6 +40,9 @@ export function FillCard({
 }) {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<ErrorTagCode | null>(null);
+  // H-1: fingerprint of the last RECORDED answer — repeated Check on the same
+  // unchanged answer shows feedback again but records no duplicate event.
+  const lastRecorded = useRef<string | null>(null);
 
   const onCheck = () => {
     const expectedAnswer = exercise.targetText ?? null;
@@ -48,7 +52,11 @@ export function FillCard({
       expectedAnswer,
     });
     setResult(graded.result);
-    onGradedAttempt?.({ userAnswer: input, expectedAnswer, gradeResult: graded });
+    const fp = fingerprintAnswer(input);
+    if (lastRecorded.current !== fp) {
+      lastRecorded.current = fp;
+      onGradedAttempt?.({ userAnswer: input, expectedAnswer, gradeResult: graded });
+    }
   };
 
   const feedback = result ? friendlyFeedback(result) : null;
