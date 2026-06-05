@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "validate:pools": "tsx scripts/validatePools.ts",
-    "validate:content": "tsx scripts/validateContent.ts"
+    "validate:content": "tsx scripts/validateContent.ts",
+    "test:learning-engine": "tsx scripts/tests/run.ts"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
