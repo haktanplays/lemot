@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
+import { useApp } from "@/providers/AppProvider";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
@@ -13,10 +14,29 @@ import { NaturalReveal } from "./screens/NaturalReveal";
 import { SayItYourWayV1 } from "./screens/SayItYourWayV1";
 import { RecapCard } from "./screens/RecapCard";
 
+// Minimal completion marker. The v1 engine has its own screen taxonomy, so
+// we reuse one existing legacy section key (completion-only, no scoring) to
+// record that the lesson was finished. This keeps lp(lesson.number) > 0 so
+// Home / Daily Review / Progress no longer read as fully empty after the
+// dev-apk smoke path. Full v1 progress mapping is a later workstream.
+const V1_COMPLETION_SECTION_KEY = "read_listen";
+
 export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
+  const { mk } = useApp();
   const [screenIndex, setScreenIndex] = useState(0);
   const screen = lesson.screens[screenIndex];
   const goNext = () => setScreenIndex((n) => n + 1);
+
+  // Persist exactly once when the learner reaches the end of the flow.
+  // The ref guard prevents re-writes if mk's identity changes on re-render.
+  const isComplete = screenIndex >= lesson.screens.length;
+  const persisted = useRef(false);
+  useEffect(() => {
+    if (isComplete && !persisted.current) {
+      persisted.current = true;
+      mk(lesson.number, V1_COMPLETION_SECTION_KEY);
+    }
+  }, [isComplete, mk, lesson.number]);
 
   return (
     <SafeAreaView
