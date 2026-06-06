@@ -8,20 +8,22 @@ import {
 } from "react-native";
 import { P } from "@/constants/theme";
 import type { ExerciseBlueprint, RawItem } from "@/content/learning-engine";
-import { grade } from "@/content/learning-engine/grade";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
 import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive } from "./feedbackCopy";
 import { fingerprintAnswer } from "./gradedAttemptGuard";
+import { gradeBuildSequence } from "./buildSequence";
 
 /**
  * Learner-facing build card (P3.4).
  *
  * The learner taps pieces in order to assemble the answer; tapping a placed
- * piece removes it, and "Reset" clears. On "Check" it joins the chosen pieces
- * and runs the deterministic `grade()` (operation "build") against the
- * exercise's `targetText`, showing CALM, learner-friendly feedback. Tile surface
- * text is resolved from the item registry (`items[itemId].text.fr`).
+ * piece removes it, and "Reset" clears. On "Check" it grades the chosen tile
+ * SEQUENCE against the answer tiles (those with an `answerIndex`, ordered by it)
+ * via the pure `gradeBuildSequence` helper — NOT a string match on `targetText`,
+ * so punctuation in `targetText` never blocks a correct build. Feedback stays
+ * CALM and learner-friendly. Tile surface text is resolved from the item
+ * registry (`items[itemId].text.fr`).
  *
  * The card does NOT import `LocalRepository`, construct events, or update
  * mastery — `grade()` drives on-screen feedback, and on Check it hands the result
@@ -54,9 +56,18 @@ export function BuildCard({
   const available = tiles.map((_, i) => i).filter((i) => !picked.includes(i));
 
   const onCheck = () => {
+    // Correctness is the chosen tile SEQUENCE, not a string match on targetText —
+    // punctuation in targetText (L1's internal comma, L12/L16's trailing "?") must
+    // never block a correct build. `userAnswer` / `expectedAnswer` are echoes for
+    // the event only and are never used to grade.
     const userAnswer = picked.map((i) => surface(tiles[i].itemId)).join(" ");
     const expectedAnswer = exercise.targetText ?? null;
-    const graded = grade({ operation: "build", userAnswer, expectedAnswer });
+    const graded = gradeBuildSequence({
+      tiles,
+      picked,
+      normalizedAnswer: userAnswer.length > 0 ? userAnswer : null,
+      expectedAnswer,
+    });
     setResult(graded.result);
     // Tile-selection signature (index order), not the surface text — reordering
     // identical-surface tiles still counts as a changed answer.
