@@ -14,6 +14,7 @@ import "./privacyLocal.test";
 import "./privacyData.test";
 import "./mastery.test";
 import "./localRepository.test";
+import "./buildSequence.test";
 import { runAll } from "./harness";
 
 void runAll();
