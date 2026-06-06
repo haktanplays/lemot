@@ -1,0 +1,39 @@
+name: Learning Engine CI
+
+# Runs the existing learning-engine validation suite on every PR into main and
+# on pushes to main, so changes can't merge without these checks passing.
+# Scope is deliberately small: install deps, then run the three existing green
+# commands. No Expo/device/emulator, no deploy, no secrets, no Supabase.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    # The Expo app (and all npm scripts) live in lemot-app/.
+    defaults:
+      run:
+        working-directory: lemot-app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: lemot-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate content
+        run: npm run validate:content
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Learning-engine tests
+        run: npm run test:learning-engine
