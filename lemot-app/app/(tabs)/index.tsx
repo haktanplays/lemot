@@ -8,7 +8,7 @@ import { useApp } from "@/providers/AppProvider";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
-import { FEATURES, PRODUCT_STAGE, DEV_APK_LESSON_LIMIT } from "@/config/productStage";
+import { FEATURES, PRODUCT_STAGE } from "@/config/productStage";
 import { kvStorage } from "@/lib/storage";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
@@ -23,6 +23,7 @@ import {
 } from "@/components/DailyReviewOverlay";
 
 const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
+const SEEN_HOW_WEAVE_KEY = "lm7_seen_how_weave_works";
 const FIRST_USE_DATE_KEY = "lm7_first_use_date";
 
 // Safe to read/write kvStorage here because this is invoked from a
@@ -68,13 +69,28 @@ export default function HomeScreen() {
     }
   });
 
-  useEffect(() => {
-    if (needsLessonZero) {
-      // expo-router's typed-routes union regenerates on `expo start`; cast
-      // bypasses the stale literal check until Metro picks up the new file.
-      router.replace("/lesson-zero" as never);
+  // Second first-run gate: How Weave Works runs once, after Lesson Zero.
+  // Only due when Lesson Zero is already seen but Weave intro is not.
+  const [needsHowWeave] = useState(() => {
+    try {
+      return (
+        kvStorage.getItem(SEEN_LESSON_ZERO_KEY) === "true" &&
+        kvStorage.getItem(SEEN_HOW_WEAVE_KEY) !== "true"
+      );
+    } catch {
+      return false;
     }
-  }, [needsLessonZero]);
+  });
+
+  useEffect(() => {
+    // expo-router's typed-routes union regenerates on `expo start`; casts
+    // bypass the stale literal check until Metro picks up the new files.
+    if (needsLessonZero) {
+      router.replace("/lesson-zero" as never);
+    } else if (needsHowWeave) {
+      router.replace("/how-weave-works" as never);
+    }
+  }, [needsLessonZero, needsHowWeave]);
 
   // Top date label — initialized once per mount via useState so the
   // first-use anchor write happens in a side-effect-safe place
@@ -90,7 +106,7 @@ export default function HomeScreen() {
   const [drAns, setDrAns] = useState<string | null>(null);
   const [drItems, setDrItems] = useState<ReviewQuestion[]>([]);
 
-  if (!loaded || needsLessonZero) {
+  if (!loaded || needsLessonZero || needsHowWeave) {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <ActivityIndicator size="small" color={P.red} />
@@ -158,13 +174,17 @@ export default function HomeScreen() {
   // Daily quote
   const quote = MOTIV[Math.floor(Date.now() / 86400000) % MOTIV.length];
 
-  // Lesson scope: dev-apk testers only see L1..DEV_APK_LESSON_LIMIT.
-  // Sandbox/public-beta keep the full curriculum visible.
-  // This is scope control, not monetization — no paywall, no locks, no banners.
-  const visibleLessons =
-    PRODUCT_STAGE === "dev-apk"
-      ? LESSONS.filter((l) => l.id <= DEV_APK_LESSON_LIMIT)
-      : LESSONS;
+  // Lesson scope: dev-apk hides the legacy lesson list entirely so the v1
+  // Lesson 1 smoke path is the only lesson surface. Sandbox/public-beta keep
+  // the full curriculum visible. This is scope control, not monetization —
+  // no paywall, no locks, no banners.
+  const visibleLessons = PRODUCT_STAGE === "dev-apk" ? [] : LESSONS;
+
+  // Narrow v1 smoke entry. Surfaced for internal (sandbox) and the dev-apk
+  // tester wave only; public-beta keeps it hidden. This does NOT flip the
+  // v1LessonEngine feature flag — it is a Home-only condition.
+  const showV1SmokeEntry =
+    PRODUCT_STAGE === "sandbox" || PRODUCT_STAGE === "dev-apk";
 
   return (
     <SafeAreaView className="flex-1 bg-lm-bg">
@@ -287,7 +307,9 @@ export default function HomeScreen() {
         )}
 
         {/* Lessons */}
-        <Text className="text-lg font-bold text-lm-ink mb-3">Lessons</Text>
+        {visibleLessons.length > 0 && (
+          <Text className="text-lg font-bold text-lm-ink mb-3">Lessons</Text>
+        )}
         {visibleLessons.map((lesson) => {
           const isFree = FREE_LESSON_IDS.includes(lesson.id);
           const isLocked = FEATURES.paywall && !isFree;
@@ -323,11 +345,13 @@ export default function HomeScreen() {
           );
         })}
 
-        {/* v1 Lab — sandbox-only; any flag flip of v1LessonEngine must
-            review this consumer. Dev-apk and public-beta keep it hidden. */}
-        {FEATURES.v1LessonEngine && PRODUCT_STAGE === "sandbox" && (
+        {/* v1 Lesson 1 smoke entry — the dev-apk P0 first-run lesson surface.
+            Surfaced in sandbox (internal comparison) and dev-apk (tester
+            wave); public-beta keeps it hidden. Home-only condition, not a
+            v1LessonEngine flag flip. */}
+        {showV1SmokeEntry && (
           <View className="mt-2 mb-3">
-            <Text className="text-sm font-bold text-lm-ink mb-2">v1 Lab</Text>
+            <Text className="text-lg font-bold text-lm-ink mb-3">Lesson 1</Text>
             <Pressable
               onPress={() =>
                 router.push("/v1-lesson/v1-lesson-001" as never)
@@ -342,7 +366,7 @@ export default function HomeScreen() {
                 Je suis
               </Text>
               <Text className="text-xs" style={{ color: P.ink3 }}>
-                5 min
+                Begin the first lesson.
               </Text>
             </Pressable>
           </View>
