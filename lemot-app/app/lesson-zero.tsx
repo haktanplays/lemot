@@ -88,7 +88,10 @@ export default function LessonZeroScreen() {
     } catch (e) {
       console.warn("[LessonZero] Failed to save first-use flag:", e);
     }
-    router.replace("/lesson/1");
+    // First-run smoke path continues to the How Weave Works interstitial,
+    // not the legacy lesson. Cast bypasses expo-router's stale typed-routes
+    // union until Metro regenerates after the new route file is picked up.
+    router.replace("/how-weave-works" as never);
   };
 
   // ─── Step renders ───
