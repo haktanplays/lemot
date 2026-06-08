@@ -61,9 +61,12 @@ and the founder-self-learning checkpoints in this folder. It is written against 
 ## 4. Freeze criteria status
 
 Verdicts use two sources: the earlier first-run emulator smoke that accompanied PR #80 and PR #81,
-and the **Dev APK Home State Emulator Smoke (2026-06-09, Pixel_8 AVD, Expo Go 55,
-`EXPO_PUBLIC_PRODUCT_STAGE=dev-apk`)**. The 2026-06-09 smoke ran against existing post-onboarding
+and the **Dev APK Home State Emulator Smoke (2026-06-09 local operator time, UTC+3, Pixel_8 AVD,
+Expo Go 55, `EXPO_PUBLIC_PRODUCT_STAGE=dev-apk`)**. The smoke ran against existing post-onboarding
 storage (no reset), so it did not replay the from-scratch onboarding chain; see criteria 1 and 2.
+
+Date note: the Home-state smoke ran on 2026-06-09 in the operator's local timezone, UTC+3, which
+corresponds to 2026-06-08 UTC.
 
 | # | Criterion | Status |
 |---|-----------|--------|
