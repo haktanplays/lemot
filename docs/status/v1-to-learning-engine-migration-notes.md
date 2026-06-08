@@ -108,9 +108,12 @@ Review requirements.
 - Mon Lexique integration.
 - Practice or Chat expansion.
 - Multi-lesson expansion.
-- Physical APK fresh-install revalidation.
 
 These are not v1 work unless they become Dev APK test-path blockers.
+
+Physical APK fresh-install revalidation is not listed here because it is a required
+pre-external-testing smoke gate, not a deferred idea. It remains test work, not v1 implementation
+work.
 
 ## 9. Open questions for learning-engine
 
@@ -127,4 +130,4 @@ These are not v1 work unless they become Dev APK test-path blockers.
 - Do not extend v1.
 - Next code work should inspect `learning-engine` renderer readiness or event-log progress
   integration.
-- Physical APK smoke remains pending before external testing.
+- Physical APK smoke remains pending as a required pre-external-testing gate.
