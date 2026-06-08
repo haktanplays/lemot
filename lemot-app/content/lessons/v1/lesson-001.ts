@@ -56,7 +56,7 @@ const screens: LessonScreen[] = [
           text: "voudrais",
           isCorrect: false,
           trapReason:
-            "You met je voudrais in the last lesson — it asks for something. It does not say where you are.",
+            "You met je voudrais in the last lesson. It asks for something. It does not say where you are.",
         },
         {
           id: "opt-bonjour",
@@ -97,7 +97,7 @@ const screens: LessonScreen[] = [
         ifUnderstandableButWrong:
           "Your meaning lands. A native joins the pieces this way.",
         ifMissingTargetPiece:
-          "Start with je suis — that is the shape that does the work.",
+          "Start with je suis. That is the shape that does the work.",
       },
       validationMode: "exact-or-alternative",
     },
@@ -134,7 +134,7 @@ const screens: LessonScreen[] = [
     payload: {
       insightType: "grammar-nugget",
       title: "Notice the shape.",
-      body: "You just wrote Je suis ici twice. The shape stayed the same — only the moment around it changed. That is what an engine does.",
+      body: "You just wrote Je suis ici twice. The shape stayed the same. Only the moment around it changed. That is what an engine does.",
       examples: [{ fr: "Je suis ici.", en: "I am here." }],
     },
   },
