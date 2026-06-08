@@ -51,7 +51,15 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
             current={screenIndex + 1}
             total={lesson.screens.length}
           />
-          {pickScreen(screen, goNext)}
+          {/* Key the active screen by screenIndex so each step mounts a fresh
+              instance. Without this, two consecutive same-type screens (e.g.
+              Weave -> Weave) reuse one component instance and its local state
+              bleeds across (next screen appears pre-filled / already revealed).
+              The key only changes on step advance, so typing within a screen
+              (screenIndex unchanged) preserves state. */}
+          <View key={screenIndex} style={{ flex: 1 }}>
+            {pickScreen(screen, goNext)}
+          </View>
         </View>
       ) : (
         <CompletionView lesson={lesson} />
