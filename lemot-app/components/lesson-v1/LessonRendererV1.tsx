@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { ChevronLeft } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import { useApp } from "@/providers/AppProvider";
@@ -43,8 +44,86 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
       edges={["top"]}
       style={{ flex: 1, backgroundColor: P.bg }}
     >
-      {screen ? pickScreen(screen, goNext) : <CompletionView />}
+      {screen ? (
+        <View style={{ flex: 1 }}>
+          <LessonHeader
+            title={lesson.title}
+            current={screenIndex + 1}
+            total={lesson.screens.length}
+          />
+          {pickScreen(screen, goNext)}
+        </View>
+      ) : (
+        <CompletionView lesson={lesson} />
+      )}
     </SafeAreaView>
+  );
+}
+
+// Leave the lesson safely: back if there is history, else home.
+function exitToPrevious() {
+  if (router.canGoBack()) {
+    router.back();
+  } else {
+    router.replace("/(tabs)");
+  }
+}
+
+// Quiet top frame for active lesson screens only. Back affordance, editorial
+// lesson title, and a calm passive position. No XP, level, streak, score, or
+// percent. Just where you are. Not rendered on the completion view.
+function LessonHeader({
+  title,
+  current,
+  total,
+}: {
+  title: string;
+  current: number;
+  total: number;
+}) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+        paddingHorizontal: 16,
+        paddingTop: 12,
+        paddingBottom: 14,
+        borderBottomWidth: 1,
+        borderBottomColor: P.border,
+        backgroundColor: P.bg,
+      }}
+    >
+      <Pressable
+        onPress={exitToPrevious}
+        hitSlop={10}
+        accessibilityRole="button"
+        accessibilityLabel="Go back"
+        style={{ padding: 4 }}
+      >
+        <ChevronLeft size={22} color={P.ink2} />
+      </Pressable>
+      <View style={{ flex: 1 }}>
+        <Text
+          className="text-xs"
+          style={{ color: P.ink3, marginBottom: 2 }}
+        >
+          {`part ${current} of ${total}`}
+        </Text>
+        <Text
+          className="text-lg"
+          style={{
+            color: P.ink,
+            fontFamily: "serif",
+            fontStyle: "italic",
+            lineHeight: 26,
+          }}
+        >
+          {title}
+        </Text>
+      </View>
+    </View>
   );
 }
 
@@ -71,15 +150,9 @@ function pickScreen(screen: LessonScreen, onContinue: () => void) {
   }
 }
 
-function CompletionView() {
-  const goBack = () => {
-    if (router.canGoBack()) {
-      router.back();
-    } else {
-      router.replace("/(tabs)");
-    }
-  };
-
+// Completion view: standalone card with no lesson header. Only the completion
+// message and the return action.
+function CompletionView({ lesson }: { lesson: Lesson }) {
   return (
     <View
       style={{
@@ -98,13 +171,13 @@ function CompletionView() {
         }}
       >
         <Text className="text-base mb-2" style={{ color: P.ink }}>
-          Lesson scaffold complete.
+          {`You reached the end of Lesson ${lesson.number}.`}
         </Text>
         <Text className="text-sm" style={{ color: P.ink2 }}>
-          You reached the end of this v1 lesson flow.
+          A small French shape is now familiar.
         </Text>
-        <Btn onPress={goBack}>
-          <Text style={{ color: P.paper, fontSize: 15 }}>Back</Text>
+        <Btn onPress={exitToPrevious}>
+          <Text style={{ color: P.paper, fontSize: 15 }}>Back to Home</Text>
         </Btn>
       </View>
     </View>
