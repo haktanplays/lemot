@@ -22,7 +22,7 @@ export function MeetCard({
       contentContainerStyle={{ padding: 20 }}
     >
       {payload.title && (
-        <Text className="text-xs mb-3" style={{ color: P.ink3 }}>
+        <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
           {payload.title}
         </Text>
       )}
@@ -32,7 +32,7 @@ export function MeetCard({
         style={{
           backgroundColor: P.paper,
           borderColor: P.border,
-          padding: 18,
+          padding: 16,
         }}
       >
         <View className="flex-row items-start gap-3">

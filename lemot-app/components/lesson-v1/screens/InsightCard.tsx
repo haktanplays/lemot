@@ -39,7 +39,7 @@ export function InsightCard({
         style={{
           backgroundColor: P.paper,
           borderColor: P.border,
-          padding: 18,
+          padding: 16,
         }}
       >
         <Text className="text-base mb-2" style={{ color: P.ink }}>
