@@ -23,6 +23,7 @@ import {
 const IDLE_STATE: SessionState = {
   status: "idle",
   latestSnapshot: null,
+  events: [],
   lastEventCount: 0,
   lastSavedAt: null,
 };
