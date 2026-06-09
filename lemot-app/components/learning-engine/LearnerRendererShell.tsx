@@ -298,7 +298,13 @@ export function LearnerRendererShell({
                   Card {idx + 1} of {total}
                 </Text>
 
-                <View>{renderCard(current, items, contract, session)}</View>
+                {/* PR-E: key the active-card wrapper by step slot (idx) so each
+                    step always remounts on Next/Back. Local card state cannot
+                    bleed even if two exercises ever shared an id. The Practice
+                    Pool panel below stays keyed by its own exercise id. */}
+                <View key={`${idx}:${current.id}`}>
+                  {renderCard(current, items, contract, session)}
+                </View>
 
                 <View style={navRow}>
                   <Pressable
