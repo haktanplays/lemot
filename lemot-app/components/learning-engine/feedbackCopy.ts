@@ -11,9 +11,9 @@ import type { ErrorTagCode } from "@/content/learning-engine/events";
 const FRIENDLY: Partial<Record<ErrorTagCode, string>> = {
   correct: "That's it.",
   accepted_variant: "That works too.",
-  punctuation_only: "Almost — just punctuation.",
-  accent_only: "Almost — watch the accents.",
-  spelling_near_miss: "Almost — small spelling slip.",
+  punctuation_only: "Almost. Just punctuation.",
+  accent_only: "Almost. Watch the accents.",
+  spelling_near_miss: "Almost. Small spelling slip.",
   wrong_order: "Right pieces, different order.",
   missing_word: "Something's missing.",
   extra_word: "One word too many.",

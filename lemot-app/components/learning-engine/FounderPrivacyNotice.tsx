@@ -37,7 +37,7 @@ export function FounderPrivacyNotice({
           and your Mon Lexique and Practice Pool are stored only on this device.
         </Text>
         <Text style={body}>
-          Remote sync isn&rsquo;t enabled in this build — nothing is uploaded.
+          Remote sync isn&rsquo;t enabled in this build. Nothing is uploaded.
         </Text>
         <Text style={body}>
           You can keep practicing. Ways to export or delete your data will arrive
