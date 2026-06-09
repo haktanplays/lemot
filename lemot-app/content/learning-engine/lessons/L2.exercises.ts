@@ -24,6 +24,20 @@ export const L2_EXERCISES: ExerciseBlueprint[] = [
     validationMode: "expected-bank",
   },
   {
+    // Insight approximation (PR-G, Strategy A): a calm "notice the shape" beat
+    // reusing the recognition card. Show me reveals the note, which counts as
+    // attempted only when revealed. Temporary content-only stand-in until a
+    // dedicated notice operation/card exists. No broad etre paradigm.
+    id: "L2-ex01b-notice-je-suis",
+    lessonId: "L2",
+    operation: "recognition",
+    prompt: "A small shape worth noticing.",
+    targetText: "Je suis ici.",
+    targetItemIds: ["chunk:je-suis"],
+    displayAnswer: "je suis = I am. This small shape comes back again and again.",
+    validationMode: "expected-bank",
+  },
+  {
     id: "L2-ex02-fill-suis",
     lessonId: "L2",
     operation: "fill",
