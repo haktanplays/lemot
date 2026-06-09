@@ -16,6 +16,7 @@ import "./mastery.test";
 import "./localRepository.test";
 import "./buildSequence.test";
 import "./lessonProgress.test";
+import "./ttsPlaceholder.test";
 import { runAll } from "./harness";
 
 void runAll();
