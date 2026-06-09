@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { View, Text, Pressable, type ViewStyle, type TextStyle } from "react-native";
 import { P } from "@/constants/theme";
+import { useSpeech } from "@/hooks/useSpeech";
 import type { ExerciseBlueprint } from "@/content/learning-engine";
 
 /**
@@ -23,11 +24,15 @@ export function RecognitionCard({
   /** Called once, when the learner first reveals the meaning (not on hide). */
   onReveal?: () => void;
 }) {
+  const { say } = useSpeech();
   const [revealed, setRevealed] = useState(false);
   // Record the reveal exactly once for the card's lifetime — a later hide/show
   // must NOT append another recognition event.
   const hasRecordedReveal = useRef(false);
   const meaning = exercise.displayAnswer ?? exercise.targetText ?? "";
+  // French phrase to speak on Listen. Always the FRENCH target, never the
+  // English displayAnswer gloss. When empty, no Listen button is rendered.
+  const spokenText = exercise.targetText?.trim() ?? "";
 
   const toggle = () => {
     if (!revealed && !hasRecordedReveal.current) {
@@ -47,9 +52,22 @@ export function RecognitionCard({
         </View>
       ) : null}
 
-      <Pressable onPress={toggle} style={primaryBtn}>
-        <Text style={primaryBtnText}>{revealed ? "Hide" : "Show me"}</Text>
-      </Pressable>
+      <View style={btnRow}>
+        {spokenText ? (
+          <Pressable
+            onPress={() => void say(spokenText)}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel="Listen"
+            style={listenBtn}
+          >
+            <Text style={listenBtnText}>Listen</Text>
+          </Pressable>
+        ) : null}
+        <Pressable onPress={toggle} style={primaryBtn}>
+          <Text style={primaryBtnText}>{revealed ? "Hide" : "Show me"}</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -91,6 +109,20 @@ const primaryBtn: ViewStyle = {
 };
 const primaryBtnText: TextStyle = {
   color: P.red,
+  fontSize: 14,
+  fontFamily: "Outfit",
+};
+const btnRow: ViewStyle = { flexDirection: "row", gap: 10, alignItems: "center" };
+const listenBtn: ViewStyle = {
+  alignSelf: "flex-start",
+  borderRadius: 999,
+  borderWidth: 1,
+  borderColor: P.border,
+  paddingHorizontal: 18,
+  paddingVertical: 8,
+};
+const listenBtnText: TextStyle = {
+  color: P.ink2,
   fontSize: 14,
   fontFamily: "Outfit",
 };
