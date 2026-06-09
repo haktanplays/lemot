@@ -67,6 +67,12 @@ export type SessionState = {
   status: SessionStatus;
   /** Latest snapshot derived from ALL local events after the last settled append. */
   latestSnapshot: MasterySnapshot | null;
+  /**
+   * All local events behind `latestSnapshot`, in append order. Surfaced so a
+   * caller can run a pure projection (e.g. `selectLessonProgress`) without its
+   * own storage read. Same array the snapshot was derived from; never mutated.
+   */
+  events: readonly LearningEvent[];
   /** Event count behind `latestSnapshot` (for founder-local sanity, not a learner label). */
   lastEventCount: number;
   /** Event-time of the last settled save (controller clock), or null before the first. */
@@ -118,6 +124,7 @@ export class LearningSessionController {
   private current: SessionState = {
     status: "idle",
     latestSnapshot: null,
+    events: [],
     lastEventCount: 0,
     lastSavedAt: null,
   };
@@ -248,6 +255,7 @@ export class LearningSessionController {
     this.emit({
       status: "saved",
       latestSnapshot: snapshot,
+      events,
       lastEventCount: events.length,
       lastSavedAt: savedAt,
     });

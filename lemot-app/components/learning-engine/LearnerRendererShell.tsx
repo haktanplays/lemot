@@ -7,12 +7,14 @@ import {
   type ViewStyle,
   type TextStyle,
 } from "react-native";
+import { router } from "expo-router";
 import { P } from "@/constants/theme";
 import type {
   ExerciseBlueprint,
   LessonContract,
   RawItem,
 } from "@/content/learning-engine";
+import { selectLessonProgress } from "@/content/learning-engine/lesson-progress";
 import { LearnerLessonHeader } from "./LearnerLessonHeader";
 import { RecognitionCard } from "./RecognitionCard";
 import { FillCard } from "./FillCard";
@@ -32,6 +34,7 @@ import { selectPracticePoolBuckets, type PracticePoolItem } from "@/content/lear
 import { selectReusablePracticeExercise } from "@/content/learning-engine/practice-reuse";
 import { PrivacyDataControls } from "./PrivacyDataControls";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
+import { LessonCompletionView } from "./LessonCompletionView";
 
 /**
  * Learner renderer shell (P3.6 + P3.7).
@@ -179,8 +182,33 @@ export function LearnerRendererShell({
   const disclosure = useLocalPrivacyDisclosure();
   const session = useLearningEngineSession({ lessonId, contentVersion });
   const [idx, setIdx] = useState(0);
+  const [finished, setFinished] = useState(false);
   const total = exercises.length;
   const current = total > 0 ? exercises[idx] : undefined;
+  const isLast = total > 0 && idx >= total - 1;
+
+  // PR-C: lesson coverage from the canonical event log (pure projection, matched
+  // by exerciseId). No lm7 write, no manual lessonId matching, no Home read.
+  const exerciseIds = useMemo(() => exercises.map((e) => e.id), [exercises]);
+  const progress = useMemo(
+    () =>
+      selectLessonProgress({
+        events: session.state.events,
+        lessonId,
+        exerciseIds,
+      }),
+    [session.state.events, lessonId, exerciseIds],
+  );
+
+  // Sandbox return path: go back if possible, otherwise the hidden dev player.
+  // Never routes to /(tabs) / Home / v1.
+  const handleExit = () => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace("/dev/learning-engine-player");
+    }
+  };
 
   // Orchestration-only: derive learner-safe Mon Lexique entries from the existing
   // session snapshot (null → empty state) and hand them to the dumb shell.
@@ -256,32 +284,47 @@ export function LearnerRendererShell({
 
         {current ? (
           <>
-            <Text style={countText}>
-              Card {idx + 1} of {total}
-            </Text>
+            {finished ? (
+              <LessonCompletionView
+                completed={progress.completed}
+                remainingCount={progress.remainingExerciseIds.length}
+                saveHint={SAVE_HINT[session.state.status]}
+                onBack={handleExit}
+                onReview={() => setFinished(false)}
+              />
+            ) : (
+              <>
+                <Text style={countText}>
+                  Card {idx + 1} of {total}
+                </Text>
 
-            <View>{renderCard(current, items, contract, session)}</View>
+                <View>{renderCard(current, items, contract, session)}</View>
 
-            <View style={navRow}>
-              <Pressable
-                disabled={idx === 0}
-                onPress={() => setIdx((i) => Math.max(0, i - 1))}
-                style={[navBtn, idx === 0 ? dimmed : null]}
-              >
-                <Text style={navText}>Back</Text>
-              </Pressable>
-              <Pressable
-                disabled={idx >= total - 1}
-                onPress={() => setIdx((i) => Math.min(total - 1, i + 1))}
-                style={[navBtn, idx >= total - 1 ? dimmed : null]}
-              >
-                <Text style={navText}>Next</Text>
-              </Pressable>
-            </View>
+                <View style={navRow}>
+                  <Pressable
+                    disabled={idx === 0}
+                    onPress={() => setIdx((i) => Math.max(0, i - 1))}
+                    style={[navBtn, idx === 0 ? dimmed : null]}
+                  >
+                    <Text style={navText}>Back</Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={
+                      isLast
+                        ? () => setFinished(true)
+                        : () => setIdx((i) => Math.min(total - 1, i + 1))
+                    }
+                    style={navBtn}
+                  >
+                    <Text style={navText}>{isLast ? "Finish" : "Next"}</Text>
+                  </Pressable>
+                </View>
 
-            {SAVE_HINT[session.state.status] ? (
-              <Text style={saveHint}>{SAVE_HINT[session.state.status]}</Text>
-            ) : null}
+                {SAVE_HINT[session.state.status] ? (
+                  <Text style={saveHint}>{SAVE_HINT[session.state.status]}</Text>
+                ) : null}
+              </>
+            )}
 
             <MonLexiqueShell entries={monLexiqueEntries} />
             <PracticePoolShell
