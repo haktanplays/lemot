@@ -4,6 +4,7 @@ import { P } from "@/constants/theme";
 import { PRODUCT_STAGE, FEATURES } from "@/config/productStage";
 import {
   L1_CONTENT_FIXTURE,
+  L2_CONTENT_FIXTURE,
   L11_CONTENT_FIXTURE,
   L12_CONTENT_FIXTURE,
   L14_CONTENT_FIXTURE,
@@ -37,6 +38,7 @@ const LEARNER_RENDERER_ENABLED =
 // is never shown to the learner — only the contract's learner-friendly canDo is.
 const FIXTURES: Record<string, ValidationInput> = {
   l1: L1_CONTENT_FIXTURE,
+  l2: L2_CONTENT_FIXTURE,
   l11: L11_CONTENT_FIXTURE,
   l12: L12_CONTENT_FIXTURE,
   l14: L14_CONTENT_FIXTURE,

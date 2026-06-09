@@ -218,6 +218,58 @@ export const L1_ITEMS: Record<string, RawItem> = {
 };
 
 /**
+ * L2 item registry fixture (v0.1) — «Je suis» / "I am here" location doorway.
+ *
+ * The first-run-equivalent core of v1 Lesson 1: a narrow «je suis + ici» doorway.
+ * Three active chunks only — the «je suis» opener, the place word «ici», and the
+ * whole phrase «je suis ici». Deliberately NOT the full être paradigm, être for
+ * identity/profession, or any place beyond «ici»; those stay out of L2.
+ */
+export const L2_ITEMS: Record<string, RawItem> = {
+  "chunk:je-suis": {
+    id: "chunk:je-suis",
+    preset: "early_active_chunk",
+    text: { fr: "je suis", en: "I am" },
+    firstIntroducedIn: "L2",
+    tags: ["etre", "identity_state_location", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh SWEE",
+      ipa: "/ʒə sɥi/",
+      audioText: "je suis",
+      soundNotes: ["The first-person «être» opener — one fixed shape, not the paradigm."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:ici": {
+    id: "chunk:ici",
+    preset: "early_active_chunk",
+    text: { fr: "ici", en: "here" },
+    firstIntroducedIn: "L2",
+    tags: ["location", "place_adverb", "here"],
+    pronunciationProfile: {
+      respelling: "ee-SEE",
+      ipa: "/i.si/",
+      audioText: "ici",
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+  "chunk:je-suis-ici": {
+    id: "chunk:je-suis-ici",
+    preset: "early_active_chunk",
+    text: { fr: "je suis ici", en: "I am here" },
+    firstIntroducedIn: "L2",
+    tags: ["etre", "location", "doorway"],
+    pronunciationProfile: {
+      respelling: "zhuh swee-zee-SEE",
+      ipa: "/ʒə sɥi.zi.si/",
+      audioText: "je suis ici",
+      soundNotes: ["«suis» links into «ici» with a z-sound — said as one location phrase."],
+    },
+    sourceHygiene: CLEAN_ORIGINAL,
+  },
+};
+
+/**
  * L14 item registry fixture (v0.1) — y-light / place-pronoun doorway.
  *
  * A narrow, chunk-first slice: two active doorway chunks plus recognition-only

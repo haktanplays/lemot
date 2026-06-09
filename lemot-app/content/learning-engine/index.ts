@@ -14,6 +14,7 @@ export { PRESETS, resolvePreset, isKnownPreset } from "./presets";
 export {
   SHARED_ITEMS,
   L1_ITEMS,
+  L2_ITEMS,
   L11_ITEMS,
   L12_ITEMS,
   L14_ITEMS,
@@ -22,6 +23,8 @@ export {
 } from "./items";
 export { L1_CONTRACT } from "./lessons/L1.contract";
 export { L1_EXERCISES } from "./lessons/L1.exercises";
+export { L2_CONTRACT } from "./lessons/L2.contract";
+export { L2_EXERCISES } from "./lessons/L2.exercises";
 export { L11_CONTRACT } from "./lessons/L11.contract";
 export { L11_EXERCISES } from "./lessons/L11.exercises";
 export { L12_CONTRACT } from "./lessons/L12.contract";
@@ -43,6 +46,7 @@ import { PRESETS } from "./presets";
 import {
   SHARED_ITEMS,
   L1_ITEMS,
+  L2_ITEMS,
   L11_ITEMS,
   L12_ITEMS,
   L14_ITEMS,
@@ -51,6 +55,8 @@ import {
 } from "./items";
 import { L1_CONTRACT } from "./lessons/L1.contract";
 import { L1_EXERCISES } from "./lessons/L1.exercises";
+import { L2_CONTRACT } from "./lessons/L2.contract";
+import { L2_EXERCISES } from "./lessons/L2.exercises";
 import { L11_CONTRACT } from "./lessons/L11.contract";
 import { L11_EXERCISES } from "./lessons/L11.exercises";
 import { L12_CONTRACT } from "./lessons/L12.contract";
@@ -72,6 +78,17 @@ export const L1_CONTENT_FIXTURE: ValidationInput = {
   presets: PRESETS,
   contracts: [L1_CONTRACT],
   exercises: L1_EXERCISES,
+};
+
+/**
+ * L2 fixture only — the «je suis + ici» location doorway (first-run-equivalent
+ * core of v1 Lesson 1). Defines its own three active chunks; no SHARED carry-in.
+ */
+export const L2_CONTENT_FIXTURE: ValidationInput = {
+  items: mergeItemMapsStrict([{ name: "L2_ITEMS", items: L2_ITEMS }]),
+  presets: PRESETS,
+  contracts: [L2_CONTRACT],
+  exercises: L2_EXERCISES,
 };
 
 /**
@@ -181,6 +198,7 @@ export const LEARNING_ENGINE_FIXTURE: ValidationInput = {
   items: mergeItemMapsStrict([
     { name: "SHARED_ITEMS", items: SHARED_ITEMS },
     { name: "L1_ITEMS", items: L1_ITEMS },
+    { name: "L2_ITEMS", items: L2_ITEMS },
     { name: "L11_ITEMS", items: L11_ITEMS },
     { name: "L12_ITEMS", items: L12_ITEMS },
     { name: "L14_ITEMS", items: L14_ITEMS },
@@ -190,6 +208,7 @@ export const LEARNING_ENGINE_FIXTURE: ValidationInput = {
   presets: PRESETS,
   contracts: [
     L1_CONTRACT,
+    L2_CONTRACT,
     L11_CONTRACT,
     L12_CONTRACT,
     L14_CONTRACT,
@@ -199,6 +218,7 @@ export const LEARNING_ENGINE_FIXTURE: ValidationInput = {
   ],
   exercises: [
     ...L1_EXERCISES,
+    ...L2_EXERCISES,
     ...L11_EXERCISES,
     ...L12_EXERCISES,
     ...L14_EXERCISES,
