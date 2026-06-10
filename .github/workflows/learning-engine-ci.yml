@@ -32,6 +32,9 @@ jobs:
       - name: Validate content
         run: npm run validate:content
 
+      - name: Validate pools
+        run: npm run validate:pools
+
       - name: Typecheck
         run: npm run typecheck
 
