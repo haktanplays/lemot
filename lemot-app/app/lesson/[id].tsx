@@ -884,19 +884,24 @@ export default function LessonScreen() {
                 </Text>
               </Pressable>
             )}
-            <Pressable
-              onPress={() => router.replace("/(tabs)/practice")}
-              className="rounded-xl px-6 py-3 mb-3"
-              style={{
-                borderWidth: 1,
-                borderColor: P.border,
-                backgroundColor: P.paper,
-              }}
-            >
-              <Text className="font-semibold text-center" style={{ color: P.ink }}>
-                Practice This Lesson
-              </Text>
-            </Pressable>
+            {/* Practice This Lesson — gated to stages where FEATURES.practice
+                is true. Dev APK hides the Practice surface, so the CTA must
+                not render there (tapping it would only bounce to Home). */}
+            {FEATURES.practice && (
+              <Pressable
+                onPress={() => router.replace("/(tabs)/practice")}
+                className="rounded-xl px-6 py-3 mb-3"
+                style={{
+                  borderWidth: 1,
+                  borderColor: P.border,
+                  backgroundColor: P.paper,
+                }}
+              >
+                <Text className="font-semibold text-center" style={{ color: P.ink }}>
+                  Practice This Lesson
+                </Text>
+              </Pressable>
+            )}
             {/* Chat in French — gated to stages where FEATURES.aiChat is true.
                 Dev APK keeps the Chat surface hidden per Dev APK canon. */}
             {FEATURES.aiChat && (
