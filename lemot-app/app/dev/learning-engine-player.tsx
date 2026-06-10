@@ -23,7 +23,8 @@
 import { useState, type ReactNode } from "react";
 import { ScrollView, View, Text, Pressable, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, Redirect } from "expo-router";
+import { PRODUCT_STAGE } from "@/config/productStage";
 import {
   L1_CONTENT_FIXTURE,
   L11_CONTENT_FIXTURE,
@@ -520,16 +521,13 @@ function ExerciseCard({ ex, items }: { ex: ExerciseBlueprint; items: ItemMap }) 
 }
 
 export default function LearningEnginePlayerScreen() {
-  // Dev-only guard: this route resolves by deep link in any build. Never render
-  // the interactive player in production. Mirrors the read-only preview guard.
-  if (!__DEV__) {
-    return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-lm-bg px-6">
-        <Text className="text-center font-outfit text-sm text-lm-ink2">
-          Developer player is unavailable in this build.
-        </Text>
-      </SafeAreaView>
-    );
+  // Sandbox + dev guard (defense in depth): this internal debug route resolves
+  // by deep link in any build. It renders only in the sandbox stage AND a dev
+  // build, so dev-apk, public-beta, and any release-like build (even sandbox
+  // stage) redirect to Home. Mirrors the read-only preview guard and the
+  // FEATURES-gated Practice/Chat tab redirects.
+  if (!(PRODUCT_STAGE === "sandbox" && __DEV__)) {
+    return <Redirect href={"/" as never} />;
   }
 
   // Dev-only local fixture selection (default L1). Switching fixtures re-keys the
