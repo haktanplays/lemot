@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import {
   Layers,
   Volume2,
@@ -107,6 +107,16 @@ export default function PracticeScreen() {
     setTransScore(0);
     setMode("translate");
   }, []);
+
+  // Dev APK canon defense-in-depth: even if some surface pushes to
+  // /(tabs)/practice (deep link, restored nav state), do not expose the
+  // Practice UI when FEATURES.practice is false. Redirect to Home instead.
+  // Placed after all hook calls so React's Rules of Hooks are respected
+  // (FEATURES.practice is a module-level constant; hook order stays stable
+  // across renders). Mirrors the Chat tab guard in chat.tsx.
+  if (!FEATURES.practice) {
+    return <Redirect href={"/" as never} />;
+  }
 
   if (!loaded || !srsLoaded) {
     return (
