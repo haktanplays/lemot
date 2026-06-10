@@ -54,6 +54,10 @@ export default function TabLayout() {
         name="practice"
         options={{
           title: "Practice",
+          // Hide tab in dev-apk (FEATURES.practice=false). Practice surfaces
+          // legacy scenario / flashcard material beyond the Dev APK path.
+          // Sandbox keeps practice=true so the tab remains visible there.
+          href: FEATURES.practice ? undefined : null,
           tabBarIcon: ({ color, size }) => (
             <Layers color={color} size={size} />
           ),

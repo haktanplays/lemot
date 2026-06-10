@@ -83,7 +83,10 @@ export const FEATURES_BY_STAGE = {
     wordGraph: false,
     monLexique: false,
     leCarnet: false,
-    practice: true,
+    // Practice tab hidden in dev-apk: it surfaces legacy scenario and
+    // flashcard material beyond the Dev APK first-user path. Sandbox and
+    // public-beta keep practice=true.
+    practice: false,
     v1LessonEngine: false,
   },
   // Future monetized beta — paywall + RevenueCat live, selected features open.
