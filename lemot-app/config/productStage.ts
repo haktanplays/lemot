@@ -10,27 +10,37 @@ const VALID_PRODUCT_STAGES: readonly ProductStage[] = [
   "public-beta",
 ];
 
+// Fail-closed fallback. A missing or invalid env must NOT resolve to "sandbox":
+// sandbox turns on every future/full-product surface, so a tester APK built
+// without EXPO_PUBLIC_PRODUCT_STAGE (or with a typo) would silently ship the
+// full sandbox surface. "dev-apk" is the most restricted real stage, so an
+// unconfigured or mistyped build ships the minimal tester surface instead.
+const FAIL_CLOSED_STAGE: ProductStage = "dev-apk";
+
 /**
- * Resolve the active product stage from env. Local dev defaults to "sandbox";
- * EAS preview profile sets EXPO_PUBLIC_PRODUCT_STAGE=dev-apk; a future
- * public beta profile would set "public-beta". Any missing / invalid value
- * falls back to "sandbox" so emulator runs never break on a typo.
+ * Resolve the active product stage from env, fail-closed.
+ *
+ * A valid explicit value ("sandbox" | "dev-apk" | "public-beta") is honored.
+ * Anything else (missing or invalid) falls back to FAIL_CLOSED_STAGE rather than
+ * "sandbox". To run sandbox locally, set EXPO_PUBLIC_PRODUCT_STAGE=sandbox
+ * explicitly; EAS preview sets dev-apk; a future public beta sets public-beta.
  */
-function resolveProductStage(value: string | undefined): ProductStage {
+export function resolveProductStage(value: string | undefined): ProductStage {
   if (
     value !== undefined &&
     (VALID_PRODUCT_STAGES as readonly string[]).includes(value)
   ) {
     return value as ProductStage;
   }
-  return "sandbox";
+  return FAIL_CLOSED_STAGE;
 }
 
 /**
  * Current product stage.
  *
  * - "sandbox": internal emulator / dev testing — every feature flag on,
- *   nothing locked. Default when no env is set.
+ *   nothing locked. Must be requested explicitly via
+ *   EXPO_PUBLIC_PRODUCT_STAGE=sandbox; it is no longer the fallback (fail-closed).
  * - "dev-apk": controlled external MVP testing — bare minimum surface
  *   for the first-3-minutes hook. No paywall, no Chat tab, no Graph,
  *   no Carnet. In-lesson AI (Say It Your Way + Mini Conversation) is
@@ -51,7 +61,7 @@ export const PRODUCT_STAGE: ProductStage = resolveProductStage(
 // sections are part of every lesson, not an optional bonus surface.
 // `v1LessonEngine` is a WS.3 scaffold flag for the v1 typed content engine.
 // Not consumed anywhere in Sprint 12 yet — gates the future v1 surface only.
-const FEATURES_BY_STAGE = {
+export const FEATURES_BY_STAGE = {
   // Internal emulator / dev testing — everything on for full sandbox exploration.
   sandbox: {
     paywall: false,
