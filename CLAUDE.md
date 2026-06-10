@@ -1,3 +1,12 @@
+> **READ FIRST: CURRENT STATUS (2026-06-10).**
+> The body of this file below this banner is the legacy v7 roadmap, kept for reference.
+> Current Dev APK scope lives in `docs/DEV_APK_MVP_CANON.md`.
+> Current execution state lives in `docs/STATUS.md`.
+> v1 is a temporary Dev APK smoke surface.
+> learning-engine is the long-term product foundation. Do not expand v1.
+> Do not use the legacy 24-lesson, L14 paywall, or Sprint 10 language below as active
+> direction unless it is explicitly reactivated.
+
 # LE MOT — French Learning App
 
 @docs/MASTER_PIPELINE_v1.2.1.md

@@ -112,3 +112,28 @@ This is not urgent unless those surfaces start changing often.
 - SayIt offline and AI fallback confirmation.
 - Cold restart and storage-reset.
 - Android viewport and keyboard pass.
+
+---
+
+## 9. Addendum (2026-06-10, post-checkpoint closures)
+
+Appended after #103 and #104 merged. The sections above are unchanged.
+
+**Post-checkpoint closures:**
+
+- #103 closed the validate:pools CI gap. `npm run validate:pools` now runs on every PR
+  and push to main in `.github/workflows/learning-engine-ci.yml`.
+- #104 closed the fail-open product stage fallback. A missing or invalid
+  `EXPO_PUBLIC_PRODUCT_STAGE` now resolves to "dev-apk", never "sandbox".
+  Covered by `scripts/tests/productStageResolution.test.ts`.
+
+**Remaining PR-D residue:**
+
+- `app/dev/*` route gating is still open. Both dev routes are deep-link reachable in any
+  stage and are protected by comments only.
+- The supabaseReady banner item from the release guardrail audit plan is still open.
+
+**Decisions not settled here:**
+
+- The Practice tab decision remains separate and is not settled in this checkpoint.
+- Home Auth and Account (F3) remains held until a product decision or smoke.
