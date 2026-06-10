@@ -19,6 +19,7 @@ import "./lessonProgress.test";
 import "./ttsPlaceholder.test";
 import "./devApkScope.test";
 import "./devApkCopyGuard.test";
+import "./productStageResolution.test";
 import { runAll } from "./harness";
 
 void runAll();
