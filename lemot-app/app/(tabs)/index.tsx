@@ -370,7 +370,7 @@ export default function HomeScreen() {
                 className="text-sm font-semibold mb-0.5"
                 style={{ color: P.ink }}
               >
-                Je suis
+                Survival Kit
               </Text>
               <Text className="text-xs" style={{ color: P.ink3 }}>
                 Begin the first lesson.

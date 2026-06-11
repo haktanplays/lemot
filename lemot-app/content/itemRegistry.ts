@@ -48,6 +48,18 @@ export const ITEM_REGISTRY = {
     exampleEn: "A coffee, please.",
     weakPointTags: ["politeness", "elision"],
   },
+  "chunk-merci": {
+    id: "chunk-merci",
+    type: "chunk",
+    text: "merci",
+    status: "active",
+    fr: "merci",
+    en: "thank you",
+    meaning: "Thank you. Closes a polite exchange.",
+    exampleFr: "Merci !",
+    exampleEn: "Thank you!",
+    weakPointTags: ["politeness"],
+  },
   "chunk-je-suis": {
     id: "chunk-je-suis",
     type: "chunk",
