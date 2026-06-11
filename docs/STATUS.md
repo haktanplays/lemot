@@ -5,17 +5,25 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
 
 ## Current main
 
-- At or after `8e29818`.
-- Guardrail and Round 1 PRs #100 to #116 are merged.
-- Code-side: ready for the Round 1 Dev APK build, with notes below.
+- At or after `e95d790`.
+- Guardrail and Round 1 PRs #100 to #122 are merged.
+- PR #121 merged: L1 = Survival Kit (`v1-lesson-001`), L2 = Être seed
+  (`v1-lesson-002`). L3-L6 remain pending.
+- PR #122 merged: the Round 1 test plan is canon at
+  `docs/workstreams/round1-test-plan.md`.
+- Next bounded work: L3-L6 content planning or implementation, guided by
+  the test plan.
+- Code-side: guardrails and validation green. Per the test plan build rule,
+  the tester APK waits for the full L1-L6 slice plus a device pass.
 
 ## Round 1 Dev APK readiness
 
 - Round 1 assumptions: Dev APK only, no Supabase env, AI closed (fallback-only).
 - Authoritative smoke checklist: `docs/DEV_APK_SMOKE_TEST_CHECKLIST.md`.
 - Build path: `eas build --platform android --profile preview` (run from `lemot-app/`).
-- Remaining work is operator-side: checklist pre-build checks, EAS build,
-  device smoke pass, then the tester wave.
+- Remaining work before the tester wave: L3-L6 content (per the test plan
+  build rule), then operator-side checklist pre-build checks, EAS build,
+  and the device smoke pass.
 
 ## Dev APK guardrail status (all merged)
 
@@ -74,5 +82,5 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
 - No Practice or Chat expansion.
 - No Mon Lexique runtime integration.
 - No new lesson mechanics.
-- No multi-lesson content expansion.
+- No multi-lesson content expansion beyond the Round 1 L1-L6 slice.
 - No paywall work.
