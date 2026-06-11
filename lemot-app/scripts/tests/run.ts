@@ -24,6 +24,7 @@ import "./productStageResolution.test";
 import "./gradeAnswerCheck.test";
 import "./boundaryAndDue.test";
 import "./selectors.test";
+import "./noSupabaseAuthGuard.test";
 import { runAll } from "./harness";
 
 void runAll();

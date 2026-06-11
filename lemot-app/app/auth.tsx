@@ -9,9 +9,10 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { P } from "@/constants/theme";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { supabaseReady } from "@/lib/supabase";
 
 export default function AuthScreen() {
   const { user, signIn, signUp } = useAuthContext();
@@ -28,6 +29,16 @@ export default function AuthScreen() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // No-account guard: in a build without Supabase configuration, sign in and
+  // sign up cannot work, so this screen must not be reachable (deep link,
+  // restored nav state). Redirect to Home instead of showing a dead form.
+  // Placed after all hook calls so React's Rules of Hooks are respected
+  // (supabaseReady is a module-level constant; hook order stays stable).
+  // Mirrors the Practice and Chat tab guards.
+  if (!supabaseReady) {
+    return <Redirect href={"/" as never} />;
+  }
 
   const handleSubmit = async () => {
     setError("");

@@ -9,6 +9,7 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { FEATURES, PRODUCT_STAGE } from "@/config/productStage";
+import { supabaseReady } from "@/lib/supabase";
 import { kvStorage } from "@/lib/storage";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
@@ -196,21 +197,27 @@ export default function HomeScreen() {
               {dateLabel}
             </Text>
           </View>
-          <Pressable
-            onPress={() => {
-              if (user) {
-                setShowAccount(true);
-              } else {
-                router.push("/auth");
-              }
-            }}
-            className="flex-row items-center gap-2 px-3 py-2 rounded-xl bg-lm-paper border border-lm-border"
-          >
-            <User size={16} color={user ? P.green : P.ink3} />
-            <Text className="text-xs font-semibold" style={{ color: user ? P.green : P.ink3 }}>
-              {user ? (user.user_metadata?.display_name ?? "Account") : "Sign In"}
-            </Text>
-          </Pressable>
+          {/* Sign In / Account entry only renders when Supabase is configured.
+              In a build without Supabase env (Round 1 dev-apk), accounts do not
+              exist, so an actionable Sign In CTA would be a dead end. This is
+              the only opener of the Account modal, so that stays unreachable too. */}
+          {supabaseReady && (
+            <Pressable
+              onPress={() => {
+                if (user) {
+                  setShowAccount(true);
+                } else {
+                  router.push("/auth");
+                }
+              }}
+              className="flex-row items-center gap-2 px-3 py-2 rounded-xl bg-lm-paper border border-lm-border"
+            >
+              <User size={16} color={user ? P.green : P.ink3} />
+              <Text className="text-xs font-semibold" style={{ color: user ? P.green : P.ink3 }}>
+                {user ? (user.user_metadata?.display_name ?? "Account") : "Sign In"}
+              </Text>
+            </Pressable>
+          )}
         </View>
 
         {/* Journey Image */}
