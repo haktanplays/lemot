@@ -64,6 +64,7 @@ describe("product stage resolution (fail closed)", () => {
       assert(f.paywall === false, `fallback (${label}): paywall must be false`);
       assert(f.revenueCat === false, `fallback (${label}): revenueCat must be false`);
       assert(f.aiChat === false, `fallback (${label}): aiChat must be false`);
+      assert(f.aiEnabled === false, `fallback (${label}): aiEnabled must be false`);
       assert(f.wordGraph === false, `fallback (${label}): wordGraph must be false`);
       assert(f.monLexique === false, `fallback (${label}): monLexique must be false`);
       assert(f.leCarnet === false, `fallback (${label}): leCarnet must be false`);

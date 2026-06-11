@@ -61,6 +61,10 @@ export const PRODUCT_STAGE: ProductStage = resolveProductStage(
 // sections are part of every lesson, not an optional bonus surface.
 // `v1LessonEngine` is a WS.3 scaffold flag for the v1 typed content engine.
 // Not consumed anywhere in Sprint 12 yet — gates the future v1 surface only.
+// `aiEnabled` is the AI master switch: when false, lib/ai's Edge Function
+// helpers fail closed to deterministic fallbacks and make NO network call,
+// regardless of Supabase env. This keeps the dev-apk tester build AI-closed
+// even if Supabase env is later injected for auth/progress sync.
 export const FEATURES_BY_STAGE = {
   // Internal emulator / dev testing — everything on for full sandbox exploration.
   sandbox: {
@@ -68,6 +72,7 @@ export const FEATURES_BY_STAGE = {
     revenueCat: false,
     aiChat: true,
     aiLesson: true,
+    aiEnabled: true,
     wordGraph: true,
     monLexique: true,
     leCarnet: true,
@@ -80,6 +85,9 @@ export const FEATURES_BY_STAGE = {
     revenueCat: false,
     aiChat: false,
     aiLesson: true,
+    // AI master switch OFF for the Round-1 tester build: no AI network calls
+    // even if Supabase env exists. In-lesson AI sections fall back deterministically.
+    aiEnabled: false,
     wordGraph: false,
     monLexique: false,
     leCarnet: false,
@@ -95,6 +103,11 @@ export const FEATURES_BY_STAGE = {
     revenueCat: true,
     aiChat: true,
     aiLesson: true,
+    // Public-beta AI stays OFF until the AI-enabled beta gate is explicitly
+    // cleared in a later PR (after E2 console stripping, server-side hardening,
+    // rate limits, and privacy/data-handling notes). AI fails closed by default
+    // outside sandbox.
+    aiEnabled: false,
     wordGraph: false,
     monLexique: true,
     leCarnet: false,
