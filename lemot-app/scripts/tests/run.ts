@@ -23,6 +23,7 @@ import "./componentCopyGuard.test";
 import "./productStageResolution.test";
 import "./gradeAnswerCheck.test";
 import "./boundaryAndDue.test";
+import "./selectors.test";
 import { runAll } from "./harness";
 
 void runAll();
