@@ -78,7 +78,7 @@ const screens: LessonScreen[] = [
       reveal: {
         short: "un café",
         explanation:
-          "Je voudrais needs a thing. Here, that thing is un café — a coffee.",
+          "Je voudrais needs a thing. Here, that thing is un café, a coffee.",
         natural: "Bonjour, je voudrais un café.",
       },
     },
@@ -144,7 +144,7 @@ const screens: LessonScreen[] = [
         ifUnderstandableButWrong:
           "Your meaning lands. A native would join the pieces this way.",
         ifMissingTargetPiece:
-          "Add s'il vous plaît to soften the close — it costs nothing and changes the tone.",
+          "Add s'il vous plaît to soften the close. It costs nothing and changes the tone.",
       },
       validationMode: "exact-or-alternative",
     },
