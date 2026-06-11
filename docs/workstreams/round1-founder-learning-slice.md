@@ -204,18 +204,41 @@ Authoring note from the shipped normalizer: accents are normalized and
 trailing periods dropped, but `?` and `!` are not stripped. Question-form
 expected answers must list a no-question-mark accepted alternative.
 
-## 6. Current repo mismatch (P0 planning note)
+## 6. Numbering / mapping decision (RESOLVED + LOCKED, PR C)
 
-The repo today has `v1-lesson-001` = Je suis. The active canon says L1 is
-Survival Kit and être belongs to L2. Content implementation must make a
-numbering and mapping decision before any L1-L6 content file is written:
+Status: RESOLVED and LOCKED by PR C (docs-only). The decision below is the
+canonical v1 numbering/mapping for Round 1. Implementation is pending and
+happens atomically in PR D (see section 10); no lesson content file is
+created or renamed in PR C.
 
-- Preferred direction: `v1-lesson-001` becomes Survival Kit, and the
-  existing Je suis content moves to `v1-lesson-002` as the seed of the
-  Être lesson (most of its screens survive there).
-- This decision is NOT solved in this docs PR. It is resolved in PR C
-  before content PRs start.
-- Until resolved, no lesson content file is created or renamed.
+Background: the repo today has `v1-lesson-001` = Je suis. Active canon says
+L1 is Survival Kit and être belongs to L2. A read-only PR C inspection found
+that simply renumbering Je suis from `v1-lesson-001` to `v1-lesson-002`
+without creating a valid `v1-lesson-001` would leave `V1_LESSONS` with a
+numbering gap `[0, 2]` and fail the structural tests added in PR #119
+(`scripts/tests/v1LessonStructure.test.ts` requires unique, sequential
+numbers and resolving prerequisites). The migration is therefore inseparable
+from authoring L1 and must land atomically (see the atomic migration rule in
+section 12).
+
+Locked mapping:
+
+- L0 source: `app/lesson-zero.tsx` remains the actual hardcoded first-use
+  bridge for Round 1. It is not replaced by structured data in this slice.
+- `v1-lesson-000`: keep registered as number 0 — a structured twin / orphan
+  of the L0 café bridge, reachable only by manual deep link. Do NOT remove it
+  in Round 1.
+- `v1-lesson-001`: target is canon L1 Survival Kit (new content).
+- `v1-lesson-002`: target is canon L2 Être. The existing Je suis screens from
+  the current `v1-lesson-001` migrate here as the Être seed (most screens
+  survive; `c'est` content is added later per section 4 / PR E).
+- L3-L6 follow canon, numbered in order:
+  - `v1-lesson-003`: Negation / yes-no / tu-vous
+  - `v1-lesson-004`: Avoir-state
+  - `v1-lesson-005`: Objects / articles
+  - `v1-lesson-006`: Integration
+
+Until PR D lands, no lesson content file is created or renamed.
 
 ## 7. Registry additions forecast (forecast only, not implementation)
 
@@ -274,9 +297,18 @@ PR B must land before any new lesson content:
 
 - PR A: this workstream spec (docs only).
 - PR B: v1 lesson structural tests plus copy guard extension.
-- PR C: numbering/mapping decision and Lesson Zero / L1 alignment plan.
-- PR D: registry additions batch 1 plus L1 Survival Kit content.
-- PR E: L2 Être content (migrating the current Je suis screens).
+- PR C: numbering/mapping decision, docs-only. Locks the mapping in section 6.
+  This PR. No runtime, content, registry, Home, or test changes.
+- PR D: atomic migration plus L1 Survival Kit. Single atomic PR:
+  - registry batch 1 (the L1 items in section 7),
+  - new `v1-lesson-001` Survival Kit content,
+  - relocate the existing Je suis content to `v1-lesson-002` as the Être seed,
+  - update `content/lessons/v1/index.ts` to include 000, 001, 002,
+  - update prerequisites so lesson numbers stay sequential and the structural
+    tests stay green (no `[0, 2]` gap at any point),
+  - include a minimal Home card relabel if needed so Home does not say
+    "Je suis" while opening Survival Kit.
+- PR E: extend L2 Être with c'est / c'est bon / c'est moi if still needed.
 - PR F: Home lesson list plus simple sequential unlock.
 - PR G: L3 Negation / yes-no / tu-vous content.
 - PR H: L4 Avoir-state content.
@@ -301,8 +333,18 @@ One PR, one product intention. Content PRs stay content-only after PR D.
 P0:
 
 - Repo numbering mismatch: `v1-lesson-001` is Je suis, but canon L1 is
-  Survival Kit. Resolved by PR C before content. Until then, no content
-  files.
+  Survival Kit. The MAPPING is now resolved and LOCKED by PR C (section 6);
+  IMPLEMENTATION remains pending and lands atomically in PR D.
+- Atomic migration rule (required): do not land a PR that leaves
+  `V1_LESSONS` with a numbering gap. Any renumber must keep numbers
+  sequential from 0 with all prerequisites resolving, so PR D must create a
+  valid `v1-lesson-001` (Survival Kit) in the same PR that relocates Je suis
+  to `v1-lesson-002`. The structural tests (PR #119) enforce this.
+- Registry-with-content rule (required): registry additions must land in the
+  same PR as the content that references them. `learningItems` is
+  compile-checked against `ITEM_REGISTRY`, and screen-level `itemId` strings
+  are runtime-checked by the structural tests, so a content PR that references
+  an unregistered id fails typecheck or the structural suite.
 - Screen-level itemId strings are not type-checked; a typo ships silently
   today. PR B closes this. PR B lands before content.
 - The copy guard covers only lesson-001 today; L2-L6 copy would ship
@@ -310,6 +352,11 @@ P0:
 
 P1:
 
+- Home label/route mismatch: after PR D, the current hardcoded Home card
+  titled "Je suis" would open the new `v1-lesson-001` (Survival Kit) unless
+  PR D relabels it. PR D must include a minimal relabel of that card, or the
+  mismatch must be closed by PR F. Keep the relabel minimal if folded into
+  PR D — a single card title/sub change, not the full lesson list.
 - L3 becomes too heavy if it opens full question systems or tu/vous
   conjugation. Mitigations: intonation-only questions, overlay-only
   tu/vous, active-item cap of about 6.
