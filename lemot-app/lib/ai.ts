@@ -1,4 +1,5 @@
 import { supabase, supabaseReady } from "@/lib/supabase";
+import { FEATURES } from "@/config/productStage";
 
 interface AIMessage {
   role: "user" | "assistant";
@@ -14,7 +15,9 @@ async function callEdgeFunction(
   body: Record<string, unknown>,
   fallback: string,
 ): Promise<string> {
-  if (!supabaseReady) return fallback;
+  // Fail closed: the AI master switch must be on AND Supabase configured.
+  // When AI is disabled, return the deterministic fallback and make no call.
+  if (!FEATURES.aiEnabled || !supabaseReady) return fallback;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
@@ -115,7 +118,8 @@ export async function analyzeErrors(
   }>;
   summary: string;
 }> {
-  if (!supabaseReady) return { weakSpots: [], summary: "Analysis unavailable." };
+  if (!FEATURES.aiEnabled || !supabaseReady)
+    return { weakSpots: [], summary: "Analysis unavailable." };
 
   try {
     const { data, error } = await supabase.functions.invoke("ai-error", {

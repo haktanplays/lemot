@@ -31,6 +31,10 @@ describe("dev-apk feature scope", () => {
       assert(f.paywall === false, "dev-apk: paywall must be false");
       assert(f.revenueCat === false, "dev-apk: revenueCat must be false");
       assert(f.aiChat === false, "dev-apk: aiChat must be false");
+      assert(
+        f.aiEnabled === false,
+        "dev-apk: aiEnabled must be false (AI master switch off; no network calls)",
+      );
       assert(f.wordGraph === false, "dev-apk: wordGraph must be false");
       assert(f.monLexique === false, "dev-apk: monLexique must be false");
       assert(f.leCarnet === false, "dev-apk: leCarnet must be false");
@@ -58,6 +62,20 @@ describe("dev-apk feature scope", () => {
     assert(
       FEATURES_BY_STAGE.sandbox.practice === true,
       "sandbox: practice must stay true (Practice tab visible in sandbox)",
+    );
+  });
+
+  test("AI master switch is on only in sandbox", async () => {
+    // AI fails closed by default outside sandbox. public-beta AI stays off
+    // until the AI-enabled beta gate is explicitly opened in a later PR.
+    const { FEATURES_BY_STAGE } = await import("../../config/productStage");
+    assert(
+      FEATURES_BY_STAGE.sandbox.aiEnabled === true,
+      "sandbox: aiEnabled must be true (only stage that may make AI network calls)",
+    );
+    assert(
+      FEATURES_BY_STAGE["public-beta"].aiEnabled === false,
+      "public-beta: aiEnabled must be false (AI fails closed until the beta gate is opened)",
     );
   });
 });
