@@ -7,9 +7,10 @@
  * rendered strings). This locks the v1 Lesson 1 content against those.
  *
  * Conservative by design:
- *   - Imports STRUCTURED lesson data (`lesson001`) instead of raw-scanning files,
- *     so comments and non-rendered code can never cause a false positive.
- *   - Walks only `lesson001.screens` (the rendered content). Lesson-level
+ *   - Imports STRUCTURED lesson data (every lesson in `V1_LESSONS`) instead of
+ *     raw-scanning files, so comments and non-rendered code can never cause a
+ *     false positive.
+ *   - Walks only each lesson's `screens` (the rendered content). Lesson-level
  *     `designNotes` / `qaChecks` are siblings of `screens` and are NOT walked —
  *     those intentionally contain negative references like "No XP / streak ...".
  *   - Skips internal identifier / enum keys (ids, type tags, item refs) so slugs
@@ -23,7 +24,7 @@
  * end of this file.
  */
 import { describe, test, assert } from "./harness";
-import { lesson001 } from "../../content/lessons/v1/lesson-001";
+import { V1_LESSONS } from "../../content/lessons/v1";
 
 // Keys whose string values are internal identifiers / enums, not learner copy.
 const EXCLUDE_KEYS = new Set([
@@ -81,43 +82,48 @@ function collectLearnerStrings(node: unknown, out: string[]): void {
 }
 
 describe("dev-apk v1 copy guard", () => {
-  const strings: string[] = [];
-  collectLearnerStrings(lesson001.screens, strings);
+  // Covers every registered v1 lesson, so L1-L6 content PRs are born guarded
+  // (Round 1 slice spec, PR B). Previously only lesson-001 was scanned.
+  for (const lesson of V1_LESSONS) {
+    const strings: string[] = [];
+    collectLearnerStrings(lesson.screens, strings);
+    const L = lesson.id;
 
-  test("lesson 001 exposes learner-facing screen strings to check", () => {
-    assert(
-      strings.length > 0,
-      "no learner-facing strings collected from lesson001.screens — walk or import is broken",
-    );
-  });
-
-  test("lesson 001 learner copy has no em dash or en dash", () => {
-    for (const s of strings) {
+    test(`${L} exposes learner-facing screen strings to check`, () => {
       assert(
-        !DASH.test(s),
-        `lesson 001 learner string contains an em/en dash: ${JSON.stringify(s)}`,
+        strings.length > 0,
+        `no learner-facing strings collected from ${L} screens — walk or import is broken`,
       );
-    }
-  });
+    });
 
-  test("lesson 001 learner copy has no banned gamification / internal terms", () => {
-    for (const s of strings) {
-      for (const word of BANNED_WORDS) {
-        const re = new RegExp(`\\b${word}\\b`, "i");
+    test(`${L} learner copy has no em dash or en dash`, () => {
+      for (const s of strings) {
         assert(
-          !re.test(s),
-          `lesson 001 learner string contains banned term "${word}": ${JSON.stringify(s)}`,
+          !DASH.test(s),
+          `${L} learner string contains an em/en dash: ${JSON.stringify(s)}`,
         );
       }
-      const lower = s.toLowerCase();
-      for (const phrase of BANNED_PHRASES) {
-        assert(
-          !lower.includes(phrase.toLowerCase()),
-          `lesson 001 learner string contains banned phrase "${phrase}": ${JSON.stringify(s)}`,
-        );
+    });
+
+    test(`${L} learner copy has no banned gamification / internal terms`, () => {
+      for (const s of strings) {
+        for (const word of BANNED_WORDS) {
+          const re = new RegExp(`\\b${word}\\b`, "i");
+          assert(
+            !re.test(s),
+            `${L} learner string contains banned term "${word}": ${JSON.stringify(s)}`,
+          );
+        }
+        const lower = s.toLowerCase();
+        for (const phrase of BANNED_PHRASES) {
+          assert(
+            !lower.includes(phrase.toLowerCase()),
+            `${L} learner string contains banned phrase "${phrase}": ${JSON.stringify(s)}`,
+          );
+        }
       }
-    }
-  });
+    });
+  }
 });
 
 /*

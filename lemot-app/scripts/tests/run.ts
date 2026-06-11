@@ -25,6 +25,7 @@ import "./gradeAnswerCheck.test";
 import "./boundaryAndDue.test";
 import "./selectors.test";
 import "./noSupabaseAuthGuard.test";
+import "./v1LessonStructure.test";
 import { runAll } from "./harness";
 
 void runAll();
