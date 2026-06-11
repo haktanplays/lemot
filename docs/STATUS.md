@@ -5,16 +5,35 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
 
 ## Current main
 
-- At or after `99a9188`.
-- Guardrail PRs #100 to #104 are merged.
+- At or after `8e29818`.
+- Guardrail and Round 1 PRs #100 to #116 are merged.
+- Code-side: ready for the Round 1 Dev APK build, with notes below.
 
-## Dev APK guardrail status
+## Round 1 Dev APK readiness
 
-- Feature scope locked by test (#100, `scripts/tests/devApkScope.test.ts`).
-- v1 learner-facing copy guard added (#101, lesson-001 structured screens).
-- Bug closure checkpoint recorded (#102, `docs/status/dev-apk-bug-closure-checkpoint.md`).
-- `validate:pools` now runs in CI (#103).
-- Product stage resolution now fails closed (#104).
+- Round 1 assumptions: Dev APK only, no Supabase env, AI closed (fallback-only).
+- Authoritative smoke checklist: `docs/DEV_APK_SMOKE_TEST_CHECKLIST.md`.
+- Build path: `eas build --platform android --profile preview` (run from `lemot-app/`).
+- Remaining work is operator-side: checklist pre-build checks, EAS build,
+  device smoke pass, then the tester wave.
+
+## Dev APK guardrail status (all merged)
+
+- Feature scope locked by test (#100), extended for practice and aiEnabled.
+- v1 learner-facing copy guard (#101); component copy guard for
+  LessonRendererV1, Lesson Zero, How Weave Works (#110).
+- Bug closure checkpoint recorded (#102).
+- `validate:pools` runs in CI (#103).
+- Product stage resolution fails closed to dev-apk (#104).
+- Practice tab hidden in dev-apk (#106); legacy Practice CTA gated (#107).
+- `app/dev/*` routes gated to sandbox dev builds (#108).
+- Learning-engine test depth: grade and answer-check (#109), boundary and
+  due-check (#111), Mon Lexique and Practice Pool selectors (#112).
+- Temporary AI diagnostics removed (#113).
+- Explicit AI master switch (#114): `aiEnabled` true only in sandbox;
+  dev-apk and public-beta fail closed to deterministic fallbacks.
+- Auth entry hidden and `/auth` route guarded when Supabase env is absent (#115).
+- Smoke checklist placeholder replaced with the Round 1 checklist (#116).
 
 ## Product stage note
 
@@ -23,25 +42,25 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
 - An unset or mistyped env intentionally boots "dev-apk", the minimal tester surface.
 - EAS preview sets `EXPO_PUBLIC_PRODUCT_STAGE=dev-apk` explicitly.
 
-## Still open
+## Still open (Round 1 notes)
 
-- Practice tab product decision: hide in dev-apk, or accept and document. Not settled.
-- Home Auth and Account decision (F3). Held until product decision or smoke.
-- Home completion label (F5). Held.
-- `app/dev/*` route gating residue from the PR-D plan. Routes are deep-link reachable.
-- G3 operator gate: re-enable Supabase email confirmation before any external tester APK.
-- Smoke bucket: F6 SayIt AI and offline, F7 first-run and restart and storage-reset,
-  F8 Android viewport and keyboard and tap targets, TTS pass, Home visual review.
-- Smoke checklist import from the operator vault. The repo file is still a placeholder.
+- Home completion label (F5): Home still says "Begin the first lesson" after
+  completion. Held; review during the device smoke pass.
+- Smoke bucket: first-run and restart persistence, Android viewport, keyboard,
+  tap targets, TTS pass, fallback behavior on device. All covered by the
+  Round 1 checklist sections 4 to 10.
+- G3 (Supabase email confirmation) is moot for the no-env Round 1 build.
+  It becomes mandatory again before any env-bearing tester build.
 
-## Next recommended queue
+## Deferred (not Round 1)
 
-1. PR-C docs sync (this change).
-2. PR-D2: gate `app/dev/*` routes to sandbox stage.
-3. PR-T1: grade and answer-check tests (learning-engine).
-4. PR-T2: Mon Lexique and boundary tests, plus lesson-000 copy guard extension.
-5. PR-T3: graph tests (learning-engine).
-6. Practice hide PR, only if the operator approves the decision.
+- E2 console stripping.
+- E4 legacy lesson route gating (deep-link residual, not in the Round 1 path).
+- AI-enabled beta gate: server-side hardening, rate limits, then flip
+  `aiEnabled` outside sandbox.
+- Privacy and data-handling note for AI traffic.
+- Founder / public-beta features: paywall, RevenueCat, Word Graph, Mon Lexique
+  runtime, Le Carnet, public-beta EAS profile.
 
 ## Hard no
 
