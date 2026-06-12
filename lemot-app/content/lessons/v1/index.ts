@@ -4,6 +4,7 @@ import { lesson001 } from "./lesson-001";
 import { lesson002 } from "./lesson-002";
 import { lesson003 } from "./lesson-003";
 import { lesson004 } from "./lesson-004";
+import { lesson005 } from "./lesson-005";
 
 export const V1_LESSONS: Lesson[] = [
   lesson000,
@@ -11,6 +12,7 @@ export const V1_LESSONS: Lesson[] = [
   lesson002,
   lesson003,
   lesson004,
+  lesson005,
 ];
 
 export function getV1LessonById(id: string): Lesson | undefined {
