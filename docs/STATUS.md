@@ -5,14 +5,21 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
 
 ## Current main
 
-- At or after `e95d790`.
-- Guardrail and Round 1 PRs #100 to #122 are merged.
+- At or after `f3e4ce0` (PR #126).
+- Guardrail and Round 1 PRs #100 to #126 are merged.
 - PR #121 merged: L1 = Survival Kit (`v1-lesson-001`), L2 = Être seed
-  (`v1-lesson-002`). L3-L6 remain pending.
+  (`v1-lesson-002`).
 - PR #122 merged: the Round 1 test plan is canon at
   `docs/workstreams/round1-test-plan.md`.
-- Next bounded work: L3-L6 content planning or implementation, guided by
-  the test plan.
+- PR #124 merged: the Round 1 L3-L6 content plan is on main at
+  `docs/workstreams/round1-l3-l6-content-plan.md`.
+- PR #125 merged: the Round 1 Training Content Factory contract is on main at
+  `docs/workstreams/round1-training-content-factory.md`.
+- PR #126 merged: L3 = Non (`v1-lesson-003`), the first lesson built under the
+  Training Content Factory contract. L3 is shipped; L4-L6 remain pending.
+- `V1_LESSONS = [lesson000, lesson001, lesson002, lesson003]`.
+- Next content target: the next content PR is L4 (`v1-lesson-004`),
+  J'ai / avoir-state, as a Training Pack under the Training Content Factory.
 - Code-side: guardrails and validation green. Per the test plan build rule,
   the tester APK waits for the full L1-L6 slice plus a device pass.
 
@@ -21,7 +28,7 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
 - Round 1 assumptions: Dev APK only, no Supabase env, AI closed (fallback-only).
 - Authoritative smoke checklist: `docs/DEV_APK_SMOKE_TEST_CHECKLIST.md`.
 - Build path: `eas build --platform android --profile preview` (run from `lemot-app/`).
-- Remaining work before the tester wave: L3-L6 content (per the test plan
+- Remaining work before the tester wave: L4-L6 content (per the test plan
   build rule), then operator-side checklist pre-build checks, EAS build,
   and the device smoke pass.
 
