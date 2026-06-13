@@ -134,8 +134,11 @@ const screens: LessonScreen[] = [
     payload: {
       insightType: "grammar-nugget",
       title: "Notice the shape.",
-      body: "You just wrote Je suis ici twice. The shape stayed the same. Only the moment around it changed. That is what an engine does.",
-      examples: [{ fr: "Je suis ici.", en: "I am here." }],
+      body: "You just wrote Je suis ici twice. The shape stayed the same. Only the moment around it changed. That is what an engine does, and the same shape can say how you are, not just where.",
+      examples: [
+        { fr: "Je suis ici.", en: "I am here." },
+        { fr: "Je suis prêt.", en: "I am ready." },
+      ],
     },
   },
   {

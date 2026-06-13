@@ -76,7 +76,7 @@ const screens: LessonScreen[] = [
       reveal: {
         short: "voudrais",
         explanation:
-          "Je voudrais softens the request. It is the polite way to ask a stranger.",
+          "Je voudrais softens any request. It is the polite way to ask a stranger for a coffee, or for anything else.",
         natural: "Bonjour, je voudrais un café.",
       },
     },

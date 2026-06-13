@@ -26,10 +26,12 @@ const screens: LessonScreen[] = [
       body:
         "In English you are hungry. In French you have hunger: j'ai faim. " +
         "French puts some feelings on have, not on be. Je suis names who or " +
-        "where you are; j'ai names what you have or feel.",
+        "where you are; j'ai names what you feel or have: a feeling like " +
+        "j'ai faim, or a thing like j'ai une question.",
       examples: [
         { fr: "Je suis ici.", en: "I am here." },
         { fr: "J'ai faim.", en: "I am hungry." },
+        { fr: "J'ai une question.", en: "I have a question." },
       ],
     },
   },
@@ -81,6 +83,42 @@ const screens: LessonScreen[] = [
         { text: "une question", itemId: "noun-question" },
       ],
       tts: true,
+    },
+  },
+  {
+    id: "s03b-fill-where-feel-have",
+    type: "fill-with-traps",
+    targetItemIds: [
+      "chunk-j-ai-une-question",
+      "chunk-je-suis-ici",
+      "chunk-j-ai-faim",
+    ],
+    weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
+    payload: {
+      prompt: "You came with one small thing to ask. What do you say?",
+      blankCount: 1,
+      options: [
+        { id: "opt-question", text: "J'ai une question.", isCorrect: true },
+        {
+          id: "opt-ici",
+          text: "Je suis ici.",
+          isCorrect: false,
+          trapReason: "That says where you are, not what you have to ask.",
+        },
+        {
+          id: "opt-faim",
+          text: "J'ai faim.",
+          isCorrect: false,
+          trapReason: "That says how you feel, not that you have a question.",
+        },
+      ],
+      answer: ["opt-question"],
+      reveal: {
+        short: "J'ai une question.",
+        explanation:
+          "French uses j'ai for this: I have a question. Je suis ici says where you are. J'ai faim says how you feel.",
+        natural: "J'ai une question.",
+      },
     },
   },
   {

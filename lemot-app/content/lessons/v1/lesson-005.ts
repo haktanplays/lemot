@@ -47,6 +47,8 @@ const screens: LessonScreen[] = [
       examples: [
         { fr: "un café", en: "a coffee" },
         { fr: "une question", en: "a question" },
+        { fr: "Je voudrais un café.", en: "I would like a coffee." },
+        { fr: "J'ai une question.", en: "I have a question." },
       ],
     },
   },
@@ -112,6 +114,50 @@ const screens: LessonScreen[] = [
       reveal: {
         short: "une",
         explanation: "Question travels with une: une question.",
+        natural: "une question",
+      },
+    },
+  },
+  {
+    id: "s04b-fill-choose-package",
+    type: "fill-with-traps",
+    targetItemIds: [
+      "chunk-une-question",
+      "chunk-un-cafe",
+      "grammar-un-une-package",
+    ],
+    weakPointTags: ["articles"],
+    payload: {
+      prompt: "You have one question. Which French package fits?",
+      blankCount: 1,
+      options: [
+        { id: "opt-une-question", text: "une question", isCorrect: true },
+        {
+          id: "opt-un-cafe",
+          text: "un café",
+          isCorrect: false,
+          trapReason: "That is the coffee package, not the question package.",
+        },
+        {
+          id: "opt-bare-question",
+          text: "question",
+          isCorrect: false,
+          trapReason:
+            "In French, the noun travels with its little word here: une question.",
+        },
+        {
+          id: "opt-un-question",
+          text: "un question",
+          isCorrect: false,
+          trapReason:
+            "This package is not the one we use here. Keep it as: une question.",
+        },
+      ],
+      answer: ["opt-une-question"],
+      reveal: {
+        short: "une question",
+        explanation:
+          "You are not choosing a loose word. You are choosing the package: une question. The same way, the coffee package is un café.",
         natural: "une question",
       },
     },

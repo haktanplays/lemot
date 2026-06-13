@@ -32,6 +32,8 @@ const screens: LessonScreen[] = [
       examples: [
         { fr: "Je suis ici.", en: "I am here." },
         { fr: "Je ne suis pas ici.", en: "I am not here." },
+        { fr: "C'est ici.", en: "It is here." },
+        { fr: "Ce n'est pas ici.", en: "It is not here." },
       ],
     },
   },
