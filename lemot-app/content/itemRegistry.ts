@@ -429,6 +429,19 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-un-cafe", "chunk-une-question"],
     weakPointTags: ["articles", "gender"],
   },
+  "chunk-au-revoir": {
+    id: "chunk-au-revoir",
+    type: "chunk",
+    text: "au revoir",
+    status: "active",
+    fr: "au revoir",
+    en: "goodbye",
+    meaning: "Goodbye. The polite way to close a moment and leave.",
+    exampleFr: "Merci, au revoir.",
+    exampleEn: "Thank you, goodbye.",
+    relatedItemIds: ["chunk-bonjour", "chunk-merci"],
+    weakPointTags: ["politeness"],
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;
