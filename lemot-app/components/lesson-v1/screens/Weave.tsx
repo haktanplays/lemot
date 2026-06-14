@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { View, Text, ScrollView, TextInput } from "react-native";
+import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
-import type { WeaveScreen, WeaveType } from "@/content/lessonTypes";
+import type { WeavePayload, WeaveScreen, WeaveType } from "@/content/lessonTypes";
 import { matchExpected, type MatchResult } from "./normalizeAnswer";
 import { NaturalRevealView } from "./NaturalReveal";
 
@@ -12,6 +12,15 @@ const WEAVE_LABELS: Record<WeaveType, string> = {
   context: "Context Weave",
   open: "Open Weave",
 };
+
+type WeavePiece = NonNullable<WeavePayload["suggestedPieces"]>[number];
+
+// Deterministic, stable hint order: reverse the authored (answer) order so hint
+// pieces are never shown in copy-ready sequence, while staying identical across
+// renders and remounts. No randomness, so the learner experience is repeatable.
+function orderHintPieces(input: WeavePiece[]): WeavePiece[] {
+  return [...input].reverse();
+}
 
 const RESULT_NOTES: Record<MatchResult, { text: string; tone: "ok" | "warm" | "soft" }> = {
   exact: { text: "Correct.", tone: "ok" },
@@ -30,6 +39,16 @@ export function Weave({
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"input" | "revealed">("input");
   const [match, setMatch] = useState<MatchResult | null>(null);
+  // Hint ladder: pieces stay hidden until the learner asks. This keeps Weave a
+  // rebuild-the-thought task, not a copy task. 0 = hidden, 1 = pieces shown,
+  // 2 = cloze shown.
+  const [hintLevel, setHintLevel] = useState(0);
+
+  const pieces = payload.suggestedPieces ?? [];
+  const hintPieces = orderHintPieces(pieces);
+  const hasPieces = pieces.length > 0;
+  const hasCloze =
+    typeof payload.hintCloze === "string" && payload.hintCloze.length > 0;
 
   const canCheck = text.trim().length > 0;
   const isRevealed = phase === "revealed";
@@ -87,30 +106,85 @@ export function Weave({
         )}
       </View>
 
-      {payload.suggestedPieces && payload.suggestedPieces.length > 0 && (
+      {!isRevealed && (hasPieces || hasCloze) && (
         <View className="mt-3">
-          <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-            Use these pieces if helpful.
-          </Text>
-          <View className="flex-row flex-wrap gap-2">
-            {payload.suggestedPieces.map((p, i) => (
-              <View
-                key={`${p.text}-${i}`}
-                className="rounded-full"
-                style={{
-                  backgroundColor: P.rl,
-                  borderWidth: 1,
-                  borderColor: P.rb,
-                  paddingHorizontal: 10,
-                  paddingVertical: 4,
-                }}
+          {hintLevel === 0 && (
+            <Pressable onPress={() => setHintLevel(1)}>
+              <Text
+                className="text-xs"
+                style={{ color: P.ink3, textDecorationLine: "underline" }}
               >
-                <Text className="text-xs" style={{ color: P.ink2 }}>
-                  {p.text}
-                </Text>
+                Need a hint?
+              </Text>
+            </Pressable>
+          )}
+
+          {hintLevel >= 1 && hasPieces && (
+            <View>
+              <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+                Pieces you already own:
+              </Text>
+              <View className="flex-row flex-wrap gap-2">
+                {hintPieces.map((p, i) => (
+                  <View
+                    key={`${p.text}-${i}`}
+                    className="rounded-xl"
+                    style={{
+                      backgroundColor: P.rl,
+                      borderWidth: 1,
+                      borderColor: P.rb,
+                      paddingHorizontal: 10,
+                      paddingVertical: 6,
+                    }}
+                  >
+                    <Text className="text-xs" style={{ color: P.ink2 }}>
+                      {p.text}
+                    </Text>
+                    {p.label && (
+                      <Text
+                        className="text-[10px] mt-0.5"
+                        style={{ color: P.ink3 }}
+                      >
+                        {p.label}
+                      </Text>
+                    )}
+                  </View>
+                ))}
               </View>
-            ))}
-          </View>
+            </View>
+          )}
+
+          {hintLevel === 1 && hasCloze && (
+            <Pressable className="mt-2" onPress={() => setHintLevel(2)}>
+              <Text
+                className="text-xs"
+                style={{ color: P.ink3, textDecorationLine: "underline" }}
+              >
+                Need more help?
+              </Text>
+            </Pressable>
+          )}
+
+          {hintLevel >= 2 && hasCloze && (
+            <View
+              className="rounded-lg border mt-2"
+              style={{
+                backgroundColor: P.paper,
+                borderColor: P.border,
+                padding: 10,
+              }}
+            >
+              <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
+                A shape to fill in:
+              </Text>
+              <Text
+                className="text-sm"
+                style={{ color: P.ink, fontStyle: "italic" }}
+              >
+                {payload.hintCloze}
+              </Text>
+            </View>
+          )}
         </View>
       )}
 

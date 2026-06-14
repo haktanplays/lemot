@@ -3,6 +3,18 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    id: "s00-goal-petit-moment",
+    type: "insight-card",
+    payload: {
+      insightType: "lesson-goal",
+      title: "One small moment",
+      body:
+        "Today: no new rule.\n" +
+        "By the end: you can carry one small human moment with pieces you already built.\n" +
+        "Main pieces: bonjour, je suis ici, j'ai une question, merci, au revoir.",
+    },
+  },
+  {
     id: "s00-insight-bonjour-to-au-revoir",
     type: "insight-card",
     targetItemIds: ["chunk-bonjour", "chunk-au-revoir"],
@@ -73,10 +85,11 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: Hello. I am here.",
       context: "You are at the door. Greet, then say you have arrived.",
       suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true },
-        { text: "je suis", itemId: "chunk-je-suis", required: true },
-        { text: "ici", required: true },
+        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+        { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
+        { text: "ici", required: true, label: "place word" },
       ],
+      hintCloze: "Bonjour, je suis ___.",
       expectedAnswers: ["Bonjour, je suis ici."],
       acceptedAlternatives: [
         "Bonjour, je suis ici",
@@ -135,8 +148,8 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: I have a question.",
       context: "There is one small thing you came to ask. Open it.",
       suggestedPieces: [
-        { text: "j'ai", itemId: "chunk-j-ai", required: true },
-        { text: "une question", itemId: "chunk-une-question", required: true },
+        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+        { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
       ],
       expectedAnswers: ["J'ai une question."],
       acceptedAlternatives: [
@@ -212,8 +225,8 @@ const screens: LessonScreen[] = [
       prompt: "Close the moment in French: thank them and say goodbye.",
       context: "You are about to leave. Thank them, then close.",
       suggestedPieces: [
-        { text: "merci", itemId: "chunk-merci" },
-        { text: "au revoir", itemId: "chunk-au-revoir" },
+        { text: "merci", itemId: "chunk-merci", label: "thanks" },
+        { text: "au revoir", itemId: "chunk-au-revoir", label: "closing" },
       ],
       expectedAnswers: ["Merci, au revoir."],
       acceptedAlternatives: [

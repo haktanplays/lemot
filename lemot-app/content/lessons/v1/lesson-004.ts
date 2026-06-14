@@ -3,6 +3,18 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    id: "s00-goal-jai",
+    type: "insight-card",
+    payload: {
+      insightType: "lesson-goal",
+      title: "Your second engine",
+      body:
+        "Today: your second engine, j'ai.\n" +
+        "By the end: you can choose between where you are, how you feel, and what you have to ask.\n" +
+        "Main pieces: je suis ici, j'ai faim, j'ai une question.",
+    },
+  },
+  {
     id: "s00-meet-j-ai-faim",
     type: "meet-card",
     targetItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
@@ -148,8 +160,8 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: I am hungry.",
       context: "It is past noon and you have not eaten. Say how you feel, the French way.",
       suggestedPieces: [
-        { text: "j'ai", itemId: "chunk-j-ai", required: true },
-        { text: "faim", required: true },
+        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+        { text: "faim", required: true, label: "feeling word" },
       ],
       expectedAnswers: ["J'ai faim."],
       acceptedAlternatives: [
@@ -181,10 +193,11 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: Hello, I have a question.",
       context: "You step up to ask someone something. Greet first, then say you have a question.",
       suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true },
-        { text: "j'ai", itemId: "chunk-j-ai", required: true },
-        { text: "une question", itemId: "noun-question", required: true },
+        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+        { text: "une question", itemId: "noun-question", required: true, label: "noun package" },
       ],
+      hintCloze: "Bonjour, j'ai une ___.",
       expectedAnswers: ["Bonjour, j'ai une question."],
       acceptedAlternatives: [
         "Bonjour, j'ai une question",

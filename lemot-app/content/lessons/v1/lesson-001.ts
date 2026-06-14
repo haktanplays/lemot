@@ -3,6 +3,18 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    id: "s00-goal-survival-kit",
+    type: "insight-card",
+    payload: {
+      insightType: "lesson-goal",
+      title: "Your survival kit",
+      body:
+        "Today: greet someone, ask politely, and thank.\n" +
+        "By the end: you can carry a first small exchange in French.\n" +
+        "Main pieces: bonjour, je voudrais, merci.",
+    },
+  },
+  {
     id: "s00-meet-bonjour",
     type: "meet-card",
     targetItemIds: ["chunk-bonjour"],
@@ -91,10 +103,11 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: Hello, I would like a coffee.",
       context: "You step up to the counter and order simply.",
       suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true },
-        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true },
-        { text: "un café", itemId: "noun-cafe", required: true },
+        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
+        { text: "un café", itemId: "noun-cafe", required: true, label: "noun package" },
       ],
+      hintCloze: "Bonjour, je voudrais ___.",
       expectedAnswers: ["Bonjour, je voudrais un café."],
       acceptedAlternatives: [
         "Bonjour, je voudrais un café",
@@ -146,11 +159,12 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: Hello, I would like a coffee, please.",
       context: "Add the soft close to your order.",
       suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true },
-        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true },
-        { text: "un café", itemId: "noun-cafe", required: true },
-        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait" },
+        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
+        { text: "un café", itemId: "noun-cafe", required: true, label: "noun package" },
+        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
       ],
+      hintCloze: "Bonjour, je voudrais ___, s'il vous plaît.",
       expectedAnswers: ["Bonjour, je voudrais un café, s'il vous plaît."],
       acceptedAlternatives: [
         "Bonjour, je voudrais un café s'il vous plaît.",

@@ -113,11 +113,12 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: Hello, I would like a coffee, please.",
       context: "You walk into a small café and order simply.",
       suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true },
-        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true },
-        { text: "un café", itemId: "noun-cafe", required: true },
-        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait" },
+        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
+        { text: "un café", itemId: "noun-cafe", required: true, label: "noun package" },
+        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
       ],
+      hintCloze: "Bonjour, je voudrais ___, s'il vous plaît.",
       expectedAnswers: ["Bonjour, je voudrais un café, s'il vous plaît."],
       acceptedAlternatives: [
         "Bonjour, je voudrais un café s'il vous plaît.",

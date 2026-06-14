@@ -3,6 +3,18 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    id: "s00-goal-etre",
+    type: "insight-card",
+    payload: {
+      insightType: "lesson-goal",
+      title: "Your first engine",
+      body:
+        "Today: your first French sentence engine, je suis.\n" +
+        "By the end: you can say where you are.\n" +
+        "Main pieces: je suis, ici.",
+    },
+  },
+  {
     id: "s00-meet-je-suis-ici",
     type: "meet-card",
     targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis"],
@@ -84,8 +96,8 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: I am here.",
       context: "Someone called your name. Let them know you've arrived.",
       suggestedPieces: [
-        { text: "je suis", itemId: "chunk-je-suis", required: true },
-        { text: "ici", required: true },
+        { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
+        { text: "ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je suis ici."],
       acceptedAlternatives: ["Je suis ici", "je suis ici.", "je suis ici"],
@@ -112,8 +124,8 @@ const screens: LessonScreen[] = [
       context:
         "Someone in the next room calls out, looking for you. Let them know you're here.",
       suggestedPieces: [
-        { text: "je suis", itemId: "chunk-je-suis", required: true },
-        { text: "ici", required: true },
+        { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
+        { text: "ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je suis ici."],
       acceptedAlternatives: ["Je suis ici", "je suis ici.", "je suis ici"],

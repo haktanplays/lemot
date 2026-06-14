@@ -3,6 +3,18 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    id: "s00-goal-non",
+    type: "insight-card",
+    payload: {
+      insightType: "lesson-goal",
+      title: "Saying no",
+      body:
+        "Today: how to say no, and how to make a sentence negative.\n" +
+        "By the end: you can turn a sentence around with ne ... pas.\n" +
+        "Main pieces: non, ne ... pas, non merci.",
+    },
+  },
+  {
     id: "s00-meet-je-ne-suis-pas-ici",
     type: "meet-card",
     targetItemIds: ["chunk-je-ne-suis-pas", "chunk-je-suis"],
@@ -145,8 +157,8 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: I am not here.",
       context: "Someone is looking for you in the wrong room. Tell them you are not there.",
       suggestedPieces: [
-        { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true },
-        { text: "ici", required: true },
+        { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true, label: "negative frame" },
+        { text: "ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je ne suis pas ici."],
       acceptedAlternatives: [
@@ -175,8 +187,8 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: It is not here.",
       context: "Someone points to the wrong place. Tell them it is not the spot.",
       suggestedPieces: [
-        { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", required: true },
-        { text: "ici", required: true },
+        { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", required: true, label: "negative frame" },
+        { text: "ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Ce n'est pas ici."],
       acceptedAlternatives: [
@@ -205,10 +217,11 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: No, I am not here.",
       context: "Answer first, then say where you are not.",
       suggestedPieces: [
-        { text: "Non", itemId: "chunk-non", required: true },
-        { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true },
-        { text: "ici", required: true },
+        { text: "Non", itemId: "chunk-non", required: true, label: "no" },
+        { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true, label: "negative frame" },
+        { text: "ici", required: true, label: "place word" },
       ],
+      hintCloze: "Non, je ne suis pas ___.",
       expectedAnswers: ["Non, je ne suis pas ici."],
       acceptedAlternatives: [
         "Non je ne suis pas ici.",
