@@ -91,12 +91,6 @@ const screens: LessonScreen[] = [
       ],
       hintCloze: "Bonjour, je suis ___.",
       expectedAnswers: ["Bonjour, je suis ici."],
-      acceptedAlternatives: [
-        "Bonjour, je suis ici",
-        "Bonjour je suis ici.",
-        "Bonjour je suis ici",
-        "bonjour, je suis ici.",
-      ],
       reveal: {
         modelAnswer: "Bonjour, je suis ici.",
         ifCorrect: "You opened the moment and said where you are.",
@@ -153,9 +147,6 @@ const screens: LessonScreen[] = [
       ],
       expectedAnswers: ["J'ai une question."],
       acceptedAlternatives: [
-        "J'ai une question",
-        "j'ai une question.",
-        "j'ai une question",
         "J ai une question.",
         "J ai une question",
       ],
@@ -229,13 +220,6 @@ const screens: LessonScreen[] = [
         { text: "au revoir", itemId: "chunk-au-revoir", label: "closing" },
       ],
       expectedAnswers: ["Merci, au revoir."],
-      acceptedAlternatives: [
-        "Merci, au revoir",
-        "Merci au revoir.",
-        "Merci au revoir",
-        "merci, au revoir.",
-        "merci au revoir",
-      ],
       reveal: {
         modelAnswer: "Merci, au revoir.",
         ifCorrect: "That is how a moment closes: thanks, then goodbye.",

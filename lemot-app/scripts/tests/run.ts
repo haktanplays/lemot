@@ -22,6 +22,7 @@ import "./devApkCopyGuard.test";
 import "./componentCopyGuard.test";
 import "./productStageResolution.test";
 import "./gradeAnswerCheck.test";
+import "./weaveMatch.test";
 import "./boundaryAndDue.test";
 import "./selectors.test";
 import "./noSupabaseAuthGuard.test";

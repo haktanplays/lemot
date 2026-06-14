@@ -109,13 +109,6 @@ const screens: LessonScreen[] = [
       ],
       hintCloze: "Bonjour, je voudrais ___.",
       expectedAnswers: ["Bonjour, je voudrais un café."],
-      acceptedAlternatives: [
-        "Bonjour, je voudrais un café",
-        "Bonjour je voudrais un café",
-        "Bonjour, je voudrais un cafe.",
-        "Bonjour, je voudrais un cafe",
-        "Bonjour je voudrais un cafe",
-      ],
       reveal: {
         modelAnswer: "Bonjour, je voudrais un café.",
         ifCorrect: "That is exactly how a calm order begins.",
@@ -166,16 +159,6 @@ const screens: LessonScreen[] = [
       ],
       hintCloze: "Bonjour, je voudrais ___, s'il vous plaît.",
       expectedAnswers: ["Bonjour, je voudrais un café, s'il vous plaît."],
-      acceptedAlternatives: [
-        "Bonjour, je voudrais un café s'il vous plaît.",
-        "Bonjour je voudrais un café s'il vous plaît",
-        "Bonjour, je voudrais un cafe, s'il vous plaît.",
-        "Bonjour, je voudrais un cafe s'il vous plaît",
-        "Bonjour, je voudrais un café, s'il vous plait.",
-        "Bonjour, je voudrais un café s'il vous plait",
-        "Bonjour, je voudrais un cafe, s'il vous plait.",
-        "Bonjour je voudrais un cafe s'il vous plait",
-      ],
       reveal: {
         modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
         ifCorrect: "That is a full, polite café order.",

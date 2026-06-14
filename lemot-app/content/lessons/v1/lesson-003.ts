@@ -161,11 +161,6 @@ const screens: LessonScreen[] = [
         { text: "ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je ne suis pas ici."],
-      acceptedAlternatives: [
-        "Je ne suis pas ici",
-        "je ne suis pas ici.",
-        "je ne suis pas ici",
-      ],
       reveal: {
         modelAnswer: "Je ne suis pas ici.",
         ifCorrect: "You turned a sentence negative. The sandwich holds.",
@@ -192,9 +187,6 @@ const screens: LessonScreen[] = [
       ],
       expectedAnswers: ["Ce n'est pas ici."],
       acceptedAlternatives: [
-        "Ce n'est pas ici",
-        "ce n'est pas ici.",
-        "ce n'est pas ici",
         "Ce n est pas ici.",
         "Ce n est pas ici",
       ],
@@ -223,12 +215,6 @@ const screens: LessonScreen[] = [
       ],
       hintCloze: "Non, je ne suis pas ___.",
       expectedAnswers: ["Non, je ne suis pas ici."],
-      acceptedAlternatives: [
-        "Non je ne suis pas ici.",
-        "Non, je ne suis pas ici",
-        "non, je ne suis pas ici.",
-        "non je ne suis pas ici",
-      ],
       reveal: {
         modelAnswer: "Non, je ne suis pas ici.",
         ifCorrect: "Answer plus sentence. That is how a real no sounds.",
