@@ -67,6 +67,10 @@ export default function TabLayout() {
         name="stats"
         options={{
           title: "Progress",
+          // Hide tab in dev-apk (FEATURES.progress=false). stats.tsx renders
+          // the legacy 24-lesson syllabus / milestone tiers, which are out of
+          // the Round 1 L0-L6 surface. Sandbox / public-beta keep it visible.
+          href: FEATURES.progress ? undefined : null,
           tabBarIcon: ({ color, size }) => (
             <BarChart3 color={color} size={size} />
           ),

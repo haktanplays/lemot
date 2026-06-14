@@ -7,6 +7,7 @@ import { Target, Lock, User } from "lucide-react-native";
 import { useApp } from "@/providers/AppProvider";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
+import { V1_LESSONS } from "@/content/lessons/v1";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { FEATURES, PRODUCT_STAGE } from "@/config/productStage";
 import { supabaseReady } from "@/lib/supabase";
@@ -26,6 +27,11 @@ import {
 const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 const SEEN_HOW_WEAVE_KEY = "lm7_seen_how_weave_works";
 const FIRST_USE_DATE_KEY = "lm7_first_use_date";
+
+// Mirrors LessonRendererV1's completion marker: a finished v1 lesson writes
+// prog["{number}-read_listen"] = true. Home reads the same key to drive the
+// simple linear unlock of the L1-L6 path (no scoring, no ceremony).
+const V1_COMPLETION_SECTION_KEY = "read_listen";
 
 // Safe to read/write kvStorage here because this is invoked from a
 // useState initializer, which runs exactly once per component mount.
@@ -181,11 +187,28 @@ export default function HomeScreen() {
   // no paywall, no locks, no banners.
   const visibleLessons = PRODUCT_STAGE === "dev-apk" ? [] : LESSONS;
 
-  // Narrow v1 smoke entry. Surfaced for internal (sandbox) and the dev-apk
-  // tester wave only; public-beta keeps it hidden. This does NOT flip the
-  // v1LessonEngine feature flag — it is a Home-only condition.
-  const showV1SmokeEntry =
+  // v1 Round 1 lesson path (L1-L6). Surfaced for internal (sandbox) and the
+  // dev-apk tester wave only; public-beta keeps it hidden. Home-only
+  // condition; does NOT flip the v1LessonEngine feature flag.
+  const showV1Path =
     PRODUCT_STAGE === "sandbox" || PRODUCT_STAGE === "dev-apk";
+
+  // Round 1 dev-apk scope is L0-L6. The bridge (L0 / number 0) is excluded so
+  // it never appears as a normal lesson card, and nothing above L6 is shown.
+  const v1PathLessons = V1_LESSONS.filter(
+    (l) => l.number >= 1 && l.number <= 6
+  ).sort((a, b) => a.number - b.number);
+  const v1Done = (n: number) =>
+    prog[`${n}-${V1_COMPLETION_SECTION_KEY}`] === true;
+
+  // Simple linear unlock: L1 is open; lesson n+1 opens when lesson n is done.
+  let v1PrevDone = true;
+  const v1PathState = v1PathLessons.map((l) => {
+    const done = v1Done(l.number);
+    const available = v1PrevDone;
+    v1PrevDone = done;
+    return { lesson: l, done, available };
+  });
 
   return (
     <SafeAreaView className="flex-1 bg-lm-bg">
@@ -255,7 +278,10 @@ export default function HomeScreen() {
           </Text>
         </View>
 
-        {/* Daily Review */}
+        {/* Daily Review — hidden in dev-apk (FEATURES.dailyReview=false): the
+            legacy flashcard pool surfaces untaught vocabulary, and v1 Round 1
+            has no review surface. Sandbox / public-beta keep it visible. */}
+        {FEATURES.dailyReview && (
         <View
           className="bg-lm-paper rounded-xl p-4 mb-4 border"
           style={{
@@ -298,6 +324,7 @@ export default function HomeScreen() {
             </Text>
           )}
         </View>
+        )}
 
         {/* Milestones */}
         {earnedMilestones.length > 0 && (
@@ -352,30 +379,52 @@ export default function HomeScreen() {
           );
         })}
 
-        {/* v1 Lesson 1 smoke entry — the dev-apk P0 first-run lesson surface.
+        {/* v1 Round 1 path (L1-L6) — the dev-apk first-run lesson surface.
             Surfaced in sandbox (internal comparison) and dev-apk (tester
-            wave); public-beta keeps it hidden. Home-only condition, not a
-            v1LessonEngine flag flip. */}
-        {showV1SmokeEntry && (
+            wave); public-beta keeps it hidden. Linear unlock; completed
+            lessons read as Done, locked ones stay quiet. No reward / unlock
+            ceremony language. */}
+        {showV1Path && v1PathState.length > 0 && (
           <View className="mt-2 mb-3">
-            <Text className="text-lg font-bold text-lm-ink mb-3">Lesson 1</Text>
-            <Pressable
-              onPress={() =>
-                router.push("/v1-lesson/v1-lesson-001" as never)
-              }
-              className="bg-lm-paper rounded-xl p-4 border"
-              style={{ borderColor: P.border }}
-            >
-              <Text
-                className="text-sm font-semibold mb-0.5"
-                style={{ color: P.ink }}
-              >
-                Survival Kit
-              </Text>
-              <Text className="text-xs" style={{ color: P.ink3 }}>
-                Begin the first lesson.
-              </Text>
-            </Pressable>
+            <Text className="text-lg font-bold text-lm-ink mb-3">
+              Your path
+            </Text>
+            {v1PathState.map(({ lesson, done, available }) => {
+              const locked = !available && !done;
+              const stateLabel = done ? "Done" : available ? "Start" : "Not yet";
+              const stateColor = done ? P.green : available ? P.red : P.ink3;
+              return (
+                <Pressable
+                  key={lesson.id}
+                  disabled={locked}
+                  onPress={() =>
+                    router.push(`/v1-lesson/${lesson.id}` as never)
+                  }
+                  className="bg-lm-paper rounded-xl p-4 border mb-2"
+                  style={{ borderColor: P.border, opacity: locked ? 0.55 : 1 }}
+                >
+                  <View className="flex-row items-center justify-between">
+                    <Text
+                      className="text-sm font-semibold"
+                      style={{ color: P.ink }}
+                    >
+                      {lesson.title}
+                    </Text>
+                    <Text
+                      className="text-xs font-semibold"
+                      style={{ color: stateColor }}
+                    >
+                      {stateLabel}
+                    </Text>
+                  </View>
+                  <Text className="text-xs mt-0.5" style={{ color: P.ink3 }}>
+                    {locked
+                      ? "Complete the previous lesson first"
+                      : lesson.canDo}
+                  </Text>
+                </Pressable>
+              );
+            })}
           </View>
         )}
 

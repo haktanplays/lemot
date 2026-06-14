@@ -77,6 +77,9 @@ export const FEATURES_BY_STAGE = {
     monLexique: true,
     leCarnet: true,
     practice: true,
+    // Daily Review + Progress visible for full internal exploration.
+    dailyReview: true,
+    progress: true,
     v1LessonEngine: true,
   },
   // Controlled external MVP testing — minimal surface, no paywall.
@@ -95,6 +98,12 @@ export const FEATURES_BY_STAGE = {
     // flashcard material beyond the Dev APK first-user path. Sandbox and
     // public-beta keep practice=true.
     practice: false,
+    // Daily Review hidden in dev-apk: it draws from the legacy flashcard pool
+    // (untaught vocabulary) and v1 Round 1 has no review surface. Progress
+    // hidden: stats.tsx renders the legacy 24-lesson syllabus. Both are scope
+    // control for the Round 1 tester surface, not monetization.
+    dailyReview: false,
+    progress: false,
     v1LessonEngine: false,
   },
   // Future monetized beta — paywall + RevenueCat live, selected features open.
@@ -112,6 +121,9 @@ export const FEATURES_BY_STAGE = {
     monLexique: true,
     leCarnet: false,
     practice: true,
+    // Daily Review + Progress visible in the future monetized beta.
+    dailyReview: true,
+    progress: true,
     v1LessonEngine: false,
   },
 } as const;

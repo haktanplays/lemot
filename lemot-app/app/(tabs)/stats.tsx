@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import { Redirect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   BarChart3,
@@ -11,6 +12,7 @@ import {
 import { P } from "@/constants/theme";
 import { upperEn } from "@/lib/text";
 import { useApp } from "@/providers/AppProvider";
+import { FEATURES } from "@/config/productStage";
 import { LESSONS } from "@/data/lessons";
 import { MILESTONES } from "@/data/milestones";
 import { SECS } from "@/constants/sections";
@@ -59,6 +61,16 @@ export default function StatsScreen() {
       return { id: l.id, title: l.title, done, total: SECS.length };
     });
   }, [prog]);
+
+  // Dev APK canon defense-in-depth: even if some surface pushes to
+  // /(tabs)/stats (deep link, restored nav state), do not expose the legacy
+  // 24-lesson Progress UI when FEATURES.progress is false. Redirect to Home
+  // instead. Placed after all hook calls so React's Rules of Hooks are
+  // respected (FEATURES.progress is a module-level constant; hook order stays
+  // stable across renders). Mirrors the Chat and Practice tab guards.
+  if (!FEATURES.progress) {
+    return <Redirect href={"/" as never} />;
+  }
 
   if (!loaded) {
     return (
