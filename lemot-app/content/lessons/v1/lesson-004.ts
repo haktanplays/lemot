@@ -165,9 +165,6 @@ const screens: LessonScreen[] = [
       ],
       expectedAnswers: ["J'ai faim."],
       acceptedAlternatives: [
-        "J'ai faim",
-        "j'ai faim.",
-        "j'ai faim",
         "J ai faim.",
         "J ai faim",
         "j ai faim",
@@ -200,8 +197,6 @@ const screens: LessonScreen[] = [
       hintCloze: "Bonjour, j'ai une ___.",
       expectedAnswers: ["Bonjour, j'ai une question."],
       acceptedAlternatives: [
-        "Bonjour, j'ai une question",
-        "Bonjour j'ai une question",
         "Bonjour, j ai une question.",
         "Bonjour j ai une question",
       ],

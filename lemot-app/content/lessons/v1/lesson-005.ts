@@ -188,14 +188,6 @@ const screens: LessonScreen[] = [
         { text: "un café", itemId: "chunk-un-cafe", required: true, label: "noun package" },
       ],
       expectedAnswers: ["Je voudrais un café."],
-      acceptedAlternatives: [
-        "Je voudrais un café",
-        "je voudrais un café.",
-        "je voudrais un café",
-        "Je voudrais un cafe.",
-        "Je voudrais un cafe",
-        "je voudrais un cafe",
-      ],
       reveal: {
         modelAnswer: "Je voudrais un café.",
         ifCorrect: "The package stayed together: un café.",
@@ -222,9 +214,6 @@ const screens: LessonScreen[] = [
       ],
       expectedAnswers: ["J'ai une question."],
       acceptedAlternatives: [
-        "J'ai une question",
-        "j'ai une question.",
-        "j'ai une question",
         "J ai une question.",
         "J ai une question",
         "j ai une question",

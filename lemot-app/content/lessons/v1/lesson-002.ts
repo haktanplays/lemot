@@ -100,7 +100,6 @@ const screens: LessonScreen[] = [
         { text: "ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je suis ici."],
-      acceptedAlternatives: ["Je suis ici", "je suis ici.", "je suis ici"],
       reveal: {
         modelAnswer: "Je suis ici.",
         ifCorrect: "Two words. One French engine, running.",
@@ -128,7 +127,6 @@ const screens: LessonScreen[] = [
         { text: "ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je suis ici."],
-      acceptedAlternatives: ["Je suis ici", "je suis ici.", "je suis ici"],
       reveal: {
         modelAnswer: "Je suis ici.",
         ifCorrect: "Same shape. Different moment. That is how the engine works.",
