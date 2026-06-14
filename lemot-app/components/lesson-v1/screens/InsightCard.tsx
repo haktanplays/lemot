@@ -13,6 +13,7 @@ const INSIGHT_LABELS: Record<InsightType, string> = {
   "culture-bite": "Natural use",
   "faux-ami": "False friend",
   cognate: "Pattern link",
+  "lesson-goal": "Your goal",
 };
 
 export function InsightCard({

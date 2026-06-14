@@ -58,7 +58,8 @@ export type InsightType =
   | "micro-contrast"
   | "culture-bite"
   | "faux-ami"
-  | "cognate";
+  | "cognate"
+  | "lesson-goal";
 
 export type AnswerRevealPayload = {
   short: string;
@@ -130,10 +131,16 @@ export type WeavePayload = {
     text: string;
     itemId?: string;
     required?: boolean;
+    // Short learner-facing role for the piece (e.g. "polite request",
+    // "noun package"). Shown only inside the Weave hint ladder, never by default.
+    label?: string;
   }[];
   expectedAnswers: string[];
   acceptedAlternatives?: string[];
   naturalAlternatives?: string[];
+  // Optional second hint rung: a cloze shape (e.g. "Bonjour, je voudrais ___,
+  // s'il vous plaît.") shown only after the learner asks for more help.
+  hintCloze?: string;
   reveal: NaturalRevealPayload;
   validationMode?: ValidationMode;
 };

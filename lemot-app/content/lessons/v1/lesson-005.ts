@@ -3,6 +3,18 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    id: "s00-goal-un-une",
+    type: "insight-card",
+    payload: {
+      insightType: "lesson-goal",
+      title: "Little words, small packages",
+      body:
+        "Today: the little words that travel with a noun.\n" +
+        "By the end: you can ask for and name things with the right little word.\n" +
+        "Main pieces: un café, une question.",
+    },
+  },
+  {
     id: "s00-meet-un-cafe",
     type: "meet-card",
     targetItemIds: ["chunk-un-cafe", "noun-cafe"],
@@ -172,8 +184,8 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: I would like a coffee.",
       context: "Order at the counter, with the right little word.",
       suggestedPieces: [
-        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true },
-        { text: "un café", itemId: "chunk-un-cafe", required: true },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
+        { text: "un café", itemId: "chunk-un-cafe", required: true, label: "noun package" },
       ],
       expectedAnswers: ["Je voudrais un café."],
       acceptedAlternatives: [
@@ -205,8 +217,8 @@ const screens: LessonScreen[] = [
       prompt: "Write it in French: I have a question.",
       context: "You want to ask something. Use the right little word.",
       suggestedPieces: [
-        { text: "j'ai", itemId: "chunk-j-ai", required: true },
-        { text: "une question", itemId: "chunk-une-question", required: true },
+        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+        { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
       ],
       expectedAnswers: ["J'ai une question."],
       acceptedAlternatives: [
