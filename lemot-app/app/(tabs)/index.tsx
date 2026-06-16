@@ -26,38 +26,18 @@ import {
 
 const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 const SEEN_HOW_WEAVE_KEY = "lm7_seen_how_weave_works";
-const FIRST_USE_DATE_KEY = "lm7_first_use_date";
 
 // Mirrors LessonRendererV1's completion marker: a finished v1 lesson writes
 // prog["{number}-read_listen"] = true. Home reads the same key to drive the
 // simple linear unlock of the L1-L6 path (no scoring, no ceremony).
 const V1_COMPLETION_SECTION_KEY = "read_listen";
 
-// Safe to read/write kvStorage here because this is invoked from a
-// useState initializer, which runs exactly once per component mount.
-// Any storage failure falls back to "Day 1 · {Weekday}".
-function computeDateLabel(): string {
-  const now = new Date();
-  const weekday = now.toLocaleDateString("en-US", { weekday: "long" });
-  const today = now.toISOString().slice(0, 10); // YYYY-MM-DD
-
-  let first: string | null;
-  try {
-    first = kvStorage.getItem(FIRST_USE_DATE_KEY);
-    if (!first) {
-      kvStorage.setItem(FIRST_USE_DATE_KEY, today);
-      first = today;
-    }
-  } catch {
-    return `Le Mot · Day 1 · ${weekday}`;
-  }
-
-  const firstDate = new Date(first + "T00:00:00");
-  const day = Math.max(
-    1,
-    Math.floor((now.getTime() - firstDate.getTime()) / 86400000) + 1
-  );
-  return `Le Mot · Day ${day} · ${weekday}`;
+// Time-aware Home greeting from device local time:
+// 05:00-17:59 -> Bonjour., 18:00-04:59 -> Bonsoir. Computed per render, no
+// persistence; an already-open app does not need to flip exactly at 18:00.
+function getHomeGreeting(date: Date = new Date()): string {
+  const hour = date.getHours();
+  return hour >= 5 && hour < 18 ? "Bonjour." : "Bonsoir.";
 }
 
 export default function HomeScreen() {
@@ -98,11 +78,6 @@ export default function HomeScreen() {
       router.replace("/how-weave-works" as never);
     }
   }, [needsLessonZero, needsHowWeave]);
-
-  // Top date label — initialized once per mount via useState so the
-  // first-use anchor write happens in a side-effect-safe place
-  // (initializer), not inside useMemo.
-  const [dateLabel] = useState(() => computeDateLabel());
 
   // Account modal state
   const [showAccount, setShowAccount] = useState(false);
@@ -210,14 +185,17 @@ export default function HomeScreen() {
     return { lesson: l, done, available };
   });
 
+  const greeting = getHomeGreeting();
+
   return (
     <SafeAreaView className="flex-1 bg-lm-bg">
       <ScrollView className="flex-1 px-5" decelerationRate="normal">
         {/* Header */}
         <View className="pt-6 pb-4 flex-row items-center justify-between">
           <View>
-            <Text className="text-xs font-medium text-lm-ink3 tracking-wider">
-              {dateLabel}
+            <Text className="text-base font-bold text-lm-ink">{greeting}</Text>
+            <Text className="text-xs text-lm-ink3">
+              Your next step is ready.
             </Text>
           </View>
           {/* Sign In / Account entry only renders when Supabase is configured.
