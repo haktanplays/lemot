@@ -3,10 +3,43 @@
 Current execution state for cloud sessions and the operator. Short by design.
 Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1.md`.
 
+## Round 1 runtime closeout — ACCEPTED (2026-06-17)
+
+Round 1 L0-L6 runtime smoke is COMPLETE and ACCEPTED. The runtime baseline is
+accepted as the frozen Round 1 surface.
+
+- Final commit under test: `8cefe81c1ec1feef7fa1c0f0caccbb172722cf14`
+  — `fix(home): use time-aware greeting header (#136)`.
+- Smoke device: AVD `lemot_pixel5` (Pixel 5, Android 14, `emulator-5554`).
+- Live mini re-smoke result: PASS. Severity tally: **P0 0 / P1 0 / P2 0 / P3 0.**
+- PR #136 resolved the only remaining P3 (the old "Le Mot · Day" Home header).
+  The header is now a correct time-aware greeting ("Bonsoir." after 18:00),
+  verified live.
+- Verified live: clean launch; no red screen; no crash; no fatal Metro/logcat
+  errors; correct time-aware greeting; old "Le Mot · Day" header removed; only
+  the Journey tab visible; Daily Review hidden; Progress hidden; L1-L6 only; no
+  L7+; no legacy 24-lesson list; no paywall/subscription/trial/pricing;
+  completion/unlock state intact; lesson opens; Weave starts empty; "Need a
+  hint?" support works; input remains editable; no state bleed; persistence
+  survives force-stop/relaunch.
+- Honest coverage caveat (preserved): L2 and L3 were not fully completed
+  sequentially in the original smoke; L4-L6 were sampled by deep link. The
+  shared LessonRendererV1, the sequential unlock mechanism, persistence, and the
+  262 passing learning-engine tests reduce the remaining risk. A full sequential
+  L2-L6 run remains OPTIONAL pre-release exhaustive QA — it is not a Round 1
+  runtime blocker.
+- Disposition: Round 1 runtime is ACCEPTED and CLOSED. Runtime code is FROZEN
+  and must not change unless a new defect is found. Merged Round 1 branches are
+  NOT deleted yet.
+- Next phase: **Round 1 Pedagogy Polish** (not started under this closeout — no
+  pedagogy/design/content implementation here). The EAS preview build and the
+  physical-device tester wave remain separate Operator-only pre-distribution
+  steps and are unaffected by this runtime acceptance.
+
 ## Current main
 
-- At or after `66d7aa7` (PR #131).
-- Guardrail and Round 1 PRs #100 to #131 are merged.
+- At `8cefe81` (PR #136, `fix(home): use time-aware greeting header`).
+- Guardrail and Round 1 PRs #100 to #136 are merged.
 - The Round 1 L0-L6 v1 content slice is COMPLETE on main. All seven lessons
   (`v1-lesson-000` through `v1-lesson-006`) are authored, registered, and
   validating.
@@ -62,9 +95,13 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
    learning-engine migration step). Nothing beyond the slice is justified
    before Round 1 results are in.
 
-Round 1 is NOT fully closed until the closeout gate and the operator device
-smoke pass are both complete. Until then, code-side is "content slice
-complete, awaiting operator closeout".
+Round 1 runtime closeout gate: PASSED — see "Round 1 runtime closeout —
+ACCEPTED (2026-06-17)" above. The L0-L6 runtime smoke passed on AVD
+`lemot_pixel5` (`emulator-5554`) at `8cefe81` / #136 with P0-P3 all zero, and
+the runtime baseline is accepted and frozen. Next phase is Round 1 Pedagogy
+Polish (not started). A physical-device tester-wave pass and the EAS preview
+build remain separate Operator-only pre-distribution steps; they do not reopen
+the runtime baseline.
 
 ## Dev APK guardrail status (all merged)
 
