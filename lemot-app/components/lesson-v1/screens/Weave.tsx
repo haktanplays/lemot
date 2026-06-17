@@ -119,7 +119,10 @@ export function Weave({
             </Pressable>
           )}
 
-          {hintLevel >= 1 && hasPieces && (
+          {/* Pieces are the terminal support when there is no cloze. When an
+              authored cloze exists, the second hint step collapses the pieces
+              and shows the cloze alone, so only one support layer shows. */}
+          {hintLevel >= 1 && hasPieces && !(hasCloze && hintLevel >= 2) && (
             <View>
               <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
                 Pieces you already own:
