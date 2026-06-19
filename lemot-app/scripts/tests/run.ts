@@ -23,6 +23,7 @@ import "./componentCopyGuard.test";
 import "./productStageResolution.test";
 import "./gradeAnswerCheck.test";
 import "./weaveMatch.test";
+import "./lessonZeroAnswers.test";
 import "./boundaryAndDue.test";
 import "./selectors.test";
 import "./noSupabaseAuthGuard.test";

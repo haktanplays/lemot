@@ -25,7 +25,6 @@ import {
 } from "@/components/DailyReviewOverlay";
 
 const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
-const SEEN_HOW_WEAVE_KEY = "lm7_seen_how_weave_works";
 
 // Mirrors LessonRendererV1's completion marker: a finished v1 lesson writes
 // prog["{number}-read_listen"] = true. Home reads the same key to drive the
@@ -56,28 +55,16 @@ export default function HomeScreen() {
     }
   });
 
-  // Second first-run gate: How Weave Works runs once, after Lesson Zero.
-  // Only due when Lesson Zero is already seen but Weave intro is not.
-  const [needsHowWeave] = useState(() => {
-    try {
-      return (
-        kvStorage.getItem(SEEN_LESSON_ZERO_KEY) === "true" &&
-        kvStorage.getItem(SEEN_HOW_WEAVE_KEY) !== "true"
-      );
-    } catch {
-      return false;
-    }
-  });
-
   useEffect(() => {
-    // expo-router's typed-routes union regenerates on `expo start`; casts
-    // bypass the stale literal check until Metro picks up the new files.
+    // expo-router's typed-routes union regenerates on `expo start`; the cast
+    // bypasses the stale literal check until Metro picks up the new files.
+    // Lesson Zero now leads straight into Lesson 1; the How Weave Works
+    // explainer is no longer a mandatory first-run step (its route remains
+    // reachable at /how-weave-works).
     if (needsLessonZero) {
       router.replace("/lesson-zero" as never);
-    } else if (needsHowWeave) {
-      router.replace("/how-weave-works" as never);
     }
-  }, [needsLessonZero, needsHowWeave]);
+  }, [needsLessonZero]);
 
   // Account modal state
   const [showAccount, setShowAccount] = useState(false);
@@ -88,7 +75,7 @@ export default function HomeScreen() {
   const [drAns, setDrAns] = useState<string | null>(null);
   const [drItems, setDrItems] = useState<ReviewQuestion[]>([]);
 
-  if (!loaded || needsLessonZero || needsHowWeave) {
+  if (!loaded || needsLessonZero) {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <ActivityIndicator size="small" color={P.red} />
