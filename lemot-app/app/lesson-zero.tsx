@@ -23,6 +23,7 @@ import { useSpeech } from "@/hooks/useSpeech";
 import {
   acceptsCoffeeRemainder,
   acceptsRebuild,
+  rebuildHintPieces,
 } from "@/lib/lessonZeroAnswers";
 import { kvStorage } from "@/lib/storage";
 import { getV1LessonByNumber } from "@/content/lessons/v1";
@@ -38,14 +39,6 @@ const PIECES = [
   { fr: "Bonjour", en: "Hello" },
   { fr: "je voudrais", en: "I would like" },
 ] as const;
-
-// The new object pieces surfaced as Rebuild support after two misses. The hard,
-// genuinely new part of Rebuild is the Natural Reveal transformation
-// (a coffee -> un café); the greeting and polite request (PIECES) were already
-// used earlier, so the nudge focuses only on what is new. Quiet, non-interactive
-// reminders, shown without order/placement cues and never the full sentence, so
-// the learner still has to produce the whole thing.
-const REBUILD_SUPPORT_PIECES = ["un", "café"] as const;
 
 // Curated familiar pairs for the familiar-word reel. French left, English
 // right. Not random runtime words; café/coffee echoes the word just learned.
@@ -318,7 +311,11 @@ export default function LessonZeroScreen() {
   );
 
   const renderRebuild = () => {
-    const showPartialSupport = rebuildMisses >= 2;
+    // Reflective + progressive recall support: only the canonical pieces the
+    // learner has NOT yet typed, in sentence order. Recomputed each render so it
+    // tracks the live input; gated by miss count inside the helper (none before
+    // the 2nd miss, at most two on the 2nd, the rest on the 3rd and later).
+    const hintPieces = rebuildHintPieces(rebuildInput, rebuildMisses);
 
     const onCheck = () => {
       if (acceptsRebuild(rebuildInput)) {
@@ -368,17 +365,16 @@ export default function LessonZeroScreen() {
           <Text style={hearItText}>Listen</Text>
         </Pressable>
 
-        {/* After two misses, offer recall support focused on the new, hard part:
-            only the object pieces from the Natural Reveal (un / café), never the
-            already-familiar greeting/request and never the full sentence. These
-            are quiet, non-interactive reminders shown without order/placement
-            cues, not a copy-the-answer reference, so the learner still has to
-            produce the whole sentence. */}
-        {showPartialSupport && (
+        {/* Recall support after misses: quiet, non-interactive chips for only
+            the pieces the learner has NOT yet typed, in sentence order. The list
+            is reflective (already-typed pieces drop out) and progressive (the
+            2nd miss shows at most two, the 3rd and later show the rest), so it
+            nudges without ever laying out the full answer sentence. */}
+        {hintPieces.length > 0 && (
           <View style={supportCard}>
             <Text style={revealCaption}>Need a nudge?</Text>
             <View style={supportChipsRow}>
-              {REBUILD_SUPPORT_PIECES.map((piece) => (
+              {hintPieces.map((piece) => (
                 <View key={piece} style={hintChip}>
                   <FrenchPieceText text={piece} style={hintChipText} />
                 </View>
