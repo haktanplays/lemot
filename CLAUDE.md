@@ -110,6 +110,18 @@ Users write sentences mixing English + French ("weaving" two languages). Known w
 - SRS storage key: `lm7_srs` — Leitner 5-box system, intervals: [0, 1, 3, 7, 30] days
 - Practice tab uses ScenarioCard type (situation → answer → explanation), replaces old FlashCard-based flashcards
 
+## Dev Workflow: Android Visual Smoke
+For Android visual smoke, use `scripts/dev/android-smoke.sh` instead of ad hoc Bash blocks with `export ANDROID_HOME`, `export PATH`, output redirection, and inline comments (those trigger repeated Claude Code permission prompts). The wrapper sets `ANDROID_HOME`/`PATH`, restricts to safe subcommands, and writes screenshots only to `/tmp/lemot_final`:
+- `./scripts/dev/android-smoke.sh devices`
+- `./scripts/dev/android-smoke.sh tap X Y`
+- `./scripts/dev/android-smoke.sh text "a coffee"` (spaces auto-converted to `%s`)
+- `./scripts/dev/android-smoke.sh key KEYCODE_ENTER`
+- `./scripts/dev/android-smoke.sh sleep 2`
+- `./scripts/dev/android-smoke.sh screenshot 5_beat2_typed` → `/tmp/lemot_final/5_beat2_typed.png`
+
+## Execution Permission Policy
+Do not ask for confirmation for routine, reversible, in-scope actions already requested by the task. Read, search, edit scoped files, run listed validations, run emulator smoke, take screenshots, and fix concrete in-scope smoke defects without pausing. Ask only before commits, pushes, PR actions, resets, cleans, stashes, merges, rebases, deletions, dependency or config changes, broad refactors, or scope expansion. (Local allow/ask rules live in `.claude/settings.local.json`, which is gitignored.)
+
 ## What Claude Code Should Do Next:
 1. **Sprint 10**: Backend & AI
    - Supabase backend: DB, Edge Functions (AI proxy), Auth
