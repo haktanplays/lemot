@@ -344,10 +344,21 @@ export default function LessonZeroScreen() {
           <Text style={hearItText}>Listen</Text>
         </Pressable>
 
+        {/* After two misses, offer partial recall support: only the two French
+            pieces the learner already placed, never the full sentence and never
+            the missing object (un café). These are quiet, non-interactive
+            reminders of the pieces they used, not a copy-the-answer reference,
+            so the learner still has to produce the whole sentence. */}
         {showReference && (
           <View style={referenceCard}>
-            <Text style={revealCaption}>For reference</Text>
-            <Text style={referenceSentence}>Bonjour, je voudrais un café.</Text>
+            <Text style={revealCaption}>Need a nudge?</Text>
+            <View style={supportChipsRow}>
+              {PIECES.map((p) => (
+                <View key={p.fr} style={hintChip}>
+                  <Text style={hintChipText}>{p.fr}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         )}
 
@@ -589,16 +600,20 @@ const frenchStyle = {
   fontFamily: "Newsreader",
   fontStyle: "italic" as const,
   color: P.ink,
-  // Generous line height + bottom pad so the italic "j" descender (je voudrais)
-  // is never clipped by the line box on Android.
-  lineHeight: 34,
-  paddingBottom: 2,
+  // No explicit lineHeight: on Android a set lineHeight makes RN's
+  // CustomLineHeightSpan override includeFontPadding and clip the deep italic
+  // "j" tail of "je voudrais". Letting includeFontPadding use the font's full
+  // bottom metric keeps the descender intact; paddingBottom adds the gap to the
+  // meaning line.
+  includeFontPadding: true,
+  paddingBottom: 4,
 };
 
 const meaningStyle = {
   fontSize: 14,
   color: P.ink2,
-  marginTop: 2,
+  // A little breathing space below the descender of the French line.
+  marginTop: 4,
 };
 
 const pieceRowStyle = {
@@ -606,7 +621,8 @@ const pieceRowStyle = {
   alignItems: "center" as const,
   justifyContent: "space-between" as const,
   width: "100%" as const,
-  paddingVertical: 14,
+  // Slightly taller card so the serif italic glyph has top/bottom room.
+  paddingVertical: 16,
   paddingHorizontal: 16,
   backgroundColor: P.paper,
   borderWidth: 1,
@@ -638,7 +654,8 @@ const hintRow = {
 
 const hintChip = {
   paddingHorizontal: 14,
-  paddingVertical: 8,
+  // Taller chip so the serif italic "j" descender breathes inside it.
+  paddingVertical: 10,
   borderRadius: 10,
   borderWidth: 1,
   borderColor: P.rb,
@@ -650,10 +667,10 @@ const hintChipText = {
   fontFamily: "Newsreader",
   fontStyle: "italic" as const,
   color: P.ink,
-  // Extra line height so the italic "j" descender of the "je voudrais" hint
-  // chip clears the line box on Android (the chip's paddingVertical alone left
-  // it tight).
-  lineHeight: 24,
+  // No explicit lineHeight (see frenchStyle): a set lineHeight clips the italic
+  // "j" tail of "je voudrais" on Android. includeFontPadding keeps it intact;
+  // the chip's paddingVertical handles the outer breathing room.
+  includeFontPadding: true,
 };
 
 const resetText = {
@@ -687,10 +704,10 @@ const composedFrench = {
   fontFamily: "Newsreader",
   fontStyle: "italic" as const,
   color: P.ink,
-  // Generous line height + bottom pad so the italic "j" descender of
-  // "je voudrais" is never clipped by the line box on Android.
-  lineHeight: 32,
-  paddingBottom: 2,
+  // No explicit lineHeight (see frenchStyle): a set lineHeight clips the italic
+  // "j" tail on Android. includeFontPadding keeps the descender intact.
+  includeFontPadding: true,
+  paddingBottom: 4,
 };
 
 const remainderInput = {
@@ -699,16 +716,19 @@ const remainderInput = {
   // edge. minWidth keeps it tappable and fits "a coffee" without scrolling.
   minWidth: 130,
   flexShrink: 1,
-  fontSize: 18,
+  // Same serif italic + size as the French stem (composedFrench) so the typed
+  // remainder reads as one continuous sentence with it, not a mismatched
+  // sans-serif insert.
+  fontFamily: "Newsreader",
+  fontStyle: "italic" as const,
+  fontSize: 20,
+  includeFontPadding: true,
   // Zero horizontal padding so the text starts immediately after the one
   // word-space gap (Android TextInput's default inset is what split the row).
   paddingHorizontal: 0,
   paddingTop: 2,
   paddingBottom: 2,
   color: P.ink,
-  // Italic so the typed remainder reads as the inserted word, matching the
-  // French stem's voice.
-  fontStyle: "italic" as const,
   // Subtle underline marks where to type now that the placeholder is gone,
   // without shouting; reads as a fill-in-the-blank slot inside the sentence.
   borderBottomWidth: 1,
@@ -865,12 +885,12 @@ const referenceCard = {
   borderRadius: 12,
 };
 
-const referenceSentence = {
-  fontSize: 18,
-  fontFamily: "Newsreader",
-  fontStyle: "italic" as const,
-  color: P.ink,
-  lineHeight: 26,
+const supportChipsRow = {
+  flexDirection: "row" as const,
+  flexWrap: "wrap" as const,
+  alignItems: "center" as const,
+  gap: 8,
+  marginTop: 4,
 };
 
 const payoffTitle = {
