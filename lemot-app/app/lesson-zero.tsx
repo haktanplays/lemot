@@ -368,8 +368,8 @@ export default function LessonZeroScreen() {
         {/* Recall support after misses: quiet, non-interactive chips for only
             the pieces the learner has NOT yet typed, in sentence order. The list
             is reflective (already-typed pieces drop out) and progressive (the
-            2nd miss shows at most two, the 3rd and later show the rest), so it
-            nudges without ever laying out the full answer sentence. */}
+            2nd miss shows one complementary piece, the 3rd and later show at most
+            two), capped so it nudges without ever laying out the full answer. */}
         {hintPieces.length > 0 && (
           <View style={supportCard}>
             <Text style={revealCaption}>Need a nudge?</Text>
@@ -815,7 +815,9 @@ const remainderHelper = {
   alignSelf: "flex-end" as const,
   marginTop: 6,
   marginRight: 4,
-  fontSize: 12,
+  // Slightly larger than the old 12 so the guide reads as a deliberate, calm
+  // italic cue rather than faint grey text; stays subtle (ink2, italic).
+  fontSize: 13,
   fontStyle: "italic" as const,
   color: P.ink2,
 };

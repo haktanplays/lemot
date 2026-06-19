@@ -75,18 +75,20 @@ describe("lesson zero: rebuild recall nudge (reflective + progressive)", () => {
     });
   }
 
-  // 2nd miss: at most the first two still-missing pieces, canonical order.
+  // 2nd miss: a single complementary piece (the first still-missing), canonical
+  // order — typed "Bonjour" nudges "je voudrais", typed "je voudrais" nudges
+  // "Bonjour".
   const SECOND_MISS: [string, string[]][] = [
-    ["random unrelated text", ["Bonjour", "je voudrais"]],
-    ["bonjour", ["je voudrais", "un"]],
-    ["je voudrais", ["Bonjour", "un"]],
-    ["bonjour je voudrais", ["un", "café"]],
+    ["random unrelated text", ["Bonjour"]],
+    ["bonjour", ["je voudrais"]],
+    ["je voudrais", ["Bonjour"]],
+    ["bonjour je voudrais", ["un"]],
     ["bonjour je voudrais un", ["café"]],
-    ["cafe", ["Bonjour", "je voudrais"]],
-    ["café", ["Bonjour", "je voudrais"]],
-    ["un cafe", ["Bonjour", "je voudrais"]],
+    ["cafe", ["Bonjour"]],
+    ["café", ["Bonjour"]],
+    ["un cafe", ["Bonjour"]],
     // A bare "voudrais" must NOT satisfy the "je voudrais" chunk.
-    ["voudrais", ["Bonjour", "je voudrais"]],
+    ["voudrais", ["Bonjour"]],
     // All four pieces present but the answer is still wrong -> no chips.
     ["bonjour je voudrais un cafe extra", []],
   ];
@@ -96,17 +98,18 @@ describe("lesson zero: rebuild recall nudge (reflective + progressive)", () => {
     });
   }
 
-  // 3rd miss and later: every still-missing piece, canonical order.
+  // 3rd miss and later: at most the first two still-missing pieces, canonical
+  // order — capped so the full four-piece sentence is never laid out.
   const THIRD_MISS: [string, string[]][] = [
-    ["random unrelated text", ["Bonjour", "je voudrais", "un", "café"]],
-    ["bonjour", ["je voudrais", "un", "café"]],
-    ["je voudrais", ["Bonjour", "un", "café"]],
+    ["random unrelated text", ["Bonjour", "je voudrais"]],
+    ["bonjour", ["je voudrais", "un"]],
+    ["je voudrais", ["Bonjour", "un"]],
     ["bonjour je voudrais", ["un", "café"]],
     ["bonjour je voudrais un", ["café"]],
-    ["cafe", ["Bonjour", "je voudrais", "un"]],
+    ["cafe", ["Bonjour", "je voudrais"]],
     ["un cafe", ["Bonjour", "je voudrais"]],
     // "une" is not the token "un"; substrings inside larger words never count.
-    ["une", ["Bonjour", "je voudrais", "un", "café"]],
+    ["une", ["Bonjour", "je voudrais"]],
     // All four pieces present but still wrong -> no chips, never the sentence.
     ["bonjour je voudrais un cafe extra", []],
   ];
