@@ -54,11 +54,15 @@ export function acceptsRebuild(input: string): boolean {
  * "je voudrais" chunk.
  *
  * Progressive by miss count, so the nudge opens gently and only widens if the
- * learner keeps missing:
+ * learner keeps missing — but it stays a partial cue and never lays the whole
+ * sentence out to copy:
  *   - fewer than 2 misses: no chips (the caller shows only the calm nudge);
- *   - exactly the 2nd miss: at most the first two still-missing pieces;
- *   - 3rd miss and later: every still-missing piece.
+ *   - exactly the 2nd miss: a single complementary piece (the first one still
+ *     missing), so a learner who typed "Bonjour" is nudged with "je voudrais"
+ *     and one who typed "je voudrais" is nudged with "Bonjour";
+ *   - 3rd miss and later: at most the first two still-missing pieces.
  *
+ * Capped at two pieces, so the four-piece sentence is never fully displayed.
  * Returns display strings in canonical order. An empty array means "show no
  * chips": too few misses, or every piece is already present. A wrong answer
  * that still contains all four pieces must never be laid out as the answer.
@@ -102,5 +106,8 @@ export function rebuildHintPieces(input: string, missCount: number): string[] {
   const missing = REBUILD_PIECES.filter((p) => !p.present(tokens)).map(
     (p) => p.display
   );
-  return missCount === 2 ? missing.slice(0, 2) : missing;
+  // The 2nd miss shows one complementary piece; the 3rd and later widen to two.
+  // Never more than two, so the full four-piece sentence is never laid out for
+  // the learner to copy.
+  return missCount === 2 ? missing.slice(0, 1) : missing.slice(0, 2);
 }
