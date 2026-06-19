@@ -12,6 +12,7 @@ import {
   Easing,
   AccessibilityInfo,
 } from "react-native";
+import type { StyleProp, TextStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Volume2, ArrowRight } from "lucide-react-native";
@@ -74,9 +75,10 @@ export default function LessonZeroScreen() {
   const [inserted, setInserted] = useState<number[]>([]);
   const [remainder, setRemainder] = useState("");
   const [nudge, setNudge] = useState(false);
+  const remainderInputRef = useRef<TextInput>(null);
 
-  // Rebuild: the learner types the whole sentence. After two misses a read-only
-  // reference appears; the answer is never auto-filled.
+  // Rebuild: the learner types the whole sentence. After two misses a partial
+  // support nudge appears; the answer is never auto-filled.
   const [rebuildInput, setRebuildInput] = useState("");
   const [rebuildMisses, setRebuildMisses] = useState(0);
   const [rebuildTried, setRebuildTried] = useState(false);
@@ -113,7 +115,7 @@ export default function LessonZeroScreen() {
       {PIECES.map((p) => (
         <View key={p.fr} style={pieceRowStyle}>
           <View style={{ flex: 1 }}>
-            <Text style={frenchStyle}>{p.fr}</Text>
+            <FrenchPieceText text={p.fr} style={frenchStyle} />
             <Text style={meaningStyle}>{p.en}</Text>
           </View>
           <Pressable
@@ -171,16 +173,30 @@ export default function LessonZeroScreen() {
         <View style={composedRow}>
           <Text style={composedFrench}>{composed || "..."}</Text>
           {bothInserted && (
-            <TextInput
-              value={remainder}
-              onChangeText={(t) => {
-                setRemainder(t);
-                if (nudge) setNudge(false);
-              }}
-              autoCapitalize="none"
-              autoCorrect={false}
-              style={remainderInput}
-            />
+            <Pressable
+              onPress={() => remainderInputRef.current?.focus()}
+              style={remainderSlot}
+            >
+              {remainder.length > 0 && (
+                <Text pointerEvents="none" style={remainderDisplayText}>
+                  {remainder}
+                </Text>
+              )}
+              <TextInput
+                ref={remainderInputRef}
+                value={remainder}
+                onChangeText={(t) => {
+                  setRemainder(t);
+                  if (nudge) setNudge(false);
+                }}
+                autoCapitalize="none"
+                autoCorrect={false}
+                style={[
+                  remainderInput,
+                  remainder.length > 0 && remainderInputHidden,
+                ]}
+              />
+            </Pressable>
           )}
         </View>
         {/* Quiet italic guide for the blank: only while it is empty, so it
@@ -206,7 +222,7 @@ export default function LessonZeroScreen() {
                   onPress={() => setInserted([...inserted, p.i])}
                   style={[hintChip, !tappable && insertChipMuted]}
                 >
-                  <Text style={hintChipText}>{p.fr}</Text>
+                  <FrenchPieceText text={p.fr} style={hintChipText} />
                 </Pressable>
               );
             })}
@@ -221,7 +237,7 @@ export default function LessonZeroScreen() {
               setNudge(false);
             }}
             hitSlop={6}
-            style={{ alignSelf: "center", marginTop: 12 }}
+            style={resetButton}
           >
             <Text style={resetText}>Start over</Text>
           </Pressable>
@@ -294,7 +310,7 @@ export default function LessonZeroScreen() {
   );
 
   const renderRebuild = () => {
-    const showReference = rebuildMisses >= 2;
+    const showPartialSupport = rebuildMisses >= 2;
 
     const onCheck = () => {
       if (acceptsRebuild(rebuildInput)) {
@@ -349,13 +365,13 @@ export default function LessonZeroScreen() {
             the missing object (un café). These are quiet, non-interactive
             reminders of the pieces they used, not a copy-the-answer reference,
             so the learner still has to produce the whole sentence. */}
-        {showReference && (
-          <View style={referenceCard}>
+        {showPartialSupport && (
+          <View style={supportCard}>
             <Text style={revealCaption}>Need a nudge?</Text>
             <View style={supportChipsRow}>
               {PIECES.map((p) => (
                 <View key={p.fr} style={hintChip}>
-                  <Text style={hintChipText}>{p.fr}</Text>
+                  <FrenchPieceText text={p.fr} style={hintChipText} />
                 </View>
               ))}
             </View>
@@ -565,6 +581,20 @@ function FamiliarReel() {
   );
 }
 
+function FrenchPieceText({
+  text,
+  style,
+}: {
+  text: string;
+  style: StyleProp<TextStyle>;
+}) {
+  // Android clips Newsreader italic's run-initial lowercase "j" overhang. A
+  // non-breaking leading space gives that glyph real ink room while preserving
+  // the same font, style, and visible French piece.
+  const displayText = text === "je voudrais" ? `\u00A0${text}` : text;
+  return <Text style={style}>{displayText}</Text>;
+}
+
 // ─── Styles ───
 
 const block = {
@@ -600,13 +630,15 @@ const frenchStyle = {
   fontFamily: "Newsreader",
   fontStyle: "italic" as const,
   color: P.ink,
-  // No explicit lineHeight: on Android a set lineHeight makes RN's
-  // CustomLineHeightSpan override includeFontPadding and clip the deep italic
-  // "j" tail of "je voudrais". Letting includeFontPadding use the font's full
-  // bottom metric keeps the descender intact; paddingBottom adds the gap to the
-  // meaning line.
+  // The Newsreader italic "j" tail extends past the font's bottom metric, so
+  // includeFontPadding alone still shaves its tip on Android. A lineHeight set
+  // well ABOVE the natural line (~1.9x) puts the descent line below the tail
+  // (RN's line-height span splits the extra room above/below the glyph), giving
+  // the full tail space. includeFontPadding stays on as the base cushion.
   includeFontPadding: true,
-  paddingBottom: 4,
+  lineHeight: 42,
+  paddingTop: 2,
+  paddingBottom: 6,
 };
 
 const meaningStyle = {
@@ -621,14 +653,18 @@ const pieceRowStyle = {
   alignItems: "center" as const,
   justifyContent: "space-between" as const,
   width: "100%" as const,
-  // Slightly taller card so the serif italic glyph has top/bottom room.
-  paddingVertical: 16,
+  // Give the italic serif line real room; the Newsreader "j" descender can be
+  // clipped when the row is only sized by its text metrics.
+  minHeight: 96,
+  paddingTop: 18,
+  paddingBottom: 20,
   paddingHorizontal: 16,
   backgroundColor: P.paper,
   borderWidth: 1,
   borderColor: P.border,
   borderRadius: 12,
   marginBottom: 12,
+  overflow: "visible" as const,
 };
 
 const listenRoundStyle = {
@@ -655,11 +691,15 @@ const hintRow = {
 const hintChip = {
   paddingHorizontal: 14,
   // Taller chip so the serif italic "j" descender breathes inside it.
-  paddingVertical: 10,
+  minHeight: 48,
+  paddingTop: 11,
+  paddingBottom: 13,
   borderRadius: 10,
   borderWidth: 1,
   borderColor: P.rb,
   backgroundColor: P.rl,
+  justifyContent: "center" as const,
+  overflow: "visible" as const,
 };
 
 const hintChipText = {
@@ -667,18 +707,29 @@ const hintChipText = {
   fontFamily: "Newsreader",
   fontStyle: "italic" as const,
   color: P.ink,
-  // No explicit lineHeight (see frenchStyle): a set lineHeight clips the italic
-  // "j" tail of "je voudrais" on Android. includeFontPadding keeps it intact;
-  // the chip's paddingVertical handles the outer breathing room.
+  // Generous lineHeight (~1.9x, see frenchStyle) so the italic "j" tail of
+  // "je voudrais" gets full descent room; the chip's paddingVertical handles
+  // the outer breathing space.
   includeFontPadding: true,
+  lineHeight: 30,
+  paddingBottom: 2,
 };
 
 const resetText = {
-  fontSize: 13,
+  fontSize: 12,
   color: P.ink3,
-  textDecorationLine: "underline" as const,
-  paddingHorizontal: 4,
-  paddingVertical: 8,
+  fontWeight: "600" as const,
+};
+
+const resetButton = {
+  alignSelf: "center" as const,
+  marginTop: 10,
+  paddingHorizontal: 12,
+  paddingVertical: 7,
+  borderRadius: 999,
+  borderWidth: 1,
+  borderColor: P.border,
+  backgroundColor: P.bg,
 };
 
 const composedRow = {
@@ -690,13 +741,15 @@ const composedRow = {
   // fixed, never a space-between / flex push that splits the row into two
   // zones. On a narrow device the blank wraps below the stem as one unit.
   gap: 6,
-  paddingVertical: 14,
+  paddingTop: 16,
+  paddingBottom: 18,
   paddingHorizontal: 16,
   backgroundColor: P.paper,
   borderWidth: 1,
   borderColor: P.border,
   borderRadius: 12,
-  minHeight: 60,
+  minHeight: 70,
+  overflow: "visible" as const,
 };
 
 const composedFrench = {
@@ -704,35 +757,53 @@ const composedFrench = {
   fontFamily: "Newsreader",
   fontStyle: "italic" as const,
   color: P.ink,
-  // No explicit lineHeight (see frenchStyle): a set lineHeight clips the italic
-  // "j" tail on Android. includeFontPadding keeps the descender intact.
+  // Generous lineHeight (~1.9x, see frenchStyle) so the italic "j" tail of
+  // "je voudrais" gets full descent room on Android.
   includeFontPadding: true,
-  paddingBottom: 4,
+  lineHeight: 38,
+  paddingTop: 2,
+  paddingBottom: 6,
 };
 
-const remainderInput = {
+const remainderSlot = {
   // A quiet inline blank, NOT a flex-grown field: a fixed min-width slot keeps
   // the typed remainder hugging the stem instead of floating to the right
   // edge. minWidth keeps it tappable and fits "a coffee" without scrolling.
   minWidth: 130,
   flexShrink: 1,
-  // Same serif italic + size as the French stem (composedFrench) so the typed
-  // remainder reads as one continuous sentence with it, not a mismatched
-  // sans-serif insert.
+  minHeight: 40,
+  justifyContent: "center" as const,
+  // Subtle underline marks where to type, without shouting; reads as a
+  // fill-in-the-blank slot inside the sentence.
+  borderBottomWidth: 1,
+  borderBottomColor: P.border,
+};
+
+const remainderDisplayText = {
+  ...composedFrench,
+};
+
+const remainderInput = {
+  width: "100%" as const,
+  minHeight: 40,
   fontFamily: "Newsreader",
   fontStyle: "italic" as const,
   fontSize: 20,
   includeFontPadding: true,
-  // Zero horizontal padding so the text starts immediately after the one
-  // word-space gap (Android TextInput's default inset is what split the row).
+  lineHeight: 38,
   paddingHorizontal: 0,
-  paddingTop: 2,
-  paddingBottom: 2,
+  paddingTop: 0,
+  paddingBottom: 0,
   color: P.ink,
-  // Subtle underline marks where to type now that the placeholder is gone,
-  // without shouting; reads as a fill-in-the-blank slot inside the sentence.
-  borderBottomWidth: 1,
-  borderBottomColor: P.border,
+};
+
+const remainderInputHidden = {
+  position: "absolute" as const,
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  opacity: 0,
 };
 
 const remainderHelper = {
@@ -754,12 +825,14 @@ const nudgeStyle = {
 
 const revealCard = {
   width: "100%" as const,
-  paddingVertical: 14,
+  paddingTop: 14,
+  paddingBottom: 18,
   paddingHorizontal: 16,
   backgroundColor: P.paper,
   borderWidth: 1,
   borderColor: P.border,
   borderRadius: 12,
+  overflow: "visible" as const,
 };
 
 const revealCaption = {
@@ -874,10 +947,11 @@ const rebuildInputStyle = {
   textAlignVertical: "top" as const,
 };
 
-const referenceCard = {
+const supportCard = {
   width: "100%" as const,
   marginTop: 14,
-  paddingVertical: 12,
+  paddingTop: 12,
+  paddingBottom: 14,
   paddingHorizontal: 16,
   backgroundColor: P.bg,
   borderWidth: 1,
