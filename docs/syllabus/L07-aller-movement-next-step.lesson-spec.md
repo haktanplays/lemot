@@ -1,5 +1,7 @@
 # L7 — Aller / Movement / Next Step (Lesson Spec)
 
+> **SUPERSEDED AS THE NEXT PR — read first.** This full aller/movement spec is **not** the next safe L7 PR: it is too broad and assumes L1–L6 content the shipped runtime does not contain. The accepted next-PR direction is the frozen-chunk doorway in **`docs/syllabus/L07-compact-doorway.compact-spec.md`**. This document is preserved as historical/planning input for the **eventual dedicated aller lesson** (deferred, not cancelled). Do not implement this spec as L7 without an explicit, separately reviewed closeout decision.
+
 > Follows `docs/learning-engine-v1.md` + `docs/syllabus/lesson-spec-template-v1.1.md` + `docs/syllabus/lesson-archetype-templates-v1.md` + `docs/syllabus/canonical-item-id-convention-v0.1.md` + `docs/syllabus/ai-generation-contract-v1.md` + the L1–L6 pilots + the L1–L5 retrospective.
 > Planning/spec document only — authorizes **no** code, content, flag, or runtime change. Locked product canon wins on conflict.
 
