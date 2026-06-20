@@ -35,11 +35,31 @@ accepted as the frozen Round 1 surface.
   pedagogy/design/content implementation here). The EAS preview build and the
   physical-device tester wave remain separate Operator-only pre-distribution
   steps and are unaffected by this runtime acceptance.
+- **Baseline advanced after this closeout (read before device smoke):** the
+  emulator smoke above ran at `8cefe81`. Defect fixes merged afterward changed
+  runtime — most importantly #139 **rebuilt the Lesson Zero first-run flow** and
+  #141 **capped its rebuild nudge hints** (also #138, the Weave cloze fix). The
+  Lesson Zero flow the operator device smoke will exercise at current main
+  `91f1b04` is therefore the rebuilt one, which the original `8cefe81` smoke
+  never saw. The operator device smoke must re-cover the Lesson Zero first-run
+  chain (clean install → Lesson Zero → How Weave Works → Home) at current main,
+  not assume the `8cefe81` coverage carries over.
 
 ## Current main
 
-- At `8cefe81` (PR #136, `fix(home): use time-aware greeting header`).
-- Guardrail and Round 1 PRs #100 to #136 are merged.
+- At `91f1b04` (PR #142, `docs(syllabus): record accepted compact L7 doorway,
+  defer full aller spec`). Full hash:
+  `91f1b04caf862b88acabc3d74ca15c1f4d80ed87`.
+- Guardrail and Round 1 PRs #100 to #142 are merged.
+- Post-#136 changes (merged after the 8cefe81 runtime closeout baseline):
+  - #138 `fix(weave)`: collapse pieces at the cloze hint step (runtime).
+  - #139 `feat(lesson-zero)`: rebuild the first-run production flow (runtime —
+    `app/lesson-zero.tsx`, `app/(tabs)/index.tsx`, `lib/lessonZeroAnswers.ts`).
+  - #140 `chore(workflow)`: add the Android smoke helper
+    (`scripts/dev/android-smoke.sh`, operator convenience).
+  - #141 `fix(lesson-zero)`: cap the rebuild nudge hints (runtime).
+  - #142 `docs(syllabus)`: compact L7 planning doc (docs-only; L7 implementation
+    stays blocked until Round 1 results).
 - The Round 1 L0-L6 v1 content slice is COMPLETE on main. All seven lessons
   (`v1-lesson-000` through `v1-lesson-006`) are authored, registered, and
   validating.
@@ -64,10 +84,15 @@ accepted as the frozen Round 1 surface.
   received minimal example/reveal enrichment. Content-only, no runtime changes.
 - `V1_LESSONS = [lesson000, lesson001, lesson002, lesson003, lesson004,
   lesson005, lesson006]`.
-- Latest known validation status (main `66d7aa7`): `npm run typecheck` clean;
-  `npm run test:learning-engine` 246 passed / 0 failed; `npm run validate:pools`
-  exit 0 with 6 known legacy warnings; `npm run validate:content` 0 hard
-  errors / 0 warnings / 0 info.
+- Validation status is stale: the last recorded run was at main `66d7aa7`
+  (`npm run typecheck` clean; `npm run test:learning-engine` 246 passed / 0
+  failed; `npm run validate:pools` exit 0 with 6 known legacy warnings;
+  `npm run validate:content` 0 hard errors / 0 warnings / 0 info). Runtime PRs
+  #138/#139/#141 and their tests (`lessonZeroAnswers.test.ts`) landed afterward,
+  so the current learning-engine test count differs from 246 (the runtime
+  closeout note above cites 262). This was NOT re-run in the docs refresh — the
+  operator/pre-build step must re-run validation at current main `91f1b04` and
+  record the current counts before the build.
 - Code-side: the Round 1 content slice is complete and green. Per the test plan
   build rule, the tester APK still waits on the Round 1 closeout gate and an
   operator device smoke pass before distribution.

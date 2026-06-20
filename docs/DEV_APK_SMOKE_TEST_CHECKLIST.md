@@ -6,10 +6,15 @@ The operator-vault Test Checklist may extend this file; if the two diverge,
 this repo copy wins for Round 1.
 
 Round 1 policy: Android internal APK, dev-apk stage only, no Supabase env,
-AI closed (fallback-only), v1 Lesson 1 is the smoke surface.
+AI closed (fallback-only). The smoke surface is the L0 Lesson Zero bridge plus
+v1 lessons L1-L6; L1 is the mandatory end-to-end run, L2-L6 are sampled for
+reachability and the L6 integration payoff.
 
 Physical smoke is operator-only. Cloud sessions may run the pre-build
 commands, but must not claim a smoke pass from this file alone.
+`scripts/dev/android-smoke.sh` (PR #140) is an operator convenience for
+emulator screenshots, not a required path and not a substitute for this
+checklist.
 
 ---
 
@@ -57,14 +62,21 @@ Record the build ID and link in section 1.
 ## 5. First-run chain
 
 - [ ] Lesson Zero opens on first launch
+- [ ] Lesson Zero (rebuilt first-run flow, #139) completes from a clean install
+- [ ] Lesson Zero rebuild nudge hints are capped (#141): hints do not repeat
+      endlessly and do not keep firing after the expected number
+- [ ] Lesson Zero does not re-trigger on later launches once onboarding is done
 - [ ] How Weave Works opens after Lesson Zero
 - [ ] Home opens after How Weave Works
 - [ ] Home shows no Sign In or Account entry (Supabase env absent)
-- [ ] Home exposes the v1 Lesson 1 entry
+- [ ] Home exposes the v1 L1-L6 path; L1 is open and L2-L6 are locked until
+      their prerequisite lesson is complete (sequential unlock: L(n+1) opens
+      after L(n) is done)
+- [ ] No L7+ lesson, no legacy 24-lesson list, is visible
 - [ ] No Practice, Chat, Paywall, Premium, Word Graph, or Mon Lexique
       surfaces are visible
 
-## 6. Lesson 1 path
+## 6. Lesson 1 path (mandatory full run)
 
 - [ ] Start v1 Lesson 1 from Home
 - [ ] Complete all screens in order
@@ -75,11 +87,22 @@ Record the build ID and link in section 1.
 - [ ] Completion screen appears
 - [ ] Back to Home works and Home remains usable
 
+## 6b. L2-L6 reachability sample
+
+- [ ] After finishing L1, L2 unlocks on Home; open it
+- [ ] Open L3, L4, L5 in sequence, each unlocking after its prerequisite
+- [ ] Each opened lesson renders its first screen without crash or blank state
+- [ ] L6 opens and reaches the "au revoir" integration close (the small-moment
+      payoff that recombines L1-L5)
+- [ ] A full sequential L2-L6 completion is optional pre-release QA, not a Round
+      1 blocker (see STATUS.md coverage caveat); note anything that breaks
+
 ## 7. Restart and persistence
 
 - [ ] Kill the app mid-lesson, relaunch: no crash, no broken state,
       no repeat of Lesson Zero or How Weave Works
-- [ ] Restart after completing Lesson 1: no crash, Home usable
+- [ ] Restart after completing a lesson: no crash, Home usable, completed
+      lesson stays done and the next lesson stays unlocked
 - [ ] Onboarding flags persist across restarts
 
 ## 8. AI, offline, and fallback
