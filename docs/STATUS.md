@@ -2,6 +2,7 @@
 
 Current execution state for cloud sessions and the operator. Short by design.
 Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1.md`.
+Long-term product vision: `docs/CAIRN_PRODUCT_DEFINITION_v0.1.md` (planning/vision only; does not authorize implementation).
 
 ## Round 1 runtime closeout — ACCEPTED (2026-06-17)
 
