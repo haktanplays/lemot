@@ -11,6 +11,10 @@
 > validation, not locked decisions. This document does not claim any Round 1
 > device smoke has passed; that remains pending and operator-only.
 
+> System index: the engines, modules, matrices, and surfaces that build this
+> vision are mapped in `docs/CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md` (planning/index
+> only). This document stays the vision layer; system mechanics live there.
+
 ---
 
 ## 1. One-sentence product definition
@@ -184,6 +188,16 @@ scope, and nothing here is implementation authorization.
   dashboard (anti-pattern risk).
 - Reconciliation between this vision and the operator-vault canon (User Journey,
   Merged Product Canon); likely a `docs/CLOUD_SYNC_QUEUE.md` item later.
+- Passport / assessment levels: whether and how progress is marked with
+  milestones/checkpoints.
+- Motivation-without-XP mechanism: what concretely drives return, given the
+  no-XP/no-streak stance.
+- Notifications / habit loop: the mechanism behind the daily habit, without
+  streak pressure.
+- Technical observability: crash / TTS-failure / AI-failure / sync-conflict
+  tracking before any wider beta.
+- Local-first to account/cloud migration: timing and safe path from today's
+  local-only state.
 
 ---
 
