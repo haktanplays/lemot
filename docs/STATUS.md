@@ -121,6 +121,8 @@ accepted as the frozen Round 1 surface.
    learning-engine migration step). Nothing beyond the slice is justified
    before Round 1 results are in.
 
+Post-smoke interpretation: `docs/workstreams/round1-post-smoke-decision-framework.md` (planning/decision framework only; does not authorize implementation).
+
 Round 1 runtime closeout gate: PASSED — see "Round 1 runtime closeout —
 ACCEPTED (2026-06-17)" above. The L0-L6 runtime smoke passed on AVD
 `lemot_pixel5` (`emulator-5554`) at `8cefe81` / #136 with P0-P3 all zero, and
