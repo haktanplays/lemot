@@ -45,7 +45,8 @@ accepted as the frozen Round 1 surface.
   Lesson Zero flow the operator device smoke will exercise at current main
   `91f1b04` is therefore the rebuilt one, which the original `8cefe81` smoke
   never saw. The operator device smoke must re-cover the Lesson Zero first-run
-  chain (clean install → Lesson Zero → How Weave Works → Home) at current main,
+  chain (clean install → Lesson Zero → Lesson 1; How Weave Works is no longer in
+  the automatic chain, #139) at current main,
   not assume the `8cefe81` coverage carries over.
 
 ## Current main
