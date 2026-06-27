@@ -57,7 +57,10 @@ Record the build ID and link in section 1.
 - [ ] Install the APK on a clean device, or clear app data first
 - [ ] Launch the app
 - [ ] No sandbox or dev surface is visible anywhere
-- [ ] Tab bar shows only the expected Dev APK tabs: Journey and Progress
+- [ ] Tab bar shows only the expected Dev APK tab: Journey
+- [ ] Chat, Practice, and Progress are intentionally hidden by feature flags
+      (dev-apk: FEATURES.aiChat / practice / progress = false)
+- [ ] Progress/stats is the legacy 24-lesson surface, outside the Round 1 L0-L6 scope
 
 ## 5. First-run chain
 
@@ -66,8 +69,10 @@ Record the build ID and link in section 1.
 - [ ] Lesson Zero rebuild nudge hints are capped (#141): hints do not repeat
       endlessly and do not keep firing after the expected number
 - [ ] Lesson Zero does not re-trigger on later launches once onboarding is done
-- [ ] How Weave Works opens after Lesson Zero
-- [ ] Home opens after How Weave Works
+- [ ] Lesson Zero leads straight into Lesson 1 (v1 L1) on completion (#139)
+- [ ] How Weave Works is NOT auto-shown in the first-run chain
+- [ ] How Weave Works remains available as the standalone /how-weave-works route
+- [ ] Home is reached after Lesson 1 (via "Back to Home"), not directly after L0
 - [ ] Home shows no Sign In or Account entry (Supabase env absent)
 - [ ] Home exposes the v1 L1-L6 path; L1 is open and L2-L6 are locked until
       their prerequisite lesson is complete (sequential unlock: L(n+1) opens
