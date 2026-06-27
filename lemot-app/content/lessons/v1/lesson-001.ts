@@ -196,7 +196,7 @@ const screens: LessonScreen[] = [
     payload: {
       situation: "This is your order: un café.",
       communicativeGoal:
-        "Make it sound natural: add a soft opening, ask for it politely, and close the request politely.",
+        "Make it sound natural: add a soft opening, ask for it politely, close the request politely, and thank them if you like.",
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je voudrais", itemId: "chunk-je-voudrais" },
