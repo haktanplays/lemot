@@ -24,6 +24,9 @@ export function SayItYourWayV1({
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"input" | "revealed">("input");
   const [ai, setAi] = useState<AiState>({ status: "idle" });
+  // Support, not assembly: suggested pieces stay hidden until the learner opts in
+  // via "Need an idea?", so the initial screen does not read as guided assembly.
+  const [showPieces, setShowPieces] = useState(false);
 
   const canCheck = text.trim().length > 0;
   const isRevealed = phase === "revealed";
@@ -91,32 +94,47 @@ export function SayItYourWayV1({
         </Text>
       </View>
 
-      {payload.suggestedPieces && payload.suggestedPieces.length > 0 && (
-        <View className="mt-3">
-          <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-            Use these pieces if helpful.
+      {payload.suggestedPieces &&
+        payload.suggestedPieces.length > 0 &&
+        !showPieces &&
+        !isRevealed && (
+          <Text
+            onPress={() => setShowPieces(true)}
+            className="text-xs mt-3"
+            style={{ color: P.ink3, textDecorationLine: "underline" }}
+          >
+            Need an idea?
           </Text>
-          <View className="flex-row flex-wrap gap-2">
-            {payload.suggestedPieces.map((p, i) => (
-              <View
-                key={`${p.text}-${i}`}
-                className="rounded-full"
-                style={{
-                  backgroundColor: P.rl,
-                  borderWidth: 1,
-                  borderColor: P.rb,
-                  paddingHorizontal: 10,
-                  paddingVertical: 4,
-                }}
-              >
-                <Text className="text-xs" style={{ color: P.ink2 }}>
-                  {p.text}
-                </Text>
-              </View>
-            ))}
+        )}
+
+      {payload.suggestedPieces &&
+        payload.suggestedPieces.length > 0 &&
+        showPieces && (
+          <View className="mt-3">
+            <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+              Ideas you can use.
+            </Text>
+            <View className="flex-row flex-wrap gap-2">
+              {payload.suggestedPieces.map((p, i) => (
+                <View
+                  key={`${p.text}-${i}`}
+                  className="rounded-full"
+                  style={{
+                    backgroundColor: P.rl,
+                    borderWidth: 1,
+                    borderColor: P.rb,
+                    paddingHorizontal: 10,
+                    paddingVertical: 4,
+                  }}
+                >
+                  <Text className="text-xs" style={{ color: P.ink2 }}>
+                    {p.text}
+                  </Text>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
-      )}
+        )}
 
       <View className="mt-4">
         <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
