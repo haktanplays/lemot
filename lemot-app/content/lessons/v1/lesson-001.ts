@@ -194,10 +194,9 @@ const screens: LessonScreen[] = [
     ],
     weakPointTags: ["politeness", "natural-speech"],
     payload: {
-      situation:
-        "You walk into a café in the morning. The person at the counter looks up. " +
-        "Greet them, ask for a coffee politely, and thank them.",
-      communicativeGoal: "Greet, request, thank.",
+      situation: "This is your order: un café.",
+      communicativeGoal:
+        "Make it sound natural: add a soft opening, ask for it politely, and close the request politely.",
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je voudrais", itemId: "chunk-je-voudrais" },
