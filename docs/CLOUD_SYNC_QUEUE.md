@@ -133,11 +133,71 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 - Status: PENDING
 - Operator notes:
 
+### 2026-05-20 — PR #12 SW12 chat route gating landed
+
+- Date: 2026-05-20
+- Cloud branch: `claude/sprint12-sw12-chat-route-gating`
+- Decision/change: All three dev-apk Chat entry points gated behind `FEATURES.aiChat` — Practice tab "Chat with AI" card (`app/(tabs)/practice.tsx`), lesson-outro "Chat in French" CTA (`app/lesson/[id].tsx`), and the LessonPractice "Practice in Chat" shortcut (`components/LessonPractice.tsx`, found in PR #12 review fixup) — plus a route-level `<Redirect href={"/" as never} />` defense in `app/(tabs)/chat.tsx` when `aiChat` is false. No flag flip; `aiChat:false` in dev-apk preserved. Enforces `docs/DEV_APK_MVP_CANON.md` §2 and Pipeline §9 Rule 7.
+- Source PR or commit: PR #12 / merge `873efea` (branch tip `bf78ffa`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: SW12 chat gating landed @ `873efea`)
+- Mempalace action: optional `add_drawer` — durable canon enforcement: "no dev-apk surface reaches /(tabs)/chat; every navigation to chat must be FEATURES.aiChat-gated; chat route has a Redirect backstop"
+- Operator action: docs sync; re-run the dev-apk chat-unreachability smoke (Practice card absent, lesson-outro CTA absent, deep-link to /(tabs)/chat redirects Home, tab still hidden) on the next APK build
+- Status: PENDING
+- Operator notes:
+
+### 2026-05-20 — PR #13 SW12 unlocked copy + icon canon fix landed
+
+- Date: 2026-05-20
+- Cloud branch: `claude/sprint12-sw12-unlocked-copy-canon-fix`
+- Decision/change: Neutralized reward/unlock copy and icons in the enrichment reveal. `Unlocked!` → `Added.` (`TransitionScreen.tsx`); `EXPRESSION UNLOCKED` etc. → `Expression added` for all five enrichment types (`UnlockCard.tsx`); `Sparkles`/`Unlock` reward icons → neutral `Plus` across `TransitionScreen.tsx`, `UnlockCard.tsx`, and the inline chunk-end reveal in `app/lesson/[id].tsx`. No flag/data/behavior change. Two decorative `Sparkles` (the "What you learned today" recap header and `SayItYourWay.tsx`) were left unchanged and flagged for a separate product decision.
+- Source PR or commit: PR #13 / merge `e976e8a` (branch tip `9f79655`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: PR #13 passive-mirror copy/icon cleanup landed @ `e976e8a`)
+- Mempalace action: n/a — copy/icon tone fix (mirror the PR #3 precedent: skip unless operator treats the passive-mirror discipline itself as a re-locked decision)
+- Operator action: docs sync; re-run one enrichment-unlock transition smoke ("Added." + `+` glyph, "Expression added" eyebrow); make a separate call on the two flagged borderline `Sparkles` glyphs
+- Status: PENDING
+- Operator notes:
+
+### 2026-05-21 — PR #14 Expo SDK 55 dependency alignment landed
+
+- Date: 2026-05-21
+- Cloud branch: `claude/sprint12-expo-dep-align`
+- Decision/change: Aligned Expo SDK 55 dependencies to recommended versions (`build(deps)`). This is a **package-manifest change** (`package.json`/lockfile) — outside what an away/cloud agent may make or verify; recorded here for traceability of an attended, operator-approved PR.
+- Source PR or commit: PR #14 / merge `1924a75` (branch tip `0c64b10`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: Expo dep-align landed @ `1924a75`)
+- Mempalace action: optional `add_drawer` — infra note: "Expo SDK 55 deps aligned to recommended versions as of `1924a75`"
+- Operator action: APK rebuild + `npx expo-doctor` + physical smoke to confirm no regression from the dependency bump; docs sync
+- Status: PENDING
+- Operator notes:
+
+### 2026-05-21 — PR #15 remove phantom react-native-mmkv landed
+
+- Date: 2026-05-21
+- Cloud branch: `claude/sprint12-fix-remove-phantom-mmkv`
+- Decision/change: Removed the unused `react-native-mmkv` dependency to repair the lockfile (`fix(deps)`). This **closes the follow-up flagged in the PR #8 row** ("phantom `react-native-mmkv` still lives in `package.json` line 32 — separate chore PR if cleanup desired"). Storage remains `expo-sqlite/kv-store`. Package-manifest change.
+- Source PR or commit: PR #15 / merge `622c43b` (branch tip `2691bc4`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: phantom-mmkv removed @ `622c43b`); reconcile the PR #8 row's mmkv follow-up as resolved
+- Mempalace action: n/a — dependency cleanup that reconciles a prior note
+- Operator action: APK rebuild + `npm ci` / `npx expo-doctor` to confirm a clean lockfile; docs sync; mark the PR #8 row's mmkv follow-up resolved
+- Status: PENDING
+- Operator notes:
+
+### 2026-05-28 — PR #16 away-agent scaffold landed
+
+- Date: 2026-05-28
+- Cloud branch: `claude/sprint12-away-agent-scaffold`
+- Decision/change: Added the `docs/agents/` away-agent scaffolding (`LE_MOT_AGENT_CONSTITUTION.md`, `AWAY_TASK_QUEUE.md`, `AWAY_AGENT_RUN_TEMPLATE.md`) and the tracked `.agent-runs/` scaffold (`README.md` + `.gitignore`). Docs-only meta that defines the bounded, local-report-only away workflow. This TASK-001 report is the first run executed against that scaffold.
+- Source PR or commit: PR #16 / merge `c182538` (branch tip `8ab8b0e`)
+- Obsidian target: `LeMot.md` (Sprint 12 status: away-agent scaffold landed @ `c182538`)
+- Mempalace action: optional `add_drawer` — durable workflow: "Le Mot away-agent workflow = bounded, local-report-only under .agent-runs/, propose-only/report-only modes, Operator approves all privileged actions"
+- Operator action: docs sync; review this first away-run report
+- Status: PENDING
+- Operator notes:
+
 ### 2026-05-18 — Merged Claude branches need operator-side deletion
 
 - Date: 2026-05-18
 - Cloud branch: n/a (housekeeping for ten already-merged branches)
-- Decision/change: (Updated 2026-05-19 to include PR #4, PR #5, PR #7, PR #8, PR #9, and PR #10 branches.) Ten Claude branches were merged into `main` but remain on the remote because the cloud git proxy returned HTTP 403 on `git push --delete` from this session. The merge commits themselves are intact on `main`; only the source branches linger.
+- Decision/change: (Updated 2026-05-19 to include PR #4, PR #5, PR #7, PR #8, PR #9, and PR #10 branches.) (Updated 2026-05-28 to include PR #12–#16 branches.) Ten Claude branches were merged into `main` but remain on the remote because the cloud git proxy returned HTTP 403 on `git push --delete` from this session. The merge commits themselves are intact on `main`; only the source branches linger.
   - `claude/docs-pipeline-migration-v1.2.1` @ `953e39e` (merged via PR #1, merge `b155fc5`)
   - `claude/sprint12-ws8-lesson-001-path-a` @ `9139cf4` (merged via PR #2, merge `ff35013`)
   - `claude/sprint12-prc-passive-mirror-copy-cleanup` @ `ba76d68` (merged via PR #3, merge `ac9d41b`)
@@ -148,7 +208,14 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
   - `claude/sprint12-sw10b-storage-comment-drift` @ `559fdf5` (merged via PR #8, merge `21bf810`)
   - `claude/sprint12-sw10c-schema-idempotency` @ `48a4b0f` (merged via PR #9, merge `4c3e16f`)
   - `claude/sprint12-sw10d1-merge-union-and-latest` @ `8e9082d` (merged via PR #10, merge `fed57a6`)
-- Source PR or commit: PRs #1, #2, #3, #4, #5, #6, #7, #8, #9, #10 (all merged)
+  - `claude/sprint12-sw12-chat-route-gating` @ `bf78ffa` (merged via PR #12, merge `873efea`)
+  - `claude/sprint12-sw12-unlocked-copy-canon-fix` @ `9f79655` (merged via PR #13, merge `e976e8a`)
+  - `claude/sprint12-expo-dep-align` @ `0c64b10` (merged via PR #14, merge `1924a75`)
+  - `claude/sprint12-fix-remove-phantom-mmkv` @ `2691bc4` (merged via PR #15, merge `622c43b`)
+  - `claude/sprint12-away-agent-scaffold` @ `8ab8b0e` (merged via PR #16, merge `c182538`)
+  - `claude/explore-menu-options-V4GZG` — orphan, merged into main, no PR row; review then delete
+  - (verify: `claude/sprint12-cloud-sync-queue-sw10-batch-backfill` / PR #11 `68cb7f3` appears already deleted on remote)
+- Source PR or commit: PRs #1–#16 branch cleanup audit/update; verify PR #11 self-ref/backfill branch status before deletion
 - Obsidian target: n/a
 - Mempalace action: n/a
 - Operator action: branch cleanup — either delete via GitHub UI (Branches → trash icon for each) or via local CLI (`git push origin --delete <branch>` for each). No code change required.
