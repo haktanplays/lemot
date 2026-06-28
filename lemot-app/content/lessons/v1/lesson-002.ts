@@ -22,7 +22,10 @@ const screens: LessonScreen[] = [
       fr: "Je suis ici.",
       en: "I am here.",
       title: "Two words. Where you are.",
-      highlights: [{ text: "je suis", itemId: "chunk-je-suis" }],
+      highlights: [
+        { text: "je suis", itemId: "chunk-je-suis" },
+        { text: "ici" },
+      ],
       tts: true,
     },
   },
