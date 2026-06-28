@@ -6,11 +6,14 @@ import type { WeavePayload, WeaveScreen, WeaveType } from "@/content/lessonTypes
 import { matchExpected, type MatchResult } from "./normalizeAnswer";
 import { NaturalRevealView } from "./NaturalReveal";
 
+// Round 1: the v1 "weave" screens are pure-French production/check steps, not the
+// mixed-language brand mechanic. Label them so the learner reads this as "try the
+// French version here," never as "mix French and English."
 const WEAVE_LABELS: Record<WeaveType, string> = {
-  supported: "Supported Weave",
-  mid: "Weave",
-  context: "Context Weave",
-  open: "Open Weave",
+  supported: "Try it in French",
+  mid: "Try it in French",
+  context: "Try it in French",
+  open: "Try it in French",
 };
 
 type WeavePiece = NonNullable<WeavePayload["suggestedPieces"]>[number];
@@ -25,7 +28,7 @@ function orderHintPieces(input: WeavePiece[]): WeavePiece[] {
 const RESULT_NOTES: Record<MatchResult, { text: string; tone: "ok" | "warm" | "soft" }> = {
   exact: { text: "Correct.", tone: "ok" },
   alternative: { text: "Accepted.", tone: "warm" },
-  none: { text: "Not quite. Compare with the model answer.", tone: "soft" },
+  none: { text: "Compare with the model answer.", tone: "soft" },
 };
 
 export function Weave({
@@ -69,7 +72,9 @@ export function Weave({
       ? { bg: P.gl, border: P.green, color: P.green }
       : note?.tone === "warm"
         ? { bg: P.al, border: P.amber, color: P.amber }
-        : { bg: P.rl, border: P.red, color: P.red };
+        : // "soft" = no exact/alternative match. Neutral (not red): the step is a
+          // non-blocking compare-with-the-model, not a wrong-answer error.
+          { bg: P.bg, border: P.border, color: P.ink2 };
 
   return (
     <ScrollView
