@@ -82,12 +82,6 @@ const screens: LessonScreen[] = [
           trapReason:
             "Café travels with un: un café. une goes with other words, like une question.",
         },
-        {
-          id: "opt-merci",
-          text: "merci",
-          isCorrect: false,
-          trapReason: "Merci is thank you. It is not the little package word.",
-        },
       ],
       answer: ["opt-un"],
       reveal: {
@@ -115,12 +109,6 @@ const screens: LessonScreen[] = [
           trapReason:
             "Question travels with une: une question. un goes with café: un café.",
         },
-        {
-          id: "opt-merci",
-          text: "merci",
-          isCorrect: false,
-          trapReason: "Merci is thank you. It is not the little package word.",
-        },
       ],
       answer: ["opt-une"],
       reveal: {
@@ -140,7 +128,7 @@ const screens: LessonScreen[] = [
     ],
     weakPointTags: ["articles"],
     payload: {
-      prompt: "You have one question. Which French package fits?",
+      prompt: "You have a question. Which French package fits?",
       blankCount: 1,
       options: [
         { id: "opt-une-question", text: "une question", isCorrect: true },
