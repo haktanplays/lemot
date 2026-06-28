@@ -48,6 +48,7 @@ const screens: LessonScreen[] = [
       highlights: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je suis", itemId: "chunk-je-suis" },
+        { text: "ici" },
       ],
       tts: true,
     },
@@ -188,7 +189,7 @@ const screens: LessonScreen[] = [
       piecesUsed: [
         "je suis",
         "ici",
-        "Bonjour (from your survival kit)",
+        "Bonjour",
       ],
       nextLabel: "Continue",
     },
