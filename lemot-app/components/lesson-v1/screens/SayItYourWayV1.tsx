@@ -22,19 +22,37 @@ export function SayItYourWayV1({
 }) {
   const { payload } = screen;
   const [text, setText] = useState("");
-  const [phase, setPhase] = useState<"input" | "revealed">("input");
+  // Flow: input -> confirm ("You wrote: …") -> revealed (Natural Reveal). The
+  // confirm step lets the learner revise or commit before comparing. It never
+  // grades, never blocks (beyond empty input), and never shows the answer early.
+  const [phase, setPhase] = useState<"input" | "confirm" | "revealed">("input");
   const [ai, setAi] = useState<AiState>({ status: "idle" });
   // Support, not assembly: suggested pieces stay hidden until the learner opts in
   // via "Need an idea?", so the initial screen does not read as guided assembly.
   const [showPieces, setShowPieces] = useState(false);
 
   const canCheck = text.trim().length > 0;
+  const isInput = phase === "input";
+  const isConfirm = phase === "confirm";
   const isRevealed = phase === "revealed";
   const aiEligible =
     payload.validationMode === "ai-assisted-with-fallback" &&
     FEATURES.aiLesson === true;
 
+  // Check moves to the confirm step only — no grading, no reveal yet.
   const handleCheck = () => {
+    if (!canCheck) return;
+    setPhase("confirm");
+  };
+
+  // Try again returns to editing; the typed text is preserved (state untouched).
+  const handleTryAgain = () => {
+    setPhase("input");
+  };
+
+  // Keep and compare opens Natural Reveal, running the AI note only if eligible
+  // (off in dev-apk). This is the original handleCheck body, deferred to here.
+  const handleKeepAndCompare = () => {
     setPhase("revealed");
 
     if (!aiEligible) {
@@ -97,7 +115,7 @@ export function SayItYourWayV1({
       {payload.suggestedPieces &&
         payload.suggestedPieces.length > 0 &&
         !showPieces &&
-        !isRevealed && (
+        isInput && (
           <Text
             onPress={() => setShowPieces(true)}
             className="text-xs mt-3"
@@ -143,7 +161,7 @@ export function SayItYourWayV1({
         <TextInput
           value={text}
           onChangeText={setText}
-          editable={!isRevealed}
+          editable={isInput}
           multiline
           autoCapitalize="sentences"
           autoCorrect={false}
@@ -162,10 +180,50 @@ export function SayItYourWayV1({
         />
       </View>
 
-      {!isRevealed && (
+      {isInput && (
         <Btn onPress={handleCheck} disabled={!canCheck}>
           <Text style={{ color: P.paper, fontSize: 15 }}>Check</Text>
         </Btn>
+      )}
+
+      {isConfirm && (
+        <View className="mt-4">
+          <View
+            className="rounded-xl border"
+            style={{
+              backgroundColor: P.paper,
+              borderColor: P.border,
+              padding: 16,
+            }}
+          >
+            <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
+              You wrote:
+            </Text>
+            <Text
+              className="text-sm mb-3"
+              style={{ color: P.ink, lineHeight: 22 }}
+            >
+              {text.trim()}
+            </Text>
+            <Text className="text-sm" style={{ color: P.ink2 }}>
+              Want to try once more, or keep this and compare?
+            </Text>
+          </View>
+          <Btn
+            color={P.paper}
+            onPress={handleTryAgain}
+            style={{ borderWidth: 1, borderColor: P.border }}
+          >
+            <Text style={{ color: P.ink, fontSize: 15, fontWeight: "600" }}>
+              Try again
+            </Text>
+          </Btn>
+          <Btn onPress={handleKeepAndCompare}>
+            <Text style={{ color: P.paper, fontSize: 15, fontWeight: "600" }}>
+              Keep and compare
+            </Text>
+          </Btn>
+        </View>
       )}
 
       {isRevealed && (
