@@ -2,19 +2,17 @@ import { useState } from "react";
 import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
-import type { WeavePayload, WeaveScreen, WeaveType } from "@/content/lessonTypes";
+import type { WeavePayload, WeaveScreen } from "@/content/lessonTypes";
 import { matchExpected, type MatchResult } from "./normalizeAnswer";
 import { NaturalRevealView } from "./NaturalReveal";
-
-// Round 1: the v1 "weave" screens are pure-French production/check steps, not the
-// mixed-language brand mechanic. Label them so the learner reads this as "try the
-// French version here," never as "mix French and English."
-const WEAVE_LABELS: Record<WeaveType, string> = {
-  supported: "Try it in French",
-  mid: "Try it in French",
-  context: "Try it in French",
-  open: "Try it in French",
-};
+import {
+  WEAVE_BADGE,
+  WEAVE_TARGET_LABEL,
+  WEAVE_HELPER,
+  WEAVE_INPUT_LABEL,
+  weaveTargetMeaning,
+  shouldShowWeaveTargetLabel,
+} from "./weaveCopy";
 
 type WeavePiece = NonNullable<WeavePayload["suggestedPieces"]>[number];
 
@@ -82,9 +80,26 @@ export function Weave({
       contentContainerStyle={{ padding: 20 }}
       keyboardShouldPersistTaps="handled"
     >
-      <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-        {WEAVE_LABELS[payload.weaveType]}
-      </Text>
+      {/* Branded mechanic: the Weave name is visible again as a small badge.
+          Neutral ink pill (premium brand tag) — intentionally NOT red/amber/green
+          so it never reads as validation feedback or a warning. */}
+      <View className="flex-row mb-3">
+        <View
+          style={{
+            backgroundColor: P.ink,
+            borderRadius: 999,
+            paddingHorizontal: 10,
+            paddingVertical: 3,
+          }}
+        >
+          <Text
+            className="text-xs"
+            style={{ color: P.paper, fontWeight: "700", letterSpacing: 0.5 }}
+          >
+            {WEAVE_BADGE}
+          </Text>
+        </View>
+      </View>
 
       <View
         className="rounded-xl border"
@@ -94,12 +109,30 @@ export function Weave({
           padding: 16,
         }}
       >
-        <Text className="text-sm mb-2" style={{ color: P.ink }}>
-          {payload.prompt}
+        {/* Open weaves are free production: their prompt is already a directive,
+            so the "Say this:" label is suppressed to avoid doubling the
+            instruction. The target/directive below stays prominent either way. */}
+        {shouldShowWeaveTargetLabel(payload.weaveType) && (
+          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
+            {WEAVE_TARGET_LABEL}
+          </Text>
+        )}
+        {/* Target meaning is the dominant element now: large + strong, so each
+            new Weave target is hard to skim past (Round 1.2 salience fix). The
+            "Write it in French:" instruction prefix is stripped for display. */}
+        <Text
+          style={{
+            color: P.ink,
+            fontSize: 20,
+            fontWeight: "600",
+            lineHeight: 28,
+          }}
+        >
+          {weaveTargetMeaning(payload.prompt)}
         </Text>
         {payload.context && (
           <Text
-            className="text-sm"
+            className="text-sm mt-2"
             style={{
               color: P.ink2,
               fontStyle: "italic",
@@ -110,6 +143,12 @@ export function Weave({
           </Text>
         )}
       </View>
+
+      {/* Compact, always-visible helper. The one-time "How Weave works"
+          interstitial carries the fuller early explanation. */}
+      <Text className="text-xs mt-2" style={{ color: P.ink3, lineHeight: 18 }}>
+        {WEAVE_HELPER}
+      </Text>
 
       {!isRevealed && (hasPieces || hasCloze) && (
         <View className="mt-3">
@@ -198,7 +237,7 @@ export function Weave({
 
       <View className="mt-4">
         <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-          Write it in French.
+          {WEAVE_INPUT_LABEL}
         </Text>
         <TextInput
           value={text}
