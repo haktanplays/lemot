@@ -9,6 +9,7 @@
  *
  * Display-only: nothing here changes lesson content, the evaluator, or schema.
  */
+import type { WeaveType } from "@/content/lessonTypes";
 
 /** Branded mechanic name, shown as a small badge on every Weave screen. */
 export const WEAVE_BADGE = "Weave";
@@ -45,4 +46,17 @@ const WRITE_IN_FRENCH_PREFIX = /^\s*write it in french\s*:\s*/i;
  */
 export function weaveTargetMeaning(prompt: string): string {
   return prompt.replace(WRITE_IN_FRENCH_PREFIX, "").trim();
+}
+
+/**
+ * Whether to show the "Say this:" label above the target.
+ *
+ * Open weaves are freer production (no single fixed phrase to "say"), and their
+ * authored prompt is already a directive, e.g. "Close the moment in French:
+ * thank them and say goodbye." Pairing that with "Say this:" doubles the
+ * instruction, so the label is suppressed for open weaves; the directive is
+ * shown prominently on its own. Every other weave type keeps the label.
+ */
+export function shouldShowWeaveTargetLabel(weaveType: WeaveType): boolean {
+  return weaveType !== "open";
 }

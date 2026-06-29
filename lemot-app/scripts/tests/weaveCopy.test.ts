@@ -16,6 +16,7 @@ import {
   WEAVE_HELPER,
   WEAVE_INPUT_LABEL,
   weaveTargetMeaning,
+  shouldShowWeaveTargetLabel,
 } from "../../components/lesson-v1/screens/weaveCopy";
 
 describe("weave copy (Round 1.2 UX)", () => {
@@ -91,5 +92,20 @@ describe("weaveTargetMeaning transform (display only)", () => {
   test("only strips a leading prefix, never a mid-string occurrence", () => {
     const p = "Tell them, then write it in French: later.";
     assertEqual(weaveTargetMeaning(p), p, "non-leading occurrence preserved");
+  });
+});
+
+describe("shouldShowWeaveTargetLabel (open-weave label suppression)", () => {
+  test("supported / mid / context weaves keep the 'Say this:' label", () => {
+    for (const t of ["supported", "mid", "context"] as const) {
+      assert(shouldShowWeaveTargetLabel(t), `${t} should show the target label`);
+    }
+  });
+
+  test("open weave suppresses the label (avoids double instruction)", () => {
+    assert(
+      !shouldShowWeaveTargetLabel("open"),
+      "open weave must not show 'Say this:'",
+    );
   });
 });

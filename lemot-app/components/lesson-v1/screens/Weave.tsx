@@ -11,6 +11,7 @@ import {
   WEAVE_HELPER,
   WEAVE_INPUT_LABEL,
   weaveTargetMeaning,
+  shouldShowWeaveTargetLabel,
 } from "./weaveCopy";
 
 type WeavePiece = NonNullable<WeavePayload["suggestedPieces"]>[number];
@@ -108,9 +109,14 @@ export function Weave({
           padding: 16,
         }}
       >
-        <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-          {WEAVE_TARGET_LABEL}
-        </Text>
+        {/* Open weaves are free production: their prompt is already a directive,
+            so the "Say this:" label is suppressed to avoid doubling the
+            instruction. The target/directive below stays prominent either way. */}
+        {shouldShowWeaveTargetLabel(payload.weaveType) && (
+          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
+            {WEAVE_TARGET_LABEL}
+          </Text>
+        )}
         {/* Target meaning is the dominant element now: large + strong, so each
             new Weave target is hard to skim past (Round 1.2 salience fix). The
             "Write it in French:" instruction prefix is stripped for display. */}
