@@ -261,7 +261,6 @@ const screens: LessonScreen[] = [
       ],
       piecesUsed: [
         "non",
-        "oui",
         "je ne suis pas",
         "ce n'est pas",
         "non merci",
