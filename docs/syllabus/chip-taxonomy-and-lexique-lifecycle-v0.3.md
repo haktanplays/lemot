@@ -77,6 +77,7 @@ Each type is defined by **behavior**, not just a label.
 | **Accounting chip** | The canonical **registry item** (`itemId`) tracked for mastery/lifecycle. May never be shown. |
 | **UI chip** | A **visible pill** on screen (goal Main-pieces, recap `piecesUsed`, Weave hint pieces). A **selected, capped subset** of accounting chips. |
 | **Inline highlight** | An **emphasis span inside a model sentence** (meet-card `highlights`, reveal emphasis). Points at a chip; is not a standalone chip. |
+| **Model answer** | The full **natural target sentence** revealed for comparison (Weave / Say-It `reveal.modelAnswer`). A model answer **may contain full natural sentences; a model-answer sentence is not automatically a chip.** It is its own surface, distinct from accounting chip / UI chip / inline highlight. |
 
 ### Important corrections (from triage feedback)
 
@@ -301,6 +302,21 @@ Previous lesson chips are candidates, not defaults.
 Carryover pool may grow; visible carryover selection must stay capped.
 ```
 
+### Three separate systems (not one)
+
+```text
+Lesson chip surface ≠ carryover selection ≠ flashcard review.
+Mon Lexique UI ≠ Lexique Memory ≠ Carryover Selector.
+```
+
+- **Carryover selection is lesson-embedded reuse** (what old chips reappear *inside a lesson*).
+- **Flashcards / review are a separate future explicit practice system** (an opt-in review/practice queue).
+- Both may read the same `Lexique Memory` / mastery data later, but **their outputs are separate**:
+  - **Carryover Selector** → lesson examples, Weaves, hints, model answers, micro-logic contexts;
+  - **Flashcard Scheduler** → an explicit review / practice queue.
+- **Do not design lesson carryover density as if it were flashcard scheduling.**
+- **Do not let flashcard logic dictate what appears inside lessons.**
+
 ---
 
 ## 10. Carryover lifecycle canon
@@ -352,6 +368,66 @@ Carryover pool may grow; visible carryover selection must stay capped.
 - the **UI must never dump all previous chips**;
 - the **lesson surface should be curated by context + mastery**, not by accumulation.
 
+### Rolling window (graph grows, window rolls)
+
+```text
+The learned graph grows; the active carryover window rolls.
+Previous chips are candidates, not defaults.
+Old chips can return as anchors, refreshers, contrasts, or context tools.
+Visible carryover stays capped.
+```
+
+- The **global learned chip graph can grow indefinitely.**
+- The **active carryover window should peak / roll, not grow linearly forever.**
+- **New chips entering the active carryover window can push older / stronger / context-irrelevant chips into a dormant state.**
+- **Carryover pool/window behavior is about lesson-embedded reuse, not explicit review scheduling** (see §9 — carryover ≠ flashcards).
+
+### Recycle Load Protection
+
+```text
+Recycle cannot steal the lesson.
+Old chips should support the new lesson target, not steal it.
+Every sentence has a load budget: target load must stay dominant, recycle load must support, exposure load must stay optional and capped.
+```
+
+- **Recycling is not random reuse and not flashcard review.**
+- **Recycled items may return as:**
+  - anchors;
+  - refreshers;
+  - contrasts;
+  - context tools;
+  - weakness returns;
+  - structural support inside newer grammar.
+- **Recycled items must not steal cognitive weight from the lesson target.**
+- **Sentence examples must preserve target salience.**
+- **Strong old chips should usually carry lower cognitive load than weak / uncertain old chips.**
+- **Exposure chips must remain optional and low-count.**
+- **Old lesson sentences should not be replayed mechanically** unless the specific goal is speed recall / formula refresh.
+
+**Example — same chip (`un café`), rolling load (target in *italics*):**
+
+| Stage | Sentence | Role |
+|---|---|---|
+| Early | `Je voudrais un café, s'il vous plaît.` | `un café` is the *target* |
+| Later structural reuse | `Je voudrais un café, mais je n'ai pas le temps maintenant.` | `un café` is an **anchor**; the new structure is the target |
+| Later richer reuse | `Je voudrais prendre un café avec vous, mais je n'aurai pas le temps aujourd'hui.` | `un café` is **context**; richer grammar is the target |
+| Refreshment reuse | `Je voulais un café, mais je n'avais pas le temps.` | a **refresh** of `un café` inside a new tense target |
+
+State explicitly:
+- **The old chip may return.**
+- **The old full sentence should not mechanically return by default.**
+- **A known chip can become an anchor so the learner can focus on the new target.**
+
+**Future validator / sentence-builder checks** (when that system is built — §13):
+- target item is present and salient;
+- recycle density is not too high;
+- strong old items do not dominate attention;
+- weak / refresh-due items are used intentionally;
+- exposure load is capped;
+- no sentence-chip regression;
+- old sentence replay is not mechanical;
+- context is natural.
+
 ---
 
 ## 11. Field mapping
@@ -398,23 +474,28 @@ Mitigations summary: **docs canon first → tiny content experiment later → sc
 
 > Do **not** implement now. Recorded sequence only.
 
-1. **Tiny content/data cleanup PR**
+1. **Tiny data/content cleanup PR**
    - atomize L4/L6 `piecesUsed`;
-   - fix L6 "Main pieces" prose, or defer to the structured field;
-   - normalize the `un café` / `une question` identity plan;
-   - add/plan `itemId`s for `ici` and `faim`.
+   - address L6 "Main pieces" prose / future structure;
+   - plan or normalize the `un café` / `une question` identity;
+   - plan `itemId`s for `ici` / `faim`.
 2. **Tiny Weave v2 experiment**
    - 2–3 prompt rewrites (§7);
    - **no evaluator change**;
    - one controlled exposure example.
-3. **Later field/schema PR**
-   - structured `mainPieces`;
-   - `exposurePieces`;
-   - possibly a micro-logic card type (only if repeated patterns justify it).
-4. **Later Lexique Memory Selector design PR**
-   - carryover scoring;
-   - dormancy;
-   - recall triggers.
+3. **Micro-Logic / Chunk Unpack pilot**
+   - manual authored cards / copy first (reuse `insight-card` / reveal copy);
+   - e.g. `de l'eau`, `pas d'eau`, `s'il vous plaît`.
+4. **Structured `mainPieces` / `exposurePieces` later**
+   - (and a dedicated micro-logic card type only if repeated patterns justify it).
+5. **Lexique Memory / Carryover Selector design later**
+   - carryover scoring; dormancy; recall triggers.
+6. **Sentence Builder + Validator later**
+   - target salience;
+   - recycle density;
+   - exposure cap;
+   - no sentence-chip regression;
+   - natural context.
 
 ---
 
