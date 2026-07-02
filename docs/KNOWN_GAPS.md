@@ -37,9 +37,17 @@
   intrinsic 8-state lifecycle (`recycled` = query-time carryover role, not a
   stored state), the Mon Lexique 6-band projection, the event-to-memory table,
   and the Faz 4B test plan.
+- **Faz 4C landed (2026-07-02):** `content/learning-engine/carryover-selector.ts`
+  + `carryoverSelector.test.ts` — pure selector over derived states per spec
+  §65.6 (exclusion gates, priority, budget caps, target-share protection).
+  v0 decisions: lesson `contextTags` are explicit caller input (no lesson/
+  registry parsing); empty lesson tags and zero targets fail closed;
+  sentence-level caps applied at unit level until the Sentence Builder
+  exists; `clutterPenalty` = 0 (caps are the clutter control).
 - **Still open (not solved by contract or implementation):**
-  - Carryover Selector v0 (Faz 4C; needs lesson contextTags input) and the
-    Mon Lexique 6-band UI adoption (renderer-adjacent, needs smoke).
+  - Wiring the selector to lesson authoring/runtime (needs contextTags
+    sourcing decision + smoke) and the Mon Lexique 6-band UI adoption
+    (renderer-adjacent, needs smoke).
   - Most constants are provisional/tunable; `refreshDueScore` is the most
     provisional formula (expect tuning once telemetry exists).
   - Telemetry/event gaps remain open (gaps #8/#14): exposure/seen/repair/
