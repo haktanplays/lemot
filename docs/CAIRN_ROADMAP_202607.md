@@ -99,8 +99,10 @@
 > **Durum (2026-07-02):** Faz 4A tamam — sayısal kontrat spec §65'e yazıldı ve
 > Option A (frozen `mastery-v0.2` üzerine pure derived layer) operatör onayıyla
 > kilitlendi; `recycled` v0.1'de query-time carryover rolü, intrinsic state
-> değil. Faz 4B (pure `lexique-memory.ts` + testler) bekliyor. Açık kalemler:
-> `docs/KNOWN_GAPS.md` #2.
+> değil. Aynı gün consolidation guard eklendi (`CONSOLIDATION_REST_DAYS`).
+> **Faz 4B tamam:** `lexique-memory.ts` + `lexiqueMemory.test.ts` (pure,
+> runtime'a bağlı değil). Kalan: Carryover Selector v0 (Faz 4C) + parametre
+> tuning. Açık kalemler: `docs/KNOWN_GAPS.md` #2.
 
 ---
 

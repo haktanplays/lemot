@@ -21,8 +21,15 @@
 - **Resolves in:** Faz 5.1 (operator decision).
 
 ### 2. Lexique Memory matrix has names but no formulas
-- **Status: numeric contract DEFINED in docs (Faz 4A, 2026-07-02); implementation
-  pending Faz 4B.** Spec §65 now records the operator-approved Option A decision
+- **Status: numeric contract DEFINED (Faz 4A) and pure implementation ADDED
+  (Faz 4B, 2026-07-02):** `content/learning-engine/lexique-memory.ts` +
+  `scripts/tests/lexiqueMemory.test.ts` implement spec §65 as a pure derived
+  layer (`deriveLexiqueMemory(itemMastery, now)`), including the
+  consolidation guard. Precision note: strength(P=3) ≈ 0.6988, marginally
+  below `STRONG_THRESHOLD` 0.70 — Known needs P=3+R=1 or P=4 (pinned by
+  test; tune the threshold if 3 spaced productions should suffice). With
+  default constants `dormant` is unreachable (refreshDue supersedes it).
+  Spec §65 records the operator-approved Option A decision
   (derived layer over the frozen `mastery-v0.2` reducer — no reducer change, no
   migration, no new events in v0.1), the 18-field contract, the v0.1 constants
   (exponential-saturation strength, weakness floor, two-bucket decay 5d/14d,
@@ -30,9 +37,9 @@
   intrinsic 8-state lifecycle (`recycled` = query-time carryover role, not a
   stored state), the Mon Lexique 6-band projection, the event-to-memory table,
   and the Faz 4B test plan.
-- **Still open (not solved by the contract):**
-  - Faz 4B implementation: `content/learning-engine/lexique-memory.ts` +
-    `lexiqueMemory.test.ts` (pure module, property tests per spec §65.9).
+- **Still open (not solved by contract or implementation):**
+  - Carryover Selector v0 (Faz 4C; needs lesson contextTags input) and the
+    Mon Lexique 6-band UI adoption (renderer-adjacent, needs smoke).
   - Most constants are provisional/tunable; `refreshDueScore` is the most
     provisional formula (expect tuning once telemetry exists).
   - Telemetry/event gaps remain open (gaps #8/#14): exposure/seen/repair/
@@ -40,7 +47,7 @@
     transfer/recombination/repair counters stay 0 in v0.1.
   - Taxonomy-weighted weakness waits on Error Engine tags entering the event
     log.
-- **Resolves in:** Faz 4B (pure functions + tests; operator reviews parameters).
+- **Resolves in:** Faz 4C (carryover selector) + parameter tuning after telemetry.
 
 ### 3. Content factory undefined
 - **Gap:** The 180-lesson syllabus is a topic map; ~174 lessons remain. The engine will
