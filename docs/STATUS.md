@@ -5,6 +5,8 @@ Scope canon: `docs/DEV_APK_MVP_CANON.md`. Pipeline: `docs/MASTER_PIPELINE_v1.2.1
 Docs map and precedence: `docs/README.md` (navigation, precedence, and public-safe Git vs private Obsidian boundary).
 Long-term product vision: `docs/CAIRN_PRODUCT_DEFINITION_v0.1.md` (planning/vision only; does not authorize implementation).
 Cairn product systems map: `docs/CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md` (planning/index only; does not authorize implementation).
+Cairn execution roadmap (July 2026): `docs/CAIRN_ROADMAP_202607.md` (phase order Faz 0–7). Open-gap inventory: `docs/KNOWN_GAPS.md`.
+Note: `CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` is NOT yet in the repo — the v0.1 Cairn docs above are not the latest spec; do not treat them as final canon. Spec import + precedence-chain update are pending operator upload (see `docs/CLOUD_SYNC_QUEUE.md`).
 
 ## Round 1 runtime closeout — ACCEPTED (2026-06-17)
 

@@ -1,3 +1,7 @@
+// LEGACY — DO NOT BUILD ON THIS. Legacy v7 route, hidden in dev-apk but code still live (Cairn Faz 0 quarantine).
+// Imports legacy hooks (useSRS/useChat) from the frozen v7 surface; not part of learning-engine.
+// Do not extend or use as a reference for new screens.
+// See docs/KNOWN_GAPS.md and docs/CAIRN_ROADMAP_202607.md.
 import { useState, useCallback, useMemo } from "react";
 import {
   View,

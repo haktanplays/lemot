@@ -1,3 +1,5 @@
+// LEGACY — DO NOT BUILD ON THIS. Frozen legacy v7 test-build surface (Cairn Faz 0 quarantine).
+// See docs/KNOWN_GAPS.md and docs/CAIRN_ROADMAP_202607.md.
 // LEGACY TEST BUILD — frozen for Dev APK (Tier B locked 2026-05-16).
 // These 24 lessons implement the Obsidian 24-lesson syllabus (L1 Survival Kit,
 // L4 Avoir, L14 More Negation+Y/En, paywall L15). v1 Canon §5 has a different
