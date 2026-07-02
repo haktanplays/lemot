@@ -1,5 +1,7 @@
 > **Repo import note (2026-07-02, cloud session).** Imported verbatim from the
-> operator's master copy; content unchanged apart from this banner. Reading
+> operator's master copy; content unchanged apart from this banner, four
+> one-line pointers (§9.3, §9.4, §10.4, §49.5), and the appended §65 Lexique
+> Memory v0.1 numeric contract (Faz 4A, operator-approved 2026-07-02). Reading
 > guide for agents: §48–§64 are the v1.0 layer and win over the v0.3 addendum
 > (§31–§47) wherever they conflict; §47 is explicitly superseded by §64. The
 > v0.1 Cairn docs (`CAIRN_PRODUCT_DEFINITION_v0.1.md`,
@@ -523,6 +525,8 @@ hidden engine terms
 
 ### 9.3 Lexique Memory internal matrix
 
+> v0.1 numeric contract for these fields (formulas, ranges, update rules): **§65**.
+
 This is the internal per-chip state. It can be implemented as local storage, database table, or pure snapshot during tests.
 
 | Field | Type | Meaning | Notes |
@@ -557,6 +561,9 @@ This is the internal per-chip state. It can be implemented as local storage, dat
 | `notes` | string[] | internal authoring notes | optional. |
 
 ### 9.4 State machine
+
+> v0.1 numeric transition gates for these states: **§65.5** (note: `recycled` is a
+> query-time carryover role in v0.1, not an intrinsic stored state).
 
 ```text
 unknown
@@ -702,6 +709,8 @@ This is not a hard numeric rule. L11→L16 recombination is precedent, not a fiv
 | Formula speed return | social formula speed | `non merci`, `au revoir` |
 
 ### 10.4 Recycle Load Protection
+
+> v0.1 numeric caps and priority ordering for this rule: **§65.6**.
 
 ```text
 Recycle cannot steal the lesson.
@@ -3745,6 +3754,8 @@ Dev mode may show itemId; learner mode must not.
 
 ### 49.5 Friendly status mapping
 
+> v0.1 lifecycle → friendly-band mapping and hidden-field list: **§65.7**.
+
 | Lexique Memory status | Mon Lexique friendly status | Meaning shown to learner |
 |---|---|---|
 | `ghost` / `exposure` | Seen | You saw this in a model answer or note. |
@@ -4683,4 +4694,357 @@ This v1.0 document supersedes the prior standalone synthesis docs as a handoff a
 ```
 
 Do not treat this document as permission to make broad runtime changes without PR scope, validations, and appropriate smoke. Treat it as the complete map of the app we are building.
+
+---
+
+## 65. Lexique Memory / Mastery v0.1 Numeric Contract (Faz 4A, 2026-07-02)
+
+> Appended after the verbatim v1.0 import. This section fills the §9.3/§9.4
+> formula gap (KNOWN_GAPS #2) with a deterministic v0.1 contract so two agents
+> cannot build two different mastery systems. Where §65 gives a number or gate
+> and an earlier section gives only prose, **§65 wins**. Roadmap phase: Faz 4A
+> (docs, this section). Implementation: Faz 4B (pure module + tests),
+> separately reviewed. Nothing here authorizes renderer/UI or event-schema
+> changes.
+
+### 65.1 Decision record — Option A (LOCKED, operator-approved 2026-07-02)
+
+```text
+The Lexique Memory scores and lifecycle are a DERIVED LAYER over the frozen
+mastery-v0.2 substrate (content/learning-engine/mastery.ts).
+
+- The existing reducer (scoreEvent/scoreEvents) remains the canonical event
+  fold. It is not modified, not replaced, not migrated.
+- All §9.3 scores and the lifecycle status are pure projections:
+  deriveLexiqueMemory(itemMastery, now) → LexiqueMemoryState.
+- No stored mutation in v0.1: deriving is a read; nothing is written back.
+- `now` is always an explicit argument. No hidden Date.now() in the pure
+  engine (house rule shared by mastery.ts, mon-lexique.ts, practice-pool.ts).
+- Counters whose source events do not exist yet stay 0/null until the named
+  event ships. Nothing is inferred heuristically to fake a signal.
+- ItemIds are opaque, stable inputs. No rename/merge/migration behavior in
+  this phase (§55 debts stay parked in KNOWN_GAPS).
+```
+
+Honesty notes preserved from the proposal review:
+
+```text
+1. The §36.2 telemetry vocabulary is NOT implemented. The real event log has
+   one shape (LearningEvent: operation + result:ErrorTagCode). §65.8 labels
+   every input event [exists] / [new event needed] / [derive, no event].
+2. ghost/exposure state is UNREACHABLE in v0.1: model-answer exposure emits no
+   event today, so exposure-only items are absent from the snapshot. The state
+   is specified now and becomes populated when exposure_seen/item_seen events
+   land. Fail-safe: nothing can be over-credited in the meantime.
+3. Taxonomy-specific weakness (wrong_auxiliary_faim, protected_chunk_split,
+   sentence_replay, …) is DEFERRED until Error Engine taxonomy tags enter the
+   event log. v0.1 weakness derives only from what the log carries
+   (wrongCount, weakTags). exposure_gap_allowed must never count as weakness.
+```
+
+### 65.2 Field contract
+
+Substrate = shipped `ItemMastery` (mastery-v0.2). **[derived]** = computed by
+`deriveLexiqueMemory`, never stored. **[v0.1 = 0/null]** = specified now,
+frozen at its initial value until the named event exists.
+
+| Field | Meaning | Source | Update / derive rule | Range | Init | Must NOT |
+|---|---|---|---|---|---|---|
+| `seenCount` | contacts of any kind | substrate `seenCount` | +1 per event touching the itemId; later also `item_seen`/`exposure_seen` | int ≥0 | 0 | feed strength directly |
+| `recognitionCount` | correct identifications | substrate `recognitionSuccess` | +1 per successful recognition-op event | int ≥0 | 0 | imply production; be advanced by mere sight |
+| `productionCount` | production attempts | substrate `productionAttempts` | +1 per production-op event | int ≥0 | 0 | count reveals/compares as attempts |
+| `successfulProductionCount` | accepted productions | substrate `productionSuccess` | +1 when result ∈ {correct, accepted_variant} on a production op | int ≥0 | 0 | count near-misses as success or failure (precision policy) |
+| `repairCount` | completed guided repairs | `repair_completed` **[new event needed]** | +1 per completed repair | int ≥0 | **v0.1 = 0** | be inferred from retries without the event |
+| `transferCount` | old chip used in a new structure/context | production event with `context:"transfer"` tag **[new event needed]** | +1 per tagged success | int ≥0 | **v0.1 = 0** | be inferred heuristically; count sentence replay (§11.2) |
+| `recombinationCount` | known parts combined into a new line | same mechanism, `"recombination"` tag | +1 per tagged success | int ≥0 | **v0.1 = 0** | double-count with transfer on one event |
+| `lastSeenAt` | last contact time | substrate | set to event.timestamp per contact | epoch ms / null | null | be set by opening Mon Lexique |
+| `lastProducedAt` | last successful production | substrate | set on accepted production | epoch ms / null | null | be set by recognition/exposure |
+| `lastRepairedAt` | last completed repair | `repair_completed` **[new event needed]** | set on repair completion | epoch ms / null | **v0.1 = null** | — |
+| `strengthScore` | internal ownership confidence | **[derived]** | §65.4 formula | 0..1 | 0 | rise from seen/open/exposure; be shown raw |
+| `weaknessScore` | instability signal | **[derived]** | §65.4 formula | 0..1 | 0 | rise from near-misses; drop below floor while everWeak; be shown raw |
+| `decayScore` | staleness | **[derived]**, needs `now` | §65.4 formula | 0..1 | 0 | lower strength itself; be shown raw |
+| `refreshDueScore` | combined refresh need | **[derived]** | §65.4 formula | 0..1 | 0 | act as a flashcard queue by itself |
+| `carryoverEligibility` | may return inside a lesson | **[derived per query]** (needs lesson contextTags input) | §65.6 gate + priority | `excluded` \| `eligible` \| `priority` | `excluded` | be stored; be conflated with flashcards |
+| `flashcardEligibility` | explicit review candidate | **[derived]** from shipped `practiceEligibility` + `isItemDue(dueAt, now)` | `none` unless eligibility ≠ none ∧ due | `none` \| `due` \| `eligible` | `none` | drive lesson carryover (separate systems, §9.1) |
+| `exposureOnly` | seen but never asked/answered | **[derived]** | `seenCount>0 ∧ productionCount=0 ∧ recognitionCount=0` | bool | false | ever project to "Known"; **empty set in v0.1** until exposure events exist |
+| `lifecycleStatus` | intrinsic phase | **[derived]** | §65.5, evaluated top-down | 8 intrinsic states (+ `recycled` role, §65.5) | `unknown` | be a stored mutation; skip production gates |
+
+### 65.3 Numeric constants (v0.1 defaults)
+
+| Constant | Default | Meaning | Lock status |
+|---|---|---|---|
+| `STRENGTH_K` | 2.5 | saturation constant, strength | provisional |
+| `w_production` | 1.0 | strength weight: successful production | provisional |
+| `w_transfer` | 0.7 | strength weight: transfer (inactive in v0.1) | provisional |
+| `w_recombination` | 0.7 | strength weight: recombination (inactive in v0.1) | provisional |
+| `w_repair` | 0.5 | strength weight: successful repair (inactive in v0.1) | provisional |
+| `w_recognition` | 0.25 | strength weight: recognition success | **near-locked ordering**: must stay ≪ `w_production` |
+| `STRONG_THRESHOLD` | 0.70 | strength for strong / "Known" | provisional |
+| `SUPPORTED_THRESHOLD` | 0.40 | strength for supported / "Getting stronger" | provisional |
+| `WEAKNESS_K` | 2.0 | saturation constant, weakness | provisional |
+| `REPAIR_DISCOUNT` | 0.5 | offset per repair / later success against a failure | provisional |
+| `WEAK_RESIDUAL_FLOOR` | 0.15 | weakness floor while everWeak | **near-locked rule**, value tunable |
+| `HALF_LIFE_DEFAULT_DAYS` | 5 | decay half-life, non-strong items | provisional |
+| `HALF_LIFE_STRONG_DAYS` | 14 | decay half-life, strong items | provisional |
+| `REFRESH_DUE_THRESHOLD` | 0.50 | refreshDueScore that surfaces an item | provisional |
+| `DORMANT_DECAY_THRESHOLD` | 0.50 | decay at which an unselected strong item rests | provisional |
+| `RECENT_USE_DAYS` | 1 | window suppressing refresh right after use | provisional |
+| `RECENT_USE_PENALTY` | 0.5 | refresh suppression amount inside that window | provisional |
+| `CONSOLIDATION_REST_DAYS` | 1 | strong/"Known" additionally requires the strength evidence to survive one rest window (same-session over-credit guard; NOT proof of long-term retention) | provisional |
+| `WEAK_THRESHOLD` | 3 | reused from shipped mastery.ts unchanged | **locked (shipped)** |
+| `TARGET_LOAD_MIN_SHARE` | 0.50 | target's minimum load share per sentence | **near-locked rule**, value tunable |
+
+### 65.4 Scoring formulas
+
+All pure, clamped to [0,1], `now` as an explicit argument.
+
+**strengthScore** — saturating, monotone in successes only:
+
+```text
+W = 1.0·successfulProductionCount
+  + 0.7·transferCount            // 0 in v0.1 (no source event)
+  + 0.7·recombinationCount       // 0 in v0.1
+  + 0.5·repairCount              // 0 in v0.1
+  + 0.25·recognitionCount
+strengthScore = 1 − exp(−W / 2.5)
+```
+
+Anchors: 1 production ≈ 0.33; 3 productions ≈ 0.70 (Known threshold);
+1 recognition alone ≈ 0.095 — a single recognition can never cross
+SUPPORTED_THRESHOLD. No seen/open/exposure term exists, so those inputs
+cannot raise strength.
+
+Anchor caveat: "3 productions ≈ Known" assumes SPACED / consolidated
+production. Same-session repetitions may raise strengthScore to 0.70, but the
+lifecycle gate (§65.5, CONSOLIDATION_REST_DAYS) prevents immediate `strong` /
+"Known" — same-session drilling parks at `supported` / "Getting stronger".
+
+**weaknessScore** — real errors up, recovery down, floor while ever-weak:
+
+```text
+activeFailures = max(0, wrongCount − 0.5·(repairCount + lateSuccessCount))
+raw            = 1 − exp(−activeFailures / 2.0)
+weaknessScore  = everWeak ? max(raw, 0.15) : raw
+```
+
+`wrongCount` already excludes near-misses (shipped precision policy is
+inherited unchanged). `lateSuccessCount` = successful productions after the
+most recent failure. Taxonomy-weighted boosts are deferred (§65.1 note 3);
+`exposure_gap_allowed` must NEVER increase weakness.
+
+**decayScore** — two-bucket exponential; explicitly not a spaced-repetition engine:
+
+```text
+H = strengthScore ≥ 0.70 ? 14 : 5     // days
+decayScore = lastSeenAt == null ? 0
+           : 1 − 0.5^(daysSince(lastSeenAt, now) / H)
+```
+
+Starts at 0 on contact; 0.5 at one half-life. Decay never lowers
+strengthScore itself — it only feeds refreshDueScore and the dormant gate.
+The shipped Leitner `dueAt` clock keeps driving Practice/flashcard due-ness;
+decayScore drives LESSON-SIDE refresh only. Two clocks, two jobs — do not
+merge them without a new decision.
+
+**refreshDueScore** — item-intrinsic surfacing signal (context fit is applied
+later, at carryover selection):
+
+```text
+ownedGate       = strengthScore ≥ 0.40 ? 1 : 0
+recentPenalty   = daysSince(lastSeenAt, now) < 1 ? 0.5 : 0
+refreshDueScore = clamp01( max(weaknessScore, decayScore·ownedGate) − recentPenalty )
+```
+
+refreshDue at ≥ 0.50: an owned item has decayed, or weakness is high
+regardless of decay. Stays dormant when strong-and-decayed but under
+threshold, or just used. Most provisional formula in this contract — expect
+tuning once telemetry exists.
+
+### 65.5 Intrinsic lifecycle contract
+
+**Eight intrinsic states** are derivable from `itemMastery + now` alone:
+`unknown`, `ghost`, `recognition`, `activeNew`, `supported`, `strong`,
+`dormant`, `refreshDue`.
+
+**`recycled` is a query-time carryover role produced by the Carryover
+Selector, not a stored mastery mutation in v0.1.** It cannot be derived from
+`itemMastery + now` alone because it depends on lesson context (which lesson
+is asking, with which contextTags). If a future event makes reuse intrinsic
+(e.g. a tagged carryover production event), `recycled` may be promoted to an
+intrinsic state in a separately-reviewed contract bump.
+
+Transition gates ("P" = successfulProductionCount, "R" = recognitionCount,
+"str/dec/refr" = §65.4 scores):
+
+| From → To | Gate | Production required? | Exposure-only can? |
+|---|---|---|---|
+| unknown → ghost | seenCount ≥ 1, P=0, R=0 (exposure contact only) | No | **Yes** — this is the exposure path (v0.1: unreachable until exposure events ship) |
+| unknown/ghost → recognition | R ≥ 1, P=0 — requires a correct recognition ANSWER | No | No (mere sight is not recognition) |
+| recognition → activeNew | first production attempt in the item's active lesson; str < 0.40 | Yes (attempt) | No |
+| activeNew → supported | P ≥ 1 and 0.40 ≤ str < 0.70 | Yes | No |
+| supported → strong | str ≥ 0.70 AND daysSince(lastProducedAt, now) ≥ CONSOLIDATION_REST_DAYS | Yes | No |
+| strong → dormant | dec ≥ 0.50 and not selected for carryover | No | No |
+| owned (str ≥ 0.40) → refreshDue | refr ≥ 0.50 | No | No |
+| refreshDue/dormant → strong/supported | later successful production restores str, resets staleness | Yes | No |
+
+Consolidation window (same-session over-credit guard):
+
+```text
+strengthScore ≥ 0.70 is NOT enough alone to derive strong/"Known".
+The strong gate additionally requires
+daysSince(lastProducedAt, now) ≥ CONSOLIDATION_REST_DAYS.
+
+- Same-session drilling may raise strengthScore to the Known threshold, but
+  the lifecycle derives at most `supported` (learner-facing "Getting
+  stronger") during the consolidation window.
+- After the rest window elapses the item may derive `strong` / "Known"
+  (decay at 1 day is small and never lowers strength, so promotion happens
+  naturally on the next derivation).
+- This is a v0.1 same-session over-credit guard, not proof of long-term
+  retention. The better future rule is cross-lesson / distinct-context
+  evidence, but the frozen mastery-v0.2 aggregate substrate carries no
+  per-production lesson/context history, so that gate is deferred to a
+  future contract bump (alongside the transfer/recombination events).
+- Known side-effect, intentional: an already-strong item that is produced
+  again re-enters the window and derives `supported` for one rest window.
+  This affects only the derived view, never stored state, and is consistent
+  with how the contract already treats "just used" (RECENT_USE penalty,
+  carryover too-recent exclusion).
+```
+
+Invariants (all by construction):
+
+```text
+- Exposure-only tops out at ghost/recognition: the chain to strong gates on
+  production, so seen-only can never become Known (§49.4, §58.4).
+- deriveLexiqueMemory is a pure read: opening Mon Lexique appends nothing,
+  so nothing moves (§49.4).
+- Repair improves memory but preserves the weakness signal (WEAK_RESIDUAL_FLOOR).
+- Strong/"Known" requires production evidence AND a survived consolidation
+  rest window (CONSOLIDATION_REST_DAYS) — never same-session repetition alone.
+- Strong items can leave only via time: dormant or refreshDue.
+- ItemIds remain stable; no migration behavior in this phase.
+```
+
+### 65.6 Carryover budget contract (v0.1)
+
+| Budget | Default | Canon enforced |
+|---|---|---|
+| Visible carryover chips per screen | ≤ 3 | visible carryover stays capped |
+| Recycled items per sentence | ≤ 2 | recycle load must support |
+| Exposure items per Weave/model answer | ≤ 2 | exposure optional and capped |
+| Weak items deliberately reintroduced per sentence | ≤ 1 | repair never piles onto new load |
+| Target load share per sentence | ≥ 0.50 (hard post-check) | **Recycle cannot steal the lesson** |
+
+```text
+Recycle cannot steal the lesson.
+Target load must stay dominant.
+Old chips support the new target; they do not become the lesson.
+```
+
+Priority among context-fit candidates (hard gate first, highest score wins):
+
+```text
+if !contextFit(item, lessonTags) → excluded
+priority = 3·weaknessReturn + 2·refreshDueScore + 1·transferReadyStrong
+         + 0.5·recentCarryIn − clutterPenalty
+```
+
+Always excluded:
+
+```text
+- too recent AND already strong (strong ∧ seen < RECENT_USE_DAYS)
+- not context-fit
+- exposure-only wherever the slot requires production
+  (the Error Engine's ghost_required_by_mistake guard backs this)
+- itemIds with known identity ambiguity (noun-cafe/chunk-un-cafe,
+  noun-question/chunk-une-question — §55.2 debts)
+- full-sentence chips (already lint-blocked at the recap surface; the
+  selector must not reintroduce them elsewhere)
+```
+
+After selection, if the target's load share is below 0.50, drop the
+lowest-priority recycles until it holds — budget arithmetic, not judgment.
+
+### 65.7 Mon Lexique projection (v0.1)
+
+| Intrinsic state | Friendly status |
+|---|---|
+| ghost | Seen in model answers (v0.1: empty set until exposure events land) |
+| recognition | Seen |
+| activeNew | Tried |
+| supported | Getting stronger |
+| strong | Known |
+| refreshDue (incl. weakness return) | Try again soon |
+
+`recycled` (query-time role): displays as Getting stronger or Known per the
+underlying intrinsic state; may later be annotated "used again" if the UI
+supports it; not required for the MVP projection.
+
+Always hidden from learners: raw scores (strength/weakness/decay/refreshDue),
+all counts, weakTags, precisionTags, Leitner box, raw dueAt, itemId (dev-only
+debug). No percentages; no "weak / failed / decay" wording anywhere
+learner-facing. Opening the screen or a detail card emits at most telemetry —
+never a mastery-relevant event.
+
+The shipped 2-state `mon-lexique.ts` selector keeps working untouched until a
+separately-reviewed, smoke-tested UI PR adopts the 6-band projection.
+
+### 65.8 Event-to-memory update table
+
+| Event | Status today | v0.1 memory effect |
+|---|---|---|
+| `answer_submitted` (= the one real LearningEvent) | **[exists]** | full scoreEvent fold: counts, Leitner, prompt-fade, weak/precision tags |
+| `item_produced` | **[exists]** (production ops) | productionCount / successfulProductionCount, lastProducedAt → strength ↑ |
+| `item_recognized` | **[exists]** (`recognition` op) | recognitionCount → strength ↑ (small) |
+| `weave_attempted` | **[exists]** (`open_production` / `free_conversation`) | graded via Error Engine verdicts; production credit only for produced targets; exposure_gap_allowed is never weakness |
+| `lesson_completed` | **[exists]** (progress layer) | lesson status only; no per-item mastery |
+| `screen_seen` / `item_seen` | **[new event needed]** | seenCount+1, lastSeenAt; no mastery |
+| `exposure_seen` | **[new event needed]** | seenCount+1; item stays ≤ ghost; **never active mastery** |
+| `answer_compared` | **[new event needed]** | none by default (seeing the model ≠ producing) |
+| `repair_triggered` / `repair_completed` | **[new event needed]** | repairCount, lastRepairedAt; weakness ↓ with floor; strength ↑ via w_repair |
+| `micro_logic_seen` / `chunk_unpack_seen` | **[new event needed]** | seen/notice only; **never production** (§12.9) |
+| `sound_note_seen` | **[new event needed]** | listening-awareness flag later; **never production mastery** |
+| `lexique_opened` / `mon_lexique_entry_opened` | **[new event needed]** | telemetry only; **zero mastery mutation** |
+| transfer / recombination tag | **[new event field needed]** | transferCount / recombinationCount ↑ → strength; requires exercise metadata |
+
+Net: v0.1 scores are computable entirely from events that already exist.
+Every not-yet-real input is a named counter frozen at 0/null behind a named
+event — nothing is faked, nothing blocks.
+
+### 65.9 Faz 4B test plan (docs-only; tests authored in Faz 4B)
+
+Home: `scripts/tests/lexiqueMemory.test.ts` (+ later
+`carryoverSelector.test.ts`), registered in `scripts/tests/run.ts` — both
+names already anticipated by §23.2.
+
+```text
+- Deterministic units: fixed inputs → fixed outputs per formula, including
+  anchors (strength(P=3) ≈ 0.70; decay(daysSince = H) = 0.5).
+- Property-style: strength monotone non-decreasing in each success input;
+  decay monotone in time; all scores ∈ [0,1]; decay never increases strength;
+  a single recognition stays below SUPPORTED_THRESHOLD; seen/open/exposure
+  inputs leave strength bit-identical.
+- Lifecycle transitions: table-driven over §65.5, plus illegal-jump
+  assertions (ghost → strong impossible without production).
+- No mastery from Mon Lexique open: derive twice with the same inputs →
+  deep-equal; the function takes no event log to append to.
+- Exposure-only never Known: for any now, exposure-only input never projects
+  to "Known".
+- Repair improves but preserves weakness signal: fail×3 → repair → succeed
+  leaves weaknessScore ≥ WEAK_RESIDUAL_FLOOR while everWeak.
+- Strong-but-stale becomes refreshDue: str ≥ 0.70 with daysSince ≥ ~14
+  crosses REFRESH_DUE_THRESHOLD.
+- Consolidation guard: same-day P=3 derives supported / "Getting stronger",
+  never strong / "Known".
+- Consolidation release: P=3 with now ≥ lastProducedAt +
+  CONSOLIDATION_REST_DAYS can derive strong / "Known".
+- Exposure-only and recognition-only still never derive "Known", with or
+  without the rest window.
+- CONSOLIDATION_REST_DAYS is provisional and may later be replaced by
+  cross-lesson / distinct-context evidence gating.
+- Carryover budget does not steal target: arbitrary candidate sets respect
+  all caps and target share ≥ TARGET_LOAD_MIN_SHARE; exposure never fills a
+  production slot.
+```
 

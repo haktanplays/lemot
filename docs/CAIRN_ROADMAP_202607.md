@@ -96,6 +96,12 @@
 
 **Haktan'ın rolü:** Formül parametrelerinin pedagojik review'u (eşikler çok mu agresif / çok mu gevşek).
 
+> **Durum (2026-07-02):** Faz 4A tamam — sayısal kontrat spec §65'e yazıldı ve
+> Option A (frozen `mastery-v0.2` üzerine pure derived layer) operatör onayıyla
+> kilitlendi; `recycled` v0.1'de query-time carryover rolü, intrinsic state
+> değil. Faz 4B (pure `lexique-memory.ts` + testler) bekliyor. Açık kalemler:
+> `docs/KNOWN_GAPS.md` #2.
+
 ---
 
 ## Faz 5 — Karar kapısı (kod yok)
