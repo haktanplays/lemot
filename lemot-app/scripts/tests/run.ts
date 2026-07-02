@@ -32,6 +32,7 @@ import "./v1LessonStructure.test";
 import "./errorEngine.test";
 import "./lexiqueMemory.test";
 import "./carryoverSelector.test";
+import "./telemetry.test";
 import { runAll } from "./harness";
 
 void runAll();
