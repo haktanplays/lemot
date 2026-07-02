@@ -1,5 +1,9 @@
 # Cairn — Final Product Definition v0.1
 
+> **SUPERSEDED (2026-07-02)** by
+> `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md`. Reference only — do not
+> use as active canon; where the two differ, v1.0 wins.
+
 > **Planning/vision only.** This defines the long-term Cairn product. It
 > authorizes no code, no lesson implementation, no Home-visibility change, and
 > does not unblock L7. Current shippable scope remains the Round 1 Dev APK

@@ -77,16 +77,16 @@
 - **Resolves in:** Faz 3.
 
 ### 7. Hygiene debt
-- **Gap:** `CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` is not committed (repo has only
-  v0.1 docs — an agent may take v0.1 as canon); superseded v0.3 sections not physically
-  removed; no event compaction/snapshot policy for event-sourced mastery.
-- **Decision question:** Operator must supply the v1.0 spec file to a cloud session (or
-  commit it directly). Compaction policy: what happens at ~10k events?
-- **Suggested default:** Spec committed under `docs/`, precedence chain updated to
-  `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0`, superseded sections
-  moved to an archive file. Compaction policy written before Faz 6 begins.
-- **Resolves in:** Faz 0 remainder (blocked on operator upload — see
-  `docs/CLOUD_SYNC_QUEUE.md`); compaction in Faz 6 support work.
+- **Status: mostly RESOLVED 2026-07-02.** Spec v1.0 imported to
+  `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md`; precedence chain updated
+  (`CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0`); v0.1 Cairn docs
+  marked SUPERSEDED. Superseded v0.3 material was NOT physically deleted — the spec
+  was imported verbatim with a reading-guide banner instead (§48–64 win over §31–47;
+  §47 superseded by §64), so the repo copy stays byte-comparable to the operator's
+  master. If the operator prefers physical deletion, that is a follow-up docs-only PR.
+- **Still open:** event compaction/snapshot policy for event-sourced mastery (what
+  happens at ~10k events) — write before Faz 6 begins.
+- **Resolves in:** compaction policy in Faz 6 support work.
 
 ## Repo operational gaps (8–14)
 
