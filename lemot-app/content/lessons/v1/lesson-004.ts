@@ -11,7 +11,7 @@ const screens: LessonScreen[] = [
       body:
         "Today: your second engine, j'ai.\n" +
         "By the end: you can choose between where you are, how you feel, and what you have to ask.\n" +
-        "Main pieces: je suis ici, j'ai faim, j'ai une question.",
+        "Main pieces: je suis, ici, j'ai, faim, une question.",
     },
   },
   {
@@ -249,8 +249,8 @@ const screens: LessonScreen[] = [
       ],
       piecesUsed: [
         "j'ai",
-        "j'ai faim",
-        "j'ai une question",
+        "faim",
+        "une question",
         "Bonjour",
       ],
       nextLabel: "Continue",

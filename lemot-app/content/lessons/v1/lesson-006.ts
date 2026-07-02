@@ -11,7 +11,7 @@ const screens: LessonScreen[] = [
       body:
         "Today: no new rule.\n" +
         "By the end: you can carry one small human moment with pieces you already built.\n" +
-        "Main pieces: bonjour, je suis ici, j'ai une question, merci, au revoir.",
+        "Main pieces: bonjour, je suis, ici, j'ai, une question, merci, au revoir.",
     },
   },
   {
@@ -279,8 +279,10 @@ const screens: LessonScreen[] = [
       ],
       piecesUsed: [
         "Bonjour",
-        "Je suis ici",
-        "J'ai une question",
+        "je suis",
+        "ici",
+        "j'ai",
+        "une question",
         "Merci",
         "Au revoir",
       ],
