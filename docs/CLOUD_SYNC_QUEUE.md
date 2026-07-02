@@ -167,6 +167,18 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 - Status: PENDING
 - Operator notes:
 
+### 2026-07-02 — Cairn Faz 0 partial: spec v1.0 import blocked on operator
+
+- Date: 2026-07-02
+- Cloud branch: `claude/new-session-oy34fi`
+- Decision/change: Cairn July 2026 roadmap committed to `docs/CAIRN_ROADMAP_202607.md`; `docs/KNOWN_GAPS.md` created (14-gap inventory); legacy quarantine banners (`LEGACY — DO NOT BUILD ON THIS`) added to `data/lessons/*`, `data/flashcards.ts`, `data/milestones.ts`, `app/(tabs)/practice.tsx`, `app/(tabs)/chat.tsx`. Faz 1 (§29 L4/L6 recap atomization) was already done in `4aa4072`. Faz 0 items 1–3 are BLOCKED: `CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` was not uploaded to the session, so the spec is not committed, the precedence chain (`CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0`) is not updated, and superseded v0.3 sections cannot be archived.
+- Source PR or commit: this branch's Faz 0 commit (see git log)
+- Obsidian target: n/a (repo-side canon)
+- Mempalace action: optional `add_drawer` — "Cairn Faz 0 quarantine + KNOWN_GAPS landed; spec v1.0 import pending."
+- Operator action: ~~upload `CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md`~~ DONE — operator uploaded the spec on 2026-07-02 (same session); imported verbatim (+ reading-guide banner) to `docs/`, precedence chain updated, v0.1 Cairn docs marked SUPERSEDED. Remaining operator choice (optional): physically delete/archive the spec's superseded v0.3 material instead of the banner-only approach; and keep the local master copy in sync with the repo copy.
+- Status: RESOLVED (repo side) — optional follow-up noted above
+- Operator notes:
+
 ## Archive
 
 (drained rows older than the current sprint can be moved here in a docs-only PR)

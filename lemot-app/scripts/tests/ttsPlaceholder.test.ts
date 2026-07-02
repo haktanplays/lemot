@@ -75,8 +75,43 @@ describe("validateContent › tts_audio_text_contains_placeholder", () => {
     });
   }
 
+  // Widened coverage (Cairn Faz 2): the old regex missed single underscores,
+  // single-brace/bracket/angle template markers, and FIXME/lorem. Spoken
+  // French never legitimately contains `_`, `[`, `{`, or `<`.
+  const widenedFlagged = [
+    "je _ ici",
+    "_",
+    "{answer}",
+    "[blank]",
+    "je suis [ici]",
+    "<mot>",
+    "FIXME",
+    "fixme audio",
+    "lorem ipsum",
+  ];
+  for (const audioText of widenedFlagged) {
+    test(`flags widened placeholder ${JSON.stringify(audioText)}`, () => {
+      const findings = placeholderFindings(withAudioText(audioText));
+      assert(
+        findings.length > 0,
+        `expected ${JSON.stringify(audioText)} to be flagged`,
+      );
+      assert(
+        findings.every((f) => f.severity === "error"),
+        'placeholder findings must use severity "error"',
+      );
+    });
+  }
+
   // Normal French text must NOT be flagged.
-  const clean = ["je suis", "ici", "je suis ici"];
+  const clean = [
+    "je suis",
+    "ici",
+    "je suis ici",
+    "j'ai une question",
+    "s'il vous plaît, un café",
+    "euh… je voudrais un café !",
+  ];
   for (const audioText of clean) {
     test(`passes normal French audioText ${JSON.stringify(audioText)}`, () => {
       assert(

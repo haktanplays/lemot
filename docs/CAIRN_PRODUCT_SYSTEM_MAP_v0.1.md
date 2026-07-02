@@ -1,5 +1,9 @@
 # Cairn — Product System Map v0.1
 
+> **SUPERSEDED (2026-07-02)** by
+> `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md`. Reference only — do not
+> use as active canon; where the two differ, v1.0 wins.
+
 > **Planning/system-map only.** This indexes Cairn product systems and known
 > gaps. It authorizes no implementation, no runtime change, no lesson
 > implementation, no Home-visibility change, and does not unblock L7. Current

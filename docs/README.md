@@ -17,9 +17,13 @@ For anything being **built now**, the order is:
 
 1. **Current-build canon** — `docs/DEV_APK_MVP_CANON.md` + `docs/STATUS.md`.
 2. **Process canon** — `docs/MASTER_PIPELINE_v1.2.1.md`.
-3. **Product vision / index** — `docs/CAIRN_PRODUCT_DEFINITION_v0.1.md`, then
-   `docs/CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md` (both sit **below** current-build
-   canon; the Dev APK canon wins for anything built now).
+3. **Product vision / build intent** —
+   `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` (v1.0, imported
+   2026-07-02; execution order in `docs/CAIRN_ROADMAP_202607.md`, open gaps in
+   `docs/KNOWN_GAPS.md`). It sits **below** current-build canon; the Dev APK
+   canon wins for anything built now. The v0.1 docs
+   (`CAIRN_PRODUCT_DEFINITION_v0.1.md`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md`) are
+   SUPERSEDED reference only.
 4. **Active workstream** for the current sprint (`docs/workstreams/round1-*`).
 5. **Syllabus specs / matrices** (`docs/syllabus/*`, `docs/architecture/*`) —
    planning material, not build-ready unless explicitly promoted.

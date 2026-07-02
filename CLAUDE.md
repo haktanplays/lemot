@@ -1,7 +1,10 @@
-> **READ FIRST: CURRENT STATUS (2026-06-10).**
+> **READ FIRST: CURRENT STATUS (updated 2026-07-02).**
 > The body of this file below this banner is the legacy v7 roadmap, kept for reference.
 > Current Dev APK scope lives in `docs/DEV_APK_MVP_CANON.md`.
 > Current execution state lives in `docs/STATUS.md`.
+> Long-term Cairn product/build intent lives in `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md`
+> (execution order: `docs/CAIRN_ROADMAP_202607.md`; open gaps: `docs/KNOWN_GAPS.md`).
+> Precedence for Cairn work: this file → `docs/STATUS.md` → `docs/DEV_APK_MVP_CANON.md` → Cairn v1.0 spec.
 > v1 is a temporary Dev APK smoke surface.
 > learning-engine is the long-term product foundation. Do not expand v1.
 > Do not use the legacy 24-lesson, L14 paywall, or Sprint 10 language below as active

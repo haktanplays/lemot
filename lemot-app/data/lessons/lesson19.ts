@@ -1,3 +1,7 @@
+// LEGACY — DO NOT BUILD ON THIS. Frozen legacy v7 test-build surface (Cairn Faz 0 quarantine).
+// The long-term product foundation is learning-engine (content/lessons/v1 + lib/learning-engine).
+// Do not extend, import into new code, or use as a reference for new lessons.
+// See docs/KNOWN_GAPS.md and docs/CAIRN_ROADMAP_202607.md.
 import type { Lesson } from "@/lib/types";
 
 export const lesson19: Lesson = {
