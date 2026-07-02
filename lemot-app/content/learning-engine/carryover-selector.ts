@@ -207,6 +207,13 @@ export function selectCarryover(
       excluded.push({ itemId: candidate.itemId, reason: "not context-fit" });
       continue;
     }
+    if (m.lifecycleStatus === "unknown") {
+      // A never-contacted item is not an "old chip" — it can never return,
+      // even if a caller wrongly flags it recentCarryIn. Defense-in-depth:
+      // unknown items must never consume carryover budget.
+      excluded.push({ itemId: candidate.itemId, reason: "never contacted" });
+      continue;
+    }
     if (m.exposureOnly && candidate.requiresProduction === true) {
       // Mirrors the Error Engine's ghost_required_by_mistake guard.
       excluded.push({

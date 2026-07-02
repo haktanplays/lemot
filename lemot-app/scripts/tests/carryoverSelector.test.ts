@@ -188,6 +188,28 @@ describe("carryover selector › exclusion gates", () => {
     );
   });
 
+  test("unknown lifecycle is never selectable, even flagged recentCarryIn", () => {
+    // Never-contacted item with matching context and a (wrong) caller flag:
+    // must be hard-excluded before role assignment and consume no budget.
+    const unknown = mem({}); // no contact at all → lifecycleStatus "unknown"
+    const r = run([
+      cand("chunk:never-taught", unknown, { recentCarryIn: true }),
+      cand("chunk:weak", weakMem()),
+    ]);
+    assert(
+      exclusionReason(r, "chunk:never-taught") === "never contacted",
+      `got ${exclusionReason(r, "chunk:never-taught")}`,
+    );
+    assert(
+      r.selected.every((s) => s.itemId !== "chunk:never-taught"),
+      "unknown item must never be selected",
+    );
+    assert(
+      r.selected.length === 1 && r.selected[0].itemId === "chunk:weak",
+      "budget must remain fully available to real candidates",
+    );
+  });
+
   test("too recent and already strong is excluded", () => {
     const r = run([cand("chunk:bonjour", tooRecentStrongMem())]);
     assert(
