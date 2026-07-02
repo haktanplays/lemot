@@ -67,14 +67,17 @@
 - **Resolves in:** Faz 2. (Content precondition landed: L4/L6 atomized in `4aa4072`.)
 
 ### 6. Error Engine's AI boundary is unpinned
-- **Gap:** The deterministic vs AI-assisted split and the fallback ladder are not
-  specified for the error taxonomy.
-- **Decision question:** Which error ids are deterministic and which AI-assisted, and
-  what happens when AI is absent/rate-limited?
-- **Suggested default:** Every error id carries a `deterministic | ai_assisted` tag; v0
-  works in deterministic-only mode (so Faz 5.2 does not block Faz 3); AI-assisted
-  diagnoses fall back to the deterministic subset.
-- **Resolves in:** Faz 3.
+- **Status: RESOLVED 2026-07-02 (Faz 3, Error Engine v0).**
+  `content/learning-engine/error-engine.ts` implements spec §13: the 7 feedback
+  verdicts as a TS union, the 11-entry taxonomy as data + narrow deterministic
+  detectors, and the migration mapping `ErrorTagCode → FeedbackVerdict` (one
+  learner-facing feedback language; grading/event vocabulary unchanged). Every
+  error id carries `deterministic | ai_assisted`; 9 are deterministic, 2
+  (`overliteral_translation`, `register_mismatch`) are AI-assisted and never
+  fire in v0. Fallback ladder: `availableErrorIds(aiAvailable)` — AI absent or
+  rate-limited drops to the deterministic subset. Faz 5.2 does not block this.
+- **Still open:** wiring `resolveFeedback` into the live renderer (UI PR with
+  smoke), and the AI-assisted lane itself (blocked on Faz 5.2).
 
 ### 7. Hygiene debt
 - **Status: mostly RESOLVED 2026-07-02.** Spec v1.0 imported to
