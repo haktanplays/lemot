@@ -17,10 +17,14 @@ import type {
 } from "./types";
 import { buildItemGraph } from "./graph";
 
-// Blank markers (`[___]`, `__`), moustache templates (`{{...}}`), and the
-// textual placeholders authors leave behind (TODO / TBD / XXX / PLACEHOLDER,
-// case-insensitive, word-bounded so French text never matches by substring).
-const PLACEHOLDER_RE = /\[_+\]|_{2,}|\{\{.*?\}\}|\b(?:todo|tbd|xxx|placeholder)\b/i;
+// Anything an author could leave behind that TTS must never speak: underscore
+// blanks (any count, `je _ ici` included), bracketed/braced/angled template
+// markers (`[___]`, `{answer}`, `{{...}}`, `<mot>`), and textual placeholders
+// (TODO / TBD / XXX / PLACEHOLDER / FIXME / LOREM, case-insensitive,
+// word-bounded so French text never matches by substring). Spoken French never
+// legitimately contains `_`, `[`, `{`, or `<`.
+const PLACEHOLDER_RE =
+  /_|\[[^\]]*\]|\{[^}]*\}|<[^>]*>|\b(?:todo|tbd|xxx|placeholder|fixme|lorem)\b/i;
 
 function hasPlaceholder(text: string | undefined): boolean {
   return text !== undefined && PLACEHOLDER_RE.test(text);
