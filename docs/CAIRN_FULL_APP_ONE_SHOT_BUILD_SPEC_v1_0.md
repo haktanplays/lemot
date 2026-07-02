@@ -4790,6 +4790,7 @@ frozen at its initial value until the named event exists.
 | `DORMANT_DECAY_THRESHOLD` | 0.50 | decay at which an unselected strong item rests | provisional |
 | `RECENT_USE_DAYS` | 1 | window suppressing refresh right after use | provisional |
 | `RECENT_USE_PENALTY` | 0.5 | refresh suppression amount inside that window | provisional |
+| `CONSOLIDATION_REST_DAYS` | 1 | strong/"Known" additionally requires the strength evidence to survive one rest window (same-session over-credit guard; NOT proof of long-term retention) | provisional |
 | `WEAK_THRESHOLD` | 3 | reused from shipped mastery.ts unchanged | **locked (shipped)** |
 | `TARGET_LOAD_MIN_SHARE` | 0.50 | target's minimum load share per sentence | **near-locked rule**, value tunable |
 
@@ -4812,6 +4813,11 @@ Anchors: 1 production ≈ 0.33; 3 productions ≈ 0.70 (Known threshold);
 1 recognition alone ≈ 0.095 — a single recognition can never cross
 SUPPORTED_THRESHOLD. No seen/open/exposure term exists, so those inputs
 cannot raise strength.
+
+Anchor caveat: "3 productions ≈ Known" assumes SPACED / consolidated
+production. Same-session repetitions may raise strengthScore to 0.70, but the
+lifecycle gate (§65.5, CONSOLIDATION_REST_DAYS) prevents immediate `strong` /
+"Known" — same-session drilling parks at `supported` / "Getting stronger".
 
 **weaknessScore** — real errors up, recovery down, floor while ever-weak:
 
@@ -4876,10 +4882,35 @@ Transition gates ("P" = successfulProductionCount, "R" = recognitionCount,
 | unknown/ghost → recognition | R ≥ 1, P=0 — requires a correct recognition ANSWER | No | No (mere sight is not recognition) |
 | recognition → activeNew | first production attempt in the item's active lesson; str < 0.40 | Yes (attempt) | No |
 | activeNew → supported | P ≥ 1 and 0.40 ≤ str < 0.70 | Yes | No |
-| supported → strong | str ≥ 0.70 | Yes | No |
+| supported → strong | str ≥ 0.70 AND daysSince(lastProducedAt, now) ≥ CONSOLIDATION_REST_DAYS | Yes | No |
 | strong → dormant | dec ≥ 0.50 and not selected for carryover | No | No |
 | owned (str ≥ 0.40) → refreshDue | refr ≥ 0.50 | No | No |
 | refreshDue/dormant → strong/supported | later successful production restores str, resets staleness | Yes | No |
+
+Consolidation window (same-session over-credit guard):
+
+```text
+strengthScore ≥ 0.70 is NOT enough alone to derive strong/"Known".
+The strong gate additionally requires
+daysSince(lastProducedAt, now) ≥ CONSOLIDATION_REST_DAYS.
+
+- Same-session drilling may raise strengthScore to the Known threshold, but
+  the lifecycle derives at most `supported` (learner-facing "Getting
+  stronger") during the consolidation window.
+- After the rest window elapses the item may derive `strong` / "Known"
+  (decay at 1 day is small and never lowers strength, so promotion happens
+  naturally on the next derivation).
+- This is a v0.1 same-session over-credit guard, not proof of long-term
+  retention. The better future rule is cross-lesson / distinct-context
+  evidence, but the frozen mastery-v0.2 aggregate substrate carries no
+  per-production lesson/context history, so that gate is deferred to a
+  future contract bump (alongside the transfer/recombination events).
+- Known side-effect, intentional: an already-strong item that is produced
+  again re-enters the window and derives `supported` for one rest window.
+  This affects only the derived view, never stored state, and is consistent
+  with how the contract already treats "just used" (RECENT_USE penalty,
+  carryover too-recent exclusion).
+```
 
 Invariants (all by construction):
 
@@ -4889,6 +4920,8 @@ Invariants (all by construction):
 - deriveLexiqueMemory is a pure read: opening Mon Lexique appends nothing,
   so nothing moves (§49.4).
 - Repair improves memory but preserves the weakness signal (WEAK_RESIDUAL_FLOOR).
+- Strong/"Known" requires production evidence AND a survived consolidation
+  rest window (CONSOLIDATION_REST_DAYS) — never same-session repetition alone.
 - Strong items can leave only via time: dormant or refreshDue.
 - ItemIds remain stable; no migration behavior in this phase.
 ```
@@ -5002,6 +5035,14 @@ names already anticipated by §23.2.
   leaves weaknessScore ≥ WEAK_RESIDUAL_FLOOR while everWeak.
 - Strong-but-stale becomes refreshDue: str ≥ 0.70 with daysSince ≥ ~14
   crosses REFRESH_DUE_THRESHOLD.
+- Consolidation guard: same-day P=3 derives supported / "Getting stronger",
+  never strong / "Known".
+- Consolidation release: P=3 with now ≥ lastProducedAt +
+  CONSOLIDATION_REST_DAYS can derive strong / "Known".
+- Exposure-only and recognition-only still never derive "Known", with or
+  without the rest window.
+- CONSOLIDATION_REST_DAYS is provisional and may later be replaced by
+  cross-lesson / distinct-context evidence gating.
 - Carryover budget does not steal target: arbitrary candidate sets respect
   all caps and target share ≥ TARGET_LOAD_MIN_SHARE; exposure never fills a
   production slot.
