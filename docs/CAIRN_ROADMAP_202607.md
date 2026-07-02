@@ -110,6 +110,19 @@
 
 ## Faz 5 — Karar kapısı (kod yok)
 
+> **Durum (2026-07-02): TAMAMLANDI — dört karar da kilitlendi, spec §66'ya
+> yazıldı (docs PR bekliyor).** Özet: (A) MVP'de expo-speech placeholder,
+> kayıtlı ses/listening/pronunciation ertelendi — Faz 6 içerik üretimi ses
+> asset'ine BLOKE DEĞİL; (B) AI MVP'de dormant, deterministik motor tek
+> doğruluk kaynağı, auth guard interlock olarak kalıyor, aktivasyon 7 maddelik
+> pakete bağlı; (C) monetizasyon ertelendi, Round 1 / erken beta'da paywall
+> yok, legacy L14/$12.99 kararı Cairn için SUPERSEDED; (D) local-first devam,
+> zorunlu login yok, legacy remote şema event-sourced modele UYUMSUZ ilan
+> edildi, manuel export gelecekteki ara çözüm. **Faz 6 içerik fabrikası
+> audio/AI/paywall/sync implementasyonu beklemeden başlayabilir.** Runtime
+> wiring (Carryover Selector, Mon Lexique 6-band, AI aktivasyonu vb.) ayrı ve
+> UI'a dokunduğunda smoke gerektiren PR'lar olarak kalır.
+
 Faz 1–4 hiçbir karara bağımlı değil; sen karar vermeden dört haftalık iş akabilir. Ama Faz 6–7 bu kararlar olmadan başlayamaz. Tek oturumda dört karar:
 
 ### 5.1 Ses stratejisi

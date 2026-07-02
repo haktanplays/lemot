@@ -1,7 +1,9 @@
 > **Repo import note (2026-07-02, cloud session).** Imported verbatim from the
-> operator's master copy; content unchanged apart from this banner, four
-> one-line pointers (§9.3, §9.4, §10.4, §49.5), and the appended §65 Lexique
-> Memory v0.1 numeric contract (Faz 4A, operator-approved 2026-07-02). Reading
+> operator's master copy; content unchanged apart from this banner, short
+> pointers at referenced sections (§9.3, §9.4, §10.4, §33.7, §35, §48.2,
+> §49.5, §52), and the appended operator-approved sections §65 (Lexique
+> Memory v0.1 numeric contract, Faz 4A) and §66 (Faz 5 product decision
+> gate). Reading
 > guide for agents: §48–§64 are the v1.0 layer and win over the v0.3 addendum
 > (§31–§47) wherever they conflict; §47 is explicitly superseded by §64. The
 > v0.1 Cairn docs (`CAIRN_PRODUCT_DEFINITION_v0.1.md`,
@@ -2780,6 +2782,9 @@ For the existing Expo/RN app, prefer the smallest current storage pattern if one
 
 ### 33.7 Future cloud sync
 
+> Faz 5 locked decision (local-first, sync deferred, legacy schema
+> incompatible): **§66.4**.
+
 Future, not MVP:
 
 ```text
@@ -2858,6 +2863,9 @@ Unknown `pour parler` is exposure, not required ownership.
 ---
 
 ## 35. Runtime AI Policy
+
+> Faz 5 locked decision (AI dormant for MVP; auth guard stays; activation
+> package preconditions): **§66.2**.
 
 ### 35.1 Canon
 
@@ -3685,6 +3693,9 @@ This section is a hard guard against a one-shot agent building the wrong app.
 
 ### 48.2 Do not build now / record as future
 
+> Faz 5 locked decisions behind this list — monetization: **§66.3**;
+> sync/accounts: **§66.4**; AI lane: **§66.2**; audio: **§66.1**.
+
 ```text
 - automatic chunk parser / full auto pedagogical segmentation
 - commute mode / audio-only mode
@@ -4177,6 +4188,9 @@ automatic chunk parser support
 ---
 
 ## 52. Audio / Pronunciation Contract
+
+> Faz 5 locked decision (TTS placeholder for MVP; recorded audio, listening
+> contract, and pronunciation deferred): **§66.1**.
 
 Audio is part of the learning product, not decoration.
 
@@ -5055,4 +5069,167 @@ names already anticipated by §23.2.
   all caps and target share ≥ TARGET_LOAD_MIN_SHARE; exposure never fills a
   production slot.
 ```
+
+---
+
+## 66. Faz 5 Product Decision Gate (LOCKED, operator-approved 2026-07-02)
+
+> Records the four Faz 5 decisions (roadmap §5.1–§5.4). These are DECISION
+> RECORDS, not implementation authorization: every implementation named here
+> stays deferred behind its own future, separately-scoped PR. Where §66 and
+> older prose disagree, §66 wins for MVP scope.
+
+### 66.1 Audio strategy
+
+Current repo reality:
+
+```text
+Live: expo-speech (~55.0.14) via hooks/useSpeech.ts — French voice, slowed
+rate, cleaned input; TTS-placeholder hygiene is validator-enforced.
+Missing: recorded native audio, audio asset pipeline, a dedicated
+listening-comprehension exercise contract, pronunciation/speech input.
+All 10 exercise contracts are text-based.
+```
+
+Locked MVP decision:
+
+```text
+- MVP keeps expo-speech/TTS as a functional placeholder.
+- Recorded native audio is DEFERRED until Faz 6 content stabilizes
+  (record once, not per content edit).
+- Listening-comprehension is documented as a FUTURE exercise contract; it is
+  not authored, implemented, or required in MVP.
+- Pronunciation/speech input is DEFERRED (see §52.4 — never punitive early).
+- Elision/liaison stay text-first via sound-note cards (§51.6) until real
+  audio exists.
+- Faz 6 content authoring is NOT blocked on audio assets.
+```
+
+Non-goals now: recorded asset pipeline; listening exercise implementation;
+speech recognition; commute mode (§40.2); audio bundle-size work.
+
+Activation/revisit trigger: Faz 6 authoring loop stable (units shipping
+without churn) → schedule the recorded-audio pipeline; pronunciation
+re-evaluated post-beta.
+
+Agent guardrail: do not add audio assets, audio deps, or listening screens
+"while passing by". `useSpeech.ts` stays the only speech surface in MVP.
+
+### 66.2 AI lane
+
+Current repo reality:
+
+```text
+Four edge functions exist (ai-chat, ai-evaluate, ai-error, ai-diag); each
+returns 401 without Authorization and calls supabase.auth.getUser(), while
+the product is local-first/no-auth (noSupabaseAuthGuard.test.ts) — so the
+AI stack is effectively uncallable. Provider chain in _shared/providers.ts:
+Gemini 2.5 Flash → Gemini 2.5 Pro → Groq Llama 3.3 → Mistral Small (no
+Claude). No quota, token ceiling, or rate limit exists anywhere. Engine
+side: Error Engine v0 ships 2 dormant ai_assisted ids behind the
+availableErrorIds(aiAvailable) fallback ladder.
+```
+
+Locked MVP decision:
+
+```text
+- AI is NOT required for core MVP lesson flow.
+- The deterministic engine remains the source of truth (§35 reaffirmed).
+- AI-assisted Error Engine ids remain DORMANT.
+- The existing edge-function auth guard STAYS as the safety interlock —
+  do not remove it independently of the activation package.
+- No unauthenticated open AI endpoint, ever.
+- No AI in learner-critical grading — AI may propose/refine, never decide.
+```
+
+Activation package (ALL required, one future separately-reviewed PR-set):
+
+```text
+1. anon device token or auth-light identity
+2. server-side quota (per device/user)
+3. daily token ceiling
+4. request rate limit
+5. provider routing decision (recorded; current chain vs adding Claude)
+6. fallback ladder verification (engine side already shipped)
+7. explicit privacy/consent surface BEFORE any learner text leaves the device
+```
+
+Non-goals now: token infra; quota tables; routing rewrite; wiring ai_assisted
+ids; AI chat/eval activation.
+
+Agent guardrail: finding the dead AI stack is expected — leave it dormant;
+never "fix" it by loosening auth; never call it from the app.
+
+### 66.3 Monetization
+
+Current repo reality:
+
+```text
+productStage.ts is fail-closed: dev-apk and test stages have paywall:false;
+"public-beta" is documented as the future paywall+RevenueCat stage.
+devApkScope.test and componentCopyGuard.test guard against paywall language
+surfacing. Legacy L14 / $12.99 code paths live only under the quarantined
+legacy v7 surface (LEGACY — DO NOT BUILD ON THIS banners).
+```
+
+Locked MVP decision:
+
+```text
+- Monetization is DEFERRED for MVP learning validation.
+- NO active paywall in Round 1 / early beta.
+- NO L14 paywall revival.
+- The legacy locked decision (paywall after L14, $12.99/mo) is
+  SUPERSEDED-FOR-CAIRN: position and price are re-decided post-validation;
+  the old numbers do not carry forward as defaults.
+- Old paywall/subscription code remains QUARANTINED: do not wire, do not
+  extend, do not delete without an explicit future migration task.
+- productStage.ts fail-closed design remains canon ("do not touch" list).
+```
+
+Activation/revisit trigger: retention/content validation after the tester
+wave → a dedicated monetization decision session (position, price, trial),
+then the public-beta stage work.
+
+Agent guardrail: any prompt or note that assumes the L14/$12.99 paywall is
+active direction is stale — surface it, do not implement it.
+
+### 66.4 Sync / backup
+
+Current repo reality:
+
+```text
+Local-first is real: repository abstraction (repository/local.ts), and every
+LearningEvent carries sync {status: pending|synced, origin: local} — a
+future remote drain is DESIGNED but not built. The remote schema
+(supabase/schema.sql: profiles / user_progress / user_errors on auth.users)
+is the legacy v7 model with NO event or snapshot tables. Known streak-column
+migration debt. "Lose the phone, lose the progress" is the current reality.
+```
+
+Locked MVP decision:
+
+```text
+- MVP remains LOCAL-FIRST. No mandatory login.
+- Remote sync is DEFERRED.
+- The phone-loss progress risk is ACCEPTED and documented for MVP scope
+  (hours of progress at ≤ L6, not months).
+- The legacy remote schema is INCOMPATIBLE with event-sourced Lexique
+  Memory and must never be treated as the sync target.
+- Future sync requires a purpose-built event/snapshot contract; the
+  LearningEventSync pending→drain design is the intended seam.
+- Manual export/backup is the SANCTIONED INTERIM candidate — deferred until
+  testers have meaningful progress (around the tester wave, before public
+  beta).
+```
+
+Non-goals now: accounts/login; remote event/snapshot schema; drain
+implementation; export UI (named, not scheduled); legacy-schema migrations
+(separate explicit migration task, pre-public-beta).
+
+Activation/revisit trigger: public beta / multi-device demand / testers
+accumulating progress worth protecting.
+
+Agent guardrail: never build sync against profiles/user_progress/
+user_errors; never require login for core learning; schema file edits are
+not deployed-DB migrations (§Templates D discipline).
 

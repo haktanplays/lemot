@@ -11,14 +11,13 @@
 ## Spec conceptual gaps (1–7)
 
 ### 1. No audio/listening layer
-- **Gap:** Spec doctrine (elision, liaison) is sound-based, but all 10 exercise
-  contracts are text-based. No dedicated listening contract, no pronunciation.
-- **Decision question:** Recorded native audio or continue with expo-speech TTS? Which
-  phase gets a listening-comprehension contract? What is the audio asset pipeline
-  (recording, storage, bundle size)?
-- **Suggested default:** Continue expo-speech TTS; no listening contract until the
-  Faz 5.1 decision. Do not add audio assets speculatively.
-- **Resolves in:** Faz 5.1 (operator decision).
+- **Status: DECISION RECORDED (Faz 5, 2026-07-02 — spec §66.1); implementation
+  still deferred.** MVP keeps expo-speech/TTS as the functional placeholder;
+  recorded native audio waits for Faz 6 content stabilization; listening
+  comprehension is a documented future contract; pronunciation/speech input
+  deferred; Faz 6 authoring is NOT blocked on audio.
+- **Still open (implementation):** recorded-audio pipeline, listening exercise
+  contract implementation, pronunciation input — all future, separately scoped.
 
 ### 2. Lexique Memory matrix has names but no formulas
 - **Status: numeric contract DEFINED (Faz 4A) and pure implementation ADDED
@@ -69,14 +68,14 @@
 - **Resolves in:** Faz 6 (must not start before Faz 2 guardrails).
 
 ### 4. Monetization + auth/sync decisions are silent
-- **Gap:** The Cairn spec has no money model; legacy canon has a locked L14 paywall at
-  $12.99/mo and the paywall code is still in the repo — an agent could revive it by
-  accident.
-- **Decision question:** Does Cairn have a paywall — yes, no, or deferred?
-- **Suggested default:** No paywall in Cairn until the Faz 5.3 decision is written into
-  the spec; legacy paywall code stays quarantined (do not extend, do not delete without
-  a decision).
-- **Resolves in:** Faz 5.3 (operator decision).
+- **Status: DECISIONS RECORDED (Faz 5, 2026-07-02 — spec §66.3 monetization,
+  §66.4 sync); implementation deferred.** Monetization deferred for MVP
+  learning validation; no Round 1 / early-beta paywall; legacy L14/$12.99
+  decision SUPERSEDED-for-Cairn; paywall code stays quarantined; sync stays
+  local-first with no mandatory login; phone-loss risk accepted for MVP.
+- **Still open (implementation/decision):** post-validation monetization
+  session (position/price/trial), manual export/backup (interim, when testers
+  have real progress), the future event/snapshot sync contract.
 
 ### 5. No v1 pedagogy lint
 - **Gap:** Root cause of the §29 regression — validators check learning-engine fixtures
@@ -117,24 +116,23 @@
 ## Repo operational gaps (8–14)
 
 ### 8. AI infrastructure is effectively dead
-- **Gap:** Edge functions (`ai-chat`, `ai-evaluate`, `ai-error`) require
-  `supabase.auth.getUser()`, but the product direction is no-auth/local-only
-  (`noSupabaseAuthGuard.test.ts` protects this). So the AI stack cannot be called.
-  Routing has also drifted: `providers.ts` reality is Gemini 2.5 Flash → Gemini 2.5
-  Pro → Groq Llama 3.3 → Mistral; the planned Flash-Lite/Flash/Haiku chain has no
-  Claude at all.
-- **Decision question:** How are edge functions called in a no-auth world (anon device
-  token + quota?), does routing get updated, what is the rate-limit policy?
-- **Suggested default:** Keep the no-auth guard; do not call edge functions; no routing
-  change until Faz 5.2.
-- **Resolves in:** Faz 5.2 (operator decision).
+- **Status: DECISION RECORDED (Faz 5, 2026-07-02 — spec §66.2); AI remains
+  DORMANT until the activation package.** AI is not required for core MVP;
+  deterministic engine stays the source of truth; the edge-function auth
+  guard stays as the safety interlock; no unauthenticated endpoint; no AI in
+  learner-critical grading. Activation requires the full §66.2 package
+  (auth-light identity, quota, token ceiling, rate limit, routing decision,
+  fallback verification, privacy/consent surface).
+- **Still open (implementation):** the entire activation package; provider
+  routing refresh (current chain has no Claude); wiring the 2 dormant
+  ai_assisted Error Engine ids.
 
 ### 9. Zero rate limiting / cost control
-- **Gap:** No per-user quota, daily token ceiling, or request-frequency limit. The day
-  auth turns on, cost risk is immediate.
-- **Suggested default:** AI must not be enabled for users until server-side quotas
-  exist. Hard precondition for any Faz 5.2 outcome that activates AI.
-- **Resolves in:** Faz 5.2 decision → implementation before AI activation.
+- **Status: STILL OPEN — now a locked precondition.** Spec §66.2 makes
+  server-side quota, daily token ceiling, and request rate limit items 2–4 of
+  the mandatory AI activation package. Nothing is implemented; AI must not be
+  enabled for users until they exist.
+- **Resolves in:** the future AI activation PR-set (after §66.2 package).
 
 ### 10. No release engineering
 - **Gap:** `eas.json` has only a `preview` profile — no production profile, no iOS, no
@@ -159,14 +157,15 @@
 - **Resolves in:** Faz 0 (banners done); deletion decision later.
 
 ### 13. Remote schema frozen in the legacy era
-- **Gap:** Supabase schema has only `profiles`, `user_progress`, `user_errors`. The
-  event-sourced learning-engine has no remote counterpart. Consistent with local-only,
-  but "lose the phone, lose the progress" is not a written decision.
-- **Decision question:** How long does local-only last? When is the repository
-  abstraction's remote contract designed? Is manual export/backup enough as an interim?
-- **Suggested default:** Local-only continues; manual export/backup as interim; no
-  remote schema work until Faz 5.4.
-- **Resolves in:** Faz 5.4 (operator decision).
+- **Status: DECISION RECORDED (Faz 5, 2026-07-02 — spec §66.4); implementation
+  deferred.** The legacy schema (`profiles`/`user_progress`/`user_errors`) is
+  now EXPLICITLY declared incompatible with event-sourced Lexique Memory and
+  must never be a sync target; local-first continues with no mandatory login;
+  phone-loss risk is a written, accepted MVP decision; manual export/backup is
+  the sanctioned interim candidate.
+- **Still open (implementation):** the purpose-built event/snapshot sync
+  contract (the `LearningEventSync` pending→drain seam), manual export UI,
+  legacy-schema migration task (pre-public-beta).
 
 ### 14. Telemetry spec'd but not implemented
 - **Gap:** Schema exists in the spec, no code. Writing 180 lessons without seeing where
