@@ -21,18 +21,26 @@
 - **Resolves in:** Faz 5.1 (operator decision).
 
 ### 2. Lexique Memory matrix has names but no formulas
-- **Gap:** 25+ fields (strengthScore, decayScore, transferCount, contextFitScore…) are
-  named but uncomputed. Two agents can both be "spec-compliant" and still build two
-  different mastery systems. Biggest drift magnet in the spec.
-- **Decision question:** What are the decay curve, state-machine transition thresholds
-  (ghost → recognition → active → supported → recycled → dormant), and the transfer
-  counter's effect on mastery — as numbers?
-- **Suggested default:** Exponential decay with a half-life parameter; numeric
-  thresholds written into the spec **before** implementation; pure functions +
-  property-based tests ("decay never increases strength", "a single recognition event
-  cannot grant production mastery", "Micro-Logic alone cannot raise production
-  mastery").
-- **Resolves in:** Faz 4 (Claude implements, operator reviews parameters).
+- **Status: numeric contract DEFINED in docs (Faz 4A, 2026-07-02); implementation
+  pending Faz 4B.** Spec §65 now records the operator-approved Option A decision
+  (derived layer over the frozen `mastery-v0.2` reducer — no reducer change, no
+  migration, no new events in v0.1), the 18-field contract, the v0.1 constants
+  (exponential-saturation strength, weakness floor, two-bucket decay 5d/14d,
+  refresh threshold 0.50, carryover caps 3/2/2/1 + target share ≥ 0.50), the
+  intrinsic 8-state lifecycle (`recycled` = query-time carryover role, not a
+  stored state), the Mon Lexique 6-band projection, the event-to-memory table,
+  and the Faz 4B test plan.
+- **Still open (not solved by the contract):**
+  - Faz 4B implementation: `content/learning-engine/lexique-memory.ts` +
+    `lexiqueMemory.test.ts` (pure module, property tests per spec §65.9).
+  - Most constants are provisional/tunable; `refreshDueScore` is the most
+    provisional formula (expect tuning once telemetry exists).
+  - Telemetry/event gaps remain open (gaps #8/#14): exposure/seen/repair/
+    transfer events do not exist, so `ghost` is unreachable and
+    transfer/recombination/repair counters stay 0 in v0.1.
+  - Taxonomy-weighted weakness waits on Error Engine tags entering the event
+    log.
+- **Resolves in:** Faz 4B (pure functions + tests; operator reviews parameters).
 
 ### 3. Content factory undefined
 - **Gap:** The 180-lesson syllabus is a topic map; ~174 lessons remain. The engine will
