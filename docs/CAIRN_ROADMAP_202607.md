@@ -147,6 +147,14 @@ Faz 1–4 hiçbir karara bağımlı değil; sen karar vermeden dört haftalık i
 
 ## Faz 6 — İçerik fabrikası (asıl maraton)
 
+> **Durum (2026-07-02, Faz 6A):** İçerik fabrikası kontratı, Telemetry v0
+> kontratı ve event compaction/snapshot politikası yazıldı —
+> `docs/CONTENT_FACTORY_CONTRACT.md`. İlk pilot L7–L9 olarak KİLİTLENDİ
+> (Unit 2'nin tamamı değil; L7 = compact doorway). Pilot PR'ı Haktan
+> pedagojik review'u olmadan merge edilmez. Yeni dersler Home'daki L6
+> tavanı sayesinde runtime'da görünmez; tavanı kaldırmak ayrı, smoke
+> gerektiren bir PR'dır.
+
 **Neden kritik:** 180 derslik syllabus bir topic haritası; geriye ~174 ders var. Engine, içerikten çok önce bitecek. Gerçek darboğaz burası.
 
 **Authoring döngüsü kontratı:**

@@ -57,15 +57,15 @@
 - **Resolves in:** Faz 4C (carryover selector) + parameter tuning after telemetry.
 
 ### 3. Content factory undefined
-- **Gap:** The 180-lesson syllabus is a topic map; ~174 lessons remain. The engine will
-  finish long before the content. No authoring process is defined. This is the real
-  bottleneck.
-- **Decision question:** What is the batch unit, review loop, and validator gate for
-  lesson authoring?
-- **Suggested default:** Unit-based batches (~12 lessons); agent drafts are
-  validator-first (must pass `validate:content` + `validate:pools` before review);
-  operator does pedagogical review; merge → CI → next batch.
-- **Resolves in:** Faz 6 (must not start before Faz 2 guardrails).
+- **Status: CONTRACT DEFINED (Faz 6A, 2026-07-02 —
+  `docs/CONTENT_FACTORY_CONTRACT.md`).** Batch = unit slice (pilot: 3 lessons),
+  validator-first drafts, per-batch Haktan pedagogical review with an explicit
+  checklist, hard content rules (chip taxonomy, carryover budgets, exposure
+  caps, Weave/model-answer rules). First pilot LOCKED to L7–L9 only (L7 =
+  compact doorway spec, not full aller); pilot PR never merges without review.
+- **Still open:** the pilot itself proving the loop; per-unit batch cadence
+  after the pilot; the Home L6-cap unlock (separate smoke-bearing PR) before
+  any new lesson is learner-visible.
 
 ### 4. Monetization + auth/sync decisions are silent
 - **Status: DECISIONS RECORDED (Faz 5, 2026-07-02 — spec §66.3 monetization,
@@ -109,9 +109,11 @@
   was imported verbatim with a reading-guide banner instead (§48–64 win over §31–47;
   §47 superseded by §64), so the repo copy stays byte-comparable to the operator's
   master. If the operator prefers physical deletion, that is a follow-up docs-only PR.
-- **Still open:** event compaction/snapshot policy for event-sourced mastery (what
-  happens at ~10k events) — write before Faz 6 begins.
-- **Resolves in:** compaction policy in Faz 6 support work.
+- **Still open → policy now DEFINED (Faz 6A, 2026-07-02 —
+  `docs/CONTENT_FACTORY_CONTRACT.md` §5):** local-only snapshots, ~1000-event
+  recommendation threshold, versioned, source events retained in v0,
+  replay-equivalence invariant test-locked. Pure implementation is Faz 6A
+  Slice C; sync-specific compaction stays deferred with §66.4.
 
 ## Repo operational gaps (8–14)
 
@@ -168,11 +170,13 @@
   legacy-schema migration task (pre-public-beta).
 
 ### 14. Telemetry spec'd but not implemented
-- **Gap:** Schema exists in the spec, no code. Writing 180 lessons without seeing where
-  learners drop is blind flight.
-- **Suggested default:** Telemetry v0 = local event log only (no remote), built as Faz 6
-  support work before the content marathon scales.
-- **Resolves in:** Faz 6 support work.
+- **Status: CONTRACT DEFINED (Faz 6A, 2026-07-02 —
+  `docs/CONTENT_FACTORY_CONTRACT.md` §4); implementation pending Slice B.**
+  Local-only, content-debugging purpose, 15 v0 event types
+  (repair_triggered/completed named future), versioned events, NO raw learner
+  free-text, no personal data, no remote drain, never updates mastery.
+- **Still open:** the pure/local implementation + tests (Faz 6A Slice B), and
+  any runtime emission wiring (separate, potentially smoke-bearing).
 
 ## Healthy — do not touch
 
