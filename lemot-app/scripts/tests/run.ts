@@ -30,6 +30,7 @@ import "./selectors.test";
 import "./noSupabaseAuthGuard.test";
 import "./v1LessonStructure.test";
 import "./errorEngine.test";
+import "./lexiqueMemory.test";
 import { runAll } from "./harness";
 
 void runAll();

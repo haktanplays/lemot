@@ -4809,15 +4809,21 @@ W = 1.0·successfulProductionCount
 strengthScore = 1 − exp(−W / 2.5)
 ```
 
-Anchors: 1 production ≈ 0.33; 3 productions ≈ 0.70 (Known threshold);
-1 recognition alone ≈ 0.095 — a single recognition can never cross
-SUPPORTED_THRESHOLD. No seen/open/exposure term exists, so those inputs
-cannot raise strength.
+Anchors: 1 production ≈ 0.33; 3 productions ≈ 0.70 — precisely 0.6988, just
+UNDER the Known threshold. Known normally requires P=3 plus one
+recognition/transfer/recombination success (P=3 + R=1 ≈ 0.727), or P=4
+(≈ 0.798), plus the consolidation window. 1 recognition alone ≈ 0.095 — a
+single recognition can never cross SUPPORTED_THRESHOLD. No seen/open/exposure
+term exists, so those inputs cannot raise strength.
 
-Anchor caveat: "3 productions ≈ Known" assumes SPACED / consolidated
-production. Same-session repetitions may raise strengthScore to 0.70, but the
-lifecycle gate (§65.5, CONSOLIDATION_REST_DAYS) prevents immediate `strong` /
-"Known" — same-session drilling parks at `supported` / "Getting stronger".
+Anchor caveat: this is INTENTIONAL conservative behavior — P=3 alone is
+near-threshold by design, not enough. Same-session repetitions may raise
+strengthScore, but the lifecycle gate (§65.5, CONSOLIDATION_REST_DAYS)
+prevents immediate `strong` / "Known" — same-session drilling parks at
+`supported` / "Getting stronger". The better future rule is cross-lesson /
+distinct-context evidence once the event log carries per-production
+lesson/context data; until then the near-threshold anchor + rest window err
+on the side of never over-crediting.
 
 **weaknessScore** — real errors up, recovery down, floor while ever-weak:
 
@@ -5037,8 +5043,10 @@ names already anticipated by §23.2.
   crosses REFRESH_DUE_THRESHOLD.
 - Consolidation guard: same-day P=3 derives supported / "Getting stronger",
   never strong / "Known".
-- Consolidation release: P=3 with now ≥ lastProducedAt +
-  CONSOLIDATION_REST_DAYS can derive strong / "Known".
+- Consolidation release: P=3 + R=1, or P=4, with now ≥ lastProducedAt +
+  CONSOLIDATION_REST_DAYS can derive strong / "Known"; P=3 alone remains
+  supported / "Getting stronger" because it is near-threshold by design
+  (intentional conservative behavior).
 - Exposure-only and recognition-only still never derive "Known", with or
   without the rest window.
 - CONSOLIDATION_REST_DAYS is provisional and may later be replaced by
