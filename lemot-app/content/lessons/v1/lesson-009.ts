@@ -114,7 +114,12 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "je fais", itemId: "chunk-je-fais", required: true, label: "I'm making" },
         { text: "un café", itemId: "chunk-un-cafe", required: true, label: "a coffee" },
-        { text: "maintenant", itemId: "adverb-maintenant", label: "now" },
+        {
+          text: "maintenant",
+          itemId: "adverb-maintenant",
+          required: true,
+          label: "now",
+        },
       ],
       expectedAnswers: ["Je fais un café maintenant."],
       reveal: {

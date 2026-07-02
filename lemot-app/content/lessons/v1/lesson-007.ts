@@ -123,7 +123,12 @@ const screens: LessonScreen[] = [
           required: true,
           label: "home",
         },
-        { text: "au revoir", itemId: "chunk-au-revoir", label: "goodbye" },
+        {
+          text: "au revoir",
+          itemId: "chunk-au-revoir",
+          required: true,
+          label: "goodbye",
+        },
       ],
       expectedAnswers: ["Je vais à la maison. Au revoir."],
       acceptedAlternatives: ["Je vais à la maison, au revoir."],

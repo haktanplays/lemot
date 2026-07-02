@@ -37,7 +37,7 @@ const screens: LessonScreen[] = [
       insightType: "grammar-nugget",
       title: "It's... where?",
       body:
-        "Où = where. Spoken French loves this shape: C'est où ?: literally \"it's where?\". You already own c'est from L3. Take the question whole.",
+        "Où = where. Spoken French loves this shape: C'est où ? Literally, \"it's where?\". You already own c'est from L3. Take the question whole.",
       examples: [
         { fr: "C'est où ?", en: "Where is it?" },
         { fr: "Le café, c'est où ?", en: "The café, where is it?" },
@@ -120,7 +120,7 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "C'est ici.",
         ifCorrect: "Question and answer. Both sides are yours now.",
-        ifCorrectButFlat: "The same pieces answer that asked.",
+        ifCorrectButFlat: "The same pieces that asked now answer.",
         ifMissingTargetPiece: "C'est carries the answer. Ici lands it.",
       },
       validationMode: "exact-or-alternative",
