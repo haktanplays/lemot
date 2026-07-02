@@ -101,8 +101,10 @@
 > kilitlendi; `recycled` v0.1'de query-time carryover rolü, intrinsic state
 > değil. Aynı gün consolidation guard eklendi (`CONSOLIDATION_REST_DAYS`).
 > **Faz 4B tamam:** `lexique-memory.ts` + `lexiqueMemory.test.ts` (pure,
-> runtime'a bağlı değil). Kalan: Carryover Selector v0 (Faz 4C) + parametre
-> tuning. Açık kalemler: `docs/KNOWN_GAPS.md` #2.
+> runtime'a bağlı değil). **Faz 4C tamam:** `carryover-selector.ts` +
+> `carryoverSelector.test.ts` (pure; contextTags explicit input; recycled =
+> query-time rol). Faz 4 motor tarafı kapandı — kalan: runtime wiring
+> (smoke ister) + parametre tuning. Açık kalemler: `docs/KNOWN_GAPS.md` #2.
 
 ---
 
