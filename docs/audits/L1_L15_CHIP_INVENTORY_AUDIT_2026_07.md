@@ -453,3 +453,46 @@ Columns: surface · proposed class · source of decision (shipped / conversation
 ### Reading the map
 
 By L15 the discipline holds: 26 active registry items across fifteen lessons (1-3 active-new per teaching lesson, 0 in the three integrations), a supported layer of composition pieces, exposure used only for seeds and traps, and every dangerous temptation parked with a reason. The extended quarry above shows the restriction is NOT starving the syllabus — each doorway (object pronouns, y expansion, devoir persons, repair, service) has a named, ordered backlog waiting on prerequisites rather than an improvised widening of today's chips.
+
+
+---
+
+## Spine Narrowness Analysis & Recommendations (post-review)
+
+**Trigger**: Haktan reviewed the extended L1-L5 chip framework and flagged that the spine feels too narrow. This section records the analysis and the ranked recommendations. Analysis only — nothing below changes a lesson, the registry, or canon; every recommendation is a decision waiting on Haktan.
+
+### Diagnosis: the narrowness is real, but it lives in the payload, not the spine
+
+The ENGINE spine by L15 is complete and correctly narrow: je suis, j'ai, je voudrais, je vais, je peux, il faut / je dois, est-ce que, ne ___ pas, y. No missing engine for an A1 opening arc. What is thin is the **lexical cargo riding those engines — roughly 1.5 payload items per engine**: je voudrais carries only {un cafe, faire une pause}; j'ai only {faim, une question}; je suis only {ici}; je vais only {a la maison}. After five lessons the learner owns ~14 surfaces; after fifteen, ~30. The learner has strong machines and little to say with them. That — not the active-new discipline — is what makes the early lessons feel narrow. The fix is therefore NOT more active chips per lesson (that discipline is what makes L7-L15 work); it is cheap supported cargo on existing engines, plus four functional holes closed.
+
+### The four functional holes
+
+1. **The Survival Kit has no survival in it.** The repair pair — *je ne comprends pas* / *vous pouvez repeter ?* — is shipped nowhere in house v1, yet the **L13 spec assumes it is owned from L1** ("repair/politeness (L1)"). This is a live spec-vs-shipped inconsistency (worked around as an L13 de-scope; root cause is L1 under-provisioning). Canon tension to resolve: composition canon would demand a *je comprends* chip + ne ___ pas, but repair phrases are arguably the ONE class where frozen sentence-formulas are pedagogically justified — learners need them whole, under stress, like s'il vous plait. **Decision needed (R-B): a narrow, named "survival-formula" frozen-sentence class vs strict composition — then retrofit location (into L6 integration as its one new function, or a dedicated repair mini-lesson).**
+2. **The oui paradox.** By L12-L13 the learner can ASK yes/no questions but cannot ANSWER yes: non / non merci are producible, oui is passive/trap. The original intent of the post-L3 rule was to keep oui out of WRONG SLOTS (e.g. inside questions, the L8 fill trap), and it over-generalized into "never produced". **Decision needed (R-C): rehabilitate oui as a producible answer word (the est-ce que lessons give it a natural scene) and scope the trap rule to wrong-slot uses. This re-frames audit risk R2: not a status demotion, a scope clarification.**
+3. **excusez-moi is parked in Future while every L8+ scene needs it.** Each scene opens on a stranger and leans on Bonjour as an attention-getter, a role it only half fills; *Excusez-moi, c'est ou ?* is the natural form. **Recommendation (inside R-A): promote excusez-moi (and optionally pardon) to early supported.**
+4. **The state/feeling gap.** *fatigue* is wanted by three sources (L10 spec, L13 spec, the registry's own micro-contrast example) and shipped by none; *j'ai soif* is a near-free twin of faim. One adjective + one sensation noun would humanize four scenes (L2/L6/L10/L13) at almost zero load.
+
+### Supporting observations
+
+- **Cognate cargo is free and unused**: un the, un croissant, une table, un restaurant cost an English speaker almost nothing; all sit in backlog with no landing slot.
+- **Core 150 math**: ~2 items/lesson implies 50+ lessons to reach Core 150 — the band map does not plan for that. The lever is the supported/exposure layer and NAMED future lesson slots (numbers/money via c'est combien; service expansion), not heavier active loads.
+- **R3 identity debt makes the inventory measure smaller than it plays**: ici and faim are produced chips with no registry item, so their mastery never accrues to anything.
+- Two small corrections to the reviewed framework: *une question* should carry one class (supported/package), not appear in both spine and support; and L2's etre / tu es / vous etes are dormant-registry items (R4), not lesson exposure — they never surface in the lesson.
+
+### What must NOT change (the narrowness that is correct)
+
+Active-new 1-3 per teaching lesson and 0 in integrations; PROTECTED_CHUNKS frozen at its two entries; the composition canon (je ne peux pas class); no new engines in L1-L5. The spine stays narrow; only the cargo grows.
+
+### Operational warning
+
+L1-L5 are the **visible dev-APK surface** (Home cap L6). Unlike everything L7+, any enrichment there is smoke-bearing: it must be its own careful batch with Operator device smoke, never mixed into the invisible L16+ content line.
+
+### Ranked recommendations (all awaiting Haktan decisions)
+
+| # | Recommendation | Shape | Risk |
+|---|---|---|---|
+| R-A | **L1-L5 payload enrichment batch**: +1-2 supported cargo per lesson (L1: excusez-moi + un the; L2: fatigue; L4: soif; L5: une table), active load unchanged | content batch, smoke-bearing | biggest lever, lowest concept risk |
+| R-B | **Repair-kit canon decision**: survival-formula class vs composition; then retrofit (L6 or mini-lesson). Also heals the L13-spec assumption | canon decision + small batch | canon-sensitive |
+| R-C | **oui rehabilitation** as producible answer word; trap rule scoped to wrong-slot uses | canon decision + registry note | small |
+| R-D | **Registry hygiene pass (R1-R4)**: word-ici, noun-faim, oui scope, dormant triage — natural precondition for R-A | registry-only PR | small |
+| R-E | **Named landing slots** for numbers/money (c'est combien) and service expansion in the band map | docs/planning | none |
