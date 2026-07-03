@@ -586,6 +586,85 @@ export const ITEM_REGISTRY = {
     exampleEn: "Is it here?",
     relatedItemIds: ["chunk-c-est", "chunk-je-peux"],
   },
+  // -- Unit 3 batch (L13-L15): y-light + obligation-light --------------------
+  "word-y-place": {
+    id: "word-y-place",
+    type: "pronoun",
+    text: "y",
+    status: "active",
+    fr: "y",
+    en: "there (the place you named)",
+    meaning:
+      "Place pronoun, one sense only: stands in for a place already named (a + place) and sits BEFORE the verb. Other uses of y (il y a, j'y pense) are separate, later doorways.",
+    exampleFr: "J'y vais.",
+    exampleEn: "I'm going there.",
+    relatedItemIds: ["chunk-je-vais", "chunk-j-y-vais"],
+  },
+  "chunk-j-y-vais": {
+    id: "chunk-j-y-vais",
+    type: "chunk",
+    text: "j'y vais",
+    status: "active",
+    fr: "j'y vais",
+    en: "I'm off / I'm going there",
+    meaning:
+      "Near-fixed expression: je + y + vais, with je squeezed to j' in front of y. Owned as a whole; the productive replacement rule comes later.",
+    exampleFr: "J'y vais.",
+    exampleEn: "I'm off.",
+    relatedItemIds: ["word-y-place", "chunk-je-vais"],
+  },
+  "chunk-on-y-va": {
+    id: "chunk-on-y-va",
+    type: "chunk",
+    text: "on y va",
+    status: "active",
+    fr: "on y va",
+    en: "let's go",
+    meaning:
+      "Near-fixed high-utility expression: let's go / we're going there. Frozen as a whole; NOT a general on + y + verb pattern. On (= we) lives only inside this chunk for now.",
+    exampleFr: "On y va ?",
+    exampleEn: "Shall we go?",
+    relatedItemIds: ["word-y-place", "chunk-j-y-vais"],
+  },
+  "chunk-il-faut": {
+    id: "chunk-il-faut",
+    type: "chunk",
+    text: "il faut",
+    status: "active",
+    fr: "il faut",
+    en: "one must / it's necessary to",
+    meaning:
+      "Impersonal necessity opener, invariable: il faut + a plain verb. Faut only ever rides with il; no paradigm, no il faut que clause yet.",
+    exampleFr: "Il faut faire une pause.",
+    exampleEn: "We need to take a break.",
+    relatedItemIds: ["chunk-je-dois", "chunk-faire-une-pause"],
+  },
+  "chunk-je-dois": {
+    id: "chunk-je-dois",
+    type: "chunk",
+    text: "je dois",
+    status: "supported",
+    fr: "je dois",
+    en: "I have to",
+    meaning:
+      "Personal obligation, one person-form only: I have to + a plain verb. The je peux sibling; the devoir paradigm and the owe sense come later.",
+    exampleFr: "Je dois aller à la maison.",
+    exampleEn: "I have to go home.",
+    relatedItemIds: ["chunk-je-peux", "chunk-il-faut"],
+  },
+  "verb-aller": {
+    id: "verb-aller",
+    type: "verb",
+    status: "supported",
+    text: "aller",
+    fr: "aller",
+    en: "to go",
+    meaning:
+      "To go, in its dictionary shape. Reusable after il faut / je dois; je vais stays the moving engine for saying you are going.",
+    exampleFr: "Je dois aller à la maison.",
+    exampleEn: "I have to go home.",
+    relatedItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;
