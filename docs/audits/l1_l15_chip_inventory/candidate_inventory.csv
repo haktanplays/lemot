@@ -1,0 +1,449 @@
+lesson,surface,item_id,proposed_item_id,source,category,reason,risk,in_lesson_surface,add_to_registry_now
+L1,Bonjour,chunk-bonjour,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L1,merci,chunk-merci,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L1,s'il vous plaît,chunk-sil-vous-plait,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L1,je voudrais,chunk-je-voudrais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L1,café,noun-cafe,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L2,je suis,chunk-je-suis,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L2,je suis ici,chunk-je-suis-ici,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L2,Bonjour,chunk-bonjour,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L2,ici,,(needs id: see R3),lesson content (unregistered chip),Supported,produced chip without registry identity,REVIEW (R3),yes,future registry pass
+L3,non,chunk-non,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L3,oui,chunk-oui,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L3,je ne suis pas,chunk-je-ne-suis-pas,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L3,ce n'est pas,chunk-ce-n-est-pas,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L3,non merci,chunk-non-merci,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L3,ne ... pas wraps the action,grammar-ne-pas-sandwich,,lesson content,Exposure,current lesson inventory,low,yes,already-registered
+L3,ici,,(needs id: see R3),lesson content (unregistered chip),Supported,produced chip without registry identity,REVIEW (R3),yes,future registry pass
+L4,j'ai,chunk-j-ai,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L4,j'ai faim,chunk-j-ai-faim,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L4,j'ai une question,chunk-j-ai-une-question,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L4,je suis vs j'ai,micro-je-suis-vs-j-ai,,lesson content,Exposure,current lesson inventory,low,yes,already-registered
+L4,elision (j' / c' / l' / d' / s'),sound-elision,,lesson content,Exposure,current lesson inventory,low,yes,already-registered
+L4,question,noun-question,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L4,faim,,(needs id: see R3),lesson content (unregistered chip),Supported,produced chip without registry identity,REVIEW (R3),yes,future registry pass
+L5,un café,chunk-un-cafe,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L5,une question,chunk-une-question,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L5,un and une are little packages,grammar-un-une-package,,lesson content,Exposure,current lesson inventory,low,yes,already-registered
+L5,café,noun-cafe,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L5,question,noun-question,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L5,je voudrais,chunk-je-voudrais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L5,j'ai,chunk-j-ai,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,au revoir,chunk-au-revoir,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L6,Bonjour,chunk-bonjour,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,je suis ici,chunk-je-suis-ici,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,je suis,chunk-je-suis,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,je ne suis pas,chunk-je-ne-suis-pas,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,non merci,chunk-non-merci,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,j'ai,chunk-j-ai,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,j'ai une question,chunk-j-ai-une-question,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,une question,chunk-une-question,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,merci,chunk-merci,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,ici,,(needs id: see R3),lesson content (unregistered chip),Supported,produced chip without registry identity,REVIEW (R3),yes,future registry pass
+L7,je vais,chunk-je-vais,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L7,à la maison,chunk-a-la-maison,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L7,au revoir,chunk-au-revoir,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L7,merci,chunk-merci,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L8,c'est où ?,chunk-c-est-ou,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L8,où,adverb-ou-where,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L8,c'est,chunk-c-est,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L8,Bonjour,chunk-bonjour,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L8,ici,,(needs id: see R3),lesson content (unregistered chip),Supported,produced chip without registry identity,REVIEW (R3),yes,future registry pass
+L9,faire une pause,chunk-faire-une-pause,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L9,pause,noun-pause,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L9,je voudrais,chunk-je-voudrais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L9,s'il vous plaît,chunk-sil-vous-plait,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,c'est où ?,chunk-c-est-ou,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,où,adverb-ou-where,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,c'est,chunk-c-est,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,Bonjour,chunk-bonjour,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,je voudrais,chunk-je-voudrais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,faire une pause,chunk-faire-une-pause,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,je vais,chunk-je-vais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,à la maison,chunk-a-la-maison,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,au revoir,chunk-au-revoir,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L10,vous pouvez,chunk-vous-pouvez,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L10,m'aider,chunk-m-aider,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L11,je peux,chunk-je-peux,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L11,ne ... pas wraps the action,grammar-ne-pas-sandwich,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L11,vous pouvez,chunk-vous-pouvez,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L11,aider,verb-aider,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L11,m'aider,chunk-m-aider,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L11,faire une pause,chunk-faire-une-pause,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L11,s'il vous plaît,chunk-sil-vous-plait,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L12,est-ce que,chunk-est-ce-que,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L12,je peux,chunk-je-peux,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L12,c'est,chunk-c-est,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L12,faire une pause,chunk-faire-une-pause,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L12,vous pouvez,chunk-vous-pouvez,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L12,m'aider,chunk-m-aider,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L12,s'il vous plaît,chunk-sil-vous-plait,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L12,ici,,(needs id: see R3),lesson content (unregistered chip),Supported,produced chip without registry identity,REVIEW (R3),yes,future registry pass
+L13,est-ce que,chunk-est-ce-que,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,je peux,chunk-je-peux,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,vous pouvez,chunk-vous-pouvez,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,m'aider,chunk-m-aider,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,faire une pause,chunk-faire-une-pause,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,ne ... pas wraps the action,grammar-ne-pas-sandwich,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,je vais,chunk-je-vais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,à la maison,chunk-a-la-maison,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,c'est,chunk-c-est,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,s'il vous plaît,chunk-sil-vous-plait,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L13,j'y vais,chunk-j-y-vais,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L13,y,word-y-place,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L14,y,word-y-place,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L14,j'y vais,chunk-j-y-vais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L14,on y va,chunk-on-y-va,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L14,je vais,chunk-je-vais,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L14,à la maison,chunk-a-la-maison,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L14,au revoir,chunk-au-revoir,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L15,il faut,chunk-il-faut,,lesson content,Active,current lesson inventory,low,yes,already-registered
+L15,je dois,chunk-je-dois,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L15,aller,verb-aller,,lesson content,Supported,current lesson inventory,low,yes,already-registered
+L15,faire une pause,chunk-faire-une-pause,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L15,à la maison,chunk-a-la-maison,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L15,je peux,chunk-je-peux,,lesson content,Carryover,current lesson inventory,low,yes,already-registered
+L6,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L6,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L6,s'il vous plaît,chunk-sil-vous-plait,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L6,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L6,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L6,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L6,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L6,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L6,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L7,Bonjour,chunk-bonjour,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L7,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L7,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L7,s'il vous plaît,chunk-sil-vous-plait,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L7,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L7,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L7,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L7,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L7,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L7,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L7,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L7,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L7,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L7,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L7,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L7,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L7,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L8,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L8,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L8,s'il vous plaît,chunk-sil-vous-plait,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L8,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L8,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L8,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L8,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L8,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L8,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L8,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L8,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L8,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L8,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L8,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L8,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L8,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L8,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L8,au revoir,chunk-au-revoir,,owned inventory (carryover pool),Carryover,owned since L6; available for recombination,low,no,already-registered
+L8,je vais,chunk-je-vais,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L8,à la maison,chunk-a-la-maison,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L9,Bonjour,chunk-bonjour,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L9,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L9,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L9,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L9,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L9,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L9,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L9,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L9,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L9,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L9,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L9,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L9,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L9,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L9,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L9,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L9,au revoir,chunk-au-revoir,,owned inventory (carryover pool),Carryover,owned since L6; available for recombination,low,no,already-registered
+L9,je vais,chunk-je-vais,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L9,à la maison,chunk-a-la-maison,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L9,c'est où ?,chunk-c-est-ou,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L9,où,adverb-ou-where,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L9,c'est,chunk-c-est,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L10,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L10,s'il vous plaît,chunk-sil-vous-plait,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L10,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L10,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L10,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L10,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L10,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L10,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L10,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L10,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L10,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L10,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L10,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L10,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L10,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L10,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L10,pause,noun-pause,,owned inventory (carryover pool),Carryover,owned since L9; available for recombination,low,no,already-registered
+L11,Bonjour,chunk-bonjour,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L11,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L11,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L11,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L11,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L11,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L11,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L11,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L11,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L11,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L11,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L11,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L11,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L11,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L11,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L11,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L11,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L11,au revoir,chunk-au-revoir,,owned inventory (carryover pool),Carryover,owned since L6; available for recombination,low,no,already-registered
+L11,je vais,chunk-je-vais,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L11,à la maison,chunk-a-la-maison,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L11,c'est où ?,chunk-c-est-ou,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L11,où,adverb-ou-where,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L11,c'est,chunk-c-est,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L11,pause,noun-pause,,owned inventory (carryover pool),Carryover,owned since L9; available for recombination,low,no,already-registered
+L12,Bonjour,chunk-bonjour,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L12,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L12,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L12,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L12,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L12,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L12,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L12,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L12,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L12,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L12,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L12,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L12,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L12,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L12,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L12,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L12,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L12,au revoir,chunk-au-revoir,,owned inventory (carryover pool),Carryover,owned since L6; available for recombination,low,no,already-registered
+L12,je vais,chunk-je-vais,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L12,à la maison,chunk-a-la-maison,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L12,c'est où ?,chunk-c-est-ou,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L12,où,adverb-ou-where,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L12,pause,noun-pause,,owned inventory (carryover pool),Carryover,owned since L9; available for recombination,low,no,already-registered
+L12,aider,verb-aider,,owned inventory (carryover pool),Carryover,owned since L11; available for recombination,low,no,already-registered
+L13,Bonjour,chunk-bonjour,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L13,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L13,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L13,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L13,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L13,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L13,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L13,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L13,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L13,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L13,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L13,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L13,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L13,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L13,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L13,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L13,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L13,au revoir,chunk-au-revoir,,owned inventory (carryover pool),Carryover,owned since L6; available for recombination,low,no,already-registered
+L13,c'est où ?,chunk-c-est-ou,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L13,où,adverb-ou-where,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L13,pause,noun-pause,,owned inventory (carryover pool),Carryover,owned since L9; available for recombination,low,no,already-registered
+L13,aider,verb-aider,,owned inventory (carryover pool),Carryover,owned since L11; available for recombination,low,no,already-registered
+L14,Bonjour,chunk-bonjour,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L14,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L14,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L14,s'il vous plaît,chunk-sil-vous-plait,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L14,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L14,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L14,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L14,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L14,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L14,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L14,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L14,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L14,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L14,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L14,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L14,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L14,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L14,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L14,c'est où ?,chunk-c-est-ou,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L14,où,adverb-ou-where,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L14,c'est,chunk-c-est,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L14,faire une pause,chunk-faire-une-pause,,owned inventory (carryover pool),Carryover,owned since L9; available for recombination,low,no,already-registered
+L14,pause,noun-pause,,owned inventory (carryover pool),Carryover,owned since L9; available for recombination,low,no,already-registered
+L14,vous pouvez,chunk-vous-pouvez,,owned inventory (carryover pool),Carryover,owned since L10; available for recombination,low,no,already-registered
+L14,m'aider,chunk-m-aider,,owned inventory (carryover pool),Carryover,owned since L10; available for recombination,low,no,already-registered
+L14,je peux,chunk-je-peux,,owned inventory (carryover pool),Carryover,owned since L11; available for recombination,low,no,already-registered
+L14,aider,verb-aider,,owned inventory (carryover pool),Carryover,owned since L11; available for recombination,low,no,already-registered
+L14,est-ce que,chunk-est-ce-que,,owned inventory (carryover pool),Carryover,owned since L12; available for recombination,low,no,already-registered
+L15,Bonjour,chunk-bonjour,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L15,je voudrais,chunk-je-voudrais,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L15,café,noun-cafe,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L15,s'il vous plaît,chunk-sil-vous-plait,,owned inventory (carryover pool),Carryover,owned since L0; available for recombination,low,no,already-registered
+L15,merci,chunk-merci,,owned inventory (carryover pool),Carryover,owned since L1; available for recombination,low,no,already-registered
+L15,je suis,chunk-je-suis,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L15,je suis ici,chunk-je-suis-ici,,owned inventory (carryover pool),Carryover,owned since L2; available for recombination,low,no,already-registered
+L15,non,chunk-non,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L15,oui,chunk-oui,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L15,je ne suis pas,chunk-je-ne-suis-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L15,ce n'est pas,chunk-ce-n-est-pas,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L15,non merci,chunk-non-merci,,owned inventory (carryover pool),Carryover,owned since L3; available for recombination,low,no,already-registered
+L15,j'ai,chunk-j-ai,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L15,j'ai faim,chunk-j-ai-faim,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L15,j'ai une question,chunk-j-ai-une-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L15,question,noun-question,,owned inventory (carryover pool),Carryover,owned since L4; available for recombination,low,no,already-registered
+L15,un café,chunk-un-cafe,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L15,une question,chunk-une-question,,owned inventory (carryover pool),Carryover,owned since L5; available for recombination,low,no,already-registered
+L15,au revoir,chunk-au-revoir,,owned inventory (carryover pool),Carryover,owned since L6; available for recombination,low,no,already-registered
+L15,je vais,chunk-je-vais,,owned inventory (carryover pool),Carryover,owned since L7; available for recombination,low,no,already-registered
+L15,c'est où ?,chunk-c-est-ou,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L15,où,adverb-ou-where,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L15,c'est,chunk-c-est,,owned inventory (carryover pool),Carryover,owned since L8; available for recombination,low,no,already-registered
+L15,pause,noun-pause,,owned inventory (carryover pool),Carryover,owned since L9; available for recombination,low,no,already-registered
+L15,vous pouvez,chunk-vous-pouvez,,owned inventory (carryover pool),Carryover,owned since L10; available for recombination,low,no,already-registered
+L15,m'aider,chunk-m-aider,,owned inventory (carryover pool),Carryover,owned since L10; available for recombination,low,no,already-registered
+L15,aider,verb-aider,,owned inventory (carryover pool),Carryover,owned since L11; available for recombination,low,no,already-registered
+L15,est-ce que,chunk-est-ce-que,,owned inventory (carryover pool),Carryover,owned since L12; available for recombination,low,no,already-registered
+L15,j'y vais,chunk-j-y-vais,,owned inventory (carryover pool),Carryover,owned since L13; available for recombination,low,no,already-registered
+L15,y,word-y-place,,owned inventory (carryover pool),Carryover,owned since L13; available for recombination,low,no,already-registered
+L15,on y va,chunk-on-y-va,,owned inventory (carryover pool),Carryover,owned since L14; available for recombination,low,no,already-registered
+L1,un thé,,noun-the,audit backlog,Future,service slice: second orderable,low,no,no
+L1,un croissant,,noun-croissant,audit backlog,Future,service slice,low,no,no
+L1,une table,,noun-table,audit backlog,Future,service slice (une-gender partner),low,no,no
+L1,l'addition,,chunk-l-addition,audit backlog,Future,service close-out; l' elision later,med: article system,no,no
+L1,un verre d'eau,,chunk-un-verre-d-eau,audit backlog,Future,service; de-liaison later,med,no,no
+L1,c'est combien,,chunk-c-est-combien,audit backlog,Future,price ask over owned c'est,med: numbers unopened,no,no
+L1,excusez-moi,,chunk-excusez-moi,audit backlog,Future,attention-getter / repair opener,low,no,no
+L1,pardon,,chunk-pardon,audit backlog,Future,repair opener,low,no,no
+L1,madame / monsieur,,word-madame|word-monsieur,audit backlog,Future,address forms for the vous register,low,no,no
+L1,merci beaucoup,,chunk-merci-beaucoup,audit backlog,Future,politeness upgrade (already lint-safe),low,no,no
+L1,de rien,,chunk-de-rien,audit backlog,Future,politeness reply,low,no,no
+L1,bonsoir,,chunk-bonsoir,audit backlog,Future,time-of-day greeting partner,low,no,no
+L1,salut,,chunk-salut,audit backlog,Future,informal register; needs tu-register moment,med: register,no,no
+L1,je veux,,,audit backlog,Reject,blunt want; deliberately trap-only (L1 s03),canon: politeness-first,no,no
+L1,je prends,,,audit backlog,Reject,ordering verb too early; prendre is a later engine,canon: active-load,no,no
+L1,s'il te plaît,,chunk-sil-te-plait,audit backlog,Future,informal please; waits for tu register,med,no,no
+L2,là,,word-la-there,audit backlog,Future,here/there contrast partner for ici,low,no,no
+L2,là-bas,,word-la-bas,audit backlog,Future,distance pointing; pairs with où answers,low,no,no
+L2,je suis là,,,audit backlog,Future,"natural variant of je suis ici; composed, not a chip",low,no,no
+L2,c'est moi,,chunk-c-est-moi,audit backlog,Future,identity answer over owned c'est,low,no,no
+L2,moi,,pronoun-moi-tonic,audit backlog,Future,tonic pronoun doorway,med: pronoun system,no,no
+L2,désolé / désolée,,word-desole,audit backlog,Future,state/apology; gender agreement later,med: agreement,no,no
+L2,en retard,,chunk-en-retard,audit backlog,Future,state after je suis,low,no,no
+L2,prêt / prête,,word-pret,audit backlog,Future,already ghosted via chunk-tu-es-pret (dormant),low,no,no
+L2,il est / elle est,,,audit backlog,Reject,3rd-person être paradigm; not a doorway yet,canon: no paradigm,no,no
+L2,voilà,,chunk-voila,audit backlog,Future,pointing/handing-over word; high utility,low,no,no
+L2,tu es,,chunk-tu-es,audit backlog,Future,dormant registry item; needs a tu-register lesson,med: register,no,no
+L2,vous êtes,,chunk-vous-etes,audit backlog,Future,dormant registry item; formal identity ask,low,no,no
+L3,je ne sais pas,,,audit backlog,Future,top negative; MUST compose from future savoir chip + ne ___ pas (no clause chip),canon: PR #168 composition rule,no,no
+L3,je ne veux pas,,,audit backlog,Future,composed decline; needs vouloir surface first,med,no,no
+L3,je ne comprends pas,,,audit backlog,Future,repair core; composed from future je comprends,med: repair slice unshipped,no,no
+L3,pas encore,,chunk-pas-encore,audit backlog,Future,soft negative time answer,low,no,no
+L3,pas de problème,,chunk-pas-de-probleme,audit backlog,Future,reassurance formula,low,no,no
+L3,c'est pas grave,,chunk-c-est-pas-grave,audit backlog,Future,spoken reassurance; register note needed (dropped ne),med: register,no,no
+L3,moi non plus,,,audit backlog,Future,agreement-in-negative; tonic pronoun first,med,no,no
+L3,si,,word-si-yes,audit backlog,Future,yes-after-negative; sense-suffixed id needed,med: homograph,no,no
+L3,jamais / rien,,,audit backlog,Reject,second negation system; much later,canon: one frame only,no,no
+L3,ne...jamais as frame,,,audit backlog,Reject,frame expansion; ne ___ pas must settle first,canon,no,no
+L3,Oui merci (trap),,,audit backlog,Reject,exists only as L3 trap; never a chip,-,no,no
+L4,j'ai soif,,,audit backlog,Future,avoir-sensation family; composed j'ai + soif,low,no,no
+L4,soif,,noun-soif,audit backlog,Future,sensation noun to back the above,low,no,no
+L4,j'ai froid / j'ai chaud,,,audit backlog,Future,same family; composed,low,no,no
+L4,j'ai besoin de,,chunk-j-ai-besoin-de,audit backlog,Future,need+noun bridge; L15 already owns the verbal need side,med: de-contraction,no,no
+L4,une idée,,noun-idee,audit backlog,Future,dormant registry item (noun-idee) waiting for a slot,low,no,no
+L4,fatigué / fatiguée,,word-fatigue,audit backlog,Future,L10/L13 specs wanted it; belongs to a je-suis-state slot,med: agreement,no,no
+L4,ça va,,chunk-ca-va,audit backlog,Future,wellbeing exchange; needs ça,med: ça unshipped,no,no
+L4,j'ai ... ans,,,audit backlog,Reject,age formula; numbers unopened,canon: prerequisites,no,no
+L4,il y a,,chunk-il-y-a,audit backlog,Reject,"existential; separate later doorway, kept away from L14 y",canon: L14 spec,no,no
+L4,avoir paradigm (tu as / il a),,,audit backlog,Reject,no paradigms at this band,canon,no,no
+L5,le / la / les,,,audit backlog,Future,definite article system; own lesson later,med: system,no,no
+L5,des,,,audit backlog,Future,plural indefinite; with plurals,med,no,no
+L5,un thé / une table,,(see L1),audit backlog,Future,gender practice pairs from the service slice,low,no,no
+L5,une pause,,noun-pause,audit backlog,Carryover,already registered at L9; back-links to un/une,low,no,no
+L5,un verre d'eau,,(see L1),audit backlog,Future,service + de,med,no,no
+L5,plural -s (silent),,sound-plural-s,audit backlog,Future,sound pattern note,low,no,no
+L5,gender rules lecture,,,audit backlog,Reject,package-first canon; no rule tables,canon,no,no
+L5,un question (trap),,,audit backlog,Reject,exists only as L5 trap,-,no,no
+L6,à bientôt,,chunk-a-bientot,audit backlog,Future,closing variant after au revoir,low,no,no
+L6,bonne journée,,chunk-bonne-journee,audit backlog,Future,closing wish; pairs with L10 day-arc,low,no,no
+L6,enchanté,,word-enchante,audit backlog,Future,meeting-people slot,low,no,no
+L6,entrez,,,audit backlog,Reject,imperative doorway; not opened,canon: no imperatives yet,no,no
+L6,small-talk expansion,,,audit backlog,Reject,integration lessons must not add lexis,canon: rhythm rule,no,no
+L7,je vais à Paris,,,audit backlog,Future,place slot variation; needs place nouns,low,no,no
+L7,au café,,chunk-au-cafe,audit backlog,Future,à+le contraction; deliberate later doorway,med: contraction system,no,no
+L7,chez,,word-chez,audit backlog,Future,chez + person; high utility,med,no,no
+L7,on va,,,audit backlog,Reject,subject toggle = aller paradigm creep; on lives in on-y-va only,canon: PR #169,no,no
+L7,tu vas,,,audit backlog,Future,needed for tu y vas later (L14 backlog),med: register,no,no
+L7,je ne vais pas,,,audit backlog,Future,composed negative (je vais + ne ___ pas); no clause chip,canon: composition,no,no
+L7,je vais + infinitive (futur proche),,,audit backlog,Reject,tense doorway; recognition at most,canon: L7 spec,no,no
+L7,où vas-tu,,,audit backlog,Reject,inversion; blocked band-wide,canon,no,no
+L8,où est + noun,,frame-ou-est,audit backlog,Future,the fuller where-frame from the L8 spec (de-scoped in house v1),med,no,no
+L8,tu vas où,,,audit backlog,Future,informal where-ask; needs tu vas,med,no,no
+L8,là-bas,,(see L2),audit backlog,Future,natural answer partner for c'est où,low,no,no
+L8,à gauche / à droite,,,audit backlog,Future,direction answers,low,no,no
+L8,l'hôtel / la gare / les toilettes,,,audit backlog,Future,place nouns with definite articles,med: articles,no,no
+L8,c'est là,,,audit backlog,Future,near-variant of c'est ici,low,no,no
+L8,où est-ce que,,,audit backlog,Reject,wrapper+question-word stack; blocked (L13 trap logic),canon,no,no
+L8,comment / quand / pourquoi,,,audit backlog,Reject,question-word expansion; later band,canon,no,no
+L9,je fais,,,audit backlog,Future,held at supported by L09 spec; deferred with the pause slice,canon: no active je fais from L9,no,no
+L9,faire ça,,chunk-faire-ca,audit backlog,Future,spec-level small action; needs ça,med: ça,no,no
+L9,ça,,word-ca,audit backlog,Future,pointing pronoun; unlocks faire ça and ça va,med: system,no,no
+L9,on fait,,,audit backlog,Reject,paradigm creep,canon,no,no
+L9,faire du sport / la cuisine / les courses,,,audit backlog,Reject,broad faire senses; split-sense guardrail,canon: L9 spec,no,no
+L9,maintenant,,,audit backlog,Reject,from the rejected L9 variant; do not revive unless syllabus reopens it,canon: PR #167,no,no
+L9,un café (ordering scene),,,audit backlog,Reject,rejected café-centric faire slice; pause slice is canon,canon: PR #167,no,no
+L9,après,,word-apres,audit backlog,Future,time sequencing; later,low,no,no
+L10,je suis fatigué,,,audit backlog,Future,"the L10/L13 spec combo, waiting on word-fatigue",low,no,no
+L10,aujourd'hui / ce soir,,,audit backlog,Future,day-arc time words,low,no,no
+L10,bonne journée,,(see L6),audit backlog,Future,day-arc close,low,no,no
+L10,day-vocabulary dump,,,audit backlog,Reject,integration lessons add no lexis,canon: rhythm rule,no,no
+L11,tu peux,,,audit backlog,Future,pouvoir person 2; needs tu register moment,med,no,no
+L11,on peut,,,audit backlog,Reject,paradigm creep; recognition at most later,canon: L11 spec,no,no
+L11,je pourrais,,,audit backlog,Reject,conditionnel; deferred (paid-zone per specs),canon,no,no
+L11,t'aider / l'aider,,,audit backlog,Future,the object-pronoun-before-infinitive family m'aider seeds,canon: deferred doorway,no,no
+L11,aidez-moi,,,audit backlog,Reject,imperative + tonic pronoun; wrong doorway order,canon,no,no
+L11,au secours,,,audit backlog,Reject,emergency register; not the help slice,tone,no,no
+L11,j'ai besoin d'aide,,,audit backlog,Future,L13-spec repair line; needs besoin-de bridge,med,no,no
+L11,est-ce que je peux,,,audit backlog,Carryover,graduated in L12; listed for completeness,low,no,no
+L12,qu'est-ce que,,,audit backlog,Future,object-question wrapper; own doorway much later,canon: trap-only now,no,no
+L12,est-ce qu'il y a,,,audit backlog,Future,wrapper + existential; after il y a doorway,med,no,no
+L12,est-ce que tu ...,,,audit backlog,Future,wrapper over tu clauses; needs tu material,med,no,no
+L12,n'est-ce pas,,,audit backlog,Future,tag question; register lesson later,low,no,no
+L12,inversion (pouvez-vous...),,,audit backlog,Reject,blocked band-wide; recognition at most,canon,no,no
+L12,question words (comment/quand/qui...),,,audit backlog,Reject,Question Expansion 2; later band,canon,no,no
+L13,je ne comprends pas,,,audit backlog,Future,repair core for the after-class scene; composed,med: repair slice,no,no
+L13,vous pouvez répéter,,,audit backlog,Future,repair ask; needs répéter,med,no,no
+L13,c'est pas grave,,(see L3),audit backlog,Future,reassure line from the spec scene,med: register,no,no
+L13,d'accord,,chunk-d-accord,audit backlog,Future,agreement token; high utility,low,no,no
+L13,un moment,,chunk-un-moment,audit backlog,Future,holding line; pairs with une pause,low,no,no
+L13,attendez,,,audit backlog,Reject,imperative doorway not opened,canon,no,no
+L13,"je suis fatigué, est-ce que je peux ...",,,audit backlog,Future,"the spec's signature chained line, waits on fatigué",low,no,no
+L14,tu y vas,,chunk-tu-y-vas,audit backlog,Future,spec-supported; dropped (no tu-form of aller shipped),med,no,no
+L14,vous y allez,,,audit backlog,Future,register variant; recognition first,med,no,no
+L14,je n'y vais pas,,,audit backlog,Future,"composed negative y-line; arrives as copy once stable, never a clause chip",canon: composition,no,no
+L14,j'y suis,,,audit backlog,Future,multi-verb y; recognition-only later,canon: L14 spec,no,no
+L14,il y a,,chunk-il-y-a,audit backlog,Future,separate existential doorway; deliberately absent from L14,canon: kept separate,no,no
+L14,en,,,audit backlog,Future,paid-zone pronoun; y/en contrast later,canon,no,no
+L14,allons-y,,,audit backlog,Reject,imperative + y; later,canon,no,no
+L14,j'y pense,,,audit backlog,Reject,abstract y sense; much later,canon,no,no
+L14,je vais y (word order),,,audit backlog,Reject,trap-only error form,-,no,no
+L14,je peux y aller,,,audit backlog,Reject,y+modal chain; recognition at most (L13 AI row blocks it),canon,no,no
+L15,tu dois / on doit / vous devez,,,audit backlog,Future,"devoir paradigm; recognition first, later band",canon: one form now,no,no
+L15,il ne faut pas,,,audit backlog,Future,prohibition nuance; composed via frame when opened,med: meaning shift,no,no
+L15,il faut + noun,,,audit backlog,Future,different sense (need a thing); own doorway,canon: sense split,no,no
+L15,il me faut,,,audit backlog,Future,pronoun+falloir; far later,canon,no,no
+L15,il faut que + subjonctif,,,audit backlog,Reject,"the #1 leak; blocked, trap-only",canon: L15 spec,no,no
+L15,je devrais / il faudrait,,,audit backlog,Reject,advice register; deferred,canon,no,no
+L15,je dois y aller,,,audit backlog,Future,y+devoir chain; natural exit line AFTER both settle,canon: unstacked now,no,no
+L15,devoir = owe,,,audit backlog,Reject,separate sense; sense-suffix if ever opened,canon,no,no
+L15,je dois partir,,,audit backlog,Future,partir as later exit verb; aller covers it now,low,no,no

@@ -1,0 +1,53 @@
+item_id,surface,en,type,registry_status,first_lesson,lessons_used_in,in_piecesUsed_lessons,related_item_ids,used_in_L0_L15,risk_notes
+chunk-bonjour,Bonjour,Hello,chunk,active,L0,L0 L1 L2 L4 L6 L8 L10,L0 L1 L2 L4 L6 L8 L10,,yes,
+chunk-je-voudrais,je voudrais,I would like,chunk,active,L0,L0 L1 L5 L9 L10,L0 L1 L9 L10,,yes,
+noun-cafe,café,coffee,noun,active,L0,L0 L1 L5,,,yes,
+chunk-sil-vous-plait,s'il vous plaît,please (formal),chunk,active,L0,L0 L1 L9 L11 L12 L13,L0 L1 L9 L11 L13,,yes,
+chunk-merci,merci,thank you,chunk,active,L1,L1 L6 L7 L10,L1 L6 L7,,yes,
+chunk-je-suis,je suis,I am,chunk,active,L2,L2 L3 L4 L6 L10,L2 L6,verb-etre pronoun-je chunk-j-ai,yes,
+chunk-j-ai,j'ai,I have,chunk,active,L4,L4 L5 L6,L4 L6,chunk-je-suis micro-je-suis-vs-j-ai,yes,
+pronoun-je,je,I,pronoun,active,,,,,NO (dormant),
+pronoun-tu,tu,you (informal singular),pronoun,active,,,,,NO (dormant),
+pronoun-vous,vous,you (formal or plural),pronoun,active,,,,,NO (dormant),
+verb-etre,être,to be,verb,active,,,,chunk-je-suis chunk-tu-es chunk-vous-etes chunk-c-est grammar-etre-identity,NO (dormant),
+chunk-tu-es,tu es,you are (informal),chunk,active,,,,verb-etre pronoun-tu,NO (dormant),
+chunk-vous-etes,vous êtes,you are (formal/plural),chunk,active,,,,verb-etre pronoun-vous,NO (dormant),
+chunk-c-est,c'est,it is / that is,chunk,supported,L8,L3 L8 L10 L12 L13,L8 L10 L12,verb-etre,yes,
+sound-elision,elision (j' / c' / l' / d' / s'),,sound-pattern,recognition,L4,L4,,,yes,
+sound-liaison,"liaison (vous_êtes, nous_avons)",,sound-pattern,recognition,,,,,NO (dormant),
+micro-je-suis-vs-j-ai,je suis vs j'ai,,micro-contrast,recognition,L4,L4,,chunk-je-suis chunk-j-ai,yes,
+grammar-etre-identity,"être = identity, state, location",,grammar-nugget,recognition,,,,verb-etre micro-je-suis-vs-j-ai,NO (dormant),
+chunk-je-suis-ici,je suis ici,I am here,chunk,active,L2,L2 L4 L6,,chunk-je-suis,yes,"REVIEW: pre-canon sentence-shaped registry chunk (subject+3 tokens); lesson surfaces atomize it correctly (recap chips are je suis + ici); keep, but do not replicate the pattern for new items"
+chunk-tu-es-pret,tu es prêt,you are ready (informal),chunk,supported,,,,chunk-tu-es,NO (dormant),
+chunk-vous-etes-pret,vous êtes prêt,you are ready (formal),chunk,supported,,,,chunk-vous-etes,NO (dormant),
+noun-idee,idée,idea,noun,supported,,,,,NO (dormant),
+noun-question,question,question,noun,supported,L4,L4 L5,,,yes,
+chunk-non,non,no,chunk,active,L3,L3,L3,chunk-non-merci chunk-oui,yes,
+chunk-oui,oui,yes,chunk,active,L3,L3,,chunk-non,yes,"REVIEW: registry status active, but post-L3 canon treats oui as passive/trap only (never produced; L8/L10/L13/L14 use it as trap text). Candidate for status demotion in a future registry pass"
+chunk-je-ne-suis-pas,je ne suis pas,I am not,chunk,active,L3,L3 L6,L3,chunk-je-suis grammar-ne-pas-sandwich,yes,
+chunk-ce-n-est-pas,ce n'est pas,it is not / that is not,chunk,active,L3,L3,L3,chunk-c-est grammar-ne-pas-sandwich,yes,
+chunk-non-merci,non merci,no thank you,chunk,supported,L3,L3 L6,L3,chunk-non chunk-merci,yes,
+grammar-ne-pas-sandwich,ne ... pas wraps the action,,grammar-nugget,recognition,L3,L3 L11 L13,,chunk-je-ne-suis-pas chunk-ce-n-est-pas,yes,the reusable negation frame; negatives compose from engine chip + frame (PR #168); appears as the ne ___ pas hint chip in L11/L13
+chunk-j-ai-faim,j'ai faim,I am hungry,chunk,active,L4,L4,,chunk-j-ai micro-je-suis-vs-j-ai,yes,REVIEW: pre-canon clause chunk (j'+ai+faim would trip chip lint); recaps atomize to j'ai + faim
+chunk-j-ai-une-question,j'ai une question,I have a question,chunk,active,L4,L4 L6,,chunk-j-ai noun-question,yes,REVIEW: pre-canon clause chunk; its chip use is lint-forbidden (calibration forbidden list); appears only as learningItem/model copy; recaps atomize to j'ai + une question
+chunk-un-cafe,un café,a coffee,chunk,active,L5,L5,L0 L1 L5,noun-cafe chunk-une-question,yes,
+chunk-une-question,une question,a question,chunk,active,L5,L5 L6,L4 L5 L6,noun-question chunk-un-cafe,yes,
+grammar-un-une-package,un and une are little packages,,grammar-nugget,recognition,L5,L5,,chunk-un-cafe chunk-une-question,yes,
+chunk-au-revoir,au revoir,goodbye,chunk,active,L6,L6 L7 L10 L14,L6 L7 L10 L14,chunk-bonjour chunk-merci,yes,
+chunk-je-vais,je vais,I'm going,chunk,active,L7,L7 L10 L13 L14,L7 L10 L13 L14,chunk-je-suis,yes,
+chunk-a-la-maison,à la maison,home,chunk,supported,L7,L7 L10 L13 L14 L15,L7 L10 L13 L14 L15,chunk-je-vais,yes,
+chunk-c-est-ou,c'est où ?,where is it?,chunk,active,L8,L8 L10,,chunk-c-est adverb-ou-where,yes,keeps the question mark in text per PR #167 decision
+adverb-ou-where,où,where,adverb,supported,L8,L8 L10,L8 L10,chunk-c-est-ou,yes,sense-suffixed id per L08 spec (accent-folding collision guard)
+chunk-faire-une-pause,faire une pause,to take a break,chunk,active,L9,L9 L10 L11 L12 L13 L15,L9 L10 L11 L12 L13 L15,chunk-je-voudrais noun-pause,yes,
+noun-pause,pause,a break,noun,supported,L9,L9,,chunk-faire-une-pause,yes,
+chunk-je-peux,je peux,I can,chunk,active,L11,L11 L12 L13 L15,L11 L12 L13,chunk-je-voudrais chunk-faire-une-pause,yes,
+chunk-vous-pouvez,vous pouvez,you can,chunk,supported,L10,L10 L11 L12 L13,L11 L12 L13,chunk-je-peux,yes,
+verb-aider,aider,to help,verb,supported,L11,L11,,chunk-vous-pouvez chunk-m-aider,yes,infinitive support; productive aider deferred
+chunk-m-aider,m'aider,to help me,chunk,supported,L10,L10 L11 L12 L13,L11 L12 L13,verb-aider chunk-vous-pouvez,yes,frozen elision chunk; seeds future object-pronoun-before-infinitive doorway; family (t'aider/l'aider) deferred
+chunk-est-ce-que,est-ce que,question wrapper (is it that...),chunk,active,L12,L12 L13,L12 L13,chunk-c-est chunk-je-peux,yes,wrapper target; intonation forms are comparison copy only on wrapper-target screens
+word-y-place,y,there (the place you named),pronoun,active,L13,L13 L14,L14,chunk-je-vais chunk-j-y-vais,yes,sense-suffixed id (homograph guard: il y a / j'y pense / en are separate doorways)
+chunk-j-y-vais,j'y vais,I'm off / I'm going there,chunk,active,L13,L13 L14,,word-y-place chunk-je-vais,yes,chunk-first y doorway; production composes je vais + y; never a recap chip (would trip lint)
+chunk-on-y-va,on y va,let's go,chunk,active,L14,L14,,word-y-place chunk-j-y-vais,yes,"frozen high-utility formula per L14 spec + PR #169; NOT a general on+y+verb pattern; weave hint chip only, never a recap chip"
+chunk-il-faut,il faut,one must / it's necessary to,chunk,active,L15,L15,L15,chunk-je-dois chunk-faire-une-pause,yes,invariable impersonal; il faut que blocked (trap only in L15)
+chunk-je-dois,je dois,I have to,chunk,supported,L15,L15,L15,chunk-je-peux chunk-il-faut,yes,one person-form only; paradigm + owe sense deferred
+verb-aller,aller,to go,verb,supported,L15,L15,L15,chunk-je-vais chunk-a-la-maison,yes,infinitive support behind il faut/je dois only; je vais stays the engine; no paradigm

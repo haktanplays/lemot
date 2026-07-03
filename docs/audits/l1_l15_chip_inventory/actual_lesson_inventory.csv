@@ -1,0 +1,103 @@
+lesson,lesson_id,item_id,surface,type,registry_status,role_in_lesson,in_piecesUsed
+L0,v1-lesson-000,chunk-bonjour,Bonjour,chunk,active,active-new,yes
+L0,v1-lesson-000,chunk-je-voudrais,je voudrais,chunk,active,active-new,yes
+L0,v1-lesson-000,noun-cafe,café,noun,active,active-new,no
+L0,v1-lesson-000,chunk-sil-vous-plait,s'il vous plaît,chunk,active,active-new,yes
+L1,v1-lesson-001,chunk-bonjour,Bonjour,chunk,active,carryover,yes
+L1,v1-lesson-001,chunk-merci,merci,chunk,active,active-new,yes
+L1,v1-lesson-001,chunk-sil-vous-plait,s'il vous plaît,chunk,active,carryover,yes
+L1,v1-lesson-001,chunk-je-voudrais,je voudrais,chunk,active,carryover,yes
+L1,v1-lesson-001,noun-cafe,café,noun,active,carryover,no
+L2,v1-lesson-002,chunk-je-suis,je suis,chunk,active,active-new,yes
+L2,v1-lesson-002,chunk-je-suis-ici,je suis ici,chunk,active,active-new,no
+L2,v1-lesson-002,chunk-bonjour,Bonjour,chunk,active,carryover,yes
+L3,v1-lesson-003,chunk-non,non,chunk,active,active-new,yes
+L3,v1-lesson-003,chunk-oui,oui,chunk,active,active-new,no
+L3,v1-lesson-003,chunk-je-ne-suis-pas,je ne suis pas,chunk,active,active-new,yes
+L3,v1-lesson-003,chunk-ce-n-est-pas,ce n'est pas,chunk,active,active-new,yes
+L3,v1-lesson-003,chunk-non-merci,non merci,chunk,supported,supported-new,yes
+L3,v1-lesson-003,grammar-ne-pas-sandwich,ne ... pas wraps the action,grammar-nugget,recognition,exposure,no
+L4,v1-lesson-004,chunk-j-ai,j'ai,chunk,active,active-new,yes
+L4,v1-lesson-004,chunk-j-ai-faim,j'ai faim,chunk,active,active-new,no
+L4,v1-lesson-004,chunk-j-ai-une-question,j'ai une question,chunk,active,active-new,no
+L4,v1-lesson-004,micro-je-suis-vs-j-ai,je suis vs j'ai,micro-contrast,recognition,exposure,no
+L4,v1-lesson-004,sound-elision,elision (j' / c' / l' / d' / s'),sound-pattern,recognition,exposure,no
+L4,v1-lesson-004,noun-question,question,noun,supported,supported-new,no
+L5,v1-lesson-005,chunk-un-cafe,un café,chunk,active,active-new,yes
+L5,v1-lesson-005,chunk-une-question,une question,chunk,active,active-new,yes
+L5,v1-lesson-005,grammar-un-une-package,un and une are little packages,grammar-nugget,recognition,exposure,no
+L5,v1-lesson-005,noun-cafe,café,noun,active,carryover,no
+L5,v1-lesson-005,noun-question,question,noun,supported,carryover,no
+L5,v1-lesson-005,chunk-je-voudrais,je voudrais,chunk,active,carryover,no
+L5,v1-lesson-005,chunk-j-ai,j'ai,chunk,active,carryover,no
+L6,v1-lesson-006,chunk-au-revoir,au revoir,chunk,active,active-new,yes
+L6,v1-lesson-006,chunk-bonjour,Bonjour,chunk,active,carryover,yes
+L6,v1-lesson-006,chunk-je-suis-ici,je suis ici,chunk,active,carryover,no
+L6,v1-lesson-006,chunk-je-suis,je suis,chunk,active,carryover,yes
+L6,v1-lesson-006,chunk-je-ne-suis-pas,je ne suis pas,chunk,active,carryover,no
+L6,v1-lesson-006,chunk-non-merci,non merci,chunk,supported,carryover,no
+L6,v1-lesson-006,chunk-j-ai,j'ai,chunk,active,carryover,yes
+L6,v1-lesson-006,chunk-j-ai-une-question,j'ai une question,chunk,active,carryover,no
+L6,v1-lesson-006,chunk-une-question,une question,chunk,active,carryover,yes
+L6,v1-lesson-006,chunk-merci,merci,chunk,active,carryover,yes
+L7,v1-lesson-007,chunk-je-vais,je vais,chunk,active,active-new,yes
+L7,v1-lesson-007,chunk-a-la-maison,à la maison,chunk,supported,supported-new,yes
+L7,v1-lesson-007,chunk-au-revoir,au revoir,chunk,active,carryover,yes
+L7,v1-lesson-007,chunk-merci,merci,chunk,active,carryover,yes
+L8,v1-lesson-008,chunk-c-est-ou,c'est où ?,chunk,active,active-new,no
+L8,v1-lesson-008,adverb-ou-where,où,adverb,supported,supported-new,yes
+L8,v1-lesson-008,chunk-c-est,c'est,chunk,supported,supported-new,yes
+L8,v1-lesson-008,chunk-bonjour,Bonjour,chunk,active,carryover,yes
+L9,v1-lesson-009,chunk-faire-une-pause,faire une pause,chunk,active,active-new,yes
+L9,v1-lesson-009,noun-pause,pause,noun,supported,supported-new,no
+L9,v1-lesson-009,chunk-je-voudrais,je voudrais,chunk,active,carryover,yes
+L9,v1-lesson-009,chunk-sil-vous-plait,s'il vous plaît,chunk,active,carryover,yes
+L10,v1-lesson-010,chunk-c-est-ou,c'est où ?,chunk,active,carryover,no
+L10,v1-lesson-010,adverb-ou-where,où,adverb,supported,carryover,yes
+L10,v1-lesson-010,chunk-c-est,c'est,chunk,supported,carryover,yes
+L10,v1-lesson-010,chunk-bonjour,Bonjour,chunk,active,carryover,yes
+L10,v1-lesson-010,chunk-je-voudrais,je voudrais,chunk,active,carryover,yes
+L10,v1-lesson-010,chunk-faire-une-pause,faire une pause,chunk,active,carryover,yes
+L10,v1-lesson-010,chunk-je-vais,je vais,chunk,active,carryover,yes
+L10,v1-lesson-010,chunk-a-la-maison,à la maison,chunk,supported,carryover,yes
+L10,v1-lesson-010,chunk-au-revoir,au revoir,chunk,active,carryover,yes
+L10,v1-lesson-010,chunk-vous-pouvez,vous pouvez,chunk,supported,supported-new,no
+L10,v1-lesson-010,chunk-m-aider,m'aider,chunk,supported,supported-new,no
+L11,v1-lesson-011,chunk-je-peux,je peux,chunk,active,active-new,yes
+L11,v1-lesson-011,grammar-ne-pas-sandwich,ne ... pas wraps the action,grammar-nugget,recognition,carryover,no
+L11,v1-lesson-011,chunk-vous-pouvez,vous pouvez,chunk,supported,carryover,yes
+L11,v1-lesson-011,verb-aider,aider,verb,supported,supported-new,no
+L11,v1-lesson-011,chunk-m-aider,m'aider,chunk,supported,carryover,yes
+L11,v1-lesson-011,chunk-faire-une-pause,faire une pause,chunk,active,carryover,yes
+L11,v1-lesson-011,chunk-sil-vous-plait,s'il vous plaît,chunk,active,carryover,yes
+L12,v1-lesson-012,chunk-est-ce-que,est-ce que,chunk,active,active-new,yes
+L12,v1-lesson-012,chunk-je-peux,je peux,chunk,active,carryover,yes
+L12,v1-lesson-012,chunk-c-est,c'est,chunk,supported,carryover,yes
+L12,v1-lesson-012,chunk-faire-une-pause,faire une pause,chunk,active,carryover,yes
+L12,v1-lesson-012,chunk-vous-pouvez,vous pouvez,chunk,supported,carryover,yes
+L12,v1-lesson-012,chunk-m-aider,m'aider,chunk,supported,carryover,yes
+L12,v1-lesson-012,chunk-sil-vous-plait,s'il vous plaît,chunk,active,carryover,no
+L13,v1-lesson-013,chunk-est-ce-que,est-ce que,chunk,active,carryover,yes
+L13,v1-lesson-013,chunk-je-peux,je peux,chunk,active,carryover,yes
+L13,v1-lesson-013,chunk-vous-pouvez,vous pouvez,chunk,supported,carryover,yes
+L13,v1-lesson-013,chunk-m-aider,m'aider,chunk,supported,carryover,yes
+L13,v1-lesson-013,chunk-faire-une-pause,faire une pause,chunk,active,carryover,yes
+L13,v1-lesson-013,grammar-ne-pas-sandwich,ne ... pas wraps the action,grammar-nugget,recognition,carryover,no
+L13,v1-lesson-013,chunk-je-vais,je vais,chunk,active,carryover,yes
+L13,v1-lesson-013,chunk-a-la-maison,à la maison,chunk,supported,carryover,yes
+L13,v1-lesson-013,chunk-c-est,c'est,chunk,supported,carryover,no
+L13,v1-lesson-013,chunk-sil-vous-plait,s'il vous plaît,chunk,active,carryover,yes
+L13,v1-lesson-013,chunk-j-y-vais,j'y vais,chunk,active,active-new,no
+L13,v1-lesson-013,word-y-place,y,pronoun,active,active-new,no
+L14,v1-lesson-014,word-y-place,y,pronoun,active,carryover,yes
+L14,v1-lesson-014,chunk-j-y-vais,j'y vais,chunk,active,carryover,no
+L14,v1-lesson-014,chunk-on-y-va,on y va,chunk,active,active-new,no
+L14,v1-lesson-014,chunk-je-vais,je vais,chunk,active,carryover,yes
+L14,v1-lesson-014,chunk-a-la-maison,à la maison,chunk,supported,carryover,yes
+L14,v1-lesson-014,chunk-au-revoir,au revoir,chunk,active,carryover,yes
+L15,v1-lesson-015,chunk-il-faut,il faut,chunk,active,active-new,yes
+L15,v1-lesson-015,chunk-je-dois,je dois,chunk,supported,supported-new,yes
+L15,v1-lesson-015,verb-aller,aller,verb,supported,supported-new,yes
+L15,v1-lesson-015,chunk-faire-une-pause,faire une pause,chunk,active,carryover,yes
+L15,v1-lesson-015,chunk-a-la-maison,à la maison,chunk,supported,carryover,yes
+L15,v1-lesson-015,chunk-je-peux,je peux,chunk,active,carryover,no
