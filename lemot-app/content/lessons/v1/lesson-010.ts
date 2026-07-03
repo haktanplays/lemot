@@ -234,7 +234,7 @@ export const lesson010: Lesson = {
   id: "v1-lesson-010",
   version: "v1",
   number: 10,
-  title: "Un petit jour",
+  title: "Une petite journée",
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
