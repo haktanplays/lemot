@@ -184,9 +184,9 @@ const screens: LessonScreen[] = [
     payload: {
       title: "You can leave in one word.",
       lines: [
-        "You stopped repeating the place: y carries it now.",
+        "You stopped repeating the place: J'y vais says it all.",
         "Y sits before the verb, and je becomes j' in front of it.",
-        "The full sentence from L7 still works. Now you have the short way too.",
+        "On y va gets everyone moving; the full je vais à la maison from L7 still works too.",
       ],
       piecesUsed: ["y", "je vais", "à la maison", "au revoir"],
       nextLabel: "Continue",

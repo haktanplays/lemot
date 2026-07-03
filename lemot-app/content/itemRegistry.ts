@@ -621,7 +621,7 @@ export const ITEM_REGISTRY = {
     fr: "on y va",
     en: "let's go",
     meaning:
-      "Near-fixed expression: let's go / we're going there. On (= we) lives only inside this chunk for now.",
+      "Near-fixed high-utility expression: let's go / we're going there. Frozen as a whole; NOT a general on + y + verb pattern. On (= we) lives only inside this chunk for now.",
     exampleFr: "On y va ?",
     exampleEn: "Shall we go?",
     relatedItemIds: ["word-y-place", "chunk-j-y-vais"],

@@ -57,15 +57,12 @@ const screens: LessonScreen[] = [
         },
       ],
       expectedAnswers: ["Est-ce que je peux faire une pause ?"],
-      acceptedAlternatives: [
-        "Est-ce que je peux faire une pause",
-        "Je peux faire une pause ?",
-      ],
+      acceptedAlternatives: ["Est-ce que je peux faire une pause"],
       reveal: {
         modelAnswer: "Est-ce que je peux faire une pause ?",
         ifCorrect:
-          "Yesterday's pieces, back when you actually need them. Both ways of asking are yours now.",
-        ifCorrectButFlat: "Right shape. The wrapper or the rising voice: either asks.",
+          "Yesterday's pieces, back when you actually need them.",
+        ifCorrectButFlat: "Right shape. The wrapper marks the question for you.",
         ifMissingTargetPiece:
           "Keep je peux faire une pause whole, and put est-ce que in front.",
       },
@@ -144,7 +141,6 @@ const screens: LessonScreen[] = [
       acceptedAlternatives: [
         "Est-ce que vous pouvez m'aider, s'il vous plaît",
         "Est-ce que vous pouvez m'aider ?",
-        "Vous pouvez m'aider, s'il vous plaît ?",
       ],
       reveal: {
         modelAnswer: "Est-ce que vous pouvez m'aider, s'il vous plaît ?",
@@ -297,7 +293,7 @@ export const lesson013: Lesson = {
     "De-scopes vs spec (items not in the shipped house registry): je suis fatigue, faire ca, j'ai besoin d'aide, repeter, c'est pas grave, and the tu vas frames are dropped; the owned recombination set carries the scene instead.",
     "s03 implements the spec's est-ce que over-stacking watch item inside owned material: ou is the trap (question word + wrapper don't stack), oui stays passive/trap only.",
     "s05 composes the negative from je peux + the owned ne...pas frame per the PR #168 canon: je ne peux pas appears only as composed expected/model copy, never as a chip.",
-    "Both intonation and wrapper question forms are accepted in weaves per L13 spec section 9 (both engines are owned by now); the wrapper leads every model answer.",
+    "Intonation question forms appear ONLY as sayit reveal comparison copy (L13 spec section 9 keeps them valid at meaning level); the two weaves make est-ce que a required piece, so their validation accepts wrapper forms only, consistent with L12's wrapper-target stance.",
     "L14 seed: chunk-j-y-vais + word-y-place appear ONLY in the s06 recognition meet-card (registry status is static; their L13 use is recognition-only by lesson design). Never produced, never suggested pieces elsewhere, never recap chips.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
