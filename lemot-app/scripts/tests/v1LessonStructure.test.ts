@@ -163,6 +163,10 @@ describe("v1 lesson structure", () => {
       "J'ai une question",
       "je ne suis pas ici",
       "ce n'est pas pour moi",
+      // Locked by the L11 decision (PR #168): negative verb phrases are
+      // composed from the engine chip + the ne...pas frame, NOT protected
+      // as clause chips. Only "je ne suis pas" / "ce n'est pas" are canon.
+      "je ne peux pas",
       "C'est bon",
       "Bonjour.",
       "on y va !",
@@ -191,6 +195,9 @@ describe("v1 lesson structure", () => {
       "je voudrais",
       "je ne suis pas",
       "ce n'est pas",
+      "est-ce que",
+      "vous pouvez",
+      "m'aider",
       "ne ___ pas",
       "ici",
       "faim",

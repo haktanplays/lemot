@@ -521,6 +521,71 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-faire-une-pause"],
     weakPointTags: ["gender", "articles"],
   },
+  // -- Unit 2 batch (L10-L12): pouvoir-light + est-ce que wrapper -----------
+  "chunk-je-peux": {
+    id: "chunk-je-peux",
+    type: "chunk",
+    text: "je peux",
+    status: "active",
+    fr: "je peux",
+    en: "I can",
+    meaning:
+      "Frozen ability/permission chunk: I can. Ask by rising intonation; no pouvoir paradigm yet.",
+    exampleFr: "Je peux faire une pause ?",
+    exampleEn: "Can I take a break?",
+    relatedItemIds: ["chunk-je-voudrais", "chunk-faire-une-pause"],
+  },
+  "chunk-vous-pouvez": {
+    id: "chunk-vous-pouvez",
+    type: "chunk",
+    text: "vous pouvez",
+    status: "supported",
+    fr: "vous pouvez",
+    en: "you can",
+    meaning:
+      "Pouvoir piece for requests: you can. Used to ask others, with a rising voice; no pouvoir paradigm yet.",
+    exampleFr: "Vous pouvez m'aider ?",
+    exampleEn: "Can you help me?",
+    relatedItemIds: ["chunk-je-peux"],
+  },
+  "verb-aider": {
+    id: "verb-aider",
+    type: "verb",
+    text: "aider",
+    status: "supported",
+    fr: "aider",
+    en: "to help",
+    meaning: "To help, in its dictionary shape. Reusable after vous pouvez.",
+    exampleFr: "Vous pouvez aider ?",
+    exampleEn: "Can you help?",
+    relatedItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
+  },
+  "chunk-m-aider": {
+    id: "chunk-m-aider",
+    type: "chunk",
+    text: "m'aider",
+    status: "supported",
+    fr: "m'aider",
+    en: "to help me",
+    meaning:
+      "Elision chunk: me + aider becomes m'aider (to help me). Only this frozen form for now; the wider object-pronoun family (t'aider, l'aider, me/te/lui) is deliberately deferred.",
+    exampleFr: "Vous pouvez m'aider ?",
+    exampleEn: "Can you help me?",
+    relatedItemIds: ["verb-aider", "chunk-vous-pouvez"],
+  },
+  "chunk-est-ce-que": {
+    id: "chunk-est-ce-que",
+    type: "chunk",
+    text: "est-ce que",
+    status: "active",
+    fr: "est-ce que",
+    en: "question wrapper (is it that...)",
+    meaning:
+      "Yes/no question wrapper. Put it in front of a sentence you own and it becomes a question. No inversion, no question words yet.",
+    exampleFr: "Est-ce que c'est ici ?",
+    exampleEn: "Is it here?",
+    relatedItemIds: ["chunk-c-est", "chunk-je-peux"],
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;
