@@ -11,7 +11,7 @@ const screens: LessonScreen[] = [
       body:
         "Today: one new engine, je peux.\n" +
         "By the end: you can ask if you can do something, and say when you can't.\n" +
-        "Main pieces: je peux, je ne peux pas.",
+        "Main pieces: je peux, plus the ne...pas sandwich you already own.",
     },
   },
   {
@@ -112,37 +112,36 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    id: "s05-weave-cant-heading-home",
+    id: "s05-weave-say-you-cant",
     type: "weave",
-    targetItemIds: ["chunk-je-ne-peux-pas"],
+    targetItemIds: ["chunk-je-peux", "grammar-ne-pas-sandwich"],
+    weakPointTags: ["negation", "ne-pas"],
     payload: {
       weaveType: "supported",
-      prompt: "Say you can't, and that you're going home.",
+      prompt: "Say you can't.",
       context:
-        "They ask if you can stay a little longer. You honestly can't.",
+        "They ask if you can stay a little longer. You honestly can't. Wrap je peux in the L3 sandwich.",
       suggestedPieces: [
+        { text: "je peux", itemId: "chunk-je-peux", required: true, label: "I can" },
         {
-          text: "je ne peux pas",
-          itemId: "chunk-je-ne-peux-pas",
+          text: "ne ___ pas",
+          itemId: "grammar-ne-pas-sandwich",
           required: true,
-          label: "I can't",
-        },
-        { text: "je vais", itemId: "chunk-je-vais", required: true, label: "I'm going" },
-        {
-          text: "à la maison",
-          itemId: "chunk-a-la-maison",
-          required: true,
-          label: "home",
+          label: "not (the sandwich)",
         },
       ],
-      expectedAnswers: ["Je ne peux pas. Je vais à la maison."],
-      acceptedAlternatives: ["Je ne peux pas, je vais à la maison."],
+      expectedAnswers: ["Je ne peux pas."],
+      acceptedAlternatives: [
+        "Je ne peux pas. Je vais à la maison.",
+        "Je ne peux pas, je vais à la maison.",
+      ],
       reveal: {
-        modelAnswer: "Je ne peux pas. Je vais à la maison.",
-        ifCorrect: "A calm no, and the reason. The ne...pas frame you know, on a new engine.",
-        ifCorrectButFlat: "Two short sentences. Honest and complete.",
+        modelAnswer: "Je ne peux pas.",
+        ifCorrect:
+          "The L3 sandwich around your new engine: ne before peux, pas after. Nothing new to memorize.",
+        ifCorrectButFlat: "A calm no. The old frame did all the work.",
         ifMissingTargetPiece:
-          "Lead with je ne peux pas. Then je vais à la maison explains why.",
+          "Take je peux and wrap it: ne before peux, pas after.",
       },
       validationMode: "exact-or-alternative",
     },
@@ -237,12 +236,12 @@ const screens: LessonScreen[] = [
       title: "You can ask if you can.",
       lines: [
         "You asked permission with statement words and a rising voice.",
-        "You said no calmly: je ne peux pas, the ne...pas frame on a new engine.",
+        "You said no calmly by wrapping je peux in the ne...pas sandwich you already own.",
         "You asked for help from two small pieces: vous pouvez + m'aider.",
       ],
       piecesUsed: [
         "je peux",
-        "je ne peux pas",
+        "ne ___ pas",
         "faire une pause",
         "vous pouvez",
         "m'aider",
@@ -264,11 +263,11 @@ export const lesson011: Lesson = {
   estimatedMinutes: 5,
   canDo: "Ask if you can do something, say you can't, and ask for help.",
   whyItExists:
-    "Per the L11 pouvoir-light spec, this is a narrow permission/help doorway, not the pouvoir lesson: je peux active as a frozen engine (asking by rising intonation only), je ne peux pas reusing the owned ne...pas frame, and the help question Vous pouvez m'aider ? COMPOSED from small supported pieces (vous pouvez + m'aider, planted in L10 as recognition) rather than memorized as one chip. No pouvoir paradigm, no tu peux / on peut production, no object-pronoun system. The est-ce que way of asking is deliberately deferred to L12, which will graduate this lesson's question.",
+    "Per the L11 pouvoir-light spec, this is a narrow permission/help doorway, not the pouvoir lesson: je peux active as a frozen engine (asking by rising intonation only), the negative Je ne peux pas COMPOSED from je peux and the owned L3 ne...pas frame (not a separate chip), and the help question Vous pouvez m'aider ? COMPOSED from small supported pieces (vous pouvez + m'aider, planted in L10 as recognition) rather than memorized as one chip. No pouvoir paradigm, no tu peux / on peut production, no object-pronoun system. The est-ce que way of asking is deliberately deferred to L12, which will graduate this lesson's question.",
   prerequisites: ["v1-lesson-010"],
   learningItems: getItems([
     "chunk-je-peux",
-    "chunk-je-ne-peux-pas",
+    "grammar-ne-pas-sandwich",
     "chunk-vous-pouvez",
     "verb-aider",
     "chunk-m-aider",
@@ -278,14 +277,13 @@ export const lesson011: Lesson = {
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
-    "Aligned with docs/syllabus/L11-pouvoir-help-permission.lesson-spec.md: chunk-je-peux active, chunk-je-ne-peux-pas supported-active via the owned negation frame, vous pouvez as a supported pouvoir piece.",
+    "Aligned with docs/syllabus/L11-pouvoir-help-permission.lesson-spec.md: chunk-je-peux active, negative pouvoir practiced via the owned negation frame, vous pouvez as a supported pouvoir piece.",
     "Asking is by rising intonation ONLY in this lesson; est-ce que je peux stays recognition-level and is graduated in L12 (spec's L12 bridge).",
     "De-scope vs spec: the spec's faire ca example is replaced with the owned action package faire une pause (ca is not in the shipped registry, deferred with the L9 pause slice).",
     "Help structure (Haktan decision, PR #168 rework): the full question is never a chip or registry chunk. Pieces are chunk-vous-pouvez + chunk-m-aider (with verb-aider as the reusable infinitive); Vous pouvez m'aider ? exists only as the composed model answer. Learner-facing explanation stays tiny: me + aider = m'aider, to help me. No moi aider, no inversion (pouvez-vous), no grammar table.",
     "futureNote: m'aider opens a future object-pronoun-before-infinitive family (m'aider / t'aider / l'aider, later me donner / te donner / lui donner). That family, direct vs indirect objects, and reflexives are intentionally deferred; L11 teaches only the frozen m'aider form.",
     "s05 recombines the new negative with L7 (je vais a la maison): integration habit from L10 carried forward.",
-    "je ne peux pas is learned whole here as a useful negative pouvoir chip (a real chip that appears in exercises). It is a pattern-instance conceptually related to the broader ne ___ pas frame, which is NOT taught or generated here; later lessons may unpack it against that frame.",
-    "The structural validator's PROTECTED_CHUNKS calibration covers exactly the string je ne peux pas (same approved class as je ne suis pas); it does not admit arbitrary pronoun/modal negatives.",
+    "je ne peux pas appears here as a composed negative line (model answer / reveal / expected answer built from the je peux chip plus the owned L3 ne...pas frame), not as a separate registry chip. The broader ne ___ pas pattern remains the reusable system (Haktan decision, PR #168): useful negative verb phrases do not become protected clause chips.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],
@@ -293,7 +291,8 @@ export const lesson011: Lesson = {
     "TTS reads Je peux faire une pause ? and Vous pouvez m'aider ? with rising question contours.",
     "s03 trap reasons fire on voudrais and vais.",
     "s04 and s07 accept no-question-mark variants via acceptedAlternatives.",
-    "Recap chips are atoms/frames only; je ne peux pas passes as a protected negation frame; vous pouvez and m'aider pass natively.",
+    "s05 accepts the je vais a la maison continuation via acceptedAlternatives.",
+    "Recap chips are atoms/frames only; je ne peux pas never appears as a chip (the frame chip ne ___ pas stands in); vous pouvez and m'aider pass natively.",
     "The full help question never appears as a chip; it is composed from vous pouvez + m'aider.",
     "No est-ce que appears anywhere in L11 learner-facing copy.",
     "No streak/XP/mission language anywhere.",

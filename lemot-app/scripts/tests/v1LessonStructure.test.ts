@@ -52,16 +52,7 @@ const TERMINAL_PUNCTUATION = /[.!?]\s*$/;
 // Canonical multi-token chunks allowed as UI chips even though they trip the
 // subject-start + 3-token heuristic (negation frames per the v0.3 verdict
 // table). Extend deliberately — additions mean the chunk is approved canon.
-const PROTECTED_CHUNKS = new Set([
-  "je ne suis pas",
-  "ce n'est pas",
-  // L11 (Unit 2): approved negative pouvoir chunk, same class as
-  // "je ne suis pas" — a real chip, learned whole, usable in exercises.
-  // It is a pattern-INSTANCE related to the ne...pas frame, not the frame
-  // itself: this calibration admits exactly this string and must not be
-  // widened to arbitrary pronoun/modal negatives (PR #168).
-  "je ne peux pas",
-]);
+const PROTECTED_CHUNKS = new Set(["je ne suis pas", "ce n'est pas"]);
 
 function tokenCount(entry: string): number {
   // Split on whitespace, then split elisions so "j'ai" counts as two tokens.
@@ -172,6 +163,10 @@ describe("v1 lesson structure", () => {
       "J'ai une question",
       "je ne suis pas ici",
       "ce n'est pas pour moi",
+      // Locked by the L11 decision (PR #168): negative verb phrases are
+      // composed from the engine chip + the ne...pas frame, NOT protected
+      // as clause chips. Only "je ne suis pas" / "ce n'est pas" are canon.
+      "je ne peux pas",
       "C'est bon",
       "Bonjour.",
       "on y va !",
@@ -200,7 +195,6 @@ describe("v1 lesson structure", () => {
       "je voudrais",
       "je ne suis pas",
       "ce n'est pas",
-      "je ne peux pas",
       "est-ce que",
       "vous pouvez",
       "m'aider",

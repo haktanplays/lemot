@@ -535,19 +535,6 @@ export const ITEM_REGISTRY = {
     exampleEn: "Can I take a break?",
     relatedItemIds: ["chunk-je-voudrais", "chunk-faire-une-pause"],
   },
-  "chunk-je-ne-peux-pas": {
-    id: "chunk-je-ne-peux-pas",
-    type: "chunk",
-    text: "je ne peux pas",
-    status: "supported",
-    fr: "je ne peux pas",
-    en: "I can't",
-    meaning:
-      "Negative pouvoir chunk, learned whole: I can't. A pattern-instance of the ne...pas idea, not the general frame.",
-    exampleFr: "Je ne peux pas.",
-    exampleEn: "I can't.",
-    relatedItemIds: ["chunk-je-peux", "chunk-je-ne-suis-pas"],
-  },
   "chunk-vous-pouvez": {
     id: "chunk-vous-pouvez",
     type: "chunk",
