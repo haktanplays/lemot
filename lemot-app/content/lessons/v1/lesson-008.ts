@@ -17,14 +17,14 @@ const screens: LessonScreen[] = [
   {
     id: "s01-meet-c-est-ou",
     type: "meet-card",
-    targetItemIds: ["chunk-c-est-ou", "adverb-ou"],
+    targetItemIds: ["chunk-c-est-ou", "adverb-ou-where"],
     payload: {
       fr: "C'est où ?",
       en: "Where is it?",
       title: "Two words. One question.",
       highlights: [
         { text: "c'est", itemId: "chunk-c-est" },
-        { text: "où", itemId: "adverb-ou" },
+        { text: "où", itemId: "adverb-ou-where" },
       ],
       tts: true,
     },
@@ -47,7 +47,7 @@ const screens: LessonScreen[] = [
   {
     id: "s03-fill-c-est-blank",
     type: "fill-with-traps",
-    targetItemIds: ["adverb-ou", "chunk-c-est-ou"],
+    targetItemIds: ["adverb-ou-where", "chunk-c-est-ou"],
     payload: {
       prompt: "What fits the empty space?",
       sentenceBefore: "C'est ",
@@ -80,7 +80,7 @@ const screens: LessonScreen[] = [
   {
     id: "s04-weave-ask-where",
     type: "weave",
-    targetItemIds: ["chunk-c-est-ou", "adverb-ou"],
+    targetItemIds: ["chunk-c-est-ou", "adverb-ou-where"],
     payload: {
       weaveType: "supported",
       prompt: "Ask where it is.",
@@ -88,7 +88,7 @@ const screens: LessonScreen[] = [
         "You're looking for the room. Someone friendly is standing nearby.",
       suggestedPieces: [
         { text: "c'est", itemId: "chunk-c-est", required: true, label: "it is" },
-        { text: "où", itemId: "adverb-ou", required: true, label: "where" },
+        { text: "où", itemId: "adverb-ou-where", required: true, label: "where" },
       ],
       expectedAnswers: ["C'est où ?"],
       acceptedAlternatives: ["C'est où", "c'est où"],
@@ -138,7 +138,7 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "bonjour", itemId: "chunk-bonjour" },
         { text: "c'est", itemId: "chunk-c-est" },
-        { text: "où", itemId: "adverb-ou" },
+        { text: "où", itemId: "adverb-ou-where" },
       ],
       modelAnswer: "Bonjour, c'est où ?",
       reveal: {
@@ -181,18 +181,19 @@ export const lesson008: Lesson = {
   prerequisites: ["v1-lesson-007"],
   learningItems: getItems([
     "chunk-c-est-ou",
-    "adverb-ou",
+    "adverb-ou-where",
     "chunk-c-est",
     "chunk-bonjour",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
-    "Compact de-scope of docs/syllabus/L08-ou-location-movement-questions.lesson-spec.md against the shipped registry: the owned unit is the frozen question chunk-c-est-ou; adverb-ou is supported inside the frame (same ownership pattern as ce n'est pas).",
+    "Compact de-scope of docs/syllabus/L08-ou-location-movement-questions.lesson-spec.md against the shipped registry: the owned unit is the frozen question chunk-c-est-ou; adverb-ou-where is supported inside the frame (same ownership pattern as ce n'est pas).",
     "No est-ce que wrapper, no où est, no movement/destination system, no new place nouns.",
     "oui appears ONLY as a fill trap: it stays passive/recognition, never active-produced (L3 decision carried forward).",
     "Question-form Weave answers carry no-question-mark acceptedAlternatives (CI rule).",
     "Recycled load: chunk-c-est (target support), ici and chunk-bonjour as light carryover: the new question stays the headline of every screen.",
+    "adverb-ou-where uses the disambiguated id recommended by L08 spec section 18: où (where) folds to ou (or) under accent-stripping, so the id carries the sense to avoid a future collision/migration.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],
   qaChecks: [
