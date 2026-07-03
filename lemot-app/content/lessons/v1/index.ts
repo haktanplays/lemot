@@ -12,6 +12,9 @@ import { lesson009 } from "./lesson-009";
 import { lesson010 } from "./lesson-010";
 import { lesson011 } from "./lesson-011";
 import { lesson012 } from "./lesson-012";
+import { lesson013 } from "./lesson-013";
+import { lesson014 } from "./lesson-014";
+import { lesson015 } from "./lesson-015";
 
 export const V1_LESSONS: Lesson[] = [
   lesson000,
@@ -31,6 +34,11 @@ export const V1_LESSONS: Lesson[] = [
   lesson010,
   lesson011,
   lesson012,
+  // Unit 3 continuation (L13-L15): registered for validation; NOT
+  // learner-visible — the Home path caps the dev-apk scope at L6.
+  lesson013,
+  lesson014,
+  lesson015,
 ];
 
 export function getV1LessonById(id: string): Lesson | undefined {
