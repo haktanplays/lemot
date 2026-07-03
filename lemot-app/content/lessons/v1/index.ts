@@ -6,6 +6,9 @@ import { lesson003 } from "./lesson-003";
 import { lesson004 } from "./lesson-004";
 import { lesson005 } from "./lesson-005";
 import { lesson006 } from "./lesson-006";
+import { lesson007 } from "./lesson-007";
+import { lesson008 } from "./lesson-008";
+import { lesson009 } from "./lesson-009";
 
 export const V1_LESSONS: Lesson[] = [
   lesson000,
@@ -15,6 +18,11 @@ export const V1_LESSONS: Lesson[] = [
   lesson004,
   lesson005,
   lesson006,
+  // Unit 2 pilot (L7-L9): registered for validation; NOT learner-visible —
+  // the Home path caps the dev-apk scope at L6 (separate unlock decision).
+  lesson007,
+  lesson008,
+  lesson009,
 ];
 
 export function getV1LessonById(id: string): Lesson | undefined {
