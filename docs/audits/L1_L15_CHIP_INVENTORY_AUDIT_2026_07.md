@@ -240,3 +240,216 @@ Special-attention items: `je ne peux pas` (composed only, pinned) OK · `vous po
 **CLEAN_WITH_REVIEW_ITEMS**
 
 No violations: zero sentence/question chips in piecesUsed, zero protected-chunk expansion, all #164-#169 decisions intact in shipped content. Review items (no fixes in this audit): **R1** legacy sentence/clause-shaped registry chunks (chunk-je-suis-ici, chunk-j-ai-faim, chunk-j-ai-une-question) — keep but never replicate; **R2** chunk-oui still `active` vs post-L3 passive/trap canon — demotion candidate; **R3** unregistered chip surfaces `ici` / `faim` — identity gap for mastery events; **R4** 11 dormant registry items — annotate/triage later; plus the standing watches R5-R9 (on y va generalization, j'y vais chip pressure, negative-composition debt, m'aider doorway, infinitive-family growth). Recommended next step: a small, dedicated **registry hygiene pass** (R1-R4) as its own reviewed PR — separate from any content batch.
+
+
+---
+
+## Conversation-Based Extended Chip / Candidate Inventory — L1-L15
+
+**What Haktan wanted to see**: the broader conversation-derived chip/candidate map, not only the mechanical shipped-chip audit above. The sections above answer "what is in the lessons"; this section answers "what did our pedagogical decisions imply around each lesson" — so it can be judged whether the current chip restriction is too narrow, too loose, or correctly disciplined by L15. Planning/review inventory only: it changes no lesson, adds nothing to itemRegistry, and promotes nothing to active.
+
+**Classification legend**: Active now · Supported now · Exposure/ghost now · Carryover now · Future/backlog · Reject/do-not-chip · Watchlist/canon-sensitive.
+
+**Core surface rule** (from the Haktan discussion): each lesson can carry a broad extended inventory of roughly 30-40 candidates, but the lesson SURFACE stays narrow — active usually 1-3, supported usually 2-5, exposure capped, most of the quarry in future/backlog, and tempting-but-dangerous forms parked as reject/do-not-chip. The full mechanical quarry (including each lesson's owned carryover pool) lives in `candidate_inventory.csv`; the tables below are the conversation layer on top of it.
+
+### Fixed constraints (conversation decisions, restated)
+
+1. **Full sentences are not chips.** Model answers may be full sentences; `piecesUsed` stays atomized.
+2. **`je ne peux pas` is not a chip** — composes from `je peux` + `ne ___ pas`.
+3. **`vous pouvez m'aider ?` is not a chip** — composes from `vous pouvez` + `m'aider`.
+4. **`m'aider` is a seed, not a full object-pronoun lesson.** Future doorway: m'aider / t'aider / l'aider; later me donner / te donner / lui donner.
+5. **`j'y vais` is allowed as a chunk-first y-light doorway** — do not widen into a full y system.
+6. **`on y va` is a frozen formula only** — not a general on + y + verb pattern.
+7. **`il faut` is primary in L15; `je dois` supported; `aller` infinitive support only.**
+8. **`oui` is review-sensitive** — registry says active, current canon treats it as passive/trap after L3.
+9. **`ici` and `faim` are hygiene-sensitive** — produced as chips without registry identity.
+10. **Legacy clause chunks are review-sensitive** — je suis ici / j'ai faim / j'ai une question exist historically; new surfaces atomize.
+
+### Per-lesson extended tables
+
+Columns: surface · proposed class · source of decision (shipped / conversation decision / implied future doorway / rejected temptation / hygiene risk) · reason · active now · registry now · risk note.
+
+#### L1 — Survival Kit
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| bonjour / je voudrais / un cafe / s'il vous plait | Carryover now | shipped | L0 seed set, retrieved here | yes | yes | low |
+| merci | Active now | shipped | the one new chip | yes | yes | low |
+| je veux | Reject/do-not-chip | rejected temptation | blunt want; trap-only forever at this band | no | no | politeness canon |
+| non merci | Future/backlog | shipped (L3) | arrives with negation | no | yes | low |
+| un the / un croissant / une table / l'addition / un verre d'eau | Future/backlog | implied future doorway | service-slice quarry | no | no | article/de systems |
+| c'est combien | Future/backlog | implied future doorway | price ask; needs numbers | no | no | prerequisites |
+| excusez-moi / pardon / madame / monsieur | Future/backlog | implied future doorway | repair + address register | no | no | low |
+| merci beaucoup / de rien | Future/backlog | implied future doorway | politeness upgrades | no | no | low |
+| salut / s'il te plait | Future/backlog | implied future doorway | tu-register moment first | no | no | register |
+
+#### L2 — Etre
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| je suis | Active now | shipped | first engine | yes | yes | low |
+| ici | Supported now | hygiene risk | produced chip, NO registry identity (R3) | yes | **no** | mastery events unattached |
+| je suis ici | Watchlist/canon-sensitive | hygiene risk | legacy sentence-shaped registry chunk; surfaces atomize (constraint 10) | no (as chip) | yes (legacy) | do not replicate |
+| la / la-bas / c'est moi / voila | Future/backlog | implied future doorway | pointing & presence quarry | no | no | low |
+| tu es / vous etes | Future/backlog | shipped-but-dormant | registry items waiting for a register lesson | no | yes (dormant) | R4 |
+| il est / elle est | Reject/do-not-chip | rejected temptation | 3rd-person paradigm creep | no | no | no paradigms |
+| fatigue / desole / en retard / pret | Future/backlog | implied future doorway | je-suis-state family (L10/L13 specs wanted fatigue) | no | no | agreement |
+
+#### L3 — Non
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| non / je ne suis pas / ce n'est pas | Active now | shipped | negation core; the two frames are the ONLY protected chunks | yes | yes | protected list frozen |
+| ne ___ pas | Supported now (frame) | conversation decision | THE reusable negation frame; all future negatives compose over it | yes (as frame chip) | yes (grammar-ne-pas-sandwich) | carries all negative growth |
+| non merci | Supported now | shipped | polite decline formula | yes | yes | low |
+| oui | Watchlist/canon-sensitive | shipped + conversation decision | registry active, canon passive/trap post-L3; never produced anywhere (constraint 8) | no | yes | R2 demotion candidate |
+| je ne veux pas | Future/backlog | implied future doorway | composes vouloir-surface + ne ___ pas; never a clause chip | no | no | composition canon |
+| je ne sais pas | Future/backlog | implied future doorway | composes savoir chip + ne ___ pas; never a clause chip | no | no | composition canon |
+| je ne comprends pas | Future/backlog | implied future doorway | repair core, composed | no | no | repair slice unshipped |
+| pas encore / pas de probleme / c'est pas grave | Future/backlog | implied future doorway | negative formulas; register notes needed | no | no | register |
+| si (yes-after-negative) | Future/backlog | implied future doorway | sense-suffixed id when opened | no | no | homograph |
+| ne...jamais / ne...rien | Reject/do-not-chip | rejected temptation | second negation system too early | no | no | one frame only |
+
+#### L4 — J'ai
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| j'ai | Active now | shipped | second engine | yes | yes | low |
+| faim | Supported now | hygiene risk | produced chip, NO registry identity (R3) | yes | **no** | mastery events unattached |
+| une question | Supported now | shipped | noun package | yes | yes | low |
+| j'ai faim / j'ai une question | Watchlist/canon-sensitive | hygiene risk | legacy clause chunks; surfaces atomize (constraint 10) | no (as chips) | yes (legacy) | do not replicate |
+| j'ai soif / froid / chaud | Future/backlog | implied future doorway | sensation family, composed j'ai + noun | no | no | low |
+| j'ai besoin de | Future/backlog | implied future doorway | need+noun bridge (L15 owns the verbal side) | no | no | de-contraction |
+| une idee | Future/backlog | shipped-but-dormant | noun-idee waits for a slot | no | yes (dormant) | R4 |
+| il y a | Reject/do-not-chip (here) | rejected temptation | existential; separate doorway, never via avoir or L14 y | no | no | constraint + L14 spec |
+| avoir paradigm (tu as...) | Reject/do-not-chip | rejected temptation | no paradigms | no | no | canon |
+
+#### L5 — Un, une
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| un cafe / une question | Active now | shipped | article packages | yes | yes | low |
+| une pause | Future/backlog (here) | shipped (L9) | the next une-package; arrives with L9 | no | yes | low |
+| le / la / les / des | Future/backlog | implied future doorway | definite/plural article system, own lesson | no | no | system |
+| gender rule table | Reject/do-not-chip | rejected temptation | package-first canon; no rule tables | no | no | canon |
+| plural -s sound note | Future/backlog | implied future doorway | sound pattern | no | no | low |
+
+#### L6 — Un petit moment (integration)
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| au revoir | Active now | shipped | the one new chip; closes the arc | yes | yes | low |
+| L1-L5 spine (8 items) | Carryover now | shipped | integration retrieval | yes | yes | recycle must not steal future lessons |
+| a bientot / bonne journee / enchante | Future/backlog | implied future doorway | closing/meeting variants | no | no | low |
+| entrez / attendez | Reject/do-not-chip | rejected temptation | imperative doorway not opened | no | no | canon |
+| new lexis in integrations | Reject/do-not-chip | conversation decision | integration lessons add ~0 lexis (rhythm rule) | no | no | canon |
+
+#### L7 — Je vais
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| je vais | Active now | shipped | moving engine (compact doorway, PR #167) | yes | yes | low |
+| a la maison | Supported now | shipped | frozen destination package | yes | yes | low |
+| je ne vais pas | Future/backlog | implied future doorway | composes je vais + ne ___ pas; never a clause chip | no | no | composition canon |
+| tu vas / vous allez | Future/backlog | implied future doorway | needed later for tu y vas / vous y allez | no | no | register |
+| on va | Reject/do-not-chip | rejected temptation | paradigm creep; on lives only in on y va | no | no | constraint 6 |
+| au cafe / chez / a Paris | Future/backlog | implied future doorway | destination quarry; a+le contraction doorway | no | no | contraction system |
+| je vais + infinitive (futur proche) | Reject/do-not-chip | rejected temptation | tense doorway; recognition at most | no | no | L7 spec |
+
+#### L8 — C'est ou ?
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| c'est ou ? | Active now | shipped | frozen question, keeps its ? (PR #167) | yes | yes | low |
+| ou | Supported now | shipped | adverb-ou-where, sense-suffixed id | yes | yes | low |
+| c'est / ici | Carryover now | shipped / hygiene risk | ici again unregistered (R3) | yes | c'est yes, ici **no** | R3 |
+| ou est + noun / tu vas ou | Future/backlog | implied future doorway | fuller where-frames from the L8 spec | no | no | med |
+| la-bas / c'est la / a gauche / a droite | Future/backlog | implied future doorway | answer quarry | no | no | low |
+| l'hotel / la gare / les toilettes | Future/backlog | implied future doorway | place nouns; need definite articles | no | no | articles |
+| ou est-ce que / comment / quand / pourquoi | Reject/do-not-chip | rejected temptation | wrapper+question-word stack & question words; later band | no | no | canon |
+
+#### L9 — Faire une pause
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| faire une pause | Active now | shipped | the pause slice IS the lesson (PR #167) | yes | yes | low |
+| une pause | Supported now | shipped | noun behind the package | yes | yes (noun-pause) | low |
+| je fais | Future/backlog | conversation decision | held at supported by spec; NOT active from L9 | no | no | PR #167 |
+| faire ca / ca | Future/backlog | implied future doorway | needs ca; deferred with the slice | no | no | med |
+| maintenant | Reject/do-not-chip | rejected temptation | from the rejected L9 variant; do not revive unless syllabus reopens | no | no | PR #167 |
+| cafe-centric faire slice | Reject/do-not-chip | rejected temptation | rejected slice; pause slice is canon | no | no | PR #167 |
+| broad faire (sport/weather/idiom) | Reject/do-not-chip | rejected temptation | split-sense guardrail | no | no | canon |
+
+#### L10 — Une petite journee (integration)
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| (new lexis) | — | conversation decision | 0 new items; day-arc retrieval of L7-L9 | — | — | rhythm rule |
+| vous pouvez + m'aider | Exposure/ghost now | conversation decision | recognition-only seed meet-card; split pieces highlighted separately (constraint 3) | no | yes | must not read as one chunk |
+| L7-L9 + L1-L6 pool | Carryover now | shipped | the recombination quarry | yes | yes | low |
+| je suis fatigue | Future/backlog | implied future doorway | spec's combo, waits on fatigue | no | no | low |
+| Une petite journee (title) | — | conversation decision | approved natural title (replaced Un petit jour) | — | — | — |
+
+#### L11 — Je peux
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| je peux | Active now | shipped + conversation decision | the permission engine; a real chip | yes | yes | low |
+| ne ___ pas | Carryover now (frame) | conversation decision | composes the negative | yes | yes | low |
+| je ne peux pas | Reject/do-not-chip | conversation decision | COMPOSED line only (constraint 2); lint forbidden-list pins it | no (never a chip) | **no** | chip pressure recurs per engine |
+| vous pouvez | Supported now | shipped + conversation decision | request piece (split from the question) | yes | yes | low |
+| aider | Supported now | shipped | reusable infinitive | yes | yes | low |
+| m'aider | Supported now | shipped + conversation decision | frozen elision chunk; the object-pronoun SEED (constraint 4) | yes | yes | family deferred |
+| vous pouvez m'aider ? | Reject/do-not-chip | conversation decision | composed question only (constraint 3) | no (never a chip) | **no** | keep split |
+| intonation asks (je peux ... ?) | Supported now (production), comparison later | shipped | L11 asks by rising voice ONLY | yes | — | est-ce que deferred to L12 |
+| t'aider / l'aider | Future/backlog | implied future doorway | the m'aider family, next doorway | no | no | one narrow lesson later |
+| nous aider / vous aider / les aider | Future/backlog | implied future doorway | rest of the aider family | no | no | later still |
+| donner / me donner / te donner / lui donner | Future/backlog | implied future doorway | the give+indirect-pronoun doorway m'aider prefigures | no | no | much later |
+| nous donner / vous donner / leur donner | Future/backlog | implied future doorway | full indirect set | no | no | much later |
+| full object-pronoun table (me/te/le/la/lui/leur) | Reject/do-not-chip (now) | rejected temptation | system lecture; seeds only | no | no | constraint 4 |
+| moi aider | Reject/do-not-chip | rejected temptation | non-standard structure; never a learner model | no | no | canon |
+| tu peux / on peut / je pourrais | Future or Reject | implied / rejected | persons later; conditionnel deferred | no | no | paradigm/paid-zone |
+
+#### L12 — Est-ce que
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| est-ce que | Active now | shipped + conversation decision | THE wrapper target | yes | yes | low |
+| est-ce que je peux ... / est-ce que vous pouvez ... | Supported now (composed lines) | conversation decision | wrapped productions, never chips | yes (composed) | no (as wholes) | fixture-layer ids stay out of house registry |
+| intonation question forms | Exposure/ghost now (comparison copy) | conversation decision | valid French, but NOT accepted on wrapper-target screens (PR #169) | no | — | creep-back watch |
+| qu'est-ce que | Reject/do-not-chip (now) | rejected temptation | trap-only; own doorway much later | no | no | canon |
+| inversion (pouvez-vous ...) | Reject/do-not-chip | rejected temptation | blocked band-wide | no | no | canon |
+| est-ce qu'il y a / est-ce que tu ... / n'est-ce pas | Future/backlog | implied future doorway | after il y a / tu material / register lesson | no | no | med |
+
+#### L13 — Can-do, asked (integration)
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| (new lexis) | — | conversation decision | 0 new; chains L11+L12 over L7-L12 | — | — | rhythm rule |
+| est-ce que + je peux / vous pouvez / m'aider / ne ___ pas / faire une pause / je vais / a la maison / s'il vous plait | Carryover now | shipped | the chained scene | yes | yes | low |
+| je ne peux pas. je vais a la maison. | Supported now (composed line) | conversation decision | composed decline+exit; never a chip | yes (composed) | no | composition canon |
+| j'y vais | Exposure/ghost now | shipped + conversation decision | recognition-only L14 seed meet-card | no | yes | must not leak to production in L13 |
+| intonation alternatives | Exposure/ghost now (comparison) | conversation decision | sayit reveal copy only; wrapper-required weaves validate the wrapper (PR #169 fix) | no | — | policy line for L16+ |
+| je ne comprends pas / vous pouvez repeter / c'est pas grave / d'accord / un moment | Future/backlog | implied future doorway | the repair pair + scene glue from the spec | no | no | repair slice unshipped |
+
+#### L14 — J'y vais (y-light)
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| y | Active now | shipped + conversation decision | ONE sense: the place you named; sense-suffixed id | yes | yes | homograph guard |
+| j'y vais | Active now (chunk), never a chip | conversation decision | chunk-first doorway (constraint 5); production composes je vais + y; recap anchors in prose | yes (as chunk) | yes | chip pressure = canon decision, not lint exemption |
+| on y va | Active now (frozen formula) | conversation decision | frozen whole (constraint 6); weave hint chip only, never recap chip | yes (as formula) | yes | generalization pressure |
+| je vais / a la maison / au revoir | Carryover now | shipped | antecedent + exit frame | yes | yes | low |
+| tu y vas / vous y allez | Future/backlog | implied future doorway | need tu/vous aller forms first | no | no | register |
+| je n'y vais pas | Future/backlog | conversation decision | NOT current y-light; arrives later as composed copy, never a clause chip | no | no | composition canon |
+| il y a | Future/backlog | conversation decision | separate existential doorway; deliberately absent from L14 | no | no | conflation risk |
+| j'y suis / j'y pense | Future or Reject (now) | implied / rejected | multi-verb y; recognition later at most | no | no | system creep |
+| en | Future/backlog (trap-only now) | shipped + conversation decision | paid-zone pronoun; y/en contrast later | no | no | canon |
+| je vais y | Reject/do-not-chip | rejected temptation | word-order error; trap material only | no | no | — |
+| generalized on + y + verb (on y mange ...) | Reject/do-not-chip | rejected temptation | constraint 6; any extension is a new doorway | no | no | watchlist |
+| je peux y aller / je dois y aller | Future/backlog | implied future doorway | y+modal chains; unstacked for now | no | no | both engines must settle |
+
+#### L15 — Il faut
+| Surface | Class | Source | Reason | Active now | Registry now | Risk |
+|---|---|---|---|---|---|---|
+| il faut | Active now | shipped + conversation decision | primary, impersonal, invariable (constraint 7) | yes | yes | il faut que leak |
+| je dois | Supported now | shipped + conversation decision | one person-form, the je peux sibling | yes | yes | paradigm pressure |
+| aller | Supported now | shipped + conversation decision | infinitive support ONLY; je vais stays the engine | yes | yes | closed infinitive set |
+| il faut faire une pause / il faut aller ... / je dois aller ... | Supported now (composed lines) | conversation decision | model/expected sentences over owned pieces; never chips | yes (composed) | no (as wholes) | low |
+| il faut que | Reject/do-not-chip | conversation decision | the number-one leak; TRAP-ONLY today (L15 s03) | no | no | subjunctive door stays shut |
+| tu dois / on doit / vous devez | Future/backlog | implied future doorway | devoir persons, recognition-first later | no | no | paradigm |
+| il ne faut pas | Future/backlog | implied future doorway | prohibition nuance (meaning shift vs je ne dois pas) | no | no | med |
+| il faut + noun / il me faut | Future/backlog | implied future doorway | different sense; own doorway | no | no | sense split |
+| je devrais / il faudrait | Reject/do-not-chip (now) | rejected temptation | advice register; deferred | no | no | tone drift |
+| devoir = owe | Reject/do-not-chip (now) | rejected temptation | separate sense; sense-suffix if ever opened | no | no | homograph |
+| il faut m'aider | Reject/do-not-chip | conversation decision | re-anchors m' outside its frozen chunk; deliberately avoided | no | no | constraint 4 |
+
+### Reading the map
+
+By L15 the discipline holds: 26 active registry items across fifteen lessons (1-3 active-new per teaching lesson, 0 in the three integrations), a supported layer of composition pieces, exposure used only for seeds and traps, and every dangerous temptation parked with a reason. The extended quarry above shows the restriction is NOT starving the syllabus — each doorway (object pronouns, y expansion, devoir persons, repair, service) has a named, ordered backlog waiting on prerequisites rather than an improvised widening of today's chips.
