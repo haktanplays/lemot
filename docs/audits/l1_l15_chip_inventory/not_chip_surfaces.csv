@@ -1,0 +1,23 @@
+surface,where_it_appears,why_not_a_chip,composes_from,future_risk
+Je ne peux pas.,L11 s05 / L13 s05 expected+model,"PR #168 decision: composed negative, never a chip or registry item",je peux + ne ___ pas frame,chip pressure returns with every negative engine; lint forbidden-list pins it
+Vous pouvez m'aider ?,L10 s06 meet fr; L11 s07 expected+model; model answers L12/L13,PR #168 decision: full question is never a chunk/chip,vous pouvez + m'aider (+ rising voice),tempting to freeze as one formula; keep split
+Est-ce que je peux faire une pause ?,L12 s05 / L13 s02 expected+model,"wrapped question = composed production, not an item",est-ce que + je peux + faire une pause,spec-level recombination ids exist in the fixture layer only; do not import as house chips
+Est-ce que vous pouvez m'aider ?,L12 s06 / L13 s04 expected+model,same as above,est-ce que + vous pouvez + m'aider,same
+Est-ce que c'est ici ?,L12 s04 expected+model; L13 s03 fill frame,wrapped question = composed production,est-ce que + c'est + ici,low
+Je peux faire une pause ?,sayit naturalAlternatives L11/L12/L13,intonation comparison copy only; not accepted on wrapper-target screens (PR #169),je peux + faire une pause + rising voice,must not creep back into wrapper-screen acceptedAlternatives
+J'y vais.,L13 s06 seed fr; L14 expected+model,owned chunk exists (chunk-j-y-vais) but the sentence is never a chip; production composes je vais + y; recap shows it in prose lines only,je vais + y (elision),"if learners need the whole form as a chip later, it needs a deliberate canon decision, not a lint exemption"
+On y va ?,L14 s06 expected+model; s03 meet fr,frozen formula approved as weave hint chip ONLY; never a recap chip,frozen whole (not on+y+verb pattern),generalization pressure (on y mange etc.) must stay blocked
+Il faut faire une pause.,L15 s01 meet fr; s04 expected+model,model/expected sentence; chips are il faut + faire une pause,il faut + faire une pause,low
+Je dois aller à la maison.,L15 s05 expected+model,model/expected sentence,je dois + aller + à la maison,low
+Je vais à la maison. Au revoir.,L7 s05 / L10 s05 expected+model,two-sentence model close; chips are atoms,je vais + à la maison + au revoir,low
+"Bonjour, je voudrais un café, s'il vous plaît.",L0/L1 expected+model,model sentence; chips are the four survival atoms,bonjour + je voudrais + un café + s'il vous plaît,low
+Bonjour. Je suis ici. J'ai une question. Merci. Au revoir.,L6 s09 sayit model,"integration model chain, never a chip",owned L1-L5 atoms,low
+je suis ici,registry chunk-je-suis-ici (L0/L2/L6 learningItems),pre-canon sentence-shaped registry chunk; chip use would trip lint; recaps atomize,je suis + ici,REVIEW: registry-level legacy; keep but never chip
+j'ai faim / j'ai une question,registry chunks (L4/L6),pre-canon clause chunks; lint forbidden-list pins j'ai une question; recaps atomize,j'ai + faim / j'ai + une question,REVIEW: same class
+Il faut que,L15 s03 fill trap,trap-only leak guard (subjunctive doorway blocked),-,must never gain a correct-option or chip role at this band
+Qu'est-ce que,L12 s03 fill trap,trap-only (question-word overload guard),-,same
+en,L14 s04 fill trap,trap-only (y/en confusion guard); production blocked (paid-zone),-,same
+oui,trap option in L3/L8/L13/L14 fills,"post-L3 canon: passive/trap only, never produced",-,REVIEW: registry status still active; demotion candidate
+veux,L1 s03 fill trap,blunt-want trap; je veux deliberately not taught,-,low
+Je suis ici. / Je ne suis pas ici. / J'ai faim. / J'ai une question. / Non merci.,sentence-level fill OPTIONS in L4 s03b / L6 s02 / L6 s04,"choice surfaces (recognition), not chips; options are not piecesUsed",-,REVIEW-low: sentence options are fine as recognition but should not migrate to chip surfaces
+ne ___ pas,L11/L13 weave hint chip + recap chip,"a FRAME skeleton chip (allowed), not a sentence; backed by grammar-ne-pas-sandwich",-,low; the frame chip is the approved composition route
