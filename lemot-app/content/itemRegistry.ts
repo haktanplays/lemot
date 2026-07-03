@@ -543,7 +543,7 @@ export const ITEM_REGISTRY = {
     fr: "je ne peux pas",
     en: "I can't",
     meaning:
-      "Negative ability frame: I can't. The L3 ne...pas sandwich around je peux.",
+      "Negative pouvoir chunk, learned whole: I can't. A pattern-instance of the ne...pas idea, not the general frame.",
     exampleFr: "Je ne peux pas.",
     exampleEn: "I can't.",
     relatedItemIds: ["chunk-je-peux", "chunk-je-ne-suis-pas"],

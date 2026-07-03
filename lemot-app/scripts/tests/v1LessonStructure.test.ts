@@ -55,10 +55,11 @@ const TERMINAL_PUNCTUATION = /[.!?]\s*$/;
 const PROTECTED_CHUNKS = new Set([
   "je ne suis pas",
   "ce n'est pas",
-  // L11 (Unit 2): negation frame on the je peux engine, same class as
-  // "je ne suis pas". Approved as an EXERCISE CHUNK with the L11
-  // pouvoir-light spec (PR #168) — a narrow frame exemption, NOT a
-  // precedent for sentence/clause chips.
+  // L11 (Unit 2): approved negative pouvoir chunk, same class as
+  // "je ne suis pas" — a real chip, learned whole, usable in exercises.
+  // It is a pattern-INSTANCE related to the ne...pas frame, not the frame
+  // itself: this calibration admits exactly this string and must not be
+  // widened to arbitrary pronoun/modal negatives (PR #168).
   "je ne peux pas",
 ]);
 
