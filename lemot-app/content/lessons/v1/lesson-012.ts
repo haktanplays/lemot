@@ -102,7 +102,7 @@ const screens: LessonScreen[] = [
         { text: "ici", required: true, label: "here" },
       ],
       expectedAnswers: ["Est-ce que c'est ici ?"],
-      acceptedAlternatives: ["Est-ce que c'est ici", "C'est ici ?"],
+      acceptedAlternatives: ["Est-ce que c'est ici"],
       reveal: {
         modelAnswer: "Est-ce que c'est ici ?",
         ifCorrect: "The wrapper in front, your L8 sentence untouched behind it.",
@@ -140,15 +140,13 @@ const screens: LessonScreen[] = [
         },
       ],
       expectedAnswers: ["Est-ce que je peux faire une pause ?"],
-      acceptedAlternatives: [
-        "Est-ce que je peux faire une pause",
-        "Je peux faire une pause ?",
-      ],
+      acceptedAlternatives: ["Est-ce que je peux faire une pause"],
       reveal: {
         modelAnswer: "Est-ce que je peux faire une pause ?",
-        ifCorrect: "L11's question, graduated. Both ways are yours now.",
+        ifCorrect:
+          "L11's question, graduated. The rising voice still exists; here, the wrapper was the point.",
         ifCorrectButFlat:
-          "Right shape. Rising voice or wrapper: French accepts both.",
+          "Right shape. The wrapper marks the question all by itself.",
         ifMissingTargetPiece:
           "Keep je peux faire une pause whole, and put est-ce que in front.",
       },
@@ -156,7 +154,49 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    id: "s06-sayit-formal-ask",
+    id: "s06-weave-wrap-help",
+    type: "weave",
+    targetItemIds: ["chunk-est-ce-que", "chunk-vous-pouvez", "chunk-m-aider"],
+    payload: {
+      weaveType: "supported",
+      prompt: "Ask clearly: can you help me?",
+      context:
+        "The desk is busy and you don't want your question to get lost. Mark it clearly.",
+      suggestedPieces: [
+        {
+          text: "est-ce que",
+          itemId: "chunk-est-ce-que",
+          required: true,
+          label: "question wrapper",
+        },
+        {
+          text: "vous pouvez",
+          itemId: "chunk-vous-pouvez",
+          required: true,
+          label: "you can",
+        },
+        {
+          text: "m'aider",
+          itemId: "chunk-m-aider",
+          required: true,
+          label: "to help me",
+        },
+      ],
+      expectedAnswers: ["Est-ce que vous pouvez m'aider ?"],
+      acceptedAlternatives: ["Est-ce que vous pouvez m'aider"],
+      reveal: {
+        modelAnswer: "Est-ce que vous pouvez m'aider ?",
+        ifCorrect:
+          "Three small pieces: the wrapper, vous pouvez, m'aider. Nothing memorized whole.",
+        ifCorrectButFlat: "Right shape. The wrapper carries the asking now.",
+        ifMissingTargetPiece:
+          "Start with est-ce que, then build the request: vous pouvez + m'aider.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    id: "s07-sayit-formal-ask",
     type: "say-it-your-way",
     targetItemIds: ["chunk-est-ce-que"],
     weakPointTags: ["natural-speech"],
@@ -173,24 +213,32 @@ const screens: LessonScreen[] = [
       modelAnswer: "Est-ce que je peux faire une pause, s'il vous plaît ?",
       reveal: {
         modelAnswer: "Est-ce que je peux faire une pause, s'il vous plaît ?",
-        naturalAlternatives: ["Est-ce que je peux faire une pause ?", "Je peux faire une pause ?"],
+        naturalAlternatives: ["Est-ce que je peux faire une pause ?"],
         explanation:
-          "All three are natural. The wrapper marks the question clearly; the rising voice from L11 still works everywhere.",
+          "Both are natural. The wrapper marks the question clearly. (For comparison: L11's rising voice also exists in spoken French; today, practice the wrapper.)",
       },
       validationMode: "model-answer-only",
     },
   },
   {
-    id: "s07-recap-wrapper",
+    id: "s08-recap-wrapper",
     type: "recap",
     payload: {
       title: "You can ask two ways.",
       lines: [
         "You wrapped sentences you own and got clear yes/no questions.",
         "Nothing inside the sentence changed. The wrapper did all the work.",
-        "Rising voice or est-ce que: both are yours now.",
+        "You even wrapped a request built from small pieces: vous pouvez + m'aider.",
       ],
-      piecesUsed: ["est-ce que", "je peux", "c'est", "ici", "faire une pause"],
+      piecesUsed: [
+        "est-ce que",
+        "je peux",
+        "c'est",
+        "ici",
+        "faire une pause",
+        "vous pouvez",
+        "m'aider",
+      ],
       nextLabel: "Continue",
     },
   },
@@ -207,30 +255,35 @@ export const lesson012: Lesson = {
   estimatedMinutes: 5,
   canDo: "Turn a sentence you own into a clear yes/no question with est-ce que.",
   whyItExists:
-    "Per the L12 est-ce que compact spec, this lesson teaches exactly one frame: est-ce que + owned clause = yes/no question. It graduates L11's recognition-level Est-ce que je peux ... ? to owned production, and wraps only sentences the learner already produces (c'est ici, je peux faire une pause). No question words, no inversion, no qu'est-ce que (trap only): the wrapper is the whole lesson, so questions stop depending on intonation alone.",
+    "Per the L12 est-ce que compact spec, this lesson teaches exactly one frame: est-ce que + owned clause = yes/no question. It graduates L11's recognition-level Est-ce que je peux ... ? to owned production, and wraps only material the learner already produces (c'est ici, je peux faire une pause, vous pouvez + m'aider). No question words, no inversion, no qu'est-ce que (trap only): the wrapper is the whole lesson, so questions stop depending on intonation alone.",
   prerequisites: ["v1-lesson-011"],
   learningItems: getItems([
     "chunk-est-ce-que",
     "chunk-je-peux",
     "chunk-c-est",
     "chunk-faire-une-pause",
+    "chunk-vous-pouvez",
+    "chunk-m-aider",
     "chunk-sil-vous-plait",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
-    "Aligned with docs/syllabus/L12-est-ce-que-question-wrapper.compact-spec.md: the frame est-ce que + clause is the only new material; both wrapped clauses are already-owned productions (L8 c'est ici, L11 je peux faire une pause).",
+    "Aligned with docs/syllabus/L12-est-ce-que-question-wrapper.compact-spec.md: the frame est-ce que + clause is the only new material; all wrapped clauses are already-owned or just-taught productions (L8 c'est ici, L11 je peux faire une pause and vous pouvez + m'aider).",
     "Spec traps honored: qu-est-ce-que-overload (Qu'est-ce que appears ONLY as a fill trap, never taught) and inversion-too-early (no inversion anywhere).",
-    "L11 bridge closed: est-ce que je peux ... ? moves from recognition to owned, and the rising-voice way stays explicitly valid (acceptedAlternatives + sayit alternatives), so the wrapper adds an option instead of replacing one.",
+    "L11 bridge closed: est-ce que je peux ... ? moves from recognition to owned.",
+    "Rising voice is a comparison note ONLY (Haktan decision, PR #168 rework): on wrapper-target production screens the rising-voice form is NOT an accepted answer; it appears only in insight/reveal comparison copy. The wrapper is the point of every production here.",
+    "The wrapped help question is composed from small pieces (est-ce que + vous pouvez + m'aider); no full question is ever a chip or registry chunk.",
     "chunk-est-ce-que is a frame chunk: learners take it whole; no decomposition into est / ce / que.",
     "Question-form weave answers carry no-question-mark acceptedAlternatives (CI rule).",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],
   qaChecks: [
-    "TTS reads Est-ce que je peux faire une pause ? with a natural question contour.",
+    "TTS reads Est-ce que je peux faire une pause ? and Est-ce que vous pouvez m'aider ? with natural question contours.",
     "s03 trap reasons fire on Qu'est-ce que and Ou.",
-    "s04 and s05 accept no-question-mark variants via acceptedAlternatives.",
+    "s04, s05 and s06 accept no-question-mark variants via acceptedAlternatives.",
+    "Rising-voice forms are never accepted answers on wrapper production screens.",
     "Recap chips are atoms/frames only; est-ce que passes as a frame chip.",
     "Qu'est-ce que never appears outside the s03 trap.",
     "No inversion form appears anywhere.",

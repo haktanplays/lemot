@@ -56,7 +56,9 @@ const PROTECTED_CHUNKS = new Set([
   "je ne suis pas",
   "ce n'est pas",
   // L11 (Unit 2): negation frame on the je peux engine, same class as
-  // "je ne suis pas" — approved with the L11 pouvoir-light spec.
+  // "je ne suis pas". Approved as an EXERCISE CHUNK with the L11
+  // pouvoir-light spec (PR #168) — a narrow frame exemption, NOT a
+  // precedent for sentence/clause chips.
   "je ne peux pas",
 ]);
 
@@ -199,6 +201,8 @@ describe("v1 lesson structure", () => {
       "ce n'est pas",
       "je ne peux pas",
       "est-ce que",
+      "vous pouvez",
+      "m'aider",
       "ne ___ pas",
       "ici",
       "faim",

@@ -148,9 +148,24 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    id: "s06-weave-ask-for-help",
+    id: "s06-insight-m-aider",
+    type: "insight-card",
+    targetItemIds: ["chunk-m-aider", "verb-aider"],
+    payload: {
+      insightType: "grammar-nugget",
+      title: "One small squeeze.",
+      body:
+        "Aider = to help. To say help ME, French squeezes two small words into one: me + aider = m'aider. Take m'aider as one piece for now.",
+      examples: [
+        { fr: "aider", en: "to help" },
+        { fr: "m'aider", en: "to help me" },
+      ],
+    },
+  },
+  {
+    id: "s07-weave-ask-for-help",
     type: "weave",
-    targetItemIds: ["chunk-vous-pouvez-m-aider"],
+    targetItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
     payload: {
       weaveType: "supported",
       prompt: "Ask them: can you help me?",
@@ -158,10 +173,16 @@ const screens: LessonScreen[] = [
         "You heard this one yesterday. Now you need it: the form in front of you makes no sense.",
       suggestedPieces: [
         {
-          text: "vous pouvez m'aider",
-          itemId: "chunk-vous-pouvez-m-aider",
+          text: "vous pouvez",
+          itemId: "chunk-vous-pouvez",
           required: true,
-          label: "can you help me",
+          label: "you can",
+        },
+        {
+          text: "m'aider",
+          itemId: "chunk-m-aider",
+          required: true,
+          label: "to help me",
         },
         {
           text: "s'il vous plaît",
@@ -176,16 +197,17 @@ const screens: LessonScreen[] = [
       ],
       reveal: {
         modelAnswer: "Vous pouvez m'aider ?",
-        ifCorrect: "One frozen chunk, taken whole. Same rising voice as je peux.",
+        ifCorrect:
+          "Two small pieces, one request. Same rising voice as je peux.",
         ifCorrectButFlat: "Right shape. The rising tone carries the request.",
         ifMissingTargetPiece:
-          "Take vous pouvez m'aider as one piece. The voice does the asking.",
+          "Start with vous pouvez, then hand it m'aider. The voice does the asking.",
       },
       validationMode: "exact-or-alternative",
     },
   },
   {
-    id: "s07-sayit-need-a-break",
+    id: "s08-sayit-need-a-break",
     type: "say-it-your-way",
     targetItemIds: ["chunk-je-peux"],
     weakPointTags: ["natural-speech"],
@@ -209,16 +231,23 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    id: "s08-recap-je-peux",
+    id: "s09-recap-je-peux",
     type: "recap",
     payload: {
       title: "You can ask if you can.",
       lines: [
         "You asked permission with statement words and a rising voice.",
         "You said no calmly: je ne peux pas, the ne...pas frame on a new engine.",
-        "You asked for help with one frozen chunk, taken whole.",
+        "You asked for help from two small pieces: vous pouvez + m'aider.",
       ],
-      piecesUsed: ["je peux", "je ne peux pas", "faire une pause", "s'il vous plaît"],
+      piecesUsed: [
+        "je peux",
+        "je ne peux pas",
+        "faire une pause",
+        "vous pouvez",
+        "m'aider",
+        "s'il vous plaît",
+      ],
       nextLabel: "Continue",
     },
   },
@@ -235,32 +264,36 @@ export const lesson011: Lesson = {
   estimatedMinutes: 5,
   canDo: "Ask if you can do something, say you can't, and ask for help.",
   whyItExists:
-    "Per the L11 pouvoir-light spec, this is a narrow permission/help doorway, not the pouvoir lesson: je peux active as a frozen engine (asking by rising intonation only), je ne peux pas reusing the owned ne...pas frame, and vous pouvez m'aider ? produced as one supported frozen chunk (planted in L10 as recognition). No pouvoir paradigm, no tu peux / on peut production, no infinitive rule talk. The est-ce que way of asking is deliberately deferred to L12, which will graduate this lesson's question.",
+    "Per the L11 pouvoir-light spec, this is a narrow permission/help doorway, not the pouvoir lesson: je peux active as a frozen engine (asking by rising intonation only), je ne peux pas reusing the owned ne...pas frame, and the help question Vous pouvez m'aider ? COMPOSED from small supported pieces (vous pouvez + m'aider, planted in L10 as recognition) rather than memorized as one chip. No pouvoir paradigm, no tu peux / on peut production, no object-pronoun system. The est-ce que way of asking is deliberately deferred to L12, which will graduate this lesson's question.",
   prerequisites: ["v1-lesson-010"],
   learningItems: getItems([
     "chunk-je-peux",
     "chunk-je-ne-peux-pas",
-    "chunk-vous-pouvez-m-aider",
+    "chunk-vous-pouvez",
+    "verb-aider",
+    "chunk-m-aider",
     "chunk-faire-une-pause",
     "chunk-sil-vous-plait",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
-    "Aligned with docs/syllabus/L11-pouvoir-help-permission.lesson-spec.md: chunk-je-peux active, chunk-je-ne-peux-pas supported-active via the owned negation frame, vous pouvez only inside the frozen help chunk.",
+    "Aligned with docs/syllabus/L11-pouvoir-help-permission.lesson-spec.md: chunk-je-peux active, chunk-je-ne-peux-pas supported-active via the owned negation frame, vous pouvez as a supported pouvoir piece.",
     "Asking is by rising intonation ONLY in this lesson; est-ce que je peux stays recognition-level and is graduated in L12 (spec's L12 bridge).",
     "De-scope vs spec: the spec's faire ca example is replaced with the owned action package faire une pause (ca is not in the shipped registry, deferred with the L9 pause slice).",
-    "aider and m' live only inside chunk-vous-pouvez-m-aider; no productive aider, no me/m' object-pronoun teaching.",
+    "Help structure (Haktan decision, PR #168 rework): the full question is never a chip or registry chunk. Pieces are chunk-vous-pouvez + chunk-m-aider (with verb-aider as the reusable infinitive); Vous pouvez m'aider ? exists only as the composed model answer. Learner-facing explanation stays tiny: me + aider = m'aider, to help me. No moi aider, no inversion (pouvez-vous), no grammar table.",
+    "futureNote: m'aider opens a future object-pronoun-before-infinitive family (m'aider / t'aider / l'aider, later me donner / te donner / lui donner). That family, direct vs indirect objects, and reflexives are intentionally deferred; L11 teaches only the frozen m'aider form.",
     "s05 recombines the new negative with L7 (je vais a la maison): integration habit from L10 carried forward.",
     "je ne peux pas is added to the structural validator's PROTECTED_CHUNKS as approved canon (negation frame chip, same class as je ne suis pas).",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],
   qaChecks: [
-    "TTS reads Je peux faire une pause ? with a rising question contour.",
+    "TTS reads Je peux faire une pause ? and Vous pouvez m'aider ? with rising question contours.",
     "s03 trap reasons fire on voudrais and vais.",
-    "s04 and s06 accept no-question-mark variants via acceptedAlternatives.",
-    "Recap chips are atoms/frames only; je ne peux pas passes as a protected negation frame.",
+    "s04 and s07 accept no-question-mark variants via acceptedAlternatives.",
+    "Recap chips are atoms/frames only; je ne peux pas passes as a protected negation frame; vous pouvez and m'aider pass natively.",
+    "The full help question never appears as a chip; it is composed from vous pouvez + m'aider.",
     "No est-ce que appears anywhere in L11 learner-facing copy.",
     "No streak/XP/mission language anywhere.",
   ],
