@@ -158,7 +158,7 @@ const screens: LessonScreen[] = [
       context: "Someone is looking for you in the wrong room. Tell them you are not there.",
       suggestedPieces: [
         { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true, label: "negative frame" },
-        { text: "ici", required: true, label: "place word" },
+        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je ne suis pas ici."],
       reveal: {
@@ -183,7 +183,7 @@ const screens: LessonScreen[] = [
       context: "Someone points to the wrong place. Tell them it is not the spot.",
       suggestedPieces: [
         { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", required: true, label: "negative frame" },
-        { text: "ici", required: true, label: "place word" },
+        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Ce n'est pas ici."],
       acceptedAlternatives: [
@@ -211,7 +211,7 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "Non", itemId: "chunk-non", required: true, label: "no" },
         { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true, label: "negative frame" },
-        { text: "ici", required: true, label: "place word" },
+        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
       ],
       hintCloze: "Non, je ne suis pas ___.",
       expectedAnswers: ["Non, je ne suis pas ici."],
@@ -237,7 +237,7 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "Non", itemId: "chunk-non" },
         { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas" },
-        { text: "ici" },
+        { text: "ici", itemId: "word-ici" },
       ],
       modelAnswer: "Non, je ne suis pas ici.",
       reveal: {

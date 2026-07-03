@@ -87,7 +87,7 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
         { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
-        { text: "ici", required: true, label: "place word" },
+        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
       ],
       hintCloze: "Bonjour, je suis ___.",
       expectedAnswers: ["Bonjour, je suis ici."],
@@ -188,7 +188,7 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je suis", itemId: "chunk-je-suis" },
-        { text: "ici" },
+        { text: "ici", itemId: "word-ici" },
         { text: "j'ai", itemId: "chunk-j-ai" },
         { text: "une question", itemId: "chunk-une-question" },
       ],
