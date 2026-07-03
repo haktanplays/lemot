@@ -52,7 +52,13 @@ const TERMINAL_PUNCTUATION = /[.!?]\s*$/;
 // Canonical multi-token chunks allowed as UI chips even though they trip the
 // subject-start + 3-token heuristic (negation frames per the v0.3 verdict
 // table). Extend deliberately — additions mean the chunk is approved canon.
-const PROTECTED_CHUNKS = new Set(["je ne suis pas", "ce n'est pas"]);
+const PROTECTED_CHUNKS = new Set([
+  "je ne suis pas",
+  "ce n'est pas",
+  // L11 (Unit 2): negation frame on the je peux engine, same class as
+  // "je ne suis pas" — approved with the L11 pouvoir-light spec.
+  "je ne peux pas",
+]);
 
 function tokenCount(entry: string): number {
   // Split on whitespace, then split elisions so "j'ai" counts as two tokens.
@@ -191,6 +197,8 @@ describe("v1 lesson structure", () => {
       "je voudrais",
       "je ne suis pas",
       "ce n'est pas",
+      "je ne peux pas",
+      "est-ce que",
       "ne ___ pas",
       "ici",
       "faim",

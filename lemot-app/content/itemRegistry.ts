@@ -521,6 +521,59 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-faire-une-pause"],
     weakPointTags: ["gender", "articles"],
   },
+  // -- Unit 2 batch (L10-L12): pouvoir-light + est-ce que wrapper -----------
+  "chunk-je-peux": {
+    id: "chunk-je-peux",
+    type: "chunk",
+    text: "je peux",
+    status: "active",
+    fr: "je peux",
+    en: "I can",
+    meaning:
+      "Frozen ability/permission chunk: I can. Ask by rising intonation; no pouvoir paradigm yet.",
+    exampleFr: "Je peux faire une pause ?",
+    exampleEn: "Can I take a break?",
+    relatedItemIds: ["chunk-je-voudrais", "chunk-faire-une-pause"],
+  },
+  "chunk-je-ne-peux-pas": {
+    id: "chunk-je-ne-peux-pas",
+    type: "chunk",
+    text: "je ne peux pas",
+    status: "supported",
+    fr: "je ne peux pas",
+    en: "I can't",
+    meaning:
+      "Negative ability frame: I can't. The L3 ne...pas sandwich around je peux.",
+    exampleFr: "Je ne peux pas.",
+    exampleEn: "I can't.",
+    relatedItemIds: ["chunk-je-peux", "chunk-je-ne-suis-pas"],
+  },
+  "chunk-vous-pouvez-m-aider": {
+    id: "chunk-vous-pouvez-m-aider",
+    type: "chunk",
+    text: "vous pouvez m'aider ?",
+    status: "supported",
+    fr: "vous pouvez m'aider ?",
+    en: "can you help me?",
+    meaning:
+      "Frozen help ask: can you help me? Taken whole; aider and m' live only inside this chunk for now.",
+    exampleFr: "Vous pouvez m'aider ?",
+    exampleEn: "Can you help me?",
+    relatedItemIds: ["chunk-je-peux", "chunk-sil-vous-plait"],
+  },
+  "chunk-est-ce-que": {
+    id: "chunk-est-ce-que",
+    type: "chunk",
+    text: "est-ce que",
+    status: "active",
+    fr: "est-ce que",
+    en: "question wrapper (is it that...)",
+    meaning:
+      "Yes/no question wrapper. Put it in front of a sentence you own and it becomes a question. No inversion, no question words yet.",
+    exampleFr: "Est-ce que c'est ici ?",
+    exampleEn: "Is it here?",
+    relatedItemIds: ["chunk-c-est", "chunk-je-peux"],
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;
