@@ -37,6 +37,18 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 
 ## Queue
 
+### 2026-07-04 — Payload Economy v0 canon decisions (survival-formula class + oui answer word)
+
+- Date: 2026-07-04
+- Cloud branch: docs/payload-economy-v0
+- Decision/change: Payload Economy v0 locked (docs/PAYLOAD_ECONOMY_v0.md): four-layer item economy (engine/payload/ghost/pool) with a visible-lesson surface ceiling; NEW closed survival-formula class (je ne comprends pas, vous pouvez repeter ? — separate SURVIVAL_FORMULAS lint set, PROTECTED_CHUNKS stays frozen at 2); oui rehabilitated as producible ANSWER word (trap rule scoped to wrong-slot uses); L1-L5 Kademe 2 enrichment table locked; L5/L15 breadth metrics set.
+- Source PR or commit: docs/payload-economy-v0 branch (spec PR, follows PR #170 audit + PR #171 hygiene)
+- Obsidian target: 01 Projeler/LeMot/LeMot - User Journey.md (decision log) + v1 Canon TOP
+- Mempalace action: check_duplicate then add_drawer (survival-formula class; oui answer-word) + kg_add (Payload Economy -> chip canon)
+- Operator action: docs sync
+- Status: PENDING
+- Operator notes:
+
 ### 2026-05-18 — PR #1 cloud pipeline migration landed
 
 - Date: 2026-05-18
