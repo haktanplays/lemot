@@ -37,6 +37,18 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 
 ## Queue
 
+### 2026-07-04 — Product Q&A canon (learner profile, true Weave, reveal window, Campfire, free threshold)
+
+- Date: 2026-07-04
+- Cloud branch: docs/payload-economy-v0
+- Decision/change: docs/CAIRN_PRODUCT_ANSWERS_2026_07.md locked: learner = nerd hobbyist (LearnCraft-inspired, mechanics-first); true mixed-language Weave (open weaves ungraded, answer then Natural Reveal); Natural Reveal on all free-writing exercises; reveal look-ahead window 3-4 lessons (max 5-6); hardcoded human audio + early shadowing; Campfire @ L24 generates practice from owned inventory + error tracking (not hardcoded); free tier promise = self-talk threshold, chip-less easy open Say It from ~L10; first testers = family/friends.
+- Source PR or commit: docs/payload-economy-v0 branch (PR #172)
+- Obsidian target: 01 Projeler/LeMot/LeMot - User Journey.md (decision log) + v1 Canon TOP
+- Mempalace action: check_duplicate then add_drawer (learner profile; true Weave form; reveal window; Campfire generation) + kg_add (Product Answers -> Payload Economy)
+- Operator action: docs sync
+- Status: PENDING
+- Operator notes:
+
 ### 2026-07-04 — Payload Economy v0 canon decisions (survival-formula class + oui answer word)
 
 - Date: 2026-07-04
