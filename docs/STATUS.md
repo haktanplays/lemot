@@ -7,6 +7,30 @@ Long-term product/build intent: `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md
 Cairn execution roadmap (July 2026): `docs/CAIRN_ROADMAP_202607.md` (phase order Faz 0–7). Open-gap inventory: `docs/KNOWN_GAPS.md`.
 Precedence for Cairn work: `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. The v0.1 Cairn docs (`CAIRN_PRODUCT_DEFINITION_v0.1.md`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md`) are SUPERSEDED reference only.
 
+## Cairn content line — current state (2026-07-04)
+
+The July content line has advanced well past the Round 1 sections below (kept as
+history). Current state:
+
+- L0-L15 v1 lessons are authored, registered, and validating on main
+  (L7-L15 landed via PRs #164-#169).
+- PR #170 merged: L1-L15 chip / vocabulary / candidate inventory audit
+  (`docs/audits/L1_L15_CHIP_INVENTORY_AUDIT_2026_07.md` + CSVs), including the
+  conversation-based extended inventory and the spine-narrowness analysis.
+- PR #171 merged: registry hygiene (word-ici, noun-faim wired; oui scope note;
+  dormant-item annotation).
+- PR #172 merged: Payload Economy v0 (`docs/PAYLOAD_ECONOMY_v0.md`) and the
+  product Q&A canon (`docs/CAIRN_PRODUCT_ANSWERS_2026_07.md`).
+- PR #173 merged: Exercise Canon v0.4 (`docs/EXERCISE_CANON_v0.4.md`) with the
+  locked Practice Hub progression policy (§5.4).
+- **PR #174 (draft, current workstream): L1-L5 Kademe 2 payload enrichment.**
+  Smoke-bearing (touches the visible dev-APK lessons); merge requires Haktan
+  pedagogical review + Operator device smoke. Includes
+  `docs/AUDIO_RECORDING_QUEUE_v0.md` (planning-only human-audio queue).
+- Practice Hub and Exercise System v1 remain FUTURE workstreams (hub-first,
+  Tier D deterministic; per Exercise Canon v0.4). Not started.
+- L16 is NOT started in this batch; the L16+ content line resumes after #174.
+
 ## Round 1 runtime closeout — ACCEPTED (2026-06-17)
 
 Round 1 L0-L6 runtime smoke is COMPLETE and ACCEPTED. The runtime baseline is

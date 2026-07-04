@@ -196,9 +196,9 @@ const screens: LessonScreen[] = [
       insightType: "culture-bite",
       title: "When French moves too fast.",
       body:
-        "Real survival is knowing what to say when you're lost. Excusez-moi opens the door to a stranger (madame to a woman, monsieur to a man). Then two lines, learned whole, rescue any moment: je ne comprends pas, and the ask that follows it, vous pouvez répéter ?",
+        "Real survival is knowing what to say when you're lost. Excusez-moi opens the door to a stranger. Then two lines, learned whole, rescue any moment: je ne comprends pas, and the ask that follows it, vous pouvez répéter ?",
       examples: [
-        { fr: "Excusez-moi, madame.", en: "Excuse me (ma'am)." },
+        { fr: "Excusez-moi.", en: "Excuse me." },
         { fr: "Je ne comprends pas.", en: "I don't understand." },
         { fr: "Vous pouvez répéter ?", en: "Can you repeat?" },
       ],
@@ -349,14 +349,14 @@ export const lesson001: Lesson = {
     "No XP / streak / level-up / mission copy.",
     "c'est and au revoir remain out of this slice; the RESCUE kit is now IN (Kademe 2 enrichment): je ne comprends pas + vous pouvez répéter ? as SURVIVAL_FORMULAS (closed lint class, PAYLOAD_ECONOMY 4.1), plus excusez-moi as supported attention opener.",
     "Survival formulas are learned whole: comprendre is not unpacked, the non-inverted vous pouvez répéter ? is canon (inversion stays recognition-only).",
-    "un thé is supported service variation (dual role: article package reinforcement in L5). Ghosts (un croissant, madame, monsieur) live ONLY in meet/insight example copy, never in fills, weaves, or piecesUsed.",
+    "un thé is supported service variation (dual role: article package reinforcement in L5). The only ghost is un croissant, living ONLY in insight example copy, never in fills, weaves, or piecesUsed. madame / monsieur were trimmed from the ghost tier (Payload Economy review, 2026-07-04): address-register lands later as its own register/service slice; excusez-moi alone carries the opener here. They stay in the Practice Pool candidate quarry (docs/audits).",
     "s08 is the open mixed Weave (W1 canon): the prompt invites leaving unknown words in English; it is model-answer-only and the reveal compares instead of grading.",
   ],
   qaChecks: [
     "TTS reads Bonjour, Je voudrais un café, S'il vous plaît, and Merci cleanly.",
     "TTS reads Je ne comprends pas. Vous pouvez répéter ? with a rising contour on the second line.",
     "s07c accepts the no-question-mark and excusez-moi variants via acceptedAlternatives.",
-    "Ghost items (croissant, madame, monsieur) never appear as chips or correctness requirements.",
+    "The ghost item (croissant) never appears as a chip or correctness requirement; madame / monsieur appear nowhere in the lesson.",
     "Apostrophe normalization handles curly quotes in s'il vous plaît.",
     "Unaccented cafe and plait variants pass Weave via accepted alternatives.",
     "s03 trap reasons fire on veux and suis selections.",
