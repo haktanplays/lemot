@@ -205,3 +205,13 @@ sync/remote schema (§66.4), runtime UI changes (incl. raising the Home L6
 cap — separate smoke-bearing unlock PR), Carryover Selector runtime wiring,
 Mon Lexique 6-band UI, release engineering, crash reporting.
 ```
+
+
+## 7. Payload Economy (v0 pointer)
+
+Item-layer decisions (engine vs payload vs ghost vs pool), the visible-lesson
+surface ceiling, the survival-formula closed class, the oui answer-word
+decision, payload families, and the L5/L15 breadth metrics are governed by
+`docs/PAYLOAD_ECONOMY_v0.md` (locked 2026-07-04). When authoring content,
+classify every candidate item into exactly one of the four layers before
+adding it anywhere.
