@@ -709,8 +709,8 @@ export const ITEM_REGISTRY = {
     en: "excuse me",
     meaning:
       "Attention opener: the polite way to reach a stranger before asking anything. Frozen whole; the -moi ending is not an object-pronoun lesson.",
-    exampleFr: "Excusez-moi, madame.",
-    exampleEn: "Excuse me (to a woman).",
+    exampleFr: "Excusez-moi, j'ai une question.",
+    exampleEn: "Excuse me, I have a question.",
     relatedItemIds: ["chunk-bonjour", "chunk-sil-vous-plait"],
     weakPointTags: ["politeness"],
   },

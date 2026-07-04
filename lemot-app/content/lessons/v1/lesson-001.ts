@@ -196,7 +196,7 @@ const screens: LessonScreen[] = [
       insightType: "culture-bite",
       title: "When French moves too fast.",
       body:
-        "Real survival is knowing what to say when you're lost. Excusez-moi opens the door to a stranger. Then two lines, learned whole, rescue any moment: je ne comprends pas, and the ask that follows it, vous pouvez répéter ?",
+        "Real survival is knowing what to say when you're lost. Excusez-moi opens the door to a stranger. Then two lines, learned whole, rescue any moment: je ne comprends pas, and the ask that follows it, vous pouvez répéter ? No word order changes for the ask. Your rising voice does the asking: vous pouvez répéter ?",
       examples: [
         { fr: "Excusez-moi.", en: "Excuse me." },
         { fr: "Je ne comprends pas.", en: "I don't understand." },
@@ -322,7 +322,7 @@ export const lesson001: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
-  estimatedMinutes: 6,
+  estimatedMinutes: 7,
   canDo: "Greet, ask for something politely, and thank.",
   whyItExists:
     "L0 gave one polite café line as a first taste. L1 grows it into a small survival kit: greet, make a soft request, and thank. These polite chunks carry a whole first exchange before any verb system arrives in L2.",
