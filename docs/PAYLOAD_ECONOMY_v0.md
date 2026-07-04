@@ -130,15 +130,27 @@ recognition separately and the derived Lexique layer weights recognition low
 "Seen on the path / Not yours yet" label is a future Mon Lexique surface —
 dev-apk out-of-scope, deferred with the rest of Mon Lexique.
 
-## 9. Metrics (measured by the audit generator each batch)
+## 9. Metrics — SUPERSEDED (2026-07-04)
+
+> **This section is superseded by
+> `docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md`.**
+> The 30-35 figure was written (and implemented in PR #174) as a cumulative
+> L5-end recognizable count, carryover-inclusive. Haktan's intended metric
+> is per lesson, EXCLUDING carryover: roughly 30-35 fresh seen surfaces /
+> chip candidates per teaching lesson, of which only a small subset (the §3
+> ceiling) becomes mastery/support production. Carryover is counted
+> separately. Do not use the block below as a target.
+
+Original v0 block (kept for history only):
 
 ```text
 End of L5 :  18-22 producible surfaces   / 30-35 recognizable
 End of L15:  45-55 producible surfaces   / 70-90 recognizable
 ```
 
-Every enrichment/content PR states actual-vs-target in its body. The counts
-come from the same extraction the L1-L15 audit used; no runtime code.
+Every enrichment/content PR states actual-vs-target in its body, using the
+corrected per-lesson definition once the #175 Surface Density workstream
+fixes the measurement (clarification doc §4-§5).
 
 ## 10. Execution order (each step = its own reviewed PR)
 
