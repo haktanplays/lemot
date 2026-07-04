@@ -289,6 +289,28 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s08b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "The counter talks back.",
+      body:
+        "Your kit carries you. Around it, the counter has its own lines. None of them are yours to produce yet. Hear them once, let them pass; they'll feel familiar when they find you for real.",
+      examples: [
+        { fr: "Vous désirez ?", en: "What would you like?" },
+        { fr: "Sur place ou à emporter ?", en: "For here or to go?" },
+        { fr: "Et voilà.", en: "There you go." },
+        { fr: "C'est combien ?", en: "How much is it? (a question for later)" },
+        { fr: "Ça fait deux euros.", en: "That's two euros." },
+        { fr: "Je vous en prie.", en: "You're welcome." },
+        { fr: "Bonne journée !", en: "Have a nice day." },
+        { fr: "Pardon ?", en: "Sorry? (they didn't catch it)" },
+        { fr: "monsieur, madame", en: "sir, ma'am (how they may address you)" },
+        { fr: "un chocolat chaud", en: "a hot chocolate" },
+      ],
+    },
+  },
+  {
     id: "s09-recap-survival-kit",
     type: "recap",
     payload: {
@@ -351,6 +373,7 @@ export const lesson001: Lesson = {
     "Survival formulas are learned whole: comprendre is not unpacked, the non-inverted vous pouvez répéter ? is canon (inversion stays recognition-only).",
     "un thé is supported service variation (dual role: article package reinforcement in L5). The only ghost is un croissant, living ONLY in insight example copy, never in fills, weaves, or piecesUsed. madame / monsieur were trimmed from the ghost tier (Payload Economy review, 2026-07-04): address-register lands later as its own register/service slice; excusez-moi alone carries the opener here. They stay in the Practice Pool candidate quarry (docs/audits).",
     "s08 is the open mixed Weave (W1 canon): the prompt invites leaving unknown words in English; it is model-answer-only and the reveal compares instead of grading.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s08b is heard-French exposure only. Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only. madame/monsieur re-enter here as heard address forms (seen tier), distinct from the trimmed ghost tier.",
   ],
   qaChecks: [
     "TTS reads Bonjour, Je voudrais un café, S'il vous plaît, and Merci cleanly.",

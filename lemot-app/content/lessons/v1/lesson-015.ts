@@ -182,6 +182,25 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s06b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Obligation, overheard.",
+      body:
+        "Must-language is everywhere at the end of a long day. You produce none of these yet. Hear how many ways French says the same tired truth.",
+      examples: [
+        { fr: "Je dois partir.", en: "I have to leave." },
+        { fr: "On doit finir.", en: "We have to finish." },
+        { fr: "Il faut manger !", en: "You have to eat." },
+        { fr: "C'est obligé.", en: "It's a must." },
+        { fr: "Pas le choix.", en: "No choice." },
+        { fr: "Il est temps.", en: "It's time." },
+        { fr: "Encore cinq minutes.", en: "Five more minutes." },
+      ],
+    },
+  },
+  {
     id: "s07-recap-obligation",
     type: "recap",
     payload: {
@@ -228,6 +247,7 @@ export const lesson015: Lesson = {
     "Il faut que appears ONLY as the s03 fill trap (the spec's number-one leak, blocked); je devrais / il faudrait / tu dois / on doit / il me faut / devoir-as-owe appear nowhere.",
     "Il faut m'aider is deliberately avoided per spec section 2: m' stays frozen inside vous pouvez m'aider and is not re-anchored after il faut.",
     "No y+devoir chain (je dois y aller) anywhere: L14's y and L15's devoir stay unstacked, per both specs.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s06b is heard-French exposure only (the obligation family: partir heard, on doit heard-not-owned, no y anywhere per the qaChecks, no il faut que). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "je faut / il dois form-mixing is guarded in the s02 insight copy (faut only ever rides with il; for yourself, je dois).",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",

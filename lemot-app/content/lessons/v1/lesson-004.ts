@@ -271,6 +271,25 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s07b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "The rest of the family.",
+      body:
+        "j'ai carries more than hunger and questions. Around you, the have-family keeps going. Nothing here is asked of you yet; recognize it and move on.",
+      examples: [
+        { fr: "Vous avez faim ?", en: "Are you hungry? (your own line, coming back at you)" },
+        { fr: "Vous avez une question ?", en: "Do you have a question?" },
+        { fr: "Moi aussi.", en: "Me too." },
+        { fr: "J'ai sommeil.", en: "I am sleepy." },
+        { fr: "J'ai une petite faim.", en: "I'm a little hungry." },
+        { fr: "J'ai besoin d'un café.", en: "I need a coffee." },
+        { fr: "Bonne idée !", en: "Good idea." },
+      ],
+    },
+  },
+  {
     id: "s08-recap-jai",
     type: "recap",
     payload: {
@@ -324,6 +343,7 @@ export const lesson004: Lesson = {
     "Contrast metaphor: micro-je-suis-vs-j-ai. French uses have where English uses be for some feelings (j'ai faim = I am hungry). Taught as a French-thinks-differently moment, not a paradigm table.",
     "Elision is taught lightly: je + ai becomes j'ai. Not a broad elision lecture.",
     "Kademe 2 enrichment: soif joins as faim's supported twin (insight example + sayit piece/alternative); une idée joins as a second supported thing-package, reusing the previously dormant noun-idee. j'ai froid / j'ai chaud stay ghost-only in the insight example copy, never produced.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s07b is heard-French exposure only (vous avez lines are recognition, NOT paradigm ownership; besoin seeds the deferred need frame as heard copy). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "il y a remains a separate deferred doorway and appears nowhere in L4 (Payload Economy / L14 canon).",
     "chunk-j-ai is promoted from supported to active in this lesson.",
     "L4 follows the enumerated 9-screen shape from the L3-L6 content plan (meet x2, insight x2, fill x1, weave x2, say-it x1, recap). The plan header's '10 screens' is treated as an off-by-one note, not a reason to add a filler screen.",

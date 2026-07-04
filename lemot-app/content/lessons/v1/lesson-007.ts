@@ -168,6 +168,26 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s06b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Leaving has its own music.",
+      body:
+        "Around every departure, small goodbyes fly back and forth. None of them are yours to produce yet. Hear them now; doors will say them to you soon.",
+      examples: [
+        { fr: "Bonne soirée !", en: "Have a good evening." },
+        { fr: "À demain !", en: "See you tomorrow." },
+        { fr: "À bientôt !", en: "See you soon." },
+        { fr: "À la prochaine !", en: "Until next time." },
+        { fr: "Tu pars déjà ?", en: "Leaving already?" },
+        { fr: "Moi, je reste.", en: "Me, I'm staying." },
+        { fr: "Il est tard.", en: "It's late." },
+        { fr: "Rentre bien !", en: "Get home safe." },
+      ],
+    },
+  },
+  {
     id: "s07-recap-heading-home",
     type: "recap",
     payload: {
@@ -208,6 +228,7 @@ export const lesson007: Lesson = {
     "Follows docs/syllabus/L07-compact-doorway.compact-spec.md exactly: two new items only (chunk-je-vais active, chunk-a-la-maison supported), frozen chunks, no conjugation.",
     "Strict out-of-scope honored: no aller paradigm, no à/au/à la rule, no futur proche, no y, no où, no new destinations.",
     "Recycled load: chunk-au-revoir and chunk-merci as closers (carryover supports the target; the target line leads every model answer).",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s06b is heard-French exposure only (the goodbye family around a departure). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "chunk-je-suis and chunk-je-voudrais appear only as fill traps, not production targets.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible: Home caps the path at L6. Surfacing L7 is a separate smoke-bearing unlock decision.",

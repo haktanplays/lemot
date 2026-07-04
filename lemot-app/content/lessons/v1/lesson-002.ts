@@ -213,6 +213,26 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s07b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Voices around the door.",
+      body:
+        "je suis is yours now. Around any arrival, other lines float by. None of them are asked of you yet. Let them wash over you.",
+      examples: [
+        { fr: "Ça va ?", en: "How's it going?" },
+        { fr: "Bienvenue !", en: "Welcome." },
+        { fr: "Entrez !", en: "Come in." },
+        { fr: "Un instant !", en: "One moment." },
+        { fr: "Vous êtes prêt ?", en: "Are you ready?" },
+        { fr: "Je suis content.", en: "I am glad." },
+        { fr: "Je suis désolé.", en: "I am sorry." },
+        { fr: "Je suis en retard.", en: "I am late." },
+      ],
+    },
+  },
+  {
     id: "s08-recap-first-engine",
     type: "recap",
     payload: {
@@ -258,6 +278,7 @@ export const lesson002: Lesson = {
   designNotes: [
     "Je suis is the L2 architecture target. No broader conjugation table appears.",
     "Kademe 2 enrichment: fatigué joins as the first supported state riding je suis (one -e micro-note in the insight; the agreement system is NOT opened; the weave accepts fatiguée). là and prêt stay ghost-only in insight example copy.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s07b is heard-French exposure only (arrival lines + the content/désolé/en retard state family from the payload map's Later column). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "The parallel avoir shape is intentionally absent from L2.",
     "Survival-kit callback uses chunk-bonjour. chunk-je-voudrais appears only as a fill trap, not a production target.",
     "The shape-noticed insight is a deliberate meta-reflection: it names what the learner just did without adding a new concept.",

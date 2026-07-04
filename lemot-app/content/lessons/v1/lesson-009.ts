@@ -180,6 +180,26 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s06b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Around the pause.",
+      body:
+        "A break has its own little soundtrack. You produce none of it yet. Recognize it, and the room will feel less foreign when it happens around you.",
+      examples: [
+        { fr: "On fait une pause ?", en: "Shall we take a break?" },
+        { fr: "Cinq minutes.", en: "Five minutes." },
+        { fr: "Un café ?", en: "Coffee? (the offer that follows)" },
+        { fr: "Bonne idée.", en: "Good idea." },
+        { fr: "Je reviens.", en: "I'll be right back." },
+        { fr: "On continue ?", en: "Shall we keep going?" },
+        { fr: "Encore une fois.", en: "One more time." },
+        { fr: "C'est reparti.", en: "Here we go again." },
+      ],
+    },
+  },
+  {
     id: "s07-recap-pause",
     type: "recap",
     payload: {
@@ -222,6 +242,7 @@ export const lesson009: Lesson = {
     "je voudrais + faire une pause is deliberate recombination of the owned L1 engine with the new action package: the spec's central production target (Je voudrais faire une pause).",
     "No faire paradigm, no weather/sport/idiom faire, no qu'est-ce que, no grammar table.",
     "Recycled load: chunk-je-voudrais and chunk-sil-vous-plait (L1); the new package stays the headline of every screen.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s06b is heard-French exposure only (On fait une pause ? stays heard-not-owned; on fait production remains deferred per the note above). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],

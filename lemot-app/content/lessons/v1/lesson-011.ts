@@ -230,6 +230,25 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s08b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "What permission sounds like back.",
+      body:
+        "You can ask now, so answers are on their way. None of these are yours to produce yet. Knowing their shape is what makes your own question safe to ask.",
+      examples: [
+        { fr: "Oui, bien sûr.", en: "Yes, of course." },
+        { fr: "Allez-y.", en: "Go ahead." },
+        { fr: "Pas de souci.", en: "No worries." },
+        { fr: "Avec plaisir.", en: "With pleasure." },
+        { fr: "Une seconde.", en: "One second." },
+        { fr: "Désolé, je ne peux pas.", en: "Sorry, I can't. (someone else can't, either)" },
+        { fr: "Vous avez besoin d'aide ?", en: "Do you need help?" },
+      ],
+    },
+  },
+  {
     id: "s09-recap-je-peux",
     type: "recap",
     payload: {
@@ -283,6 +302,7 @@ export const lesson011: Lesson = {
     "Help structure (Haktan decision, PR #168 rework): the full question is never a chip or registry chunk. Pieces are chunk-vous-pouvez + chunk-m-aider (with verb-aider as the reusable infinitive); Vous pouvez m'aider ? exists only as the composed model answer. Learner-facing explanation stays tiny: me + aider = m'aider, to help me. No moi aider, no inversion (pouvez-vous), no grammar table.",
     "futureNote: m'aider opens a future object-pronoun-before-infinitive family (m'aider / t'aider / l'aider, later me donner / te donner / lui donner). That family, direct vs indirect objects, and reflexives are intentionally deferred; L11 teaches only the frozen m'aider form.",
     "s05 recombines the new negative with L7 (je vais a la maison): integration habit from L10 carried forward.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s08b is heard-French exposure only (the permission answers the learner's question will trigger; Allez-y seeds L14's y as a frozen heard idiom, W2 look-ahead range). No est-ce que appears in it (L11 rule holds). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "je ne peux pas appears here as a composed negative line (model answer / reveal / expected answer built from the je peux chip plus the owned L3 ne...pas frame), not as a separate registry chip. The broader ne ___ pas pattern remains the reusable system (Haktan decision, PR #168): useful negative verb phrases do not become protected clause chips.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",

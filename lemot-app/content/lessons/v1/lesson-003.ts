@@ -279,6 +279,26 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s09b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "The many shades of no.",
+      body:
+        "You own one clean no and one clean sandwich. Around them, French says no in a dozen soft ways. None of these are yours to produce yet. Just let your ear collect them.",
+      examples: [
+        { fr: "Ce n'est pas grave.", en: "It's no big deal." },
+        { fr: "Pas du tout.", en: "Not at all." },
+        { fr: "Pas encore.", en: "Not yet." },
+        { fr: "Pas maintenant.", en: "Not now." },
+        { fr: "Je ne sais pas.", en: "I don't know." },
+        { fr: "Je ne veux pas.", en: "I don't want to." },
+        { fr: "Non non non.", en: "No no no. (the everyday triple)" },
+        { fr: "Si !", en: "Yes it is! (the comeback yes you waved at earlier)" },
+      ],
+    },
+  },
+  {
     id: "s10-recap-negation",
     type: "recap",
     payload: {
@@ -329,6 +349,7 @@ export const lesson003: Lesson = {
     "Negation is taught as a transform of owned sentences: je suis ici becomes je ne suis pas ici; c'est becomes ce n'est pas.",
     "oui and non enter as the fastest answers; non opens the polite refusal non merci, and oui is PRODUCIBLE as an answer word (Payload Economy 4.2 rehabilitation: the s05b accept weave). The wrong-slot rule stays: oui never sits inside questions or statements, and the L8/L13/L14 fill traps keep guarding that.",
     "Kademe 2 ghosts: pas de probleme lives only in the s04 insight example copy; si gets a one-line inline seed there and is NOT productive.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s09b is heard-French exposure only (the negative family the sandwich will one day compose: je ne sais pas, je ne veux pas, plus the bare pas idioms). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "Compact, negation-centered slice. tu/vous register work, yes-no question asking, and ça / pronoun-ca remain deferred from L3 to hold cognitive load.",
     "No runtime Review, Checkpoint, or Mon Lexique surfaces are added; the Training Pack review and checkpoint material exists as PR notes only.",
     "Tone stays polite and neutral throughout. SayIt is deterministic and model-answer-only, consistent with L0-L2.",

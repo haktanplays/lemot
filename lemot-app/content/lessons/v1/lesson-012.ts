@@ -221,6 +221,25 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s07b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Questions flying around you.",
+      body:
+        "The wrapper you own is everywhere once you hear it. And around it, other question shapes fly by. Produce none of them yet; just notice how many you already half-understand.",
+      examples: [
+        { fr: "Est-ce que ça va ?", en: "Are you okay?" },
+        { fr: "Est-ce que c'est bon ?", en: "Is it all right?" },
+        { fr: "Est-ce que vous avez faim ?", en: "Are you hungry?" },
+        { fr: "Vous êtes sûr ?", en: "Are you sure? (no wrapper, just the voice)" },
+        { fr: "C'est possible ?", en: "Is that possible?" },
+        { fr: "Pourquoi ?", en: "Why?" },
+        { fr: "Parce que...", en: "Because..." },
+      ],
+    },
+  },
+  {
     id: "s08-recap-wrapper",
     type: "recap",
     payload: {
@@ -276,6 +295,7 @@ export const lesson012: Lesson = {
     "The wrapped help question is composed from small pieces (est-ce que + vous pouvez + m'aider); no full question is ever a chip or registry chunk.",
     "chunk-est-ce-que is a frame chunk: learners take it whole; no decomposition into est / ce / que.",
     "Question-form weave answers carry no-question-mark acceptedAlternatives (CI rule).",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s07b is heard-French exposure only (wrapped questions over familiar material, plus pourquoi/parce que waved at as future question words; qu'est-ce que still appears ONLY in the s03 trap). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],

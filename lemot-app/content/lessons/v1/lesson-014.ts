@@ -179,6 +179,25 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s07b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Small words fly fast.",
+      body:
+        "Doorway French is quick and tiny, like your new y. None of these lines are yours to produce yet. They pass in a second; recognizing them is enough.",
+      examples: [
+        { fr: "Vas-y !", en: "Go on!" },
+        { fr: "Allons-y.", en: "Let's go. (a cousin of on y va)" },
+        { fr: "J'arrive !", en: "Coming!" },
+        { fr: "À tout à l'heure !", en: "See you in a bit." },
+        { fr: "Bonne nuit !", en: "Good night." },
+        { fr: "Doucement.", en: "Easy now, gently." },
+        { fr: "Fais attention.", en: "Watch out, take care." },
+      ],
+    },
+  },
+  {
     id: "s08-recap-y",
     type: "recap",
     payload: {
@@ -226,6 +245,7 @@ export const lesson014: Lesson = {
     "on (= we) lives only inside chunk-on-y-va, mirroring how m' lives inside m'aider; no subject-pronoun teaching.",
     "s06 treats on y va as a near-fixed formula chunk per the spec's chunk-first mandate (same class as s'il vous plait); it is a weave hint chip but never a recap chip (it would trip the sentence-chip lint, and the recap keeps atoms only).",
     "en appears ONLY as a fill trap (blocked production per spec); oui stays passive/trap.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s07b is heard-French exposure only (fast doorway idioms; Vas-y / Allons-y show y living in other frozen expressions without opening the pronoun system; il y a / en / j'y suis stay absent per the qaChecks). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],

@@ -85,6 +85,15 @@ live in the Practice Pool candidate quarry (`docs/audits/`) for later slices:
 - `Excusez-moi, madame.` / madame / monsieur (address-register lands later as its own register/service slice)
 - `un restaurant, une maison` (L5 package-pattern extra example)
 
+## Seen-layer lines (SW175) — NOT queued
+
+The seen-layer "you may hear" cards (branch `content/seen-layer-l1-l15`,
+`docs/workstreams/SW175_seen_layer_v0.md`) add ~90 heard-French exposure
+lines across L1-L15. They are TTS-synthesized exposure and are deliberately
+NOT queued for human recording in the first pass: the mastery path records
+first. Queueing seen lines (which, being "what the world says", arguably
+benefit most from real voices) is a later, explicit decision.
+
 ## Out of scope for this queue
 
 - Audio runtime, playback, or asset pipeline work.

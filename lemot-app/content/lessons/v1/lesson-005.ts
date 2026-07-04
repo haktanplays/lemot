@@ -271,6 +271,25 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s07b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "A tableful of packages.",
+      body:
+        "Every French thing travels in its package. Here is a tableful you'll meet soon, plus a different little word, le and la, waving from a distance. None of this is yours to produce yet.",
+      examples: [
+        { fr: "un verre d'eau", en: "a glass of water" },
+        { fr: "un jus d'orange", en: "an orange juice" },
+        { fr: "un sandwich", en: "a sandwich" },
+        { fr: "une salade", en: "a salad" },
+        { fr: "un restaurant, une maison", en: "a restaurant, a house" },
+        { fr: "la carte", en: "the menu (a different little word, for later)" },
+        { fr: "L'addition, s'il vous plaît.", en: "The bill, please. (the little word squeezes to l')" },
+      ],
+    },
+  },
+  {
     id: "s08-recap-packages",
     type: "recap",
     payload: {
@@ -323,7 +342,8 @@ export const lesson005: Lesson = {
     "L5 Training Pack lesson under the Training Content Factory contract. L5 maps to the slice-spec PR I. Owned core: un and une as noun packages (un café, une question).",
     "Package framing, not a rule: un café and une question are taught as whole units. No masculine/feminine table, no gender rule, no article taxonomy. Registry uses package chunks (chunk-un-cafe, chunk-une-question), not abstract article items, per the L3-L6 plan Q1.",
     "Frames are recycled, not re-taught: je voudrais un café (L1) and j'ai une question (L4) carry the packages. c'est is not introduced here.",
-    "Kademe 2 enrichment: un thé (dual role: L1 service variation, here article reinforcement; the s05 weave accepts the thé slot-swap) and une table (s04c fill) join as supported packages. un restaurant / une maison were trimmed from the ghost example copy (Payload Economy review, 2026-07-04) to keep the recognizable metric inside the 30-35 band; four real packages already carry the pattern. They stay in the Practice Pool candidate quarry (docs/audits).",
+    "Kademe 2 enrichment: un thé (dual role: L1 service variation, here article reinforcement; the s05 weave accepts the thé slot-swap) and une table (s04c fill) join as supported packages. un restaurant / une maison were trimmed from the ghost example copy in the 2026-07-04 review under the (since superseded) cumulative metric reading; they re-enter in the seen layer below.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s07b is heard-French exposure only (more un/une packages, incl. cognates, plus le/la/l' waved at as heard forms; definite-article TEACHING stays deferred). Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "L5 follows the enumerated 9-screen shape from the L3-L6 content plan (meet x2, insight x1, fill x2, weave x2, say-it x1, recap). The plan header's '10 screens' is treated as an off-by-one note, not a reason to add a filler screen.",
     "le / la (definite articles) are deferred. The plan lists them as a recognition-light touch, but they add a second article concept and would need a new noun; deferring keeps L5 the lightest system lesson.",
     "Deferred: plural articles, partitives (du / de la / des), pas de, definite-article production, agreement systems, and broad noun-gender teaching beyond un café and une question.",

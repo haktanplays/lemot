@@ -151,6 +151,27 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s06b-insight-you-may-hear",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Answers you'll get back.",
+      body:
+        "You can ask where now, which means answers are coming. You don't produce any of these yet; you only need to catch their direction when they land.",
+      examples: [
+        { fr: "C'est là-bas.", en: "It's over there." },
+        { fr: "Juste ici.", en: "Right here." },
+        { fr: "À gauche.", en: "On the left." },
+        { fr: "À droite.", en: "On the right." },
+        { fr: "Tout droit.", en: "Straight ahead." },
+        { fr: "Au fond.", en: "At the back." },
+        { fr: "C'est loin ?", en: "Is it far?" },
+        { fr: "Ce n'est pas loin.", en: "It's not far." },
+        { fr: "Je suis perdu.", en: "I'm lost. (one for you, when you need it)" },
+      ],
+    },
+  },
+  {
     id: "s07-recap-ou",
     type: "recap",
     payload: {
@@ -193,6 +214,7 @@ export const lesson008: Lesson = {
     "oui appears ONLY as a fill trap: it stays passive/recognition, never active-produced (L3 decision carried forward).",
     "Question-form Weave answers carry no-question-mark acceptedAlternatives (CI rule).",
     "Recycled load: chunk-c-est (target support), ici and chunk-bonjour as light carryover: the new question stays the headline of every screen.",
+    "Seen layer v0 (docs/SURFACE_DENSITY_METRIC_CLARIFICATION_2026_07.md): s06b is heard-French exposure only, and functionally load-bearing: these are the ANSWERS the learner's own question will trigger, so recognition here is what makes c'est ou usable in the world. Nothing in it is produced, chipped, required, registered, or counted in piecesUsed; TTS is synthesis-only.",
     "adverb-ou-where uses the disambiguated id recommended by L08 spec section 18: où (where) folds to ou (or) under accent-stripping, so the id carries the sense to avoid a future collision/migration.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],
