@@ -25,7 +25,7 @@ const screens: LessonScreen[] = [
       title: "A different way to feel.",
       highlights: [
         { text: "J'ai", itemId: "chunk-j-ai" },
-        { text: "faim" },
+        { text: "faim", itemId: "noun-faim" },
       ],
       tts: true,
     },
@@ -164,7 +164,7 @@ const screens: LessonScreen[] = [
       context: "It is past noon and you have not eaten. Say how you feel, the French way.",
       suggestedPieces: [
         { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
-        { text: "faim", required: true, label: "feeling word" },
+        { text: "faim", itemId: "noun-faim", required: true, label: "feeling word" },
       ],
       expectedAnswers: ["J'ai faim."],
       acceptedAlternatives: [
@@ -225,7 +225,7 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "j'ai", itemId: "chunk-j-ai" },
-        { text: "faim" },
+        { text: "faim", itemId: "noun-faim" },
       ],
       modelAnswer: "J'ai faim.",
       reveal: {
@@ -274,6 +274,7 @@ export const lesson004: Lesson = {
   learningItems: getItems([
     "chunk-j-ai",
     "chunk-j-ai-faim",
+    "noun-faim",
     "chunk-j-ai-une-question",
     "micro-je-suis-vs-j-ai",
     "sound-elision",

@@ -24,7 +24,7 @@ const screens: LessonScreen[] = [
       title: "Two words. Where you are.",
       highlights: [
         { text: "je suis", itemId: "chunk-je-suis" },
-        { text: "ici" },
+        { text: "ici", itemId: "word-ici" },
       ],
       tts: true,
     },
@@ -51,7 +51,7 @@ const screens: LessonScreen[] = [
       highlights: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je suis", itemId: "chunk-je-suis" },
-        { text: "ici" },
+        { text: "ici", itemId: "word-ici" },
       ],
       tts: true,
     },
@@ -101,7 +101,7 @@ const screens: LessonScreen[] = [
       context: "Someone called your name. Let them know you've arrived.",
       suggestedPieces: [
         { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
-        { text: "ici", required: true, label: "place word" },
+        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je suis ici."],
       reveal: {
@@ -128,7 +128,7 @@ const screens: LessonScreen[] = [
         "Someone in the next room calls out, looking for you. Let them know you're here.",
       suggestedPieces: [
         { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
-        { text: "ici", required: true, label: "place word" },
+        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
       ],
       expectedAnswers: ["Je suis ici."],
       reveal: {
@@ -167,7 +167,7 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je suis", itemId: "chunk-je-suis" },
-        { text: "ici" },
+        { text: "ici", itemId: "word-ici" },
       ],
       modelAnswer: "Bonjour, je suis ici.",
       reveal: {
@@ -215,6 +215,7 @@ export const lesson002: Lesson = {
   learningItems: getItems([
     "chunk-je-suis",
     "chunk-je-suis-ici",
+    "word-ici",
     "chunk-bonjour",
   ]),
   screens,

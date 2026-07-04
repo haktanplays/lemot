@@ -86,6 +86,11 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-je-suis", "micro-je-suis-vs-j-ai"],
     weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis", "elision"],
   },
+  // R4 (L1-L15 audit, 2026-07): pronoun-je/tu/vous, verb-etre,
+  // chunk-tu-es(-pret), chunk-vous-etes(-pret), sound-liaison,
+  // grammar-etre-identity and noun-idee are registered but unused by any
+  // v1 lesson surface. Retained for future register/etre lessons; see
+  // docs/audits/L1_L15_CHIP_INVENTORY_AUDIT_2026_07.md (risk R4).
   "pronoun-je": {
     id: "pronoun-je",
     type: "pronoun",
@@ -238,6 +243,19 @@ export const ITEM_REGISTRY = {
     exampleEn: "Hello, I am here.",
     relatedItemIds: ["chunk-je-suis"],
   },
+  "word-ici": {
+    id: "word-ici",
+    type: "adverb",
+    text: "ici",
+    status: "supported",
+    fr: "ici",
+    en: "here",
+    meaning:
+      "Here. Produced as a chip since L2; registry identity added in the R3 hygiene pass so mastery events attach to an item.",
+    exampleFr: "Je suis ici.",
+    exampleEn: "I am here.",
+    relatedItemIds: ["chunk-je-suis-ici", "adverb-ou-where"],
+  },
   "chunk-tu-es-pret": {
     id: "chunk-tu-es-pret",
     type: "chunk",
@@ -307,7 +325,8 @@ export const ITEM_REGISTRY = {
     status: "active",
     fr: "oui",
     en: "yes",
-    meaning: "Yes. The quickest affirmative answer.",
+    meaning:
+      "Yes, as an ANSWER word. Scope note (audit R2, Payload Economy): never slotted inside questions or statements (wrong-slot trap in L8/L13/L14 fills); producible-answer rehabilitation lands with the L1-L5 enrichment canon.",
     exampleFr: "Oui, merci.",
     exampleEn: "Yes, thank you.",
     relatedItemIds: ["chunk-non"],
@@ -377,6 +396,20 @@ export const ITEM_REGISTRY = {
     exampleEn: "I am hungry.",
     relatedItemIds: ["chunk-j-ai", "micro-je-suis-vs-j-ai"],
     weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
+  },
+  "noun-faim": {
+    id: "noun-faim",
+    type: "noun",
+    text: "faim",
+    status: "supported",
+    fr: "faim",
+    en: "hunger",
+    meaning:
+      "Hunger, the thing you HAVE in French (j'ai faim). Produced as a chip since L4; registry identity added in the R3 hygiene pass.",
+    exampleFr: "J'ai faim.",
+    exampleEn: "I am hungry.",
+    relatedItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
+    weakPointTags: ["avoir-vs-etre"],
   },
   "chunk-j-ai-une-question": {
     id: "chunk-j-ai-une-question",

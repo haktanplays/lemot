@@ -114,7 +114,7 @@ const screens: LessonScreen[] = [
         "Now you're the local. Someone asks you C'est où ? And you're standing right at the door.",
       suggestedPieces: [
         { text: "c'est", itemId: "chunk-c-est", required: true, label: "it is" },
-        { text: "ici", required: true, label: "here" },
+        { text: "ici", itemId: "word-ici", required: true, label: "here" },
       ],
       expectedAnswers: ["C'est ici."],
       reveal: {

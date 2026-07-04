@@ -99,7 +99,7 @@ const screens: LessonScreen[] = [
           label: "question wrapper",
         },
         { text: "c'est", itemId: "chunk-c-est", required: true, label: "it is" },
-        { text: "ici", required: true, label: "here" },
+        { text: "ici", itemId: "word-ici", required: true, label: "here" },
       ],
       expectedAnswers: ["Est-ce que c'est ici ?"],
       acceptedAlternatives: ["Est-ce que c'est ici"],
