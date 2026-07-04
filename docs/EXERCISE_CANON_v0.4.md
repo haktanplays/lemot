@@ -281,6 +281,25 @@ Seeded by §13 events; capped per day by the carryover selector's existing caps.
 | Speaking / shadowing | optional layer | primary once audio lands |
 | Reflection (Keep One, What Helped) | lesson end | recurring |
 
+## 5.4 Progression policy (locked)
+
+The Practice Hub is **optional-but-urged** in MVP/dev-APK. It never gates the
+lesson path.
+
+- The lesson path stays calm and linear: finishing a lesson is what unlocks the
+  next lesson, nothing else.
+- The Hub is strongly invited at lesson end ("Stay with it" / "Practice this
+  moment"), but the invitation is never a requirement.
+- Hub work feeds the system: it may update mastery evidence, error tags, Daily
+  Review selection, nudge choices, and future Hub generation.
+- Hub work must NOT hard-lock the next lesson in MVP/dev-APK — no "solve N to
+  continue", no L5→L6 gate on hub completion.
+- Any future progression gate based on hub completion is a separate product
+  decision and its own smoke-bearing PR — it cannot arrive as a side effect of
+  Exercise System work.
+- Reason: forced hub turns Cairn into homework. Cairn's rhythm is lesson path
+  first, practice volume available on demand.
+
 ---
 
 # 6. Opening Learn Page canon
