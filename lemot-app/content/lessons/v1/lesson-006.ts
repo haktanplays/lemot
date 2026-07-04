@@ -260,9 +260,10 @@ const screens: LessonScreen[] = [
         naturalAlternatives: [
           "Bonjour. J'ai une question. Merci. Au revoir.",
           "Bonjour. Je suis ici. J'ai une question. Merci, au revoir.",
+          "Excusez-moi, j'ai une question. Merci. Au revoir.",
         ],
         explanation:
-          "Every piece here is one you already built. Put together, they make a small French moment.",
+          "Every piece here is one you already built. Put together, they make a small French moment. The excusez-moi opener from L1 works just as well when you're reaching a stranger.",
       },
       validationMode: "model-answer-only",
     },
@@ -321,6 +322,7 @@ export const lesson006: Lesson = {
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Integration payoff lesson (L6). L6 maps to the slice-spec PR J. Adds no new grammar and exactly one new item, chunk-au-revoir. Density comes from recombining owned L1-L5 material, not new acquisition.",
+    "Kademe 2 payoff (minimal): the s09 reveal gains one natural alternative using the L1 excusez-moi opener. 0 new lexis, no new learningItems, no new screens.",
     "Guided roleplay without AI: the scene is fixed and deterministic. Meaning-based micro-choices (s02 location, s04 social offer), suggested-piece productions (s03, s05), a scaffold-fade open weave (s08), and two model-answer-only Say It Your Way screens drive retrieval. No free AI roleplay and no simulated interlocutor producing unseen French.",
     "Ezber guardrail: no screen asks the learner to repeat a pre-shown script. Each production is prompted by the situation; the learner assembles owned pieces.",
     "Non-café scene: a small first meeting at a door. un café appears only as someone else's offer in the English prompt text (s04), declined with Non merci; no café is produced in French and no counter transaction occurs.",

@@ -107,10 +107,14 @@ const screens: LessonScreen[] = [
       title: "Oui and non.",
       body:
         "Oui opens the door: yes. Non closes it: no. They are the fastest " +
-        "answers in French. Non also begins a polite refusal: non merci.",
+        "answers in French, and both are yours to say. Non begins a polite " +
+        "refusal: non merci. Oui begins a warm acceptance: oui, merci. After " +
+        "a no, pas de problème keeps things easy. (One for much later: French " +
+        "answers yes to a negative question with si. Just a wave for now.)",
       examples: [
-        { fr: "Oui.", en: "Yes." },
+        { fr: "Oui, merci.", en: "Yes, thank you." },
         { fr: "Non, merci.", en: "No, thank you." },
+        { fr: "Pas de problème.", en: "No problem." },
       ],
     },
   },
@@ -145,6 +149,31 @@ const screens: LessonScreen[] = [
           "Non merci is a soft, complete refusal. It says no without sounding sharp.",
         natural: "Non merci.",
       },
+    },
+  },
+  {
+    id: "s05b-weave-accept-warmly",
+    type: "weave",
+    targetItemIds: ["chunk-oui", "chunk-merci"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "supported",
+      prompt: "This time the offer is exactly what you want. Accept warmly.",
+      context:
+        "The same offer comes again, but now it's the right one. Say yes, kindly.",
+      suggestedPieces: [
+        { text: "Oui", itemId: "chunk-oui", required: true, label: "yes" },
+        { text: "merci", itemId: "chunk-merci", required: true, label: "thanks" },
+      ],
+      expectedAnswers: ["Oui, merci."],
+      acceptedAlternatives: ["Oui merci.", "Oui, merci"],
+      reveal: {
+        modelAnswer: "Oui, merci.",
+        ifCorrect: "Both doors are yours now: non merci closes, oui merci opens.",
+        ifCorrectButFlat: "Right. The comma is a small warm breath between the two.",
+        ifMissingTargetPiece: "Open with oui, then land it with merci.",
+      },
+      validationMode: "exact-or-alternative",
     },
   },
   {
@@ -257,10 +286,11 @@ const screens: LessonScreen[] = [
       lines: [
         "You wrapped a sentence with ne and pas.",
         "You turned je suis into je ne suis pas, and c'est into ce n'est pas.",
-        "You refused politely with non merci.",
+        "You refused politely with non merci, and accepted warmly with oui, merci.",
       ],
       piecesUsed: [
         "non",
+        "oui",
         "je ne suis pas",
         "ce n'est pas",
         "non merci",
@@ -297,7 +327,8 @@ export const lesson003: Lesson = {
     "First Training Pack lesson under the Training Content Factory contract. L3 maps to the slice-spec PR G. Owned core: the ne ... pas sandwich as a two-part negative frame.",
     "Metaphor: metaphor-negation-sandwich. ne and pas sit around the action, one on each side. Early naming only; do not imply it is the only negation form.",
     "Negation is taught as a transform of owned sentences: je suis ici becomes je ne suis pas ici; c'est becomes ce n'est pas.",
-    "oui and non enter as the fastest answers; non also opens the polite refusal non merci. oui and non are answers only, not a question system.",
+    "oui and non enter as the fastest answers; non opens the polite refusal non merci, and oui is PRODUCIBLE as an answer word (Payload Economy 4.2 rehabilitation: the s05b accept weave). The wrong-slot rule stays: oui never sits inside questions or statements, and the L8/L13/L14 fill traps keep guarding that.",
+    "Kademe 2 ghosts: pas de probleme lives only in the s04 insight example copy; si gets a one-line inline seed there and is NOT productive.",
     "Compact, negation-centered slice. tu/vous register work, yes-no question asking, and ça / pronoun-ca remain deferred from L3 to hold cognitive load.",
     "No runtime Review, Checkpoint, or Mon Lexique surfaces are added; the Training Pack review and checkpoint material exists as PR notes only.",
     "Tone stays polite and neutral throughout. SayIt is deterministic and model-answer-only, consistent with L0-L2.",
