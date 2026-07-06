@@ -37,12 +37,15 @@ export function loadShippedManifest(path: string = MANIFEST_PATH): ShippedManife
 }
 
 /**
- * Pure check: every manifest id must still exist in the registry.
+ * Pure check, both directions (K3, operator decision 2026-07-05):
  *
- * A missing id means it was deleted or renamed — both are YASA 2 violations
- * and HARD ERRORS. Registry ids absent from the manifest are fine (adding
- * new items is free); they are reported separately as `unrecorded` so the
- * caller can surface an informational count.
+ *  - A manifest id missing from the registry means it was deleted or
+ *    renamed — a YASA 2 violation, HARD ERROR.
+ *  - A registry id missing from the manifest means a PR added an itemId
+ *    without recording it. The manifest update travels INSIDE the same PR;
+ *    there is no post-merge manual sync. HARD ERROR.
+ *
+ * `unrecorded` is still returned so callers can print the offending ids.
  */
 export function checkShippedItemIds(
   manifestIds: readonly string[],
@@ -71,5 +74,10 @@ export function checkShippedItemIds(
   }
 
   const unrecorded = [...registryIds].filter((id) => !seen.has(id)).sort();
+  for (const id of unrecorded) {
+    errors.push(
+      `new itemId "${id}" is not recorded in the shipped manifest — new itemIds must be recorded in the same PR — run: npm run manifest:add -- ${id}`,
+    );
+  }
   return { errors, unrecorded };
 }

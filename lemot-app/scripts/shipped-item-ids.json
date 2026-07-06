@@ -1,5 +1,5 @@
 {
-  "note": "YASA 2 (docs/ROADMAP.md): a shipped itemId is immutable forever. Ids listed here must exist in content/itemRegistry.ts with the same id, or validate:content hard-errors. Adding NEW registry ids is free; recording them here is a deliberate act via npm run manifest:add -- <id...>. Never edit this file by hand to make an error go away.",
+  "note": "YASA 2 (docs/ROADMAP.md): a shipped itemId is immutable forever. Every id here must exist in content/itemRegistry.ts with the same id, AND every registry id must be recorded here (K3, 2026-07-05): a PR that adds an itemId records it in the SAME PR via npm run manifest:add -- <id...>. Either direction failing is a validate:content hard error. Never edit this file by hand to make an error go away.",
   "ids": [
     "adverb-ou-where",
     "chunk-a-la-maison",
