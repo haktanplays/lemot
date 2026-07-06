@@ -9,6 +9,12 @@
 This is the entry point for the `docs/` tree. Start here, then read the root
 `CLAUDE.md` and the canon files below.
 
+> **Active sprint specs (2026-07-05):** `docs/canon/LESSON_FLOW_CANON_v1.md`
+> (Ders Akışı Kanonu v1.0 — lesson/hub/gate/hint/instruction-weave design
+> canon; authorizes no code by itself) and `docs/ROADMAP.md` (Deployment
+> Roadmap v1.0 — the closed five-stone PR list + system laws YASA 1/YASA 2).
+> On conflict, the Dev APK canon wins, per both documents' own scope walls.
+
 ---
 
 ## Precedence (summary — `MASTER_PIPELINE_v1.2.1.md` §2 is authoritative)

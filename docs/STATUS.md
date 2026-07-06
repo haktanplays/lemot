@@ -6,6 +6,7 @@ Docs map and precedence: `docs/README.md` (navigation, precedence, and public-sa
 Long-term product/build intent: `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` (imported 2026-07-02; supersedes the v0.1 Cairn docs; planning/intent — does not authorize implementation outside PR scope).
 Cairn execution roadmap (July 2026): `docs/CAIRN_ROADMAP_202607.md` (phase order Faz 0–7). Open-gap inventory: `docs/KNOWN_GAPS.md`.
 Precedence for Cairn work: `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. The v0.1 Cairn docs (`CAIRN_PRODUCT_DEFINITION_v0.1.md`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md`) are SUPERSEDED reference only.
+Active sprint specs (2026-07-05): `docs/canon/LESSON_FLOW_CANON_v1.md` + `docs/ROADMAP.md`; on conflict the Dev APK canon wins.
 
 ## Round 1 runtime closeout — ACCEPTED (2026-06-17)
 
