@@ -29,11 +29,15 @@ import "./boundaryAndDue.test";
 import "./selectors.test";
 import "./noSupabaseAuthGuard.test";
 import "./v1LessonStructure.test";
+import "./shippedItemIds.test";
 import "./errorEngine.test";
 import "./lexiqueMemory.test";
 import "./carryoverSelector.test";
 import "./telemetry.test";
 import "./compaction.test";
+import "./migrations.test";
+import "./deriveDrill.test";
+import "./practiceSelector.test";
 import { runAll } from "./harness";
 
 void runAll();

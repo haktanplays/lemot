@@ -6,6 +6,46 @@ Docs map and precedence: `docs/README.md` (navigation, precedence, and public-sa
 Long-term product/build intent: `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` (imported 2026-07-02; supersedes the v0.1 Cairn docs; planning/intent — does not authorize implementation outside PR scope).
 Cairn execution roadmap (July 2026): `docs/CAIRN_ROADMAP_202607.md` (phase order Faz 0–7). Open-gap inventory: `docs/KNOWN_GAPS.md`.
 Precedence for Cairn work: `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. The v0.1 Cairn docs (`CAIRN_PRODUCT_DEFINITION_v0.1.md`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md`) are SUPERSEDED reference only.
+Active sprint specs (2026-07-05): `docs/canon/LESSON_FLOW_CANON_v1.md` + `docs/ROADMAP.md`; on conflict the Dev APK canon wins.
+
+## Screenless sprint closeout (2026-07-05)
+
+Golden rule held: no unseen UI behavior merged. Results:
+- #176 merged: lesson flow canon v1.0 + deployment roadmap v1.0 into docs/.
+- #177 merged: YASA 2 shipped itemId immutability (54-id manifest,
+  validate:content hard error on delete/rename, `npm run manifest:add`).
+- #178 merged: YASA 1 migration rails (pure registry/runner, fail-safe
+  `unsupported` on unknown versions, ZERO real migrations, no schema change).
+- #179 merged: deterministic drill derivation (deriveDrill, fail-closed) +
+  practice selector v0 (canon 5.2 order) — the factory's first product.
+- #180 OPEN, [awaiting device pass], NOT merged: natural-reveal screens in
+  L1-L3 (stacked on PR #174's branch). Operator device pass must confirm the
+  reveal lands as the emotional close before any merge.
+- Learning-engine suite on main: 582 -> 613 passed.
+- Still pending, unchanged by this sprint: PR #174 (Haktan screen review +
+  operator smoke), seen-layer branch, #175 lesson skeleton, expanded test
+  matrix branch.
+
+## Operator decisions (2026-07-05, post-sprint delivery)
+
+- K1 schemaVersion: APPROVED — "absent field reads as v1, stored data never
+  rewritten" is the pattern. The optional type field is NOT added now; it is
+  born in the first real migration PR, in the same commit as the code that
+  fills it. (Recorded in migrations.ts header.)
+- K2 DEVICE-DAY ORDER (single device session, batch landing):
+  #174 -> #180 (natural-reveal) -> seen-layer. Rationale: the reveal's
+  position is FIXED by canon (right after production); the seen layer is
+  flexible and arranges itself around the fixed piece. Screen-count contract
+  tests are updated ONCE, against the final layout.
+- K3 manifest rule is PERMANENT: every PR that adds an itemId carries the
+  manifest update INSIDE the same PR. No post-merge manual sync.
+  (Mechanized: unrecorded registry id is now a validate:content HARD ERROR.)
+- K4 karpathy.md imported to docs/engineering/karpathy.md; referenced from
+  CLAUDE.md.
+- K5 squash-merge convention STAYS.
+- K6 deriveDrill English template copy: untouched now; tone pass is IN SCOPE
+  of Tas 2 / PR 14 (Hub UI), together with instruction-weave coach voice
+  (noted in docs/ROADMAP.md).
 
 ## Cairn content line — current state (2026-07-04)
 
