@@ -26,6 +26,27 @@ Golden rule held: no unseen UI behavior merged. Results:
   operator smoke), seen-layer branch, #175 lesson skeleton, expanded test
   matrix branch.
 
+## Operator decisions (2026-07-05, post-sprint delivery)
+
+- K1 schemaVersion: APPROVED — "absent field reads as v1, stored data never
+  rewritten" is the pattern. The optional type field is NOT added now; it is
+  born in the first real migration PR, in the same commit as the code that
+  fills it. (Recorded in migrations.ts header.)
+- K2 DEVICE-DAY ORDER (single device session, batch landing):
+  #174 -> #180 (natural-reveal) -> seen-layer. Rationale: the reveal's
+  position is FIXED by canon (right after production); the seen layer is
+  flexible and arranges itself around the fixed piece. Screen-count contract
+  tests are updated ONCE, against the final layout.
+- K3 manifest rule is PERMANENT: every PR that adds an itemId carries the
+  manifest update INSIDE the same PR. No post-merge manual sync.
+  (Mechanized: unrecorded registry id is now a validate:content HARD ERROR.)
+- K4 karpathy.md imported to docs/engineering/karpathy.md; referenced from
+  CLAUDE.md.
+- K5 squash-merge convention STAYS.
+- K6 deriveDrill English template copy: untouched now; tone pass is IN SCOPE
+  of Tas 2 / PR 14 (Hub UI), together with instruction-weave coach voice
+  (noted in docs/ROADMAP.md).
+
 ## Round 1 runtime closeout — ACCEPTED (2026-06-17)
 
 Round 1 L0-L6 runtime smoke is COMPLETE and ACCEPTED. The runtime baseline is
