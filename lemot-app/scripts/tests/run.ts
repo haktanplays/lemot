@@ -36,6 +36,8 @@ import "./carryoverSelector.test";
 import "./telemetry.test";
 import "./compaction.test";
 import "./migrations.test";
+import "./deriveDrill.test";
+import "./practiceSelector.test";
 import { runAll } from "./harness";
 
 void runAll();
