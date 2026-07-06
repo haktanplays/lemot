@@ -279,6 +279,20 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s09b-reveal-how-it-sounds",
+    type: "natural-reveal",
+    targetItemIds: ["chunk-je-ne-suis-pas", "chunk-non"],
+    payload: {
+      modelAnswer: "Non, je ne suis pas ici.",
+      naturalAlternatives: [
+        "Je ne suis pas ici.",
+        "Non, désolé, je ne suis pas ici.",
+      ],
+      explanation:
+        "You turned a sentence inside out and said no with it. The sandwich holds in every one of these lines. Désolé is a softener you will meet properly later; here it only shows how a native cushions a no.",
+    },
+  },
+  {
     id: "s10-recap-negation",
     type: "recap",
     payload: {
@@ -329,6 +343,7 @@ export const lesson003: Lesson = {
     "Negation is taught as a transform of owned sentences: je suis ici becomes je ne suis pas ici; c'est becomes ce n'est pas.",
     "oui and non enter as the fastest answers; non opens the polite refusal non merci, and oui is PRODUCIBLE as an answer word (Payload Economy 4.2 rehabilitation: the s05b accept weave). The wrong-slot rule stays: oui never sits inside questions or statements, and the L8/L13/L14 fill traps keep guarding that.",
     "Kademe 2 ghosts: pas de probleme lives only in the s04 insight example copy; si gets a one-line inline seed there and is NOT productive.",
+    "Natural Reveal (roadmap Tas 1 PR#2, Lesson Flow Canon 2.2): s09b is compare-first after the final production; desole appears inside it deliberately, in the canon's ALLOWED ghost zone (compare reveal), never produced or required.",
     "Compact, negation-centered slice. tu/vous register work, yes-no question asking, and ça / pronoun-ca remain deferred from L3 to hold cognitive load.",
     "No runtime Review, Checkpoint, or Mon Lexique surfaces are added; the Training Pack review and checkpoint material exists as PR notes only.",
     "Tone stays polite and neutral throughout. SayIt is deterministic and model-answer-only, consistent with L0-L2.",
