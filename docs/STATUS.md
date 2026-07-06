@@ -8,6 +8,24 @@ Cairn execution roadmap (July 2026): `docs/CAIRN_ROADMAP_202607.md` (phase order
 Precedence for Cairn work: `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. The v0.1 Cairn docs (`CAIRN_PRODUCT_DEFINITION_v0.1.md`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md`) are SUPERSEDED reference only.
 Active sprint specs (2026-07-05): `docs/canon/LESSON_FLOW_CANON_v1.md` + `docs/ROADMAP.md`; on conflict the Dev APK canon wins.
 
+## Screenless sprint closeout (2026-07-05)
+
+Golden rule held: no unseen UI behavior merged. Results:
+- #176 merged: lesson flow canon v1.0 + deployment roadmap v1.0 into docs/.
+- #177 merged: YASA 2 shipped itemId immutability (54-id manifest,
+  validate:content hard error on delete/rename, `npm run manifest:add`).
+- #178 merged: YASA 1 migration rails (pure registry/runner, fail-safe
+  `unsupported` on unknown versions, ZERO real migrations, no schema change).
+- #179 merged: deterministic drill derivation (deriveDrill, fail-closed) +
+  practice selector v0 (canon 5.2 order) — the factory's first product.
+- #180 OPEN, [awaiting device pass], NOT merged: natural-reveal screens in
+  L1-L3 (stacked on PR #174's branch). Operator device pass must confirm the
+  reveal lands as the emotional close before any merge.
+- Learning-engine suite on main: 582 -> 613 passed.
+- Still pending, unchanged by this sprint: PR #174 (Haktan screen review +
+  operator smoke), seen-layer branch, #175 lesson skeleton, expanded test
+  matrix branch.
+
 ## Round 1 runtime closeout — ACCEPTED (2026-06-17)
 
 Round 1 L0-L6 runtime smoke is COMPLETE and ACCEPTED. The runtime baseline is
