@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "validate:pools": "tsx scripts/validatePools.ts",
     "validate:content": "tsx scripts/validateContent.ts",
+    "manifest:add": "tsx scripts/manifestAdd.ts",
     "test:learning-engine": "tsx scripts/tests/run.ts"
   },
   "dependencies": {
