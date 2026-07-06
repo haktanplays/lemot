@@ -213,6 +213,17 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s07b-reveal-how-it-sounds",
+    type: "natural-reveal",
+    targetItemIds: ["chunk-je-suis"],
+    payload: {
+      modelAnswer: "Bonjour, je suis ici.",
+      naturalAlternatives: ["Je suis ici.", "Bonjour ! Je suis là."],
+      explanation:
+        "You said where you are, and it landed. Natives shift these small pieces all the time; là slips in where ici lives. You do not need to produce it yet. Just hear that your engine already sounds like theirs.",
+    },
+  },
+  {
     id: "s08-recap-first-engine",
     type: "recap",
     payload: {
@@ -258,6 +269,7 @@ export const lesson002: Lesson = {
   designNotes: [
     "Je suis is the L2 architecture target. No broader conjugation table appears.",
     "Kademe 2 enrichment: fatigué joins as the first supported state riding je suis (one -e micro-note in the insight; the agreement system is NOT opened; the weave accepts fatiguée). là and prêt stay ghost-only in insight example copy.",
+    "Natural Reveal (roadmap Tas 1 PR#2, Lesson Flow Canon 2.2): s07b is compare-first after the final production; la appears inside it deliberately, in the canon's ALLOWED ghost zone (compare reveal), never produced or required.",
     "The parallel avoir shape is intentionally absent from L2.",
     "Survival-kit callback uses chunk-bonjour. chunk-je-voudrais appears only as a fill trap, not a production target.",
     "The shape-noticed insight is a deliberate meta-reflection: it names what the learner just did without adding a new concept.",

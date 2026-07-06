@@ -289,6 +289,20 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s08b-reveal-how-it-sounds",
+    type: "natural-reveal",
+    targetItemIds: ["chunk-je-voudrais", "chunk-sil-vous-plait"],
+    payload: {
+      modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
+      naturalAlternatives: [
+        "Bonjour, un café, s'il vous plaît.",
+        "Je voudrais un thé, s'il vous plaît. Merci !",
+      ],
+      explanation:
+        "Look at what you just did: a stranger, a counter, and your own French carried the moment. Every line here is the same move you made, worn slightly differently. Natural French is a family of shapes, not a single fixed sentence.",
+    },
+  },
+  {
     id: "s09-recap-survival-kit",
     type: "recap",
     payload: {
@@ -351,6 +365,7 @@ export const lesson001: Lesson = {
     "Survival formulas are learned whole: comprendre is not unpacked, the non-inverted vous pouvez répéter ? is canon (inversion stays recognition-only).",
     "un thé is supported service variation (dual role: article package reinforcement in L5). The only ghost is un croissant, living ONLY in insight example copy, never in fills, weaves, or piecesUsed. madame / monsieur were trimmed from the ghost tier (Payload Economy review, 2026-07-04): address-register lands later as its own register/service slice; excusez-moi alone carries the opener here. They stay in the Practice Pool candidate quarry (docs/audits).",
     "s08 is the open mixed Weave (W1 canon): the prompt invites leaving unknown words in English; it is model-answer-only and the reveal compares instead of grading.",
+    "Natural Reveal (roadmap Tas 1 PR#2, Lesson Flow Canon 1.5/2.2): s08b is the first natural-reveal screen in a shipped lesson, placed after the final production as the compare-first emotional close. It grades nothing and requires nothing.",
   ],
   qaChecks: [
     "TTS reads Bonjour, Je voudrais un café, S'il vous plaît, and Merci cleanly.",
