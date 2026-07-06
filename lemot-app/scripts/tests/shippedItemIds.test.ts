@@ -35,23 +35,30 @@ describe("shipped itemId manifest (YASA 2)", () => {
     );
   });
 
-  test("renaming a shipped id is a hard error (old id gone, new id free)", () => {
+  test("renaming a shipped id errors twice: old id vanished AND new id unrecorded", () => {
     const manifestIds = ["a-id", "b-id"];
     const registry = new Set(["a-id", "b-id-renamed"]); // rename = delete + add
     const result = checkShippedItemIds(manifestIds, registry);
-    assertEqual(result.errors.length, 1, "the vanished old id is the violation");
-    assert(result.errors[0].includes('"b-id"'), "error names the old id");
-    assertEqual(
-      result.unrecorded,
-      ["b-id-renamed"],
-      "the new id is merely unrecorded, never an error",
+    assertEqual(result.errors.length, 2, "both directions of the rename are violations");
+    assert(result.errors[0].includes('"b-id"'), "first error names the old id");
+    assert(result.errors[1].includes('"b-id-renamed"'), "second error names the unrecorded new id");
+    assertEqual(result.unrecorded, ["b-id-renamed"], "unrecorded list still reported");
+  });
+
+  test("K3: an unrecorded new registry id is a HARD ERROR with the same-PR message", () => {
+    const result = checkShippedItemIds(["a-id"], new Set(["a-id", "z-new-id"]));
+    assertEqual(result.errors.length, 1, "unrecorded id must error");
+    assert(
+      result.errors[0].includes("recorded in the same PR") &&
+        result.errors[0].includes("npm run manifest:add -- z-new-id"),
+      `error must carry the same-PR instruction: ${result.errors[0]}`,
     );
   });
 
-  test("brand-new registry ids are free: unrecorded, not errors", () => {
-    const result = checkShippedItemIds(["a-id"], new Set(["a-id", "z-new-id"]));
-    assertEqual(result.errors, [], "additions must never violate YASA 2");
-    assertEqual(result.unrecorded, ["z-new-id"], "additions surface as unrecorded");
+  test("K3: recording the id in the manifest makes the check green again", () => {
+    const result = checkShippedItemIds(["a-id", "z-new-id"], new Set(["a-id", "z-new-id"]));
+    assertEqual(result.errors, [], "manifest updated in the same PR -> clean");
+    assertEqual(result.unrecorded, [], "nothing left unrecorded");
   });
 
   test("duplicated and unsorted manifests are rejected (hand-edit guard)", () => {

@@ -28,8 +28,8 @@ console.log(formatReport(findings));
 const manifest = loadShippedManifest();
 const shipped = checkShippedItemIds(manifest.ids, new Set(Object.keys(ITEM_REGISTRY)));
 console.log(
-  `Shipped itemId manifest (YASA 2): ${manifest.ids.length} frozen, ` +
-    `${shipped.unrecorded.length} registry id(s) not yet recorded, ` +
+  `Shipped itemId manifest (YASA 2 + K3): ${manifest.ids.length} frozen, ` +
+    `${shipped.unrecorded.length} unrecorded registry id(s) [hard error if > 0], ` +
     `${shipped.errors.length} hard error(s)`,
 );
 for (const error of shipped.errors) {
