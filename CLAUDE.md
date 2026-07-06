@@ -16,6 +16,8 @@
 
 > **Cloud sessions must follow `docs/MASTER_PIPELINE_v1.2.1.md`. Local-only Obsidian/mempalace/GSD steps become Sync Queue items in `docs/CLOUD_SYNC_QUEUE.md`.**
 >
+> **Engineering house rules: `docs/engineering/karpathy.md`** (think before coding, simplicity first, surgical changes; engine purity contract: pure, deterministic, explicit `now`, fail behavior explicit). Binding for all code PRs.
+>
 > **Current Dev APK work should follow `docs/DEV_APK_MVP_CANON.md`. If older notes conflict with that document, the MVP canon takes priority.**
 >
 > **Pedagogical / syllabus planning should follow `docs/learning-engine-v1.md`** — the learning-object spec defining how lessons work and how content stays compatible with Practice Pool, Daily Review, Natural Reveal, Mon Lexique, and Word Graph. Canon/spec layer, not runtime code.

@@ -28,6 +28,11 @@
  *    "drop snapshot, recompute" the cheap path for most future migrations.
  *  - lexique memory / mon-lexique / practice-pool → pure projections, never
  *    persisted; they have no schema to migrate.
+ *
+ * K1 (operator decision, 2026-07-05): the optional schemaVersion TYPE field
+ * is not added now; it is born in the first real migration PR, in the same
+ * commit as the code that fills it. "Absent reads as v1, stored data never
+ * rewritten" is the approved pattern.
  */
 
 export type MigrationFn = (
