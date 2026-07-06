@@ -82,7 +82,7 @@ Gerekçe: "hepsini şimdi güncelle" = haftalarca görünmez iş (premortem 1);
 | 11 | `feat(privacy)`: delete-account + DELETE policy'ler + tam lokal silme + export | G1; dış tester'ın YASAL eşiği |
 | 12 | `docs(privacy)`: disclosure metni | İşleyici listesi (Google/Groq/Mistral, ABD) + KVKK aktarım rızası + tester_cohort copy |
 | 13 | `chore(supabase)`: email confirmation geri aç | G3; tek toggle |
-| 14 | `feat(hub)`: Practice Hub v0 — "bugünün seti" | ÖN KOŞUL: türetme kararı (aşağıda) verilmiş olmalı |
+| 14 | `feat(hub)`: Practice Hub v0 — "bugünün seti" | ÖN KOŞUL: türetme kararı (aşağıda) verilmiş olmalı. K6 (2026-07-05): deriveDrill şablon copy'lerine ton turu bu PR kapsamındadır (instruction-weave koç sesi diliyle birlikte ele alınır). |
 | 15 | `feat(app)`: geri bildirim kanalı | Ayarlar → "sorun bildir" → mailto; SDK yok |
 
 **HUB TÜRETME KARARI (PR 14'ten ÖNCE verilmeli):**
