@@ -35,6 +35,7 @@ import "./lexiqueMemory.test";
 import "./carryoverSelector.test";
 import "./telemetry.test";
 import "./compaction.test";
+import "./migrations.test";
 import { runAll } from "./harness";
 
 void runAll();
