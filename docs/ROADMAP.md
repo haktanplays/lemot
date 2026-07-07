@@ -155,8 +155,9 @@ BİLİNÇLİ ERTELEMELER (blocker DEĞİL):
 
 ```text
 VERİLDİ:   retrofit dalga stratejisi (Taş 1/4) · tip seti donması (~10)
-VERİLMELİ: hub türetme (Taş 2 öncesi) · fabrika ilk ürünü (ayrı oturum)
-           · paywall yeri (Taş 5 sonrası) · onboarding akışı (Taş 4 içinde)
+           · hub türetme = B/türetilmiş (PR #179) · fabrika ilk ürünü =
+             deriveDrill + practice selector v0 (PR #179, 2026-07-05)
+VERİLMELİ: paywall yeri (Taş 5 sonrası) · onboarding akışı (Taş 4 içinde)
 TUNABLE:   kanon §13'teki tüm eşikler → telemetri kalibre eder
 ```
 

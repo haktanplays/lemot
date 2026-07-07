@@ -26,6 +26,12 @@ Golden rule held: no unseen UI behavior merged. Results:
   operator smoke), seen-layer branch, #175 lesson skeleton, expanded test
   matrix branch.
 
+## Evening hardening package (2026-07-05, pre-device-day)
+
+Bu paket yarınki device-day'in ön koşulu DEĞİLDİR — yarım kalsa da operatör
+teste gider. Device-day runbook: `docs/runbooks/DEVICE_DAY.md`; telemetry
+funnel tool: `npm run telemetry:report -- <exported-log.json>`.
+
 ## Operator decisions (2026-07-05, post-sprint delivery)
 
 - K1 schemaVersion: APPROVED — "absent field reads as v1, stored data never
