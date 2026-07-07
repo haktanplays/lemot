@@ -43,6 +43,48 @@ ERROR_TAG_CODES + ERROR_TAXONOMY id'leri + içerik kullanımı); çift yönlü
 validate:content HARD ERROR; büyüme yolu `npm run manifest:add-tag`
 (aynı PR içinde, auto-sync yok — K3 kalıbı).
 
+## Canon validators V3/V4/V5 mechanized (2026-07-05, evening package)
+
+Lesson Flow Canon §11'in mekanikleştirilebilir alt kümesi artık
+`validate:content` içinde çalışıyor (`lemot-app/scripts/canonRules.ts`):
+V3 future_as_answer (exposure-tier item cevap pozisyonunda: required weave
+parçası veya doğru fill seçeneği) HARD ERROR; V4 future_in_forbidden_zone
+(chip tray / meet-card highlight / recap "Yours now") HARD ERROR; V5
+insight_budget (>3 insight-card/ders) WARNING. Şema değişikliği YOK —
+ownership alanı registry'de ZATEN vardı (`LearningItem.status`,
+"recognition" = exposure tier); kurallar mevcut alan üzerinden okuyor.
+Meta tipler (sound-pattern/grammar-nugget/micro-contrast/culture-bite)
+muaf — kavramdır, gelecek yüzey değildir; onaylı `ne ___ pas` frame chip
+(PR #168 kanonu) böylece yasal kalır. Mevcut 16 ders 0 error / 0 warning
+ile geçti.
+
+**Deferred validators** (V1/V2/V6/V7/V8/V9 — bilerek mekanize EDİLMEDİ,
+"neden yarım?" sorusu doğmasın):
+
+- V1 screen_action_count ("mikro-aksiyon > 4"): mikro-aksiyon mevcut
+  payload'larda sayılabilir bir alan değil; ekran tipi başına aksiyon
+  modeli tanımlamak gerekir (tanım sorusu, kural sorusu değil). Ayrıca
+  ekran iskeleti #174/#180/seen-layer batch'i ile değişecek (K2) — model
+  final layout'a karşı bir kez kurulmalı.
+- V2 passive_screen ("hiç etkileşim yok"): meet/insight/recap Faz A'da
+  TASARIM GEREĞİ pasif; etkileşimleri kanonun kendisi Faz B'ye koyuyor
+  (kanon "FAZ B: meet/insight/recap etkileşimleri"). Bugün mekanize
+  edilse her meet-card'ı yanlış pozitif işaretler.
+- V6 gate_scope ("gate review-integration dışında"): v1 lesson şemasında
+  gate alanı YOK; kontrol için alan icat etmek gerekir — "şema değişikliği
+  yok, alan yoksa soru sor" kuralına takılır. Gate şemaya girdiği PR'da
+  validator'ı da aynı PR taşır (K3 kalıbı).
+- V7 exposure_horizon ("kademe-3 exposure oturumda > 1"): oturum (session)
+  runtime kompozisyonudur, statik ders içeriği değil; statik validator
+  yanlış katmanda ölçer. Kademe-3 exposure işareti de şemada yok.
+- V8 production_without_ladder + V9 fill_without_recovery: kanon kendi
+  fazlamasında bunları sonraya koyuyor ("v0.4: V8-V9 + telemetri ekleri +
+  Faz D"). V9'un hammaddesi (trapReason) şemada kısmen var; hint/struggle
+  merdiveni Faz B'de birleşik spec alınca ikisi birlikte mekanize edilir.
+
+Not: V5'te "seviye-3 kart" insight-card ekran tipi olarak sayıldı
+(mevcut şemadaki tek seviye-3 gösterimi budur).
+
 ## Operator decisions (2026-07-05, post-sprint delivery)
 
 - K1 schemaVersion: APPROVED — "absent field reads as v1, stored data never

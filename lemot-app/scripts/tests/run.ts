@@ -31,6 +31,7 @@ import "./noSupabaseAuthGuard.test";
 import "./v1LessonStructure.test";
 import "./shippedItemIds.test";
 import "./shippedErrorTags.test";
+import "./canonRules.test";
 import "./errorEngine.test";
 import "./lexiqueMemory.test";
 import "./carryoverSelector.test";
