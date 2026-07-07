@@ -27,6 +27,14 @@ silinip yeniden yaratılamaz. Kullanıcının tüm mastery/SRS/lexique geçmişi
 itemId referanslarıyla yaşar; rename = kanıtın öksüz kalması.
 Validator satırı: "shipped itemId değişti → ERROR" (registry hygiene
 audit'inin makineleşmesi).
+
+YASA 3 — HATA ETİKETİ DOKUNULMAZLIĞI (2026-07-05; YASA 2 / K3'ün ikizi)
+Error tag'ler içerik fabrikasının sipariş dilidir (hata → tag → drill
+türetme) ve öğrenci kanıtının referans anahtarıdır (weakTags /
+precisionTags / resultTag). Shipped bir tag yeniden adlandırılamaz,
+silinemez; yeni tag AYNI PR içinde manifest'e kaydedilir
+(npm run manifest:add-tag). Çift yönlü validator satırı: "shipped tag
+kullanımdan düştü → ERROR" ve "kayıtsız yeni tag → ERROR".
 ```
 
 ---

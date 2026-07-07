@@ -32,6 +32,17 @@ Bu paket yarınki device-day'in ön koşulu DEĞİLDİR — yarım kalsa da oper
 teste gider. Device-day runbook: `docs/runbooks/DEVICE_DAY.md`; telemetry
 funnel tool: `npm run telemetry:report -- <exported-log.json>`.
 
+## YASA 3 — error-tag immutability (2026-07-05, evening package)
+
+Error tag'ler içerik fabrikasının sipariş dilidir (hata -> tag -> drill
+türetme) ve öğrenci kanıtının referans anahtarıdır (weakTags/precisionTags/
+resultTag). Shipped bir tag rename/silinirse ona bağlı tüm kanıt öksüz
+kalır — itemId ile aynı hastalık, aynı ilaç. Mekanik: `scripts/
+shipped-error-tags.json` (54 tag donduruldu: WEAK_POINT_TAGS +
+ERROR_TAG_CODES + ERROR_TAXONOMY id'leri + içerik kullanımı); çift yönlü
+validate:content HARD ERROR; büyüme yolu `npm run manifest:add-tag`
+(aynı PR içinde, auto-sync yok — K3 kalıbı).
+
 ## Operator decisions (2026-07-05, post-sprint delivery)
 
 - K1 schemaVersion: APPROVED — "absent field reads as v1, stored data never
