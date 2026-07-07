@@ -21,6 +21,7 @@ import {
 } from "../content/learning-engine";
 import { ITEM_REGISTRY } from "../content/itemRegistry";
 import { loadShippedManifest, checkShippedItemIds } from "./shippedItemIds";
+import { loadShippedTagManifest, collectUsedTags, checkShippedErrorTags } from "./shippedErrorTags";
 
 const findings = validateContent(LEARNING_ENGINE_FIXTURE);
 console.log(formatReport(findings));
@@ -36,7 +37,18 @@ for (const error of shipped.errors) {
   console.log(`  ERROR ${error}`);
 }
 
+const tagManifest = loadShippedTagManifest();
+const shippedTags = checkShippedErrorTags(tagManifest.tags, new Set(collectUsedTags()));
+console.log(
+  `Shipped error-tag manifest (YASA 3): ${tagManifest.tags.length} frozen, ` +
+    `${shippedTags.unrecorded.length} unrecorded tag(s) [hard error if > 0], ` +
+    `${shippedTags.errors.length} hard error(s)`,
+);
+for (const error of shippedTags.errors) {
+  console.log(`  ERROR ${error}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
-if (hardErrors.length > 0 || shipped.errors.length > 0) {
+if (hardErrors.length > 0 || shipped.errors.length > 0 || shippedTags.errors.length > 0) {
   process.exit(1);
 }

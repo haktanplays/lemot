@@ -46,6 +46,40 @@ export type ErrorTagCode =
   | "incorrect_but_understandable"
   | "empty_or_skip";
 
+/**
+ * Runtime mirror of `ErrorTagCode` (YASA 3 rails). Both directions are
+ * compile-time locked below: removing a code from the type breaks the
+ * array's element check; removing it from the array breaks the
+ * exhaustiveness check. The shipped-error-tags manifest freezes these
+ * values forever — learner evidence references them by string.
+ */
+export const ERROR_TAG_CODES = [
+  "correct",
+  "accepted_variant",
+  "punctuation_only",
+  "accent_only",
+  "spelling_near_miss",
+  "wrong_item",
+  "wrong_order",
+  "missing_word",
+  "extra_word",
+  "wrong_register",
+  "meaning_shift",
+  "blocked_form_used",
+  "recognition_only_form_used",
+  "overproduction_unseen_form",
+  "incorrect_but_understandable",
+  "empty_or_skip",
+] as const;
+
+// Every array member is a valid ErrorTagCode…
+const _codesAreValid: readonly ErrorTagCode[] = ERROR_TAG_CODES;
+void _codesAreValid;
+// …and every ErrorTagCode is in the array (exhaustive).
+type MissingErrorTagCodes = Exclude<ErrorTagCode, (typeof ERROR_TAG_CODES)[number]>;
+const _allCodesListed: MissingErrorTagCodes extends never ? true : never = true;
+void _allCodesListed;
+
 /** Local sync state of an event. Remote phase (P6/P7) drains "pending". */
 export type LearningEventSyncStatus = "pending" | "synced";
 
