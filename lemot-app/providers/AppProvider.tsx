@@ -12,13 +12,12 @@ interface AppContextType {
   prog: Record<string, boolean>;
   errors: ErrorEntry[];
   dailyRev: DailyReview;
-  setDailyRev: React.Dispatch<React.SetStateAction<DailyReview>>;
   loaded: boolean;
-  save: (
-    p: Record<string, boolean>,
-    err: ErrorEntry[],
-    dr: DailyReview
-  ) => void;
+  /**
+   * Atomically update the daily-review slice of the shared blob (audit B6) and
+   * sync to cloud. Preserves the latest progress + errors.
+   */
+  updateDailyReview: (fn: (dr: DailyReview) => DailyReview) => void;
 
   // Progress
   mk: (lessonId: number, sectionKey: string) => void;
@@ -141,9 +140,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       );
 
       if (localProgressDiffers || localDailyReviewDiffers) {
-        if (localProgressDiffers) s.setProg(mergedProgress);
-        if (localDailyReviewDiffers) s.setDailyRev(mergedDailyReview);
-        s.save(mergedProgress, s.errors, mergedDailyReview);
+        // Atomic whole-blob write against the latest store value: apply the
+        // merged progress / daily review, preserve the latest errors (audit B6).
+        s.updateStoredData((cur) => ({
+          p: localProgressDiffers ? mergedProgress : cur.p,
+          err: cur.err,
+          dr: localDailyReviewDiffers ? mergedDailyReview : cur.dr,
+        }));
       }
 
       if (cloudProgressDiffers || cloudDailyReviewDiffers) {
@@ -167,15 +170,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     })();
   }, [user, storageHook.loaded, pullFromCloud, pushToCloud]);
 
-  // Wrap save to also push to cloud
-  const saveWithSync = useCallback(
-    (p: Record<string, boolean>, err: ErrorEntry[], dr: DailyReview) => {
-      storageHook.save(p, err, dr);
+  // Atomically update the daily-review slice, then push the resulting full blob
+  // to cloud (preserves the prior save-then-push cloud behavior, now race-safe).
+  const updateDailyReviewWithSync = useCallback(
+    (fn: (dr: DailyReview) => DailyReview) => {
+      const next = storageHook.updateDailyReview(fn);
       if (user) {
-        pushToCloud({ progress: p, errors: err, dailyReview: dr });
+        pushToCloud({
+          progress: next.p,
+          errors: next.err,
+          dailyReview: next.dr,
+        });
       }
     },
-    [storageHook.save, user, pushToCloud]
+    [storageHook.updateDailyReview, user, pushToCloud]
   );
 
   // Wrap logErr to also push error to cloud
@@ -194,9 +202,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     prog: storageHook.prog,
     errors: storageHook.errors,
     dailyRev: storageHook.dailyRev,
-    setDailyRev: storageHook.setDailyRev,
     loaded: storageHook.loaded,
-    save: saveWithSync,
+    updateDailyReview: updateDailyReviewWithSync,
 
     // Progress
     mk: progressHook.mk,
