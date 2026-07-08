@@ -167,7 +167,7 @@ export function GrammarRenderer({ sections, onSpeak }: GrammarRendererProps) {
                     >
                       {pair.fr}
                     </Text>
-                    <Text className="text-xs text-lm-ink3">\u2248</Text>
+                    <Text className="text-xs text-lm-ink3">{"\u2248"}</Text>
                     <Text className="text-sm font-medium text-lm-ink">
                       {pair.en}
                     </Text>

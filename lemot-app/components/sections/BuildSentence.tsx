@@ -85,14 +85,15 @@ export function BuildSentence({
     }
   };
 
-  // Since setScore is async, we compute the final score manually
-  // to account for the current item's result not yet being in state.
+  // The current item's result is already committed to `score` by handleCheck
+  // (the Next/Done button only renders after Check has run), so completion
+  // reports `score` as-is. Adding the current item again here double-counted the
+  // final item, producing scores like N+1/N (audit B1).
   const handleNext = () => {
-    const currentItemScore = isCorrect ? 1 : 0;
     if (currentIndex < items.length - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
-      onComplete(score + currentItemScore, items.length);
+      onComplete(score, items.length);
     }
   };
 
