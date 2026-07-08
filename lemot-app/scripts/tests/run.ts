@@ -13,6 +13,7 @@ import "./privacy.test";
 import "./privacyLocal.test";
 import "./privacyData.test";
 import "./mastery.test";
+import "./safeStorage.test";
 import "./localRepository.test";
 import "./buildSequence.test";
 import "./lessonProgress.test";
