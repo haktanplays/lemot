@@ -1,36 +1,29 @@
 import { useCallback } from "react";
 import { SECS } from "@/constants/sections";
-import type { ErrorEntry, DailyReview } from "@/lib/types";
 
 interface UseLessonProgressArgs {
   prog: Record<string, boolean>;
-  setProg: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  errors: ErrorEntry[];
-  dailyRev: DailyReview;
-  save: (
-    p: Record<string, boolean>,
-    err: ErrorEntry[],
-    dr: DailyReview
+  updateProgress: (
+    fn: (p: Record<string, boolean>) => Record<string, boolean>
   ) => void;
 }
 
 export function useLessonProgress({
   prog,
-  setProg,
-  errors,
-  dailyRev,
-  save,
+  updateProgress,
 }: UseLessonProgressArgs) {
-  /** Mark section complete */
+  /**
+   * Mark section complete. Updates only the progress slice via the atomic store,
+   * so it preserves the latest errors and daily-review data (audit B6).
+   */
   const mk = useCallback(
     (lessonId: number, sectionKey: string) => {
-      setProg((prev) => {
-        const next = { ...prev, [`${lessonId}-${sectionKey}`]: true };
-        save(next, errors, dailyRev);
-        return next;
-      });
+      updateProgress((prev) => ({
+        ...prev,
+        [`${lessonId}-${sectionKey}`]: true,
+      }));
     },
-    [errors, dailyRev, save, setProg]
+    [updateProgress]
   );
 
   /** Get lesson progress (completed sections count) */

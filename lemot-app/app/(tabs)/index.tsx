@@ -40,8 +40,7 @@ function getHomeGreeting(date: Date = new Date()): string {
 }
 
 export default function HomeScreen() {
-  const { lp, dailyRev, setDailyRev, save, prog, errors, weakSpots, loaded } =
-    useApp();
+  const { lp, dailyRev, updateDailyReview, prog, weakSpots, loaded } = useApp();
   const { user, signOut } = useAuthContext();
 
   // First-use redirect: read sync from storage on first render so we can hide
@@ -110,16 +109,16 @@ export default function HomeScreen() {
   const handleDrNext = () => {
     const newCount = drCount + 1;
     const newDr = { date: today(), count: newCount };
-    setDailyRev(newDr);
+    // Atomic daily-review update — preserves progress + errors and syncs to
+    // cloud (audit B6). Replaces the prior stale-snapshot save(prog, errors, dr).
+    updateDailyReview(() => newDr);
     if (drIdx >= drItems.length - 1) {
-      save(prog, errors, newDr);
       setShowDR(false);
       setDrIdx(0);
       setDrAns(null);
     } else {
       setDrIdx(drIdx + 1);
       setDrAns(null);
-      save(prog, errors, newDr);
     }
   };
 
