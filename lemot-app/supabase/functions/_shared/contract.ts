@@ -58,29 +58,54 @@ export type ChatPromptSpec = {
 const CHAT_BASE = `You are a French conversation partner. User is an English speaker at A1-A2.
 RULES: Always respond in French, short simple sentences. NEVER directly correct errors — say "je n'ai pas bien compris" and force self-correction. After 2nd attempt: indirect hint. After 3rd: provide correct form. 1-3 sentences max. No emojis. If user writes English: "En français, s'il vous plaît !"`;
 
-function miniBase(topic: string): string {
-  return `You are a French conversation partner for an A1 learner. Topic: ${topic}. Rules: Respond in simple French (1-2 sentences). If user makes errors, naturally rephrase correctly. Ask follow-up questions to keep conversation going. No English unless user is completely stuck.`;
-}
+const MINI_BASE = `You are a French conversation partner for an A1 learner. Rules: Respond in simple French (1-2 sentences). If the user makes errors, naturally rephrase correctly. Ask follow-up questions to keep the conversation going. No English unless the user is completely stuck. Stay on the conversation topic given in the learner-context message.`;
 
-function clampLabel(s: unknown): string {
-  return typeof s === "string" ? s.slice(0, MAX_LABEL_CHARS) : "";
+/**
+ * Sanitize a client label: strip control characters and newlines, collapse
+ * whitespace, and cap length. This prevents a client label from injecting
+ * multi-line instructions or breaking out of its slot (audit B4 / PR review).
+ */
+export function sanitizeLabel(s: unknown): string {
+  if (typeof s !== "string") return "";
+  return s
+    .replace(/[\u0000-\u001F\u007F]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, MAX_LABEL_CHARS);
 }
 
 /**
- * Build the chat system prompt SERVER-SIDE from an allowlisted mode. The client
- * may only supply short, length-capped labels (scenario / topic) that fill a
- * slot in a fixed template — it can never send the raw system instructions (B4).
+ * The SERVER-OWNED chat system prompt. It contains NO client-derived text — the
+ * client cannot influence the authoritative system instructions at all (B4).
+ * Scenario/topic are delivered separately via {@link buildContextMessage}.
  */
 export function buildChatSystem(spec: ChatPromptSpec | undefined): string {
   const mode = typeof spec?.mode === "string" ? spec.mode : "free";
+  return mode === "mini" ? MINI_BASE : CHAT_BASE;
+}
+
+/**
+ * Client scenario/topic are delivered as a sanitized USER-role context message,
+ * NEVER merged into the authoritative system prompt (audit B4 / PR review). A
+ * malicious label can therefore only ever be user-level input (like any chat
+ * turn), under the server-owned system rules — it cannot elevate to a system
+ * instruction. Returns null when there is no label.
+ */
+export function buildContextMessage(
+  spec: ChatPromptSpec | undefined,
+): ChatMessage | null {
+  const mode = typeof spec?.mode === "string" ? spec.mode : "free";
   if (mode === "mini") {
-    return miniBase(clampLabel(spec?.topic));
+    const topic = sanitizeLabel(spec?.topic);
+    return topic ? { role: "user", content: `Conversation topic: ${topic}` } : null;
   }
   if (mode === "scenario") {
-    const scenario = clampLabel(spec?.scenario);
-    if (scenario) return `${CHAT_BASE}\nROLE: ${scenario}. Stay in character.`;
+    const scenario = sanitizeLabel(spec?.scenario);
+    return scenario
+      ? { role: "user", content: `Role-play scenario: ${scenario}` }
+      : null;
   }
-  return CHAT_BASE;
+  return null;
 }
 
 // ---- Validation ----
@@ -127,8 +152,13 @@ export function validateChatBody(body: unknown): ValidationResult<ChatRequest> {
 
   const lang = typeof body.lang === "string" ? body.lang : "fr";
   const maxTokens = clampMaxTokens(body.maxTokens, MAX_TOKENS_CHAT);
-  const system = buildChatSystem(body.prompt as ChatPromptSpec | undefined);
-  return { ok: true, value: { messages, system, maxTokens, lang } };
+  const spec = body.prompt as ChatPromptSpec | undefined;
+  const system = buildChatSystem(spec);
+  // Scenario/topic ride in a sanitized user-role context message — never the
+  // system prompt — so a client label can never elevate to a system instruction.
+  const context = buildContextMessage(spec);
+  const finalMessages = context ? [context, ...messages] : messages;
+  return { ok: true, value: { messages: finalMessages, system, maxTokens, lang } };
 }
 
 export type EvaluateRequest = {

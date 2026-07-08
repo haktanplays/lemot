@@ -9,12 +9,21 @@
 ## What changed
 
 - **B16 — `ai-diag` removed.** The unauthenticated debug endpoint that leaked
-  auth-header prefix, token length, and email prefix is deleted.
+  auth-header prefix, token length, and email prefix is deleted from source.
+  **Operator step required:** deleting the local source does NOT remove an
+  already-deployed remote function. Before treating the endpoint as gone, run
+  `supabase functions delete ai-diag` (or `supabase functions deploy --prune`)
+  against each Supabase project so the live endpoint is actually removed — the
+  current deploy docs deploy functions individually
+  (`docs/EAS_PREVIEW_BUILD.md`), so a prune is not implicit. Until this runs, the
+  deployed `ai-diag` can remain reachable.
 - **B4 — server-owned request contract.** `ai-chat` / `ai-evaluate` now validate
   the request in `supabase/functions/_shared/contract.ts`: the chat system prompt
-  is derived SERVER-SIDE from an allowlisted `prompt` mode (any client `system`
-  is ignored); `maxTokens` is clamped (≤300); message count, per-message length,
-  and total payload are capped; malformed bodies get a generic `400`.
+  is a SERVER-OWNED constant chosen by an allowlisted `prompt` mode and contains
+  NO client-derived text (any client `system` is ignored; scenario/topic labels
+  are sanitized and delivered as a user-role context message, never the system
+  prompt); `maxTokens` is clamped (≤300); message count, per-message length, and
+  total payload are capped; malformed bodies get a generic `400`.
 - **B4 — per-user rate limiting.** Every AI function calls the atomic
   `bump_ai_usage` RPC, keyed by `auth.uid()` (works for anonymous-auth users
   too). Daily caps: `ai-chat` 20, `ai-evaluate` 40, `ai-error` 10. It **fails
@@ -27,11 +36,16 @@
 
 ## Deploy requirement (before AI is enabled)
 
-`supabase/schema.sql` adds `public.ai_usage` + `public.bump_ai_usage(text, int)`.
-**Apply the schema to the Supabase project before enabling AI.** Until it is
-applied, `bump_ai_usage` errors and every AI request is denied (fail-closed —
-the safe default). Deploying the schema and the updated Edge Functions is an
-Operator step (cloud sessions do not deploy).
+Operator deploy steps (cloud sessions do not deploy):
+
+1. Apply `supabase/schema.sql` (`public.ai_usage` + `public.bump_ai_usage(text,
+   int)`) to the Supabase project **before enabling AI**. Until it is applied,
+   `bump_ai_usage` errors and every AI request is denied (fail-closed — the safe
+   default).
+2. Deploy the updated Edge Functions (`ai-chat`, `ai-evaluate`, `ai-error`).
+3. **Delete the deployed `ai-diag`** (`supabase functions delete ai-diag`, or
+   deploy with `--prune`) — removing the source alone does not remove the live
+   endpoint.
 
 ## Residual notes
 
