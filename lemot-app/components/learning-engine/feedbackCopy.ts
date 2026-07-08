@@ -28,6 +28,15 @@ const POSITIVE: ReadonlySet<ErrorTagCode> = new Set<ErrorTagCode>([
   "accepted_variant",
 ]);
 
+// Harmless slips the learner may keep and still move on from: a missing accent
+// or trailing punctuation. Aligned with the product's accent-optional philosophy
+// ("a learner is never blocked for a missing accent"). These still show their own
+// gentle feedback — they are advanceable, not silently marked correct.
+const ADVANCEABLE_NEAR_MISS: ReadonlySet<ErrorTagCode> = new Set<ErrorTagCode>([
+  "accent_only",
+  "punctuation_only",
+]);
+
 /** Friendly, non-technical feedback line for a graded result. */
 export function friendlyFeedback(result: ErrorTagCode): string {
   return FRIENDLY[result] ?? "Not quite yet.";
@@ -36,4 +45,13 @@ export function friendlyFeedback(result: ErrorTagCode): string {
 /** True when the result should read as a calm success (green), not a near-miss. */
 export function isPositive(result: ErrorTagCode): boolean {
   return POSITIVE.has(result);
+}
+
+/**
+ * True when the learner may progress past this result — a positive grade OR a
+ * harmless accent/punctuation near-miss. Progression must not dead-end on a
+ * recoverable slip (audit B21); genuinely wrong answers stay blocked.
+ */
+export function canAdvance(result: ErrorTagCode): boolean {
+  return POSITIVE.has(result) || ADVANCEABLE_NEAR_MISS.has(result);
 }

@@ -5,6 +5,7 @@ import { Btn } from "@/components/Btn";
 import { MCQ } from "@/components/MCQ";
 import { P } from "@/constants/theme";
 import { norm } from "@/lib/normalize";
+import { reviewTotalScorable } from "@/lib/reviewScore";
 import type { ReviewItem, WeaveBlank } from "@/lib/types";
 
 interface ReviewProps {
@@ -34,7 +35,10 @@ export function Review({ items, onComplete, onError, say }: ReviewProps) {
   if (!current) return null;
 
   const isLast = index >= items.length - 1;
-  const totalScorable = items.length;
+  // Weave items are scored per blank (see checkWeaveBlank), so the denominator
+  // must count blanks for them — otherwise a multi-blank weave item can push the
+  // score above the total (audit B11).
+  const totalScorable = reviewTotalScorable(items);
 
   /** Handle MCQ answer selection */
   function handleSelect(option: string, correct: string) {
