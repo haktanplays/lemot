@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { kvStorage } from "@/lib/storage";
+import { loadOrQuarantine, isPlainObject } from "@/lib/safeStorage";
 
 /**
  * Simple Leitner-style SRS (Spaced Repetition System)
@@ -44,15 +45,27 @@ function todayStart(): number {
 export function useSRS() {
   const [data, setData] = useState<SRSData>({});
   const [loaded, setLoaded] = useState(false);
+  // Set when the load found corrupt data (already backed up). While true, an
+  // empty save must NOT overwrite the original key — recovery only happens once
+  // there is at least one real card to persist (see save()).
+  const corruptUnrecovered = useRef(false);
 
   // Load
   useEffect(() => {
     (async () => {
-      try {
-        const raw = await kvStorage.getItem(SRS_KEY);
-        if (raw) setData(JSON.parse(raw));
-      } catch (e) {
-        console.warn("[SRS] Load failed:", e);
+      const { value, corrupt } = await loadOrQuarantine<SRSData>(
+        kvStorage,
+        SRS_KEY,
+        isPlainObject,
+        "lm7_srs-invalid-json-or-shape"
+      );
+      if (corrupt) {
+        corruptUnrecovered.current = true;
+        console.warn(
+          "[SRS] Corrupt lm7_srs quarantined to backup key; kept raw, not overwriting."
+        );
+      } else if (value) {
+        setData(value);
       }
       setLoaded(true);
     })();
@@ -60,6 +73,10 @@ export function useSRS() {
 
   // Save
   const save = useCallback(async (newData: SRSData) => {
+    const meaningful = Object.keys(newData).length > 0;
+    // Do not let an empty save clobber a still-corrupt original key.
+    if (corruptUnrecovered.current && !meaningful) return;
+    if (meaningful) corruptUnrecovered.current = false;
     try {
       await kvStorage.setItem(SRS_KEY, JSON.stringify(newData));
     } catch (e) {

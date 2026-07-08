@@ -23,6 +23,7 @@
  */
 import type { LearningEvent } from "../events";
 import type { LearningRepository } from "./types";
+import { backupCorruptValue, corruptBackupKey } from "../../../lib/safeStorage";
 
 /** Minimal storage surface this repository needs. The app's `kvStorage` satisfies it. */
 export type KvLike = {
@@ -33,6 +34,28 @@ export type KvLike = {
 /** Namespaced keys — must never collide with live-v7 `lm7` / `lm7_srs`. */
 export const LM_LE_EVENTS_KEY = "lm_le_events";
 export const LM_LE_SNAPSHOT_KEY = "lm_le_snapshot";
+/** Where a corrupt event log is preserved for recovery (never overwritten). */
+export const LM_LE_EVENTS_CORRUPT_KEY = corruptBackupKey(LM_LE_EVENTS_KEY);
+
+/**
+ * Thrown when an append is refused because the on-disk event log is corrupt.
+ * The raw blob is preserved under `LM_LE_EVENTS_CORRUPT_KEY`; the original key is
+ * left untouched (fail-closed) so nothing recoverable is destroyed. Callers
+ * already tolerate a rejected append (the session controller's serialized chain
+ * surfaces an error status and keeps draining).
+ */
+export class CorruptEventLogError extends Error {
+  constructor(public readonly key: string) {
+    super(`event log at "${key}" is corrupt; append refused to avoid data loss`);
+    this.name = "CorruptEventLogError";
+  }
+}
+
+/** Discriminated read of the raw event log. */
+type EventLogRead =
+  | { kind: "empty" }
+  | { kind: "events"; events: LearningEvent[] }
+  | { kind: "corrupt"; raw: string };
 
 export class LocalRepository implements LearningRepository {
   private readonly injectedStore?: KvLike;
@@ -56,17 +79,52 @@ export class LocalRepository implements LearningRepository {
     return this.defaultStorePromise;
   }
 
-  /** Read the event list; any read/parse failure fails safely to `[]`. */
-  private async readEvents(): Promise<LearningEvent[]> {
+  /**
+   * Classify the raw event log without mutating storage:
+   *  - `empty`   → key absent/blank (first-run).
+   *  - `events`  → a valid JSON array (possibly the empty array `[]`).
+   *  - `corrupt` → unparseable OR parsed-but-not-an-array; carries the raw blob.
+   */
+  private async readEventLog(): Promise<EventLogRead> {
     const store = await this.store();
     const raw = await store.getItem(LM_LE_EVENTS_KEY);
-    if (!raw) return [];
+    if (raw == null || raw === "") return { kind: "empty" };
     try {
       const parsed: unknown = JSON.parse(raw);
-      return Array.isArray(parsed) ? (parsed as LearningEvent[]) : [];
+      if (Array.isArray(parsed)) return { kind: "events", events: parsed as LearningEvent[] };
+      return { kind: "corrupt", raw };
     } catch {
+      return { kind: "corrupt", raw };
+    }
+  }
+
+  /**
+   * Preserve a corrupt event blob under a non-overwriting backup key. Idempotent
+   * (the first captured corruption is kept), and it never touches the original
+   * `LM_LE_EVENTS_KEY`, so the recoverable raw value is never destroyed.
+   */
+  private async quarantineCorruptLog(raw: string): Promise<void> {
+    const store = await this.store();
+    await backupCorruptValue(
+      store,
+      LM_LE_EVENTS_KEY,
+      raw,
+      "event-log-not-array-or-unparseable",
+    );
+  }
+
+  /**
+   * Read the event list for consumers. A valid (possibly empty) log reads as its
+   * array. A corrupt log is quarantined (raw preserved) and surfaced as `[]` so
+   * downstream derivation stays crash-free — the original blob is NOT erased.
+   */
+  private async readEvents(): Promise<LearningEvent[]> {
+    const res = await this.readEventLog();
+    if (res.kind === "corrupt") {
+      await this.quarantineCorruptLog(res.raw);
       return [];
     }
+    return res.kind === "events" ? res.events : [];
   }
 
   private async writeEvents(events: LearningEvent[]): Promise<void> {
@@ -74,9 +132,19 @@ export class LocalRepository implements LearningRepository {
     await store.setItem(LM_LE_EVENTS_KEY, JSON.stringify(events));
   }
 
-  /** Append one event unless its `clientEventId` is already present (idempotent). */
+  /**
+   * Append one event unless its `clientEventId` is already present (idempotent).
+   * Fails closed on a corrupt log: the raw blob is backed up and the append is
+   * refused (throws `CorruptEventLogError`) rather than overwriting the corrupt
+   * original with `[event]` — non-destructive per audit B3.
+   */
   async appendEvent(event: LearningEvent): Promise<void> {
-    const events = await this.readEvents();
+    const res = await this.readEventLog();
+    if (res.kind === "corrupt") {
+      await this.quarantineCorruptLog(res.raw);
+      throw new CorruptEventLogError(LM_LE_EVENTS_KEY);
+    }
+    const events = res.kind === "events" ? res.events : [];
     if (events.some((e) => e.clientEventId === event.clientEventId)) return;
     events.push(event);
     await this.writeEvents(events);
