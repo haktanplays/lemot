@@ -1,5 +1,11 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { callWithFallback } from "../_shared/providers.ts";
+import {
+  validateEvaluateBody,
+  MAX_TOKENS_EVALUATE,
+  FALLBACK_EVALUATE,
+} from "../_shared/contract.ts";
+import { withinRateLimit } from "../_shared/ratelimit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,7 +13,12 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const FALLBACK_TEXT = "Could not evaluate. Try again.";
+function json(status: number, body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -16,12 +27,7 @@ Deno.serve(async (req) => {
 
   try {
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Missing auth" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    if (!authHeader) return json(401, { error: "unauthorized" });
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -32,45 +38,38 @@ Deno.serve(async (req) => {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (authError || !user) return json(401, { error: "unauthorized" });
+
+    if (!(await withinRateLimit(supabase, "ai-evaluate"))) {
+      return json(429, { error: "rate_limited" });
     }
 
-    const {
-      userText,
-      situation,
-      targetWords,
-      lang = "fr",
-    }: {
-      userText: string;
-      situation: string;
-      targetWords: string[];
-      lang?: string;
-    } = await req.json();
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return json(400, { error: "bad_request" });
+    }
 
+    const parsed = validateEvaluateBody(body);
+    if (!parsed.ok) return json(400, { error: "bad_request" });
+    const { userText, situation, targetWords, lang } = parsed.value;
+
+    // System prompt is entirely server-owned.
     const system = `You evaluate an A1 ${lang.toUpperCase()} learner's writing and give feedback DIRECTLY TO THE LEARNER. Always address them as "you" (2nd person). NEVER say "the user", "the student", "the learner", or "they" — always "you". Check: 1) Did you use the target words? 2) Basic grammar. 3) Does it fit the situation? Give 2-3 sentences of encouraging feedback in English. Mention specific words you used well. Example good: "You nailed 'je voudrais' — that's the polite form."`;
     const prompt = `Situation: ${situation}\nTarget words: ${targetWords.join(", ")}\nYour writing: ${userText}`;
 
     const result = await callWithFallback(
       [{ role: "user", content: prompt }],
       system,
-      200,
+      MAX_TOKENS_EVALUATE,
       lang,
       "evaluate",
     );
 
-    return new Response(
-      JSON.stringify({ text: result.text, provider: result.provider }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    return json(200, { text: result.text });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return new Response(
-      JSON.stringify({ text: FALLBACK_TEXT, error: msg }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    console.error("[ai-evaluate]", err instanceof Error ? err.message : String(err));
+    return json(200, { text: FALLBACK_EVALUATE });
   }
 });

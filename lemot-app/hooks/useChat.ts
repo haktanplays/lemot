@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import type { ScrollView } from "react-native";
-import { sendAIMessage, buildChatSystem } from "@/lib/ai";
+import { sendAIMessage } from "@/lib/ai";
 
 const MSG_LIMIT = 15;
 
@@ -30,8 +30,12 @@ export function useChat() {
     setChatMsgCount((c) => c + 1);
 
     try {
-      const system = buildChatSystem(chatMode, chatScenario ?? undefined);
-      const reply = await sendAIMessage(newMsgs, system);
+      // Server owns the system prompt; the client only sends the mode + an
+      // optional constrained scenario label (audit B4).
+      const reply = await sendAIMessage(newMsgs, {
+        mode: chatMode,
+        scenario: chatScenario ?? undefined,
+      });
       setChatMsgs((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch {
       setChatMsgs((prev) => [

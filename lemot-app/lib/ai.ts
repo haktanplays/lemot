@@ -7,7 +7,20 @@ interface AIMessage {
 }
 
 /**
- * Call a Supabase Edge Function with auth.
+ * Chat prompt spec sent to the server. The server OWNS the system prompt (audit
+ * B4); the client only supplies a mode and short constrained labels. It never
+ * sends the raw system instructions.
+ */
+export interface ChatPromptSpec {
+  mode?: string;
+  scenario?: string;
+  topic?: string;
+}
+
+const AI_TIMEOUT_MS = 15000;
+
+/**
+ * Call a Supabase Edge Function with auth and a hard client timeout.
  * Falls back to a default message on failure.
  */
 async function callEdgeFunction(
@@ -20,13 +33,14 @@ async function callEdgeFunction(
   if (!FEATURES.aiEnabled || !supabaseReady) return fallback;
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000);
+  const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
 
   try {
+    // Wire the abort signal so the timeout actually cancels the request (B15).
     const { data, error } = await supabase.functions.invoke(fnName, {
       body,
+      signal: controller.signal,
     });
-    clearTimeout(timeout);
 
     if (error) {
       console.warn(`[AI] ${fnName} error:`, error.message);
@@ -34,47 +48,33 @@ async function callEdgeFunction(
     }
     return data?.text ?? fallback;
   } catch (err: unknown) {
-    clearTimeout(timeout);
     if (err instanceof Error && err.name === "AbortError") {
       return "Temps d'attente dépassé. Réessayez.";
     }
     return fallback;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
 /**
- * Send a chat message via ai-chat Edge Function (Gemini Flash).
+ * Send a chat message via the ai-chat Edge Function. The server derives the
+ * system prompt from `prompt`; the client never sends raw system text.
  */
 export async function sendAIMessage(
   messages: AIMessage[],
-  system: string,
+  prompt: ChatPromptSpec,
   maxTokens: number = 300,
 ): Promise<string> {
   return callEdgeFunction(
     "ai-chat",
-    { messages, system, maxTokens },
+    { messages, prompt, maxTokens },
     "Désolé, réessayez.",
   );
 }
 
 /**
- * Build system prompt for chat modes.
- */
-export function buildChatSystem(
-  mode: string,
-  scenarioDesc?: string,
-): string {
-  const base = `You are a French conversation partner. User is an English speaker at A1-A2.
-RULES: Always respond in French, short simple sentences. NEVER directly correct errors — say "je n'ai pas bien compris" and force self-correction. After 2nd attempt: indirect hint. After 3rd: provide correct form. 1-3 sentences max. No emojis. If user writes English: "En français, s'il vous plaît !"`;
-
-  if (mode === "scenario" && scenarioDesc) {
-    return `${base}\nROLE: ${scenarioDesc}. Stay in character.`;
-  }
-  return base;
-}
-
-/**
- * Evaluate "Say It Your Way" free writing via ai-evaluate Edge Function (Gemini Flash-Lite).
+ * Evaluate "Say It Your Way" free writing via the ai-evaluate Edge Function.
  */
 export async function evaluateSayIt(
   userText: string,
@@ -89,18 +89,18 @@ export async function evaluateSayIt(
 }
 
 /**
- * Get AI response for mini conversation via ai-chat Edge Function (Gemini Flash).
+ * Get AI response for a mini conversation via the ai-chat Edge Function. The
+ * server builds the topic-scoped system prompt from the `mini` mode + topic.
  */
 export async function sendMiniConv(
   messages: AIMessage[],
   topic: string,
 ): Promise<string> {
-  const system = `You are a French conversation partner for an A1 learner. Topic: ${topic}. Rules: Respond in simple French (1-2 sentences). If user makes errors, naturally rephrase correctly. Ask follow-up questions to keep conversation going. No English unless user is completely stuck.`;
-  return sendAIMessage(messages, system, 150);
+  return sendAIMessage(messages, { mode: "mini", topic }, 150);
 }
 
 /**
- * Analyze user errors via ai-error Edge Function (Claude Haiku).
+ * Analyze user errors via the ai-error Edge Function (Claude Haiku).
  */
 export async function analyzeErrors(
   errors: Array<{
@@ -118,19 +118,24 @@ export async function analyzeErrors(
   }>;
   summary: string;
 }> {
-  if (!FEATURES.aiEnabled || !supabaseReady)
-    return { weakSpots: [], summary: "Analysis unavailable." };
+  const unavailable = { weakSpots: [], summary: "Analysis unavailable." };
+  if (!FEATURES.aiEnabled || !supabaseReady) return unavailable;
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
   try {
     const { data, error } = await supabase.functions.invoke("ai-error", {
       body: { errors },
+      signal: controller.signal,
     });
     if (error) {
       console.warn("[AI] ai-error error:", error.message);
-      return { weakSpots: [], summary: "Analysis unavailable." };
+      return unavailable;
     }
-    return data ?? { weakSpots: [], summary: "Analysis unavailable." };
+    return data ?? unavailable;
   } catch {
-    return { weakSpots: [], summary: "Analysis unavailable." };
+    return unavailable;
+  } finally {
+    clearTimeout(timeout);
   }
 }
