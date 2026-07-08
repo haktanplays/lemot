@@ -10,6 +10,7 @@ import {
 import { P } from "@/constants/theme";
 import type { ExerciseBlueprint } from "@/content/learning-engine";
 import { grade } from "@/content/learning-engine/grade";
+import { checkAnswer } from "@/content/learning-engine/answer-check";
 import type { ErrorTagCode } from "@/content/learning-engine/events";
 import type { GradedAttemptHandler } from "@/content/learning-engine/session-controller";
 import { friendlyFeedback, isPositive, canAdvance } from "./feedbackCopy";
@@ -54,12 +55,25 @@ export function ContextChainCard({
   const step = steps[idx];
   const isLast = idx >= steps.length - 1;
   const positive = result ? isPositive(result) : false;
-  // Progression is allowed on a positive grade OR a harmless accent/punctuation
-  // near-miss, so a missing accent never dead-ends the step (audit B21). The
-  // green/amber feedback below still reflects `positive`, so a near-miss reads
-  // as "almost" — it is advanceable, not silently marked correct.
-  const advanceable = result ? canAdvance(result) : false;
-  const feedback = result ? friendlyFeedback(result) : null;
+  // Lenient recovery: the answer matches the step target once accents,
+  // punctuation and case are folded. grade() reports a COMBINED accent+
+  // punctuation slip (e.g. "faire ca" for "faire ça ?") as
+  // `incorrect_but_understandable` — neither single-dimension near-miss tag — so
+  // canAdvance() alone would still dead-end common accent-optional answers on
+  // shipped steps. The lenient match reopens them (audit B21).
+  const lenientMatch = result != null && step != null && checkAnswer(input, step.answer);
+  // Advance on a positive grade, a single-dimension accent/punctuation near-miss,
+  // OR a lenient (accent/punctuation/case) match. Genuinely wrong answers stay
+  // blocked; the grade sent upstream via onGradedAttempt is unchanged.
+  const advanceable = result ? canAdvance(result) || lenientMatch : false;
+  // A lenient match the grade didn't already treat as advanceable is a combined
+  // accent/punctuation slip — show a gentle "almost", not a hard fail. Positive
+  // grades stay green; every recoverable slip reads amber, never a green success.
+  const feedback = result
+    ? lenientMatch && !canAdvance(result)
+      ? "Almost — just accents or punctuation."
+      : friendlyFeedback(result)
+    : null;
   const accent = positive ? P.green : P.amber;
 
   const onCheck = () => {

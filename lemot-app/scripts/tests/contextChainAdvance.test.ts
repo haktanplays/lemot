@@ -11,6 +11,7 @@
 import { describe, test, assert } from "./harness";
 import { canAdvance, isPositive } from "../../components/learning-engine/feedbackCopy";
 import { grade } from "../../content/learning-engine/grade";
+import { checkAnswer } from "../../content/learning-engine/answer-check";
 
 describe("PR-B1 — context_chain progression (B21)", () => {
   test("positive grades are advanceable", () => {
@@ -53,5 +54,34 @@ describe("PR-B1 — context_chain progression (B21)", () => {
       expectedAnswer: "ça va",
     });
     assert(!canAdvance(graded.result), `wrong answer (${graded.result}) must stay blocked`);
+  });
+
+  // Combined accent + punctuation slip on a shipped-style step (e.g. L12
+  // "Est-ce que je peux faire ça ?"). grade() folds each dimension separately,
+  // so it reports incorrect_but_understandable and canAdvance() alone would
+  // dead-end. ContextChainCard also gates on the lenient checkAnswer match,
+  // which reopens progression (audit B21 / PR review).
+  test("combined accent+punctuation slip: canAdvance blocks but lenient match advances", () => {
+    const expected = "Est-ce que je peux faire ça ?";
+    const userAnswer = "Est-ce que je peux faire ca"; // missing ç accent AND trailing " ?"
+    const graded = grade({ operation: "context_chain", userAnswer, expectedAnswer: expected });
+    // The grade tag itself is not advanceable (this is the gap the fix closes)...
+    assert(
+      !canAdvance(graded.result),
+      `combined slip grades as ${graded.result}; canAdvance alone would dead-end`,
+    );
+    // ...but the lenient (accent/punctuation/case) match is true, so the card's
+    // advance gate (canAdvance || lenientMatch) opens.
+    assert(
+      checkAnswer(userAnswer, expected),
+      "the lenient normalized match must recover the combined accent+punctuation slip",
+    );
+  });
+
+  test("lenient match does not rescue a genuinely different answer", () => {
+    assert(
+      !checkAnswer("faire du café", "Est-ce que je peux faire ça ?"),
+      "a different answer must not lenient-match, so it stays blocked",
+    );
   });
 });
