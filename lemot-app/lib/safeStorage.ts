@@ -67,6 +67,11 @@ export async function safeLoadJson<T>(
  *
  * `now` is injectable for deterministic tests; it defaults to `Date.now()`.
  * This is an I/O-layer diagnostic timestamp, not an engine event timestamp.
+ *
+ * Best-effort: if the backup read/write itself fails (quota, SecurityError,
+ * native kv error), this resolves `wrote: false` instead of throwing. The raw
+ * value is still intact under the ORIGINAL key, so nothing is lost, and callers
+ * (hook load paths) are never blocked from finishing startup by a failed backup.
  */
 export async function backupCorruptValue(
   store: MinimalKv,
@@ -76,11 +81,15 @@ export async function backupCorruptValue(
   now: number = Date.now(),
 ): Promise<{ backupKey: string; wrote: boolean }> {
   const backupKey = corruptBackupKey(key);
-  const existing = await store.getItem(backupKey);
-  if (existing != null) return { backupKey, wrote: false };
-  const payload = JSON.stringify({ key, reason, savedAt: now, raw });
-  await store.setItem(backupKey, payload);
-  return { backupKey, wrote: true };
+  try {
+    const existing = await store.getItem(backupKey);
+    if (existing != null) return { backupKey, wrote: false };
+    const payload = JSON.stringify({ key, reason, savedAt: now, raw });
+    await store.setItem(backupKey, payload);
+    return { backupKey, wrote: true };
+  } catch {
+    return { backupKey, wrote: false };
+  }
 }
 
 /**

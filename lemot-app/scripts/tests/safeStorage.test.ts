@@ -78,6 +78,27 @@ describe("PR-A — safeStorage corruption handling", () => {
     assertEqual(parsed.savedAt, 111, "the first backup's metadata is retained");
   });
 
+  test("failed backup write is non-fatal: loadOrQuarantine resolves, never throws", async () => {
+    // A store that can read the corrupt raw but rejects the backup write (quota /
+    // SecurityError / native kv failure). Startup must not be blocked.
+    const store = {
+      getItem: (k: string) => (k === KEY ? "corrupt{" : null),
+      setItem: () => {
+        throw new Error("QuotaExceededError");
+      },
+    };
+    let threw = false;
+    let result: { value: unknown; corrupt: boolean } | null = null;
+    try {
+      result = await loadOrQuarantine(store, KEY, isPlainObject, "lm7-invalid");
+    } catch {
+      threw = true;
+    }
+    assert(!threw, "a failed backup write must not propagate out of loadOrQuarantine");
+    assert(result?.corrupt === true, "corrupt is still reported so the caller can guard");
+    assert(result?.value === null, "no value is returned for corrupt data");
+  });
+
   test("clean-empty save after corrupt load does not clobber (guard semantics)", async () => {
     // Mirrors the hook guard: after a corrupt load the original + backup exist,
     // and an empty/default save is skipped while a meaningful one is allowed.

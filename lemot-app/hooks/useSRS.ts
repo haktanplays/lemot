@@ -53,21 +53,28 @@ export function useSRS() {
   // Load
   useEffect(() => {
     (async () => {
-      const { value, corrupt } = await loadOrQuarantine<SRSData>(
-        kvStorage,
-        SRS_KEY,
-        isPlainObject,
-        "lm7_srs-invalid-json-or-shape"
-      );
-      if (corrupt) {
-        corruptUnrecovered.current = true;
-        console.warn(
-          "[SRS] Corrupt lm7_srs quarantined to backup key; kept raw, not overwriting."
+      try {
+        const { value, corrupt } = await loadOrQuarantine<SRSData>(
+          kvStorage,
+          SRS_KEY,
+          isPlainObject,
+          "lm7_srs-invalid-json-or-shape"
         );
-      } else if (value) {
-        setData(value);
+        if (corrupt) {
+          corruptUnrecovered.current = true;
+          console.warn(
+            "[SRS] Corrupt lm7_srs quarantined to backup key; kept raw, not overwriting."
+          );
+        } else if (value) {
+          setData(value);
+        }
+      } catch (e) {
+        // Any unexpected load failure falls back to safe in-memory defaults.
+        console.warn("[SRS] Load failed:", e);
+      } finally {
+        // Always finish startup — never leave the app stuck unloaded.
+        setLoaded(true);
       }
-      setLoaded(true);
     })();
   }, []);
 

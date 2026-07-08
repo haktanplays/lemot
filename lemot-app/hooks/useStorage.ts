@@ -34,25 +34,32 @@ export function useStorage() {
   // Load from kvStorage on mount
   useEffect(() => {
     (async () => {
-      const { value, corrupt } = await loadOrQuarantine<StorageData>(
-        kvStorage,
-        STORAGE_KEY,
-        isPlainObject,
-        "lm7-invalid-json-or-shape"
-      );
-      if (corrupt) {
-        // Raw blob preserved under `${STORAGE_KEY}__corrupt`; keep in-memory
-        // safe defaults and block a clean-empty clobber of the original key.
-        corruptUnrecovered.current = true;
-        console.warn(
-          "[Storage] Corrupt lm7 quarantined to backup key; kept raw, not overwriting."
+      try {
+        const { value, corrupt } = await loadOrQuarantine<StorageData>(
+          kvStorage,
+          STORAGE_KEY,
+          isPlainObject,
+          "lm7-invalid-json-or-shape"
         );
-      } else if (value) {
-        setProg(value.p || {});
-        setErrors(value.err || []);
-        setDailyRev(value.dr || { date: "", count: 0 });
+        if (corrupt) {
+          // Raw blob preserved under `${STORAGE_KEY}__corrupt`; keep in-memory
+          // safe defaults and block a clean-empty clobber of the original key.
+          corruptUnrecovered.current = true;
+          console.warn(
+            "[Storage] Corrupt lm7 quarantined to backup key; kept raw, not overwriting."
+          );
+        } else if (value) {
+          setProg(value.p || {});
+          setErrors(value.err || []);
+          setDailyRev(value.dr || { date: "", count: 0 });
+        }
+      } catch (e) {
+        // Any unexpected load failure falls back to safe in-memory defaults.
+        console.warn("[Storage] Load failed:", e);
+      } finally {
+        // Always finish startup — never leave the app stuck unloaded.
+        setLoaded(true);
       }
-      setLoaded(true);
     })();
   }, []);
 
