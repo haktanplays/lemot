@@ -46,6 +46,7 @@ import "./compaction.test";
 import "./migrations.test";
 import "./deriveDrill.test";
 import "./practiceSelector.test";
+import "./nearMissMasteryTiming.test";
 import { runAll } from "./harness";
 
 void runAll();
