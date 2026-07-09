@@ -13,6 +13,7 @@ import {
   clearLocalLearningData,
 } from "@/content/learning-engine/privacy-data";
 import { clearLocalPrivacyState } from "@/content/learning-engine/privacy-local";
+import { TelemetryStore } from "@/content/learning-engine/telemetry";
 
 /**
  * Local privacy & data controls (P5.4C) — calm, learner-safe, local-only.
@@ -42,9 +43,12 @@ type ExportSummary = {
 };
 
 export function PrivacyDataControls() {
-  // Scoped LocalRepository for EXPORT reads only (no session-controller use).
+  // Scoped LocalRepository + TelemetryStore for EXPORT reads only (no
+  // session-controller use). Telemetry is included so the export is complete (B9).
   const repoRef = useRef<LocalRepository | null>(null);
   if (repoRef.current === null) repoRef.current = new LocalRepository();
+  const telemetryRef = useRef<TelemetryStore | null>(null);
+  if (telemetryRef.current === null) telemetryRef.current = new TelemetryStore();
 
   const [exportStatus, setExportStatus] = useState<ExportStatus>("idle");
   const [summary, setSummary] = useState<ExportSummary | null>(null);
@@ -57,6 +61,7 @@ export function PrivacyDataControls() {
         const out = await exportLocalLearningData({
           repository: repoRef.current!,
           exportedAt: Date.now(), // UI action boundary; primitive stays pure.
+          telemetry: telemetryRef.current!,
         });
         setSummary({
           eventCount: out.eventCount,
