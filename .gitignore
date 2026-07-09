@@ -4,4 +4,7 @@
 lemot-app/.env
 .mcp.json
 .agents/
-.claude/
+.claude/*
+!.claude/skills/
+!.claude/settings.json
+!.claude/hooks/
