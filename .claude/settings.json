@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/fable5-stop-validate.sh\"",
+            "timeout": 300
+          }
+        ]
+      }
+    ]
+  }
+}
