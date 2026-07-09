@@ -60,6 +60,11 @@ export const SECURE_CHUNK_SIZE = 1800;
  */
 export const MANIFEST_PREFIX = "__lm_chunks__:";
 
+/** Consecutive absent indices that end a cleanup sweep (tolerates small holes). */
+const SWEEP_MISS_TOLERANCE = 4;
+/** Absolute index ceiling so a sweep can never loop unbounded on a pathological store. */
+const SWEEP_HARD_CAP = 4096;
+
 const chunkKey = (key: string, i: number): string => `${key}.${i}`;
 
 function splitIntoChunks(value: string, size: number): string[] {
@@ -83,17 +88,42 @@ export function createChunkedSecureStorage(deps: {
   const { secure, legacy } = deps;
   const chunkSize = deps.chunkSize && deps.chunkSize > 0 ? deps.chunkSize : SECURE_CHUNK_SIZE;
 
-  /** How many chunks the current manifest at `key` claims (0 = none/not chunked). */
-  async function readChunkCount(key: string): Promise<number> {
-    const manifest = await secure.getItemAsync(key);
-    if (manifest === null || !manifest.startsWith(MANIFEST_PREFIX)) return 0;
-    const n = parseInt(manifest.slice(MANIFEST_PREFIX.length), 10);
-    return Number.isFinite(n) && n > 0 ? n : 0;
+  /**
+   * Delete chunk keys `${key}.i` for i ≥ `start`, walking upward until
+   * `SWEEP_MISS_TOLERANCE` consecutive indices are absent (hard-capped).
+   *
+   * Cleanup deliberately does NOT trust the manifest count: a prior shorter
+   * overwrite lowers the manifest before pruning stale higher-index chunks, so
+   * an interrupted prune (app killed / a transient delete failure) can leave
+   * `.N`, `.N+1`, … fragments with a manifest that undercounts them. Sweeping the
+   * contiguous run — with a small tolerance for holes — guarantees a
+   * sign-out/overwrite removes every token fragment, never orphaning secrets in
+   * the keychain (audit B19 / PR review P2). Best-effort per key; never throws.
+   */
+  async function sweepChunksFrom(key: string, start: number): Promise<void> {
+    let misses = 0;
+    for (let i = start; misses < SWEEP_MISS_TOLERANCE && i < SWEEP_HARD_CAP; i++) {
+      let existed = false;
+      try {
+        existed = (await secure.getItemAsync(chunkKey(key, i))) !== null;
+      } catch {
+        existed = false;
+      }
+      if (existed) {
+        misses = 0;
+        try {
+          await secure.deleteItemAsync(chunkKey(key, i));
+        } catch {
+          /* best-effort */
+        }
+      } else {
+        misses += 1;
+      }
+    }
   }
 
-  /** Write `value` as chunks + manifest, pruning any stale higher-index chunks. */
+  /** Write `value` as chunks + manifest, then sweep away any stale higher-index chunks. */
   async function writeChunks(key: string, value: string): Promise<void> {
-    const oldCount = await readChunkCount(key);
     const chunks = splitIntoChunks(value, chunkSize);
     // Chunks first, then the manifest: a torn write never leaves a valid count
     // pointing at a missing chunk (a read of missing chunks fails soft anyway).
@@ -101,13 +131,9 @@ export function createChunkedSecureStorage(deps: {
       await secure.setItemAsync(chunkKey(key, i), chunks[i]);
     }
     await secure.setItemAsync(key, MANIFEST_PREFIX + String(chunks.length));
-    for (let i = chunks.length; i < oldCount; i++) {
-      try {
-        await secure.deleteItemAsync(chunkKey(key, i));
-      } catch {
-        /* stale-chunk prune is best-effort */
-      }
-    }
+    // Robustly drop any stale chunks left by a previous, longer value — the
+    // sweep does not rely on the (already-updated) manifest count.
+    await sweepChunksFrom(key, chunks.length);
   }
 
   /** Best-effort one-time migration of a legacy plaintext session into SecureStore. */
@@ -171,20 +197,12 @@ export function createChunkedSecureStorage(deps: {
     },
 
     async removeItem(key: string): Promise<void> {
+      // Sweep the whole contiguous chunk run (ignoring the manifest count, which
+      // may undercount after an interrupted prune) so sign-out leaves no token
+      // fragment behind, then drop the manifest and any legacy plaintext copy.
+      await sweepChunksFrom(key, 0);
       try {
-        const count = await readChunkCount(key);
-        for (let i = 0; i < count; i++) {
-          try {
-            await secure.deleteItemAsync(chunkKey(key, i));
-          } catch {
-            /* best-effort */
-          }
-        }
-        try {
-          await secure.deleteItemAsync(key);
-        } catch {
-          /* best-effort */
-        }
+        await secure.deleteItemAsync(key);
       } catch {
         /* best-effort */
       }

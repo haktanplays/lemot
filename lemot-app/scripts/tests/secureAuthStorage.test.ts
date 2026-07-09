@@ -137,6 +137,34 @@ describe("PR-D — chunked secure auth storage (B19)", () => {
     assertEqual(await store.getItem(KEY), "xy", "reads the new shorter value cleanly");
   });
 
+  test("removeItem sweeps orphaned chunks even when the manifest undercounts (P2 fix)", async () => {
+    // Simulate an interrupted prior prune: the manifest claims 1 chunk but stale
+    // higher-index fragments remain in SecureStore. Sign-out must still clear them.
+    const secure = makeFakeSecure({
+      [KEY]: MANIFEST_PREFIX + "1",
+      [`${KEY}.0`]: "new",
+      [`${KEY}.1`]: "stale-token-fragment-1",
+      [`${KEY}.2`]: "stale-token-fragment-2",
+    });
+    const store = createChunkedSecureStorage({ secure, legacy: makeFakeKv() });
+    await store.removeItem(KEY);
+    assert(secure.map.size === 0, "all fragments + manifest removed despite an undercounting manifest");
+  });
+
+  test("a shorter overwrite then remove leaves nothing, even across an interrupted prune", async () => {
+    // Pre-seed stale fragments as if a previous prune never finished, then do a
+    // normal short write (manifest → 1) and a remove; nothing may survive.
+    const secure = makeFakeSecure({
+      [`${KEY}.3`]: "orphan-3",
+      [`${KEY}.4`]: "orphan-4",
+    });
+    const store = createChunkedSecureStorage({ secure, legacy: makeFakeKv(), chunkSize: 4 });
+    await store.setItem(KEY, "abcdefghij"); // 3 chunks (.0/.1/.2) — but .3/.4 orphaned earlier
+    await store.setItem(KEY, "xy"); // 1 chunk; sweep must clear .1..(up to tolerance)
+    await store.removeItem(KEY);
+    assert(secure.map.size === 0, "no chunk or manifest survives after remove");
+  });
+
   test("a legacy full value written directly under the key still reads back", async () => {
     // Defensive: a hypothetical prior build that wrote the whole value under the
     // key (no manifest) must not read as a chunk count.
