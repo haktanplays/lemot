@@ -116,3 +116,54 @@ drop trigger if exists update_progress_updated_at on public.user_progress;
 create trigger update_progress_updated_at
   before update on public.user_progress
   for each row execute function public.update_updated_at();
+
+-- 7. AI usage quota (PR-C, audit B4 — server-side per-user rate limiting)
+-- DEPLOY REQUIRED: this table + RPC must be applied before AI is enabled;
+-- without them, `bump_ai_usage` errors and the Edge Functions fail closed
+-- (every AI request is denied), which is the safe default.
+create table if not exists public.ai_usage (
+  user_id uuid references auth.users on delete cascade not null,
+  fn text not null,
+  day date not null default current_date,
+  count int not null default 0,
+  primary key (user_id, fn, day)
+);
+
+alter table public.ai_usage enable row level security;
+
+-- Users may read their own usage; writes only ever happen through the
+-- SECURITY DEFINER RPC below (no direct client insert/update policy exists).
+drop policy if exists "Users can view own ai usage" on public.ai_usage;
+create policy "Users can view own ai usage"
+  on public.ai_usage for select
+  using (auth.uid() = user_id);
+
+-- Atomic per-user daily increment + limit check. SECURITY DEFINER so it can
+-- write the counter, but it is keyed STRICTLY by auth.uid(), so a caller can
+-- only ever bump their own row (anonymous-auth users included — they are still
+-- authenticated). Returns true iff the request is within the daily limit.
+create or replace function public.bump_ai_usage(p_fn text, p_limit int)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_uid uuid := auth.uid();
+  v_count int;
+begin
+  if v_uid is null then
+    return false; -- fail closed: no identity, no allowance
+  end if;
+  insert into public.ai_usage (user_id, fn, day, count)
+    values (v_uid, p_fn, current_date, 1)
+  on conflict (user_id, fn, day)
+    do update set count = public.ai_usage.count + 1
+  returning count into v_count;
+  return v_count <= p_limit;
+end;
+$$;
+
+-- Only authenticated sessions may call it; never anon/unauthenticated.
+revoke all on function public.bump_ai_usage(text, int) from public;
+grant execute on function public.bump_ai_usage(text, int) to authenticated;

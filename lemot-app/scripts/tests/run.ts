@@ -15,6 +15,7 @@ import "./privacyData.test";
 import "./mastery.test";
 import "./safeStorage.test";
 import "./blobStore.test";
+import "./aiContract.test";
 import "./reviewScore.test";
 import "./contextChainAdvance.test";
 import "./localRepository.test";

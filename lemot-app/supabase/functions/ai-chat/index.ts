@@ -1,5 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { callWithFallback, type ChatMessage } from "../_shared/providers.ts";
+import { callWithFallback } from "../_shared/providers.ts";
+import { validateChatBody, FALLBACK_CHAT } from "../_shared/contract.ts";
+import { withinRateLimit } from "../_shared/ratelimit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,7 +9,12 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const FALLBACK_TEXT = "Désolé, réessayez.";
+function json(status: number, body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -16,12 +23,7 @@ Deno.serve(async (req) => {
 
   try {
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Missing auth" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    if (!authHeader) return json(401, { error: "unauthorized" });
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -32,36 +34,38 @@ Deno.serve(async (req) => {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (authError || !user) return json(401, { error: "unauthorized" });
+
+    // Server-side per-user rate limit (fails closed).
+    if (!(await withinRateLimit(supabase, "ai-chat"))) {
+      return json(429, { error: "rate_limited" });
     }
 
-    const {
-      messages,
-      system,
-      maxTokens = 150,
-      lang = "fr",
-    }: {
-      messages: ChatMessage[];
-      system: string;
-      maxTokens?: number;
-      lang?: string;
-    } = await req.json();
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return json(400, { error: "bad_request" });
+    }
 
-    const result = await callWithFallback(messages, system, maxTokens, lang, "chat");
+    // Server owns the system prompt + clamps maxTokens / message caps. Any
+    // client `system` field is ignored.
+    const parsed = validateChatBody(body);
+    if (!parsed.ok) return json(400, { error: "bad_request" });
 
-    return new Response(
-      JSON.stringify({ text: result.text, provider: result.provider }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    const result = await callWithFallback(
+      parsed.value.messages,
+      parsed.value.system,
+      parsed.value.maxTokens,
+      parsed.value.lang,
+      "chat",
     );
+
+    // Do not return provider name or any internal detail (audit B15).
+    return json(200, { text: result.text });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return new Response(
-      JSON.stringify({ text: FALLBACK_TEXT, error: msg }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    // Log internals server-side only; client gets a generic calm fallback.
+    console.error("[ai-chat]", err instanceof Error ? err.message : String(err));
+    return json(200, { text: FALLBACK_CHAT });
   }
 });

@@ -22,17 +22,30 @@ const GEMINI_KEY = Deno.env.get("GEMINI_API_KEY") ?? "";
 const GROQ_KEY = Deno.env.get("GROQ_API_KEY") ?? "";
 const MISTRAL_KEY = Deno.env.get("MISTRAL_API_KEY") ?? "";
 
+// Per-provider outbound timeout (audit B15): a hung upstream must not stall the
+// whole request. Timeouts are surfaced as provider failures so callWithFallback
+// moves on to the next provider.
+const PROVIDER_TIMEOUT_MS = 10000;
+
 async function postJson(
   url: string,
   headers: Record<string, string>,
   body: unknown,
   providerName: string,
 ): Promise<Response> {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...headers },
-    body: JSON.stringify(body),
-  });
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...headers },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
+    });
+  } catch (err) {
+    // Timeout (AbortError/TimeoutError) or network failure → retryable provider error.
+    const detail = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+    throw new ProviderError(providerName, 504, `fetch failed: ${detail}`);
+  }
   if (!res.ok) {
     const text = await res.text();
     throw new ProviderError(providerName, res.status, text);
