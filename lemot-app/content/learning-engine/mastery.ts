@@ -54,10 +54,10 @@ export type ItemMastery = {
   wrongCount: number;
   skipCount: number;
   /**
-   * Near-miss / precision signals (meaning-preserving slips:
-   * punctuation_only / accent_only / spelling_near_miss). Tracked but NOT
-   * counted as failure in the foundation reducer — see `scoreEvent` and
-   * docs/status/founder-self-learning-mastery-precision-policy.md.
+   * Precision signals for meaning-PRESERVING slips (punctuation_only /
+   * accent_only). Tracked but never counted as failure. `spelling_near_miss`
+   * is NOT a precision signal (audit B7) — it accrues weakness instead; see
+   * `scoreEvent` and docs/status/founder-self-learning-mastery-precision-policy.md.
    */
   precisionCount: number;
   precisionTags: Partial<Record<ErrorTagCode, number>>;
@@ -130,18 +130,19 @@ const isSuccess = (r: ErrorTagCode): boolean =>
   r === "correct" || r === "accepted_variant";
 
 /**
- * Near-miss / precision outcomes: meaning-preserving slips. In the FOUNDATION
- * reducer these are soft precision signals, NOT failures (no wrongCount,
- * productionFailure, recognitionFailure, weakTags, weakness, or box/prompt-fade
- * step-down). Staged strictness (lesson band, monolingual phase, promptFade,
- * item maturity, future `accentCriticality`) is documented, not yet implemented.
+ * Meaning-PRESERVING slips (PR-B1 leniency): punctuation_only / accent_only.
+ * Soft precision signals — never a failure, never weaken the item, never step
+ * the leitner box or prompt-fade down.
+ *
+ * `spelling_near_miss` is deliberately NOT here (audit B7): FR minimal pairs
+ * (un/on, le/la, et/est) surface as `spelling_near_miss` but are meaning-
+ * distinct, so mastery must not treat them as harmless — see `scoreEvent`.
  */
-const NEAR_MISS_TAGS: ReadonlySet<ErrorTagCode> = new Set<ErrorTagCode>([
+const PRECISION_TAGS: ReadonlySet<ErrorTagCode> = new Set<ErrorTagCode>([
   "punctuation_only",
   "accent_only",
-  "spelling_near_miss",
 ]);
-const isNearMiss = (r: ErrorTagCode): boolean => NEAR_MISS_TAGS.has(r);
+const isPrecision = (r: ErrorTagCode): boolean => PRECISION_TAGS.has(r);
 
 /** Increment weakTags for the failing result + its errorTags, de-duplicated per event. */
 function addWeakTags(weakTags: Partial<Record<ErrorTagCode, number>>, event: LearningEvent): void {
@@ -156,7 +157,7 @@ function addPrecisionTags(
 ): void {
   const tags = new Set<ErrorTagCode>([event.result, ...event.errorTags]);
   for (const t of tags) {
-    if (NEAR_MISS_TAGS.has(t)) precisionTags[t] = (precisionTags[t] ?? 0) + 1;
+    if (PRECISION_TAGS.has(t)) precisionTags[t] = (precisionTags[t] ?? 0) + 1;
   }
 }
 
@@ -164,21 +165,26 @@ function addPrecisionTags(
  * Fold one event into the snapshot. Idempotent: a `clientEventId` already in
  * `processedClientEventIds` returns the snapshot unchanged.
  *
- * `event.result` is classified into four buckets:
+ * `event.result` is classified into five buckets:
  *  - SUCCESS (`correct` / `accepted_variant`): counts success, advances leitner
- *    box + prompt-fade.
- *  - PRECISION / near-miss (`punctuation_only` / `accent_only` /
- *    `spelling_near_miss`): a soft signal — increments `precisionCount` /
- *    `precisionTags` and the attempt counter, but does NOT touch wrongCount,
- *    productionFailure/recognitionFailure, weakTags, weakness, success, or the
- *    box / prompt-fade level. `dueAt` is refreshed neutrally at the CURRENT box.
+ *    box + prompt-fade, schedules `dueAt` at the new (further-out) box interval.
+ *  - PRECISION (`punctuation_only` / `accent_only`): meaning-preserving slip —
+ *    increments `precisionCount` / `precisionTags` and the attempt counter, but
+ *    does NOT touch failure counters, weakTags, weakness, success, or the box /
+ *    prompt-fade level (PR-B1 leniency).
+ *  - SPELLING NEAR-MISS (`spelling_near_miss`): a meaning-distinct minimal pair
+ *    (un/on, le/la, et/est). Still a near-miss for UX tone, but mastery gives NO
+ *    positive credit; it neither advances nor demotes the box / prompt-fade, and
+ *    it accrues weakTags so repeats surface for Challenge (audit B7).
  *  - SKIP (`empty_or_skip`): increments skipCount only; neutral otherwise.
  *  - FAILURE (every other tag): counts failure → wrongCount++, weakTags, and a
  *    leitner / prompt-fade step down.
  *
- * This foundation policy keeps early learners from being silently punished for
- * meaning-preserving slips; staged strictness is documented for later (see
- * docs/status/founder-self-learning-mastery-precision-policy.md), not built here.
+ * `dueAt` timing (audit B12): SUCCESS and FAILURE (re)schedule at the new box
+ * interval; PRECISION, SPELLING NEAR-MISS and SKIP keep the item DUE NOW so it
+ * returns for reinforcement instead of disappearing for a full box interval.
+ * Staged strictness (lesson band, promptFade, item maturity, future
+ * `accentCriticality`) is documented for later, not built here.
  */
 export function scoreEvent(
   snapshot: MasterySnapshot,
@@ -192,8 +198,12 @@ export function scoreEvent(
   const items: Record<ItemId, ItemMastery> = { ...snapshot.items };
   const isProduction = PRODUCTION_OPS.has(event.operation);
   const success = isSuccess(event.result);
-  const nearMiss = isNearMiss(event.result);
+  const precision = isPrecision(event.result);
+  const spellingNearMiss = event.result === "spelling_near_miss";
   const skip = event.result === "empty_or_skip";
+  // Skip and either kind of near-miss neither advance nor hard-fail the box, so
+  // the item must stay due now for reinforcement rather than being pushed out.
+  const keepDueNow = precision || spellingNearMiss || skip;
 
   for (const itemId of event.itemIds) {
     const prev = items[itemId] ?? emptyItem(itemId);
@@ -216,11 +226,15 @@ export function scoreEvent(
         m.lastProducedAt = event.timestamp;
         box = Math.min(box + 1, MAX_LEITNER_BOX);
         pf = Math.min(pf + 1, MAX_PF_INDEX);
-      } else if (nearMiss) {
-        // Precision signal — soft, not a failure or a success. Box / prompt-fade
-        // stay put; no wrongCount / productionFailure / weakTags.
+      } else if (precision) {
+        // Meaning-preserving slip — soft, not a failure or a success. Box /
+        // prompt-fade stay put; no wrongCount / productionFailure / weakTags.
         m.precisionCount += 1;
         addPrecisionTags(m.precisionTags, event);
+      } else if (spellingNearMiss) {
+        // Meaning-distinct minimal pair: no positive credit, no hard demotion,
+        // but not harmless — accrue weakness so repeats reach Challenge. (B7)
+        addWeakTags(m.weakTags, event);
       } else if (skip) {
         m.skipCount += 1;
       } else {
@@ -236,10 +250,13 @@ export function scoreEvent(
         m.recognitionSuccess += 1;
         box = Math.min(box + 1, MAX_LEITNER_BOX);
         pf = Math.min(pf + 1, MAX_PF_INDEX);
-      } else if (nearMiss) {
-        // Precision signal — soft, not a failure or a success (see above).
+      } else if (precision) {
+        // Meaning-preserving slip — soft, not a failure or a success (see above).
         m.precisionCount += 1;
         addPrecisionTags(m.precisionTags, event);
+      } else if (spellingNearMiss) {
+        // Meaning-distinct minimal pair — no credit, accrues weakness. (B7)
+        addWeakTags(m.weakTags, event);
       } else if (skip) {
         m.skipCount += 1;
       } else {
@@ -253,7 +270,11 @@ export function scoreEvent(
 
     m.leitnerBox = box;
     m.promptFadeLevel = PF_LEVELS[pf];
-    m.dueAt = event.timestamp + LEITNER_INTERVAL_DAYS[box] * DAY_MS;
+    // B12: only success/failure (which moved the box) reschedule at the box
+    // interval; skip and near-miss keep the item due now for reinforcement.
+    m.dueAt = keepDueNow
+      ? event.timestamp
+      : event.timestamp + LEITNER_INTERVAL_DAYS[box] * DAY_MS;
 
     m.isWeak =
       m.wrongCount >= WEAK_THRESHOLD ||
