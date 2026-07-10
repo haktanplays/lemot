@@ -1,11 +1,14 @@
 /**
- * PR-E2 — context_chain mastery credit is bounded (audit B23).
+ * PR-E2 — context_chain mastery credit is bounded, WITHOUT dropping later-step
+ * failures (audit B23 + PR-E2 review P1).
  *
- * A context_chain emits one graded event PER internal step, and every step event
- * used to carry the exercise's FULL target set — so an N-step chain over M targets
- * credited each target N times (N×M), "mastering" every item off a single chain.
- * The controller now attributes the chain's targets only on its FIRST recorded
- * event; later step events persist but carry no item attribution. Non-chain
+ * A context_chain emits one graded event PER internal step, each carrying the
+ * exercise's FULL target set — so an N-step chain over M targets credited each
+ * target N times (N×M), "mastering" every item off a single chain. The controller
+ * now dedups only REPEATED SUCCESSES within a chain attempt: the first success
+ * carries the targets (one bounded box advance); a later success carries none.
+ * Every non-success outcome (failure / near-miss / skip) ALWAYS carries the
+ * targets, so a failure after a correct step is never dropped. Non-chain
  * operations are unchanged, and the PR-E1 near-miss/skip due-timing is preserved.
  *
  * Exercised end-to-end through the real `LearningSessionController` +
@@ -58,8 +61,8 @@ const graded = (result: ErrorTagCode) => ({
   gradeResult: { result, errorTags: [] as ErrorTagCode[], normalizedAnswer: "x" },
 });
 
-describe("PR-E2 B23 — context_chain mastery credit is bounded", () => {
-  test("1. multiple steps × multiple targets do NOT create N×M mastery credit", async () => {
+describe("PR-E2 B23 — context_chain credit bounded, later failures preserved", () => {
+  test("1. all-success multi-step × multiple targets credits each target ONCE (no N×M)", async () => {
     const repo = new LocalRepository(makeFakeKv());
     const c = makeController(repo);
     const ex = chain(["a", "b"]);
@@ -70,48 +73,73 @@ describe("PR-E2 B23 — context_chain mastery credit is bounded", () => {
 
     const events = await repo.readAllEvents();
     assert(events.length === 3, "one event per step is still recorded (history preserved)");
-    assertEqual(events[0].itemIds, ["a", "b"], "the first step carries the chain targets");
-    assertEqual(events[1].itemIds, [], "later steps carry no item attribution");
-    assertEqual(events[2].itemIds, [], "later steps carry no item attribution");
+    assertEqual(events[0].itemIds, ["a", "b"], "the first success carries the chain targets");
+    assertEqual(events[1].itemIds, [], "a repeated success carries no item attribution");
+    assertEqual(events[2].itemIds, [], "a repeated success carries no item attribution");
 
     const snap = scoreEvents(events);
     assert(Object.keys(snap.items).length === 2, "no item inflation");
-    assert(snap.items["a"].productionAttempts === 1, "target a credited once, not 3×");
-    assert(snap.items["b"].productionAttempts === 1, "target b credited once, not 3×");
+    assert(snap.items["a"].productionSuccess === 1, "target a credited once, not 3×");
+    assert(snap.items["b"].productionSuccess === 1, "target b credited once, not 3×");
+    assert(snap.items["a"].leitnerBox === 1, "box advances once, not to 3");
   });
 
-  test("2. completing a chain still gives bounded positive credit", async () => {
+  test("2. success THEN failure: success credited once AND the later failure is not dropped (P1)", async () => {
     const repo = new LocalRepository(makeFakeKv());
     const c = makeController(repo);
     const ex = chain(["a"]);
-    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
-    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
-    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
+    c.recordGradedAttempt({ exercise: ex, ...graded("correct") }); // step 1 ✓
+    c.recordGradedAttempt({ exercise: ex, ...graded("wrong_item") }); // step 2 ✗
     await c.flush();
 
-    const snap = scoreEvents(await repo.readAllEvents());
-    const a = snap.items["a"];
-    assert(a.productionSuccess === 1, "a completed chain credits the target once");
-    assert(a.leitnerBox === 1, "the box advances once (not to 4 off a single chain)");
-    assert(a.monLexiqueStatus === "added", "a completed chain still adds the item");
-  });
+    const events = await repo.readAllEvents();
+    assertEqual(events[0].itemIds, ["a"], "first success carries the target");
+    assertEqual(events[1].itemIds, ["a"], "the LATER failure still carries the target (not dropped)");
 
-  test("3. a failed chain still records a bounded, meaningful failure/weak signal", async () => {
-    const repo = new LocalRepository(makeFakeKv());
-    const c = makeController(repo);
-    const ex = chain(["a"]);
-    c.recordGradedAttempt({ exercise: ex, ...graded("wrong_item") }); // first step wrong
-    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
-    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
-    await c.flush();
-
-    const a = scoreEvents(await repo.readAllEvents()).items["a"];
-    assert(a.productionFailure === 1, "the chain's failure is recorded (bounded to once)");
+    const a = scoreEvents(events).items["a"];
+    assert(a.productionSuccess === 1, "one bounded success credit");
+    assert(a.productionFailure === 1, "the later failure IS recorded");
     assert(a.wrongCount === 1, "wrongCount reflects the failed step");
-    assert((a.weakTags.wrong_item ?? 0) === 1, "the failing tag accrues weakness (meaningful)");
+    assert((a.weakTags.wrong_item ?? 0) === 1, "the failing tag accrues weakness");
   });
 
-  test("4. non-context_chain operations are unchanged (fill credits every attempt)", async () => {
+  test("3. failure THEN success: the failure registers AND one bounded success is credited", async () => {
+    const repo = new LocalRepository(makeFakeKv());
+    const c = makeController(repo);
+    const ex = chain(["a"]);
+    c.recordGradedAttempt({ exercise: ex, ...graded("wrong_item") }); // step 1 ✗
+    c.recordGradedAttempt({ exercise: ex, ...graded("correct") }); // step 2 ✓
+    await c.flush();
+
+    const events = await repo.readAllEvents();
+    assertEqual(events[0].itemIds, ["a"], "the failure carries the target");
+    assertEqual(events[1].itemIds, ["a"], "the first success carries the target");
+
+    const a = scoreEvents(events).items["a"];
+    assert(a.productionFailure === 1, "failure registered");
+    assert(a.productionSuccess === 1, "one bounded success credit");
+    assert((a.weakTags.wrong_item ?? 0) === 1, "weakness registered from the failed step");
+  });
+
+  test("4. repeated successes after the first add NO extra mastery success credit", async () => {
+    const repo = new LocalRepository(makeFakeKv());
+    const c = makeController(repo);
+    const ex = chain(["a"]);
+    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
+    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
+    c.recordGradedAttempt({ exercise: ex, ...graded("correct") });
+    await c.flush();
+
+    const events = await repo.readAllEvents();
+    assertEqual(events[1].itemIds, [], "second success is dedup'd");
+    assertEqual(events[2].itemIds, [], "third success is dedup'd");
+    const a = scoreEvents(events).items["a"];
+    assert(a.productionSuccess === 1, "only one success credit for the whole chain");
+    assert(a.productionAttempts === 1, "only the first success counts as an attempt");
+    assert(a.leitnerBox === 1, "the box advances exactly once");
+  });
+
+  test("5. non-context_chain operations are unchanged (fill credits every attempt)", async () => {
     const repo = new LocalRepository(makeFakeKv());
     const c = makeController(repo);
     const ex = fill("f-1", ["c"]);
@@ -125,7 +153,7 @@ describe("PR-E2 B23 — context_chain mastery credit is bounded", () => {
     assert(scoreEvents(events).items["c"].productionAttempts === 2, "fill credits each attempt");
   });
 
-  test("5. PR-E1 near-miss / skip due-timing is preserved through the controller", async () => {
+  test("6. PR-E1 skip due-now behavior is preserved through the controller", async () => {
     const repo = new LocalRepository(makeFakeKv());
     const c = makeController(repo);
     // A fill skip must keep the item due now (PR-E1 B12), unaffected by the B23 change.
@@ -137,5 +165,20 @@ describe("PR-E2 B23 — context_chain mastery credit is bounded", () => {
     assert(d.skipCount === 1, "skip is counted");
     assert(d.leitnerBox === 0, "skip neither advances nor demotes the box");
     assert(d.dueAt === events[0].timestamp, "skip keeps the item due now (PR-E1 B12 preserved)");
+  });
+
+  test("7. a near-miss after a success still registers (targets not dropped)", async () => {
+    const repo = new LocalRepository(makeFakeKv());
+    const c = makeController(repo);
+    const ex = chain(["a"]);
+    c.recordGradedAttempt({ exercise: ex, ...graded("correct") }); // success
+    c.recordGradedAttempt({ exercise: ex, ...graded("accent_only") }); // near-miss (precision)
+    await c.flush();
+
+    const events = await repo.readAllEvents();
+    assertEqual(events[1].itemIds, ["a"], "the later near-miss still carries the target");
+    const a = scoreEvents(events).items["a"];
+    assert(a.productionSuccess === 1, "the success is credited once");
+    assert(a.precisionCount === 1, "the near-miss precision signal is not dropped");
   });
 });

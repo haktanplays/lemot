@@ -120,6 +120,14 @@ export class LearningSessionController {
   private tail: Promise<void> = Promise.resolve();
   /** Per-exercise attempt counter (increments on each recorded action). */
   private readonly attempts = new Map<string, number>();
+  /**
+   * B23: context_chain exercise ids that have already been credited ONE success
+   * on this controller. Scoped per exercise.id and per controller instance (one
+   * lesson session) — it never leaks across exercises (distinct keys) or sessions
+   * (a fresh controller starts empty). Used to bound repeated chain successes
+   * without dropping later-step failures.
+   */
+  private readonly chainSuccessCredited = new Set<string>();
   /** Last emitted state; the snapshot lives here until React state mirrors it. */
   private current: SessionState = {
     status: "idle",
@@ -197,6 +205,38 @@ export class LearningSessionController {
     return n;
   }
 
+  /**
+   * B23: bound context_chain mastery credit WITHOUT dropping later-step failures.
+   *
+   * A context_chain emits one graded event per step, each carrying the exercise's
+   * full target set, so crediting every step over-weights mastery (N steps × M
+   * targets → every target "mastered" off one chain). But suppressing every step
+   * after the first would silently drop a failure that follows a correct step
+   * (the first step would decide the whole chain — audit PR-E2 review P1). So we
+   * dedup ONLY repeated SUCCESSES: the first success in a chain attempt carries
+   * the targets (one bounded box advance); a later success carries none. Every
+   * NON-success outcome (failure / near-miss / precision / skip) ALWAYS carries
+   * the targets, so its failure / weakness / reinforcement signal still registers.
+   * Non-context_chain operations are unchanged — they always carry their targets.
+   *
+   * "Success" mirrors the mastery reducer's box-advancing set (correct /
+   * accepted_variant); every other tag is a non-success here. Dedup is keyed by
+   * exercise.id on this controller (see `chainSuccessCredited`), so it is scoped
+   * to the current chain attempt and never leaks across exercises or sessions.
+   */
+  private boundChainItemIds(
+    exercise: ExerciseBlueprint,
+    result: ErrorTagCode,
+    allTargets: ItemId[],
+  ): ItemId[] {
+    if (exercise.operation !== "context_chain") return allTargets;
+    const isSuccess = result === "correct" || result === "accepted_variant";
+    if (!isSuccess) return allTargets; // failures / near-miss / skip always register
+    if (this.chainSuccessCredited.has(exercise.id)) return []; // repeat success → no extra credit
+    this.chainSuccessCredited.add(exercise.id);
+    return allTargets; // first success → one bounded credit
+  }
+
   private buildEvent(args: {
     exercise: ExerciseBlueprint;
     timestamp: number;
@@ -210,18 +250,7 @@ export class LearningSessionController {
     const allTargets: ItemId[] = Array.isArray(args.exercise.targetItemIds)
       ? [...args.exercise.targetItemIds]
       : [];
-    // B23: a context_chain emits ONE graded event per internal step, and every
-    // step event carries the exercise's full target set. Crediting every target
-    // on every step over-weights mastery (N steps × M targets → each target
-    // "mastered" off a single chain). Bound it: attribute the targets only on the
-    // chain's FIRST recorded event (attemptNumber 1), so one chain credits each
-    // target at most once. Later step events still persist (history, attempt
-    // number, result) but carry no item attribution. Every non-chain operation is
-    // unchanged — it always carries its full target set.
-    const itemIds: ItemId[] =
-      args.exercise.operation === "context_chain" && attemptNumber > 1
-        ? []
-        : allTargets;
+    const itemIds = this.boundChainItemIds(args.exercise, args.result, allTargets);
     return {
       clientEventId: this.makeClientEventId(args.timestamp),
       sessionId: this.sessionId,
