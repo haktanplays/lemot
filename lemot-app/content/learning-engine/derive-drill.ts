@@ -48,6 +48,38 @@ const DERIVABLE_TYPES = new Set([
 
 const TERMINAL_PUNCTUATION = /[.!?]\s*$/;
 
+/**
+ * A "word" character for token-boundary purposes: any Unicode letter, combining
+ * mark (decomposed accents), or number. French accented letters (é, à, ç, œ…)
+ * are letters, so a boundary is only where the neighbour is NOT one of these.
+ */
+const WORD_CHAR = /[\p{L}\p{M}\p{N}]/u;
+const isWordChar = (ch: string | undefined): boolean =>
+  ch !== undefined && WORD_CHAR.test(ch);
+
+/**
+ * Index of the FIRST whole-word/token-boundary occurrence of `needle` in
+ * `haystack` (case-insensitive), or -1 when it only ever appears INSIDE a larger
+ * word. A match qualifies only when the character immediately before and after it
+ * is not a Unicode word character — so a short surface like "on" never blanks
+ * inside "Bonjour" (audit B8). Deterministic: scans left-to-right and returns the
+ * first boundary-valid position; fail-closed (-1) if none exists.
+ */
+function firstWholeWordIndex(haystack: string, needle: string): number {
+  if (needle.length === 0) return -1;
+  const hay = haystack.toLowerCase();
+  const need = needle.toLowerCase();
+  for (let from = 0; from <= hay.length - need.length; ) {
+    const at = hay.indexOf(need, from);
+    if (at < 0) return -1;
+    const before = at > 0 ? hay[at - 1] : undefined;
+    const after = at + need.length < hay.length ? hay[at + need.length] : undefined;
+    if (!isWordChar(before) && !isWordChar(after)) return at;
+    from = at + 1;
+  }
+  return -1;
+}
+
 /** Deterministic ascii-ish slug for ids ("s'il vous plaît" -> "s-il-vous-plait"). */
 function slug(text: string): string {
   return text
@@ -110,8 +142,11 @@ function deriveFill(
   errorTag: string | undefined,
 ): FillWithTrapsScreen | null {
   const sentence = item.exampleFr!; // guaranteed by isDerivableItem
-  const at = sentence.toLowerCase().indexOf(item.text.toLowerCase());
-  if (at < 0) return null; // the surface does not live in its own example
+  // Whole-word/token-boundary match so a short surface (e.g. "on") is never
+  // blanked inside a larger word (e.g. "Bonjour" → "B___jour"). Fail-closed when
+  // the surface only appears in-word (audit B8).
+  const at = firstWholeWordIndex(sentence, item.text);
+  if (at < 0) return null; // the surface does not live in its own example as a whole word
   const before = sentence.slice(0, at).trim();
   const after = sentence.slice(at + item.text.length).trim();
   if (before.length === 0 && after.length === 0) return null; // nothing left to anchor the blank

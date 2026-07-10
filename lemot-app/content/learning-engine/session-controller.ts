@@ -206,9 +206,22 @@ export class LearningSessionController {
     result: ErrorTagCode;
     errorTags: ErrorTagCode[];
   }): LearningEvent {
-    const itemIds: ItemId[] = Array.isArray(args.exercise.targetItemIds)
+    const attemptNumber = this.nextAttempt(args.exercise.id);
+    const allTargets: ItemId[] = Array.isArray(args.exercise.targetItemIds)
       ? [...args.exercise.targetItemIds]
       : [];
+    // B23: a context_chain emits ONE graded event per internal step, and every
+    // step event carries the exercise's full target set. Crediting every target
+    // on every step over-weights mastery (N steps × M targets → each target
+    // "mastered" off a single chain). Bound it: attribute the targets only on the
+    // chain's FIRST recorded event (attemptNumber 1), so one chain credits each
+    // target at most once. Later step events still persist (history, attempt
+    // number, result) but carry no item attribution. Every non-chain operation is
+    // unchanged — it always carries its full target set.
+    const itemIds: ItemId[] =
+      args.exercise.operation === "context_chain" && attemptNumber > 1
+        ? []
+        : allTargets;
     return {
       clientEventId: this.makeClientEventId(args.timestamp),
       sessionId: this.sessionId,
@@ -217,7 +230,7 @@ export class LearningSessionController {
       operation: args.exercise.operation,
       itemIds,
       promptLevel: "PF0",
-      attemptNumber: this.nextAttempt(args.exercise.id),
+      attemptNumber,
       userAnswer: args.userAnswer,
       expectedAnswer: args.expectedAnswer,
       normalizedAnswer: args.normalizedAnswer,
