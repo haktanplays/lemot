@@ -12,6 +12,8 @@
 import "./privacy.test";
 import "./privacyLocal.test";
 import "./privacyData.test";
+import "./localPrivacyCompleteness.test";
+import "./privacyResetBarrier.test";
 import "./mastery.test";
 import "./safeStorage.test";
 import "./blobStore.test";

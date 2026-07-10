@@ -5,6 +5,8 @@ import { useErrors } from "@/hooks/useErrors";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useProgressSync } from "@/hooks/useProgressSync";
+import { resetAllLocalPrivacyData } from "@/content/learning-engine/local-privacy-inventory";
+import { bumpPrivacyResetEpoch } from "@/lib/privacyResetEpoch";
 import type { ErrorEntry, DailyReview } from "@/lib/types";
 
 interface AppContextType {
@@ -36,6 +38,15 @@ interface AppContextType {
   // Speech
   say: (text: string) => void;
   stopSpeech: () => void;
+
+  /**
+   * PR-H: perform a COMPLETE device-local privacy reset. Engages the runtime
+   * write-barrier (so stale in-memory state can't re-persist), clears the full
+   * local storage inventory (progress, SRS, learning-engine keys, telemetry,
+   * privacy state, and every `__corrupt` blob), then clears this provider's live
+   * in-memory progress state. Local-only — it does NOT delete cloud data (C1).
+   */
+  resetLocalData: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -186,6 +197,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     [storageHook.updateDailyReview, user, pushToCloud]
   );
 
+  // PR-H: complete device-local privacy reset. Order matters:
+  //  1) bump the reset epoch FIRST so any stale in-memory write (this provider's
+  //     store, or a screen-local useSRS) is suppressed for the whole operation;
+  //  2) clear the full on-device inventory (progress, SRS, learning-engine keys,
+  //     telemetry, privacy state, and every __corrupt quarantine blob);
+  //  3) clear this provider's live in-memory blob and re-acknowledge the epoch, so
+  //     fresh post-reset activity persists cleanly without an app restart.
+  // Cloud rows are intentionally untouched (audit C1, future work).
+  const resetLocalData = useCallback(async () => {
+    bumpPrivacyResetEpoch();
+    await resetAllLocalPrivacyData();
+    storageHook.resetLocal();
+  }, [storageHook]);
+
   // Wrap logErr to also push error to cloud
   const logErrWithSync = useCallback(
     (word: string, section: string, given: string, correct: string, lessonId: number) => {
@@ -216,6 +241,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     // Speech
     say,
     stopSpeech,
+
+    // Privacy
+    resetLocalData,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

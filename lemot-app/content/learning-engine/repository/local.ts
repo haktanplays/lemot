@@ -24,6 +24,7 @@
 import type { LearningEvent } from "../events";
 import type { LearningRepository } from "./types";
 import { backupCorruptValue, corruptBackupKey } from "../../../lib/safeStorage";
+import { privacyResetEpoch, isPersistSuppressed } from "../../../lib/privacyResetEpoch";
 
 /** Minimal storage surface this repository needs. The app's `kvStorage` satisfies it. */
 export type KvLike = {
@@ -60,6 +61,15 @@ type EventLogRead =
 export class LocalRepository implements LearningRepository {
   private readonly injectedStore?: KvLike;
   private defaultStorePromise?: Promise<KvLike>;
+  /**
+   * PR-H reset write-barrier: the local-privacy reset epoch captured when this
+   * repository was CREATED. If an explicit privacy reset bumps the epoch after
+   * that, every write method becomes a no-op — a stale pre-reset
+   * repository/controller can never re-create the cleared `lm_le_*` keys. A
+   * repository created after the reset (normal remount) captures the new epoch
+   * and writes normally. Reads are never suppressed.
+   */
+  private readonly ackEpoch = privacyResetEpoch();
 
   /**
    * @param store optional storage adapter (used by tests). When omitted, the
@@ -67,6 +77,11 @@ export class LocalRepository implements LearningRepository {
    */
   constructor(store?: KvLike) {
     this.injectedStore = store;
+  }
+
+  /** True when an unacknowledged privacy reset makes this writer stale (PR-H). */
+  private isStaleWriter(): boolean {
+    return isPersistSuppressed(this.ackEpoch);
   }
 
   private async store(): Promise<KvLike> {
@@ -139,6 +154,9 @@ export class LocalRepository implements LearningRepository {
    * original with `[event]` — non-destructive per audit B3.
    */
   async appendEvent(event: LearningEvent): Promise<void> {
+    // PR-H: a privacy reset happened after this repository was created — the
+    // write is suppressed so a stale writer can't re-create `lm_le_events`.
+    if (this.isStaleWriter()) return;
     const res = await this.readEventLog();
     if (res.kind === "corrupt") {
       await this.quarantineCorruptLog(res.raw);
@@ -162,6 +180,7 @@ export class LocalRepository implements LearningRepository {
    * (no in-place mutation), unmatched events are kept as-is.
    */
   async markSynced(clientEventIds: string[]): Promise<void> {
+    if (this.isStaleWriter()) return; // PR-H reset write-barrier
     if (clientEventIds.length === 0) return;
     const ids = new Set(clientEventIds);
     const events = await this.readEvents();
@@ -195,6 +214,7 @@ export class LocalRepository implements LearningRepository {
 
   /** Persist a cached projection as JSON. Typed `unknown` until P2.2. */
   async writeSnapshot(snapshot: unknown): Promise<void> {
+    if (this.isStaleWriter()) return; // PR-H reset write-barrier
     const store = await this.store();
     await store.setItem(LM_LE_SNAPSHOT_KEY, JSON.stringify(snapshot));
   }

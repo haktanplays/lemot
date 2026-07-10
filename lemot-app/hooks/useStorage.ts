@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { kvStorage } from "@/lib/storage";
 import { loadOrQuarantine, isPlainObject } from "@/lib/safeStorage";
 import { createBlobStore, type BlobStore } from "@/lib/blobStore";
+import { privacyResetEpoch, isPersistSuppressed } from "@/lib/privacyResetEpoch";
 import type { StorageData, ErrorEntry, DailyReview } from "@/lib/types";
 
 const STORAGE_KEY = "lm7";
@@ -39,9 +40,16 @@ export function useStorage() {
   // an empty/default save must NOT overwrite the original key — recovery only
   // happens once real data exists (see persist()).
   const corruptUnrecovered = useRef(false);
+  // PR-H: the reset epoch this hook has acknowledged. If a local privacy reset
+  // bumps the epoch past this, `persist` is suppressed so stale in-memory state
+  // can never re-create the cleared `lm7` key; `resetLocal` re-acknowledges it.
+  const ackEpoch = useRef(privacyResetEpoch());
 
-  // Persist the full blob with the PR-A non-destructive guard.
+  // Persist the full blob with the PR-A non-destructive guard + PR-H reset guard.
   const persist = useCallback((next: StorageData) => {
+    // PR-H: a reset happened that this store has not acknowledged → its data is
+    // stale pre-reset state; do not write it back over the cleared key.
+    if (isPersistSuppressed(ackEpoch.current)) return;
     const meaningful = isMeaningful(next);
     if (corruptUnrecovered.current && !meaningful) return;
     if (meaningful) corruptUnrecovered.current = false;
@@ -140,6 +148,18 @@ export function useStorage() {
     [syncState]
   );
 
+  // PR-H: clear the live in-memory blob to empty and acknowledge the current
+  // reset epoch. Called after a local privacy reset has cleared storage, so that
+  // (a) no stale pre-reset data remains in memory to be written back, and (b)
+  // genuinely new post-reset activity persists fresh (built on empty), without
+  // requiring an app restart. Does NOT persist here — it only resets runtime state.
+  const resetLocal = useCallback(() => {
+    storeRef.current!.hydrate({ p: {}, err: [], dr: { date: "", count: 0 } });
+    syncState({ p: {}, err: [], dr: { date: "", count: 0 } });
+    corruptUnrecovered.current = false;
+    ackEpoch.current = privacyResetEpoch();
+  }, [syncState]);
+
   return {
     prog,
     errors,
@@ -149,5 +169,6 @@ export function useStorage() {
     updateErrors,
     updateDailyReview,
     updateStoredData,
+    resetLocal,
   };
 }
