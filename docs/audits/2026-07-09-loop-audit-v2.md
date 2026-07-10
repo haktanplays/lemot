@@ -4,6 +4,14 @@
 > (post PR-A…PR-E1, i.e. after #188–#193). Builds on
 > `docs/audits/2026-07-08-final-loop-audit.md` (findings B1–B24). Previously
 > known findings are reconciled below; net-new findings carry **C-series IDs**.
+>
+> **Reconciliation update — PR-E complete (main @ `332a2169604b82c11d5f4dd87417df8231bd7dec`).**
+> Since this audit was captured, **PR-E2 / #194** fixed **B8** and **B23** (and
+> addressed a Codex P1 by preserving later context-chain failure / near-miss /
+> skip signals while deduping only repeated successes). Together with **PR-E1 /
+> #193** (B7, B12), the PR-E engine-correctness slice is now **complete**. The
+> tables and remediation plan below are updated accordingly; the C-series findings
+> and PR-F / PR-G remain untouched, separate future work.
 
 ## Scope & method
 
@@ -27,7 +35,7 @@ behind `aiEnabled:false` or an unwired code path).
 Validation state at audit time: `npm run typecheck` clean · `validate:content`
 0/0/0 (canon V3/V4/V5 now live over 16 lessons) · `test:learning-engine` 709/709.
 
-## B1–B24 reconciliation (main @ 4b68f4c)
+## B1–B24 reconciliation (updated to main @ 332a216, post-PR-E)
 
 | ID | Finding (short) | Status |
 |----|-----------------|--------|
@@ -38,7 +46,7 @@ Validation state at audit time: `npm run typecheck` clean · `validate:content`
 | B5 | hasPulled never reset on user change | **OPEN** → C4 |
 | B6 | shared-blob write race | **FIXED** #190 |
 | B7 | near-miss mastery-positive | **FIXED** #193 |
-| B8 | deriveFill in-word blanking | **OPEN** (PR-E2) |
+| B8 | deriveFill in-word blanking | **FIXED** #194 (PR-E2) |
 | B9 | telemetry missing from reset/export | **FIXED** #192 — but corruption path reopens it, see C2 |
 | B10 | unbounded growth, O(n²) scoring | **OPEN**; compaction rails exist but unwired (C12) |
 | B11 | Review weave >100% score | **FIXED** #189 |
@@ -53,10 +61,10 @@ Validation state at audit time: `npm run typecheck` clean · `validate:content`
 | B20 | lemot:// scheme claimable | **OPEN** (info) |
 | B21 | context_chain un-advanceable | **FIXED** #189 |
 | B22 | shipped content ≈unvalidated; canonRules dead | **MOSTLY FIXED** (#187 wired canonRules); residual C22 |
-| B23 | context_chain over-weights mastery | **OPEN** (PR-E2) |
-| B24 | practice reuse inflates lesson mastery | **OPEN** (PR-E2) |
+| B23 | context_chain over-weights mastery | **FIXED** #194 (PR-E2; + Codex P1 follow-up — success-dedup keeps later failures/near-miss/skip) |
+| B24 | practice reuse inflates lesson mastery | **OPEN** (not in PR-E2; future engine PR — PR-L) |
 
-**13 of 24 fixed.** Still open: B5, B8, B10, B13, B14, B17, B18, B20, B23, B24
+**15 of 24 fixed.** Still open: B5, B10, B13, B14, B17, B18, B20, B24
 (+ B22 residual). B5/B14 fold into C-series below.
 
 ## Net-new findings (C-series)
@@ -280,21 +288,31 @@ Each PR: branch from main → fix only its findings → add/extend harness tests
 4. **PR-K — sync correctness + tests (HIGH/MED).** C4 (export+test AppProvider
    merge; key `hasPulled` by user id = B5), then B17/B18 (versioning + real error
    pull). Guards the sync-path data-loss class.
-5. **PR-L — engine correctness (MED).** B8, B23, B24 (the deferred PR-E2), plus
-   C11 (extract+test `srsCore`) and C15 (pin/unify normalizers).
-6. **PR-M — growth/lifecycle (MED, latent).** C9 (telemetry quarantine + cap
+5. **PR-E (engine correctness) — ✅ COMPLETE.** B7 + B12 shipped in PR-E1 / #193;
+   B8 + B23 shipped in PR-E2 / #194 (incl. the Codex P1 success-dedup follow-up).
+6. **PR-L — remaining engine correctness (MED).** B24 (practice-reuse mastery
+   inflation — was mis-tagged PR-E2 but not shipped there), plus C11 (extract+test
+   `srsCore`) and C15 (pin/unify normalizers).
+7. **PR-M — growth/lifecycle (MED, latent).** C9 (telemetry quarantine + cap
    before wiring), C12 (wire migrations/compaction; B10), C17/C18 lifecycle.
-7. **PR-N — config/build hardening (MED-LOW).** C14 (Android backup opt-out),
+8. **PR-N — config/build hardening (MED-LOW).** C14 (Android backup opt-out),
    C16 (android-smoke escaping), C27 cluster (CI permissions/pins, deno.lock,
    config.toml, versionCode, doc drift), C19.
-8. **PR-O — dead code + validator coverage (LOW).** C24 (delete ai-error/
+9. **PR-O — dead code + validator coverage (LOW).** C24 (delete ai-error/
    analyzeErrors/dead deps/orphan key), C22/C23 (residual B22), C28 defense-in-
    depth flags, C25 unmount guards. Plus still-open B13 (lesson route stage guard),
    B20 (lemot:// note).
 
 ## Notes
 
-- No fix is applied in this change — this is the audit + plan deliverable only.
+- This document is the audit + plan record; it applies **no code fix** itself.
+- **Reconciliation status (post-PR-E):** the PR-E engine-correctness slice is
+  complete — B7/B12 (PR-E1 / #193) and B8/B23 (PR-E2 / #194, incl. the Codex P1
+  success-dedup follow-up). Main is at `332a216`. All remaining B-series
+  (B5, B10, B13, B14, B17, B18, B20, B24, + B22 residual) and every C-series
+  finding are unchanged and remain sequenced in the remediation plan above.
+- **PR-F and PR-G remain separate, not started.** The C-series remediation
+  (PR-H … PR-O) likewise remains separate, severity-ranked future PRs.
 - Round-2 fresh fan-out (LOW-tail sweep + the 4 lenses cut short by the session
   cap) is deferred until the cap resets; HIGH/MED coverage is saturated via
   cross-lens convergence and hand-verification.
