@@ -7,6 +7,7 @@ import {
   isPersistSuppressed,
   subscribePrivacyReset,
 } from "@/lib/privacyResetEpoch";
+import { isLearnerMutationBlocked } from "@/lib/learnerMutationGate";
 import type { StorageData, ErrorEntry, DailyReview } from "@/lib/types";
 
 const STORAGE_KEY = "lm7";
@@ -54,6 +55,9 @@ export function useStorage() {
     // PR-H: a reset happened that this store has not acknowledged → its data is
     // stale pre-reset state; do not write it back over the cleared key.
     if (isPersistSuppressed(ackEpoch.current)) return;
+    // PR-I1: while a synced-data deletion / remote-erase recovery is pending, no
+    // NEW learner state may persist — a required cleanup would erase it.
+    if (isLearnerMutationBlocked()) return;
     const meaningful = isMeaningful(next);
     if (corruptUnrecovered.current && !meaningful) return;
     if (meaningful) corruptUnrecovered.current = false;

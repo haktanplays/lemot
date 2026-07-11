@@ -77,6 +77,36 @@ export const ALL_LOCAL_PRIVACY_KEYS: readonly string[] = [
   ...LOCAL_PRIVACY_CORRUPT_KEYS,
 ];
 
+/**
+ * Keys that carry actual LEARNER CONTENT (progress, SRS, events, snapshot,
+ * telemetry) plus their `__corrupt` quarantine blobs. Deliberately EXCLUDES the
+ * privacy-state key (consent/control metadata, not learner data) and onboarding
+ * flags — so a fresh install that has only shown the privacy notice is NOT
+ * mistaken for one holding learner progress (PR-I1 fresh-install shortcut).
+ */
+export const LOCAL_LEARNER_CONTENT_KEYS: readonly string[] = [
+  ...LOCAL_PRIVACY_PRIMARY_KEYS.filter((k) => k !== LM_LE_PRIVACY_STATE_KEY),
+  ...LOCAL_PRIVACY_CORRUPT_KEYS,
+];
+
+/**
+ * TRUE if this device holds ANY local learner content (PR-I1). A present,
+ * non-empty value under any learner-content key — including a single `__corrupt`
+ * quarantine blob — counts as data. Used to decide between the fresh-install
+ * generation shortcut (empty → safe auto-acknowledge) and remote-erase recovery
+ * (non-empty → require explicit confirmation, never auto-wipe).
+ */
+export async function hasLocalLearnerData(args?: {
+  store?: KvFullLike;
+}): Promise<boolean> {
+  const store = args?.store ?? (await loadKvStore());
+  for (const key of LOCAL_LEARNER_CONTENT_KEYS) {
+    const raw = await store.getItem(key);
+    if (raw != null && raw !== "") return true;
+  }
+  return false;
+}
+
 /** Minimal storage surface: read + remove. The app's `kvStorage` satisfies it. */
 export type KvFullLike = {
   getItem(key: string): string | null | Promise<string | null>;

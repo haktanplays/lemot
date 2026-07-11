@@ -1,17 +1,61 @@
-import React, { createContext, useContext, useEffect, useRef, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
 import { useStorage } from "@/hooks/useStorage";
 import { useLessonProgress } from "@/hooks/useLessonProgress";
 import { useErrors } from "@/hooks/useErrors";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useProgressSync } from "@/hooks/useProgressSync";
-import { resetAllLocalPrivacyData } from "@/content/learning-engine/local-privacy-inventory";
+import {
+  resetAllLocalPrivacyData,
+  hasLocalLearnerData,
+} from "@/content/learning-engine/local-privacy-inventory";
 import {
   bumpPrivacyResetEpoch,
   privacyResetEpoch,
   isPersistSuppressed,
 } from "@/lib/privacyResetEpoch";
+import {
+  hydrateCloudEraseGuard,
+  armCloudErase,
+  advanceCloudErasePhase,
+  finishCloudErase,
+  isCloudSyncAdmitted,
+  cloudEraseState,
+  cloudEraseGeneration,
+  isEraseGenerationStale,
+  cloudErasePendingOpId,
+  cloudErasePendingUserId,
+  cloudErasePendingPhase,
+  cloudErasePendingServerGeneration,
+} from "@/lib/cloudEraseGuard";
+import {
+  hydrateSyncGeneration,
+  syncGeneration,
+  setSyncGeneration,
+  blockSyncGeneration,
+} from "@/lib/syncGeneration";
+import {
+  hydrateRemoteEraseRecovery,
+  probeRemoteEraseRecovery,
+  isRemoteErasePending,
+  remoteEraseRecovery,
+  persistRemoteEraseRecovery,
+  clearRemoteEraseRecovery,
+} from "@/lib/remoteEraseRecovery";
+import {
+  runDeleteSyncedData,
+  type DeleteSyncedStatus,
+} from "@/lib/deleteSyncedData";
+import { runRemoteEraseConfirm } from "@/lib/remoteEraseConfirm";
+import { handleGenerationMismatch } from "@/lib/generationMismatch";
 import type { ErrorEntry, DailyReview } from "@/lib/types";
+
+/** A delete operation id (idempotency key). Not a user identifier. */
+function makeOpId(): string {
+  const g = globalThis as { crypto?: { randomUUID?: () => string } };
+  if (g.crypto?.randomUUID) return g.crypto.randomUUID();
+  return `op-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
 
 interface AppContextType {
   // Storage
@@ -51,6 +95,43 @@ interface AppContextType {
    * in-memory progress state. Local-only — it does NOT delete cloud data (C1).
    */
   resetLocalData: () => Promise<void>;
+
+  /**
+   * PR-I1 (audit C1): delete this signed-in user's SYNCED learning data. Arms a
+   * durable erase guard, deletes the user's `user_progress` + `user_errors` cloud
+   * rows via the authenticated RPC (ownership = `auth.uid()`), then reuses the
+   * PR-H local reset, clearing the guard only on full success. Preserves the auth
+   * account, session, `ai_usage`, and profile — it does NOT sign the user out.
+   * Returns the operation outcome so the UI can report partial failures honestly.
+   */
+  deleteSyncedData: () => Promise<DeleteSyncedStatus>;
+
+  /**
+   * PR-I1: TRUE when this device discovered its synced data was deleted on another
+   * device/account session (server generation ahead + local learner data present).
+   * Sync is blocked and the device is NOT auto-wiped — the user must explicitly
+   * confirm clearing this device via {@link confirmRemoteErase}.
+   */
+  remoteErasePending: boolean;
+
+  /**
+   * PR-I1: explicit confirmation for the remote-erase recovery. Verifies the
+   * recovery marker belongs to the current user, REVALIDATES the current server
+   * generation (a further deletion may have advanced it past the recorded
+   * target), runs the PR-H reset, acknowledges the freshly fetched generation,
+   * clears the marker, and reopens sync. Fails closed on fetch failure or a
+   * foreign marker. No-op if no owned recovery is pending.
+   */
+  confirmRemoteErase: () => Promise<void>;
+
+  /**
+   * PR-I1: durable pending-deletion state for the UI. "own" — this user's
+   * deletion didn't finish (any phase); a retry resumes from the durable phase.
+   * "blocked" — a pending deletion belongs to another account or its marker is
+   * unreadable; learning + sync stay paused and only the owning account may
+   * complete it. "none" — no deletion pending.
+   */
+  pendingDeletion: "none" | "own" | "blocked";
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -107,12 +188,98 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const progressHook = useLessonProgress(storageHook);
   const errorsHook = useErrors(storageHook);
   const { say, stop: stopSpeech } = useSpeech();
-  const { pushToCloud, pullFromCloud, pushError } = useProgressSync(user?.id);
+  // Write-RPC generation-mismatch handoff. A ref breaks the circular dependency
+  // (the handler needs fetchSyncGeneration, which the hook itself returns); the
+  // latest handler is stamped below once the deps exist.
+  const generationMismatchRef = useRef<() => void>(() => {});
+  const {
+    pushToCloud,
+    pullFromCloud,
+    pushError,
+    deleteSyncedRows,
+    fetchSyncGeneration,
+  } = useProgressSync(user?.id, () => generationMismatchRef.current());
   const hasPulled = useRef(false);
 
   // Ref to capture latest storage values for the pull effect
   const storageRef = useRef(storageHook);
   storageRef.current = storageHook;
+
+  // PR-I1: hydrate the durable cloud-erase guard once at startup. Until this
+  // resolves the guard is fail-closed (sync blocked); after it, sync is allowed
+  // only if no erase is pending. Gates the pull effect below so a leftover
+  // pending erase (e.g. app killed mid-operation) never pulls/re-pushes.
+  const [eraseGuardHydrated, setEraseGuardHydrated] = useState(false);
+  const [remoteErasePending, setRemoteErasePending] = useState(false);
+  const [pendingDeletion, setPendingDeletion] = useState<"none" | "own" | "blocked">(
+    "none"
+  );
+  // Bumped after a confirmed recovery to re-run the reconcile/pull once sync is
+  // unblocked (does NOT touch B5's hasPulled-by-user model).
+  const [syncEpoch, setSyncEpoch] = useState(0);
+  const uid = user?.id;
+
+  // Re-derive the UI-facing durable control state from the coordinator modules
+  // (after hydration and after every deletion/recovery operation).
+  const refreshControlState = useCallback(() => {
+    setRemoteErasePending(isRemoteErasePending());
+    if (cloudEraseState() === "pending") {
+      const owner = cloudErasePendingUserId();
+      setPendingDeletion(owner && owner === uid ? "own" : "blocked");
+    } else {
+      setPendingDeletion("none");
+    }
+  }, [uid]);
+
+  // Mount-time (user-independent, LOCAL-ONLY) hydration of both deletion-control
+  // records. The learner-mutation gate fails closed until these resolve, so this
+  // must run before any lesson surface renders — and it must NOT wait on auth or
+  // network: an ordinary offline startup with clean markers reopens local
+  // learning here, while sync admission stays independently fail-closed.
+  // `controlHydrated` gates `loaded` so the app never presents a normal writable
+  // learning state whose persistence would be silently dropped.
+  const [controlHydrated, setControlHydrated] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    void Promise.all([hydrateCloudEraseGuard(), probeRemoteEraseRecovery()]).finally(
+      () => {
+        if (!alive) return;
+        refreshControlState();
+        setControlHydrated(true);
+      }
+    );
+    return () => {
+      alive = false;
+    };
+    // refreshControlState is uid-dependent; the user-bound effect below refreshes
+    // again once auth resolves — this mount pass only needs the initial resolve.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!uid) {
+      setEraseGuardHydrated(false);
+      return;
+    }
+    let alive = true;
+    setEraseGuardHydrated(false);
+    // Hydrate every durable sync control record bound to THIS user before any sync
+    // is allowed: the erase guard (incl. its durable PHASE), the acknowledged
+    // generation, and any remote-erase recovery marker. User-mismatched / corrupt
+    // records fail closed.
+    void Promise.all([
+      hydrateCloudEraseGuard(),
+      hydrateSyncGeneration({ userId: uid }),
+      hydrateRemoteEraseRecovery({ userId: uid }),
+    ]).finally(() => {
+      if (!alive) return;
+      refreshControlState();
+      setEraseGuardHydrated(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [uid, syncEpoch, refreshControlState]);
 
   // Pull from cloud on first login, then merge.
   // Progress = union(local, cloud) — section completion is monotonic.
@@ -122,14 +289,62 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // re-run cleanly if its material dependencies change mid-flight.
   useEffect(() => {
     if (!user || !storageHook.loaded || hasPulled.current) return;
+    // PR-I1: wait until the durable records hydrate; skip while an erase is
+    // pending or a remote-erase recovery is awaiting the user's confirmation.
+    if (!eraseGuardHydrated || !isCloudSyncAdmitted() || isRemoteErasePending()) return;
 
     (async () => {
+      // PR-I1 (durable delete, multi-device) reconcile — NO automatic wipe:
+      //  * fetch failure → fail closed (block writes, don't merge);
+      //  * server > local + this device HAS learner data → a deletion happened on
+      //    another device/session: persist a user-bound recovery marker, block
+      //    sync, and require explicit confirmation (do NOT reset here);
+      //  * server > local + this device is EMPTY → safe fresh-install
+      //    acknowledgement of the current generation;
+      //  * local > server → impossible without a bug → fail closed;
+      //  * equal → normal pull + merge.
+      const serverGen = await fetchSyncGeneration();
+      if (serverGen === null) {
+        blockSyncGeneration(); // generation fetch failed → fail closed
+        return;
+      }
+      const localGen = syncGeneration();
+      if (serverGen > localGen) {
+        if (await hasLocalLearnerData()) {
+          await persistRemoteEraseRecovery({
+            userId: user.id,
+            targetGeneration: serverGen,
+          });
+          setRemoteErasePending(true);
+          hasPulled.current = true;
+          return; // recovery UI takes over — no automatic device wipe
+        }
+        await setSyncGeneration({ userId: user.id, generation: serverGen });
+        hasPulled.current = true;
+        return;
+      }
+      if (localGen > serverGen) {
+        blockSyncGeneration(); // fail closed — never write or silently downgrade
+        hasPulled.current = true;
+        return;
+      }
+
       // PR-H P2-2: snapshot the reset epoch BEFORE the pull starts. If a local
       // privacy reset lands while this pull is in flight, its result is stale
       // pre-reset cloud data — applying it would silently undo the reset (C5).
       const pullEpoch = privacyResetEpoch();
+      // PR-I1: snapshot the erase generation BEFORE the pull. If a cloud-erase
+      // begins while this pull is in flight, its result must be discarded at THIS
+      // apply boundary — no merge, no updateStoredData, no follow-up push — so a
+      // pre-existing pull can never restore rows the erase is deleting.
+      const eraseGen = cloudEraseGeneration();
 
       const cloud = await pullFromCloud();
+
+      // An erase began mid-flight → discard this pull entirely (apply boundary).
+      if (isEraseGenerationStale(eraseGen)) {
+        return;
+      }
 
       // A reset happened mid-flight → discard this pull ENTIRELY: no merge, no
       // updateStoredData, no push. `hasPulled` is left unset so a genuinely new
@@ -196,7 +411,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
       hasPulled.current = true;
     })();
-  }, [user, storageHook.loaded, pullFromCloud, pushToCloud]);
+  }, [
+    user,
+    storageHook.loaded,
+    eraseGuardHydrated,
+    syncEpoch,
+    pullFromCloud,
+    pushToCloud,
+    fetchSyncGeneration,
+  ]);
 
   // Atomically update the daily-review slice, then push the resulting full blob
   // to cloud (preserves the prior save-then-push cloud behavior, now race-safe).
@@ -228,6 +451,93 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     await resetAllLocalPrivacyData();
   }, []);
 
+  // PR-I1 (audit C1): delete synced learning data. Runs the approved state
+  // machine — arm coordinator (close→persist op-id→drain) → authenticated delete
+  // RPC (server bumps generation, then deletes) → PR-H local reset → acknowledge
+  // the new generation locally (cleanup-before-ack) → clear guard. Reuses
+  // `resetLocalData` for local cleanup; never signs out. Requires a session
+  // (ownership resolves from auth.uid() server-side). A retry reuses the durable
+  // op-id so the server replays idempotently (no double generation bump).
+  const deleteSyncedData = useCallback(async (): Promise<DeleteSyncedStatus> => {
+    if (!user) return "cloud_failed";
+    // A pending deletion owned by ANOTHER user — or one whose marker is corrupt
+    // (unknown owner) — must never be executed under this user: the original
+    // account must complete its own pending deletion. Fail closed.
+    if (cloudEraseState() === "pending" && cloudErasePendingUserId() !== user.id) {
+      return "cloud_failed";
+    }
+    // Reuse a pending op id (crash/retry) so the server replays idempotently, and
+    // RESUME from the durable phase so no completed destructive step re-runs.
+    const opId = cloudErasePendingOpId() ?? makeOpId();
+    const phase = cloudErasePendingPhase();
+    const resume = phase
+      ? {
+          phase,
+          serverGeneration: cloudErasePendingServerGeneration() ?? undefined,
+        }
+      : null;
+    const uidNow = user.id;
+    const status = await runDeleteSyncedData({
+      resume,
+      armErase: () => armCloudErase({ opId, userId: uidNow }),
+      deleteCloud: () => deleteSyncedRows(opId),
+      markCloudDeleted: (gen) =>
+        advanceCloudErasePhase({ phase: "cloud_deleted", serverGeneration: gen }),
+      resetLocal: resetLocalData,
+      markLocalResetDone: () =>
+        advanceCloudErasePhase({ phase: "local_reset_done" }),
+      acknowledgeGeneration: (gen) =>
+        setSyncGeneration({ userId: uidNow, generation: gen }),
+      finishErase: () => finishCloudErase(),
+    });
+    refreshControlState();
+    return status;
+  }, [user, deleteSyncedRows, resetLocalData, refreshControlState]);
+
+  // PR-I1: explicit second-device recovery. Owner-verified, then the current
+  // server generation is REVALIDATED (the recorded target may be stale if a
+  // further deletion happened before confirmation) → PR-H reset (once) →
+  // acknowledge the FRESH generation → clear the marker → reopen. A fetch
+  // failure leaves recovery fully pending (no reset, no acknowledgement, no
+  // clear, no reopen). No automatic remote wipe ever happens without this.
+  const confirmRemoteErase = useCallback(async () => {
+    if (!user) return;
+    const uidNow = user.id;
+    const outcome = await runRemoteEraseConfirm({
+      recovery: remoteEraseRecovery(),
+      currentUserId: uidNow,
+      fetchServerGeneration: fetchSyncGeneration,
+      resetLocal: resetLocalData,
+      acknowledgeGeneration: (gen) =>
+        setSyncGeneration({ userId: uidNow, generation: gen }),
+      clearRecovery: () => clearRemoteEraseRecovery(),
+    });
+    refreshControlState();
+    if (outcome === "done") {
+      hasPulled.current = false;
+      setSyncEpoch((n) => n + 1); // re-run reconcile/pull now that sync is unblocked
+    }
+  }, [user, fetchSyncGeneration, resetLocalData, refreshControlState]);
+
+  // Stamp the write-RPC generation-mismatch handler (see useProgressSync wiring):
+  // block admission → fetch the current generation → recovery marker when local
+  // learner data exists, fresh acknowledgement when the device is empty. The
+  // rejected payload is never restamped or resent.
+  generationMismatchRef.current = () => {
+    if (!user) return;
+    const uidNow = user.id;
+    void handleGenerationMismatch({
+      userId: uidNow,
+      localGeneration: syncGeneration(),
+      blockGeneration: blockSyncGeneration,
+      fetchServerGeneration: fetchSyncGeneration,
+      hasLearnerData: () => hasLocalLearnerData(),
+      persistRecovery: (args) => persistRemoteEraseRecovery(args),
+      acknowledgeGeneration: (gen) =>
+        setSyncGeneration({ userId: uidNow, generation: gen }),
+    }).then(() => refreshControlState());
+  };
+
   // Wrap logErr to also push error to cloud
   const logErrWithSync = useCallback(
     (word: string, section: string, given: string, correct: string, lessonId: number) => {
@@ -244,7 +554,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     prog: storageHook.prog,
     errors: storageHook.errors,
     dailyRev: storageHook.dailyRev,
-    loaded: storageHook.loaded,
+    // PR-I1: the app is "loaded" only once the LOCAL deletion-control records
+    // have hydrated too — until then learner-mutation persistence is fail-closed
+    // and no normal writable learning state may be presented. Local-only; never
+    // waits on network or auth.
+    loaded: storageHook.loaded && controlHydrated,
     updateDailyReview: updateDailyReviewWithSync,
 
     // Progress
@@ -261,6 +575,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     // Privacy
     resetLocalData,
+    deleteSyncedData,
+    remoteErasePending,
+    confirmRemoteErase,
+    pendingDeletion,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
