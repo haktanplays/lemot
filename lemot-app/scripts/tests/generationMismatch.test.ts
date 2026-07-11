@@ -8,10 +8,19 @@
  * (empty device). The rejected payload is never restamped or resent.
  */
 import { describe, test, assert } from "./harness";
+import { makeFakeKv } from "./helpers";
 import {
   handleGenerationMismatch,
   type GenerationMismatchDeps,
 } from "../../lib/generationMismatch";
+import {
+  persistRemoteEraseRecovery,
+  markRemoteEraseBlocked,
+  remoteEraseStatusFor,
+  isRemoteErasePending,
+  hydrateRemoteEraseRecovery,
+  __resetRemoteEraseRecoveryForTest,
+} from "../../lib/remoteEraseRecovery";
 
 function harness(over: Partial<GenerationMismatchDeps> = {}) {
   const calls: string[] = [];
@@ -80,5 +89,38 @@ describe("PR-I1 — write-RPC generation mismatch recovery", () => {
       },
     });
     assert((await handleGenerationMismatch(deps)) === "blocked", "persist failure fails closed");
+  });
+
+  test("Codex P2-3: marker persist failure via the provider wrapper → blocked-NOT-actionable surfaced, exception contained", async () => {
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+    const failingStore = {
+      getItem: () => null,
+      setItem: () => {
+        throw new Error("marker persist failed");
+      },
+      removeItem: () => {},
+    };
+    const { calls, deps } = harness({
+      // Exactly the AppProvider wiring: mark the runtime blocked-not-actionable,
+      // then rethrow so the pure machine still resolves "blocked".
+      persistRecovery: async (args) => {
+        try {
+          await persistRemoteEraseRecovery({ ...args, store: failingStore });
+        } catch (e) {
+          markRemoteEraseBlocked();
+          throw e;
+        }
+      },
+    });
+    const outcome = await handleGenerationMismatch(deps); // must resolve — never reject
+    assert(outcome === "blocked", "persist failure fails closed");
+    assert(calls[0] === "block", "admission was stopped BEFORE the persistence attempt");
+    assert(isRemoteErasePending(), "the runtime learner/sync gate stays blocked");
+    assert(remoteEraseStatusFor("user-a") === "blocked", "UI sees blocked — never an actionable recovery without a durable marker");
+    assert(!calls.some((c) => c.startsWith("ack")), "no acknowledgement after the failure");
+    // Leave the module in a clean hydrated state for later suites.
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
   });
 });

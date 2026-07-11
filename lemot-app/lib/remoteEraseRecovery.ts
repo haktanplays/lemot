@@ -74,6 +74,35 @@ export function isRemoteErasePending(): boolean {
   return pending != null || blockedUnowned;
 }
 
+/**
+ * UI-facing recovery status (Codex P2-2). "own" — a valid marker owned by
+ * `userId` (actionable: the explicit clear-this-device confirmation applies).
+ * "blocked" — a marker is present but foreign / corrupt / unreadable /
+ * owner-unknown, OR the runtime was fail-closed by {@link markRemoteEraseBlocked}
+ * — never actionable, never confirmable. "none" — no recovery state.
+ */
+export type RemoteEraseStatus = "none" | "own" | "blocked";
+
+export function remoteEraseStatusFor(userId: string | undefined): RemoteEraseStatus {
+  if (!blockedUnowned && pending != null && userId != null && pending.userId === userId) {
+    return "own";
+  }
+  return isRemoteErasePending() ? "blocked" : "none";
+}
+
+/**
+ * Runtime fail-closed marker (Codex P2-3): a recovery was REQUIRED (server
+ * generation ahead + learner data present) but the durable marker could not be
+ * persisted. Blocks sync + learner mutations for this runtime WITHOUT writing,
+ * overwriting, or reinterpreting anything durable — there is no owned marker,
+ * so the state is blocked-not-actionable. A restart re-runs the normal startup
+ * reconcile, which retries the persistence.
+ */
+export function markRemoteEraseBlocked(): void {
+  blockedUnowned = true;
+  hydrated = true;
+}
+
 /** True once the marker's presence has been resolved from storage. */
 export function isRemoteEraseRecoveryHydrated(): boolean {
   return hydrated;

@@ -63,7 +63,7 @@ export function PrivacyDataControls() {
   const {
     resetLocalData,
     deleteSyncedData,
-    remoteErasePending,
+    remoteEraseStatus,
     confirmRemoteErase,
     pendingDeletion,
   } = useApp();
@@ -229,23 +229,54 @@ export function PrivacyDataControls() {
         </Pressable>
       )}
 
-      {/* Unfinished deletion (PR-I1) — a durable pending deletion exists. "own":
-          this user resumes it from its recorded phase (never repeating a completed
-          destructive step). "blocked": it belongs to another account session —
-          only that account may complete it; learning + sync stay paused. */}
-      {pendingDeletion === "own" && syncDeletePhase === "idle" ? (
+      {/* ——— Delete synced learning data (PR-I1) ——— everything below concerns
+          the synced-data deletion + remote-erase recovery flows; the device-only
+          export/reset copy stays above this marker (C5 guard scope). The three
+          deletion states are mutually exclusive:
+            pendingDeletion === "none"    → normal delete controls
+            pendingDeletion === "own"     → resume/retry controls (ALWAYS actionable)
+            pendingDeletion === "blocked" → blocked informational message only */}
+
+      {/* Owned pending deletion — a durable marker for THIS user exists (fresh
+          resume after a restart, or any retryable failure: armed cloud_failed,
+          local_reset_failed, guard_finalize_failed). The retry CTA is always
+          visible outside the busy state; it re-enters the SAME provider flow,
+          which reuses the durable operation id and resumes from the recorded
+          phase — no completed destructive step ever re-runs. */}
+      {pendingDeletion === "own" ? (
         <View style={syncDeleteBlock}>
-          <View style={confirmBox}>
-            <Text style={body}>
-              A deletion of your synced learning data hasn&rsquo;t finished.
-              Learning and sync stay paused until it completes.
-            </Text>
-            <Pressable onPress={onDeleteSyncedConfirmed} style={dangerBtn}>
-              <Text style={dangerBtnText}>Finish deletion</Text>
-            </Pressable>
-          </View>
+          {syncDeletePhase === "deleting" ? (
+            <Text style={note}>Deleting synced data&hellip;</Text>
+          ) : (
+            <View style={confirmBox}>
+              <Text style={body}>
+                {syncDeletePhase === "local_reset_failed"
+                  ? "Your synced data was deleted from the cloud, but clearing this device didn’t finish — your data is still on this device. Sync stays paused until you retry."
+                  : syncDeletePhase === "guard_finalize_failed"
+                    ? "Your synced and on-device data were deleted. Finishing up — sync stays paused until it completes."
+                    : syncDeletePhase === "cloud_failed"
+                      ? "Couldn’t finish deleting your synced data just now. Learning and sync stay paused until it completes — you can try again."
+                      : "A deletion of your synced learning data hasn’t finished. Learning and sync stay paused until it completes."}
+              </Text>
+              <Pressable onPress={onDeleteSyncedConfirmed} style={dangerBtn}>
+                <Text style={dangerBtnText}>
+                  {syncDeletePhase === "local_reset_failed"
+                    ? "Retry device cleanup"
+                    : syncDeletePhase === "guard_finalize_failed"
+                      ? "Finish"
+                      : syncDeletePhase === "cloud_failed"
+                        ? "Try again"
+                        : "Finish deletion"}
+                </Text>
+              </Pressable>
+            </View>
+          )}
         </View>
       ) : null}
+
+      {/* Blocked pending deletion — it belongs to another account session (or
+          its marker is unreadable). Informational only: NO retry action here;
+          only the owning account may complete it. */}
       {pendingDeletion === "blocked" ? (
         <View style={syncDeleteBlock}>
           <Text style={body}>
@@ -257,9 +288,11 @@ export function PrivacyDataControls() {
       ) : null}
 
       {/* Remote-erase recovery (PR-I1) — synced data was deleted on another
-          device/account session. This device is NOT auto-wiped: the user must
-          explicitly confirm clearing it. */}
-      {remoteErasePending ? (
+          device/account session. "own": a valid marker for THIS user — the
+          device is NOT auto-wiped; the user must explicitly confirm clearing it.
+          "blocked": foreign/corrupt/unreadable/unpersisted recovery state — no
+          confirmation is possible, so no CTA is offered. */}
+      {remoteEraseStatus === "own" ? (
         <View style={syncDeleteBlock}>
           <View style={confirmBox}>
             <Text style={body}>
@@ -279,12 +312,22 @@ export function PrivacyDataControls() {
           </View>
         </View>
       ) : null}
+      {remoteEraseStatus === "blocked" ? (
+        <View style={syncDeleteBlock}>
+          <Text style={body}>
+            Sync is paused: a sync-state record on this device belongs to
+            another account or couldn&rsquo;t be read, so it can&rsquo;t be
+            resolved from here. Restart the app to try again &mdash; if this
+            keeps happening, contact support.
+          </Text>
+        </View>
+      ) : null}
 
-      {/* Delete synced learning data (PR-I1) — only for a signed-in, NON-anonymous
-          account (anonymous deletion is server-rejected; it is PR-I2 scope).
-          Distinct from the device-only reset above: this also erases synced rows.
-          Hidden while a remote-erase recovery or a pending deletion is showing. */}
-      {user && !user.is_anonymous && !remoteErasePending && pendingDeletion === "none" ? (
+      {/* Normal delete controls — only for a signed-in, NON-anonymous account
+          (anonymous deletion is server-rejected; it is PR-I2 scope), and only
+          while NO pending deletion or recovery state exists. Distinct from the
+          device-only reset above: this also erases synced rows. */}
+      {user && !user.is_anonymous && remoteEraseStatus === "none" && pendingDeletion === "none" ? (
         <View style={syncDeleteBlock}>
           {syncDeletePhase === "confirming" ? (
             <View style={confirmBox}>
@@ -312,28 +355,10 @@ export function PrivacyDataControls() {
               Synced learning data deleted, and this device&rsquo;s learning data
               was cleared too. You&rsquo;re still signed in.
             </Text>
-          ) : syncDeletePhase === "local_reset_failed" ? (
-            <View style={confirmBox}>
-              <Text style={body}>
-                Your synced data was deleted from the cloud, but clearing this
-                device didn&rsquo;t finish &mdash; your data is still on this
-                device. Sync stays paused until you retry.
-              </Text>
-              <Pressable onPress={onDeleteSyncedConfirmed} style={dangerBtn}>
-                <Text style={dangerBtnText}>Retry device cleanup</Text>
-              </Pressable>
-            </View>
-          ) : syncDeletePhase === "guard_finalize_failed" ? (
-            <View style={confirmBox}>
-              <Text style={body}>
-                Your synced and on-device data were deleted. Finishing up
-                &mdash; sync stays paused until it completes.
-              </Text>
-              <Pressable onPress={onDeleteSyncedConfirmed} style={dangerBtn}>
-                <Text style={dangerBtnText}>Finish</Text>
-              </Pressable>
-            </View>
           ) : syncDeletePhase === "cloud_failed" ? (
+            // Reachable here only when the failure left NO durable marker
+            // (e.g. arming itself failed) — otherwise pendingDeletion is "own"
+            // and the owned retry block above renders instead.
             <View style={{ gap: 8 }}>
               <Text style={errorText}>
                 Couldn&rsquo;t delete your synced data just now. Nothing was

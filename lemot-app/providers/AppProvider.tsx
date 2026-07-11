@@ -39,8 +39,11 @@ import {
   probeRemoteEraseRecovery,
   isRemoteErasePending,
   remoteEraseRecovery,
+  remoteEraseStatusFor,
+  markRemoteEraseBlocked,
   persistRemoteEraseRecovery,
   clearRemoteEraseRecovery,
+  type RemoteEraseStatus,
 } from "@/lib/remoteEraseRecovery";
 import {
   runDeleteSyncedData,
@@ -103,12 +106,16 @@ interface AppContextType {
   deleteSyncedData: () => Promise<DeleteSyncedStatus>;
 
   /**
-   * PR-I1: TRUE when this device discovered its synced data was deleted on another
-   * device/account session (server generation ahead + local learner data present).
-   * Sync is blocked and the device is NOT auto-wiped — the user must explicitly
-   * confirm clearing this device via {@link confirmRemoteErase}.
+   * PR-I1: remote-erase recovery status (Codex P2-2). "own" — this device
+   * discovered its synced data was deleted elsewhere (server generation ahead +
+   * local learner data present) and holds a valid marker owned by the current
+   * user: sync is blocked, the device is NOT auto-wiped, and the user may
+   * explicitly confirm clearing it via {@link confirmRemoteErase}. "blocked" —
+   * a recovery state exists but is foreign / corrupt / unreadable / could not
+   * be durably persisted: sync stays blocked and NO confirmation is possible
+   * (the UI must not offer one). "none" — no recovery state.
    */
-  remoteErasePending: boolean;
+  remoteEraseStatus: RemoteEraseStatus;
 
   /**
    * PR-I1: explicit confirmation for the remote-erase recovery. Verifies the
@@ -206,7 +213,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // only if no erase is pending. Gates the pull effect below so a leftover
   // pending erase (e.g. app killed mid-operation) never pulls/re-pushes.
   const [eraseGuardHydrated, setEraseGuardHydrated] = useState(false);
-  const [remoteErasePending, setRemoteErasePending] = useState(false);
+  const [remoteEraseStatus, setRemoteEraseStatus] = useState<RemoteEraseStatus>("none");
   const [pendingDeletion, setPendingDeletion] = useState<"none" | "own" | "blocked">(
     "none"
   );
@@ -218,7 +225,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Re-derive the UI-facing durable control state from the coordinator modules
   // (after hydration and after every deletion/recovery operation).
   const refreshControlState = useCallback(() => {
-    setRemoteErasePending(isRemoteErasePending());
+    setRemoteEraseStatus(remoteEraseStatusFor(uid));
     if (cloudEraseState() === "pending") {
       const owner = cloudErasePendingUserId();
       setPendingDeletion(owner && owner === uid ? "own" : "blocked");
@@ -307,11 +314,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       if (decision.kind === "recovery") {
-        await persistRemoteEraseRecovery({
-          userId: user.id,
-          targetGeneration: decision.targetGeneration,
-        });
-        setRemoteErasePending(true);
+        // Codex P2-3: fail closed BEFORE the marker write can fail. The server
+        // has provably advanced past this device's generation, so the stale
+        // local generation must stop being admitted regardless of whether the
+        // recovery marker persists.
+        blockSyncGeneration();
+        try {
+          await persistRemoteEraseRecovery({
+            userId: user.id,
+            targetGeneration: decision.targetGeneration,
+          });
+          setRemoteEraseStatus("own"); // actionable: explicit confirmation flow
+        } catch {
+          // Marker persistence failed → no durable owned marker exists, so the
+          // state is blocked-NOT-actionable (no "Clear this device"). Sync and
+          // learner mutations stay blocked; a restart retries the reconcile.
+          markRemoteEraseBlocked();
+          setRemoteEraseStatus("blocked");
+        }
         hasPulled.current = true;
         return; // recovery UI takes over — no automatic device wipe, no pull
       }
@@ -564,7 +584,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       blockGeneration: blockSyncGeneration,
       fetchServerGeneration: fetchSyncGeneration,
       hasLearnerData: () => hasLocalLearnerData(),
-      persistRecovery: (args) => persistRemoteEraseRecovery(args),
+      // Codex P2-3: same persistence-failure class as the startup reconcile —
+      // if the required marker cannot be persisted, surface a blocked-NOT-
+      // actionable state instead of a silently blocked generation. The rethrow
+      // keeps the pure machine's outcome "blocked" (admission stays stopped).
+      persistRecovery: async (args) => {
+        try {
+          await persistRemoteEraseRecovery(args);
+        } catch (e) {
+          markRemoteEraseBlocked();
+          throw e;
+        }
+      },
       acknowledgeGeneration: (gen) =>
         setSyncGeneration({ userId: uidNow, generation: gen }),
     }).then(() => refreshControlState());
@@ -608,7 +639,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     // Privacy
     resetLocalData,
     deleteSyncedData,
-    remoteErasePending,
+    remoteEraseStatus,
     confirmRemoteErase,
     pendingDeletion,
   };

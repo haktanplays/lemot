@@ -210,6 +210,39 @@ describe("PR-I1 — client wiring", () => {
     assert(provider.includes("finishCloudErase(undefined, { userId: uidNow, operationId: opId })"), "finish is identity-checked");
   });
 
+  test("Codex P2-3: recovery marker persistence fails CLOSED (block first, catch, blocked-not-actionable, no pull)", () => {
+    const provider = read("providers/AppProvider.tsx");
+    // Startup reconcile recovery branch: admission blocked BEFORE the marker
+    // write is attempted; the write failure is caught inside the effect (never
+    // an unhandled rejection); success → owned actionable recovery, failure →
+    // blocked-not-actionable; the pull/merge path never runs from this branch.
+    const recoveryStart = provider.indexOf('decision.kind === "recovery"');
+    const recoveryEnd = provider.indexOf('decision.kind === "acknowledge_and_pull"');
+    assert(recoveryStart !== -1 && recoveryEnd !== -1 && recoveryStart < recoveryEnd, "recovery branch precedes the acknowledge branch");
+    const recoveryBranch = provider.slice(recoveryStart, recoveryEnd);
+    const blockIdx = recoveryBranch.indexOf("blockSyncGeneration()");
+    const persistIdx = recoveryBranch.indexOf("await persistRemoteEraseRecovery({");
+    assert(blockIdx !== -1 && persistIdx !== -1 && blockIdx < persistIdx, "blockSyncGeneration runs BEFORE marker persistence begins");
+    assert(recoveryBranch.includes("try {") && recoveryBranch.includes("} catch {"), "marker persistence failure is caught inside the effect");
+    assert(recoveryBranch.includes("markRemoteEraseBlocked()"), "persistence failure surfaces the runtime blocked state");
+    assert(recoveryBranch.includes('setRemoteEraseStatus("blocked")'), "UI is told the state is blocked, not actionable");
+    assert(recoveryBranch.includes('setRemoteEraseStatus("own")'), "successful persistence still yields the owned actionable recovery");
+    assert(!recoveryBranch.includes("pullFromCloud"), "no pull runs from the recovery branch");
+    // The write-RPC generation-mismatch path handles the SAME persistence-failure
+    // class: mark blocked-not-actionable, rethrow so the pure machine stays blocked.
+    const mismatchStart = provider.indexOf("handleGenerationMismatch({");
+    assert(mismatchStart !== -1, "mismatch recovery wired");
+    const mismatchSlice = provider.slice(mismatchStart, provider.indexOf("acknowledgeGeneration", mismatchStart));
+    assert(
+      mismatchSlice.includes("markRemoteEraseBlocked()") && mismatchSlice.includes("throw e"),
+      "mismatch persistRecovery failure marks blocked and stays blocked",
+    );
+    // Codex P2-2: the tri-state per-user status replaces the ambiguous boolean.
+    assert(provider.includes("remoteEraseStatusFor(uid)"), "status derived per-user from the recovery module");
+    assert(provider.includes('remoteEraseStatus: RemoteEraseStatus'), "context exposes the tri-state recovery status");
+    assert(!provider.includes("remoteErasePending:"), "the ambiguous pending boolean is gone from the provider API");
+  });
+
   test("all durable control keys are EXCLUDED from the PR-H local reset/export inventory", () => {
     for (const k of [
       LM_CLOUD_ERASE_PENDING_KEY,
@@ -228,26 +261,76 @@ describe("PR-I1 — client wiring", () => {
 });
 
 describe("PR-I1 — UI copy contract", () => {
-  test("recovery banner (no auto-wipe), non-anonymous delete, honest partial-failure copy", () => {
+  test("render matrix: normal / owned-retry / blocked states are mutually clear (Codex P2-1/P2-2)", () => {
     const ui = read("components/learning-engine/PrivacyDataControls.tsx");
-    // Remote-erase recovery banner — explicit confirmation, no auto-wipe.
-    assert(ui.includes("remoteErasePending"), "recovery banner is driven by remoteErasePending");
-    assert(/deleted on another device/i.test(ui), "recovery copy explains the remote deletion");
-    assert(/nothing on this device is removed until you confirm/i.test(ui), "recovery copy: no auto-wipe");
-    assert(ui.includes("confirmRemoteErase"), "recovery routes through explicit confirmation");
-    // Delete action: non-anon only, hidden during recovery / pending deletion.
-    assert(
-      ui.includes('user && !user.is_anonymous && !remoteErasePending && pendingDeletion === "none"'),
-      "delete action non-anon + hidden during recovery and pending deletion",
+    const ownStart = ui.indexOf('{pendingDeletion === "own" ?');
+    const blockedStart = ui.indexOf('{pendingDeletion === "blocked" ?');
+    const recoveryOwnStart = ui.indexOf('{remoteEraseStatus === "own" ?');
+    const recoveryBlockedStart = ui.indexOf('{remoteEraseStatus === "blocked" ?');
+    const normalStart = ui.indexOf(
+      'user && !user.is_anonymous && remoteEraseStatus === "none" && pendingDeletion === "none"',
     );
+    assert(
+      ownStart !== -1 && blockedStart !== -1 && recoveryOwnStart !== -1 &&
+        recoveryBlockedStart !== -1 && normalStart !== -1,
+      "all five deletion/recovery states render from explicit, distinct conditions",
+    );
+    assert(
+      ownStart < blockedStart && blockedStart < recoveryOwnStart &&
+        recoveryOwnStart < recoveryBlockedStart && recoveryBlockedStart < normalStart,
+      "state blocks are laid out in matrix order",
+    );
+
+    // OWNED pending deletion: ALWAYS actionable — no idle-phase gate; every
+    // retryable failure keeps a CTA; the busy state exposes no duplicate CTA.
+    assert(!ui.includes('pendingDeletion === "own" &&'), "the owned retry block is not gated on a UI phase");
+    const ownBlock = ui.slice(ownStart, blockedStart);
+    assert(/data is still on this/i.test(ownBlock), "local_reset_failed copy: data still on device");
+    assert(ownBlock.includes("Retry device cleanup"), "local_reset_failed keeps a retry CTA");
+    assert(/on-device data were deleted/i.test(ownBlock), "guard_finalize_failed copy: device data WAS cleared");
+    assert(ownBlock.includes('"Finish"'), "guard_finalize_failed keeps a finish CTA");
+    assert(ownBlock.includes("Try again"), "armed cloud_failed keeps a try-again CTA");
+    assert(ownBlock.includes("Finish deletion"), "a freshly resumed own pending deletion is resumable");
+    assert(ownBlock.includes("Deleting synced data"), "busy state shown during an active retry");
+    assert(
+      (ownBlock.match(/onPress=\{onDeleteSyncedConfirmed\}/g) ?? []).length === 1,
+      "ONE retry CTA, wired to the existing deleteSyncedData flow",
+    );
+
+    // BLOCKED pending deletion: informational only — never an owner retry CTA.
+    const blockedBlock = ui.slice(blockedStart, recoveryOwnStart);
+    assert(/another account session/i.test(blockedBlock), "foreign pending deletion explains the owning account must complete it");
+    assert(
+      !blockedBlock.includes("Pressable") && !blockedBlock.includes("onDeleteSyncedConfirmed"),
+      "blocked deletion exposes NO action",
+    );
+
+    // Remote-erase recovery: own → explicit confirmation; blocked → message only.
+    const recoveryOwnBlock = ui.slice(recoveryOwnStart, recoveryBlockedStart);
+    assert(/deleted on another device/i.test(recoveryOwnBlock), "recovery copy explains the remote deletion");
+    assert(/nothing on this device is removed until you confirm/i.test(recoveryOwnBlock), "recovery copy: no auto-wipe");
+    assert(
+      recoveryOwnBlock.includes("onConfirmRemoteErase") && recoveryOwnBlock.includes("Clear this device"),
+      "owned recovery routes through the explicit confirmation",
+    );
+    const recoveryBlockedBlock = ui.slice(recoveryBlockedStart, normalStart);
+    assert(
+      /restart the app/i.test(recoveryBlockedBlock) && /contact support/i.test(recoveryBlockedBlock),
+      "blocked recovery: other-account / restart / support message",
+    );
+    assert(
+      !recoveryBlockedBlock.includes("ConfirmRemoteErase") &&
+        !recoveryBlockedBlock.includes("Clear this device") &&
+        !recoveryBlockedBlock.includes("Pressable"),
+      "blocked recovery exposes NO confirmation action",
+    );
+    assert((ui.match(/Clear this device/g) ?? []).length === 1, "the confirmation CTA exists ONLY in the owned state");
+
+    // Normal controls + single deletion implementation (no duplicate destructive path).
     assert(ui.includes("Delete synced learning data"), "distinct action label present");
-    // Pending-deletion banners: own → resumable "Finish deletion"; foreign/corrupt
-    // → blocked explanation (the original account must complete it).
+    assert((ui.match(/deleteSyncedData\(\)/g) ?? []).length === 1, "exactly one call site into the provider deletion flow");
+    assert((ui.match(/const onDeleteSyncedConfirmed = /g) ?? []).length === 1, "one shared confirm/retry handler");
     assert(/hasn&rsquo;t finished/.test(ui), "pending-deletion copy shows the unfinished state");
-    assert(ui.includes("Finish deletion"), "own pending deletion is resumable");
-    assert(/another account session/i.test(ui), "foreign pending deletion explains the owning account must complete it");
-    assert(/data is still on this/i.test(ui), "local_reset_failed copy: data still on device");
-    assert(/on-device data were deleted/i.test(ui), "guard_finalize_failed copy: device data WAS cleared");
     assert(!/delete account/i.test(ui) && !/sign (you )?out/i.test(ui), "no account-deletion / sign-out wording");
   });
 });

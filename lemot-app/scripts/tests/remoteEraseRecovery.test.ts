@@ -12,6 +12,8 @@ import {
   LM_REMOTE_ERASE_RECOVERY_KEY,
   isRemoteErasePending,
   remoteEraseRecovery,
+  remoteEraseStatusFor,
+  markRemoteEraseBlocked,
   hydrateRemoteEraseRecovery,
   persistRemoteEraseRecovery,
   clearRemoteEraseRecovery,
@@ -81,5 +83,50 @@ describe("PR-I1 — remote-erase recovery marker", () => {
     assert(kv.map.get(LM_REMOTE_ERASE_RECOVERY_KEY) === rec("user-a", 2), "user-bound marker persisted");
     await clearRemoteEraseRecovery(kv);
     assert(!isRemoteErasePending() && !kv.map.has(LM_REMOTE_ERASE_RECOVERY_KEY), "cleared");
+  });
+});
+
+describe("PR-I1 — remote-erase UI status (Codex P2-2/P2-3)", () => {
+  test('own valid marker → "own" for the owner only; anyone else sees "blocked"', async () => {
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateRemoteEraseRecovery({
+      userId: "user-a",
+      store: makeFakeKv({ [LM_REMOTE_ERASE_RECOVERY_KEY]: rec("user-a", 4) }),
+    });
+    assert(remoteEraseStatusFor("user-a") === "own", "owner sees the actionable status");
+    assert(remoteEraseStatusFor("user-b") === "blocked", "any other user sees blocked, never actionable");
+    assert(remoteEraseStatusFor(undefined) === "blocked", "no signed-in user → blocked, never actionable");
+  });
+
+  test('foreign / corrupt marker → "blocked"; absent → "none"', async () => {
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateRemoteEraseRecovery({
+      userId: "user-a",
+      store: makeFakeKv({ [LM_REMOTE_ERASE_RECOVERY_KEY]: rec("user-b", 7) }),
+    });
+    assert(remoteEraseStatusFor("user-a") === "blocked", "foreign marker → blocked, no CTA");
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateRemoteEraseRecovery({
+      userId: "user-a",
+      store: makeFakeKv({ [LM_REMOTE_ERASE_RECOVERY_KEY]: "{broken" }),
+    });
+    assert(remoteEraseStatusFor("user-a") === "blocked", "corrupt marker → blocked, no CTA");
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+    assert(remoteEraseStatusFor("user-a") === "none", "no marker → none (no recovery panel)");
+  });
+
+  test("markRemoteEraseBlocked: runtime fail-closed — blocked + pending, nothing durable written", async () => {
+    __resetRemoteEraseRecoveryForTest();
+    const kv = makeFakeKv();
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: kv });
+    markRemoteEraseBlocked();
+    assert(isRemoteErasePending(), "sync + learner mutations stay blocked");
+    assert(remoteEraseStatusFor("user-a") === "blocked", "blocked, NOT actionable — no owned durable marker exists");
+    assert(remoteEraseRecovery() === null, "no actionable record is fabricated");
+    assert(!kv.map.has(LM_REMOTE_ERASE_RECOVERY_KEY), "nothing durable was written or overwritten");
+    // Leave the module in a clean hydrated state for later suites.
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
   });
 });

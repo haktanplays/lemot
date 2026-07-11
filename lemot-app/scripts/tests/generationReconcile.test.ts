@@ -11,10 +11,27 @@
  * chooses whether the unchanged pull/merge path runs.
  */
 import { describe, test, assert } from "./harness";
+import { makeFakeKv } from "./helpers";
 import {
   decideGenerationReconcile,
   resolveGenerationReconcile,
 } from "../../lib/generationReconcile";
+import {
+  hydrateSyncGeneration,
+  isSyncGenerationReady,
+  blockSyncGeneration,
+  __resetSyncGenerationForTest,
+} from "../../lib/syncGeneration";
+import {
+  LM_REMOTE_ERASE_RECOVERY_KEY,
+  persistRemoteEraseRecovery,
+  markRemoteEraseBlocked,
+  remoteEraseStatusFor,
+  isRemoteErasePending,
+  hydrateRemoteEraseRecovery,
+  __resetRemoteEraseRecoveryForTest,
+  type RecoveryKv,
+} from "../../lib/remoteEraseRecovery";
 
 describe("PR-I1 — reconcile decision matrix", () => {
   test("missing/failed/malformed server generation (null) → fail closed", () => {
@@ -213,5 +230,104 @@ describe("PR-I1 — fail-closed resolver: fetch first, inventory only when neede
       d.kind === "fail_closed" && d.reason === "inventory_unreadable",
       "an unreadable inventory fails closed instead of escaping the effect",
     );
+  });
+});
+
+describe("PR-I1 — recovery marker persistence fails closed (Codex P2-3)", () => {
+  /**
+   * Mirrors the AppProvider recovery branch (the source scan in
+   * deleteSyncedDataWiring.test pins the real wiring to the same shape):
+   * admission is blocked synchronously BEFORE the marker write is attempted; a
+   * write failure is caught in place (never an unhandled rejection) and
+   * surfaces the runtime blocked-not-actionable state; the pull/merge path
+   * never runs from this branch in either outcome.
+   */
+  async function runRecoveryBranch(args: {
+    store: RecoveryKv;
+    order: string[];
+  }): Promise<"own" | "blocked"> {
+    args.order.push("block");
+    blockSyncGeneration();
+    try {
+      await persistRemoteEraseRecovery({
+        userId: "user-a",
+        targetGeneration: 2,
+        store: args.store,
+      });
+      args.order.push("own");
+      return "own";
+    } catch {
+      markRemoteEraseBlocked();
+      args.order.push("blocked");
+      return "blocked";
+    }
+    // returns WITHOUT ever reaching a pull
+  }
+
+  test("persist FAILURE: blocked before the attempt, exception contained, sync stays blocked, UI blocked-not-actionable", async () => {
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+    assert(isSyncGenerationReady(), "precondition: sync generation was admitted");
+
+    const order: string[] = [];
+    const failingStore: RecoveryKv = {
+      getItem: () => null,
+      setItem: () => {
+        order.push("persist_attempt");
+        throw new Error("marker persist failed");
+      },
+      removeItem: () => {},
+    };
+    const status = await runRecoveryBranch({ store: failingStore, order }); // resolves — never rejects
+    assert(status === "blocked", "persistence failure yields the blocked outcome");
+    assert(
+      order.join(",") === "block,persist_attempt,blocked",
+      "blockSyncGeneration ran BEFORE marker persistence began",
+    );
+    assert(!isSyncGenerationReady(), "sync generation stays blocked (no pull, no merge, no write, no push)");
+    assert(isRemoteErasePending(), "the learner-mutation gate stays blocked");
+    assert(
+      remoteEraseStatusFor("user-a") === "blocked",
+      "UI reports blocked — no owned durable marker exists, so no clear-this-device CTA",
+    );
+
+    // Clean re-hydrate for later suites.
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+  });
+
+  test("persist SUCCESS: still blocked until explicit confirmation, but the recovery is OWNED and actionable", async () => {
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+
+    const order: string[] = [];
+    const kv = makeFakeKv();
+    const recordingStore: RecoveryKv = {
+      getItem: (k) => kv.getItem(k),
+      setItem: (k, v) => {
+        order.push("persist_attempt");
+        return kv.setItem(k, v);
+      },
+      removeItem: (k) => kv.removeItem(k),
+    };
+    const status = await runRecoveryBranch({ store: recordingStore, order });
+    assert(status === "own", "successful persistence yields the owned outcome");
+    assert(order.join(",") === "block,persist_attempt,own", "block still precedes the persistence attempt");
+    assert(kv.map.has(LM_REMOTE_ERASE_RECOVERY_KEY), "the user-bound marker was durably written");
+    assert(remoteEraseStatusFor("user-a") === "own", "owned actionable recovery for the current user");
+    assert(!isSyncGenerationReady(), "sync stays blocked until the user explicitly confirms");
+    assert(isRemoteErasePending(), "learning stays gated until the confirmation completes");
+
+    // Clean re-hydrate for later suites.
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
   });
 });
