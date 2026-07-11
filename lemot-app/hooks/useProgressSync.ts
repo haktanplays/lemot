@@ -154,8 +154,11 @@ export function useProgressSync(
     [userId]
   );
 
-  // PR-I1: read the authoritative server generation. Returns null on failure so
-  // the caller can FAIL CLOSED (never treat a fetch failure as generation 0).
+  // PR-I1: read the authoritative server generation. Returns null on ANY
+  // uncertainty so the caller FAILS CLOSED — legitimate sync-state rows come only
+  // from signup/backfill, so a MISSING row is an anomaly, never baseline 0, and
+  // the client never creates the row itself (only the authenticated delete RPC
+  // may repair its caller's own row). A malformed generation is also null.
   const fetchSyncGeneration = useCallback(async (): Promise<number | null> => {
     if (!userId) return null;
     const { data, error } = await supabase
@@ -164,8 +167,10 @@ export function useProgressSync(
       .eq("user_id", userId)
       .maybeSingle();
     if (error) return null; // fail closed
-    if (!data) return 0; // no row → baseline
-    return typeof data.generation === "number" ? data.generation : 0;
+    if (!data) return null; // missing row → fail closed (anomaly, not baseline 0)
+    return typeof data.generation === "number" && Number.isFinite(data.generation)
+      ? data.generation
+      : null; // malformed → fail closed
   }, [userId]);
 
   return {

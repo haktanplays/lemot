@@ -48,14 +48,9 @@ import {
 } from "@/lib/deleteSyncedData";
 import { runRemoteEraseConfirm } from "@/lib/remoteEraseConfirm";
 import { handleGenerationMismatch } from "@/lib/generationMismatch";
+import { makeOperationId } from "@/lib/operationId";
+import { decideGenerationReconcile } from "@/lib/generationReconcile";
 import type { ErrorEntry, DailyReview } from "@/lib/types";
-
-/** A delete operation id (idempotency key). Not a user identifier. */
-function makeOpId(): string {
-  const g = globalThis as { crypto?: { randomUUID?: () => string } };
-  if (g.crypto?.randomUUID) return g.crypto.randomUUID();
-  return `op-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
 
 interface AppContextType {
   // Storage
@@ -294,40 +289,38 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (!eraseGuardHydrated || !isCloudSyncAdmitted() || isRemoteErasePending()) return;
 
     (async () => {
-      // PR-I1 (durable delete, multi-device) reconcile — NO automatic wipe:
-      //  * fetch failure → fail closed (block writes, don't merge);
-      //  * server > local + this device HAS learner data → a deletion happened on
-      //    another device/session: persist a user-bound recovery marker, block
-      //    sync, and require explicit confirmation (do NOT reset here);
-      //  * server > local + this device is EMPTY → safe fresh-install
-      //    acknowledgement of the current generation;
-      //  * local > server → impossible without a bug → fail closed;
-      //  * equal → normal pull + merge.
-      const serverGen = await fetchSyncGeneration();
-      if (serverGen === null) {
-        blockSyncGeneration(); // generation fetch failed → fail closed
+      // PR-I1 (durable delete, multi-device) reconcile — NO automatic wipe. The
+      // decision matrix is pure ({@link decideGenerationReconcile}); this effect
+      // only executes it. A missing/malformed sync-state row surfaces as
+      // serverGeneration null → fail closed (never treated as baseline 0, never
+      // client-created).
+      const decision = decideGenerationReconcile({
+        serverGeneration: await fetchSyncGeneration(),
+        localGeneration: syncGeneration(),
+        hasLearnerData: await hasLocalLearnerData(),
+      });
+      if (decision.kind === "fail_closed") {
+        blockSyncGeneration(); // no pull, no merge, no local write, no push
         return;
       }
-      const localGen = syncGeneration();
-      if (serverGen > localGen) {
-        if (await hasLocalLearnerData()) {
-          await persistRemoteEraseRecovery({
-            userId: user.id,
-            targetGeneration: serverGen,
-          });
-          setRemoteErasePending(true);
-          hasPulled.current = true;
-          return; // recovery UI takes over — no automatic device wipe
-        }
-        await setSyncGeneration({ userId: user.id, generation: serverGen });
+      if (decision.kind === "recovery") {
+        await persistRemoteEraseRecovery({
+          userId: user.id,
+          targetGeneration: decision.targetGeneration,
+        });
+        setRemoteErasePending(true);
         hasPulled.current = true;
-        return;
+        return; // recovery UI takes over — no automatic device wipe, no pull
       }
-      if (localGen > serverGen) {
-        blockSyncGeneration(); // fail closed — never write or silently downgrade
-        hasPulled.current = true;
-        return;
+      if (decision.kind === "acknowledge_and_pull") {
+        // Fresh-install shortcut: adopt the current server generation, then
+        // CONTINUE into the normal pull below under the acknowledged generation —
+        // valid learner data created after the historical deletion must still be
+        // pulled and merged. hasPulled is set only after the normal pull/apply
+        // path completes.
+        await setSyncGeneration({ userId: user.id, generation: decision.generation });
       }
+      // decision.kind === "proceed" (or acknowledged) → normal pull + merge below.
 
       // PR-H P2-2: snapshot the reset epoch BEFORE the pull starts. If a local
       // privacy reset lands while this pull is in flight, its result is stale
@@ -467,8 +460,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       return "cloud_failed";
     }
     // Reuse a pending op id (crash/retry) so the server replays idempotently, and
-    // RESUME from the durable phase so no completed destructive step re-runs.
-    const opId = cloudErasePendingOpId() ?? makeOpId();
+    // RESUME from the durable phase so no completed destructive step re-runs. A
+    // NEW id is a validated RFC4122 UUIDv4 (the server column is `uuid`).
+    const opId = cloudErasePendingOpId() ?? (await makeOperationId());
     const phase = cloudErasePendingPhase();
     const resume = phase
       ? {

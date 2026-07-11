@@ -23,6 +23,8 @@ import "./localLearnerData.test";
 import "./learnerMutationGate.test";
 import "./remoteEraseConfirm.test";
 import "./generationMismatch.test";
+import "./operationId.test";
+import "./generationReconcile.test";
 import "./deleteSyncedDataWiring.test";
 import "./mastery.test";
 import "./safeStorage.test";

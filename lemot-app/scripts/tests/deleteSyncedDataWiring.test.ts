@@ -114,7 +114,16 @@ describe("PR-I1 — client wiring", () => {
     assert(/\.rpc\(\s*["']delete_my_synced_learning_data["']\s*,\s*\{[\s\n]*p_op_id:/.test(sync), "delete RPC passes p_op_id only (idempotency key)");
     assert(!/p_op_id:\s*userId/.test(sync), "op id is not the user id");
     // fetchSyncGeneration fails closed (returns null on error).
-    assert(sync.includes("if (error) return null; // fail closed"), "generation fetch fails closed");
+    assert(sync.includes("if (error) return null; // fail closed"), "generation fetch fails closed on error");
+    assert(
+      sync.includes("if (!data) return null; // missing row → fail closed"),
+      "a MISSING sync-state row is null (anomaly), never baseline 0",
+    );
+    assert(
+      sync.includes("Number.isFinite(data.generation)") && sync.includes(": null; // malformed → fail closed"),
+      "a malformed generation is null (fail closed)",
+    );
+    assert(!sync.includes('.from("user_sync_state").insert') && !sync.includes('.from("user_sync_state").upsert'), "the client never creates the sync-state row");
     // Stale-generation rejections hand off to the mismatch recovery on BOTH write
     // paths; the rejected payload is never restamped/resent inside the hook.
     assert(
@@ -146,11 +155,22 @@ describe("PR-I1 — client wiring", () => {
     assert(provider.includes("hydrateSyncGeneration({ userId: uid })"), "generation hydrated user-bound");
     assert(provider.includes("hydrateRemoteEraseRecovery({ userId: uid })"), "recovery hydrated user-bound");
 
-    // Reconcile: no automatic wipe — persist a recovery marker when data exists.
-    assert(provider.includes("if (await hasLocalLearnerData())"), "reconcile checks local learner data");
-    assert(provider.includes("persistRemoteEraseRecovery({"), "server>local + data → persist recovery marker (no reset)");
-    assert(!/if \(await hasLocalLearnerData\(\)\)[^}]*await resetLocalData\(\)/s.test(provider), "reconcile does NOT auto-reset when learner data exists");
-    assert(provider.includes("blockSyncGeneration()"), "fetch-failure / local>server fail closed");
+    // Reconcile: pure decision matrix executed by the effect — no automatic
+    // wipe; fresh-install acknowledgement CONTINUES into the normal pull.
+    assert(provider.includes("decideGenerationReconcile({"), "reconcile runs the pure decision matrix");
+    assert(provider.includes("hasLearnerData: await hasLocalLearnerData()"), "reconcile checks local learner data");
+    assert(provider.includes("persistRemoteEraseRecovery({"), "recovery decision → persist recovery marker (no reset)");
+    assert(!provider.includes("await resetLocalData();\n        await setSyncGeneration"), "reconcile never auto-resets");
+    assert(provider.includes("blockSyncGeneration()"), "fail_closed decision blocks (no pull/merge/write/push)");
+    // acknowledge_and_pull FALLS THROUGH into the normal pull: between the
+    // acknowledgement and `await pullFromCloud()` there is no return and no
+    // premature hasPulled — hasPulled is set only after the pull path completes.
+    const ackIdx = provider.indexOf('decision.kind === "acknowledge_and_pull"');
+    const pullIdx = provider.indexOf("await pullFromCloud()");
+    assert(ackIdx !== -1 && pullIdx !== -1 && ackIdx < pullIdx, "acknowledge branch precedes the pull");
+    const between = provider.slice(provider.indexOf("setSyncGeneration({ userId: user.id, generation: decision.generation })"), pullIdx);
+    assert(!/\breturn\b/.test(between), "no early return between acknowledgement and the normal pull");
+    assert(!between.includes("hasPulled.current = true"), "hasPulled is not set before the pull runs");
 
     // Confirmation: delegated to the pure revalidating orchestrator (fetch the
     // CURRENT generation before reset/ack; owner-verified; fail closed on fetch).
@@ -164,6 +184,10 @@ describe("PR-I1 — client wiring", () => {
       "a foreign OR corrupt pending deletion is refused (fail closed)",
     );
     assert(provider.includes("cloudErasePendingPhase()"), "resume is built from the durable phase");
+    // Fresh op ids are validated RFC4122 UUIDv4 (server column is `uuid`); the
+    // legacy non-UUID `op-...` fallback is gone.
+    assert(provider.includes("cloudErasePendingOpId() ?? (await makeOperationId())"), "new op ids come from the validated UUID source");
+    assert(!provider.includes("op-${"), "no non-UUID op-id fallback remains");
     assert(provider.includes("markCloudDeleted:"), "records cloud_deleted before the local reset");
     assert(provider.includes("markLocalResetDone:"), "records local_reset_done after the reset");
     assert(provider.includes("armCloudErase({ opId, userId: uidNow })"), "arm is user-bound");
