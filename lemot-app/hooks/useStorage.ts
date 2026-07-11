@@ -2,7 +2,11 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { kvStorage } from "@/lib/storage";
 import { loadOrQuarantine, isPlainObject } from "@/lib/safeStorage";
 import { createBlobStore, type BlobStore } from "@/lib/blobStore";
-import { privacyResetEpoch, isPersistSuppressed } from "@/lib/privacyResetEpoch";
+import {
+  privacyResetEpoch,
+  isPersistSuppressed,
+  subscribePrivacyReset,
+} from "@/lib/privacyResetEpoch";
 import type { StorageData, ErrorEntry, DailyReview } from "@/lib/types";
 
 const STORAGE_KEY = "lm7";
@@ -159,6 +163,10 @@ export function useStorage() {
     corruptUnrecovered.current = false;
     ackEpoch.current = privacyResetEpoch();
   }, [syncState]);
+
+  // PR-H: self-heal on any local-privacy reset, even one triggered elsewhere, so
+  // this store never keeps stale data or blocks fresh writes while mounted.
+  useEffect(() => subscribePrivacyReset(resetLocal), [resetLocal]);
 
   return {
     prog,

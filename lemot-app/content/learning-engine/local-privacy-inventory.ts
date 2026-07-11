@@ -89,9 +89,11 @@ export type KvFullLike = {
  * is a no-op. Local-only; it never touches the Supabase auth token, onboarding
  * flags, or any cloud row (cloud deletion is C1, future work).
  *
- * NOTE: this clears on-device STORAGE. Live in-memory state held by
- * `useStorage` / `useSRS` is not reset here, so the settings UI advises a restart
- * to finish — see `PrivacyDataControls`.
+ * NOTE: this clears on-device STORAGE only. Live in-memory state is reset
+ * separately by the runtime barrier: `AppProvider.resetLocalData` bumps the
+ * reset epoch (which notifies mounted stores like `useStorage` / `useSRS` to
+ * clear their in-memory data and re-acknowledge) and suppresses stale writers,
+ * so no app restart is needed — see `PrivacyDataControls` and `privacyResetEpoch`.
  */
 export async function resetAllLocalPrivacyData(args?: {
   store?: KvFullLike;

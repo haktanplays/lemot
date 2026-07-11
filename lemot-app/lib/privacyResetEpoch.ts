@@ -22,11 +22,37 @@
  * nothing to resurrect. Pure and framework-free, so the barrier is unit-testable.
  */
 let epoch = 0;
+const listeners = new Set<() => void>();
 
-/** Bump the epoch once per explicit local-privacy reset. Returns the new epoch. */
+/**
+ * Bump the epoch once per explicit local-privacy reset and notify subscribers.
+ * Subscribers (mounted runtime stores) use the signal to clear their own
+ * in-memory state and re-acknowledge the new epoch immediately — so a store that
+ * stays mounted across the reset (e.g. a Practice-tab `useSRS`) does not keep
+ * showing deleted data or block fresh post-reset writes until it remounts.
+ */
 export function bumpPrivacyResetEpoch(): number {
   epoch += 1;
+  for (const listener of listeners) {
+    try {
+      listener();
+    } catch {
+      /* a faulty subscriber must never break the reset */
+    }
+  }
   return epoch;
+}
+
+/**
+ * Subscribe to local-privacy resets. Returns an unsubscribe function (call it on
+ * unmount). Runtime stores register their `resetLocal` so a reset reaches every
+ * mounted store, not just the ones an orchestrator happens to hold a ref to.
+ */
+export function subscribePrivacyReset(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 /** The current reset epoch. Runtime stores capture this when they (re)hydrate. */
@@ -43,7 +69,8 @@ export function isPersistSuppressed(capturedEpoch: number): boolean {
   return capturedEpoch < epoch;
 }
 
-/** TEST-ONLY: restore the counter to zero so tests don't leak epoch state. */
+/** TEST-ONLY: restore the counter to zero + drop subscribers between tests. */
 export function __resetPrivacyResetEpochForTest(): void {
   epoch = 0;
+  listeners.clear();
 }

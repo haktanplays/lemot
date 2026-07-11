@@ -8,6 +8,11 @@
  * re-create `lm7` and a modeled `lm7_srs` save is likewise suppressed, while
  * fresh post-reset activity persists clean; (3) the real hooks + provider + UI
  * are wired to the barrier (source scan — hooks can't render in this harness).
+ *
+ * PR-H P2-2 (audit C5, cloud-pull rollback gap): a cloud pull that STARTED before
+ * a privacy reset must not apply its stale result AFTER the reset. This models the
+ * `AppProvider` pull/apply guard — capture the epoch before the pull, discard the
+ * result if a reset landed mid-flight — and asserts the provider is wired to it.
  */
 import { describe, test, assert } from "./harness";
 import { readFileSync } from "node:fs";
@@ -18,6 +23,7 @@ import {
   bumpPrivacyResetEpoch,
   privacyResetEpoch,
   isPersistSuppressed,
+  subscribePrivacyReset,
   __resetPrivacyResetEpochForTest,
 } from "../../lib/privacyResetEpoch";
 import { makeFakeKv, makeEvent } from "./helpers";
@@ -63,6 +69,35 @@ function makeGuardedLm7() {
   };
   return { store, persisted, resetLocal };
 }
+
+describe("PR-H — reset notifies mounted stores (self-heal, PR review P2-1)", () => {
+  test("a subscribed store's resetLocal runs on the reset bump; unsubscribe stops it", () => {
+    __resetPrivacyResetEpochForTest();
+    let calls = 0;
+    const unsubscribe = subscribePrivacyReset(() => {
+      calls += 1;
+    });
+    bumpPrivacyResetEpoch();
+    assert(calls === 1, "mounted store is notified to clear its own state on reset");
+    unsubscribe();
+    bumpPrivacyResetEpoch();
+    assert(calls === 1, "after unmount/unsubscribe, no further notifications");
+  });
+
+  test("a mounted SRS-like store clears in-memory + re-acknowledges via the subscription", () => {
+    __resetPrivacyResetEpochForTest();
+    // Model a screen-local useSRS mounted before the reset.
+    let data: Record<string, unknown> = { "card-a": { box: 3 } };
+    let ack = privacyResetEpoch();
+    subscribePrivacyReset(() => {
+      data = {};
+      ack = privacyResetEpoch();
+    });
+    bumpPrivacyResetEpoch(); // reset fires while the store is still mounted
+    assert(Object.keys(data).length === 0, "mounted store's in-memory schedule is cleared");
+    assert(!isPersistSuppressed(ack), "store re-acknowledged → fresh review writes are re-enabled");
+  });
+});
 
 describe("PR-H — stale writes cannot resurrect lm7; fresh activity persists", () => {
   test("after reset, a stale pre-reset write cannot re-create lm7 progress/answers", () => {
@@ -215,6 +250,81 @@ describe("PR-H — stale writers cannot re-create lm_le_events (real repository/
   });
 });
 
+/**
+ * Faithful model of `AppProvider`'s cloud pull/apply guard (P2-2). The real
+ * effect: capture `pullEpoch = privacyResetEpoch()` before `pullFromCloud()`,
+ * then after it resolves, `if (isPersistSuppressed(pullEpoch)) return;` BEFORE any
+ * merge / `updateStoredData` / `pushToCloud`. Side effects are spies here.
+ */
+function simulateCloudPull(sideEffects: {
+  merge: () => void;
+  writeLocal: () => void;
+  push: () => void;
+}) {
+  // Captured immediately before the (async) pull begins.
+  const pullEpoch = privacyResetEpoch();
+  // ...pull resolves here (modeled as already-resolved cloud data)...
+  return {
+    apply() {
+      if (isPersistSuppressed(pullEpoch)) return; // PR-H P2-2 guard
+      sideEffects.merge();
+      sideEffects.writeLocal();
+      sideEffects.push();
+    },
+  };
+}
+
+describe("PR-H — in-flight cloud pull is discarded when a reset lands mid-flight (P2-2)", () => {
+  test("pull under epoch N + reset before it resolves → no merge / write / push", () => {
+    __resetPrivacyResetEpochForTest();
+    let merged = 0;
+    let wroteLocal = 0;
+    let pushed = 0;
+    const pull = simulateCloudPull({
+      merge: () => (merged += 1),
+      writeLocal: () => (wroteLocal += 1),
+      push: () => (pushed += 1),
+    });
+
+    bumpPrivacyResetEpoch(); // the user resets while the pull is in flight
+    pull.apply(); // stale pull now resolves
+
+    assert(merged === 0, "stale pull did not merge cloud into local");
+    assert(wroteLocal === 0, "stale pull did not write local storage (no reset undo)");
+    assert(pushed === 0, "stale pull did not push anything to cloud");
+  });
+
+  test("a pull started AFTER the reset (epoch N+1) applies through the normal path", () => {
+    __resetPrivacyResetEpochForTest();
+    bumpPrivacyResetEpoch(); // reset first
+    let merged = 0;
+    let wroteLocal = 0;
+    let pushed = 0;
+    // Fresh pull captures the post-reset epoch.
+    const pull = simulateCloudPull({
+      merge: () => (merged += 1),
+      writeLocal: () => (wroteLocal += 1),
+      push: () => (pushed += 1),
+    });
+
+    pull.apply(); // resolves with no intervening reset
+
+    assert(merged === 1 && wroteLocal === 1 && pushed === 1, "post-reset pull runs the normal apply path");
+  });
+
+  test("no reset mid-flight → the pull applies normally (guard is inert)", () => {
+    __resetPrivacyResetEpochForTest();
+    let applied = 0;
+    const pull = simulateCloudPull({
+      merge: () => (applied += 1),
+      writeLocal: () => (applied += 1),
+      push: () => (applied += 1),
+    });
+    pull.apply();
+    assert(applied === 3, "with no reset, all apply side effects run");
+  });
+});
+
 describe("PR-H — runtime persisters + provider + UI are wired to the barrier", () => {
   test("useStorage / useSRS / AppProvider / PrivacyDataControls consult the barrier", () => {
     const storage = read("hooks/useStorage.ts");
@@ -226,11 +336,24 @@ describe("PR-H — runtime persisters + provider + UI are wired to the barrier",
     assert(srs.includes("isPersistSuppressed(ackEpoch.current)"), "useSRS.save consults the barrier");
     assert(srs.includes("resetLocal"), "useSRS exposes resetLocal");
 
+    assert(storage.includes("subscribePrivacyReset(resetLocal)"), "useStorage self-heals on reset");
+    assert(srs.includes("subscribePrivacyReset(resetLocal)"), "useSRS self-heals on reset (Practice tab)");
+
     const provider = read("providers/AppProvider.tsx");
-    assert(provider.includes("bumpPrivacyResetEpoch()"), "provider engages the barrier");
+    assert(provider.includes("bumpPrivacyResetEpoch()"), "provider engages the barrier + notifies stores");
     assert(provider.includes("resetAllLocalPrivacyData()"), "provider clears the storage inventory");
-    assert(provider.includes("storageHook.resetLocal()"), "provider clears live in-memory state");
     assert(provider.includes("resetLocalData"), "provider exposes resetLocalData");
+
+    // PR-H P2-2: the pull effect must capture the epoch BEFORE the pull and
+    // discard the result if a reset landed mid-flight, BEFORE applying it.
+    const capture = provider.indexOf("const pullEpoch = privacyResetEpoch()");
+    const pull = provider.indexOf("await pullFromCloud()");
+    const guard = provider.indexOf("isPersistSuppressed(pullEpoch)");
+    const writeLocal = provider.indexOf("s.updateStoredData(");
+    assert(capture !== -1 && pull !== -1 && guard !== -1 && writeLocal !== -1, "pull effect has capture + guard + apply");
+    assert(capture < pull, "pull epoch is captured BEFORE the cloud pull starts");
+    assert(guard > pull, "the reset guard runs AFTER the pull resolves");
+    assert(guard < writeLocal, "the reset guard runs BEFORE local storage is written");
 
     const ui = read("components/learning-engine/PrivacyDataControls.tsx");
     assert(ui.includes("resetLocalData"), "PrivacyDataControls routes reset through the provider");

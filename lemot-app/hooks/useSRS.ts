@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { kvStorage } from "@/lib/storage";
 import { loadOrQuarantine, isPlainObject } from "@/lib/safeStorage";
-import { privacyResetEpoch, isPersistSuppressed } from "@/lib/privacyResetEpoch";
+import {
+  privacyResetEpoch,
+  isPersistSuppressed,
+  subscribePrivacyReset,
+} from "@/lib/privacyResetEpoch";
 
 /**
  * Simple Leitner-style SRS (Spaced Repetition System)
@@ -107,6 +111,12 @@ export function useSRS() {
     corruptUnrecovered.current = false;
     ackEpoch.current = privacyResetEpoch();
   }, []);
+
+  // PR-H: self-heal on any local-privacy reset. `useSRS` is screen-local (Practice
+  // tab), so a reset from the privacy controls reaches it via this subscription
+  // rather than a provider ref — it clears the deleted schedule and re-enables
+  // fresh review writes without waiting for the tab to unmount/remount.
+  useEffect(() => subscribePrivacyReset(resetLocal), [resetLocal]);
 
   // Mark card as known — move up one box
   const markKnown = useCallback(
