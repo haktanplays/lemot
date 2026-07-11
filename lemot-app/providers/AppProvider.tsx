@@ -5,6 +5,12 @@ import { useErrors } from "@/hooks/useErrors";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useProgressSync } from "@/hooks/useProgressSync";
+import { resetAllLocalPrivacyData } from "@/content/learning-engine/local-privacy-inventory";
+import {
+  bumpPrivacyResetEpoch,
+  privacyResetEpoch,
+  isPersistSuppressed,
+} from "@/lib/privacyResetEpoch";
 import type { ErrorEntry, DailyReview } from "@/lib/types";
 
 interface AppContextType {
@@ -36,6 +42,15 @@ interface AppContextType {
   // Speech
   say: (text: string) => void;
   stopSpeech: () => void;
+
+  /**
+   * PR-H: perform a COMPLETE device-local privacy reset. Engages the runtime
+   * write-barrier (so stale in-memory state can't re-persist), clears the full
+   * local storage inventory (progress, SRS, learning-engine keys, telemetry,
+   * privacy state, and every `__corrupt` blob), then clears this provider's live
+   * in-memory progress state. Local-only — it does NOT delete cloud data (C1).
+   */
+  resetLocalData: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -109,7 +124,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (!user || !storageHook.loaded || hasPulled.current) return;
 
     (async () => {
+      // PR-H P2-2: snapshot the reset epoch BEFORE the pull starts. If a local
+      // privacy reset lands while this pull is in flight, its result is stale
+      // pre-reset cloud data — applying it would silently undo the reset (C5).
+      const pullEpoch = privacyResetEpoch();
+
       const cloud = await pullFromCloud();
+
+      // A reset happened mid-flight → discard this pull ENTIRELY: no merge, no
+      // updateStoredData, no push. `hasPulled` is left unset so a genuinely new
+      // pull started after the reset (captured under the new epoch) still runs
+      // the normal path. This does not change the merge algorithm below.
+      if (isPersistSuppressed(pullEpoch)) {
+        return;
+      }
 
       if (!cloud) {
         hasPulled.current = true;
@@ -186,6 +214,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     [storageHook.updateDailyReview, user, pushToCloud]
   );
 
+  // PR-H: complete device-local privacy reset.
+  //  1) bump the reset epoch — this SYNCHRONOUSLY notifies every mounted runtime
+  //     store (useStorage here, a screen-local useSRS, etc.) to clear its
+  //     in-memory state and re-acknowledge the new epoch, so nothing keeps stale
+  //     data and fresh post-reset writes resume without a restart; any store that
+  //     is not subscribed stays write-suppressed until it remounts;
+  //  2) clear the full on-device inventory (progress, SRS, learning-engine keys,
+  //     telemetry, privacy state, and every __corrupt quarantine blob).
+  // Cloud rows are intentionally untouched (audit C1, future work).
+  const resetLocalData = useCallback(async () => {
+    bumpPrivacyResetEpoch();
+    await resetAllLocalPrivacyData();
+  }, []);
+
   // Wrap logErr to also push error to cloud
   const logErrWithSync = useCallback(
     (word: string, section: string, given: string, correct: string, lessonId: number) => {
@@ -216,6 +258,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     // Speech
     say,
     stopSpeech,
+
+    // Privacy
+    resetLocalData,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

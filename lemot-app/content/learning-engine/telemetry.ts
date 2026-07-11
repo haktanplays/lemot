@@ -18,6 +18,7 @@
  *    real kvStorage otherwise, own `lm_le_telemetry` namespace key.
  */
 import type { KvLike } from "./repository/local";
+import { privacyResetEpoch, isPersistSuppressed } from "../../lib/privacyResetEpoch";
 
 /** Bump when the event shape changes. Every event carries it. */
 export const TELEMETRY_SCHEMA_VERSION = 1;
@@ -157,6 +158,14 @@ export function createTelemetryEvent(
 export class TelemetryStore {
   private readonly injectedStore?: KvLike;
   private defaultStorePromise?: Promise<KvLike>;
+  /**
+   * PR-H reset write-barrier: epoch captured at construction. After an explicit
+   * local-privacy reset, a stale pre-reset store's `appendEvent` is suppressed so
+   * it can't re-create the cleared `lm_le_telemetry` key. (There is currently no
+   * production `appendEvent` caller — this is defense-in-depth for when telemetry
+   * is wired.) Reads are never suppressed.
+   */
+  private readonly ackEpoch = privacyResetEpoch();
 
   constructor(store?: KvLike) {
     this.injectedStore = store;
@@ -186,6 +195,7 @@ export class TelemetryStore {
 
   /** Append one event; duplicate eventIds are ignored (idempotent). */
   async appendEvent(event: TelemetryEvent): Promise<void> {
+    if (isPersistSuppressed(this.ackEpoch)) return; // PR-H reset write-barrier
     const store = await this.store();
     const events = await this.readRaw();
     if (events.some((e) => e.eventId === event.eventId)) return;

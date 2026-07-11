@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { kvStorage } from "@/lib/storage";
 import { loadOrQuarantine, isPlainObject } from "@/lib/safeStorage";
+import {
+  privacyResetEpoch,
+  isPersistSuppressed,
+  subscribePrivacyReset,
+} from "@/lib/privacyResetEpoch";
 
 /**
  * Simple Leitner-style SRS (Spaced Repetition System)
@@ -49,6 +54,11 @@ export function useSRS() {
   // empty save must NOT overwrite the original key — recovery only happens once
   // there is at least one real card to persist (see save()).
   const corruptUnrecovered = useRef(false);
+  // PR-H: reset epoch this hook has acknowledged. A local privacy reset bumps the
+  // epoch; until this store re-acknowledges (resetLocal, or a remount that
+  // re-captures the epoch against empty storage), `save` is suppressed so stale
+  // in-memory cards can never re-create the cleared `lm7_srs` key.
+  const ackEpoch = useRef(privacyResetEpoch());
 
   // Load
   useEffect(() => {
@@ -80,6 +90,9 @@ export function useSRS() {
 
   // Save
   const save = useCallback(async (newData: SRSData) => {
+    // PR-H: an unacknowledged reset happened → these cards are stale pre-reset
+    // state; do not write them back over the cleared key.
+    if (isPersistSuppressed(ackEpoch.current)) return;
     const meaningful = Object.keys(newData).length > 0;
     // Do not let an empty save clobber a still-corrupt original key.
     if (corruptUnrecovered.current && !meaningful) return;
@@ -90,6 +103,20 @@ export function useSRS() {
       console.warn("[SRS] Save failed:", e);
     }
   }, []);
+
+  // PR-H: clear in-memory SRS cards and acknowledge the current reset epoch, so
+  // stale cards can't be written back and fresh post-reset review persists clean.
+  const resetLocal = useCallback(() => {
+    setData({});
+    corruptUnrecovered.current = false;
+    ackEpoch.current = privacyResetEpoch();
+  }, []);
+
+  // PR-H: self-heal on any local-privacy reset. `useSRS` is screen-local (Practice
+  // tab), so a reset from the privacy controls reaches it via this subscription
+  // rather than a provider ref — it clears the deleted schedule and re-enables
+  // fresh review writes without waiting for the tab to unmount/remount.
+  useEffect(() => subscribePrivacyReset(resetLocal), [resetLocal]);
 
   // Mark card as known — move up one box
   const markKnown = useCallback(
@@ -207,5 +234,6 @@ export function useSRS() {
     markLearning,
     getDueCards,
     getStats,
+    resetLocal,
   };
 }
