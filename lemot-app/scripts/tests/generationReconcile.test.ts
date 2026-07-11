@@ -11,7 +11,10 @@
  * chooses whether the unchanged pull/merge path runs.
  */
 import { describe, test, assert } from "./harness";
-import { decideGenerationReconcile } from "../../lib/generationReconcile";
+import {
+  decideGenerationReconcile,
+  resolveGenerationReconcile,
+} from "../../lib/generationReconcile";
 
 describe("PR-I1 — reconcile decision matrix", () => {
   test("missing/failed/malformed server generation (null) → fail closed", () => {
@@ -143,5 +146,72 @@ describe("PR-I1 — fresh-install acknowledge CONTINUES into the normal pull", (
     });
     assert(calls.join(",") === "block", "fail closed performs no sync side effects");
     assert(!state.hasPulled && state.applied === null, "no pull state, no applied data");
+  });
+});
+
+describe("PR-I1 — fail-closed resolver: fetch first, inventory only when needed", () => {
+  function harness(server: number | null | "throws", local: number, hasData: boolean | "throws") {
+    let inventoryCalls = 0;
+    const deps = {
+      fetchServerGeneration: async () => {
+        if (server === "throws") throw new Error("fetch blew up");
+        return server;
+      },
+      localGeneration: () => local,
+      hasLearnerData: async () => {
+        inventoryCalls += 1;
+        if (hasData === "throws") throw new Error("inventory read blew up");
+        return hasData;
+      },
+    };
+    return { deps, inventoryCalls: () => inventoryCalls };
+  }
+
+  test("server fetch null → fail closed, learner inventory NOT called", async () => {
+    const h = harness(null, 0, true);
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(d.kind === "fail_closed" && d.reason === "fetch_failed", "null fetch fails closed");
+    assert(h.inventoryCalls() === 0, "inventory never scanned on a failed fetch");
+  });
+
+  test("server fetch THROWS → fail closed, inventory NOT called", async () => {
+    const h = harness("throws", 0, true);
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(d.kind === "fail_closed" && d.reason === "fetch_failed", "thrown fetch fails closed");
+    assert(h.inventoryCalls() === 0, "inventory never scanned");
+  });
+
+  test("server == local → proceed, inventory NOT called", async () => {
+    const h = harness(2, 2, true);
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(d.kind === "proceed", "equal generations proceed");
+    assert(h.inventoryCalls() === 0, "the empty-vs-recovery split is not needed");
+  });
+
+  test("server < local → fail closed, inventory NOT called", async () => {
+    const h = harness(1, 3, true);
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(d.kind === "fail_closed" && d.reason === "local_ahead", "local-ahead fails closed");
+    assert(h.inventoryCalls() === 0, "inventory never scanned");
+  });
+
+  test("server > local → inventory checked; empty/nonempty behavior unchanged", async () => {
+    const empty = harness(1, 0, false);
+    const de = await resolveGenerationReconcile(empty.deps);
+    assert(de.kind === "acknowledge_and_pull" && de.generation === 1, "empty device → acknowledge_and_pull");
+    assert(empty.inventoryCalls() === 1, "inventory scanned exactly once");
+
+    const full = harness(1, 0, true);
+    const df = await resolveGenerationReconcile(full.deps);
+    assert(df.kind === "recovery" && df.targetGeneration === 1, "nonempty device → recovery");
+  });
+
+  test("inventory read THROWS → fail closed (no pull/merge/write/push), exception contained", async () => {
+    const h = harness(1, 0, "throws");
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(
+      d.kind === "fail_closed" && d.reason === "inventory_unreadable",
+      "an unreadable inventory fails closed instead of escaping the effect",
+    );
   });
 });

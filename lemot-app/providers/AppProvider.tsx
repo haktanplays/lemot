@@ -49,7 +49,8 @@ import {
 import { runRemoteEraseConfirm } from "@/lib/remoteEraseConfirm";
 import { handleGenerationMismatch } from "@/lib/generationMismatch";
 import { makeOperationId } from "@/lib/operationId";
-import { decideGenerationReconcile } from "@/lib/generationReconcile";
+import { resolveGenerationReconcile } from "@/lib/generationReconcile";
+import { createSingleFlight, type SingleFlight } from "@/lib/singleFlight";
 import type { ErrorEntry, DailyReview } from "@/lib/types";
 
 interface AppContextType {
@@ -290,14 +291,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     (async () => {
       // PR-I1 (durable delete, multi-device) reconcile — NO automatic wipe. The
-      // decision matrix is pure ({@link decideGenerationReconcile}); this effect
-      // only executes it. A missing/malformed sync-state row surfaces as
-      // serverGeneration null → fail closed (never treated as baseline 0, never
-      // client-created).
-      const decision = decideGenerationReconcile({
-        serverGeneration: await fetchSyncGeneration(),
-        localGeneration: syncGeneration(),
-        hasLearnerData: await hasLocalLearnerData(),
+      // fail-closed order is pure ({@link resolveGenerationReconcile}): server
+      // generation is fetched FIRST (null/throw → fail closed with the learner
+      // inventory never scanned); the inventory is read ONLY when server > local,
+      // and an inventory read failure also fails closed without escaping this
+      // effect. A missing/malformed sync-state row surfaces as null (never
+      // baseline 0, never client-created).
+      const decision = await resolveGenerationReconcile({
+        fetchServerGeneration: fetchSyncGeneration,
+        localGeneration: syncGeneration,
+        hasLearnerData: hasLocalLearnerData,
       });
       if (decision.kind === "fail_closed") {
         blockSyncGeneration(); // no pull, no merge, no local write, no push
@@ -444,6 +447,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     await resetAllLocalPrivacyData();
   }, []);
 
+  // PR-I1: single-flight locks for the two destructive privacy operations. A
+  // second call while one is active JOINS the in-flight promise — no second op
+  // id, arm, RPC, reset, or finalization sequence can start. The lock is taken
+  // synchronously before any await/marker mutation; UI busy state is UX only.
+  const deleteFlightRef = useRef<SingleFlight<DeleteSyncedStatus> | null>(null);
+  if (deleteFlightRef.current === null) {
+    deleteFlightRef.current = createSingleFlight<DeleteSyncedStatus>();
+  }
+  const confirmFlightRef = useRef<SingleFlight<void> | null>(null);
+  if (confirmFlightRef.current === null) {
+    confirmFlightRef.current = createSingleFlight<void>();
+  }
+
   // PR-I1 (audit C1): delete synced learning data. Runs the approved state
   // machine — arm coordinator (close→persist op-id→drain) → authenticated delete
   // RPC (server bumps generation, then deletes) → PR-H local reset → acknowledge
@@ -451,41 +467,57 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // `resetLocalData` for local cleanup; never signs out. Requires a session
   // (ownership resolves from auth.uid() server-side). A retry reuses the durable
   // op-id so the server replays idempotently (no double generation bump).
-  const deleteSyncedData = useCallback(async (): Promise<DeleteSyncedStatus> => {
-    if (!user) return "cloud_failed";
-    // A pending deletion owned by ANOTHER user — or one whose marker is corrupt
-    // (unknown owner) — must never be executed under this user: the original
-    // account must complete its own pending deletion. Fail closed.
-    if (cloudEraseState() === "pending" && cloudErasePendingUserId() !== user.id) {
-      return "cloud_failed";
-    }
-    // Reuse a pending op id (crash/retry) so the server replays idempotently, and
-    // RESUME from the durable phase so no completed destructive step re-runs. A
-    // NEW id is a validated RFC4122 UUIDv4 (the server column is `uuid`).
-    const opId = cloudErasePendingOpId() ?? (await makeOperationId());
-    const phase = cloudErasePendingPhase();
-    const resume = phase
-      ? {
-          phase,
-          serverGeneration: cloudErasePendingServerGeneration() ?? undefined,
-        }
-      : null;
-    const uidNow = user.id;
-    const status = await runDeleteSyncedData({
-      resume,
-      armErase: () => armCloudErase({ opId, userId: uidNow }),
-      deleteCloud: () => deleteSyncedRows(opId),
-      markCloudDeleted: (gen) =>
-        advanceCloudErasePhase({ phase: "cloud_deleted", serverGeneration: gen }),
-      resetLocal: resetLocalData,
-      markLocalResetDone: () =>
-        advanceCloudErasePhase({ phase: "local_reset_done" }),
-      acknowledgeGeneration: (gen) =>
-        setSyncGeneration({ userId: uidNow, generation: gen }),
-      finishErase: () => finishCloudErase(),
+  // SINGLE-FLIGHT: concurrent calls join the same operation.
+  const deleteSyncedData = useCallback((): Promise<DeleteSyncedStatus> => {
+    return deleteFlightRef.current!.run(async () => {
+      if (!user) return "cloud_failed";
+      // A pending deletion owned by ANOTHER user — or one whose marker is corrupt
+      // (unknown owner) — must never be executed under this user: the original
+      // account must complete its own pending deletion. Fail closed.
+      if (cloudEraseState() === "pending" && cloudErasePendingUserId() !== user.id) {
+        return "cloud_failed";
+      }
+      // Reuse a pending op id (crash/retry) so the server replays idempotently,
+      // and RESUME from the durable phase so no completed destructive step
+      // re-runs. A NEW id is a validated RFC4122 UUIDv4 (the server column is
+      // `uuid`). The state machine passes the operation identity to every phase
+      // advance / marker clear, so a stale task can never touch another
+      // operation's marker.
+      const opId = cloudErasePendingOpId() ?? (await makeOperationId());
+      const phase = cloudErasePendingPhase();
+      const resume = phase
+        ? {
+            phase,
+            serverGeneration: cloudErasePendingServerGeneration() ?? undefined,
+          }
+        : null;
+      const uidNow = user.id;
+      const status = await runDeleteSyncedData({
+        resume,
+        armErase: () => armCloudErase({ opId, userId: uidNow }),
+        deleteCloud: () => deleteSyncedRows(opId),
+        markCloudDeleted: (gen) =>
+          advanceCloudErasePhase({
+            phase: "cloud_deleted",
+            serverGeneration: gen,
+            expectedUserId: uidNow,
+            expectedOperationId: opId,
+          }),
+        resetLocal: resetLocalData,
+        markLocalResetDone: () =>
+          advanceCloudErasePhase({
+            phase: "local_reset_done",
+            expectedUserId: uidNow,
+            expectedOperationId: opId,
+          }),
+        acknowledgeGeneration: (gen) =>
+          setSyncGeneration({ userId: uidNow, generation: gen }),
+        finishErase: () =>
+          finishCloudErase(undefined, { userId: uidNow, operationId: opId }),
+      });
+      refreshControlState();
+      return status;
     });
-    refreshControlState();
-    return status;
   }, [user, deleteSyncedRows, resetLocalData, refreshControlState]);
 
   // PR-I1: explicit second-device recovery. Owner-verified, then the current
@@ -494,23 +526,29 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // acknowledge the FRESH generation → clear the marker → reopen. A fetch
   // failure leaves recovery fully pending (no reset, no acknowledgement, no
   // clear, no reopen). No automatic remote wipe ever happens without this.
-  const confirmRemoteErase = useCallback(async () => {
-    if (!user) return;
-    const uidNow = user.id;
-    const outcome = await runRemoteEraseConfirm({
-      recovery: remoteEraseRecovery(),
-      currentUserId: uidNow,
-      fetchServerGeneration: fetchSyncGeneration,
-      resetLocal: resetLocalData,
-      acknowledgeGeneration: (gen) =>
-        setSyncGeneration({ userId: uidNow, generation: gen }),
-      clearRecovery: () => clearRemoteEraseRecovery(),
+  // SINGLE-FLIGHT: concurrent confirmations join the one operation, so fetch /
+  // reset / acknowledgement / clear each run once and a delayed second
+  // invocation can never reset learner data after recovery has been cleared
+  // (a fresh call after completion finds no owned marker → no-op).
+  const confirmRemoteErase = useCallback((): Promise<void> => {
+    return confirmFlightRef.current!.run(async () => {
+      if (!user) return;
+      const uidNow = user.id;
+      const outcome = await runRemoteEraseConfirm({
+        recovery: remoteEraseRecovery(),
+        currentUserId: uidNow,
+        fetchServerGeneration: fetchSyncGeneration,
+        resetLocal: resetLocalData,
+        acknowledgeGeneration: (gen) =>
+          setSyncGeneration({ userId: uidNow, generation: gen }),
+        clearRecovery: () => clearRemoteEraseRecovery(),
+      });
+      refreshControlState();
+      if (outcome === "done") {
+        hasPulled.current = false;
+        setSyncEpoch((n) => n + 1); // re-run reconcile/pull now that sync is unblocked
+      }
     });
-    refreshControlState();
-    if (outcome === "done") {
-      hasPulled.current = false;
-      setSyncEpoch((n) => n + 1); // re-run reconcile/pull now that sync is unblocked
-    }
   }, [user, fetchSyncGeneration, resetLocalData, refreshControlState]);
 
   // Stamp the write-RPC generation-mismatch handler (see useProgressSync wiring):

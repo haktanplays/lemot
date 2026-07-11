@@ -195,10 +195,24 @@ export function cloudErasePendingServerGeneration(): number | null {
 export async function advanceCloudErasePhase(args: {
   phase: "cloud_deleted" | "local_reset_done";
   serverGeneration?: number;
+  /** When given, the advance is refused unless the pending erase matches. */
+  expectedUserId?: string;
+  expectedOperationId?: string;
   store?: CloudEraseKv;
 }): Promise<void> {
   if (pendingUserId === null || pendingOpId === null) {
     throw new Error("no actionable pending erase to advance");
+  }
+  // Operation-identity protection: a stale task must never advance ANOTHER
+  // operation's marker.
+  if (args.expectedUserId !== undefined && args.expectedUserId !== pendingUserId) {
+    throw new Error("pending erase belongs to a different user; refusing to advance");
+  }
+  if (
+    args.expectedOperationId !== undefined &&
+    args.expectedOperationId !== pendingOpId
+  ) {
+    throw new Error("pending erase is a different operation; refusing to advance");
   }
   const generation = args.serverGeneration ?? pendingServerGeneration;
   if (typeof generation !== "number") {
@@ -317,7 +331,14 @@ export async function hydrateCloudEraseGuard(
   return state;
 }
 
-export type ArmResult = "armed" | "persist_failed" | "drain_failed";
+export type ArmResult =
+  | "armed"
+  | "persist_failed"
+  | "drain_failed"
+  /** Another arm is mid-flight, or the marker's presence is not yet proven. */
+  | "busy"
+  /** A DIFFERENT operation's marker is active — never overwritten/regressed. */
+  | "conflict";
 
 /**
  * Begin an erase, in the required order:
@@ -336,6 +357,22 @@ export async function armCloudErase(opts: {
   store?: CloudEraseKv;
   drainTimeoutMs?: number;
 }): Promise<ArmResult> {
+  // 0) Operation-identity protection (defense-in-depth under the caller's
+  // single-flight lock): NEVER silently replace or regress a different active
+  // operation's marker. All checks are synchronous — no state is mutated on a
+  // refused arm.
+  if (state === "arming") return "busy"; // another arm is mid-persist
+  if (state === "unknown") return "busy"; // marker presence not yet proven
+  if (state === "pending") {
+    const sameOwnedOp =
+      pendingUserId === opts.userId && pendingOpId === opts.opId;
+    // Only the SAME owned operation, still at phase `armed`, may re-arm (the
+    // in-session retry path). A different op/user — or an advanced phase, which
+    // re-arming would REGRESS — is a conflict.
+    if (!sameOwnedOp || pendingPhase !== "armed") return "conflict";
+  }
+  const priorState = state; // restored if the marker persist fails
+
   // 1) Close admission synchronously (before any await) so no new sync can start.
   state = "arming";
   generation += 1;
@@ -351,7 +388,10 @@ export async function armCloudErase(opts: {
     const kv = opts.store ?? (await loadKv());
     await kv.setItem(LM_CLOUD_ERASE_PENDING_KEY, JSON.stringify(record));
   } catch {
-    state = "ready"; // reopen admission — nothing persisted, nothing deleted
+    // Restore the PRIOR state: a fresh arm reopens (nothing persisted, nothing
+    // deleted); a same-op RETRY arm stays pending — its durable marker is still
+    // on disk and admission must not reopen under it.
+    state = priorState;
     return "persist_failed";
   }
   pendingOpId = opts.opId;
@@ -372,7 +412,19 @@ export async function armCloudErase(opts: {
  * with sync still blocked (the caller reports the op as not fully complete).
  * Idempotent.
  */
-export async function finishCloudErase(store?: CloudEraseKv): Promise<void> {
+export async function finishCloudErase(
+  store?: CloudEraseKv,
+  /** When given, the clear is refused unless the pending erase matches. */
+  expected?: { userId: string; operationId: string },
+): Promise<void> {
+  if (
+    expected &&
+    (pendingUserId !== expected.userId || pendingOpId !== expected.operationId)
+  ) {
+    // A stale task must never clear ANOTHER operation's marker (or a marker that
+    // is already gone) — the active operation finishes itself.
+    throw new Error("pending erase does not match; refusing to clear the marker");
+  }
   const kv = store ?? (await loadKv());
   await kv.removeItem(LM_CLOUD_ERASE_PENDING_KEY);
   state = "ready";

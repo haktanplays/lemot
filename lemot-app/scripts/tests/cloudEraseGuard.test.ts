@@ -265,6 +265,135 @@ describe("PR-I1 — erase generation + finish", () => {
   });
 });
 
+describe("PR-I1 — arm never replaces another operation's marker", () => {
+  test("operation B cannot replace operation A's pending marker (conflict, marker intact)", async () => {
+    __resetCloudEraseGuardForTest();
+    const kv = makeFakeKv();
+    await hydrateCloudEraseGuard(kv);
+    await armCloudErase({ userId: "user-a", opId: "op-A", store: kv, drainTimeoutMs: 10_000 });
+
+    const asB = await armCloudErase({ userId: "user-b", opId: "op-B", store: kv, drainTimeoutMs: 10_000 });
+    assert(asB === "conflict", "a different user's arm is refused");
+    const otherOp = await armCloudErase({ userId: "user-a", opId: "op-C", store: kv, drainTimeoutMs: 10_000 });
+    assert(otherOp === "conflict", "a different operation id is refused even for the same user");
+    assert(cloudErasePendingOpId() === "op-A", "operation A's marker is untouched");
+    assert(cloudErasePendingUserId() === "user-a", "operation A's owner is untouched");
+  });
+
+  test("arm while another arm is mid-persist → busy (no marker write)", async () => {
+    __resetCloudEraseGuardForTest();
+    const kv = makeFakeKv();
+    await hydrateCloudEraseGuard(kv);
+    let releasePersist!: () => void;
+    const gatedStore: CloudEraseKv = {
+      getItem: (k) => kv.getItem(k),
+      setItem: async (k, v) => {
+        await new Promise<void>((r) => {
+          releasePersist = r;
+        });
+        kv.setItem(k, v);
+      },
+      removeItem: (k) => kv.removeItem(k),
+    };
+    const armA = armCloudErase({ userId: "user-a", opId: "op-A", store: gatedStore, drainTimeoutMs: 10_000 });
+    const armB = await armCloudErase({ userId: "user-a", opId: "op-B", store: kv, drainTimeoutMs: 10_000 });
+    assert(armB === "busy", "an arm during another's persist window is refused");
+    assert(!kv.map.has(LM_CLOUD_ERASE_PENDING_KEY), "the busy arm wrote nothing");
+    releasePersist();
+    assert((await armA) === "armed", "the original arm completes normally");
+    assert(cloudErasePendingOpId() === "op-A", "only operation A's marker exists");
+  });
+
+  test("re-arm cannot REGRESS an advanced phase; same-op restart retry at `armed` remains supported", async () => {
+    __resetCloudEraseGuardForTest();
+    const kv = makeFakeKv();
+    await hydrateCloudEraseGuard(kv);
+    await armCloudErase({ userId: "user-a", opId: "op-A", store: kv, drainTimeoutMs: 10_000 });
+
+    // Same-op retry at phase `armed` is the supported path.
+    const retry = await armCloudErase({ userId: "user-a", opId: "op-A", store: kv, drainTimeoutMs: 10_000 });
+    assert(retry === "armed", "same owned operation may re-arm while still at phase armed");
+
+    // After the phase advanced, even the SAME op must not re-arm (would regress).
+    await advanceCloudErasePhase({ phase: "cloud_deleted", serverGeneration: 3, store: kv });
+    const regress = await armCloudErase({ userId: "user-a", opId: "op-A", store: kv, drainTimeoutMs: 10_000 });
+    assert(regress === "conflict", "re-arming an advanced operation is refused");
+    assert(cloudErasePendingPhase() === "cloud_deleted", "the durable phase is not regressed");
+  });
+
+  test("a retry-arm persist failure keeps the PENDING state (marker still on disk)", async () => {
+    __resetCloudEraseGuardForTest();
+    const kv = makeFakeKv();
+    await hydrateCloudEraseGuard(kv);
+    await armCloudErase({ userId: "user-a", opId: "op-A", store: kv, drainTimeoutMs: 10_000 });
+    const failing: CloudEraseKv = {
+      getItem: (k) => kv.getItem(k),
+      setItem: () => {
+        throw new Error("persist failed");
+      },
+      removeItem: (k) => kv.removeItem(k),
+    };
+    const r = await armCloudErase({ userId: "user-a", opId: "op-A", store: failing, drainTimeoutMs: 10_000 });
+    assert(r === "persist_failed", "retry-arm persist failure reported");
+    assert(cloudEraseState() === "pending", "admission stays CLOSED — the durable marker is still on disk");
+    assert(kv.map.has(LM_CLOUD_ERASE_PENDING_KEY), "operation A's marker survives");
+  });
+});
+
+describe("PR-I1 — phase advance / finish are operation-identity protected", () => {
+  test("a stale task cannot advance another operation's phase", async () => {
+    __resetCloudEraseGuardForTest();
+    const kv = makeFakeKv();
+    await hydrateCloudEraseGuard(kv);
+    await armCloudErase({ userId: "user-a", opId: "op-A", store: kv, drainTimeoutMs: 10_000 });
+
+    for (const expected of [
+      { expectedUserId: "user-b", expectedOperationId: "op-A" }, // wrong user
+      { expectedUserId: "user-a", expectedOperationId: "op-STALE" }, // wrong op
+    ]) {
+      let threw = false;
+      try {
+        await advanceCloudErasePhase({ phase: "cloud_deleted", serverGeneration: 9, store: kv, ...expected });
+      } catch {
+        threw = true;
+      }
+      assert(threw, "mismatched identity is refused");
+    }
+    assert(cloudErasePendingPhase() === "armed", "the phase was not advanced by the stale task");
+
+    // The owning operation advances normally with its identity attached.
+    await advanceCloudErasePhase({
+      phase: "cloud_deleted",
+      serverGeneration: 2,
+      expectedUserId: "user-a",
+      expectedOperationId: "op-A",
+      store: kv,
+    });
+    assert(cloudErasePendingPhase() === "cloud_deleted", "the owner's advance succeeds");
+  });
+
+  test("a stale task cannot clear another operation's marker", async () => {
+    __resetCloudEraseGuardForTest();
+    const kv = makeFakeKv();
+    await hydrateCloudEraseGuard(kv);
+    await armCloudErase({ userId: "user-a", opId: "op-A", store: kv, drainTimeoutMs: 10_000 });
+
+    let threw = false;
+    try {
+      await finishCloudErase(kv, { userId: "user-a", operationId: "op-STALE" });
+    } catch {
+      threw = true;
+    }
+    assert(threw, "a mismatched finish is refused");
+    assert(kv.map.has(LM_CLOUD_ERASE_PENDING_KEY), "operation A's marker survives the stale finish");
+    assert(!isCloudSyncAdmitted(), "admission stays closed");
+
+    await finishCloudErase(kv, { userId: "user-a", operationId: "op-A" });
+    assert(!kv.map.has(LM_CLOUD_ERASE_PENDING_KEY), "the owning operation clears its own marker");
+    assert(isCloudSyncAdmitted(), "admission reopens after the legitimate finish");
+  });
+});
+
 describe("PR-I1 — coordinator test-state cleanup", () => {
   test("re-hydrate a clean baseline so later suites see an unblocked gate", async () => {
     __resetCloudEraseGuardForTest();

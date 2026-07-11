@@ -22,7 +22,10 @@
  */
 
 export type GenerationReconcileDecision =
-  | { kind: "fail_closed"; reason: "fetch_failed" | "local_ahead" }
+  | {
+      kind: "fail_closed";
+      reason: "fetch_failed" | "local_ahead" | "inventory_unreadable";
+    }
   | { kind: "recovery"; targetGeneration: number }
   | { kind: "acknowledge_and_pull"; generation: number }
   | { kind: "proceed" };
@@ -48,4 +51,44 @@ export function decideGenerationReconcile(args: {
     return { kind: "fail_closed", reason: "local_ahead" }; // never silently downgrade
   }
   return { kind: "proceed" };
+}
+
+/**
+ * Fail-closed reconcile resolver — the exact startup order:
+ *   1. fetch the server generation FIRST; null/throw → fail closed immediately,
+ *      WITHOUT touching the local learner inventory;
+ *   2. compare server vs local; equal or local-ahead never needs the inventory;
+ *   3. scan the learner inventory ONLY when server > local (the only case where
+ *      the empty-vs-recovery split matters); a read failure there also fails
+ *      closed — no pull, no merge, no local write, no push — and the exception
+ *      never escapes to the caller.
+ */
+export async function resolveGenerationReconcile(deps: {
+  fetchServerGeneration: () => Promise<number | null>;
+  localGeneration: () => number;
+  hasLearnerData: () => Promise<boolean>;
+}): Promise<GenerationReconcileDecision> {
+  let server: number | null;
+  try {
+    server = await deps.fetchServerGeneration();
+  } catch {
+    server = null;
+  }
+  if (server === null) {
+    return { kind: "fail_closed", reason: "fetch_failed" }; // inventory NOT scanned
+  }
+  const local = deps.localGeneration();
+  let hasData = false;
+  if (server > local) {
+    try {
+      hasData = await deps.hasLearnerData();
+    } catch {
+      return { kind: "fail_closed", reason: "inventory_unreadable" };
+    }
+  }
+  return decideGenerationReconcile({
+    serverGeneration: server,
+    localGeneration: local,
+    hasLearnerData: hasData,
+  });
 }

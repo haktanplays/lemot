@@ -39,7 +39,7 @@
  *                              finalizes (no re-reset once `local_reset_done`
  *                              was durably recorded).
  */
-import type { PendingErasePhase } from "./cloudEraseGuard";
+import type { ArmResult, PendingErasePhase } from "./cloudEraseGuard";
 
 export type DeleteSyncedStatus =
   | "success"
@@ -53,8 +53,12 @@ export interface DeleteSyncedDeps {
    * Phases past `armed` must carry the confirmed server generation.
    */
   resume: { phase: PendingErasePhase; serverGeneration?: number } | null;
-  /** Arm: close admission, persist op-id marker (phase armed), drain writes. */
-  armErase: () => Promise<"armed" | "persist_failed" | "drain_failed">;
+  /**
+   * Arm: close admission, persist op-id marker (phase armed), drain writes.
+   * Any non-"armed" outcome — incl. "busy" (another arm mid-flight) and
+   * "conflict" (a DIFFERENT operation's marker is active) — aborts before the RPC.
+   */
+  armErase: () => Promise<ArmResult>;
   /** Authenticated cloud deletion (RPC). Resolves `{ ok, generation? }`. */
   deleteCloud: () => Promise<{ ok: boolean; generation?: number }>;
   /** Durably record `cloud_deleted` + the confirmed server generation. */
@@ -77,13 +81,13 @@ export async function runDeleteSyncedData(
 
   // ── fresh | armed: arm (idempotent re-arm on retry) → RPC → record cloud_deleted
   if (phase === null || phase === "armed") {
-    let arm: "armed" | "persist_failed" | "drain_failed";
+    let arm: ArmResult;
     try {
       arm = await deps.armErase();
     } catch {
       return "cloud_failed";
     }
-    if (arm !== "armed") return "cloud_failed";
+    if (arm !== "armed") return "cloud_failed"; // incl. busy/conflict — no RPC
 
     let cloudOk = false;
     let rpcGeneration: number | undefined;

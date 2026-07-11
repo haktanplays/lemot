@@ -155,10 +155,12 @@ describe("PR-I1 — client wiring", () => {
     assert(provider.includes("hydrateSyncGeneration({ userId: uid })"), "generation hydrated user-bound");
     assert(provider.includes("hydrateRemoteEraseRecovery({ userId: uid })"), "recovery hydrated user-bound");
 
-    // Reconcile: pure decision matrix executed by the effect — no automatic
-    // wipe; fresh-install acknowledgement CONTINUES into the normal pull.
-    assert(provider.includes("decideGenerationReconcile({"), "reconcile runs the pure decision matrix");
-    assert(provider.includes("hasLearnerData: await hasLocalLearnerData()"), "reconcile checks local learner data");
+    // Reconcile: fail-closed pure resolver — server generation fetched FIRST;
+    // the learner inventory is scanned ONLY when server > local; inventory read
+    // failures fail closed inside the resolver; no automatic wipe; fresh-install
+    // acknowledgement CONTINUES into the normal pull.
+    assert(provider.includes("resolveGenerationReconcile({"), "reconcile runs the fail-closed resolver");
+    assert(provider.includes("hasLearnerData: hasLocalLearnerData"), "the resolver receives the inventory scan (called lazily)");
     assert(provider.includes("persistRemoteEraseRecovery({"), "recovery decision → persist recovery marker (no reset)");
     assert(!provider.includes("await resetLocalData();\n        await setSyncGeneration"), "reconcile never auto-resets");
     assert(provider.includes("blockSyncGeneration()"), "fail_closed decision blocks (no pull/merge/write/push)");
@@ -195,6 +197,17 @@ describe("PR-I1 — client wiring", () => {
     // Write-RPC mismatch handoff is stamped with the real deps.
     assert(provider.includes("handleGenerationMismatch({"), "generation-mismatch recovery wired");
     assert(!provider.includes("signOut"), "delete/recovery never sign out");
+
+    // SINGLE-FLIGHT: both destructive operations run through a synchronous lock
+    // (React busy state is UX only), and every phase advance / marker clear
+    // carries the operation identity so a stale task can't touch another op.
+    assert(provider.includes("createSingleFlight<DeleteSyncedStatus>()"), "delete is single-flight");
+    assert(provider.includes("createSingleFlight<void>()"), "remote-erase confirm is single-flight");
+    assert(provider.includes("deleteFlightRef.current!.run("), "deleteSyncedData runs inside the lock");
+    assert(provider.includes("confirmFlightRef.current!.run("), "confirmRemoteErase runs inside the lock");
+    assert((provider.match(/expectedUserId: uidNow/g) ?? []).length >= 2, "phase advances carry the user identity");
+    assert((provider.match(/expectedOperationId: opId/g) ?? []).length >= 2, "phase advances carry the operation id");
+    assert(provider.includes("finishCloudErase(undefined, { userId: uidNow, operationId: opId })"), "finish is identity-checked");
   });
 
   test("all durable control keys are EXCLUDED from the PR-H local reset/export inventory", () => {
