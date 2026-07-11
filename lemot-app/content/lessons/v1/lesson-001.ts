@@ -9,9 +9,9 @@ const screens: LessonScreen[] = [
       insightType: "lesson-goal",
       title: "Your survival kit",
       body:
-        "Today: greet someone, ask politely, and thank.\n" +
+        "Today: greet someone, ask politely, thank, and rescue yourself when French moves too fast.\n" +
         "By the end: you can carry a first small exchange in French.\n" +
-        "Main pieces: bonjour, je voudrais, merci.",
+        "Main pieces: bonjour, je voudrais, merci, and a small rescue kit.",
     },
   },
   {
@@ -39,6 +39,8 @@ const screens: LessonScreen[] = [
       examples: [
         { fr: "Bonjour.", en: "Hello." },
         { fr: "Merci.", en: "Thank you." },
+        { fr: "Je voudrais un thé.", en: "I would like a tea. (same move, new thing)" },
+        { fr: "Je voudrais un croissant.", en: "I would like a croissant." },
       ],
     },
   },
@@ -183,6 +185,73 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s07b-insight-rescue-kit",
+    type: "insight-card",
+    targetItemIds: [
+      "chunk-excusez-moi",
+      "formula-je-ne-comprends-pas",
+      "formula-vous-pouvez-repeter",
+    ],
+    payload: {
+      insightType: "culture-bite",
+      title: "When French moves too fast.",
+      body:
+        "Real survival is knowing what to say when you're lost. Excusez-moi opens the door to a stranger. Then two lines, learned whole, rescue any moment: je ne comprends pas, and the ask that follows it, vous pouvez répéter ? No word order changes for the ask. Your rising voice does the asking: vous pouvez répéter ?",
+      examples: [
+        { fr: "Excusez-moi.", en: "Excuse me." },
+        { fr: "Je ne comprends pas.", en: "I don't understand." },
+        { fr: "Vous pouvez répéter ?", en: "Can you repeat?" },
+      ],
+    },
+  },
+  {
+    id: "s07c-weave-rescue",
+    type: "weave",
+    targetItemIds: ["formula-je-ne-comprends-pas", "formula-vous-pouvez-repeter"],
+    payload: {
+      weaveType: "supported",
+      prompt: "You're lost. Say you don't understand, then ask them to repeat.",
+      context:
+        "The answer came back fast and long. Use your rescue kit, whole.",
+      suggestedPieces: [
+        {
+          text: "excusez-moi",
+          itemId: "chunk-excusez-moi",
+          label: "attention opener",
+        },
+        {
+          text: "je ne comprends pas",
+          itemId: "formula-je-ne-comprends-pas",
+          required: true,
+          label: "I don't understand",
+        },
+        {
+          text: "vous pouvez répéter ?",
+          itemId: "formula-vous-pouvez-repeter",
+          required: true,
+          label: "can you repeat?",
+        },
+      ],
+      expectedAnswers: ["Je ne comprends pas. Vous pouvez répéter ?"],
+      acceptedAlternatives: [
+        "Je ne comprends pas. Vous pouvez répéter",
+        "Excusez-moi, je ne comprends pas. Vous pouvez répéter ?",
+      ],
+      reveal: {
+        modelAnswer: "Je ne comprends pas. Vous pouvez répéter ?",
+        ifCorrect:
+          "That pair rescues any moment. Both lines live in your kit whole.",
+        ifCorrectButFlat:
+          "Right lines. The rising voice on the second one does the asking.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Keep both lines whole: they work as they are.",
+        ifMissingTargetPiece:
+          "Say the state first, je ne comprends pas, then the ask, vous pouvez répéter ?",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s08-sayit-cafe-order",
     type: "say-it-your-way",
     targetItemIds: [
@@ -194,22 +263,27 @@ const screens: LessonScreen[] = [
     ],
     weakPointTags: ["politeness", "natural-speech"],
     payload: {
-      situation: "This is your order: un café.",
+      situation:
+        "Order whatever you actually want, even if you don't know its French name yet. Your skeleton is French; leave the unknown word in English.",
       communicativeGoal:
-        "Make it sound natural: add a soft opening, ask for it politely, close the request politely, and thank them if you like.",
+        "Make it sound natural: a soft opening, a polite ask, a polite close, thanks if you like. Unknown words may stay English.",
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je voudrais", itemId: "chunk-je-voudrais" },
         { text: "un café", itemId: "noun-cafe" },
+        { text: "un thé", itemId: "chunk-un-the" },
         { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait" },
         { text: "merci", itemId: "chunk-merci" },
       ],
       modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît. Merci !",
       reveal: {
         modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît. Merci !",
-        naturalAlternatives: ["Bonjour, un café s'il vous plaît. Merci !"],
+        naturalAlternatives: [
+          "Bonjour, un café s'il vous plaît. Merci !",
+          "Bonjour, je voudrais un thé, s'il vous plaît.",
+        ],
         explanation:
-          "Both are natural. The longer form leans formal; the shorter form leans casual.",
+          "Wrote something like 'je voudrais a hot chocolate, s'il vous plaît'? That works. The mix is Weave: your French skeleton carrying the day, English filling what you don't know yet. The lines above are full-French versions of the same move.",
       },
       validationMode: "model-answer-only",
     },
@@ -220,16 +294,20 @@ const screens: LessonScreen[] = [
     payload: {
       title: "Your survival kit.",
       lines: [
-        "You greeted someone.",
-        "You asked for a coffee politely.",
+        "You greeted someone and asked for a coffee politely.",
         "You softened the request and closed with thanks.",
+        "And when French moved too fast, you rescued yourself: je ne comprends pas, vous pouvez répéter ?",
       ],
       piecesUsed: [
         "Bonjour",
         "je voudrais",
         "un café",
+        "un thé",
         "s'il vous plaît",
         "merci",
+        "excusez-moi",
+        "je ne comprends pas",
+        "vous pouvez répéter ?",
       ],
       nextLabel: "Continue",
     },
@@ -244,7 +322,7 @@ export const lesson001: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
-  estimatedMinutes: 6,
+  estimatedMinutes: 7,
   canDo: "Greet, ask for something politely, and thank.",
   whyItExists:
     "L0 gave one polite café line as a first taste. L1 grows it into a small survival kit: greet, make a soft request, and thank. These polite chunks carry a whole first exchange before any verb system arrives in L2.",
@@ -255,6 +333,11 @@ export const lesson001: Lesson = {
     "chunk-sil-vous-plait",
     "chunk-je-voudrais",
     "noun-cafe",
+    "chunk-excusez-moi",
+    "formula-je-ne-comprends-pas",
+    "formula-vous-pouvez-repeter",
+    "chunk-un-the",
+    "noun-the",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
@@ -264,10 +347,16 @@ export const lesson001: Lesson = {
     "Vous register throughout. Informal tu is L3 territory.",
     "SayIt is deterministic and model-answer-only, consistent with L0.",
     "No XP / streak / level-up / mission copy.",
-    "c'est, au revoir, and the wider rescue/location kit from the L1 syllabus spec are intentionally out of this compact slice.",
+    "c'est and au revoir remain out of this slice; the RESCUE kit is now IN (Kademe 2 enrichment): je ne comprends pas + vous pouvez répéter ? as SURVIVAL_FORMULAS (closed lint class, PAYLOAD_ECONOMY 4.1), plus excusez-moi as supported attention opener.",
+    "Survival formulas are learned whole: comprendre is not unpacked, the non-inverted vous pouvez répéter ? is canon (inversion stays recognition-only).",
+    "un thé is supported service variation (dual role: article package reinforcement in L5). The only ghost is un croissant, living ONLY in insight example copy, never in fills, weaves, or piecesUsed. madame / monsieur were trimmed from the ghost tier (Payload Economy review, 2026-07-04): address-register lands later as its own register/service slice; excusez-moi alone carries the opener here. They stay in the Practice Pool candidate quarry (docs/audits).",
+    "s08 is the open mixed Weave (W1 canon): the prompt invites leaving unknown words in English; it is model-answer-only and the reveal compares instead of grading.",
   ],
   qaChecks: [
     "TTS reads Bonjour, Je voudrais un café, S'il vous plaît, and Merci cleanly.",
+    "TTS reads Je ne comprends pas. Vous pouvez répéter ? with a rising contour on the second line.",
+    "s07c accepts the no-question-mark and excusez-moi variants via acceptedAlternatives.",
+    "The ghost item (croissant) never appears as a chip or correctness requirement; madame / monsieur appear nowhere in the lesson.",
     "Apostrophe normalization handles curly quotes in s'il vous plaît.",
     "Unaccented cafe and plait variants pass Weave via accepted alternatives.",
     "s03 trap reasons fire on veux and suis selections.",

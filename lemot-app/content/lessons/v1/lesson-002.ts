@@ -148,11 +148,44 @@ const screens: LessonScreen[] = [
     payload: {
       insightType: "grammar-nugget",
       title: "Notice the shape.",
-      body: "You just wrote Je suis ici twice. The shape stayed the same. Only the moment around it changed. That is what an engine does, and the same shape can say how you are, not just where.",
+      body: "You just wrote Je suis ici twice. The shape stayed the same. Only the moment around it changed. That is what an engine does, and the same shape can say how you are, not just where. Your first state word: fatigué, tired. (In writing, a woman adds an -e: fatiguée. That is the whole note; no system to learn.)",
       examples: [
         { fr: "Je suis ici.", en: "I am here." },
+        { fr: "Je suis fatigué.", en: "I am tired." },
+        { fr: "Je suis là.", en: "I am right here / over there." },
         { fr: "Je suis prêt.", en: "I am ready." },
       ],
+    },
+  },
+  {
+    id: "s06b-weave-je-suis-fatigue",
+    type: "weave",
+    targetItemIds: ["chunk-je-suis", "adjective-fatigue"],
+    payload: {
+      weaveType: "supported",
+      prompt: "Say you are tired.",
+      context:
+        "The day has been long, and someone kindly asks how you are doing.",
+      suggestedPieces: [
+        { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
+        {
+          text: "fatigué",
+          itemId: "adjective-fatigue",
+          required: true,
+          label: "tired",
+        },
+      ],
+      expectedAnswers: ["Je suis fatigué."],
+      acceptedAlternatives: ["Je suis fatiguée.", "Je suis fatigue."],
+      reveal: {
+        modelAnswer: "Je suis fatigué.",
+        ifCorrect: "The same engine, carrying its first state.",
+        ifCorrectButFlat: "Right shape. Where you are, and now how you are.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The engine takes the state directly: je suis fatigué.",
+        ifMissingTargetPiece: "Start with je suis, then the state: fatigué.",
+      },
+      validationMode: "exact-or-alternative",
     },
   },
   {
@@ -185,13 +218,14 @@ const screens: LessonScreen[] = [
     payload: {
       title: "Your first French engine.",
       lines: [
-        "You said where you are.",
+        "You said where you are, and how you are: fatigué.",
         "You added a greeting and built a full small French interaction.",
         "Je suis stayed the same every time. That is the shape you'll use again.",
       ],
       piecesUsed: [
         "je suis",
         "ici",
+        "fatigué",
         "Bonjour",
       ],
       nextLabel: "Continue",
@@ -216,13 +250,14 @@ export const lesson002: Lesson = {
     "chunk-je-suis",
     "chunk-je-suis-ici",
     "word-ici",
+    "adjective-fatigue",
     "chunk-bonjour",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Je suis is the L2 architecture target. No broader conjugation table appears.",
-    "Only one completion, ici, is used in L2. Wider use of the shape is deferred to later lessons.",
+    "Kademe 2 enrichment: fatigué joins as the first supported state riding je suis (one -e micro-note in the insight; the agreement system is NOT opened; the weave accepts fatiguée). là and prêt stay ghost-only in insight example copy.",
     "The parallel avoir shape is intentionally absent from L2.",
     "Survival-kit callback uses chunk-bonjour. chunk-je-voudrais appears only as a fill trap, not a production target.",
     "The shape-noticed insight is a deliberate meta-reflection: it names what the learner just did without adding a new concept.",

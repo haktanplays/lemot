@@ -54,6 +54,15 @@ const TERMINAL_PUNCTUATION = /[.!?]\s*$/;
 // table). Extend deliberately — additions mean the chunk is approved canon.
 const PROTECTED_CHUNKS = new Set(["je ne suis pas", "ce n'est pas"]);
 
+// Survival formulas (PAYLOAD_ECONOMY v0 §4.1): frozen whole-sentence rescue
+// lines a learner needs under stress. A SEPARATE class from PROTECTED_CHUNKS
+// (which stays frozen at its two negation frames) with its own justification.
+// CLOSED SET: new member requires explicit Haktan canon approval.
+const SURVIVAL_FORMULAS = new Set([
+  "je ne comprends pas",
+  "vous pouvez répéter ?",
+]);
+
 function tokenCount(entry: string): number {
   // Split on whitespace, then split elisions so "j'ai" counts as two tokens.
   return entry
@@ -65,6 +74,9 @@ function tokenCount(entry: string): number {
 
 function sentenceChipProblem(entry: string): string | null {
   const normalized = entry.trim().toLowerCase();
+  // Survival formulas are checked BEFORE the punctuation guard: one of them
+  // carries its question mark by design (vous pouvez répéter ?).
+  if (SURVIVAL_FORMULAS.has(normalized)) return null;
   if (TERMINAL_PUNCTUATION.test(entry)) {
     return "ends with sentence punctuation";
   }
@@ -167,6 +179,9 @@ describe("v1 lesson structure", () => {
       // composed from the engine chip + the ne...pas frame, NOT protected
       // as clause chips. Only "je ne suis pas" / "ce n'est pas" are canon.
       "je ne peux pas",
+      // Locked by PR #168: the help question composes from vous pouvez +
+      // m'aider and is never a chip.
+      "vous pouvez m'aider ?",
       "C'est bon",
       "Bonjour.",
       "on y va !",
@@ -199,6 +214,17 @@ describe("v1 lesson structure", () => {
       "vous pouvez",
       "m'aider",
       "ne ___ pas",
+      // Kademe 2 enrichment chips (pass the heuristic natively)
+      "excusez-moi",
+      "un thé",
+      "une table",
+      "fatigué",
+      "soif",
+      "une idée",
+      "oui",
+      // Survival formulas (allowed via the closed SURVIVAL_FORMULAS set)
+      "je ne comprends pas",
+      "vous pouvez répéter ?",
       "ici",
       "faim",
       "merci beaucoup",
@@ -211,6 +237,36 @@ describe("v1 lesson structure", () => {
         `expected ${JSON.stringify(entry)} to pass, got: ${sentenceChipProblem(entry)}`,
       );
     }
+  });
+
+  test("chip canon guards: frozen and closed sets", () => {
+    // PROTECTED_CHUNKS must not expand (PR #168 / Payload Economy canon).
+    assert(PROTECTED_CHUNKS.size === 2, "PROTECTED_CHUNKS must stay at 2");
+    assert(
+      PROTECTED_CHUNKS.has("je ne suis pas") && PROTECTED_CHUNKS.has("ce n'est pas"),
+      "PROTECTED_CHUNKS members changed",
+    );
+    // SURVIVAL_FORMULAS is a closed class (PAYLOAD_ECONOMY §4.1).
+    assert(SURVIVAL_FORMULAS.size === 2, "SURVIVAL_FORMULAS must stay at 2 without Haktan approval");
+    assert(
+      SURVIVAL_FORMULAS.has("je ne comprends pas") &&
+        SURVIVAL_FORMULAS.has("vous pouvez répéter ?"),
+      "SURVIVAL_FORMULAS members changed",
+    );
+    // Composition canon stays pinned: these must NEVER pass as chips.
+    assert(
+      sentenceChipProblem("je ne peux pas") !== null,
+      "je ne peux pas must remain forbidden as a chip",
+    );
+    assert(
+      sentenceChipProblem("vous pouvez m'aider ?") !== null,
+      "vous pouvez m'aider ? must remain forbidden as a chip",
+    );
+    // Full sentences outside both sets stay forbidden.
+    assert(
+      sentenceChipProblem("je voudrais un café") !== null,
+      "arbitrary full sentences must remain forbidden as chips",
+    );
   });
 
   for (const lesson of V1_LESSONS) {
