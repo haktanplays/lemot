@@ -52,6 +52,8 @@ import {
 import { runRemoteEraseConfirm } from "@/lib/remoteEraseConfirm";
 import { handleGenerationMismatch } from "@/lib/generationMismatch";
 import { makeOperationId } from "@/lib/operationId";
+import { runPinnedCloudDelete } from "@/lib/pinnedDelete";
+import { currentSessionSnapshot } from "@/lib/supabase";
 import { resolveGenerationReconcile } from "@/lib/generationReconcile";
 import { createSingleFlight, type SingleFlight } from "@/lib/singleFlight";
 import type { ErrorEntry, DailyReview } from "@/lib/types";
@@ -208,6 +210,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const storageRef = useRef(storageHook);
   storageRef.current = storageHook;
 
+  // Codex P1: the LIVE auth identity, readable from long-running deletion
+  // closures without going stale. A deletion flow captures its owner (`uidNow`)
+  // at start and compares against this ref before every irreversible step.
+  const latestUserIdRef = useRef<string | null>(null);
+  latestUserIdRef.current = user?.id ?? null;
+
   // PR-I1: hydrate the durable cloud-erase guard once at startup. Until this
   // resolves the guard is fail-closed (sync blocked); after it, sync is allowed
   // only if no erase is pending. Gates the pull effect below so a leftover
@@ -340,8 +348,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         // CONTINUE into the normal pull below under the acknowledged generation —
         // valid learner data created after the historical deletion must still be
         // pulled and merged. hasPulled is set only after the normal pull/apply
-        // path completes.
-        await setSyncGeneration({ userId: user.id, generation: decision.generation });
+        // path completes. Codex P2 (round 2): fail closed WHILE the durable
+        // acknowledgement is attempted — block first, and if the persist fails
+        // the old baseline generation must not stay admitted.
+        blockSyncGeneration();
+        try {
+          await setSyncGeneration({ userId: user.id, generation: decision.generation });
+          // Success: the acknowledged generation is ready — fall through into
+          // the normal pull below.
+        } catch {
+          // No durable acknowledgement → stay blocked: no pull, no merge, no
+          // local write, no push. Blocked-NOT-actionable for the UI (no owned
+          // recovery marker exists); a restart retries the reconcile.
+          markRemoteEraseBlocked();
+          setRemoteEraseStatus("blocked");
+          return;
+        }
       }
       // decision.kind === "proceed" (or acknowledged) → normal pull + merge below.
 
@@ -512,10 +534,33 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           }
         : null;
       const uidNow = user.id;
+      // Codex P1: if auth switches mid-operation (sign-out + another sign-in),
+      // STOP at the latest durably recorded phase — never run a destructive or
+      // finalizing step for `uidNow` under a different active identity. The
+      // original owner resumes safely from the retained marker.
+      const assertOwnerActive = () => {
+        if (latestUserIdRef.current !== uidNow) {
+          throw new Error("auth changed during deletion; stopping at the recorded phase");
+        }
+      };
       const status = await runDeleteSyncedData({
         resume,
         armErase: () => armCloudErase({ opId, userId: uidNow }),
-        deleteCloud: () => deleteSyncedRows(opId),
+        // Codex P1: verify-then-PIN. The live identity, the fresh session, and
+        // the pending marker are all re-verified immediately before the RPC,
+        // and the request is pinned to the VERIFIED session's access token —
+        // the mutable global client is never consulted for the deletion, so a
+        // session switched to another account can never be deleted.
+        deleteCloud: () =>
+          runPinnedCloudDelete({
+            ownerUserId: uidNow,
+            operationId: opId,
+            latestAuthUserId: () => latestUserIdRef.current,
+            getSession: currentSessionSnapshot,
+            pendingOwner: cloudErasePendingUserId,
+            pendingOpId: cloudErasePendingOpId,
+            rpcWithToken: (token, id) => deleteSyncedRows(id, token),
+          }),
         markCloudDeleted: (gen) =>
           advanceCloudErasePhase({
             phase: "cloud_deleted",
@@ -523,17 +568,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             expectedUserId: uidNow,
             expectedOperationId: opId,
           }),
-        resetLocal: resetLocalData,
+        resetLocal: async () => {
+          assertOwnerActive();
+          await resetLocalData();
+        },
         markLocalResetDone: () =>
           advanceCloudErasePhase({
             phase: "local_reset_done",
             expectedUserId: uidNow,
             expectedOperationId: opId,
           }),
-        acknowledgeGeneration: (gen) =>
-          setSyncGeneration({ userId: uidNow, generation: gen }),
-        finishErase: () =>
-          finishCloudErase(undefined, { userId: uidNow, operationId: opId }),
+        acknowledgeGeneration: async (gen) => {
+          assertOwnerActive();
+          await setSyncGeneration({ userId: uidNow, generation: gen });
+        },
+        finishErase: async () => {
+          assertOwnerActive();
+          await finishCloudErase(undefined, { userId: uidNow, operationId: opId });
+        },
       });
       refreshControlState();
       return status;

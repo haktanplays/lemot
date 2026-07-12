@@ -37,3 +37,60 @@ export const supabase: SupabaseClient = supabaseReady
       },
     })
   : (null as unknown as SupabaseClient);
+
+/**
+ * Latest auth session snapshot (user id + access token), or null when signed
+ * out / unconfigured / unreadable. Used to VERIFY an identity and capture the
+ * token that pins a subsequent request to it.
+ */
+export async function currentSessionSnapshot(): Promise<{
+  userId: string;
+  accessToken: string;
+} | null> {
+  if (!supabaseReady) return null;
+  const { data } = await supabase.auth.getSession();
+  const session = data.session;
+  if (!session?.user?.id || !session.access_token) return null;
+  return { userId: session.user.id, accessToken: session.access_token };
+}
+
+/**
+ * PR-I1 (Codex P1): token-PINNED deletion RPC. An explicit PostgREST request
+ * whose Authorization header is FIXED to the caller-captured access token — it
+ * never consults the mutable global client's session, so an auth switch after
+ * the owner-identity check cannot redirect the deletion to another account.
+ * The ONLY body field is the idempotency key `p_op_id`; ownership resolves
+ * server-side from `auth.uid()` embedded in the pinned token.
+ */
+export async function rpcDeleteSyncedDataPinned(
+  accessToken: string,
+  opId: string
+): Promise<{ data: unknown; errorMessage: string | null }> {
+  if (!supabaseReady) return { data: null, errorMessage: "supabase not configured" };
+  try {
+    const res = await fetch(`${supabaseUrl}/rest/v1/rpc/delete_my_synced_learning_data`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        apikey: supabaseAnonKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ p_op_id: opId }),
+    });
+    if (!res.ok) {
+      let detail = "";
+      try {
+        detail = (await res.text()).slice(0, 300);
+      } catch {
+        /* status alone is enough */
+      }
+      return { data: null, errorMessage: `rpc failed (${res.status}): ${detail}` };
+    }
+    return { data: (await res.json()) as unknown, errorMessage: null };
+  } catch (e) {
+    return {
+      data: null,
+      errorMessage: e instanceof Error ? e.message : "network failure",
+    };
+  }
+}

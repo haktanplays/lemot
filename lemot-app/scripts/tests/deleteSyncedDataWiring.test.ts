@@ -111,7 +111,10 @@ describe("PR-I1 — client wiring", () => {
     assert(sync.includes('.rpc("insert_user_error"'), "errors written via the generation-aware RPC");
     assert((sync.match(/p_generation: syncGeneration\(\)/g) ?? []).length >= 2, "both writes stamp the generation");
     assert(sync.includes("isSyncGenerationReady()") && sync.includes("isRemoteErasePending()"), "writes gated on generation-ready + no recovery");
-    assert(/\.rpc\(\s*["']delete_my_synced_learning_data["']\s*,\s*\{[\s\n]*p_op_id:/.test(sync), "delete RPC passes p_op_id only (idempotency key)");
+    // Codex P1: the deletion request is PINNED to the caller-verified token —
+    // it must NEVER go through the mutable global client's rpc().
+    assert(!sync.includes('.rpc("delete_my_synced_learning_data"'), "deletion never uses the global-session rpc client");
+    assert(sync.includes("rpcDeleteSyncedDataPinned(accessToken, opId)"), "deletion goes through the token-pinned transport");
     assert(!/p_op_id:\s*userId/.test(sync), "op id is not the user id");
     // fetchSyncGeneration fails closed (returns null on error).
     assert(sync.includes("if (error) return null; // fail closed"), "generation fetch fails closed on error");
@@ -164,15 +167,32 @@ describe("PR-I1 — client wiring", () => {
     assert(provider.includes("persistRemoteEraseRecovery({"), "recovery decision → persist recovery marker (no reset)");
     assert(!provider.includes("await resetLocalData();\n        await setSyncGeneration"), "reconcile never auto-resets");
     assert(provider.includes("blockSyncGeneration()"), "fail_closed decision blocks (no pull/merge/write/push)");
-    // acknowledge_and_pull FALLS THROUGH into the normal pull: between the
-    // acknowledgement and `await pullFromCloud()` there is no return and no
-    // premature hasPulled — hasPulled is set only after the pull path completes.
+    // acknowledge_and_pull FALLS THROUGH into the normal pull on SUCCESS, and
+    // fails CLOSED on a persist failure (Codex P2 round 2): admission is blocked
+    // BEFORE the durable acknowledgement is attempted; the failure is caught
+    // in-effect, surfaces blocked-not-actionable, and the ONLY return in the
+    // branch is that fail-closed catch — success continues into the pull, with
+    // hasPulled set only after the pull path completes.
     const ackIdx = provider.indexOf('decision.kind === "acknowledge_and_pull"');
     const pullIdx = provider.indexOf("await pullFromCloud()");
     assert(ackIdx !== -1 && pullIdx !== -1 && ackIdx < pullIdx, "acknowledge branch precedes the pull");
-    const between = provider.slice(provider.indexOf("setSyncGeneration({ userId: user.id, generation: decision.generation })"), pullIdx);
-    assert(!/\breturn\b/.test(between), "no early return between acknowledgement and the normal pull");
-    assert(!between.includes("hasPulled.current = true"), "hasPulled is not set before the pull runs");
+    const ackBranch = provider.slice(ackIdx, pullIdx);
+    const ackBlockIdx = ackBranch.indexOf("blockSyncGeneration()");
+    const ackPersistIdx = ackBranch.indexOf(
+      "await setSyncGeneration({ userId: user.id, generation: decision.generation })",
+    );
+    assert(
+      ackBlockIdx !== -1 && ackPersistIdx !== -1 && ackBlockIdx < ackPersistIdx,
+      "ack: admission is blocked BEFORE the acknowledgement persistence begins",
+    );
+    const ackCatchIdx = ackBranch.indexOf("} catch {", ackPersistIdx);
+    assert(ackCatchIdx !== -1, "the acknowledgement persist failure is caught inside the effect");
+    assert(ackBranch.includes("markRemoteEraseBlocked()", ackCatchIdx), "ack failure surfaces the runtime blocked state");
+    assert(ackBranch.includes('setRemoteEraseStatus("blocked")', ackCatchIdx), "ack failure reports blocked, not actionable");
+    const ackReturns = ackBranch.match(/\breturn\b/g) ?? [];
+    assert(ackReturns.length === 1, "exactly one return in the ack branch (the fail-closed catch)");
+    assert(ackBranch.indexOf("return") > ackCatchIdx, "the success path falls through into the normal pull");
+    assert(!ackBranch.includes("hasPulled.current = true"), "hasPulled is not set before the pull runs");
 
     // Confirmation: delegated to the pure revalidating orchestrator (fetch the
     // CURRENT generation before reset/ack; owner-verified; fail closed on fetch).
@@ -193,7 +213,27 @@ describe("PR-I1 — client wiring", () => {
     assert(provider.includes("markCloudDeleted:"), "records cloud_deleted before the local reset");
     assert(provider.includes("markLocalResetDone:"), "records local_reset_done after the reset");
     assert(provider.includes("armCloudErase({ opId, userId: uidNow })"), "arm is user-bound");
-    assert(provider.includes("deleteCloud: () => deleteSyncedRows(opId)"), "RPC uses the same op id");
+    // Codex P1: verify-then-PIN. deleteCloud runs the pinned step (live identity
+    // + fresh session + marker identity re-verified immediately before the RPC),
+    // and the request carries the CAPTURED token via the pinned transport.
+    assert(provider.includes("runPinnedCloudDelete({"), "deleteCloud runs the auth-pinned step");
+    assert(provider.includes("ownerUserId: uidNow"), "pinned to the operation's owner");
+    assert(provider.includes("operationId: opId"), "pinned to THIS operation id");
+    assert(provider.includes("latestAuthUserId: () => latestUserIdRef.current"), "live identity read from a ref, not a closure");
+    assert(provider.includes("getSession: currentSessionSnapshot"), "session verified via the shared auth abstraction");
+    assert(
+      provider.includes("pendingOwner: cloudErasePendingUserId") &&
+        provider.includes("pendingOpId: cloudErasePendingOpId"),
+      "marker identity re-verified before the RPC",
+    );
+    assert(
+      provider.includes("rpcWithToken: (token, id) => deleteSyncedRows(id, token)"),
+      "the RPC receives the captured token and the same op id",
+    );
+    // Post-RPC owner revalidation: an auth switch stops the flow at the latest
+    // durably recorded phase — reset / acknowledgement / finalization never run
+    // for uidNow under a different active identity.
+    assert((provider.match(/assertOwnerActive\(\);/g) ?? []).length >= 3, "reset, acknowledgement, and finish each revalidate the owner");
     // Write-RPC mismatch handoff is stamped with the real deps.
     assert(provider.includes("handleGenerationMismatch({"), "generation-mismatch recovery wired");
     assert(!provider.includes("signOut"), "delete/recovery never sign out");
@@ -241,6 +281,19 @@ describe("PR-I1 — client wiring", () => {
     assert(provider.includes("remoteEraseStatusFor(uid)"), "status derived per-user from the recovery module");
     assert(provider.includes('remoteEraseStatus: RemoteEraseStatus'), "context exposes the tri-state recovery status");
     assert(!provider.includes("remoteErasePending:"), "the ambiguous pending boolean is gone from the provider API");
+  });
+
+  test("Codex P1: the pinned RPC transport is token-fixed and session-independent", () => {
+    const sb = read("lib/supabase.ts");
+    const start = sb.indexOf("export async function rpcDeleteSyncedDataPinned");
+    assert(start !== -1, "the pinned transport exists");
+    const body = sb.slice(start, sb.indexOf("\n}", start));
+    assert(body.includes("Authorization: `Bearer ${accessToken}`"), "Authorization is FIXED to the caller-captured token");
+    assert(body.includes("apikey: supabaseAnonKey"), "the public anon key rides as apikey");
+    assert(body.includes("JSON.stringify({ p_op_id: opId })"), "the ONLY body field is the idempotency key");
+    assert(!body.includes("auth."), "the pinned request never consults the mutable auth session");
+    assert(!body.includes("supabase.rpc"), "the pinned request never routes through the global rpc client");
+    assert(!/user_?id/i.test(body), "no user id is ever sent — ownership stays auth.uid() only");
   });
 
   test("all durable control keys are EXCLUDED from the PR-H local reset/export inventory", () => {

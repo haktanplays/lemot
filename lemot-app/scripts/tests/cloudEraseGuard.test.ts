@@ -394,6 +394,109 @@ describe("PR-I1 — phase advance / finish are operation-identity protected", ()
   });
 });
 
+describe("PR-I1 — stale hydrations never overwrite live coordinator state (Codex P1)", () => {
+  const marker = (userId: string, operationId: string) =>
+    JSON.stringify({ version: 2, userId, operationId, phase: "armed" });
+
+  /** A KV whose read resolves/rejects only when the test says so. */
+  function deferredReadKv() {
+    let resolveRead!: (v: string | null) => void;
+    let rejectRead!: (e: unknown) => void;
+    const gate = new Promise<string | null>((res, rej) => {
+      resolveRead = res;
+      rejectRead = rej;
+    });
+    let writes = 0;
+    let removes = 0;
+    const kv: CloudEraseKv = {
+      getItem: () => gate,
+      setItem: () => {
+        writes += 1;
+      },
+      removeItem: () => {
+        removes += 1;
+      },
+    };
+    return { kv, resolveRead, rejectRead, writes: () => writes, removes: () => removes };
+  }
+
+  test("1+7. empty read in flight → arm reaches pending → stale result is discarded (no state change, no storage write)", async () => {
+    __resetCloudEraseGuardForTest();
+    await hydrateCloudEraseGuard(makeFakeKv()); // baseline ready
+    const d = deferredReadKv();
+    const stale = hydrateCloudEraseGuard(d.kv); // read in flight (would say "empty")
+    const armKv = makeFakeKv();
+    const arm = await armCloudErase({
+      opId: "op-A",
+      userId: "user-a",
+      store: armKv,
+      drainTimeoutMs: 50,
+    });
+    assert(arm === "armed", "the erase armed while the old read was in flight");
+    d.resolveRead(null); // the stale "clean" result lands AFTER pending
+    const returned = await stale;
+    assert(returned === "pending", "a discarded hydration returns the CURRENT live state");
+    assert(cloudEraseState() === "pending" && !isCloudSyncAdmitted(), "admission stays CLOSED mid-erase");
+    assert(
+      cloudErasePendingOpId() === "op-A" &&
+        cloudErasePendingUserId() === "user-a" &&
+        cloudErasePendingPhase() === "armed",
+      "pending identity (owner / op / phase) is intact",
+    );
+    assert(d.writes() === 0 && d.removes() === 0, "discarding performed no storage write or delete");
+
+    // 2. old-marker read in flight → finish completes → stale marker is NOT resurrected.
+    const d2 = deferredReadKv();
+    const stale2 = hydrateCloudEraseGuard(d2.kv);
+    await finishCloudErase(armKv, { userId: "user-a", operationId: "op-A" });
+    d2.resolveRead(marker("user-a", "op-A")); // the finished marker's content lands late
+    assert((await stale2) === "ready", "stale hydration reports the live (finished) state");
+    assert(
+      cloudEraseState() === "ready" && cloudErasePendingOpId() === null,
+      "the finished marker is NOT resurrected in memory",
+    );
+  });
+
+  test("3. an older hydration cannot overwrite a newer authoritative hydration", async () => {
+    __resetCloudEraseGuardForTest();
+    const dA = deferredReadKv();
+    const a = hydrateCloudEraseGuard(dA.kv); // attempt A in flight
+    const b = await hydrateCloudEraseGuard(
+      makeFakeKv({ [LM_CLOUD_ERASE_PENDING_KEY]: marker("user-a", "op-B") }),
+    ); // attempt B (newer) applies authoritatively
+    assert(b === "pending", "B applied the valid marker");
+    dA.resolveRead(null); // A's stale empty result lands afterwards
+    assert((await a) === "pending", "A resolves to the authoritative state");
+    assert(
+      cloudEraseState() === "pending" && cloudErasePendingOpId() === "op-B",
+      "A did not overwrite B's result",
+    );
+  });
+
+  test("4. a stale REJECTED read cannot turn newer ready state into fail-closed", async () => {
+    __resetCloudEraseGuardForTest();
+    const dR = deferredReadKv();
+    const r = hydrateCloudEraseGuard(dR.kv); // will reject late
+    await hydrateCloudEraseGuard(makeFakeKv()); // newer clean hydration → ready
+    dR.rejectRead(new Error("slow storage died"));
+    assert((await r) === "ready", "the stale rejection is discarded, not applied");
+    assert(cloudEraseState() === "ready" && isCloudSyncAdmitted(), "ready state survives the stale failure");
+  });
+
+  test("5+6. normal hydrations still work: clean → ready; valid marker → pending", async () => {
+    __resetCloudEraseGuardForTest();
+    assert((await hydrateCloudEraseGuard(makeFakeKv())) === "ready", "clean hydration reaches ready");
+    __resetCloudEraseGuardForTest();
+    assert(
+      (await hydrateCloudEraseGuard(
+        makeFakeKv({ [LM_CLOUD_ERASE_PENDING_KEY]: marker("user-a", "op-C") }),
+      )) === "pending",
+      "valid-marker hydration reaches pending",
+    );
+    assert(cloudErasePendingOpId() === "op-C", "marker identity loaded normally");
+  });
+});
+
 describe("PR-I1 — coordinator test-state cleanup", () => {
   test("re-hydrate a clean baseline so later suites see an unblocked gate", async () => {
     __resetCloudEraseGuardForTest();

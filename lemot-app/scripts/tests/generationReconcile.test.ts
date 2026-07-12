@@ -20,6 +20,8 @@ import {
   hydrateSyncGeneration,
   isSyncGenerationReady,
   blockSyncGeneration,
+  setSyncGeneration,
+  syncGeneration,
   __resetSyncGenerationForTest,
 } from "../../lib/syncGeneration";
 import {
@@ -325,6 +327,118 @@ describe("PR-I1 — recovery marker persistence fails closed (Codex P2-3)", () =
     assert(isRemoteErasePending(), "learning stays gated until the confirmation completes");
 
     // Clean re-hydrate for later suites.
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+  });
+});
+
+describe("PR-I1 — fresh-install acknowledgement fails closed (Codex P2, round 2)", () => {
+  /**
+   * Mirrors the AppProvider acknowledge_and_pull branch (the source scan in
+   * deleteSyncedDataWiring.test pins the real wiring to the same shape):
+   * blockSyncGeneration runs BEFORE the durable acknowledgement is attempted;
+   * on success the branch FALLS THROUGH into exactly one normal pull; on
+   * failure the exception is contained, nothing pulls/merges/writes/pushes,
+   * and the runtime surfaces blocked-not-actionable.
+   */
+  async function runAckBranch(args: {
+    store: Parameters<typeof setSyncGeneration>[0]["store"];
+    order: string[];
+    pull: () => void;
+  }): Promise<"pulled" | "blocked"> {
+    args.order.push("block");
+    blockSyncGeneration();
+    try {
+      await setSyncGeneration({ userId: "user-a", generation: 1, store: args.store });
+    } catch {
+      markRemoteEraseBlocked();
+      args.order.push("blocked");
+      return "blocked"; // no pull, no merge, no local write, no push
+    }
+    // Success: fall through into the (unchanged) normal pull path.
+    args.pull();
+    args.order.push("pulled");
+    return "pulled";
+  }
+
+  test("ack persist FAILURE: blocked before the attempt, contained, zero pull, gates blocked, status blocked not own", async () => {
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+    assert(isSyncGenerationReady(), "precondition: the old baseline was admitted after hydration");
+
+    const order: string[] = [];
+    let pulls = 0;
+    const failingStore = {
+      getItem: () => null,
+      setItem: () => {
+        order.push("persist_attempt");
+        throw new Error("acknowledgement persist failed");
+      },
+      removeItem: () => {},
+    };
+    const outcome = await runAckBranch({
+      store: failingStore,
+      order,
+      pull: () => {
+        pulls += 1;
+      },
+    }); // resolves — never rejects
+    assert(outcome === "blocked", "the failure outcome is blocked");
+    assert(
+      order.join(",") === "block,persist_attempt,blocked",
+      "blockSyncGeneration ran BEFORE the acknowledgement persistence began",
+    );
+    assert(pulls === 0, "zero pull/merge/local-write/push after the failure");
+    assert(!isSyncGenerationReady(), "sync generation stays NOT ready");
+    assert(isRemoteErasePending(), "the learner-mutation gate stays blocked");
+    assert(
+      remoteEraseStatusFor("user-a") === "blocked",
+      "UI reports blocked, NOT own — no owned marker exists, so no clear-this-device",
+    );
+
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+  });
+
+  test("ack persist SUCCESS: still blocked-then-acknowledged, and exactly ONE normal pull runs", async () => {
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+
+    const order: string[] = [];
+    let pulls = 0;
+    const kv = makeFakeKv();
+    const recordingStore = {
+      getItem: (k: string) => kv.getItem(k),
+      setItem: (k: string, v: string) => {
+        order.push("persist_attempt");
+        return kv.setItem(k, v);
+      },
+      removeItem: (k: string) => kv.removeItem(k),
+    };
+    const outcome = await runAckBranch({
+      store: recordingStore,
+      order,
+      pull: () => {
+        pulls += 1;
+      },
+    });
+    assert(outcome === "pulled", "successful acknowledgement continues into the pull");
+    assert(
+      order.join(",") === "block,persist_attempt,pulled",
+      "block still precedes the persistence attempt; the pull runs after success",
+    );
+    assert(pulls === 1, "exactly one normal pull");
+    assert(isSyncGenerationReady() && syncGeneration() === 1, "the acknowledged generation is ready");
+    assert(!isRemoteErasePending(), "no recovery state on the success path");
+
     __resetSyncGenerationForTest();
     __resetRemoteEraseRecoveryForTest();
     await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });

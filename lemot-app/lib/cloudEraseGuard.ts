@@ -130,6 +130,26 @@ let pendingPhase: PendingErasePhase | null = null;
 /** The confirmed server generation (recorded at `cloud_deleted`). */
 let pendingServerGeneration: number | null = null;
 
+/**
+ * Codex P1 (stale hydration protection). Two monotonic counters, DISTINCT from
+ * `generation` above (which only invalidates in-flight cloud PULLS at their
+ * apply boundary):
+ *  - `coordinatorRevision` changes synchronously on every INTENTIONAL live
+ *    mutation of the coordinator (arm, phase advance, finish, test reset);
+ *  - `hydrationAttempt` increases when a hydration starts; only the LATEST
+ *    attempt may apply its result.
+ * A hydration result (success OR failure) is applied only when BOTH captured
+ * values are still current — otherwise it is discarded without touching state
+ * or storage, so a stale "clean" read can never reopen admission mid-erase,
+ * resurrect a finished marker, or overwrite a newer hydration.
+ */
+let coordinatorRevision = 0;
+let hydrationAttempt = 0;
+
+function touchCoordinator(): void {
+  coordinatorRevision += 1;
+}
+
 let nextToken = 0;
 const activeWrites = new Set<number>();
 type DrainWaiter = (settled: boolean) => void;
@@ -227,6 +247,7 @@ export async function advanceCloudErasePhase(args: {
   };
   const kv = args.store ?? (await loadKv());
   await kv.setItem(LM_CLOUD_ERASE_PENDING_KEY, JSON.stringify(record));
+  touchCoordinator();
   pendingPhase = args.phase;
   pendingServerGeneration = generation;
 }
@@ -295,13 +316,25 @@ function drainWrites(timeoutMs: number): Promise<boolean> {
  * Load the durable marker into memory. Absent/empty → `ready`. Present →
  * `pending` (a prior erase did not complete). A read failure → `pending`
  * (fail closed). Must run before any pull/push is permitted.
+ *
+ * STALE results are discarded (Codex P1): the result — empty, valid, corrupt,
+ * or rejected — is applied only if no intentional coordinator mutation (arm /
+ * advance / finish) happened and no newer hydration started while the read was
+ * in flight. A discarded hydration changes nothing (no state, no storage) and
+ * returns the CURRENT live state.
  */
 export async function hydrateCloudEraseGuard(
   store?: CloudEraseKv
 ): Promise<AdmissionState> {
+  hydrationAttempt += 1;
+  const attempt = hydrationAttempt;
+  const revisionAtStart = coordinatorRevision;
+  const isStale = () =>
+    attempt !== hydrationAttempt || revisionAtStart !== coordinatorRevision;
   try {
     const kv = store ?? (await loadKv());
     const raw = await kv.getItem(LM_CLOUD_ERASE_PENDING_KEY);
+    if (isStale()) return state; // discard — never overwrite newer live state
     if (raw == null || raw === "") {
       state = "ready";
       pendingOpId = null;
@@ -322,6 +355,7 @@ export async function hydrateCloudEraseGuard(
       pendingServerGeneration = rec?.serverGeneration ?? null;
     }
   } catch {
+    if (isStale()) return state; // a stale REJECTION is discarded too
     state = "pending"; // cannot read the guard → fail closed
     pendingOpId = null;
     pendingUserId = null;
@@ -374,6 +408,9 @@ export async function armCloudErase(opts: {
   const priorState = state; // restored if the marker persist fails
 
   // 1) Close admission synchronously (before any await) so no new sync can start.
+  // The revision bump also invalidates every in-flight hydration attempt HERE,
+  // before the first await — a stale "clean" read can no longer reopen admission.
+  touchCoordinator();
   state = "arming";
   generation += 1;
 
@@ -391,9 +428,11 @@ export async function armCloudErase(opts: {
     // Restore the PRIOR state: a fresh arm reopens (nothing persisted, nothing
     // deleted); a same-op RETRY arm stays pending — its durable marker is still
     // on disk and admission must not reopen under it.
+    touchCoordinator();
     state = priorState;
     return "persist_failed";
   }
+  touchCoordinator();
   pendingOpId = opts.opId;
   pendingUserId = opts.userId;
   pendingPhase = "armed";
@@ -427,6 +466,7 @@ export async function finishCloudErase(
   }
   const kv = store ?? (await loadKv());
   await kv.removeItem(LM_CLOUD_ERASE_PENDING_KEY);
+  touchCoordinator();
   state = "ready";
   pendingOpId = null;
   pendingUserId = null;
@@ -434,8 +474,13 @@ export async function finishCloudErase(
   pendingServerGeneration = null;
 }
 
-/** TEST-ONLY: return to the pre-hydration (fail-closed) state. */
+/**
+ * TEST-ONLY: return to the pre-hydration (fail-closed) state. The revision is
+ * BUMPED (never rewound — both counters stay monotonic) so hydrations left in
+ * flight by a previous test are discarded instead of mutating the fresh state.
+ */
 export function __resetCloudEraseGuardForTest(): void {
+  touchCoordinator();
   state = "unknown";
   generation = 0;
   pendingOpId = null;

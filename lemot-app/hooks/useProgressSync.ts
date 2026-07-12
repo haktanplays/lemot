@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, rpcDeleteSyncedDataPinned } from "@/lib/supabase";
 import {
   admitCloudWrite,
   releaseCloudWrite,
@@ -130,19 +130,21 @@ export function useProgressSync(
   );
 
   // PR-I1 (audit C1): erase this user's synced rows via the authenticated,
-  // atomic `delete_my_synced_learning_data` RPC. The only argument is `p_op_id`,
-  // an idempotency key (NOT a user identifier) — ownership resolves from
-  // auth.uid() server-side. The server bumps the per-user generation first, then
-  // deletes, logs the operation, and returns the current generation. NOT gated by
+  // atomic `delete_my_synced_learning_data` RPC. The only payload field is
+  // `p_op_id`, an idempotency key (NOT a user identifier) — ownership resolves
+  // from auth.uid() server-side. Codex P1: the request is PINNED to the access
+  // token the caller verified for the deletion owner (never the mutable global
+  // client, which follows whatever session is currently active). NOT gated by
   // the erase guard: it IS the deletion step (armed around by AppProvider).
   const deleteSyncedRows = useCallback(
-    async (opId: string): Promise<{ ok: boolean; generation?: number }> => {
+    async (
+      opId: string,
+      accessToken: string
+    ): Promise<{ ok: boolean; generation?: number }> => {
       if (!userId) return { ok: false };
-      const { data, error } = await supabase.rpc("delete_my_synced_learning_data", {
-        p_op_id: opId,
-      });
-      if (error) {
-        console.warn("[sync] delete synced data failed:", error.message);
+      const { data, errorMessage } = await rpcDeleteSyncedDataPinned(accessToken, opId);
+      if (errorMessage !== null) {
+        console.warn("[sync] delete synced data failed:", errorMessage);
         return { ok: false };
       }
       const generation =
