@@ -606,14 +606,41 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return confirmFlightRef.current!.run(async () => {
       if (!user) return;
       const uidNow = user.id;
+      // Codex P1 (round 3): same owner revalidation as the delete flow. If auth
+      // switches while the confirmation is in flight (e.g. during the server
+      // generation fetch), no destructive, acknowledging, or clearing step may
+      // run for uidNow under a different active identity — a thrown guard
+      // leaves the recovery marker fully pending (no reset / no ack / no clear /
+      // no reopen), so the original owner retries later from the same marker.
+      const assertOwnerActive = () => {
+        if (latestUserIdRef.current !== uidNow) {
+          throw new Error("auth changed during recovery; leaving recovery pending");
+        }
+      };
       const outcome = await runRemoteEraseConfirm({
         recovery: remoteEraseRecovery(),
         currentUserId: uidNow,
         fetchServerGeneration: fetchSyncGeneration,
-        resetLocal: resetLocalData,
-        acknowledgeGeneration: (gen) =>
-          setSyncGeneration({ userId: uidNow, generation: gen }),
-        clearRecovery: () => clearRemoteEraseRecovery(),
+        resetLocal: async () => {
+          assertOwnerActive();
+          await resetLocalData();
+        },
+        acknowledgeGeneration: async (gen) => {
+          assertOwnerActive();
+          await setSyncGeneration({ userId: uidNow, generation: gen });
+        },
+        clearRecovery: async () => {
+          assertOwnerActive();
+          // The shared recovery key must STILL hold this user's actionable
+          // marker — never clear whatever happens to occupy it merely because
+          // the active auth identity matches (absent / foreign / corrupt →
+          // throw: nothing cleared, sync not reopened, recovery stays pending).
+          const marker = remoteEraseRecovery();
+          if (!marker || marker.userId !== uidNow) {
+            throw new Error("recovery marker changed; refusing to clear");
+          }
+          await clearRemoteEraseRecovery();
+        },
       });
       refreshControlState();
       if (outcome === "done") {

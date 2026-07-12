@@ -232,8 +232,26 @@ describe("PR-I1 — client wiring", () => {
     );
     // Post-RPC owner revalidation: an auth switch stops the flow at the latest
     // durably recorded phase — reset / acknowledgement / finalization never run
-    // for uidNow under a different active identity.
-    assert((provider.match(/assertOwnerActive\(\);/g) ?? []).length >= 3, "reset, acknowledgement, and finish each revalidate the owner");
+    // for uidNow under a different active identity. Codex P1 round 3: the
+    // remote-erase CONFIRMATION flow guards its reset / acknowledgement /
+    // marker-clear the same way (3 delete-flow + 3 confirm-flow call sites).
+    assert((provider.match(/assertOwnerActive\(\);/g) ?? []).length >= 6, "delete AND recovery flows revalidate the owner before every destructive/finalizing step");
+    const confirmStart = provider.indexOf("confirmFlightRef.current!.run(");
+    assert(confirmStart !== -1, "confirm flow present");
+    const confirmSlice = provider.slice(confirmStart, provider.indexOf("generationMismatchRef.current", confirmStart));
+    assert(confirmSlice.includes("runRemoteEraseConfirm({"), "confirm still runs the revalidating machine");
+    assert(
+      (confirmSlice.match(/assertOwnerActive\(\);/g) ?? []).length === 3,
+      "recovery reset, acknowledgement, and marker-clear each revalidate the active account",
+    );
+    assert(confirmSlice.includes("await clearRemoteEraseRecovery()"), "the guarded clear still clears the marker on the owner path");
+    // The clear additionally re-verifies the MARKER itself: the shared key must
+    // still hold this user's actionable record (absent/foreign/corrupt → throw).
+    assert(
+      confirmSlice.includes("marker.userId !== uidNow") &&
+        confirmSlice.includes("refusing to clear"),
+      "clear re-verifies marker ownership, not just the auth identity",
+    );
     // Write-RPC mismatch handoff is stamped with the real deps.
     assert(provider.includes("handleGenerationMismatch({"), "generation-mismatch recovery wired");
     assert(!provider.includes("signOut"), "delete/recovery never sign out");
