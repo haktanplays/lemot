@@ -52,6 +52,7 @@ import {
 import { runRemoteEraseConfirm } from "@/lib/remoteEraseConfirm";
 import { handleGenerationMismatch } from "@/lib/generationMismatch";
 import { makeOperationId } from "@/lib/operationId";
+import { isLearnerMutationBlocked } from "@/lib/learnerMutationGate";
 import { runPinnedCloudDelete } from "@/lib/pinnedDelete";
 import { currentSessionSnapshot } from "@/lib/supabase";
 import { resolveGenerationReconcile } from "@/lib/generationReconcile";
@@ -137,6 +138,17 @@ interface AppContextType {
    * complete it. "none" — no deletion pending.
    */
   pendingDeletion: "none" | "own" | "blocked";
+
+  /**
+   * PR-I1 (Codex P2): TRUE while the learner-mutation gate is closed (pending
+   * deletion, remote-erase recovery, or blocked/foreign/unreadable control
+   * state) — local learner persistence is intentionally rejected, so no
+   * progress-producing surface may stay interactive. A reactive React mirror
+   * of `isLearnerMutationBlocked()`, refreshed with the other control state;
+   * SEPARATE from `loaded`, which stays bootstrap/readiness only (the paused
+   * UI must still show the privacy retry/confirm controls, not a spinner).
+   */
+  learningPaused: boolean;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -225,6 +237,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [pendingDeletion, setPendingDeletion] = useState<"none" | "own" | "blocked">(
     "none"
   );
+  // Codex P2: fail-closed until the first control refresh — the gate itself is
+  // closed before hydration, and the pre-`loaded` spinner covers the UI anyway.
+  const [learningPaused, setLearningPaused] = useState(true);
   // Bumped after a confirmed recovery to re-run the reconcile/pull once sync is
   // unblocked (does NOT touch B5's hasPulled-by-user model).
   const [syncEpoch, setSyncEpoch] = useState(0);
@@ -234,6 +249,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // (after hydration and after every deletion/recovery operation).
   const refreshControlState = useCallback(() => {
     setRemoteEraseStatus(remoteEraseStatusFor(uid));
+    // Codex P2: the pause mirror always re-reads the AUTHORITATIVE gate — the
+    // business rules stay in learnerMutationGate, never duplicated in screens.
+    setLearningPaused(isLearnerMutationBlocked());
     if (cloudEraseState() === "pending") {
       const owner = cloudErasePendingUserId();
       setPendingDeletion(owner && owner === uid ? "own" : "blocked");
@@ -274,6 +292,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
     let alive = true;
     setEraseGuardHydrated(false);
+    // Codex P2: the user-bound re-hydration closes the mutation gate (the
+    // hydrations reset their modules fail-closed synchronously) — mirror that
+    // to the UI BEFORE the async reads, so the previous user's learning
+    // surface cannot remain interactive; the finally refresh below re-reads
+    // the actual gate once hydration resolves.
+    setLearningPaused(true);
     // Hydrate every durable sync control record bound to THIS user before any sync
     // is allowed: the erase guard (incl. its durable PHASE), the acknowledged
     // generation, and any remote-erase recovery marker. User-mismatched / corrupt
@@ -340,6 +364,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           markRemoteEraseBlocked();
           setRemoteEraseStatus("blocked");
         }
+        setLearningPaused(true); // Codex P2: the gate is closed either way
         hasPulled.current = true;
         return; // recovery UI takes over — no automatic device wipe, no pull
       }
@@ -362,6 +387,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           // recovery marker exists); a restart retries the reconcile.
           markRemoteEraseBlocked();
           setRemoteEraseStatus("blocked");
+          setLearningPaused(true); // Codex P2: the gate is closed
           return;
         }
       }
@@ -513,82 +539,91 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const deleteSyncedData = useCallback((): Promise<DeleteSyncedStatus> => {
     return deleteFlightRef.current!.run(async () => {
       if (!user) return "cloud_failed";
-      // A pending deletion owned by ANOTHER user — or one whose marker is corrupt
-      // (unknown owner) — must never be executed under this user: the original
-      // account must complete its own pending deletion. Fail closed.
-      if (cloudEraseState() === "pending" && cloudErasePendingUserId() !== user.id) {
-        return "cloud_failed";
-      }
-      // Reuse a pending op id (crash/retry) so the server replays idempotently,
-      // and RESUME from the durable phase so no completed destructive step
-      // re-runs. A NEW id is a validated RFC4122 UUIDv4 (the server column is
-      // `uuid`). The state machine passes the operation identity to every phase
-      // advance / marker clear, so a stale task can never touch another
-      // operation's marker.
-      const opId = cloudErasePendingOpId() ?? (await makeOperationId());
-      const phase = cloudErasePendingPhase();
-      const resume = phase
-        ? {
-            phase,
-            serverGeneration: cloudErasePendingServerGeneration() ?? undefined,
-          }
-        : null;
-      const uidNow = user.id;
-      // Codex P1: if auth switches mid-operation (sign-out + another sign-in),
-      // STOP at the latest durably recorded phase — never run a destructive or
-      // finalizing step for `uidNow` under a different active identity. The
-      // original owner resumes safely from the retained marker.
-      const assertOwnerActive = () => {
-        if (latestUserIdRef.current !== uidNow) {
-          throw new Error("auth changed during deletion; stopping at the recorded phase");
+      // Codex P2: reflect the closing gate in the UI BEFORE any await — an
+      // already-open lesson must become non-interactive as soon as the
+      // destructive flow starts. The finally refresh re-reads the actual gate
+      // on EVERY outcome (success, failure, or thrown), so an arm that left no
+      // blocked state reopens learning without a reload.
+      setLearningPaused(true);
+      try {
+        // A pending deletion owned by ANOTHER user — or one whose marker is corrupt
+        // (unknown owner) — must never be executed under this user: the original
+        // account must complete its own pending deletion. Fail closed.
+        if (cloudEraseState() === "pending" && cloudErasePendingUserId() !== user.id) {
+          return "cloud_failed";
         }
-      };
-      const status = await runDeleteSyncedData({
-        resume,
-        armErase: () => armCloudErase({ opId, userId: uidNow }),
-        // Codex P1: verify-then-PIN. The live identity, the fresh session, and
-        // the pending marker are all re-verified immediately before the RPC,
-        // and the request is pinned to the VERIFIED session's access token —
-        // the mutable global client is never consulted for the deletion, so a
-        // session switched to another account can never be deleted.
-        deleteCloud: () =>
-          runPinnedCloudDelete({
-            ownerUserId: uidNow,
-            operationId: opId,
-            latestAuthUserId: () => latestUserIdRef.current,
-            getSession: currentSessionSnapshot,
-            pendingOwner: cloudErasePendingUserId,
-            pendingOpId: cloudErasePendingOpId,
-            rpcWithToken: (token, id) => deleteSyncedRows(id, token),
-          }),
-        markCloudDeleted: (gen) =>
-          advanceCloudErasePhase({
-            phase: "cloud_deleted",
-            serverGeneration: gen,
-            expectedUserId: uidNow,
-            expectedOperationId: opId,
-          }),
-        resetLocal: async () => {
-          assertOwnerActive();
-          await resetLocalData();
-        },
-        markLocalResetDone: () =>
-          advanceCloudErasePhase({
-            phase: "local_reset_done",
-            expectedUserId: uidNow,
-            expectedOperationId: opId,
-          }),
-        acknowledgeGeneration: async (gen) => {
-          assertOwnerActive();
-          await setSyncGeneration({ userId: uidNow, generation: gen });
-        },
-        finishErase: async () => {
-          assertOwnerActive();
-          await finishCloudErase(undefined, { userId: uidNow, operationId: opId });
-        },
-      });
-      refreshControlState();
-      return status;
+        // Reuse a pending op id (crash/retry) so the server replays idempotently,
+        // and RESUME from the durable phase so no completed destructive step
+        // re-runs. A NEW id is a validated RFC4122 UUIDv4 (the server column is
+        // `uuid`). The state machine passes the operation identity to every phase
+        // advance / marker clear, so a stale task can never touch another
+        // operation's marker.
+        const opId = cloudErasePendingOpId() ?? (await makeOperationId());
+        const phase = cloudErasePendingPhase();
+        const resume = phase
+          ? {
+              phase,
+              serverGeneration: cloudErasePendingServerGeneration() ?? undefined,
+            }
+          : null;
+        const uidNow = user.id;
+        // Codex P1: if auth switches mid-operation (sign-out + another sign-in),
+        // STOP at the latest durably recorded phase — never run a destructive or
+        // finalizing step for `uidNow` under a different active identity. The
+        // original owner resumes safely from the retained marker.
+        const assertOwnerActive = () => {
+          if (latestUserIdRef.current !== uidNow) {
+            throw new Error("auth changed during deletion; stopping at the recorded phase");
+          }
+        };
+        const status = await runDeleteSyncedData({
+          resume,
+          armErase: () => armCloudErase({ opId, userId: uidNow }),
+          // Codex P1: verify-then-PIN. The live identity, the fresh session, and
+          // the pending marker are all re-verified immediately before the RPC,
+          // and the request is pinned to the VERIFIED session's access token —
+          // the mutable global client is never consulted for the deletion, so a
+          // session switched to another account can never be deleted.
+          deleteCloud: () =>
+            runPinnedCloudDelete({
+              ownerUserId: uidNow,
+              operationId: opId,
+              latestAuthUserId: () => latestUserIdRef.current,
+              getSession: currentSessionSnapshot,
+              pendingOwner: cloudErasePendingUserId,
+              pendingOpId: cloudErasePendingOpId,
+              rpcWithToken: (token, id) => deleteSyncedRows(id, token),
+            }),
+          markCloudDeleted: (gen) =>
+            advanceCloudErasePhase({
+              phase: "cloud_deleted",
+              serverGeneration: gen,
+              expectedUserId: uidNow,
+              expectedOperationId: opId,
+            }),
+          resetLocal: async () => {
+            assertOwnerActive();
+            await resetLocalData();
+          },
+          markLocalResetDone: () =>
+            advanceCloudErasePhase({
+              phase: "local_reset_done",
+              expectedUserId: uidNow,
+              expectedOperationId: opId,
+            }),
+          acknowledgeGeneration: async (gen) => {
+            assertOwnerActive();
+            await setSyncGeneration({ userId: uidNow, generation: gen });
+          },
+          finishErase: async () => {
+            assertOwnerActive();
+            await finishCloudErase(undefined, { userId: uidNow, operationId: opId });
+          },
+        });
+        return status;
+      } finally {
+        refreshControlState();
+      }
     });
   }, [user, deleteSyncedRows, resetLocalData, refreshControlState]);
 
@@ -606,46 +641,53 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return confirmFlightRef.current!.run(async () => {
       if (!user) return;
       const uidNow = user.id;
-      // Codex P1 (round 3): same owner revalidation as the delete flow. If auth
-      // switches while the confirmation is in flight (e.g. during the server
-      // generation fetch), no destructive, acknowledging, or clearing step may
-      // run for uidNow under a different active identity — a thrown guard
-      // leaves the recovery marker fully pending (no reset / no ack / no clear /
-      // no reopen), so the original owner retries later from the same marker.
-      const assertOwnerActive = () => {
-        if (latestUserIdRef.current !== uidNow) {
-          throw new Error("auth changed during recovery; leaving recovery pending");
-        }
-      };
-      const outcome = await runRemoteEraseConfirm({
-        recovery: remoteEraseRecovery(),
-        currentUserId: uidNow,
-        fetchServerGeneration: fetchSyncGeneration,
-        resetLocal: async () => {
-          assertOwnerActive();
-          await resetLocalData();
-        },
-        acknowledgeGeneration: async (gen) => {
-          assertOwnerActive();
-          await setSyncGeneration({ userId: uidNow, generation: gen });
-        },
-        clearRecovery: async () => {
-          assertOwnerActive();
-          // The shared recovery key must STILL hold this user's actionable
-          // marker — never clear whatever happens to occupy it merely because
-          // the active auth identity matches (absent / foreign / corrupt →
-          // throw: nothing cleared, sync not reopened, recovery stays pending).
-          const marker = remoteEraseRecovery();
-          if (!marker || marker.userId !== uidNow) {
-            throw new Error("recovery marker changed; refusing to clear");
+      // Codex P2: mirror the (already closed) gate before the async work; the
+      // finally refresh re-reads the actual gate on every outcome, so a
+      // completed confirmation reopens learning without a reload.
+      setLearningPaused(true);
+      try {
+        // Codex P1 (round 3): same owner revalidation as the delete flow. If auth
+        // switches while the confirmation is in flight (e.g. during the server
+        // generation fetch), no destructive, acknowledging, or clearing step may
+        // run for uidNow under a different active identity — a thrown guard
+        // leaves the recovery marker fully pending (no reset / no ack / no clear /
+        // no reopen), so the original owner retries later from the same marker.
+        const assertOwnerActive = () => {
+          if (latestUserIdRef.current !== uidNow) {
+            throw new Error("auth changed during recovery; leaving recovery pending");
           }
-          await clearRemoteEraseRecovery();
-        },
-      });
-      refreshControlState();
-      if (outcome === "done") {
-        hasPulled.current = false;
-        setSyncEpoch((n) => n + 1); // re-run reconcile/pull now that sync is unblocked
+        };
+        const outcome = await runRemoteEraseConfirm({
+          recovery: remoteEraseRecovery(),
+          currentUserId: uidNow,
+          fetchServerGeneration: fetchSyncGeneration,
+          resetLocal: async () => {
+            assertOwnerActive();
+            await resetLocalData();
+          },
+          acknowledgeGeneration: async (gen) => {
+            assertOwnerActive();
+            await setSyncGeneration({ userId: uidNow, generation: gen });
+          },
+          clearRecovery: async () => {
+            assertOwnerActive();
+            // The shared recovery key must STILL hold this user's actionable
+            // marker — never clear whatever happens to occupy it merely because
+            // the active auth identity matches (absent / foreign / corrupt →
+            // throw: nothing cleared, sync not reopened, recovery stays pending).
+            const marker = remoteEraseRecovery();
+            if (!marker || marker.userId !== uidNow) {
+              throw new Error("recovery marker changed; refusing to clear");
+            }
+            await clearRemoteEraseRecovery();
+          },
+        });
+        if (outcome === "done") {
+          hasPulled.current = false;
+          setSyncEpoch((n) => n + 1); // re-run reconcile/pull now that sync is unblocked
+        }
+      } finally {
+        refreshControlState();
       }
     });
   }, [user, fetchSyncGeneration, resetLocalData, refreshControlState]);
@@ -721,6 +763,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     remoteEraseStatus,
     confirmRemoteErase,
     pendingDeletion,
+    learningPaused,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -438,3 +438,86 @@ describe("PR-I1 — UI copy contract", () => {
     assert(!/delete account/i.test(ui) && !/sign (you )?out/i.test(ui), "no account-deletion / sign-out wording");
   });
 });
+
+describe("PR-I1 — learning pauses while the mutation gate is closed (Codex P2 r3566344629)", () => {
+  test("AppProvider: learningPaused is a reactive mirror of the authoritative gate; loaded stays bootstrap-only", () => {
+    const provider = read("providers/AppProvider.tsx");
+    // Context field + authoritative source.
+    assert(provider.includes("learningPaused: boolean;"), "AppContext exposes learningPaused");
+    assert(provider.includes("setLearningPaused(isLearnerMutationBlocked())"), "the mirror re-reads the AUTHORITATIVE gate on every control refresh");
+    // loaded remains bootstrap/readiness only — never combined with the pause.
+    assert(provider.includes("loaded: storageHook.loaded && controlHydrated,"), "loaded stays bootstrap-only");
+    assert(!/loaded:.*learningPaused/.test(provider) && !/loaded:.*isLearnerMutationBlocked/.test(provider), "loaded is not combined with the pause state");
+    // Deletion: pause set synchronously BEFORE the first await; refresh in finally.
+    const delStart = provider.indexOf("deleteFlightRef.current!.run(");
+    const delSlice = provider.slice(delStart, provider.indexOf("confirmFlightRef.current!.run("));
+    const delPause = delSlice.indexOf("setLearningPaused(true)");
+    const delFirstAwait = delSlice.indexOf("await makeOperationId"); // the flow's first real await
+    assert(delPause !== -1 && delFirstAwait !== -1 && delPause < delFirstAwait, "deletion pauses BEFORE its first await");
+    assert(delSlice.includes("} finally {") && delSlice.includes("refreshControlState();"), "deletion refreshes the mirror on EVERY outcome (finally)");
+    // Recovery confirmation: same pattern.
+    const confStart = provider.indexOf("confirmFlightRef.current!.run(");
+    const confSlice = provider.slice(confStart, provider.indexOf("generationMismatchRef.current", confStart));
+    const confPause = confSlice.indexOf("setLearningPaused(true)");
+    const confFirstAwait = confSlice.indexOf("await");
+    assert(confPause !== -1 && confFirstAwait !== -1 && confPause < confFirstAwait, "confirmation pauses before its first await");
+    assert(confSlice.includes("} finally {") && confSlice.includes("refreshControlState();"), "confirmation refreshes the mirror on every outcome");
+    // User-bound hydration: pause set synchronously before the hydrations start.
+    const hydStart = provider.indexOf("let alive = true;\n    setEraseGuardHydrated(false);");
+    const hydSlice = provider.slice(hydStart, provider.indexOf("hasPulled", hydStart));
+    const hydPause = hydSlice.indexOf("setLearningPaused(true)");
+    const hydAll = hydSlice.indexOf("Promise.all");
+    assert(hydPause !== -1 && hydAll !== -1 && hydPause < hydAll, "user-bound hydration pauses synchronously before the async reads");
+    // Reconcile recovery + ack-failure branches mark the closed gate too.
+    assert((provider.match(/setLearningPaused\(true\); \/\/ Codex P2/g) ?? []).length >= 2, "reconcile recovery/ack-failure branches mirror the closed gate");
+  });
+
+  test("LearningPausedPanel is presentation-only; every learning surface consumes the pause", () => {
+    const panel = read("components/learning-engine/LearningPausedPanel.tsx");
+    assert(panel.includes("Learning is paused"), "shared calm paused copy");
+    // Presentation-only: nothing imported beyond React / react-native / theme —
+    // no lib modules (storage, supabase, gates), no providers, no router.
+    assert(
+      !/@\/lib\//.test(panel) && !/@\/providers\//.test(panel) &&
+        !panel.includes("expo-router") && !panel.includes("isLearnerMutationBlocked"),
+      "the panel has no storage/Supabase/gate/navigation logic",
+    );
+
+    // Home: paused branch keeps account + privacy controls; Lesson Zero cannot
+    // trap or redirect a paused first-use user.
+    const home = read("app/(tabs)/index.tsx");
+    assert(home.includes("learningPaused"), "Home consumes learningPaused");
+    assert(home.includes("if (loaded && !learningPaused && needsLessonZero)"), "Lesson-Zero redirect waits for loaded && !paused");
+    assert(home.includes("(needsLessonZero && !learningPaused)"), "a paused first-use user is not trapped behind the spinner");
+    const pausedHome = home.slice(home.indexOf("if (learningPaused) {"), home.indexOf("const today = ()"));
+    assert(pausedHome.includes("<LearningPausedPanel") && pausedHome.includes("<PrivacyDataControls"), "paused Home shows the panel + privacy controls");
+    assert(pausedHome.includes("accountButton") && pausedHome.includes("{accountModal}"), "account entry + sign-out stay reachable while paused");
+    assert(!pausedHome.includes("startDailyReview") && !pausedHome.includes("goToLesson") && !pausedHome.includes("v1-lesson"), "paused Home offers no lesson / v1 / Daily Review actions");
+
+    // Practice: paused panel after the FEATURES.practice redirect, before modes.
+    const practice = read("app/(tabs)/practice.tsx");
+    assert(practice.includes("learningPaused"), "Practice consumes learningPaused");
+    const redirectIdx = practice.indexOf("if (!FEATURES.practice)");
+    const practicePausedIdx = practice.indexOf("if (learningPaused)");
+    const menuIdx = practice.indexOf('if (mode === "menu")');
+    assert(redirectIdx !== -1 && redirectIdx < practicePausedIdx && practicePausedIdx < menuIdx, "paused panel sits after the redirect and before any interactive mode");
+    assert(practice.includes("<LearningPausedPanel"), "Practice renders the shared paused panel");
+
+    // Both lesson routes gate the interactive lesson.
+    for (const file of ["app/lesson/[id].tsx", "app/v1-lesson/[id].tsx"]) {
+      const src = read(file);
+      assert(src.includes("learningPaused"), `${file} consumes learningPaused`);
+      assert(src.includes("<LearningPausedPanel"), `${file} renders the paused panel instead of the lesson`);
+    }
+
+    // Learning-engine shell: paused branch keeps privacy controls + exit and
+    // returns BEFORE any interactive card renders.
+    const shell = read("components/learning-engine/LearnerRendererShell.tsx");
+    const shellPausedIdx = shell.indexOf("if (learningPaused) {");
+    const shellCardIdx = shell.indexOf("renderCard(current");
+    assert(shellPausedIdx !== -1 && shellCardIdx !== -1 && shellPausedIdx < shellCardIdx, "the shell's paused branch precedes interactive cards");
+    const shellPaused = shell.slice(shellPausedIdx, shellCardIdx);
+    assert(shellPaused.includes("<LearningPausedPanel") && shellPaused.includes("<PrivacyDataControls"), "the paused shell keeps the panel + privacy controls");
+    assert(shellPaused.includes("onGoHome={handleExit}"), "exit stays available in the paused shell");
+  });
+});

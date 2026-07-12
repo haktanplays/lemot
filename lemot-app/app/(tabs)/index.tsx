@@ -18,6 +18,8 @@ import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
 import { LessonCard } from "@/components/LessonCard";
 import { MilestoneCard } from "@/components/MilestoneCard";
 import { Btn } from "@/components/Btn";
+import { LearningPausedPanel } from "@/components/learning-engine/LearningPausedPanel";
+import { PrivacyDataControls } from "@/components/learning-engine/PrivacyDataControls";
 import type { ReviewQuestion } from "@/components/DailyReviewOverlay";
 import {
   DailyReviewOverlay,
@@ -40,7 +42,8 @@ function getHomeGreeting(date: Date = new Date()): string {
 }
 
 export default function HomeScreen() {
-  const { lp, dailyRev, updateDailyReview, prog, weakSpots, loaded } = useApp();
+  const { lp, dailyRev, updateDailyReview, prog, weakSpots, loaded, learningPaused } =
+    useApp();
   const { user, signOut } = useAuthContext();
 
   // First-use redirect: read sync from storage on first render so we can hide
@@ -60,10 +63,14 @@ export default function HomeScreen() {
     // Lesson Zero now leads straight into Lesson 1; the How Weave Works
     // explainer is no longer a mandatory first-run step (its route remains
     // reachable at /how-weave-works).
-    if (needsLessonZero) {
+    // PR-I1 (Codex P2): never redirect a paused first-use user into Lesson
+    // Zero — its progress could not be saved. The redirect waits for
+    // loaded && !learningPaused; the paused branch below keeps the user out of
+    // the spinner in the meantime.
+    if (loaded && !learningPaused && needsLessonZero) {
       router.replace("/lesson-zero" as never);
     }
-  }, [needsLessonZero]);
+  }, [needsLessonZero, loaded, learningPaused]);
 
   // Account modal state
   const [showAccount, setShowAccount] = useState(false);
@@ -74,10 +81,98 @@ export default function HomeScreen() {
   const [drAns, setDrAns] = useState<string | null>(null);
   const [drItems, setDrItems] = useState<ReviewQuestion[]>([]);
 
-  if (!loaded || needsLessonZero) {
+  // The Lesson-Zero leg of the spinner only applies while the redirect can
+  // actually fire — a PAUSED first-use user falls through to the paused Home
+  // below instead of being trapped behind an endless spinner (Codex P2).
+  if (!loaded || (needsLessonZero && !learningPaused)) {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <ActivityIndicator size="small" color={P.red} />
+      </SafeAreaView>
+    );
+  }
+
+  // Account entry + modal are shared by the paused and normal branches, so
+  // sign-out stays reachable while learning is paused.
+  const accountButton = (
+    <Pressable
+      onPress={() => {
+        if (user) {
+          setShowAccount(true);
+        } else {
+          router.push("/auth");
+        }
+      }}
+      className="flex-row items-center gap-2 px-3 py-2 rounded-xl bg-lm-paper border border-lm-border"
+    >
+      <User size={16} color={user ? P.green : P.ink3} />
+      <Text className="text-xs font-semibold" style={{ color: user ? P.green : P.ink3 }}>
+        {user ? (user.user_metadata?.display_name ?? "Account") : "Sign In"}
+      </Text>
+    </Pressable>
+  );
+
+  const accountModal = (
+    <Modal visible={showAccount} transparent animationType="fade">
+      <Pressable
+        className="flex-1 bg-black/40 justify-center items-center"
+        onPress={() => setShowAccount(false)}
+      >
+        <View className="bg-lm-paper rounded-2xl p-6 mx-8 w-72 border border-lm-border">
+          <Text className="text-lg font-bold text-lm-ink mb-1">
+            {user?.user_metadata?.display_name ?? "Account"}
+          </Text>
+          <Text className="text-sm text-lm-ink3 mb-5">
+            {user?.email ?? ""}
+          </Text>
+          <Pressable
+            onPress={() => {
+              setShowAccount(false);
+              signOut();
+            }}
+            className="rounded-xl py-3 items-center mb-2"
+            style={{ backgroundColor: P.red }}
+          >
+            <Text className="text-white text-sm font-semibold">Sign Out</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setShowAccount(false)}
+            className="rounded-xl py-3 items-center"
+            style={{ backgroundColor: P.border }}
+          >
+            <Text className="text-sm font-semibold text-lm-ink2">Cancel</Text>
+          </Pressable>
+        </View>
+      </Pressable>
+    </Modal>
+  );
+
+  // PR-I1 (Codex P2): while the learner-mutation gate is closed, durable
+  // learner writes are intentionally rejected — Home must not offer lessons,
+  // the v1 path, or Daily Review (their apparent progress would be silently
+  // dropped). The paused Home keeps the account entry, the privacy
+  // retry/confirm/blocked controls, and a calm explanation. It reopens
+  // reactively when the gate does — no reload, no repeated privacy operation.
+  if (learningPaused) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg">
+        <ScrollView className="flex-1 px-5" decelerationRate="normal">
+          <View className="pt-6 pb-4 flex-row items-center justify-between">
+            <View>
+              <Text className="text-base font-bold text-lm-ink">
+                {getHomeGreeting()}
+              </Text>
+              <Text className="text-xs text-lm-ink3">
+                Learning is paused for a moment.
+              </Text>
+            </View>
+            {supabaseReady && (accountButton)}
+          </View>
+          <LearningPausedPanel />
+          <PrivacyDataControls />
+          <View className="h-6" />
+        </ScrollView>
+        {accountModal}
       </SafeAreaView>
     );
   }
@@ -188,23 +283,7 @@ export default function HomeScreen() {
               In a build without Supabase env (Round 1 dev-apk), accounts do not
               exist, so an actionable Sign In CTA would be a dead end. This is
               the only opener of the Account modal, so that stays unreachable too. */}
-          {supabaseReady && (
-            <Pressable
-              onPress={() => {
-                if (user) {
-                  setShowAccount(true);
-                } else {
-                  router.push("/auth");
-                }
-              }}
-              className="flex-row items-center gap-2 px-3 py-2 rounded-xl bg-lm-paper border border-lm-border"
-            >
-              <User size={16} color={user ? P.green : P.ink3} />
-              <Text className="text-xs font-semibold" style={{ color: user ? P.green : P.ink3 }}>
-                {user ? (user.user_metadata?.display_name ?? "Account") : "Sign In"}
-              </Text>
-            </Pressable>
-          )}
+          {supabaseReady && (accountButton)}
         </View>
 
         {/* Journey Image */}
@@ -406,39 +485,8 @@ export default function HomeScreen() {
         onClose={() => setShowDR(false)}
       />
 
-      {/* Account Modal */}
-      <Modal visible={showAccount} transparent animationType="fade">
-        <Pressable
-          className="flex-1 bg-black/40 justify-center items-center"
-          onPress={() => setShowAccount(false)}
-        >
-          <View className="bg-lm-paper rounded-2xl p-6 mx-8 w-72 border border-lm-border">
-            <Text className="text-lg font-bold text-lm-ink mb-1">
-              {user?.user_metadata?.display_name ?? "Account"}
-            </Text>
-            <Text className="text-sm text-lm-ink3 mb-5">
-              {user?.email ?? ""}
-            </Text>
-            <Pressable
-              onPress={() => {
-                setShowAccount(false);
-                signOut();
-              }}
-              className="rounded-xl py-3 items-center mb-2"
-              style={{ backgroundColor: P.red }}
-            >
-              <Text className="text-white text-sm font-semibold">Sign Out</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setShowAccount(false)}
-              className="rounded-xl py-3 items-center"
-              style={{ backgroundColor: P.border }}
-            >
-              <Text className="text-sm font-semibold text-lm-ink2">Cancel</Text>
-            </Pressable>
-          </View>
-        </Pressable>
-      </Modal>
+      {/* Account Modal (shared with the paused branch) */}
+      {accountModal}
     </SafeAreaView>
   );
 }

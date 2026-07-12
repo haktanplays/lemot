@@ -26,6 +26,7 @@ import {
 import type { Lesson } from "@/lib/types";
 import { FEATURES } from "@/config/productStage";
 import type { UnlockType } from "@/components/UnlockCard";
+import { LearningPausedPanel } from "@/components/learning-engine/LearningPausedPanel";
 
 // Section components
 import { ReadListen } from "@/components/sections/ReadListen";
@@ -138,7 +139,7 @@ export default function LessonScreen() {
   const lessonId = parseInt(id || "1", 10);
   const lesson = LESSONS.find((l) => l.id === lessonId);
 
-  const { mk, lp, logErr, say, prog } = useApp();
+  const { mk, lp, logErr, say, prog, learningPaused } = useApp();
 
   const [sec, setSec] = useState(-1); // -1 = chunk selector
   const [activeChunk, setActiveChunk] = useState(-1); // -1 = not selected
@@ -150,6 +151,22 @@ export default function LessonScreen() {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <Text className="text-lm-ink">Lesson not found</Text>
+      </SafeAreaView>
+    );
+  }
+
+  // PR-I1 (Codex P2): the learner-mutation gate is closed — mk()/logErr()
+  // persistence is intentionally rejected, so the interactive sections must
+  // not mount (their progress/error/completion callbacks would appear to
+  // succeed and be silently dropped). Deep links and restored navigation
+  // stacks land here directly, so entry-point gating alone is not enough.
+  // Placed after all hooks (Rules of Hooks).
+  if (learningPaused) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg">
+        <View className="flex-1 px-6 justify-center">
+          <LearningPausedPanel onGoHome={() => router.replace("/" as never)} />
+        </View>
       </SafeAreaView>
     );
   }
