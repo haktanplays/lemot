@@ -1,11 +1,22 @@
 import { useCallback } from "react";
-import { supabase, rpcDeleteSyncedDataPinned } from "@/lib/supabase";
+import {
+  supabase,
+  currentSessionSnapshot,
+  rpcDeleteSyncedDataPinned,
+  rpcUpsertUserProgressPinned,
+  rpcInsertUserErrorPinned,
+} from "@/lib/supabase";
+import { runPinnedCloudWrite } from "@/lib/pinnedWrite";
 import {
   admitCloudWrite,
   releaseCloudWrite,
   isCloudSyncAdmitted,
 } from "@/lib/cloudEraseGuard";
-import { syncGeneration, isSyncGenerationReady } from "@/lib/syncGeneration";
+import {
+  syncGeneration,
+  syncGenerationUserId,
+  isSyncGenerationReady,
+} from "@/lib/syncGeneration";
 import { isRemoteErasePending } from "@/lib/remoteEraseRecovery";
 import type { ErrorEntry, DailyReview } from "@/lib/types";
 
@@ -49,18 +60,30 @@ export function useProgressSync(
       const token = admitCloudWrite();
       if (token === null) return;
       try {
-        // Current clients write via the generation-aware RPC (bypasses the
-        // generation-0 direct-write RLS); the server verifies exact generation.
-        const { error } = await supabase.rpc("upsert_user_progress", {
-          p_generation: syncGeneration(),
-          p_progress: data.progress,
-          p_daily_review: data.dailyReview,
+        // Codex P1 (round 4): verify-then-PIN. The ready generation must belong
+        // to THIS payload's user, the current session must be this user's, and
+        // the request executes pinned to the captured token + captured
+        // generation — never the mutable global client, so a session switched
+        // to another account can never receive this payload. Verification
+        // failures SKIP silently (best-effort sync; local data stays intact).
+        const result = await runPinnedCloudWrite({
+          expectedUserId: userId,
+          generationUserId: syncGenerationUserId,
+          generation: syncGeneration,
+          getSession: currentSessionSnapshot,
+          send: (accessToken, generation) =>
+            rpcUpsertUserProgressPinned({
+              accessToken,
+              generation,
+              progress: data.progress,
+              dailyReview: data.dailyReview,
+            }),
         });
-        if (error) {
-          console.warn("[Sync] Push failed:", error.message);
+        if (result.kind === "sent" && result.errorMessage !== null) {
+          console.warn("[Sync] Push failed:", result.errorMessage);
           // A stale-generation rejection means a deletion happened elsewhere:
           // hand off to the mismatch recovery; do NOT restamp/resend this payload.
-          if (isStaleGenerationError(error.message)) onGenerationMismatch?.();
+          if (isStaleGenerationError(result.errorMessage)) onGenerationMismatch?.();
         }
       } finally {
         releaseCloudWrite(token);
@@ -109,18 +132,27 @@ export function useProgressSync(
       const token = admitCloudWrite();
       if (token === null) return;
       try {
-        const { error } = await supabase.rpc("insert_user_error", {
-          p_generation: syncGeneration(),
-          p_word: entry.w,
-          p_section: entry.s,
-          p_given: entry.g,
-          p_correct: entry.c,
-          p_lesson_id: entry.l,
+        // Codex P1 (round 4): same verify-then-PIN as pushToCloud.
+        const result = await runPinnedCloudWrite({
+          expectedUserId: userId,
+          generationUserId: syncGenerationUserId,
+          generation: syncGeneration,
+          getSession: currentSessionSnapshot,
+          send: (accessToken, generation) =>
+            rpcInsertUserErrorPinned({
+              accessToken,
+              generation,
+              word: entry.w,
+              section: entry.s,
+              given: entry.g,
+              correct: entry.c,
+              lessonId: entry.l,
+            }),
         });
-        if (error) {
-          console.warn("[Sync] Error push failed:", error.message);
+        if (result.kind === "sent" && result.errorMessage !== null) {
+          console.warn("[Sync] Error push failed:", result.errorMessage);
           // Same mismatch handoff as pushToCloud; the payload is never resent.
-          if (isStaleGenerationError(error.message)) onGenerationMismatch?.();
+          if (isStaleGenerationError(result.errorMessage)) onGenerationMismatch?.();
         }
       } finally {
         releaseCloudWrite(token);

@@ -26,6 +26,7 @@ import "./generationMismatch.test";
 import "./operationId.test";
 import "./generationReconcile.test";
 import "./pinnedDelete.test";
+import "./pinnedWrite.test";
 import "./singleFlight.test";
 import "./deleteSyncedDataWiring.test";
 import "./mastery.test";

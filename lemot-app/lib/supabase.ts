@@ -55,27 +55,34 @@ export async function currentSessionSnapshot(): Promise<{
 }
 
 /**
- * PR-I1 (Codex P1): token-PINNED deletion RPC. An explicit PostgREST request
- * whose Authorization header is FIXED to the caller-captured access token — it
- * never consults the mutable global client's session, so an auth switch after
- * the owner-identity check cannot redirect the deletion to another account.
- * The ONLY body field is the idempotency key `p_op_id`; ownership resolves
- * server-side from `auth.uid()` embedded in the pinned token.
+ * PR-I1 (Codex P1): INTERNAL token-PINNED PostgREST RPC transport. An explicit
+ * POST whose Authorization header is FIXED to the caller-captured access token
+ * — it never consults the mutable global client's session and never routes
+ * through `supabase.rpc`, so an auth switch after the caller's identity check
+ * cannot redirect the request to another account. Ownership always resolves
+ * server-side from `auth.uid()` embedded in the pinned token; no body ever
+ * carries a user id. Reachable ONLY through the narrow allowed-function
+ * wrappers below — feature code gets no arbitrary-URL transport.
+ *
+ * A 2xx response with an empty (or JSON `null`) body is a SUCCESS (the write
+ * RPCs return void); a non-2xx response is an error whose PostgREST body text
+ * is preserved (the callers' "stale sync generation" detection reads it).
  */
-export async function rpcDeleteSyncedDataPinned(
-  accessToken: string,
-  opId: string
+async function rpcWithPinnedToken(
+  fn: "delete_my_synced_learning_data" | "upsert_user_progress" | "insert_user_error",
+  body: Record<string, unknown>,
+  accessToken: string
 ): Promise<{ data: unknown; errorMessage: string | null }> {
   if (!supabaseReady) return { data: null, errorMessage: "supabase not configured" };
   try {
-    const res = await fetch(`${supabaseUrl}/rest/v1/rpc/delete_my_synced_learning_data`, {
+    const res = await fetch(`${supabaseUrl}/rest/v1/rpc/${fn}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${accessToken}`,
         apikey: supabaseAnonKey,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ p_op_id: opId }),
+      body: JSON.stringify(body),
     });
     if (!res.ok) {
       let detail = "";
@@ -84,13 +91,81 @@ export async function rpcDeleteSyncedDataPinned(
       } catch {
         /* status alone is enough */
       }
-      return { data: null, errorMessage: `rpc failed (${res.status}): ${detail}` };
+      return { data: null, errorMessage: `rpc ${fn} failed (${res.status}): ${detail}` };
     }
-    return { data: (await res.json()) as unknown, errorMessage: null };
+    const text = await res.text();
+    if (text === "") return { data: null, errorMessage: null }; // void RPC success
+    try {
+      return { data: JSON.parse(text) as unknown, errorMessage: null };
+    } catch {
+      return { data: null, errorMessage: null }; // 2xx, non-JSON body → success, no data
+    }
   } catch (e) {
     return {
       data: null,
       errorMessage: e instanceof Error ? e.message : "network failure",
     };
   }
+}
+
+/**
+ * Token-pinned deletion RPC (Codex P1). The ONLY body field is the idempotency
+ * key `p_op_id` — never a user id.
+ */
+export function rpcDeleteSyncedDataPinned(
+  accessToken: string,
+  opId: string
+): Promise<{ data: unknown; errorMessage: string | null }> {
+  return rpcWithPinnedToken("delete_my_synced_learning_data", { p_op_id: opId }, accessToken);
+}
+
+/**
+ * Token-pinned generation-aware progress write (Codex P1, round 4). Body
+ * fields are exactly the server parameters — never a user id; the token rides
+ * only in the Authorization header.
+ */
+export async function rpcUpsertUserProgressPinned(args: {
+  accessToken: string;
+  generation: number;
+  progress: Record<string, boolean>;
+  dailyReview: unknown;
+}): Promise<{ errorMessage: string | null }> {
+  const { errorMessage } = await rpcWithPinnedToken(
+    "upsert_user_progress",
+    {
+      p_generation: args.generation,
+      p_progress: args.progress,
+      p_daily_review: args.dailyReview,
+    },
+    args.accessToken
+  );
+  return { errorMessage };
+}
+
+/**
+ * Token-pinned generation-aware error write (Codex P1, round 4). Body fields
+ * are exactly the server parameters — never a user id.
+ */
+export async function rpcInsertUserErrorPinned(args: {
+  accessToken: string;
+  generation: number;
+  word: string;
+  section: string;
+  given: string;
+  correct: string;
+  lessonId: number;
+}): Promise<{ errorMessage: string | null }> {
+  const { errorMessage } = await rpcWithPinnedToken(
+    "insert_user_error",
+    {
+      p_generation: args.generation,
+      p_word: args.word,
+      p_section: args.section,
+      p_given: args.given,
+      p_correct: args.correct,
+      p_lesson_id: args.lessonId,
+    },
+    args.accessToken
+  );
+  return { errorMessage };
 }

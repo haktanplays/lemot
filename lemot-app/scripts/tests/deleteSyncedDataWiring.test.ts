@@ -107,9 +107,17 @@ describe("PR-I1 — server durability model (generation + op log + write RPCs)",
 describe("PR-I1 — client wiring", () => {
   test("useProgressSync writes via generation-aware RPCs, fails closed, hands off mismatches", () => {
     const sync = read("hooks/useProgressSync.ts");
-    assert(sync.includes('.rpc("upsert_user_progress"'), "progress written via the generation-aware RPC");
-    assert(sync.includes('.rpc("insert_user_error"'), "errors written via the generation-aware RPC");
-    assert((sync.match(/p_generation: syncGeneration\(\)/g) ?? []).length >= 2, "both writes stamp the generation");
+    // Codex P1 (round 4): EVERY authenticated RPC — writes and deletion — is
+    // PINNED to a caller-verified token; the mutable global rpc client is gone.
+    assert(!sync.includes("supabase.rpc("), "no RPC goes through the mutable global client");
+    assert((sync.match(/runPinnedCloudWrite\(\{/g) ?? []).length === 2, "progress AND error writes run the verify-then-pin step");
+    assert(sync.includes("rpcUpsertUserProgressPinned({"), "progress written via the token-pinned transport");
+    assert(sync.includes("rpcInsertUserErrorPinned({"), "errors written via the token-pinned transport");
+    // The ready generation must belong to the payload's user, and the stamped
+    // generation is captured inside the pinned step (synchronously, pre-await).
+    assert((sync.match(/generationUserId: syncGenerationUserId/g) ?? []).length === 2, "both writes enforce the generation OWNER");
+    assert((sync.match(/generation: syncGeneration,/g) ?? []).length === 2, "both writes capture the user-bound generation in the pinned step");
+    assert((sync.match(/getSession: currentSessionSnapshot/g) ?? []).length === 2, "both writes verify the session via the shared auth abstraction");
     assert(sync.includes("isSyncGenerationReady()") && sync.includes("isRemoteErasePending()"), "writes gated on generation-ready + no recovery");
     // Codex P1: the deletion request is PINNED to the caller-verified token —
     // it must NEVER go through the mutable global client's rpc().
@@ -128,10 +136,15 @@ describe("PR-I1 — client wiring", () => {
     );
     assert(!sync.includes('.from("user_sync_state").insert') && !sync.includes('.from("user_sync_state").upsert'), "the client never creates the sync-state row");
     // Stale-generation rejections hand off to the mismatch recovery on BOTH write
-    // paths; the rejected payload is never restamped/resent inside the hook.
+    // paths (only for a SENT result — a skipped write never triggers it); the
+    // rejected payload is never restamped/resent inside the hook.
     assert(
-      (sync.match(/isStaleGenerationError\(error\.message\)\) onGenerationMismatch\?\.\(\)/g) ?? []).length >= 2,
+      (sync.match(/isStaleGenerationError\(result\.errorMessage\)\) onGenerationMismatch\?\.\(\)/g) ?? []).length >= 2,
       "pushToCloud AND pushError hand a stale-generation rejection to the mismatch recovery",
+    );
+    assert(
+      (sync.match(/result\.kind === "sent" && result\.errorMessage !== null/g) ?? []).length === 2,
+      "the handoff/logging path is reachable only from a SENT result",
     );
   });
 
@@ -301,17 +314,37 @@ describe("PR-I1 — client wiring", () => {
     assert(!provider.includes("remoteErasePending:"), "the ambiguous pending boolean is gone from the provider API");
   });
 
-  test("Codex P1: the pinned RPC transport is token-fixed and session-independent", () => {
+  test("Codex P1: the pinned RPC transport is token-fixed, session-independent, and narrowly wrapped", () => {
     const sb = read("lib/supabase.ts");
-    const start = sb.indexOf("export async function rpcDeleteSyncedDataPinned");
-    assert(start !== -1, "the pinned transport exists");
+    // ONE internal pinned transport; not exported (no arbitrary-URL transport
+    // for feature code) and restricted to the three allowed functions.
+    const start = sb.indexOf("async function rpcWithPinnedToken");
+    assert(start !== -1 && !sb.includes("export async function rpcWithPinnedToken"), "the internal transport exists and is NOT exported");
     const body = sb.slice(start, sb.indexOf("\n}", start));
+    assert(
+      body.includes('"delete_my_synced_learning_data" | "upsert_user_progress" | "insert_user_error"'),
+      "the transport accepts ONLY the three allowed functions",
+    );
     assert(body.includes("Authorization: `Bearer ${accessToken}`"), "Authorization is FIXED to the caller-captured token");
     assert(body.includes("apikey: supabaseAnonKey"), "the public anon key rides as apikey");
-    assert(body.includes("JSON.stringify({ p_op_id: opId })"), "the ONLY body field is the idempotency key");
     assert(!body.includes("auth."), "the pinned request never consults the mutable auth session");
     assert(!body.includes("supabase.rpc"), "the pinned request never routes through the global rpc client");
-    assert(!/user_?id/i.test(body), "no user id is ever sent — ownership stays auth.uid() only");
+    assert(body.includes('if (text === "") return { data: null, errorMessage: null }'), "an empty 2xx body is a SUCCESS (void write RPCs)");
+    // Narrow wrappers: deletion body stays ONLY p_op_id; write bodies carry
+    // exactly the server parameters; nothing anywhere sends a user id.
+    const wrappers = sb.slice(start);
+    assert(wrappers.includes("{ p_op_id: opId }"), "deletion body remains only the idempotency key");
+    assert(
+      wrappers.includes("p_generation: args.generation") &&
+        wrappers.includes("p_progress: args.progress") &&
+        wrappers.includes("p_daily_review: args.dailyReview"),
+      "progress body carries exactly the server parameters",
+    );
+    assert(
+      wrappers.includes("p_word: args.word") && wrappers.includes("p_lesson_id: args.lessonId"),
+      "error body carries exactly the server parameters",
+    );
+    assert(!/p_user_?id|user_id/i.test(wrappers), "no user id is ever sent — ownership stays auth.uid() only");
   });
 
   test("all durable control keys are EXCLUDED from the PR-H local reset/export inventory", () => {
