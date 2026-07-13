@@ -46,11 +46,14 @@ function isStaleGenerationError(message: string | undefined): boolean {
  * @param onGenerationMismatch invoked when a write RPC rejects with a stale
  *   generation — the caller (AppProvider) runs the mismatch recovery (block
  *   admission → fetch → recovery marker or fresh acknowledgement). The rejected
- *   payload is dropped, never restamped or resent.
+ *   payload is dropped, never restamped or resent. Codex P1: the callback
+ *   carries the REJECTED write's userId (captured with the payload), so the
+ *   caller can ignore a rejection whose owner is no longer the active account —
+ *   an A-bound stale response must never drive recovery for B.
  */
 export function useProgressSync(
   userId: string | undefined,
-  onGenerationMismatch?: () => void
+  onGenerationMismatch?: (rejectedUserId: string) => void
 ) {
   const pushToCloud = useCallback(
     async (data: SyncData) => {
@@ -83,7 +86,7 @@ export function useProgressSync(
           console.warn("[Sync] Push failed:", result.errorMessage);
           // A stale-generation rejection means a deletion happened elsewhere:
           // hand off to the mismatch recovery; do NOT restamp/resend this payload.
-          if (isStaleGenerationError(result.errorMessage)) onGenerationMismatch?.();
+          if (isStaleGenerationError(result.errorMessage)) onGenerationMismatch?.(userId);
         }
       } finally {
         releaseCloudWrite(token);
@@ -152,7 +155,7 @@ export function useProgressSync(
         if (result.kind === "sent" && result.errorMessage !== null) {
           console.warn("[Sync] Error push failed:", result.errorMessage);
           // Same mismatch handoff as pushToCloud; the payload is never resent.
-          if (isStaleGenerationError(result.errorMessage)) onGenerationMismatch?.();
+          if (isStaleGenerationError(result.errorMessage)) onGenerationMismatch?.(userId);
         }
       } finally {
         releaseCloudWrite(token);

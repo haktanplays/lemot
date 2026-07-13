@@ -137,10 +137,11 @@ describe("PR-I1 — client wiring", () => {
     assert(!sync.includes('.from("user_sync_state").insert') && !sync.includes('.from("user_sync_state").upsert'), "the client never creates the sync-state row");
     // Stale-generation rejections hand off to the mismatch recovery on BOTH write
     // paths (only for a SENT result — a skipped write never triggers it); the
-    // rejected payload is never restamped/resent inside the hook.
+    // rejected payload is never restamped/resent inside the hook. Codex P1: the
+    // handoff is OWNER-QUALIFIED — it carries the rejected write's userId.
     assert(
-      (sync.match(/isStaleGenerationError\(result\.errorMessage\)\) onGenerationMismatch\?\.\(\)/g) ?? []).length >= 2,
-      "pushToCloud AND pushError hand a stale-generation rejection to the mismatch recovery",
+      (sync.match(/isStaleGenerationError\(result\.errorMessage\)\) onGenerationMismatch\?\.\(userId\)/g) ?? []).length >= 2,
+      "pushToCloud AND pushError hand the stale rejection to the mismatch recovery WITH the write's user",
     );
     assert(
       (sync.match(/result\.kind === "sent" && result\.errorMessage !== null/g) ?? []).length === 2,
@@ -320,6 +321,32 @@ describe("PR-I1 — client wiring", () => {
     assert(
       noCloudIdx !== -1 && mergeIdx !== -1 && recheckIdx < noCloudIdx && recheckIdx < mergeIdx,
       "the re-check precedes the !cloud branch and every merge/apply side effect",
+    );
+  });
+
+  test("Codex P1: mismatch recovery is BOUND to the rejected write's user", () => {
+    const sync = read("hooks/useProgressSync.ts");
+    const provider = read("providers/AppProvider.tsx");
+    // Hook contract: the callback carries the rejected write's userId (captured
+    // with the payload), never resolved from the session at callback time.
+    assert(
+      sync.includes("onGenerationMismatch?: (rejectedUserId: string) => void"),
+      "the mismatch callback is owner-qualified",
+    );
+    // Provider wiring: the qualified id flows through the ref…
+    assert(
+      provider.includes("(rejectedUserId) => generationMismatchRef.current(rejectedUserId)"),
+      "the provider forwards the rejected owner through the ref",
+    );
+    // …and the handler runs recovery ONLY when that owner is still the active
+    // authenticated user — an A-bound rejection under B is ignored, so B's
+    // generation is never blocked and no B-bound recovery marker is created.
+    const handlerIdx = provider.indexOf("generationMismatchRef.current = (rejectedUserId");
+    assert(handlerIdx !== -1, "the handler receives the rejected owner");
+    const handlerSlice = provider.slice(handlerIdx, provider.indexOf("handleGenerationMismatch({", handlerIdx));
+    assert(
+      handlerSlice.includes("rejectedUserId !== user.id") && handlerSlice.includes("return"),
+      "ownership is checked BEFORE mismatch recovery runs",
     );
   });
 

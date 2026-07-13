@@ -228,3 +228,97 @@ describe("PR-I1 — hook-shaped mismatch + admission/release semantics", () => {
     await hydrateCloudEraseGuard(makeFakeKv());
   });
 });
+
+describe("PR-I1 — Codex P1: mismatch handoff is bound to the REJECTED write's user", () => {
+  /**
+   * Mirrors the OWNER-QUALIFIED hook shape (pinned by the wiring source scan):
+   * the stale-generation handoff passes the userId CAPTURED for the rejected
+   * payload — never the account active when the response resolves — and the
+   * provider side runs recovery only when that owner is still the active user.
+   */
+  const STALE = 'rpc failed (400): {"message":"stale sync generation (0 <> 1)"}';
+
+  async function qualifiedPushMirror(args: {
+    writeUserId: string;
+    deps: PinnedWriteDeps;
+    onGenerationMismatch: (rejectedUserId: string) => void;
+  }): Promise<void> {
+    const token = admitCloudWrite();
+    if (token === null) return;
+    try {
+      const result = await runPinnedCloudWrite(args.deps);
+      if (result.kind === "sent" && result.errorMessage !== null) {
+        if (result.errorMessage.includes("stale sync generation")) {
+          args.onGenerationMismatch(args.writeUserId);
+        }
+      }
+    } finally {
+      releaseCloudWrite(token);
+    }
+  }
+
+  // Mirrors the provider-side owner gate: recovery runs ONLY for the still-active owner.
+  function providerGate(activeUser: () => string | null, recoveries: string[]) {
+    return (rejectedUserId: string) => {
+      const active = activeUser();
+      if (!active || rejectedUserId !== active) return; // A-bound rejection under B → ignored
+      recoveries.push(rejectedUserId);
+    };
+  }
+
+  test("A's stale response after an A→B switch carries A and is IGNORED by the gate", async () => {
+    __resetCloudEraseGuardForTest();
+    await hydrateCloudEraseGuard(makeFakeKv());
+
+    let active: string | null = "user-a";
+    const recoveries: string[] = [];
+    const received: string[] = [];
+    const gate = providerGate(() => active, recoveries);
+
+    let settle!: () => void;
+    const wait = new Promise<void>((res) => {
+      settle = res;
+    });
+    const slow = harness({
+      send: async () => {
+        await wait; // A's request stays in flight…
+        return { errorMessage: STALE };
+      },
+    });
+    const run = qualifiedPushMirror({
+      writeUserId: "user-a",
+      deps: slow.deps,
+      onGenerationMismatch: (rejected) => {
+        received.push(rejected);
+        gate(rejected);
+      },
+    });
+    active = "user-b"; // …the account switches to B before the rejection returns
+    settle();
+    await run;
+
+    assert(received.length === 1 && received[0] === "user-a", "the handoff carries the REJECTED write's user (A), not the active account");
+    assert(recoveries.length === 0, "no recovery runs for B from A's rejected write");
+  });
+
+  test("stale response while the owner is STILL active → recovery runs exactly once for that owner", async () => {
+    __resetCloudEraseGuardForTest();
+    await hydrateCloudEraseGuard(makeFakeKv());
+    const recoveries: string[] = [];
+    const gate = providerGate(() => "user-a", recoveries);
+    const stale = harness({ send: async () => ({ errorMessage: STALE }) });
+    await qualifiedPushMirror({ writeUserId: "user-a", deps: stale.deps, onGenerationMismatch: gate });
+    assert(recoveries.length === 1 && recoveries[0] === "user-a", "same-user mismatch recovery runs exactly once");
+  });
+
+  test("non-stale failures never invoke the qualified handoff (both write paths share the shape)", async () => {
+    __resetCloudEraseGuardForTest();
+    await hydrateCloudEraseGuard(makeFakeKv());
+    const received: string[] = [];
+    const nonStale = harness({ send: async () => ({ errorMessage: "rpc failed (401): JWT expired" }) });
+    await qualifiedPushMirror({ writeUserId: "user-a", deps: nonStale.deps, onGenerationMismatch: (u) => received.push(u) });
+    assert(received.length === 0, "auth/network failures do not trigger mismatch recovery");
+    __resetCloudEraseGuardForTest();
+    await hydrateCloudEraseGuard(makeFakeKv());
+  });
+});

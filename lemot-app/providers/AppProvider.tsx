@@ -209,14 +209,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Write-RPC generation-mismatch handoff. A ref breaks the circular dependency
   // (the handler needs fetchSyncGeneration, which the hook itself returns); the
   // latest handler is stamped below once the deps exist.
-  const generationMismatchRef = useRef<() => void>(() => {});
+  const generationMismatchRef = useRef<(rejectedUserId: string) => void>(() => {});
   const {
     pushToCloud,
     pullFromCloud,
     pushError,
     deleteSyncedRows,
     fetchSyncGeneration,
-  } = useProgressSync(user?.id, () => generationMismatchRef.current());
+  } = useProgressSync(user?.id, (rejectedUserId) => generationMismatchRef.current(rejectedUserId));
   const hasPulled = useRef(false);
 
   // Ref to capture latest storage values for the pull effect
@@ -716,8 +716,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // block admission → fetch the current generation → recovery marker when local
   // learner data exists, fresh acknowledgement when the device is empty. The
   // rejected payload is never restamped or resent.
-  generationMismatchRef.current = () => {
-    if (!user) return;
+  generationMismatchRef.current = (rejectedUserId) => {
+    // Codex P1: an A-bound stale rejection resolving under account B must be
+    // ignored — recovery runs ONLY for the write's owner while that owner is
+    // still the active user. Otherwise A's failed write could block B's sync
+    // or persist a B-bound remote-erase marker.
+    if (!user || rejectedUserId !== user.id) return;
     const uidNow = user.id;
     void handleGenerationMismatch({
       userId: uidNow,
