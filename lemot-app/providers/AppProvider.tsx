@@ -30,6 +30,7 @@ import {
 } from "@/lib/cloudEraseGuard";
 import {
   hydrateSyncGeneration,
+  isSyncGenerationReady,
   syncGeneration,
   setSyncGeneration,
   blockSyncGeneration,
@@ -326,7 +327,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (!user || !storageHook.loaded || hasPulled.current) return;
     // PR-I1: wait until the durable records hydrate; skip while an erase is
     // pending or a remote-erase recovery is awaiting the user's confirmation.
-    if (!eraseGuardHydrated || !isCloudSyncAdmitted() || isRemoteErasePending()) return;
+    // Codex P1: also require the LOCAL generation to be READY for this user —
+    // a corrupt/foreign/unreadable record hydrates not-ready with the value
+    // parked at 0, and that 0 must never enter the reconcile below. Readiness
+    // changes only via a hydration cycle (which re-toggles eraseGuardHydrated)
+    // or the acknowledgement inside this effect, so no extra dependency is
+    // needed for the legitimate ready transition to re-run this effect.
+    if (!eraseGuardHydrated || !isSyncGenerationReady() || !isCloudSyncAdmitted() || isRemoteErasePending()) return;
 
     (async () => {
       // PR-I1 (durable delete, multi-device) reconcile — NO automatic wipe. The
@@ -337,6 +344,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       // effect. A missing/malformed sync-state row surfaces as null (never
       // baseline 0, never client-created).
       const decision = await resolveGenerationReconcile({
+        localGenerationReady: isSyncGenerationReady,
         fetchServerGeneration: fetchSyncGeneration,
         localGeneration: syncGeneration,
         hasLearnerData: hasLocalLearnerData,

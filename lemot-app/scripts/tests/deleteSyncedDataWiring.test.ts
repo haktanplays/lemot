@@ -281,6 +281,26 @@ describe("PR-I1 — client wiring", () => {
     assert(provider.includes("finishCloudErase(undefined, { userId: uidNow, operationId: opId })"), "finish is identity-checked");
   });
 
+  test("Codex P1: startup reconcile is gated on local generation READINESS", () => {
+    const provider = read("providers/AppProvider.tsx");
+    // A corrupt/foreign/unreadable durable generation hydrates NOT-ready with the
+    // in-memory value parked at 0. The reconcile effect must not enter (and the
+    // resolver must not run) on that basis: the readiness gate sits in the same
+    // early-return guard as the admission checks, BEFORE any generation value is
+    // consumed or any cloud/recovery side effect starts.
+    assert(provider.includes("!isSyncGenerationReady()"), "effect gate: not-ready never enters reconcile");
+    const gateIdx = provider.indexOf("!isSyncGenerationReady()");
+    const resolverIdx = provider.indexOf("resolveGenerationReconcile({");
+    assert(gateIdx !== -1 && resolverIdx !== -1 && gateIdx < resolverIdx, "the readiness gate precedes the resolver");
+    // Defense-in-depth: the pure resolver also receives readiness and fails
+    // closed BEFORE fetching the server generation (behavior pinned in
+    // generationReconcile.test.ts).
+    assert(
+      provider.includes("localGenerationReady: isSyncGenerationReady"),
+      "the resolver receives the readiness dep",
+    );
+  });
+
   test("Codex P2-3: recovery marker persistence fails CLOSED (block first, catch, blocked-not-actionable, no pull)", () => {
     const provider = read("providers/AppProvider.tsx");
     // Startup reconcile recovery branch: admission blocked BEFORE the marker

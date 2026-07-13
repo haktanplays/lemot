@@ -24,7 +24,11 @@
 export type GenerationReconcileDecision =
   | {
       kind: "fail_closed";
-      reason: "fetch_failed" | "local_ahead" | "inventory_unreadable";
+      reason:
+        | "generation_not_ready"
+        | "fetch_failed"
+        | "local_ahead"
+        | "inventory_unreadable";
     }
   | { kind: "recovery"; targetGeneration: number }
   | { kind: "acknowledge_and_pull"; generation: number }
@@ -55,6 +59,11 @@ export function decideGenerationReconcile(args: {
 
 /**
  * Fail-closed reconcile resolver — the exact startup order:
+ *   0. the LOCAL generation must be READY for the current user (Codex P1): a
+ *      corrupt/foreign/unreadable durable record hydrates NOT-ready with the
+ *      in-memory value parked at 0 — that 0 is not a real generation and must
+ *      never be compared, acknowledged, or recovered against. Not ready → fail
+ *      closed BEFORE any cloud side effect (the server fetch never starts);
  *   1. fetch the server generation FIRST; null/throw → fail closed immediately,
  *      WITHOUT touching the local learner inventory;
  *   2. compare server vs local; equal or local-ahead never needs the inventory;
@@ -64,10 +73,15 @@ export function decideGenerationReconcile(args: {
  *      never escapes to the caller.
  */
 export async function resolveGenerationReconcile(deps: {
+  localGenerationReady: () => boolean;
   fetchServerGeneration: () => Promise<number | null>;
   localGeneration: () => number;
   hasLearnerData: () => Promise<boolean>;
 }): Promise<GenerationReconcileDecision> {
+  if (!deps.localGenerationReady()) {
+    // No fetch, no inventory scan, no decision built on the parked default.
+    return { kind: "fail_closed", reason: "generation_not_ready" };
+  }
   let server: number | null;
   try {
     server = await deps.fetchServerGeneration();

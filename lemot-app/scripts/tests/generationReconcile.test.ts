@@ -172,6 +172,7 @@ describe("PR-I1 — fail-closed resolver: fetch first, inventory only when neede
   function harness(server: number | null | "throws", local: number, hasData: boolean | "throws") {
     let inventoryCalls = 0;
     const deps = {
+      localGenerationReady: () => true, // these cases exercise the READY paths
       fetchServerGeneration: async () => {
         if (server === "throws") throw new Error("fetch blew up");
         return server;
@@ -443,5 +444,73 @@ describe("PR-I1 — fresh-install acknowledgement fails closed (Codex P2, round 
     __resetRemoteEraseRecoveryForTest();
     await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
     await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+  });
+});
+
+describe("PR-I1 — Codex P1: reconcile fails closed while the local generation is NOT ready", () => {
+  // A corrupt/foreign/unreadable durable record hydrates to ready=false with the
+  // in-memory value parked at 0. The resolver must refuse to treat that 0 as a
+  // real generation: no server fetch, no inventory scan, no decision beyond
+  // fail_closed — BEFORE any cloud/recovery side effect can start.
+  function notReadyHarness(args: { ready: boolean; server: number; hasData?: boolean }) {
+    let fetches = 0;
+    let scans = 0;
+    let ready = args.ready;
+    const deps = {
+      localGenerationReady: () => ready,
+      fetchServerGeneration: async () => {
+        fetches += 1;
+        return args.server;
+      },
+      localGeneration: () => 0, // the parked not-ready default the finding warns about
+      hasLearnerData: async () => {
+        scans += 1;
+        return args.hasData ?? true;
+      },
+    };
+    return {
+      deps,
+      fetches: () => fetches,
+      scans: () => scans,
+      setReady: (v: boolean) => {
+        ready = v;
+      },
+    };
+  }
+
+  test("not ready → fail_closed with ZERO cloud side effects (no fetch, no inventory)", async () => {
+    const h = notReadyHarness({ ready: false, server: 3 });
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(
+      d.kind === "fail_closed" && d.reason === "generation_not_ready",
+      `not-ready must fail closed as generation_not_ready; got ${JSON.stringify(d)}`,
+    );
+    assert(h.fetches() === 0, "server generation must NOT be fetched while not ready");
+    assert(h.scans() === 0, "learner inventory must NOT be scanned while not ready");
+  });
+
+  test("not ready never surfaces as recovery even when the server is ahead", async () => {
+    // Pre-fix this produced kind:"recovery" (server 3 > parked 0, data present) —
+    // i.e. a 'Clear this device' prompt built on a corrupt/foreign basis.
+    const h = notReadyHarness({ ready: false, server: 3, hasData: true });
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(d.kind === "fail_closed", "corrupt/foreign basis must never prompt recovery");
+  });
+
+  test("legitimately READY baseline generation 0 still reconciles normally", async () => {
+    const h = notReadyHarness({ ready: true, server: 0 });
+    const d = await resolveGenerationReconcile(h.deps);
+    assert(d.kind === "proceed", "ready baseline 0 with server 0 proceeds as before");
+    assert(h.fetches() === 1, "server generation fetched exactly once");
+  });
+
+  test("ready TRANSITION: blocked first, then reconciles exactly once", async () => {
+    const h = notReadyHarness({ ready: false, server: 0 });
+    const first = await resolveGenerationReconcile(h.deps);
+    assert(first.kind === "fail_closed", "first pass (not ready) stays blocked");
+    h.setReady(true);
+    const second = await resolveGenerationReconcile(h.deps);
+    assert(second.kind === "proceed", "after a legitimate ready transition reconcile proceeds");
+    assert(h.fetches() === 1, "exactly one fetch across both passes (none while blocked)");
   });
 });
