@@ -426,6 +426,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      // Codex P2: a REMOTELY discovered erase can land mid-flight — e.g. a
+      // concurrent stale-generation write rejection blocks the generation and
+      // persists a recovery marker — without touching the local erase
+      // generation or the reset epoch above. Re-check the authoritative remote
+      // state at this same boundary: if the generation is no longer ready or a
+      // remote-erase recovery became pending, this pull is stale pre-deletion
+      // data — discard it entirely (no merge, no updateStoredData, no push;
+      // `hasPulled` stays unset so a legitimate later cycle re-runs normally).
+      if (!isSyncGenerationReady() || isRemoteErasePending()) {
+        return;
+      }
+
       if (!cloud) {
         hasPulled.current = true;
         return;

@@ -37,6 +37,18 @@ import {
   type CloudEraseKv,
   type PendingErasePhase,
 } from "../../lib/cloudEraseGuard";
+import {
+  hydrateSyncGeneration,
+  isSyncGenerationReady,
+  blockSyncGeneration,
+  __resetSyncGenerationForTest,
+} from "../../lib/syncGeneration";
+import {
+  isRemoteErasePending,
+  persistRemoteEraseRecovery,
+  hydrateRemoteEraseRecovery,
+  __resetRemoteEraseRecoveryForTest,
+} from "../../lib/remoteEraseRecovery";
 
 const tick = () => new Promise<void>((r) => setTimeout(r, 0));
 function val<T>(x: T): T {
@@ -444,6 +456,83 @@ describe("PR-I1 — in-flight pull is discarded at the apply boundary", () => {
     await finishCloudErase(kv);
     applyPullResult(cloudEraseGeneration());
     assert(len(applied) === 1, "a pull with no erase in flight applies normally");
+  });
+});
+
+describe("PR-I1 — Codex P2: REMOTE erase state is re-checked at the apply boundary", () => {
+  /**
+   * A remotely discovered erase can land while `pullFromCloud()` is in flight
+   * (a stale-generation write rejection blocks the generation and persists a
+   * recovery marker) WITHOUT touching the local erase generation or the reset
+   * epoch. The apply boundary must therefore re-check the authoritative remote
+   * state AFTER the await, before any merge/updateStoredData/push. This mirrors
+   * the effect's post-pull guard order (the wiring test pins the real source),
+   * driven by REAL module state over a deterministic deferred pull — no sleeps.
+   */
+  type Deferred<T> = { promise: Promise<T>; resolve: (v: T) => void };
+  function deferred<T>(): Deferred<T> {
+    let resolve!: (v: T) => void;
+    const promise = new Promise<T>((r) => {
+      resolve = r;
+    });
+    return { promise, resolve };
+  }
+
+  async function freshReadyBaseline(): Promise<void> {
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    await hydrateSyncGeneration({ userId: "user-a", store: makeFakeKv() });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+  }
+
+  // The post-pull apply boundary (same order as AppProvider): remote re-check
+  // runs after the await and before the !cloud / merge / push path.
+  async function runPullApply(pull: Promise<{ v: number } | null>) {
+    const effects = { applied: 0, pushed: 0 };
+    const cloud = await pull;
+    if (!isSyncGenerationReady() || isRemoteErasePending()) {
+      return { outcome: "discarded" as const, effects };
+    }
+    if (!cloud) return { outcome: "no-cloud" as const, effects };
+    effects.applied += 1; // updateStoredData(merge)
+    effects.pushed += 1; // pushToCloud(merged)
+    return { outcome: "applied" as const, effects };
+  }
+
+  test("generation becomes NOT ready mid-flight → pull discarded (no merge/update/push)", async () => {
+    await freshReadyBaseline();
+    const pull = deferred<{ v: number } | null>();
+    const run = runPullApply(pull.promise);
+    blockSyncGeneration(); // e.g. handleGenerationMismatch on a stale write rejection
+    pull.resolve({ v: 1 }); // stale pre-deletion cloud row arrives afterwards
+    const r = await run;
+    assert(r.outcome === "discarded", "stale pull must be discarded once the generation is blocked");
+    assert(r.effects.applied === 0 && r.effects.pushed === 0, "no merge, no updateStoredData, no push");
+  });
+
+  test("remote-erase recovery becomes PENDING mid-flight → pull discarded", async () => {
+    await freshReadyBaseline();
+    const store = makeFakeKv();
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store });
+    const pull = deferred<{ v: number } | null>();
+    const run = runPullApply(pull.promise);
+    await persistRemoteEraseRecovery({ userId: "user-a", targetGeneration: 2, store });
+    pull.resolve({ v: 1 });
+    const r = await run;
+    assert(isRemoteErasePending(), "precondition: recovery became pending mid-flight");
+    assert(r.outcome === "discarded", "a pull racing a pending recovery must be discarded");
+    assert(r.effects.applied === 0 && r.effects.pushed === 0, "no stale application side effect");
+  });
+
+  test("unchanged ready / no-pending state → the pull applies exactly once", async () => {
+    await freshReadyBaseline();
+    const pull = deferred<{ v: number } | null>();
+    const run = runPullApply(pull.promise);
+    pull.resolve({ v: 1 });
+    const r = await run;
+    assert(r.outcome === "applied", "normal pull application still proceeds");
+    assert(r.effects.applied === 1 && r.effects.pushed === 1, "applied exactly once");
+    await freshReadyBaseline(); // leave a clean baseline for later suites
   });
 });
 

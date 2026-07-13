@@ -301,6 +301,28 @@ describe("PR-I1 — client wiring", () => {
     );
   });
 
+  test("Codex P2: the apply boundary re-checks REMOTE erase state after the pull", () => {
+    const provider = read("providers/AppProvider.tsx");
+    // A remotely discovered erase (stale-write rejection → generation blocked +
+    // recovery marker persisted) does not touch the local erase generation or
+    // the reset epoch, so the boundary must ALSO re-check the authoritative
+    // remote state AFTER `await pullFromCloud()` and BEFORE the !cloud branch,
+    // the merge, updateStoredData, and the follow-up push.
+    const pullIdx = provider.indexOf("const cloud = await pullFromCloud()");
+    assert(pullIdx !== -1, "the pull boundary exists");
+    const recheckIdx = provider.indexOf(
+      "!isSyncGenerationReady() || isRemoteErasePending()",
+      pullIdx,
+    );
+    assert(recheckIdx !== -1, "post-pull remote-erase re-check exists after the await");
+    const noCloudIdx = provider.indexOf("if (!cloud)", pullIdx);
+    const mergeIdx = provider.indexOf("mergeProgress(", pullIdx);
+    assert(
+      noCloudIdx !== -1 && mergeIdx !== -1 && recheckIdx < noCloudIdx && recheckIdx < mergeIdx,
+      "the re-check precedes the !cloud branch and every merge/apply side effect",
+    );
+  });
+
   test("Codex P2-3: recovery marker persistence fails CLOSED (block first, catch, blocked-not-actionable, no pull)", () => {
     const provider = read("providers/AppProvider.tsx");
     // Startup reconcile recovery branch: admission blocked BEFORE the marker
