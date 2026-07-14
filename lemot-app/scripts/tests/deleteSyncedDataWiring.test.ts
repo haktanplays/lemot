@@ -375,6 +375,30 @@ describe("PR-I1 — client wiring", () => {
     );
   });
 
+  test("Codex P1 (round 5): learner mutations are gated BEFORE the in-memory blob mutates", () => {
+    const blob = read("lib/blobStore.ts");
+    const storage = read("hooks/useStorage.ts");
+    // Source order in BlobStore.update: the admission check must precede the
+    // `current = updater(current)` assignment, so a blocked mutation never
+    // contaminates in-memory state (the persist no-op alone fired too late).
+    const updateIdx = blob.indexOf("const update = (updater");
+    assert(updateIdx !== -1, "update exists");
+    const blockIdx = blob.indexOf("isMutationBlocked", updateIdx);
+    const assignIdx = blob.indexOf("current = updater(current)", updateIdx);
+    assert(blockIdx !== -1 && assignIdx !== -1 && blockIdx < assignIdx, "the block check precedes the current assignment");
+    // hydrate stays UNGATED (internal load/reset/acknowledged replacement).
+    const hydrateIdx = blob.indexOf("hydrate:");
+    const hydrateSlice = blob.slice(hydrateIdx, blob.indexOf("update,", hydrateIdx) > hydrateIdx ? blob.indexOf("update,", hydrateIdx) : hydrateIdx + 120);
+    assert(!hydrateSlice.includes("isMutationBlocked"), "hydrate is not gated (internal replacement stays functional)");
+    // Wiring: useStorage injects the learner-mutation gate as the predicate.
+    assert(
+      storage.includes("createBlobStore({ ...EMPTY }, (next) => persist(next), () => isLearnerMutationBlocked())"),
+      "useStorage injects isLearnerMutationBlocked as the blob-store admission predicate",
+    );
+    // Defense-in-depth: the persist-layer PR-I1 guard is retained.
+    assert(storage.includes("if (isLearnerMutationBlocked()) return;"), "the persist-layer guard remains as defense in depth");
+  });
+
   test("Codex P2-3: recovery marker persistence fails CLOSED (block first, catch, blocked-not-actionable, no pull)", () => {
     const provider = read("providers/AppProvider.tsx");
     // Startup reconcile recovery branch: admission blocked BEFORE the marker

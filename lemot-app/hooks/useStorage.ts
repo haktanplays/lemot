@@ -72,7 +72,7 @@ export function useStorage() {
   // value, so slice updates never clobber siblings.
   const storeRef = useRef<BlobStore | null>(null);
   if (storeRef.current === null) {
-    storeRef.current = createBlobStore({ ...EMPTY }, (next) => persist(next));
+    storeRef.current = createBlobStore({ ...EMPTY }, (next) => persist(next), () => isLearnerMutationBlocked());
   }
 
   const syncState = useCallback((next: StorageData) => {
