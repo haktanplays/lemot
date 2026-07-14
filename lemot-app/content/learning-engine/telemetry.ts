@@ -19,6 +19,7 @@
  */
 import type { KvLike } from "./repository/local";
 import { privacyResetEpoch, isPersistSuppressed } from "../../lib/privacyResetEpoch";
+import { isLearnerMutationBlocked } from "../../lib/learnerMutationGate";
 
 /** Bump when the event shape changes. Every event carries it. */
 export const TELEMETRY_SCHEMA_VERSION = 1;
@@ -196,6 +197,8 @@ export class TelemetryStore {
   /** Append one event; duplicate eventIds are ignored (idempotent). */
   async appendEvent(event: TelemetryEvent): Promise<void> {
     if (isPersistSuppressed(this.ackEpoch)) return; // PR-H reset write-barrier
+    // PR-I1: no NEW learner state while a deletion / recovery is pending.
+    if (isLearnerMutationBlocked()) return;
     const store = await this.store();
     const events = await this.readRaw();
     if (events.some((e) => e.eventId === event.eventId)) return;
