@@ -350,6 +350,31 @@ describe("PR-I1 — client wiring", () => {
     );
   });
 
+  test("Codex P1 (round 4): the server generation is revalidated AFTER the pull, before apply", () => {
+    const provider = read("providers/AppProvider.tsx");
+    // A deletion on ANOTHER device during the pull's MVCC read leaves every
+    // local mirror untouched, so the boundary must re-read the AUTHORITATIVE
+    // server generation post-pull and require it to still match the locally
+    // acknowledged one before the !cloud branch / merge / update / push.
+    const pullIdx = provider.indexOf("const cloud = await pullFromCloud()");
+    assert(pullIdx !== -1, "the pull boundary exists");
+    const refetchIdx = provider.indexOf("await fetchSyncGeneration()", pullIdx);
+    assert(refetchIdx !== -1, "the server generation is re-fetched after the pull");
+    const compareIdx = provider.indexOf("!== syncGeneration()", refetchIdx);
+    assert(compareIdx !== -1, "the re-read is compared to the locally acknowledged generation");
+    const localRecheckIdx = provider.indexOf("!isSyncGenerationReady() || isRemoteErasePending()", pullIdx);
+    const noCloudIdx = provider.indexOf("if (!cloud)", pullIdx);
+    const mergeIdx = provider.indexOf("mergeProgress(", pullIdx);
+    assert(
+      localRecheckIdx !== -1 && localRecheckIdx < refetchIdx,
+      "the cheap local P2 re-check precedes the server round-trip",
+    );
+    assert(
+      noCloudIdx !== -1 && mergeIdx !== -1 && refetchIdx < noCloudIdx && compareIdx < mergeIdx,
+      "revalidation precedes the !cloud branch and every merge/apply side effect",
+    );
+  });
+
   test("Codex P2-3: recovery marker persistence fails CLOSED (block first, catch, blocked-not-actionable, no pull)", () => {
     const provider = read("providers/AppProvider.tsx");
     // Startup reconcile recovery branch: admission blocked BEFORE the marker

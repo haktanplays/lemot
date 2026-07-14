@@ -438,6 +438,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      // Codex P1 (round 4): a deletion completed on ANOTHER device while the
+      // pull read an old MVCC snapshot leaves every local mirror above
+      // untouched — on an empty device the stale rows would even merge with no
+      // follow-up push, so no stale-write rejection would ever wake recovery.
+      // Re-read the AUTHORITATIVE server generation and require it to still
+      // equal the locally acknowledged one before anything applies; null /
+      // mismatch / failure discards the pull (fail closed, `hasPulled` unset)
+      // and the next reconcile cycle runs the normal mismatch/recovery path.
+      // This narrows — it cannot eliminate — the client-side check/apply
+      // window; server-side generation enforcement and the next reconcile
+      // remain the backstop.
+      let serverGenNow: number | null;
+      try {
+        serverGenNow = await fetchSyncGeneration();
+      } catch {
+        serverGenNow = null; // fail closed, same policy as the resolver
+      }
+      if (serverGenNow === null || serverGenNow !== syncGeneration()) {
+        return;
+      }
+
       if (!cloud) {
         hasPulled.current = true;
         return;

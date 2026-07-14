@@ -39,6 +39,8 @@ import {
 } from "../../lib/cloudEraseGuard";
 import {
   hydrateSyncGeneration,
+  setSyncGeneration,
+  syncGeneration,
   isSyncGenerationReady,
   blockSyncGeneration,
   __resetSyncGenerationForTest,
@@ -533,6 +535,140 @@ describe("PR-I1 — Codex P2: REMOTE erase state is re-checked at the apply boun
     assert(r.outcome === "applied", "normal pull application still proceeds");
     assert(r.effects.applied === 1 && r.effects.pushed === 1, "applied exactly once");
     await freshReadyBaseline(); // leave a clean baseline for later suites
+  });
+});
+
+describe("PR-I1 — Codex P1 (round 4): server generation is REVALIDATED before applying pulls", () => {
+  /**
+   * A deletion completed on ANOTHER device while `pullFromCloud()` read an old
+   * MVCC snapshot leaves every LOCAL mirror untouched (ready stays true, no
+   * recovery pending, no erase-generation/reset-epoch movement) — so the P2
+   * local re-check alone cannot see it. The boundary must therefore re-read
+   * the AUTHORITATIVE server generation after the pull resolves and require
+   * it to still equal the locally acknowledged one before anything applies.
+   * Mirrors the effect's post-pull order (the wiring test pins the source);
+   * deterministic deferred pull + stateful fake server — no sleeps.
+   */
+  type Deferred<T> = { promise: Promise<T>; resolve: (v: T) => void };
+  function deferred<T>(): Deferred<T> {
+    let resolve!: (v: T) => void;
+    const promise = new Promise<T>((r) => {
+      resolve = r;
+    });
+    return { promise, resolve };
+  }
+
+  async function readyAt(generation: number): Promise<void> {
+    __resetSyncGenerationForTest();
+    __resetRemoteEraseRecoveryForTest();
+    const store = makeFakeKv();
+    await hydrateSyncGeneration({ userId: "user-a", store });
+    if (generation > 0) await setSyncGeneration({ userId: "user-a", generation, store });
+    await hydrateRemoteEraseRecovery({ userId: "user-a", store: makeFakeKv() });
+  }
+
+  // Post-pull boundary, effect order: local P2 re-check FIRST (no server fetch
+  // when a local signal already blocks), THEN the authoritative revalidation.
+  async function runPullApply(args: {
+    pull: Promise<{ v: number } | null>;
+    fetchServerGeneration: () => Promise<number | null>;
+  }) {
+    const effects = { applied: 0, pushed: 0, fetches: 0 };
+    const cloud = await args.pull;
+    if (!isSyncGenerationReady() || isRemoteErasePending()) {
+      return { outcome: "discarded-local" as const, effects };
+    }
+    let serverNow: number | null;
+    try {
+      effects.fetches += 1;
+      serverNow = await args.fetchServerGeneration();
+    } catch {
+      serverNow = null;
+    }
+    if (serverNow === null || serverNow !== syncGeneration()) {
+      return { outcome: "discarded-stale" as const, effects };
+    }
+    if (!cloud) return { outcome: "no-cloud" as const, effects };
+    effects.applied += 1; // merge + updateStoredData
+    effects.pushed += 1; // follow-up push
+    return { outcome: "applied" as const, effects };
+  }
+
+  test("another device deletes mid-pull (g→g+1) → stale snapshot discarded, nothing applied", async () => {
+    await readyAt(2);
+    const server = { current: 2 };
+    const pull = deferred<{ v: number } | null>();
+    const run = runPullApply({
+      pull: pull.promise,
+      fetchServerGeneration: async () => server.current,
+    });
+    server.current = 3; // remote delete bumps the server while the pull is in flight
+    pull.resolve({ v: 1 }); // …and the pull returns a pre-delete MVCC snapshot
+    const r = await run;
+    assert(r.outcome === "discarded-stale", "revalidation must reject the stale snapshot");
+    assert(r.effects.fetches === 1, "the server generation is re-read AFTER the pull");
+    assert(r.effects.applied === 0 && r.effects.pushed === 0, "no merge, no updateStoredData, no push");
+  });
+
+  test("EMPTY device + mid-pull delete → stale cloud data is NOT silently adopted (gen 0 case)", async () => {
+    await readyAt(0); // fresh baseline: merged === cloud would produce NO push to wake recovery
+    const server = { current: 0 };
+    const pull = deferred<{ v: number } | null>();
+    const run = runPullApply({
+      pull: pull.promise,
+      fetchServerGeneration: async () => server.current,
+    });
+    server.current = 1;
+    pull.resolve({ v: 42 });
+    const r = await run;
+    assert(r.outcome === "discarded-stale", "the silent-adoption path is closed on an empty device");
+    assert(r.effects.applied === 0, "stale pre-delete rows never reach local storage");
+  });
+
+  test("server generation unchanged → normal apply proceeds exactly once (valid gen 0 too)", async () => {
+    await readyAt(0);
+    const r0 = await runPullApply({
+      pull: Promise.resolve({ v: 1 }),
+      fetchServerGeneration: async () => 0,
+    });
+    assert(r0.outcome === "applied" && r0.effects.applied === 1, "legitimate generation-0 pull applies");
+    await readyAt(2);
+    const r2 = await runPullApply({
+      pull: Promise.resolve({ v: 1 }),
+      fetchServerGeneration: async () => 2,
+    });
+    assert(r2.outcome === "applied" && r2.effects.applied === 1 && r2.effects.pushed === 1, "unchanged generation applies exactly once");
+  });
+
+  test("post-pull fetch returns null or THROWS → fail closed, nothing applied", async () => {
+    await readyAt(2);
+    const rNull = await runPullApply({
+      pull: Promise.resolve({ v: 1 }),
+      fetchServerGeneration: async () => null,
+    });
+    assert(rNull.outcome === "discarded-stale" && rNull.effects.applied === 0, "null revalidation fails closed");
+    const rThrow = await runPullApply({
+      pull: Promise.resolve({ v: 1 }),
+      fetchServerGeneration: async () => {
+        throw new Error("network died");
+      },
+    });
+    assert(rThrow.outcome === "discarded-stale" && rThrow.effects.applied === 0, "a thrown revalidation fails closed");
+  });
+
+  test("a LOCAL signal (P2 guards) still short-circuits BEFORE the server re-read", async () => {
+    await readyAt(2);
+    const pull = deferred<{ v: number } | null>();
+    const run = runPullApply({
+      pull: pull.promise,
+      fetchServerGeneration: async () => 2,
+    });
+    blockSyncGeneration(); // local mirror flips mid-flight
+    pull.resolve({ v: 1 });
+    const r = await run;
+    assert(r.outcome === "discarded-local", "P2 local re-check still fires first");
+    assert(r.effects.fetches === 0, "no server round-trip when a local signal already blocks");
+    await readyAt(0); // clean baseline for later suites
   });
 });
 
