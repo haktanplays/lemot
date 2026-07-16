@@ -99,9 +99,23 @@ Bu staging pass'inin tüm raporları → [REPORTS/](REPORTS/):
 
 ## Kaynak arşivi ve durum
 
-> [!warning] Göreve göre 8 yüklenen kaynak (`LeMot.md`, `User Journey`,
-> `Tasarım Envanteri`, `Notes Archive Index`, `L1-L5 Proofreading`,
-> `Test Checklist`, `Round1 Handoff`, `V4 Studies HTML`) **bu oturumun dosya
-> sistemine düşmedi** → kopyalanamadı, ingest edilmedi, içerikleri uydurulmadı.
-> Detay + geldiklerinde ne yapılacağı: [SOURCE_ARCHIVE/AVAILABLE_INPUTS](SOURCE_ARCHIVE/AVAILABLE_INPUTS/README.md)
-> ve [Source Ingestion Report](REPORTS/SOURCE_INGESTION_REPORT.md).
+> [!check] **Güncel durum (2026-07-15).** Founder Le Mot yerel-vault notlarının bir
+> alt kümesini sağladı; **15 redakte Markdown kaynak notu** artık
+> [SOURCE_ARCHIVE/AVAILABLE_INPUTS/](SOURCE_ARCHIVE/AVAILABLE_INPUTS/README.md) altında
+> (historical/source material, aktif kanon değil).
+
+**Ingestion sonucu:** **12 fully-ingested · 2 partially-ingested · 1 copied-not-ingested.**
+Per-dosya tablo (README'de tekrarlanmaz): [Source Ingestion Report](REPORTS/SOURCE_INGESTION_REPORT.md) ·
+[Source Manifest (CSV)](REPORTS/SOURCE_MANIFEST.csv).
+
+- **18MB V4 Studies standalone HTML → git'ten HARİÇ.** Tasarım kanıtı için kısmen
+  incelendi/ingest edildi (V4-B seçimi, halftone reddi, disposition), ama **HTML'in
+  kendisi PR workspace'te YOK.**
+- **Bu batch'te hâlâ unavailable** (içerik uydurulmadı): `LeMot.md` ·
+  `LeMot - User Journey.md` · `Notes Archive Index.md` · `L1-L5 Proofreading.md`.
+  → [Missing Source Inputs](ACTIVE_CODEX/95_SOURCE_LEDGER/Missing%20Source%20Inputs.md).
+- **Tam denetlenmiş yerel 28-notluk Smart Brain reconciliation'ı hâlâ PENDING** →
+  [Local Reconciliation Pending](LOCAL_RECONCILIATION_PENDING.md).
+
+> [!warning] Bu online Product Brain **geçici bir çalışma katmanıdır** — yerel
+> vault'un yerini almaz. Kalıcı hafıza founder'ın yerel Smart Brain'idir.

@@ -5,13 +5,13 @@ type: lesson-spec
 domain: syllabus
 status: active-redesign
 canon_status: provisional
-implementation_status: implemented
-verification_status: device-verified
+implementation_status: partial
+verification_status: source-inspected
 lesson_id: v1-lesson-001
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-15
+last_reviewed: 2026-07-15
 source_of_truth: ["docs/syllabus/L01-survival-kit.lesson-spec.md", "docs/audits/L1_L15_CHIP_INVENTORY_AUDIT_2026_07.md", "content/lessons/v1/lesson-001.ts"]
 code_refs: ["lemot-app/content/lessons/v1/lesson-001.ts"]
 related: ["[[L0 The First Step]]", "[[Chip Taxonomy]]", "[[Chip Coverage Matrix]]", "[[Syllabus Design Rules]]", "[[05 Open Loops]]", "[[Active Decisions]]"]
@@ -24,6 +24,7 @@ tags: [syllabus, lesson, l1, open-design]
 
 ## İçindekiler
 
+- [L1 statü ayrımı (runtime vs redesign)](#l1-statü-ayrımı-runtime-vs-redesign)
 - [Lesson Identity](#lesson-identity)
 - [Learner Job](#learner-job)
 - [L0 ≠ L1 (kilitli ontoloji)](#l0-l1-kilitli-ontoloji)
@@ -35,14 +36,30 @@ tags: [syllabus, lesson, l1, open-design]
 - [Deferred / Rejected](#deferred-rejected)
 - [History](#history)
 
-> [!canon] Runtime status: **authored & registered & learner-VISIBLE** (`v1-lesson-001`),
-> Round 1 Dev APK smoke ile geçti. [IMPLEMENTED, device-verified via #136]
-> **AMA** L1'in chip envanteri şu an **aktif yeniden tasarımda** — bu not
-> çalışan hafızayı kaydeder, **listeyi kilitlemez.**
+> [!canon] **İki ayrı katman — KARIŞTIRMA.** Mevcut **runtime L1 dersi**
+> (`v1-lesson-001`) authored & registered & learner-VISIBLE; **kendi baseline'ında**
+> geçmişte device-verified (Round 1 #136 emülatör smoke; ayrıca `8cfdce75` fiziksel
+> spot-check). **AMA** L1'in **chip envanteri redesign'ı ayrı bir katmandır** —
+> implement edilmedi, device-verified değil, final değil. Bu not ikisini karıştırmadan kaydeder.
 
 > [!open-loop] **L1 chip listesi bilinçli olarak KİLİTLENMEDİ.** Bu, açık bir
 > tasarım kararıdır (bkz. [[05 Open Loops]] · [[Active Decisions]]). Aşağıdaki
 > "current working selection" son karar değildir.
+
+## L1 statü ayrımı (runtime vs redesign)
+
+| Layer | Canon | Implementation | Verification | Meaning |
+|---|---|---|---|---|
+| Mevcut runtime L1 baseline | current-runtime / tarihsel baseline | implemented | **kendi kayıtlı baseline'ında** geçmişte device-verified; güncel-main smoke pending olabilir | Mevcut yazılmış ders (`v1-lesson-001`) |
+| 31 + 3–4 chip redesign | provisional / open | **not implemented** | **unverified** | Güncel founder tasarım işi |
+| Bu doküman notu | provisional sentez | documentation-only | source-inspected | İki katmanı **karıştırmadan** kaydeder |
+
+Açıkça:
+- Mevcut ders **runtime'ı** ve yeni **redesign** = **farklı katmanlar.**
+- **31 + 3–4 redesign implement EDİLMEDİ.**
+- Redesign **device-verified DEĞİL.**
+- Redesign **final DEĞİL** (liste kilitli değil).
+- **Tarihsel runtime pass'inden yeni bir device verification ÇIKARILAMAZ.** Runtime baseline'ın device-verified'liği yalnız o baseline'a aittir; redesign'a taşınmaz.
 
 ## Lesson Identity
 İlk gerçek ders (spine'ın başı). "Survival Kit": bir öğrencinin Fransızca bir
@@ -50,10 +67,38 @@ ortamda ilk dakikada hayatta kalmasını sağlayan en küçük, en yüksek getir
 parça seti — nezaket formülleri + birkaç ihtiyaç ismi + ilk üretim iskeletleri.
 
 ## Learner Job
-Öğrenci bu dersten sonra: selam verip teşekkür edebilir, kibarca bir şey
-isteyebilir (`je voudrais + [nom]`), bir şeyin yerini sorabilir (`où + est`),
-yardım isteyebilir (`pouvez-vous ...`) ve kendini tanıtabilir (`je suis`).
-Gramer etiketi değil, **can-do**.
+
+### Stable L1 communicative purpose
+Öğrencinin bu derste **sabit** iletişim amacı (can-do, gramer etiketi değil) —
+bu kısım kararlıdır, chip listesinden bağımsızdır:
+- sosyal olarak **açılış** (open socially)
+- **kibar bir istek** yapmak (make a polite request)
+- bir **iletişim kopmasını yönetmek** (handle a communication breakdown)
+- kibarca **kapatmak** (close politely)
+
+### Working redesign capability candidates
+Mevcut 31-nesne havuzu şu üretim yeteneklerini **keşfediyor** (henüz sabit
+sahiplik DEĞİL — [PROPOSED / OPEN]):
+- `je voudrais + [nom/action]`
+- sınırlı `pouvez-vous + [infinitif]`
+- `ne ___ pas`
+- `où + être + [lieu]`
+- `je suis`
+
+Açıkça:
+- Nihai **active / support / recognition / ghost** sınıflandırması **açık.**
+- Her aday **aktif L1 üretim hedefi olmayacak.**
+- Bazı adaylar sonraki dersler için **ghost / seed / support** kalabilir.
+- Bu not, sınıflandırma yapılmadan **nihai learner ownership VAAT ETMEZ.**
+
+> [!warning] Kanonik yer-sorma pattern'i **`où + être + [lieu]`**'dir — **`où + est` DEĞİL.**
+> Örnekler (yüzey ayrımı):
+> - `où | est | la gare`
+> - `où | est | l'hôtel`
+> - `où | sont | les toilettes`
+>
+> `est` ve `sont` **`être`'nin yüzey gerçekleşmeleridir** (surface realizations);
+> otomatik olarak **ayrı lexical accounting chip DEĞİLDİR.** Bkz. [[Chip Taxonomy]].
 
 ## L0 ≠ L1 (kilitli ontoloji)
 

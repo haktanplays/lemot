@@ -9,14 +9,14 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-15
+last_reviewed: 2026-07-15
 source_of_truth: ["docs/STATUS.md", "docs/ROADMAP.md", "docs/CAIRN_ROADMAP_202607.md", "docs/KNOWN_GAPS.md", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/PR_and_Smoke_Log.md", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Agent_Handoff.md", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Tester_Feedback_Log.md"]
 related: ["[[00 Le Mot Holy Codex]]", "[[04 Current Priorities]]", "[[05 Open Loops]]", "[[Implementation Ledger]]"]
 tags: [index, status]
 ---
 
-# Current State — 2026-07-14
+# Current State — 2026-07-15
 
 <!-- gh-toc -->
 
@@ -38,10 +38,27 @@ tags: [index, status]
 
 ## Git zemini (bu vault build'i anındaki)
 
-- **HEAD / origin/main:** `02f9f7ae3746355ea77f94d81c1c4d198a823b38`
-- **Son commit:** `fix(privacy): complete local reset and export coverage (PR-H) (#196)`
-- **Build branch (bu vault için):** `claude/lemot-holy-codex-obsidian-8o24qz` — repo **temiz**, dokunulmadı.
-- Klon **sığ** (~50 commit, #146→#196); #146 öncesi PR numaraları status dokümanlarından alıntı, yerel git'ten değil. [SOURCE-INSPECTED]
+> [!warning] **İki BAĞIMSIZ gerçek — karıştırma.** (A) ürün/runtime baseline'ı
+> `origin/main`'dir; (B) bu Product Brain kendi ayrı çalışma branch'inde yaşar ve
+> ürün runtime'ını **değiştirmez.** Product Brain branch head'i ürün baseline'ı
+> **DEĞİLDİR.**
+
+### A. Ürün / runtime baseline
+- **`origin/main` baseline:** `02f9f7ae3746355ea77f94d81c1c4d198a823b38` (#196, PR-H privacy).
+- Bu, Codex'in temsil ettiği **ürün-kod baseline'ıdır**; üç runtime + L0–L6 dev-apk hep buna göre.
+- Product Brain branch'i bu baseline'ı **oluşturduğu noktadır** ve **ürün runtime'ını değiştirmez** (yalnız `obsidian-product-brain/` ekler).
+- Klon **sığ** (~50 commit, #146→#196); #146 öncesi PR numaraları status dokümanlarından alıntı. [SOURCE-INSPECTED]
+
+### B. Product Brain online çalışma katmanı
+- **Branch:** `docs/obsidian-product-brain-v0.2`
+- **Bu düzeltme öncesi başlangıç head'i:** `4a6846e7657521e6575e9b04b980f0da08ba71a4` (ürün baseline'ı DEĞİL — yalnız Product Brain commit'i).
+- **Draft PR:** **#198** — durum: **draft, open, ready-for-review DEĞİL, merged DEĞİL.**
+- **Amaç:** geçici GitHub Mobile / bulut-düzenleme / transport katmanı.
+- **Final yerel Smart Brain reconciliation:** **pending** → [[05 Open Loops]].
+
+> [!historical] Eski `claude/lemot-holy-codex-obsidian-8o24qz` branch'i yalnızca
+> v0.1 build oturumunun geçici çalışma branch'iydi; **final Product Brain branch'i
+> DEĞİLDİR.** Final branch = `docs/obsidian-product-brain-v0.2` (B).
 
 ## Round 1.1/1.2 tarihçesi (repo HEAD #196'nın gerisinde)
 

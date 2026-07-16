@@ -14,7 +14,8 @@
 
 ### §3 kaynak arşivi
 - `SOURCE_ARCHIVE/AVAILABLE_INPUTS/` oluşturuldu.
-- ⚠️ 8 yüklenen kaynak **bu oturumun dosya sistemine düşmedi** → kopyalanamadı; `SOURCE_MANIFEST.csv` hepsini `pending` / `not-present-in-session` işaretler. İçerik uydurulmadı.
+- **GÜNCEL (2026-07-15):** Founder 15 `.md` + 1 `.html` kaynak sağladı; 15 redakte `.md` arşive alındı (12 fully / 2 partially / 1 copied-not-ingested), 18MB V4 HTML git'ten hariç. Aşağıdaki "§6 Kaynak ingestion" bölümü + `SOURCE_INGESTION_REPORT.md` bu satırı **supersede eder**.
+- (Tarihsel not: bu iskelet ilk yazıldığında kaynaklar henüz oturuma düşmemişti; artık düştü ve ingest edildi.)
 
 ### §4 yerel vault durumu
 - `LOCAL_RECONCILIATION_PENDING.md`: yerel `~/Documents/Smart Brain/` v0.2 Second Brain; erişim yok; 28 not **içe aktarılmadı**; 10 bilinen primary home listelendi (içerik uydurulmadan).
