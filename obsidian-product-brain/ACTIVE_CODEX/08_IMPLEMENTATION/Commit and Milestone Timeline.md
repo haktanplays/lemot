@@ -116,4 +116,4 @@ timeline
 
 ## Related Notes
 
-[[PR Map]] · [[Sprint Timeline]] · [[Product Timeline]] · [[Decision Index]] · [[03 Current State]]
+[[PR Map]] · [[Sprint Timeline]] · [[Product Timeline]] · [[Decision Index]] · [[03 Current State]] · [[Roadmap Crosswalk]] (Five Stones ↔ Faz 0–7 eşleme)

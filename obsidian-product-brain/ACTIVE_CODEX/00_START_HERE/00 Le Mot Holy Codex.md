@@ -1,6 +1,6 @@
 ---
-title: Le Mot Holy Codex
-aliases: [Holy Codex, Cairn Codex, Home, Ana Sayfa, Start Here]
+title: Cairn Holy Codex
+aliases: [Cairn Holy Codex, Le Mot Holy Codex, Holy Codex, Cairn Codex, Home, Ana Sayfa, Start Here]
 type: index
 domain: meta
 status: canonical
@@ -9,16 +9,29 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-16
+last_reviewed: 2026-07-16
 source_of_truth: ["CLAUDE.md", "docs/STATUS.md", "docs/DEV_APK_MVP_CANON.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
 related: ["[[03 Current State]]", "[[02 Product Map]]", "[[05 Open Loops]]", "[[06 Canon and Status Legend]]", "[[09 Role-Based Onboarding Paths]]"]
 tags: [index, home, moc]
 ---
 
-# 🪨 Le Mot Holy Codex
+# 🪨 Cairn Holy Codex
 
-> [!canon] Bu vault, **Le Mot / Cairn** French-learning app'inin kalıcı kurumsal hafızasıdır.
+> [!canon] **Ürün kimliği.** Güncel ürün adı: **Cairn**. **Le Mot** = legacy/proje/repo
+> adı; kod klasör adları hâlâ `lemot` içerebilir (ör. `lemot-app`). İsim kararının
+> gerekçesi ve kanıt zinciri: [[Naming and Brand Registry]]. *(Dosya adı `00 Le Mot
+> Holy Codex.md` link churn'ü önlemek için değiştirilmedi; `Le Mot Holy Codex` legacy
+> alias olarak korunur.)*
+
+> [!warning] **Bu online Codex, Draft PR #198'de yaşar** — geçici çalışma katmanı.
+> **Yalnız `main` veya eski `docs/obsidian/*` planlama dosyalarına karşı yapılan
+> audit'ler zorunlu olarak KISMÎDİR.** Yerel Smart Brain ile **final reconciliation
+> hâlâ PENDING.** Bu geçici PR **kalıcı/final vault DEĞİLDİR.** Bkz. [[03 Current State]] · [[08 Source of Truth Map]].
+
+> **Hızlı giriş:** [[Naming and Brand Registry]] · [[Roadmap Crosswalk]] · [[Product Risks]] · [[04 Current Priorities]] · [[Active Decisions]] · [[05 Open Loops]].
+
+> [!canon] Bu vault, **Cairn** (eski: Le Mot) French-learning app'inin kalıcı kurumsal hafızasıdır.
 > Yeni bir ekip üyesine, ajana veya altı ay sonraki bize "**önce bunu oku**"
 > diyebileceğimiz tek giriş kapısı. Ham konuşma arşivi ile canonical bilgi burada
 > **ayrı** tutulur; her iddianın bir **statüsü**, bir **kaynağı** ve bir

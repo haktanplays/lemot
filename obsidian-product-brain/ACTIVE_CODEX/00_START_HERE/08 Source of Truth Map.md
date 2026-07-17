@@ -69,3 +69,4 @@ CLAUDE.md → docs/STATUS.md → docs/DEV_APK_MVP_CANON.md → Cairn v1.0 spec
 > - **Sprint 11 recommended shape** aktif sprint planı değil.
 
 Tam kaynak envanteri: [[Source Ledger]]. Çelişkiler: [[Contradictions]].
+İki roadmap'in (Five Stones ↔ Faz 0–7) hangisi hangi soruyu kontrol eder: [[Roadmap Crosswalk]].

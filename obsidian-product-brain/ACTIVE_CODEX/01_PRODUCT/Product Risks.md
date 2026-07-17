@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-16
+last_reviewed: 2026-07-16
 source_of_truth: ["docs/KNOWN_GAPS.md", "docs/CAIRN_ROADMAP_202607.md", "docs/ROADMAP.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
 code_refs: []
 test_refs: []
@@ -27,6 +27,7 @@ tags: [product, risks, gaps, canon]
 ## İçindekiler
 
 - [Amaç](#amaç)
+- [Live Premortem](#live-premortem)
 - [R1 — Legacy-revival tuzağı (yüksek)](#r1-legacy-revival-tuzağı-yüksek)
 - [R2 — Mastery-formula drift ("spec'in en büyük drift deliği")](#r2-mastery-formula-drift-specin-en-büyük-drift-deliği)
 - [R3 — AI stack pratikte ölü (gap #8)](#r3-ai-stack-pratikte-ölü-gap-8)
@@ -49,6 +50,40 @@ tags: [product, risks, gaps, canon]
 
 Ürün-seviyesi riskleri kaydeder; teknik gap envanterinin ([[Known Gaps]]) ürün-etkisi
 katmanıdır. Açık kararlar [[05 Open Loops]] ve [[Deferred Decisions]]'ta izlenir.
+
+## Live Premortem
+
+> [!warning] Canlı premortem — en gürültülü güncel başarısızlık modu tek yerde.
+> (Ayrı bir Premortem notu **oluşturulmadı**; burada yaşar.)
+
+### Current loudest failure mode
+**Dokümantasyon ve mimari işi, cihaz doğrulamasının (device validation) yerine geçmeye başlar.**
+
+### Why it is loud now
+- Product Brain **birden çok kapsamlı dokümantasyon pass'i** aldı (v0.1 build + kaynak ingestion + status reconciliation + bu pass).
+- **Güncel-main fiziksel cihaz doğrulaması hâlâ operatör kapısı** (Taş 0, pending) → [[03 Current State]] · [[05 Open Loops]] O1.
+- Ürün **"hissi" (feel) dokümanla settle edilemez** — yalnız gerçek cihazda.
+- **Device-day öncesi geniş Codex genişletmesinin karar değeri azalıyor** (declining decision value).
+
+### Tripwire
+> [!canon] **Device-day kanıtı gelmeden geniş Product Brain genişletmesi YOK.**
+> İzinli istisnalar: (1) **factual error düzeltmek**; (2) **risk altındaki bir founder
+> kararını korumak**; (3) **tam olarak bu bounded pass'i tamamlamak.**
+
+### Exit condition
+- Fiziksel **device-day tamamlandı**;
+- **Taş 0'ın core question'ı kanıtla cevaplandı** ("L7-L15'li haliyle sıkıcılık gitti mi?");
+- Bulgular uygun **runtime/test notlarına** kaydedildi ([[Smoke Test Playbook]] · [[Device Verification Matrix]]).
+
+### Current risk owner
+Founder / operatör.
+
+### Last reviewed
+2026-07-16.
+
+> [!open-loop] **Full historical premortem source: NOT YET INGESTED.** Tarihsel
+> dokuz-maddelik premortem'in kesin kaynağı yok → **uydurulmadı.** Kaynak boşluğu
+> olarak kaydedildi ([[Missing Source Inputs]]); ayrı geniş dokümantasyon workstream'i **açılmadı.**
 
 ## R1 — Legacy-revival tuzağı (yüksek)
 
@@ -99,7 +134,7 @@ katmanıdır. Açık kararlar [[05 Open Loops]] ve [[Deferred Decisions]]'ta izl
 > (engine wiring vs "önce lesson-experience skeleton"). Hiçbir doküman hangisinin
 > supersede ettiğini açıkça söylemiyor; README `ROADMAP.md`'yi aktif sprint spec
 > listeler ama `CAIRN_ROADMAP_202607.md`'yi değil. UNKNOWN: bir sonraki PR için hangisi
-> yetkili. Bkz. [[05 Open Loops]].
+> yetkili. **Eşleme + operating rule:** [[Roadmap Crosswalk]]. Bkz. [[05 Open Loops]] D8.
 
 ## R8 — Paywall konumu belirsiz (meta)
 

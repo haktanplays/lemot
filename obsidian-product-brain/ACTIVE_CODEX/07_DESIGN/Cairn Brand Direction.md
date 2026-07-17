@@ -77,3 +77,4 @@ Görsel kanonun cairn/stone/summit/trail dili, bu notun [[#Metafor Sözlüğü]]
 ## Related Notes
 
 - [[Design System Overview]] · [[Visual Language]] · [[Home and Journey]] · [[Copy and Tone]] · [[Product Vision]] · [[Product Promise]]
+- İsim kararı + rakip mezarlığı + kanıt zinciri: [[Naming and Brand Registry]] (bu not görsel/metaforu tutar, isim kararı orada).
