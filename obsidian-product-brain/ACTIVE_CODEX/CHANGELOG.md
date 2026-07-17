@@ -1,5 +1,25 @@
 # CHANGELOG — CAIRN Obsidian Product Brain
 
+## v0.3 governance-skeleton pass — 2026-07-17 (Draft PR #198)
+
+Skeleton-only coverage pass (EDIT + VALIDATE ONLY). Üç eksik yapısal ana ev kuruldu; bayat yapısal-kapsam kayıtları düzeltildi.
+
+### Eklendi (3 iskelet — hepsi `status: skeleton`, `canon_status: provisional`)
+- **`06_ARCHITECTURE/Legal Compliance and Data Governance.md`** — hukuki/veri-yönetişimi evi; 16-kalemlik Governance Decision Register (hepsi OPEN/UNKNOWN), data-processing envanter iskeleti, user rights, decision gates, Non-Claims. **Uyum İDDİA EDİLMEZ.**
+- **`12_RESEARCH_AND_IDEAS/Measurement and Experimentation.md`** — ölçüm/deney yönetişimi; 9 ilke, metric layers, event dictionary iskeleti, experiment lifecycle, evidence strength, decision gates. **Sayısal hedef/şema UYDURULMADI.**
+- **`10_OPERATIONS/French Linguistic QA.md`** — Fransızca dil-QA süreç evi; review surfaces, QA dimensions, Severity Model (BLOCKER/MAJOR/POLISH/PREFERENCE), native-speaker gate (OPEN), checklist, handoff. **Native-speaker incelemesi gerçekleşti İDDİA EDİLMEZ.**
+
+### Düzeltildi (bayat yapısal-kapsam kayıtları)
+- **Coverage Report** — güncel not sayısı (249) + yapısal kapsam ≠ implementasyon derinliği ayrımı; üç ana ev kaydedildi.
+- **Missing Documentation** — MD12 düzeltildi (primary not ağacı yapısal olarak mevcut; MD1–MD11 derinlik boşlukları geçerli); MD13–MD15 eklendi (legal/measurement/French derinlik boşlukları OPEN).
+- **Unknowns U15** — Product Brain PR #198'de online-okunabilir; yalnız-main audit'ler kısmî; yerel 28-not reconciliation PENDING; unknown yalnız uzlaştırılmamış yerel-only materyale uygulanır.
+
+### Discoverability (yalnız pointer)
+- Holy Codex (3 link), Product Map (3 satır), Privacy and Data Deletion, Experiments, Content Production Workflow → yeni ana ev'lere işaretçiler.
+
+### Uygulanmadı (bilinçle)
+- Hiçbir **runtime**, **hukuki**, **analytics** veya **dilsel-inceleme** kararı uygulanmadı. Yalnız yapısal iskelet + kapsam düzeltmesi. app/runtime/source-archive/main-doc dokunulmadı.
+
 ## v0.2 içerik-gap pass — 2026-07-16 (Draft PR #198)
 
 Bounded content-gap pass (EDIT + VALIDATE ONLY).

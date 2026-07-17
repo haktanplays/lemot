@@ -4,6 +4,8 @@ type: source-record
 domain: meta
 status: canonical
 created: 2026-07-14
+last_updated: 2026-07-17
+last_reviewed: 2026-07-17
 tags: [build-report]
 ---
 
@@ -45,3 +47,24 @@ Notların büyük çoğunluğu `canon_status: canonical`; `implementation_status
 motorların çoğunu bağlamıyor); `verification_status` yalnızca Round 1 L0–L6
 için `device-verified`, gerisi `source-inspected`/`unit-tested`. Bu, ürünün
 gerçek olgunluğunun dürüst yansımasıdır.
+
+## Yapısal kapsam güncellemesi — 2026-07-17
+
+> [!warning] **Yapısal kapsam ≠ implementasyon derinliği.** Aşağıdaki sayım "ana
+> ev var mı" (structural coverage) sorusunu ölçer; "politika/spec tamamlandı mı"
+> (implementation depth) sorusunu **DEĞİL.** Her politika/spec'in tamamlandığı iddia edilmez.
+
+Güncel Markdown-not sayısı (bu pass sonrası, ölçülen): **`ACTIVE_CODEX/` altında 249 not.**
+
+| Alan | v0.1 | Şimdi | Değişim |
+|---|---|---|---|
+| Architecture | 14 | 15 | + Legal Compliance and Data Governance (skeleton) |
+| Research/Ideas | 7 | 8 | + Measurement and Experimentation (skeleton) |
+| Operations | 13 | 14 | + French Linguistic QA (skeleton) |
+
+- Bu pass, üç eksik **yapısal ana ev** kurdu (legal/veri-yönetişimi, ölçüm/deney, Fransızca dil-QA).
+  Her üçü de `status: skeleton`, `canon_status: provisional` — **iskelet, çözülmüş politika değil.**
+- Ayrıca v0.2 online pass'i +2 not eklemişti (Naming and Brand Registry, Roadmap Crosswalk);
+  v0.1 244 → 249 farkı bununla uzlaşır (244 + 2 + 3 = 249).
+- **Derinlik boşlukları hâlâ açık:** hukuki kararlar, ölçüm şema/eşik/export derinliği ve
+  Fransızca inceleyici/süreç kanıtı **OPEN** — bkz. [[Missing Documentation]] (MD12–MD15).

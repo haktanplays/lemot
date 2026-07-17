@@ -115,4 +115,4 @@ Item-katmanı kararları `docs/PAYLOAD_ECONOMY_v0.md` (locked 2026-07-04): her a
 - Content Factory Contract v0.1 (`0371e10`, #172 civarı). Pilot L7–L9 LOCKED. deriveDrill Option B (#179). Payload Economy v0 (`0b31c69`).
 
 ## Related Notes
-[[Validation Gates]] · [[Syllabus Production Workflow]] · [[Self-Producing Engine]] · [[Content Selection]] · [[PR Discipline]] · [[Documentation Workflow]] · [[00 Le Mot Holy Codex]]
+[[Validation Gates]] · [[Syllabus Production Workflow]] · [[Self-Producing Engine]] · [[Content Selection]] · [[PR Discipline]] · [[Documentation Workflow]] · [[French Linguistic QA]] (anadili dil-QA kapısı — süreç OPEN) · [[00 Le Mot Holy Codex]]

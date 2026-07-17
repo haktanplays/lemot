@@ -9,8 +9,8 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-17
+last_reviewed: 2026-07-17
 source_of_truth: ["docs/KNOWN_GAPS.md", "docs/README.md"]
 related: ["[[Missing Source Inputs]]", "[[Unknowns]]", "[[Unmapped Ideas]]", "[[Known Gaps]]", "[[Repository Document Index]]", "[[05 Open Loops]]"]
 tags: [gap, missing-doc]
@@ -34,6 +34,9 @@ tags: [gap, missing-doc]
 - [MD10 — Cloud data deletion (C1) path](#md10-cloud-data-deletion-c1-path)
 - [MD11 — Deferred validators V1/V2/V6-V9 spec'i](#md11-deferred-validators-v1v2v6-v9-speci)
 - [MD12 — Bu vault'un kendi eksik ana notları](#md12-bu-vaultun-kendi-eksik-ana-notları)
+- [MD13 — Legal governance derinliği (kararlar açık)](#md13-legal-governance-derinliği-kararlar-açık)
+- [MD14 — Measurement şema/eşik/export derinliği](#md14-measurement-şemaeşikexport-derinliği)
+- [MD15 — Fransızca inceleyici/süreç kanıtı](#md15-fransızca-inceleyicisüreç-kanıtı)
 - [İlgili notlar](#ilgili-notlar)
 
 > [!open-loop] Repo'da **iyi bir belgesi olmayan** konular. "Kaynak eksik" (o [[Missing Source Inputs]])
@@ -89,8 +92,25 @@ exposure_horizon, production_without_ladder, fill_without_recovery) hangi runtim
 gerektirdiği tam belgeli değil (canon'da tanım var, implementasyon planı yok). → [[Exercise Anti-Patterns]], [[Test Source Index]].
 
 ## MD12 — Bu vault'un kendi eksik ana notları
-Vault index'inde adı olup henüz yazılmamış çok sayıda not var (05_MATRICES çoğu, 08_IMPLEMENTATION,
-11_AGENT_CONTEXT). Bu notlar linklendi ama içerik henüz yok — v0.2 kapsamı. → [[Repository Document Index]].
+**Düzeltme (2026-07-17):** Planlanan **birincil (primary) not ağacı artık yapısal olarak mevcut** —
+eksik ana ev'ler (legal/veri-yönetişimi, ölçüm/deney, Fransızca dil-QA) bu pass'te iskelet olarak kuruldu
+([[Coverage Report]] 2026-07-17). Yani "primary home yok" durumu **büyük ölçüde kapandı**; kalan iş
+**yapısal değil derinlik** işidir. **MD1–MD11 derinlik boşlukları hâlâ geçerlidir.** Ayrıca bazı index-adı-var-içerik-yok
+notlar sürebilir (bazı 05_MATRICES / 08_IMPLEMENTATION / 11_AGENT_CONTEXT). → [[Repository Document Index]].
+
+## MD13 — Legal governance derinliği (kararlar açık)
+[[Legal Compliance and Data Governance]] artık **yapısal ev** olarak var (skeleton), ama **hukuki kararların hiçbiri çözülmedi**:
+tüzel kişilik/veri sorumlusu, hukuki dayanak, saklama, yaş politikası, sınır-ötesi, bildirim/şartlar, veri-sahibi talep yolu —
+hepsi **OPEN/UNKNOWN** ve Operator + hukuki inceleme kapısı bekler. Uyum **iddia edilmez**. → [[Legal Compliance and Data Governance]], [[Privacy and Data Deletion]].
+
+## MD14 — Measurement şema/eşik/export derinliği
+[[Measurement and Experimentation]] artık **yapısal ev** olarak var (skeleton), ama **tam event şeması yok**, **sayısal eşik/hedef yok**,
+**export/cohort şeması tanımsız**. İlkeler ve karar-taşıyan deneyler çerçevelendi; şema/eşik/export **derinliği OPEN**. → [[Measurement and Experimentation]], [[ADR-0009 events-source-of-truth]].
+
+## MD15 — Fransızca inceleyici/süreç kanıtı
+[[French Linguistic QA]] artık **yapısal ev** olarak var (skeleton), ama **native-speaker inceleyici kimliği/tedariki UNKNOWN**,
+QA'nın boru hattındaki tam yeri ve geçme eşiği **OPEN**, otoriter standart kaynağı (`L1-L5 Proofreading.md`) **ingest edilmedi**.
+Native-speaker incelemesinin gerçekleştiği **iddia edilmez**. → [[French Linguistic QA]], [[Missing Source Inputs]].
 
 ## İlgili notlar
 - [[Missing Source Inputs]] · [[Unknowns]] · [[Unmapped Ideas]]

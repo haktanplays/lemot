@@ -9,8 +9,8 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-17
+last_reviewed: 2026-07-17
 source_of_truth: ["docs/KNOWN_GAPS.md", "docs/STATUS.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
 related: ["[[Contradictions]]", "[[Needs Verification]]", "[[05 Open Loops]]", "[[Deferred Decisions]]", "[[Missing Source Inputs]]", "[[Known Gaps]]"]
 tags: [gap, unknown, open-loop]
@@ -109,6 +109,11 @@ redaction, `device_info` gerekliliği, cross-border, auth model, Edge Function v
 ## U15 — Operator-vault TOP CANON içeriği
 En yetkili pedagoji dokümanı cloud-okunamaz; içeriği bilinmiyor → [[Missing Source Inputs]].
 Bu, birçok diğer unknown'ı zincirleme çözebilir (Q1-Q9 / D1-D6 locked decisions).
+
+> [!warning] **Kapsam düzeltmesi (2026-07-17):** Bu Product Brain artık **Draft PR #198'de online-okunabilir.**
+> Ancak yalnız-`main` (ve eski `docs/obsidian/*` planlama dosyalarına karşı) audit'ler **KISMÎ** kalır ve
+> **yerel 28-notluk Smart Brain reconciliation'ı hâlâ PENDING.** Bu unknown **yalnız uzlaştırılmamış
+> yerel-only materyale** uygulanır — **tüm Codex'e değil.** Yerel reconciliation **tamamlanmış DEĞİLDİR.**
 
 ## Nasıl kapatılır
 - Bir unknown çözülünce: resolving kaynağını göster, ilgili nota taşı, buradan çıkar.

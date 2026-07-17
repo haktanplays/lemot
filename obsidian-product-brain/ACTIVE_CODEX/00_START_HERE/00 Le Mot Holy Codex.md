@@ -9,8 +9,8 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-16
-last_reviewed: 2026-07-16
+last_updated: 2026-07-17
+last_reviewed: 2026-07-17
 source_of_truth: ["CLAUDE.md", "docs/STATUS.md", "docs/DEV_APK_MVP_CANON.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
 related: ["[[03 Current State]]", "[[02 Product Map]]", "[[05 Open Loops]]", "[[06 Canon and Status Legend]]", "[[09 Role-Based Onboarding Paths]]"]
 tags: [index, home, moc]
@@ -94,6 +94,9 @@ CLAUDE.md'nin kendi banner'ı der ki: learning-engine uzun vadeli ürün temeli,
 - Bir karar neden verildi, hangi alternatif reddedildi? → [[Decision Index]]
 - Hangi fikir açık/ertelenmiş? → [[05 Open Loops]] · [[Deferred Decisions]]
 - Spec/registry/runtime/test/cihaz eşleşiyor mu? → [[Spec to Runtime Matrix]] · [[08 Source of Truth Map]]
+- Hukuki / gizlilik yönetişimi nerede? → [[Legal Compliance and Data Governance]]
+- Deneyler nasıl karara dönüşür (ölçüm yönetişimi)? → [[Measurement and Experimentation]]
+- Öğrenci-yüzü Fransızca nasıl gözden geçirilir? → [[French Linguistic QA]]
 - Rolüme göre ne okumalıyım? → [[09 Role-Based Onboarding Paths]]
 - "Şunun için ne demiştik?" → ilgili ana nota git; her sistemin **tek** ana evi var.
 

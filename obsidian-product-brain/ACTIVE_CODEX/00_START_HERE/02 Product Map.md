@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-17
+last_reviewed: 2026-07-17
 related: ["[[00 Le Mot Holy Codex]]", "[[Product Vision]]", "[[Learning System Overview]]", "[[Runtime Content Architecture]]"]
 tags: [index, map]
 ---
@@ -65,4 +65,7 @@ flowchart TD
 | Mimari | [[System Architecture]] · [[Data Flow]] |
 | Ne kodlandı | [[Implementation Overview]] · [[Implementation Ledger]] |
 | Kararlar | [[Decision Index]] |
+| Hukuki / veri yönetişimi | [[Legal Compliance and Data Governance]] · [[Privacy and Data Deletion]] |
+| Ölçüm / deney yönetişimi | [[Measurement and Experimentation]] |
+| Fransızca dil QA | [[French Linguistic QA]] · [[Content Production Workflow]] |
 | Şu an | [[03 Current State]] · [[05 Open Loops]] |

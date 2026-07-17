@@ -140,4 +140,4 @@ Hesaplar, analytics, AI veya production rollout başlayınca gerekli; local/dev-
 > (Q-IN9–Q-IN12) altında izlenir; `userAnswer` redaction ve cloud deletion path [[Research Questions]] #9/#10'da.
 
 ## Related Notes
-[[Storage Architecture]] · [[Sync Architecture]] · [[Supabase]] · [[Learning Engine Architecture]] · [[System Architecture]] · [[00 Le Mot Holy Codex]]
+[[Storage Architecture]] · [[Sync Architecture]] · [[Supabase]] · [[Learning Engine Architecture]] · [[System Architecture]] · [[Legal Compliance and Data Governance]] (hukuki katman: dayanak/saklama/sorumlu — OPEN) · [[00 Le Mot Holy Codex]]

@@ -39,3 +39,4 @@ tags: [idea, research, experiment]
 ## İlgili Notlar
 - [[Idea Index]] · [[Research Questions]] · [[Watchlist]]
 - [[Smoke Test Playbook]] · [[Test Strategy]] · [[Content Production Workflow]]
+- [[Measurement and Experimentation]] (ölçüm yönetişimi: deney → karar çerçevesi)
