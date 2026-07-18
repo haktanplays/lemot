@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/canon/LESSON_FLOW_CANON_v1.md", "docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/learning-engine-v1.md"]
 code_refs: ["lemot-app/components/lesson-v1/screens/Weave.tsx", "lemot-app/content/learning-engine/mastery.ts:35-36", "lemot-app/scripts/canonRules.ts:158-165"]
 test_refs: ["lemot-app/**/canonRules.test.ts"]
@@ -35,6 +35,7 @@ tags: [learning, difficulty, cognitive-load]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Accounting and Budgets (2026-07-18)](#policy-hardening-accounting-and-budgets-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Cairn zorluğu ve bilişsel yükü nasıl sınırlar? Ekran/chip bütçesi (invariant), recycle load protection, prompt-fade ve hint merdiveni — hepsi "yükü taşınabilir tut" ilkesinin araçları.
@@ -115,5 +116,68 @@ Hint ladder: dev-apk aktif. Prompt-fade: engine-only (v1 mastery çalıştırmaz
 ## Open Questions
 > [!open-loop] Ekran-başına micro-action sınırı (V1) ne zaman mekanize edilecek? → [[05 Open Loops]]
 
+## Policy Hardening — Accounting and Budgets (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for lesson load accounting, the production-load formula, and every numeric budget/cap. Diğer notlar sayıyı tekrar etmez, buraya link verir. Sınıflandırma etiketleri: **[HARD INVARIANT] / [LOCKED DEFAULT] / [TUNABLE PARAMETER] / [OPEN]**. Bu bir **authoring/canon policy** katmanıdır — canlı v1 runtime bunu **enforce etmez** (çoğu build-time/elle); bkz. [[#Non-claims]].
+
+### Accounting fields (ders başına)
+
+Her ders spec/review sheet'i şu alanları sayar (ledger: [[Content Production Workflow]]):
+
+`activeNewCount` · `supportedTargetCount` · `productionCarryoverCount` · `recognitionCarryoverCount` · `repairItemCount` · `integrationTargetCount` · `exposureCount` · `totalProductionLoad`
+
+### Production-load formülü [HARD INVARIANT]
+
+```
+totalProductionLoad =
+    activeNewCount
+  + supportedTargetCount
+  + productionCarryoverCount
+  + repairItemCount
+  + integrationTargetCount
+```
+
+- **`activeNewCount` toplam ders zorluğu DEĞİLDİR.** Zorluk = `totalProductionLoad` + recognition/exposure yükü + ekran/insight bütçesi.
+- **Anti-gaming [HARD INVARIANT]:** Bir ders "sadece 2 yeni chip" diyip fazla eski üretim yükünü `supportedTarget` / carryover / repair / integration kovalarına **saklayamaz**. `activeNew` bütçe kontrolü `totalProductionLoad` kontrolünü **geçersiz kılmaz**.
+- **recognitionOnly ve ghost/exposure** item'ler `totalProductionLoad`'a **girmez** ama **ayrı bilişsel/yüzey bütçesi tüketir** (aşağıdaki cap'ler) — üretim gerektirmedikleri için "sahip olunan üretim" saymazlar ([[Chip Taxonomy]] role tanımları).
+
+### Bütçe sınıfları [LOCKED DEFAULT]
+
+Ayrı bütçeler; biri diğerini tüketmez:
+
+- **activeNew budget** — [[Lesson Anatomy]] archetype'ına göre (Doorway 1–2, Standard 1–4, Integration 0).
+- **supported/integration target budget** — eski hedefler; `activeNew`'i tüketmez, `totalProductionLoad`'a girer.
+- **regular carryover budget** — görünür carryover; `activeNew`'i tüketmez.
+- **repair reserve** — hata-tetikli; ayrı ve capped (aşağıda).
+- **exposure budget** — ghost/exposure; capped, `totalProductionLoad`'a girmez.
+- **total production / cognitive load** — hepsinin üstündeki tavan (ekran/chip invariantı, yukarıdaki §"Ekran/chip bütçesi").
+
+### Numeric caps [TUNABLE PARAMETER] (tek kanonik yer)
+
+| Cap | Değer | Sınıf | Not |
+|---|---|---|---|
+| Görünür carryover / ders | **≤ 3** | TUNABLE | CPW lint `carryover > 3` bunu enforce eder |
+| Recycled item / cümle | **≤ 2** | TUNABLE | — |
+| Exposure item / ünite | **≤ 2** | TUNABLE | recognition/ghost yüzey bütçesi |
+| Weak (repair) item / cümle | **≤ 1** | TUNABLE | repair reserve ile hizalı |
+| Target load share / ders | **≥ 0.50** | TUNABLE | CPW lint `target-share < 0.50` enforce eder |
+| repairReserve / normal ders | **≤ 1 distinct item, ≤ 1 focused repair sequence** | LOCKED DEFAULT | aşağıda |
+
+> [!warning] Bu sayılar **TUNABLE PARAMETER**'dır — sistem şekli kilitli, eşik smoke/kanıt sonrası değişebilir. **Bilimsel/kalibre-edilmiş değildir.** Enforcement bugün CPW build-time lint + elle; runtime validator DEĞİL ([[Content Production Workflow]]).
+
+### Repair reserve [LOCKED DEFAULT]
+
+- Normal derste **en fazla 1 distinct repair item** ve **1 odaklı repair dizisi**.
+- Repair item `activeNew` bütçesini tüketmez; **ayrı capped repairReserve**'ü tüketir; **her zaman** `totalProductionLoad`'a girer.
+- `totalProductionLoad` zaten doluysa: repair item **en düşük öncelikli normal carryover'ın yerine geçer** (öncelik değişir, yoğunluk değişmez).
+- Yer değiştirme güvensizse: repair'i **Practice Hub / review**'a ertele.
+- **[HARD INVARIANT]** Repair override **önceliği** değiştirir, **ders yoğunluğunu (total load) değiştirmez** — öğrenci hata yaptı diye daha yoğun bir dersle cezalandırılmaz. Eligibility ve akış: [[Error Tracking System]].
+
+### Non-claims
+
+- Bu bütçe/cap'ler **canlı v1 runtime'da enforce edilmez** (build-time lint + elle; runtime event yok).
+- Sayılar **empirik olarak doğrulanmış değildir** (TUNABLE).
+- Mevcut derslerin hepsinin bu ledger'a **uyduğu iddia edilmez** — retro-audit ayrı bir görev.
+
 ## Related Notes
-[[Lesson Anatomy]] · [[Chip Lifecycle]] · [[Weave System]] · [[Mastery Model]] · [[Content Selection]]
+[[Lesson Anatomy]] · [[Chip Lifecycle]] · [[Weave System]] · [[Mastery Model]] · [[Content Selection]] · [[Spine and Carryover Logic]] · [[Error Tracking System]] · [[Content Production Workflow]]

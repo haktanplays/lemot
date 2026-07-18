@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/CONTENT_FACTORY_CONTRACT.md", "docs/PAYLOAD_ECONOMY_v0.md", "docs/canon/LESSON_FLOW_CANON_v1.md", "docs/ROADMAP.md"]
 code_refs: ["lemot-app/content/lessons/v1/", "lemot-app/content/itemRegistry.ts", "lemot-app/content/lessonTypes.ts"]
 test_refs: ["lemot-app/content/learning-engine/*"]
@@ -35,6 +35,7 @@ tags: [workflow, content, factory, cairn, ops]
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
 - [Decision History](#decision-history)
+- [Policy Hardening — Required Authoring Ledger (2026-07-18)](#policy-hardening-required-authoring-ledger-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Kalan Cairn derslerinin nasıl üretildiği: **CONTENT_FACTORY_CONTRACT** (Faz 6A) + **Training Content Factory** (deriveDrill, practice selector). Batch-küçük, validator-first, Haktan-review'lı.
@@ -63,7 +64,7 @@ flowchart LR
 
 ### İçerik kuralları (§1.5, hard)
 - **Full-sentence chip yok** `piecesUsed`'da (CI lint); cümle ezberi yok.
-- Recycle dersi çalamaz: **target share ≥ 0.50**, görünür carryover ≤ 3, recycled ≤ 2/cümle, exposure ≤ 2/unit, weak ≤ 1.
+- Recycle dersi çalamaz: **target share ≥ 0.50**, görünür carryover ≤ 3, recycled ≤ 2/cümle, exposure ≤ 2/unit, weak ≤ 1. *(Bu cap'ler için tek kanonik değer + sınıflandırma evi: [[Difficulty and Cognitive Load]]; burada CPW lint enforcement olarak yer alır.)*
 - Passive/ghost exposure ≤ 2, asla correctness için gerekli değil, asla `piecesUsed`'da.
 - Doorway/compact ders için 1–2 aktif-yeni chip; ≤ 1–2 micro-logic kartı (yalnızca yeni görülen materyale bağlı).
 - **Weave prompt'ları directive/intent-based** ("Say you are heading home") + soru yanıtları için no-question-mark alternatifi (CI-enforced).
@@ -114,5 +115,25 @@ Item-katmanı kararları `docs/PAYLOAD_ECONOMY_v0.md` (locked 2026-07-04): her a
 ## Decision History
 - Content Factory Contract v0.1 (`0371e10`, #172 civarı). Pilot L7–L9 LOCKED. deriveDrill Option B (#179). Payload Economy v0 (`0b31c69`).
 
+## Policy Hardening — Required Authoring Ledger (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the per-lesson **item-role + mechanics ledger** her gelecek ders spec/review sheet'inde zorunludur. Alan tanımları/roller [[Chip Taxonomy]]'de; sayım/formül [[Difficulty and Cognitive Load]]'ta; horizon [[Chip Lifecycle]]'te; error/repair [[Error Tracking System]]'de. Sınıf: **[LOCKED DEFAULT]**.
+
+### Per-item alanları (zorunlu)
+
+`itemId` · `surface` · `firstIntroducedIn` · `roleThisLesson` · item/chip type · `productionEligibility` · `recognitionEligibility` · `exposureOnly` · `carryoverWindow` · `plannedNextUses` · `reasonForReturn` · `errorTagEligibility` · `budgetClass` · `cutoffRule` · `reactivationTriggers` · `expectedPostLessonState`
+
+### Per-lesson alanları (zorunlu)
+
+`lessonArchetype` · `communicativePromise` · `spine` · `activeNewCount` · `supportedTargetCount` · `productionCarryoverCount` · `recognitionCarryoverCount` · `repairReserveUsed` · `integrationTargetCount` · `exposureCount` · `totalProductionLoad` · `targetLoadShare` · `carryoverPlan` · `exposurePlan` · `evidenceMap` · `errorRepairMap` · `exitCondition` · `validatorStatus` · `founderReviewStatus` · `FrenchQAStatus`
+
+### Anti-gaming rule [HARD INVARIANT]
+
+Bir ders, fazla eski üretim yükünü `supportedTarget` / carryover / repair / integration kovalarına **saklayarak** `activeNew` bütçe kontrolünü **geçemez.** `totalProductionLoad` formülü ([[Difficulty and Cognitive Load]]) ve `targetLoadShare ≥ 0.50` bunu yakalamak içindir; CPW lint `carryover > 3` ve `target-share < 0.50`'i build-time işaretler.
+
+### Non-claims
+
+- Ledger bir **authoring/review gereksinimidir**; **runtime validator değildir**. **Mevcut derslerin hiçbirinin bu ledger'a uyduğu iddia edilmez** — retro-audit + ledger geriye-doldurma ayrı bir gelecek görevdir. `FrenchQAStatus` alanı native QA'nın **yapıldığını iddia etmez** ([[French Linguistic QA]] gate OPEN).
+
 ## Related Notes
-[[Validation Gates]] · [[Syllabus Production Workflow]] · [[Self-Producing Engine]] · [[Content Selection]] · [[PR Discipline]] · [[Documentation Workflow]] · [[French Linguistic QA]] (anadili dil-QA kapısı — süreç OPEN) · [[00 Le Mot Holy Codex]]
+[[Validation Gates]] · [[Syllabus Production Workflow]] · [[Self-Producing Engine]] · [[Content Selection]] · [[PR Discipline]] · [[Documentation Workflow]] · [[French Linguistic QA]] (anadili dil-QA kapısı — süreç OPEN) · [[Chip Taxonomy]] · [[Difficulty and Cognitive Load]] · [[Lesson Anatomy]] · [[00 Le Mot Holy Codex]]

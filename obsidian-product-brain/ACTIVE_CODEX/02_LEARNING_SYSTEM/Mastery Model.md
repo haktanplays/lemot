@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["lemot-app/content/learning-engine/mastery.ts", "docs/founder-self-learning-mastery-precision-policy.md"]
 code_refs: ["lemot-app/content/learning-engine/mastery.ts:26-36", "lemot-app/content/learning-engine/mastery.ts:273-297", "lemot-app/content/learning-engine/events.ts"]
 test_refs: ["lemot-app/content/learning-engine/**/mastery*.test.ts"]
@@ -34,6 +34,7 @@ tags: [learning, mastery, srs]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Evidence Effects and Repair Mapping (2026-07-18)](#policy-hardening-evidence-effects-and-repair-mapping-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Cairn bir chip'te ustalığı nasıl ölçer? Kaynak-of-truth `MasterySnapshot`, Leitner/prompt-fade kutuları, weak eşiği ve near-miss precision politikası. **IMPLEMENTED-but-tested-only** (engine, sandbox) — sevkedilen yüzeyde değil.
@@ -127,5 +128,35 @@ Engine unit testleri (mastery reducer). Cihaz doğrulaması **YOK**.
 ## Open Questions
 > [!open-loop] Mastery canlı yüzeye ne zaman/nasıl bağlanacak? → [[05 Open Loops]]
 
+## Policy Hardening — Evidence Effects and Repair Mapping (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for **what evidence does to mastery** (strength/weakness/decay sınırları). Repair **eligibility ve akışı** [[Error Tracking System]]'de; yük [[Difficulty and Cognitive Load]]'ta. Sınıf: **[HARD INVARIANT]**.
+
+### Evidence-effect invariants [HARD INVARIANT]
+
+- **Bir item'ı göstermek, bir model answer'ı açmak veya bir dersi tamamlamak tek başına mastery kurmaz** (Non-Signals: completion ≠ mastery · reveal ≠ anlama · display ≠ ownership · AI övgüsü ≠ validation — [[Error Tracking System]]).
+- **`recycled` bir query-time ders rolüdür**, kalıcı saklanan bir mastery statüsü **değildir** (`carryover-selector.ts`: recycled = query-time rol, mastery mutasyonu değil).
+- **recognition tek başına Mon Lexique'e eklemez** (`productionSuccess > 0` gerekir; mastery.ts:283-288).
+- **Precision-only asla failure değildir** (yukarıdaki 4-bucket precision politikası); `isWeak` yapmaz, kutu/PF indirmez.
+- Mastery **saklanan durum makinesi değildir** — event log üzerinden her çalıştırmada yeniden türetilir (counter'lar kazanır).
+
+### Decay boundaries [LOCKED DEFAULT / TUNABLE PARAMETER]
+
+- **Leitner refresh:** `[0,1,3,7,30]` gün (5 kutu); `dueAt` yalnız kutuyu oynatan success/failure'da yeniden zamanlanır (mastery.ts:273-277). Aralıklar **TUNABLE**.
+- **Weakness residual decay:** Lexique Memory `WEAKNESS_K=2.0`, `WEAK_RESIDUAL_FLOOR=0.15` (fixture/spec-only) — weakness zamanla azalır ama bir tabana oturur; **TUNABLE**.
+- `decay / refreshDue`, [[Content Selection]] pozitif seçim sinyalidir ve [[Chip Lifecycle]] reactivation trigger'ıdır.
+
+### Repair → urgency mapping [HARD INVARIANT]
+
+- **Başarılı repair aciliyeti AZALTIR** (weaknessReturn önceliği düşer) — ama:
+  - item'ı **anında güçlü yapmaz**,
+  - **weakness geçmişini silmez**,
+  - **zorunlu aynı-ders drill döngüsü tetiklemez.**
+- Kapanış: **spaced confirmation** (sonraki 1–2 ders) başarılı olunca repair override kapanır, item normal rolling lifecycle'a döner. Akış: [[Error Tracking System]].
+
+### Non-claims
+
+- Bu mastery modeli **IMPLEMENTED-but-tested-only** (engine/sandbox); **sevkedilen v1 yüzeyi mastery çalıştırmaz** (event yok). Decay/repair mapping **canlı yüzeyde aktif değildir.**
+
 ## Related Notes
-[[Error Tracking System]] · [[Review and Recycling System]] · [[Mon Lexique]] · [[Self-Producing Engine]] · [[Feedback and Scoring Philosophy]]
+[[Error Tracking System]] · [[Review and Recycling System]] · [[Mon Lexique]] · [[Self-Producing Engine]] · [[Feedback and Scoring Philosophy]] · [[Difficulty and Cognitive Load]] · [[Content Selection]]

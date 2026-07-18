@@ -1,5 +1,28 @@
 # CHANGELOG — CAIRN Obsidian Product Brain
 
+## v0.4 policy-hardening pass — 2026-07-18 (Draft PR #198)
+
+Chip / lesson / carryover / error-repair / Mon Lexique **policy hardening** (docs-only, ACTIVE_CODEX-only). Mevcut öğrenme-sistemi ana evleri betimleyici → **karar-taşıyan, sınıflandırılmış policy**'ye çevrildi. **Runtime/kod/şema/test değişmedi.**
+
+### Kilitlenen policy'ler (sınıf: HARD INVARIANT / LOCKED DEFAULT / TUNABLE / OPEN)
+- **[[Chip Taxonomy]]** — item-role vocabulary (activeNew/supportedTarget/recognitionOnly/ghostExposure/incidentalCarryover/repairItem/integrationTarget/accountingOnly/modelAnswer/UI chip), role integrity, UI eligibility MAY/MUST NOT, identity/promotion/demotion.
+- **[[Difficulty and Cognitive Load]]** — accounting fields + `totalProductionLoad` formülü, bütçe sınıfları, numeric caps (görünür carryover ≤3, recycled/cümle ≤2, exposure/ünite ≤2, weak/cümle ≤1, target-share ≥0.50, repairReserve ≤1) — **tek kanonik yer**.
+- **[[Chip Lifecycle]]** — default carryover horizon (L0 / L+1–2 / L+3–5 / L+6 / L+7–9 extension / L+10 dormant) + differentiated defaults; hibrit model.
+- **[[Spine and Carryover Logic]]** — carryover contract + spine/integration exceptions.
+- **[[Content Selection]]** — selection triggers (positive/negative/hard-exclusions).
+- **[[Error Tracking System]]** — error-source → weakness → repair eligibility (twice/two-lesson eşiği TUNABLE) + repair flow.
+- **[[Mastery Model]]** — evidence-effect invariants + decay + repair→urgency mapping.
+- **[[Mon Lexique]]** — projection pipeline HARD INVARIANT (Mon Lexique = learner-safe projeksiyon, kanıt DB değil).
+- **[[Lesson Anatomy]]** — archetype contracts (Doorway/Standard/Integration/Review; Expansion = OPEN).
+- **[[Content Production Workflow]]** — zorunlu per-item + per-lesson authoring ledger + anti-gaming rule.
+
+### Sekonder pointer + meta
+- [[Integration Lesson Logic]] · [[Review and Recycling System]] → ana evlere pointer.
+- [[05 Open Loops]] → iki açık soru **policy olarak kapandı** (carryover-reach hibrit; Mon Lexique architecture); kalibrasyon/wiring OPEN.
+
+### Non-claims (açıkça)
+- Canlı v1 carryover/repair/mastery **wire edilmedi**; v1 renderer **LearningEvent yaymaz**; numeric default'lar **empirik değil**; native French QA **yapılmadı**; validator'lar bu kuralları **enforce etmez** (build-time lint + elle); mevcut derslerin ledger'a uyduğu **iddia edilmez** — retro-audit ayrı görev. Bu pass **app implementasyonu yetkilendirmez.**
+
 ## v0.3 governance-skeleton pass — 2026-07-17 (Draft PR #198)
 
 Skeleton-only coverage pass (EDIT + VALIDATE ONLY). Üç eksik yapısal ana ev kuruldu; bayat yapısal-kapsam kayıtları düzeltildi.

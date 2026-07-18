@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/learning-engine-v1.md"]
 code_refs: ["lemot-app/content/learning-engine/carryover-selector.ts", "lemot-app/content/learning-engine/lexique-memory.ts", "lemot-app/content/learning-engine/mastery.ts"]
 test_refs: []
@@ -34,6 +34,7 @@ tags: [learning, chip, lifecycle]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Default Carryover Horizon (2026-07-18)](#policy-hardening-default-carryover-horizon-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Bir chip zaman içinde nasıl davranış değiştirir? Unpackable-chunk döngüsü, carryover aşamaları ve Mon Lexique'in iki ayrı yaşam-döngüsü kavramı — hepsi tek yerde, karıştırmadan.
@@ -120,5 +121,47 @@ Unpackable döngü: kanon; runtime insight-card yeniden kullanımı **PROPOSED**
 ## Open Questions
 > [!open-loop] Carryover reach sayısal olarak kanonlaşacak mı, yoksa selection-score'a mı bırakılacak? → [[05 Open Loops]]
 
+## Policy Hardening — Default Carryover Horizon (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the default carryover **horizon** and dormant/reactivation semantics. Bu, yukarıdaki v0.3 §10 "PROPOSAL, revisable" tablosunu **authoring amacıyla** bir **LOCKED DEFAULT**'a çevirir. **NON-CLAIM:** kaynak `v0.3` hâlâ "no numeric window is *canonized*" der (`v0.3:331-332`) ve bu tavan **empirik değildir**; burada kilitlenen şey bir **yazım default'u**dur, bilimsel yasa değil. **Runtime seçim yine selection-score-güdümlü ve sandbox'tadır** — bu tablo runtime'ı wire etmez.
+
+### Hibrit model [HARD INVARIANT]
+
+Açık soru ("sayısal reach mı, selection-score mı?") **hibrit** ile kapandı (→ [[05 Open Loops]]):
+
+1. **Sayısal horizon** → default **eligibility ve density**'yi belirler (aşağıdaki tablo).
+2. **Selection score** → uygun adaylar içinden **hangisinin gerçekten döneceğine** karar verir ([[Content Selection]]).
+3. **Evidence/curriculum trigger** → bir item'ı horizon dışına **uzatabilir veya reaktive edebilir**.
+4. Bir item **yalnızca önceki derste var diye** yüzeye çıkmaz.
+
+### Default horizon [LOCKED DEFAULT]
+
+`L+n` = item'ın ilk tanıtımından (`firstIntroducedIn`) sonraki ders offset'i.
+
+| Pencere | Rol | Default eligibility/density |
+|---|---|---|
+| **L0** | activeNew tanıtımı | carryover **değil** |
+| **L+1 – L+2** | yoğun supported carryover | **en yüksek** default eligibility |
+| **L+3 – L+5** | normal recycled carryover | **orta** density |
+| **L+6** | hafif konsolidasyon | **düşük** default selection önceliği |
+| **L+7 – L+9** | yalnız extension window | evrensel yükümlülük **değil**; item yalnız bir **evidence/curriculum trigger** varsa aktif kalır |
+| **L+10 →** | default **dormant** | mastery/Lexique Memory geçmişi **korunur**; sonradan reaktive edilebilir |
+
+> [!warning] **[HARD INVARIANT]** "Dokuz ders" = "her derste göster" **DEĞİLDİR.** Bu bir **maksimum eligibility kuyruğu**dur, zorunlu tekrar değil. Güçlü, yakın zamanda aşırı kullanılmış, düşük önemli veya bağlam-uyumsuz item **daha erken** ayrılabilir. **Dormant ≠ silinmiş/unutulmuş:** dormant item Lexique Memory'de kalır ve Mon Lexique'te görünür kalabilir ([[Mon Lexique]]).
+
+### Differentiated per-type defaults [LOCKED DEFAULT / TUNABLE PARAMETER]
+
+Sistem şekli kilitli; süreler **TUNABLE** (smoke sonrası):
+
+- **simple noun/context item:** genellikle **3–5 ders**.
+- **functional/formula chunk:** genellikle **5–7 ders**.
+- **spine/pattern:** **hard expiry yok**, ama **otomatik görünme hakkı da yok** (context/prereq/weakness/integration/spiral ile seçilir; [[Spine and Carryover Logic]]).
+- **error-tagged item:** repair + spaced confirmation kapanana dek **L+9'a kadar uzayabilir** ([[Error Tracking System]]).
+- **integration prerequisite:** bağımlılık gerçekten aktifken uzayabilir.
+
+### Dormant / reactivation
+
+Dormant item silinmez; şu trigger'larla geri döner (seçim skoru: [[Content Selection]]): mastery weak · context gerekir · recall/decay zamanı · yeni pattern ihtiyacı · scheduled review · exposure-promotion fırsatı · integration/prerequisite ihtiyacı. Yük tavanları: [[Difficulty and Cognitive Load]].
+
 ## Related Notes
-[[Chip Taxonomy]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Mon Lexique]] · [[Content Selection]] · [[Review and Recycling System]]
+[[Chip Taxonomy]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Mon Lexique]] · [[Content Selection]] · [[Review and Recycling System]] · [[Difficulty and Cognitive Load]] · [[Error Tracking System]]

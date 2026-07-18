@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/syllabus/lesson-archetype-templates-v1.md", "docs/syllabus/L10-L20-band-map-v0.md"]
 related: ["[[00 Le Mot Holy Codex]]", "[[Syllabus Overview]]", "[[Level and Band Map]]", "[[L6 Un Petit Moment]]", "[[L10 Integration]]", "[[L13 Integration]]", "[[L16 Integration and Small Moment]]"]
 tags: [syllabus, integration, rhythm]
@@ -81,5 +81,12 @@ Chip audit: L6/L10/L13 (ve L16 meta) integration'larında **0 active-new** (`aud
 ## Known Gaps
 - L13, repair pair'i owned varsayıyor ama shipped değil (spec-vs-shipped tutarsızlığı). → [[Vocabulary Progression]], [[05 Open Loops]].
 
+## Policy Hardening pointer (2026-07-18)
+
+> [!canon] Integration archetype **kontratı** ve **integration exceptions** artık kilitli policy. Bu not sekonderdir; tam kural ana evlerdedir:
+> - Archetype contract (activeNew=0 default, recombination/readiness kanıtı): [[Lesson Anatomy]] Archetype Contracts.
+> - Integration exceptions (integrationTarget ≠ incidental carryover; incidental slot tüketmez **ama** total/sentence/screen/weak-item/cognitive-load bütçelerini tüketir): [[Spine and Carryover Logic]].
+> - Yük tavanları: [[Difficulty and Cognitive Load]].
+
 ## Related Notes
-[[Syllabus Overview]] · [[Level and Band Map]] · [[Syllabus Design Rules]] · [[L6 Un Petit Moment]] · [[L10 Integration]] · [[L13 Integration]] · [[L16 Integration and Small Moment]]
+[[Syllabus Overview]] · [[Level and Band Map]] · [[Syllabus Design Rules]] · [[L6 Un Petit Moment]] · [[L10 Integration]] · [[L13 Integration]] · [[L16 Integration and Small Moment]] · [[Lesson Anatomy]] · [[Spine and Carryover Logic]]

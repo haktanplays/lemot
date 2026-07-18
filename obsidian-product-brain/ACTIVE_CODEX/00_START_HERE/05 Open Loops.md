@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/STATUS.md", "docs/KNOWN_GAPS.md", "docs/audits/2026-07-09-loop-audit-v2.md", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Open_Questions.md", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Backlog_and_Deferred.md", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Tech_and_Privacy_Decisions.md"]
 related: ["[[03 Current State]]", "[[04 Current Priorities]]", "[[Deferred Decisions]]", "[[Needs Verification]]", "[[Contradictions]]"]
 tags: [index, open-loop, tracker]
@@ -112,6 +112,17 @@ iki roadmap; üç paywall ifadesi; 54/56 id; AI routing tablosu ↔ gerçek sağ
 > Round 1.1 EAS/APK URL recovery, tek-cihaz TTS OK, Weave etiket/layout (`#155`), L3 recap `oui` (`#156`),
 > legacy 24-ders/L14 paywall inaktif. Bkz. `Open_Questions.md` "Resolved Elsewhere". Bunlar Cairn HEAD #196
 > repo kanonunda zaten ayrı biçimde ele alınmıştır; kaynak SHA'ları (`8cfdce75`/`2df34699`) **bayat**, yalnız köken kaydı.
+
+## 6. Policy-hardening pass (2026-07-18) — kapanan/daralan döngüler
+
+> [!check] Chip/carryover/error-repair/Mon Lexique **policy hardening** pass'i iki açık soruyu **policy olarak** kapattı. Bunlar **authoring/canon** kararlarıdır; **runtime wiring değil** (runtime hâlâ sandbox).
+
+| # | Döngü | Yeni statü | Nasıl |
+|---|---|---|---|
+| PH1 | "Carryover reach sayısal mı, selection-score mı?" | **CLOSED (policy)** | Hibrit: sayısal horizon default eligibility/density ([[Chip Lifecycle]]); selector içeriden seçer ([[Content Selection]]); evidence/curriculum trigger uzatır/reaktive eder ([[Spine and Carryover Logic]]). |
+| PH2 | "Mon Lexique vs Lexique Memory vs Selector" | **CLOSED (policy)** | Pipeline HARD INVARIANT: events→mastery→Lexique Memory→selector→Mon Lexique UI projection. Mon Lexique = learner-safe projeksiyon, kanıt DB değil ([[Mon Lexique]]). |
+
+**Açık kalan (bu pass kapatmaz):** selector coefficient kalibrasyonu · smoke-sonrası eşik tuning (horizon süreleri, repair eşiği = TUNABLE) · **D6 Mon Lexique runtime wiring (DEFERRED)** · v1 renderer LearningEvent yayımı · telemetri kalibrasyonu · final learner-facing status kopya. Bu policy'lerin **mevcut runtime/içerik uyumu UNVERIFIED/PARTIAL** — ayrı retro-audit gerekir.
 
 ## Kapanış kaydı
 

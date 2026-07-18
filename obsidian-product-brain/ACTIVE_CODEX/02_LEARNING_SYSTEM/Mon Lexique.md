@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/learning-engine-v1.md", "docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "lemot-app/content/learning-engine/mon-lexique.ts"]
 code_refs: ["lemot-app/content/learning-engine/mon-lexique.ts", "lemot-app/content/learning-engine/lexique-memory.ts", "lemot-app/content/learning-engine/mastery.ts:283-288"]
 test_refs: []
@@ -34,6 +34,7 @@ tags: [learning, mon-lexique, memory]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Projection Architecture (2026-07-18)](#policy-hardening-projection-architecture-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Mon Lexique nedir, iki ayrı kavramı (UI Projection bugün vs Lexique Memory gelecek), yaşam döngüsü (hidden/added/weak) ve hangi ürün-aşamasında açık. (UI ekran detayı [[Mon Lexique UI]]'de.)
@@ -101,5 +102,38 @@ Aynı registry+mastery kaynağından iki farklı sistem türetilir: geriye bakan
 ## Open Questions
 > [!open-loop] Mon Lexique public'e ne zaman açılır (hangi stage)? → [[05 Open Loops]]
 
+## Policy Hardening — Projection Architecture (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the Mon Lexique **projection ilişkisi**. Bu, yukarıdaki "üç ayrı sistem" kanonunu bir **pipeline HARD INVARIANT**'ına kilitler. Sınıf: **[HARD INVARIANT]**. Bu pass, "Mon Lexique vs memory/selector" açık sorusunu **kapatır** → [[05 Open Loops]] (runtime wiring D6 **DEFERRED** kalır).
+
+### Pipeline [HARD INVARIANT]
+
+```
+Learning events / error tags
+  → Mastery state (counter-derived)
+  → Lexique Memory (derived internal state)
+  → Carryover Selector / Practice Selector
+  → Mon Lexique (learner-facing UI projection)
+```
+
+- **Mon Lexique kanonik kanıt veritabanı DEĞİLDİR.** Kanıt = mastery/event log ([[Mastery Model]]).
+- **Mon Lexique, mastery/Lexique Memory'nin learner-safe UI projeksiyonudur.**
+- **Mon Lexique'i açmak mastery'yi değiştirmez.**
+- **Mon Lexique görünürlüğü tek başına carryover yaratmaz.**
+- **Carryover Selector ve Practice Selector** Lexique Memory/mastery'yi **okuyabilir** ([[Content Selection]]).
+- **Mon Lexique tek başına ders zamanlamaz.**
+- **Dormant item'lar Mon Lexique'te görünür kalabilir** ([[Chip Lifecycle]]).
+- **Internal state ve ham weakness/error detayı doğrudan learner-facing UI'a sızmaz** (`v0.3` "do not expose technical matrix codes/status enums/internal IDs").
+
+### Internal ↔ learner-facing eşleme
+
+- **Internal state sözlüğü** (öğrenciye gösterilmez): `activeNew` · `supported` · `strong` · `dormant` · `refreshDue` · `weaknessReturn`.
+- **Learner-facing bantlar sakin ve non-punitive** olmalı; mevcut engine iki etiketi türetir: `monLexiqueStatus` → "Collected" / "Needs another look" (p4-checkpoint).
+- **[OPEN]** Nihai learner-facing kopya bir not tarafından yönetilmiyorsa **uydurulmaz**; semantik eşleme burada; **kesin ifade OPEN** ([[Mon Lexique UI]]).
+
+### Non-claims
+
+- Mon Lexique **dev-apk'te HIDDEN** (`FEATURES.monLexique=false`); UI Projection ↔ Lexique Memory **canlı entegrasyonu yok**. Public açılış stage'i **OPEN DECISION**.
+
 ## Related Notes
-[[Mastery Model]] · [[Chip Lifecycle]] · [[Content Selection]] · [[Mon Lexique UI]] · [[Learning System Overview]]
+[[Mastery Model]] · [[Chip Lifecycle]] · [[Content Selection]] · [[Mon Lexique UI]] · [[Learning System Overview]] · [[Spine and Carryover Logic]]

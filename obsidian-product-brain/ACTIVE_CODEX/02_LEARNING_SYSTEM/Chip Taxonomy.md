@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/itemRegistry.ts", "lemot-app/content/lessonTypes.ts", "lemot-app/scripts/canonRules.ts:96-165"]
 test_refs: ["lemot-app/**/canonRules.test.ts", "lemot-app/**/v1LessonStructure.test.ts"]
@@ -36,6 +36,7 @@ tags: [learning, chip, taxonomy, crown]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Item Roles and UI Eligibility (2026-07-18)](#policy-hardening-item-roles-and-ui-eligibility-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — **CROWN NOTE.** Cairn'in ~12 davranışsal chip tipinin tamamı, 3-yollu verdict sistemi (Allowed / Caveat / Forbidden-as-primary-UI), ve neden bir cümlenin chip *olmadığı*. Bu, chip sisteminin tek canonical evi. Kaynak: `chip-taxonomy-and-lexique-lifecycle-v0.3.md` (CANONICAL, revisable — "no implementation authorization", v0.3:3).
@@ -151,5 +152,63 @@ Registry System A'da canlı; validator'lar build-time; davranışsal taksonomi s
 > [!open-loop] Runtime `status` enum'u spec taksonomisine ne kadar yakınsamalı (yeni alan mı, yoksa payload/derived mi)? → [[05 Open Loops]]
 > [!open-loop] L1 nihai chip listesi kasıtlı açık. → [[05 Open Loops]]
 
+## Policy Hardening — Item Roles and UI Eligibility (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for **item roles/identity** ve **UI chip eligibility**. Yük sayımı [[Difficulty and Cognitive Load]]'ta; horizon [[Chip Lifecycle]]'te. Bu bölüm yukarıdaki 12-tip davranışsal taksonomiyi bir **authoring role modeli**ne bağlar. Sınıf: **[HARD INVARIANT] / [LOCKED DEFAULT]**. **NON-CLAIM:** runtime `LearningItem.status` hâlâ 4-değerli düz enum'dur (bkz. yukarıdaki "How It Works — Runtime katmanı"); bu roller **authoring/accounting** katmanıdır, runtime enum değil.
+
+### Authoritative item-role vocabulary (ders-içi rol)
+
+`activeNew` · `supportedTarget` · `recognitionOnly` · `ghostExposure` · `incidentalCarryover` · `weaknessReturn / repairItem` · `integrationTarget` · `accountingOnly` · `modelAnswer surface` · `primary UI chip`
+
+Bu roller **ders-içi**dir; kalıcı mastery statüsü değildir. Sayım karşılıkları: [[Difficulty and Cognitive Load]] accounting fields.
+
+### Role integrity [HARD INVARIANT]
+
+- Bir item **aynı derste iki çelişkili primary rol** taşıyamaz.
+- Daha önce tanıtılmış bir item **tekrar `activeNew` olarak gizlenemez.**
+- Daha önce tanıtılmış ama **gerçek ders hedefi** olan item **`supportedTarget` veya `integrationTarget`'tır — `incidentalCarryover` değil.**
+- **`ghostExposure` asla "sahip olunan üretim" saymaz** (production gerekmedi → weakness de üretemez, [[Error Tracking System]]).
+- **Bir item'ı göstermek, bir model answer'ı açmak veya bir dersi tamamlamak tek başına mastery kurmaz** ([[Mastery Model]] Non-Signals).
+- **`recycled` bir query-time ders rolüdür**, kalıcı saklanan mastery statüsü değil ([[Mastery Model]]).
+- **Full sentence / multi-clause yüzey primary UI chip değildir.**
+- **Model-answer cümlesi bir yüzeydir**, ders'te göründü diye otomatik chip değildir.
+
+### Primary UI chip — MAY include [LOCKED DEFAULT]
+
+- spine / formula chunk'ları
+- noun package'ları (`un café`, `de l'eau`)
+- onaylı pattern chip'leri
+- bağımsız yeniden kullanılabilir içerik kelimeleri
+- onaylı sosyal/söylem formula chunk'ları
+
+### Primary UI chip — MUST NOT include [HARD INVARIANT]
+
+- full sentence
+- multi-clause ifade
+- yalnız derste göründü diye tam bir model answer
+- future/ghost item
+- learner-facing işlevi olmayan, UI'a terfi ettirilmiş registry atomu
+- yeniden kullanılabilir iletişimsel rolü olmayan gramer parçası
+- açık bir identity kararı olmadan aynı yüzey için **çift accounting kimliği**
+
+### Ayrımlar [HARD INVARIANT]
+
+- **accounting chip ≠ UI chip** (accounting hiç gösterilmeyebilir).
+- **inline highlight ≠ chip** (bir chip'e işaret eder, kendisi değil).
+- **model answer ≠ chip.**
+- **ghost surface ≠ learner-owned chip.**
+- **formula chunk** önce bütün öğrenilir, sonra unpack (`whole → use → notice → unpack → reuse`; [[Chip Lifecycle]]).
+- **unpacking recognition/insight olarak başlar, otomatik active production DEĞİL.**
+
+### Identity, promotion, demotion [LOCKED DEFAULT]
+
+- **Identity stability:** bir `itemId` bir kez atanınca yüzey/anlam kimliği sabit kalır; aynı yüzeyin farklı katmanları (ör. `être` vs yüzey `est`) ayrı ID'ye **körlemesine kanonlaşmaz** — açık identity kararı gerekir.
+- **Same-surface ambiguity:** çözülmemişse item carryover/UI'a **eligible değildir** (hard exclusion, [[Content Selection]]).
+- **Promotion:** exposure → recognition → (kanıtla) production; her adım kanıt gerektirir, otomatik değil.
+- **Demotion:** güçlü/aşırı-kullanılmış item recycled/dormant'a iner ([[Chip Lifecycle]]).
+- **Production eligibility:** yalnız öğretilmiş/desteklenmiş item üretim slotuna girer; **görülmemiş form üretim cevabı olamaz** (V3/V4 validator zemini).
+- **Recognition eligibility / exposure-only:** recognition item fark edilir, üretilmez; exposure-only item doğruluk için asla gerekli değildir.
+- **`piecesUsed` / Main Pieces / recap'te görünme:** yalnız **atomik** chip'ler (cümle/clause değil); recap `piecesUsed` atomik olmalı (`v1LessonStructure.test.ts` PROTECTED_CHUNKS zemini).
+
 ## Related Notes
-[[Chip System Overview]] · [[Chip Lifecycle]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Weave System]] · [[Mastery Model]]
+[[Chip System Overview]] · [[Chip Lifecycle]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Weave System]] · [[Mastery Model]] · [[Difficulty and Cognitive Load]] · [[Content Selection]]

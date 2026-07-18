@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/learning-engine-v1.md", "docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md"]
 code_refs: ["lemot-app/content/learning-engine/carryover-selector.ts", "lemot-app/content/learning-engine/graph.ts", "lemot-app/content/learning-engine/lessons/"]
 test_refs: []
@@ -35,6 +35,7 @@ tags: [learning, chip, spine, carryover]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Carryover Contract and Exceptions (2026-07-18)](#policy-hardening-carryover-contract-and-exceptions-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Bir dersin **spine**'ı nedir, chip'ler dersler arası nasıl taşınır (carry-in/carry-out), ve neden carryover'ın "mekanik dökme" değil "seçim" olduğu.
@@ -111,7 +112,38 @@ SHARED_ITEMS + define-once carry-in: engine (System B) fixture'larda IMPLEMENTED
 - Sayısal reach kanonlaşmadı.
 
 ## Open Questions
-> [!open-loop] Carryover reach sayısal mı kalacak yoksa tamamen selection-score'a mı bırakılacak? → [[05 Open Loops]]
+> [!check] **KAPANDI (2026-07-18):** "Carryover reach sayısal mı yoksa selection-score mı?" → **hibrit** ile çözüldü: sayısal horizon default eligibility/density verir ([[Chip Lifecycle]]), selector içeriden seçer ([[Content Selection]]), evidence/curriculum trigger uzatır/reaktive eder. Detay: aşağıdaki Policy Hardening + [[05 Open Loops]]. (Selector coefficient kalibrasyonu ve runtime wiring **OPEN** kalır.)
+
+## Policy Hardening — Carryover Contract and Exceptions (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the carryover **contract** ve spine/integration **istisnaları**. Horizon sayıları [[Chip Lifecycle]]'te; yük tavanları [[Difficulty and Cognitive Load]]'ta; seçim sinyalleri [[Content Selection]]'da. Sınıflar: **[HARD INVARIANT] / [LOCKED DEFAULT]**.
+
+### Carryover contract [HARD INVARIANT]
+
+- Carryover **aday**dır, **default değil** — bir item yalnız önceki derste var diye dönmez.
+- Carryover **`activeNew` bütçesini tüketmez.**
+- Carryover **bilişsel olarak bedava değildir** — üretim gerektiriyorsa `totalProductionLoad`'a girer ([[Difficulty and Cognitive Load]]).
+- **Ghost/exposure asla "sahip olunan üretim" saymaz** (üretim gerekmedi).
+- Daha önce tanıtılmış bir item **tekrar `activeNew` olarak gizlenemez.**
+- Daha önce tanıtılmış ama **gerçek bir ders hedefi** olan item **`supportedTarget` veya `integrationTarget`'tır — `incidentalCarryover` değil.** (Rol tanımları: [[Chip Taxonomy]].)
+- Full-sentence/multi-clause yüzey **primary UI chip değildir** (yalnız model answer); carryover da bunu chip'e çeviremez.
+
+### Density → tek kaynak
+
+Yoğunluk **sayı** olarak [[Chip Lifecycle]] horizon tablosundan; **cap** olarak [[Difficulty and Cognitive Load]]'tan (görünür carryover ≤3, recycled/cümle ≤2). Burada tekrarlanmaz. İlke: **"Recycle cannot steal the lesson"** — target load baskın, recycle destek, exposure capped (`v0.3:388-390`).
+
+### Spine exceptions [LOCKED DEFAULT]
+
+- **Hard expiry yok**, ama **her derste görünme otomatik hakkı da yok.**
+- Aynı-ünite yeniden kullanım **beklenir**; tanıtımdan sonra **en az bir anlamlı üretim yeniden-kullanımı**.
+- Sonraki seçim: context / prerequisite / weakness / integration need / spiral importance'a bağlı.
+- **Recent overuse bir spine item'ı bile bastırabilir** ([[Content Selection]] negatif sinyalleri).
+
+### Integration exceptions [HARD INVARIANT]
+
+- `integrationTarget`'lar **incidental carryover DEĞİLDİR**; sıradan incidental-carryover slot'larını **tüketmezler**.
+- Ama **cümle, ekran, total production, weak-item ve bilişsel-yük** bütçelerini **tüketirler** ([[Difficulty and Cognitive Load]]).
+- Bir integration dersi **çok sayıda eski item** içerebilir — **yalnızca** her biri açık bir **recombination target** iken ve ders kendi archetype/load kontratında kalırken ([[Lesson Anatomy]] archetype'ları).
 
 ## Related Notes
-[[Chip Taxonomy]] · [[Chip Lifecycle]] · [[Lesson Anatomy]] · [[Content Selection]] · [[Integration Lesson Logic]] · [[Difficulty and Cognitive Load]]
+[[Chip Taxonomy]] · [[Chip Lifecycle]] · [[Lesson Anatomy]] · [[Content Selection]] · [[Integration Lesson Logic]] · [[Difficulty and Cognitive Load]] · [[Error Tracking System]]

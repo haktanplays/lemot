@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["lemot-app/content/learning-engine/events.ts:31-47", "lemot-app/content/weakPointTags.ts", "docs/ROADMAP.md:31-40", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Learning_Engine_and_Exercise_Types.md"]
 code_refs: ["lemot-app/content/learning-engine/events.ts:31-47", "lemot-app/content/learning-engine/events.ts:107-134", "lemot-app/content/weakPointTags.ts:1-28", "lemot-app/content/learning-engine/error-engine.ts", "lemot-app/scripts/shipped-error-tags.json"]
 test_refs: ["lemot-app/**/events*.test.ts", "lemot-app/**/canonRules.test.ts"]
@@ -35,6 +35,7 @@ tags: [learning, error, taxonomy, yasa]
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
 - [Kaynak içe aktarımı (Learning Engine Taxonomy, 2026-06-29 vault)](#kaynak-içe-aktarımı-learning-engine-taxonomy-2026-06-29-vault)
+- [Policy Hardening — Error → Weakness → Repair (2026-07-18)](#policy-hardening-error-weakness-repair-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Cairn bir hatayı nasıl etiketler, saklar ve mastery'ye taşır? 16-değerli `ErrorTagCode`, 27-değerli `WEAK_POINT_TAGS`, üç öğrenci-kanıt anahtarı (weakTags/precisionTags/resultTag) ve neden hepsinin dondurulduğu (YASA 3).
@@ -130,5 +131,64 @@ Her egzersiz tipi bir "measurement mapping" taşır (ne yazabilir, hangi reveal/
 
 Bu taksonomi bu notun mevcut kanonuyla **çelişmez**: runtime `ErrorTagCode`/`WEAK_POINT_TAGS`/YASA 3 = **stored grading dili**; §4 sinyal kovaları = onun *önündeki gözlem katmanı*. Ölçüm katmanı bugün yalnız engine/sandbox'ta canlıdır; **v1 renderer hiç LearningEvent yaymaz** (yukarıdaki Kritik uyumsuzluk).
 
+## Policy Hardening — Error → Weakness → Repair (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for error-source classification → weakness → **repair eligibility ve akışı**. Repair'in **yük bütçesi** [[Difficulty and Cognitive Load]]'ta (repairReserve); mastery etkileri [[Mastery Model]]'de. Sınıf: **[HARD INVARIANT] / [LOCKED DEFAULT] / [TUNABLE PARAMETER]**.
+
+### Weakness integrity [HARD INVARIANT]
+
+- Error tracking **kanıt kaydeder; doğrudan pedagoji icat etmez.**
+- **Tek bir miss** item'ı otomatik olarak sonraki derse **zorlamaz.**
+- Yalnız **doğrulanmış öğrenci-kaynaklı hata** weakness yaratır.
+- **content / validator / UI-flow / tone / AI-generator / mastery-mapping** hatası öğrenci zayıflığı **değildir** (yukarıdaki §Kaynak içe aktarımı §5 sınıflandırması).
+- **exposure/ghost üretim başarısızlığı weakness yaratamaz** — üretim gerekmedi.
+- **Precision-only** (punctuation/accent/spelling) mevcut precision politikasını izler ([[Mastery Model]]); **sessizce tam kavramsal weakness'a çevrilemez.**
+- Error-triggered return **context ve safety** sınırlarına tabidir ([[Content Selection]] hard exclusions).
+
+### Repair eligibility [LOCKED DEFAULT] (eşik [TUNABLE PARAMETER])
+
+Bir item/tag **`repairEligible`** olur, şu iki durumdan **biri** olursa:
+
+- aynı authored öğrenci hatası **aynı derste iki kez**, **veya**
+- aynı hata **iki ayrı derste** tekrarlar.
+
+> [!warning] Bu **eşik (twice / two-lesson)** bir **TUNABLE PARAMETER**'dır — sistem şekli kilitli, sayı smoke sonrası değişebilir; empirik değildir.
+
+### Repair flow [LOCKED DEFAULT]
+
+```
+tek doğrulanmış miss
+  → yalnız kanıt kaydet (return yok)
+
+tekrarlı / eşik-aşan öğrenci hatası
+  → repairEligible / weaknessReturn adayı
+
+context-fit + load-fit (repairReserve ≤ 1)
+  → ders repairReserve VEYA Practice Hub repair
+
+başarılı repair
+  → aciliyet AZALIR
+  → zorunlu aynı-ders drill döngüsü YOK
+  → sonraki 1–2 derste 1 spaced confirmation planla
+
+başarılı spaced confirmation
+  → repair override'ı KAPAT
+  → item'ı normal rolling lifecycle'a döndür
+
+kalıcı başarısızlık
+  → weaknessReturn önceliğini koru, ama repair/load cap'lerini ASLA aşma
+```
+
+### Netleştirme [HARD INVARIANT]
+
+- Repair item'ı **anında güçlü yapmaz.**
+- Weakness geçmişi **silinmez.**
+- Başarılı repair **aciliyeti azaltır** (mastery mapping: [[Mastery Model]]).
+- Öğrenci hata yaptı diye **daha yoğun bir dersle cezalandırılmaz** — repair override önceliği değiştirir, ders yoğunluğunu değil ([[Difficulty and Cognitive Load]] repairReserve).
+
+### Non-claims
+
+- Error-driven repair **canlı v1 üretimde aktif değildir** (v1 renderer LearningEvent yaymaz — yukarıdaki Kritik uyumsuzluk). Bu bir **policy**dir, çalışan runtime değil.
+
 ## Related Notes
-[[Mastery Model]] · [[Feedback and Scoring Philosophy]] · [[Self-Producing Engine]] · [[Exercise Error Matrix]]
+[[Mastery Model]] · [[Feedback and Scoring Philosophy]] · [[Self-Producing Engine]] · [[Exercise Error Matrix]] · [[Difficulty and Cognitive Load]] · [[Content Selection]] · [[Chip Lifecycle]]

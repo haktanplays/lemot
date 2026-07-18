@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/learning-engine-v1.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/lessonTypes.ts:40-47", "lemot-app/content/lessons/v1/lesson-001.ts", "lemot-app/content/learning-engine/lessons/"]
 test_refs: ["lemot-app/**/v1LessonStructure.test.ts"]
@@ -35,6 +35,7 @@ tags: [learning, lesson, structure]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Archetype Contracts (2026-07-18)](#policy-hardening-archetype-contracts-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Bir Cairn dersi *neyden* yapılır? Girdi modeli (sentence family), motor derinliği, ekran/chip bütçesi ve süreklilik kuralı. (*Nasıl akar* sorusu [[Lesson Flow]]'da.)
@@ -122,5 +123,30 @@ v1 dersleri L1–L6 dev-apk-görünür; L7–L15 kayıtlı ama Home'da gizli; en
 ## Open Questions
 > [!open-loop] L1 chip listesi **kasıtlı olarak kesinleşmedi** (~34–35 hedef, 31 aday, 3–4 eklenecek). Nihai listeyi uydurma. → [[05 Open Loops]]
 
+## Policy Hardening — Archetype Contracts (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for lesson **archetype contracts**. Bütçe sayıları [[Difficulty and Cognitive Load]]'ta; carryover contract [[Spine and Carryover Logic]]'te; integration detay [[Integration Lesson Logic]]'te; review seçimi [[Review and Recycling System]]'de. Sınıf: **[LOCKED DEFAULT]**. Her archetype ders spec'inde adlandırılmalı ([[Content Production Workflow]] ledger `lessonArchetype`).
+
+### Contract tablosu [LOCKED DEFAULT]
+
+| Archetype | Communicative promise | activeNew | supported/carryover | exposure | Evidence | Total-load sınırı | Geçersiz gizli genişleme |
+|---|---|---|---|---|---|---|---|
+| **Doorway** | tek dar iletişimsel işlev | **1–2** | yalnız anchor/support | minimal | kısa üretim kanıtı | archetype/D&CL tavanı | geniş gramer açılımı |
+| **Standard build** | bir primary yeni kenar | **1–4** (total-load korumasına tabi) | eski spine yeni bağlamda büyür; supported/carryover **açık** | capped | ≥1 anlamlı recombination | D&CL tavanı | eski üretim yükünü supported/carryover'a saklama |
+| **Integration** | recombination/readiness | **0** (default) | reused = `integrationTarget` (incidental carryover değil) | capped | recombination/readiness kanıtı | D&CL tavanı | gizli yeni gramer sistemi |
+| **Review** | iletişimsel tekrar | **0** (default, yeni ownership yok) | weakness/decay/due/upcoming/context'ten seçim | capped | due/weakness kapanışı | D&CL tavanı | sınırsız flashcard dump'a çökme |
+| **Expansion** | *(canon'da ayrı archetype olarak kilitli DEĞİL)* | **[OPEN]** | — | — | — | — | Standard build varyantı sayılır; canon aksini demedikçe **uydurma yok** |
+
+### Per-archetype kilitli davranış
+
+- **Doorway:** 1–2 activeNew · tek dar işlev · **geniş gramer açılımı yok** · carryover yalnız anchor/support · kısa üretim kanıtı.
+- **Standard build:** 1–4 activeNew (total-load korumasına tabi) · bir primary yeni kenar · **en az bir anlamlı recombination** · eski spine yeni bağlamda büyür · supported/carryover yükü **açık kalmalı** (anti-gaming, [[Difficulty and Cognitive Load]]).
+- **Integration:** activeNew=0 default · reused item'lar **`integrationTarget`, gizli incidental carryover değil** · **gizli yeni gramer yok** · başarı = recombination/readiness kanıtı · integration target'lar normal incidental-carryover slot'larını tüketmez **ama** total production/sentence/screen/weak-item/cognitive-load bütçelerini tüketir ([[Spine and Carryover Logic]] integration exceptions).
+- **Review:** default yeni ownership **yok** · seçim weakness/decay/due/upcoming-usefulness/context'ten ([[Content Selection]]) · **iletişimsel kalır**, sınırsız flashcard dump'a çökmez ([[Review and Recycling System]]).
+
+### Non-claims
+
+- Bu archetype kontratları **authoring policy**dir; runtime bunları enforce etmez (ekran tipi seti 7'de dondurulmuş, ama archetype/load kontratı build-time/elle). Mevcut derslerin hepsinin uyduğu **iddia edilmez** (retro-audit ayrı görev).
+
 ## Related Notes
-[[Lesson Flow]] · [[Spine and Carryover Logic]] · [[Chip System Overview]] · [[Difficulty and Cognitive Load]] · [[Whole First, Unpack Later]]
+[[Lesson Flow]] · [[Spine and Carryover Logic]] · [[Chip System Overview]] · [[Difficulty and Cognitive Load]] · [[Whole First, Unpack Later]] · [[Integration Lesson Logic]] · [[Review and Recycling System]] · [[Content Production Workflow]]

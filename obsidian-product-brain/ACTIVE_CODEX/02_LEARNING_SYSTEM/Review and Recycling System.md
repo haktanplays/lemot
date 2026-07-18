@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/learning-engine-v1.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/learning-engine/practice-selector.ts", "lemot-app/content/learning-engine/practice-pool.ts", "lemot-app/content/learning-engine/mastery.ts", "lemot-app/components/DailyReviewOverlay.tsx"]
 test_refs: []
@@ -114,5 +114,12 @@ Seçici sabit bir öncelik zincirinden bugünün küçük setini üretir; master
 ## Open Questions
 > [!open-loop] Daily Review legacy `lm7`'den engine projeksiyonlarına ne zaman geçecek? → [[05 Open Loops]]
 
+## Policy Hardening pointer (2026-07-18)
+
+> [!canon] Review archetype **kontratı** artık kilitli policy. Bu not sekonderdir; tam kural ana evlerdedir:
+> - Review archetype (default yeni ownership YOK; iletişimsel kalır, sınırsız flashcard dump'a çökmez): [[Lesson Anatomy]] Archetype Contracts.
+> - Seçim sinyalleri (weakness/decay/due/upcoming-usefulness/context): [[Content Selection]] Selection Triggers.
+> - Horizon/dormant: [[Chip Lifecycle]]; yük tavanları: [[Difficulty and Cognitive Load]].
+
 ## Related Notes
-[[Mastery Model]] · [[Content Selection]] · [[Daily Review]] · [[Chip Lifecycle]] · [[Mon Lexique]]
+[[Mastery Model]] · [[Content Selection]] · [[Daily Review]] · [[Chip Lifecycle]] · [[Mon Lexique]] · [[Lesson Anatomy]] · [[Difficulty and Cognitive Load]]

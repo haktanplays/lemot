@@ -9,8 +9,8 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/learning-engine/carryover-selector.ts", "lemot-app/content/learning-engine/practice-selector.ts", "lemot-app/content/learning-engine/lexique-memory.ts"]
 test_refs: []
@@ -34,6 +34,7 @@ tags: [learning, selection, carryover]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Selection Triggers (2026-07-18)](#policy-hardening-selection-triggers-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — "Bugün öğrenciye ne gösterilecek?" nasıl karar verilir? Carryover selection-score girdileri, practice selector önceliği, ve EVIDENCE-weight vs SELECTION-weight ayrımı.
@@ -106,5 +107,29 @@ Tüm seçiciler **sandbox-only**; canlı v1 dersleri seçimi yazılı içerikte 
 ## Open Questions
 > [!open-loop] Selection-score ağırlıkları nasıl kalibre edilecek (veri olmadan)? → [[05 Open Loops]]
 
+## Policy Hardening — Selection Triggers (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for carryover/return **selection triggers**. Eligibility penceresi [[Chip Lifecycle]]'te; contract [[Spine and Carryover Logic]]'te; yük tavanları [[Difficulty and Cognitive Load]]'ta. Bu, yukarıdaki v0.3:354-363 skor girdilerini **genişletir** (çelişmez). Sınıf: **[LOCKED DEFAULT]** (ağırlık kalibrasyonu **OPEN/TUNABLE**).
+
+Selector bir item'ı **eligibility penceresi içindeyse** (horizon) skorlar; skor **hangisinin döneceğine** karar verir. Selector **asla evidence weight üretmez** (§5.3 ayrımı korunur).
+
+### Positive triggers (yukarı çeker)
+
+`contextFit` · `weakness` · `decay / refreshDue` · `spiralImportance` · `upcomingUsefulness` · `integrationNeed` *(yeni)* · `prerequisiteNeed` *(yeni)* · `exposurePromotionPotential`
+
+### Negative triggers (aşağı çeker)
+
+`recentOveruse` · `alreadyStrong` · `screenClutterRisk` · `contextMismatch` *(yeni)* · `duplicateFunction` *(yeni)* · `totalLoadPressure` *(yeni — [[Difficulty and Cognitive Load]] yük tavanı baskısı)*
+
+### Hard exclusions [HARD INVARIANT] (skordan bağımsız, asla seçilmez)
+
+- **full-sentence / multi-clause chip** (yalnız model answer — [[Chip Taxonomy]]).
+- **identity ambiguity** — aynı yüzey için çözülmemiş kimlik ([[Chip Taxonomy]] identity stability).
+- **target overlap incidental carryover olarak yanlış sınıflanmış** (gerçek hedef → supported/integration target, [[Spine and Carryover Logic]]).
+- **hiç temas edilmemiş item** (never-contacted → carryover adayı olamaz).
+- **exposure-only item bir zorunlu üretim slotunda** (production gerektirmeyen item üretim slotuna konamaz).
+- **context mismatch** (bağlam uymuyorsa geri getirilmez).
+- **too recent AND already strong** — mevcut selector semantiğine tabi (yakın + güçlü item bastırılır).
+
 ## Related Notes
-[[Spine and Carryover Logic]] · [[Chip Lifecycle]] · [[Review and Recycling System]] · [[Mastery Model]] · [[Difficulty and Cognitive Load]]
+[[Spine and Carryover Logic]] · [[Chip Lifecycle]] · [[Review and Recycling System]] · [[Mastery Model]] · [[Difficulty and Cognitive Load]] · [[Chip Taxonomy]]
