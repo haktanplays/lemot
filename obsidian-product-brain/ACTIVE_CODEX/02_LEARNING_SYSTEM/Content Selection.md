@@ -35,6 +35,7 @@ tags: [learning, selection, carryover]
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
 - [Policy Hardening — Selection Triggers (2026-07-18)](#policy-hardening-selection-triggers-2026-07-18)
+- [Policy Hardening — Controlled contextTags Vocabulary (2026-07-18)](#policy-hardening-controlled-contexttags-vocabulary-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — "Bugün öğrenciye ne gösterilecek?" nasıl karar verilir? Carryover selection-score girdileri, practice selector önceliği, ve EVIDENCE-weight vs SELECTION-weight ayrımı.
@@ -131,5 +132,42 @@ Selector bir item'ı **eligibility penceresi içindeyse** (horizon) skorlar; sko
 - **context mismatch** (bağlam uymuyorsa geri getirilmez).
 - **too recent AND already strong** — mevcut selector semantiğine tabi (yakın + güçlü item bastırılır).
 
+## Policy Hardening — Controlled contextTags Vocabulary (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for `contextTags` as a **controlled authoring vocabulary**. Sınıf: **[HARD INVARIANT] / [LOCKED DEFAULT] / [OPEN]**. **Bugünkü gerçek:** `contextTags` runtime'da serbest-metin `string[]` (`carryover-selector.ts:58`, EXPLICIT caller input) — kanonik registry **yok**. Bu bölüm **policy** kurar; kod/şema değiştirmez.
+
+### Kural [HARD INVARIANT]
+
+- `contextTags` **tek bir kanonik controlled registry**'den gelmeli.
+- Yazar/agent ders/item dosyalarında **inline yeni tag icat edemez.**
+- **Bilinmeyen tag → fail closed.**
+- **Boş contextTags**, context-matching gereken yerde **fail closed** kalır (mevcut selector davranışı).
+- Selector eşleşmesi **kanonik tag** kullanır, keyfi yazım varyantı değil.
+
+### Controlled registry, her tag için tanımlar [LOCKED DEFAULT]
+
+canonical tag · kısa semantik anlam · izinli kullanım kapsamı · alias/deprecated formlar · varsa parent/group · örnekler · status (active/deprecated) · deprecated ise replacement tag.
+
+### Normalizasyon [LOCKED DEFAULT]
+
+- Alias'lar authoring/import sırasında **kabul** edilebilir,
+- **kanonik değer persist edilir,**
+- normalizasyon **deterministik**,
+- alias'lar authored içerikte **süresiz kalmaz** (kanoniğe çevrilir).
+
+### Yeni-tag prosedürü [LOCKED DEFAULT]
+
+Bir yeni `contextTag` **aynı değişiklikte** şunları gerektirir: (1) registry girişi, (2) mevcut tag'lerin neden yetersiz olduğu, (3) etkilenen item/ders referansları, (4) collision/overlap kontrolü, (5) validation güncellemesi **veya** açık "validator-deferred" notu, (6) semantik vokabüler değişince CHANGELOG girişi.
+
+### Bu pass'in sınırı [OPEN]
+
+- **Büyük taksonomi UYDURULMADI.** Kanonik tag listesi **evidenced kullanımdan seed'lenmeli** (ayrı iş).
+- **Gözlemlenen (kanonlaşmamış) mevcut string'ler:** `café`, `greeting`, `home`, `location`, `ordering` (`lemot-app/content/` içinde geçer) — **kanon değil**, seed adayı.
+- **Collision/near-duplicate riskleri (yalnız tespit prompt'u, ön-onaylı değil):** `cafe`/`café` · `travel`/`trip` · `location`/`place` · `food`/`restaurant`/`ordering` · `feeling`/`state`/`wellbeing`. Merger **tahmin edilmez** — rapor edilir, karar ayrı.
+
+### Enforcement status
+
+- **authoring/import validator candidate** (henüz yok). **contextTag code/schema/validator bu pass'te eklenmedi.** Runtime enforcement iddia edilmez.
+
 ## Related Notes
-[[Spine and Carryover Logic]] · [[Chip Lifecycle]] · [[Review and Recycling System]] · [[Mastery Model]] · [[Difficulty and Cognitive Load]] · [[Chip Taxonomy]]
+[[Spine and Carryover Logic]] · [[Chip Lifecycle]] · [[Review and Recycling System]] · [[Mastery Model]] · [[Difficulty and Cognitive Load]] · [[Chip Taxonomy]] · [[Registry Architecture]] · [[Content Production Workflow]]

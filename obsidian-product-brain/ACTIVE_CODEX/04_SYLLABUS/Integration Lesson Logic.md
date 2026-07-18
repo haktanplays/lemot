@@ -29,6 +29,7 @@ tags: [syllabus, integration, rhythm]
 - [Guardrails](#guardrails)
 - [Integration instances (audit'te 0 active-new)](#integration-instances-auditte-0-active-new)
 - [Known Gaps](#known-gaps)
+- [Policy Hardening — Integration Rhythm Contract (2026-07-18)](#policy-hardening-integration-rhythm-contract-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — **Integration (Review/Integration archetype #10)** derslerinin ne zaman geldiği, ne içerdiği, ne içermediği. Instances: L6, L10, L13, L16. Band ritmi → [[Level and Band Map]].
@@ -88,5 +89,40 @@ Chip audit: L6/L10/L13 (ve L16 meta) integration'larında **0 active-new** (`aud
 > - Integration exceptions (integrationTarget ≠ incidental carryover; incidental slot tüketmez **ama** total/sentence/screen/weak-item/cognitive-load bütçelerini tüketir): [[Spine and Carryover Logic]].
 > - Yük tavanları: [[Difficulty and Cognitive Load]].
 
+## Policy Hardening — Integration Rhythm Contract (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the **integration rhythm** as a usable authoring default. Bu, yukarıdaki "~3 ardışık new-engine" sezgisini bir **LOCKED DEFAULT + review**'a çevirir — katı bilimsel yasa değil. Archetype contract [[Lesson Anatomy]]'de; yük [[Difficulty and Cognitive Load]]'ta. Sınıf: **[LOCKED DEFAULT]**.
+
+### Kural [LOCKED DEFAULT]
+
+Her biri **maddi olarak yeni** bir iletişimsel engine / pattern / üretim kenarı tanıtan **üç ardışık dersten** sonra, **dördüncü** ardışık net-new build dersini yazmadan önce dizi **gözden geçirilmeli.** Review şunlardan **birini** seçer:
+
+- bir **Integration** dersi ekle,
+- bir **Review/Consolidation** beat ekle,
+- anlamlı integration'ın **zaten gömülü** olduğunu kanıtla,
+- **bounded bir istisna belgele** ve **bir sonraki integration noktasını adlandır.**
+
+### Diziye ne sayılır
+
+**Sayılır:** birincil amacı yeni iletişimsel engine olan ders · yeni üretken gramer/pattern kenarı · maddi olarak genişlemiş üretim sistemi.
+
+**Otomatik saymaz:** saf review · integration · repair dersi · recognition-only exposure · **yeni üretim engine'i tanıtmayan çok küçük doorway** · UI/tutorial-only ders.
+
+### Doorway handling [LOCKED DEFAULT]
+
+İki küçük doorway dersi, **yalnız** birleşik iletişimsel yükleri ve bağımlılıkları açıkça **tek bir birim** oluşturuyorsa **tek build kenarı** sayılabilir — ve bu **belgelenmelidir.** Agent, dört ardışık new-engine dersini gizlemek için "doorway" etiketini **kullanamaz** (anti-gaming, [[Content Production Workflow]]).
+
+### İzinli istisna gerekçeleri
+
+kümülatif `totalProductionLoad` gösterilebilir biçimde düşük · prerequisite zinciri kesilirse daha az güvenli olur · integration önceki derste zaten authored · iki-parçalı doorway kasten tek kenar · kullanıcı kanıtı daha uzun diziyi destekler.
+
+### Her istisna kaydeder
+
+varsayılanın neden baypas edildiği · kümülatif new-engine sayısı · güncel yük özeti · bir sonraki integration/review beat'in yeri.
+
+### Status
+
+- **authoring/review kuralı** (şimdi) · **future validator WARNING candidate** · **HARD ERROR değil** · **runtime enforcement iddia edilmez.**
+
 ## Related Notes
-[[Syllabus Overview]] · [[Level and Band Map]] · [[Syllabus Design Rules]] · [[L6 Un Petit Moment]] · [[L10 Integration]] · [[L13 Integration]] · [[L16 Integration and Small Moment]] · [[Lesson Anatomy]] · [[Spine and Carryover Logic]]
+[[Syllabus Overview]] · [[Level and Band Map]] · [[Syllabus Design Rules]] · [[L6 Un Petit Moment]] · [[L10 Integration]] · [[L13 Integration]] · [[L16 Integration and Small Moment]] · [[Lesson Anatomy]] · [[Spine and Carryover Logic]] · [[Content Production Workflow]]

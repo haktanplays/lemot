@@ -9,8 +9,8 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-17
-last_updated: 2026-07-17
-last_reviewed: 2026-07-17
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["obsidian-product-brain/ACTIVE_CODEX/12_RESEARCH_AND_IDEAS/Experiments.md", "obsidian-product-brain/ACTIVE_CODEX/09_DECISIONS/ADR-0009 events-source-of-truth.md", "obsidian-product-brain/ACTIVE_CODEX/06_ARCHITECTURE/Privacy and Data Deletion.md"]
 code_refs: []
 test_refs: []
@@ -35,6 +35,7 @@ tags: [research, governance, measurement, telemetry, experimentation, skeleton]
 - [Current Decision-Bearing Experiments](#current-decision-bearing-experiments)
 - [Export and Cohort Skeleton](#export-and-cohort-skeleton)
 - [Decision Gates](#decision-gates)
+- [Policy Hardening — TUNABLE Parameter Decision Metadata (2026-07-18)](#policy-hardening-tunable-parameter-decision-metadata-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!warning] Skeleton Banner
@@ -133,6 +134,42 @@ Bunların sayısal başarı eşiği **OPEN** — uydurulmadı.
 >
 > İzlenen yer: [[05 Open Loops]] · [[Experiments]].
 
+## Policy Hardening — TUNABLE Parameter Decision Metadata (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for **TUNABLE parametre karar-metadata**'sı. Değerlerin **tek kanonik yeri** hâlâ kendi ana evleri (cap'ler [[Difficulty and Cognitive Load]], horizon [[Chip Lifecycle]] vb.); burası **review mekanizması**dır. Sınıf: **[HARD INVARIANT]**.
+
+### Meta-kural [HARD INVARIANT]
+
+**Bir parametre, adlandırılmış bir review mekanizması olmadan anlamlı biçimde "tunable" kalamaz.** Her TUNABLE parametre şunları beyan eder: parameter name · current default · allowed/plausible range (biliniyorsa) · owner · evidence source · **named review gate** · decision question · last reviewed · status (retain/change/defer) · enforcement status.
+
+> [!warning] Tabloyu doldurmak için **sahte başarı eşiği UYDURULMAZ.** Bilinmeyen aralık/eşik **OPEN** kalır.
+
+### TUNABLE register (mevcut policy passlerinden)
+
+| Parameter | Default | Aralık | Owner | Named review gate | Decision question | Status | Enforcement |
+|---|---|---|---|---|---|---|---|
+| `visibleCarryoverCap` | 3 | OPEN | founder/content | ilk policy-uyumlu içerik batch'i + ilk gözlemli learner smoke | Carryover dersin yeni hedefini gölgeliyor mu, yoksa süreklilik yetersiz mi? | defer | CPW lint (build-time) |
+| `recycledPerSentence` | 2 | OPEN | content | aynı batch review | Cümle recycle ile mi boğuluyor? | defer | elle/lint |
+| `exposurePerUnit` | 2 | OPEN | content | aynı batch review | Ünite exposure ile mi kalabalık? | defer | elle |
+| `weakPerSentence` | 1 | OPEN | content | ilk repair-taşıyan batch | Tek cümlede >1 weak taşınabilir mi? | defer | elle |
+| `targetLoadShare` | ≥0.50 | OPEN | content | batch review + smoke | Hedef yük payı yeterince baskın mı? | defer | CPW lint |
+| `repairReserve` | 1 | OPEN | content | ilk error-repair gözlemi | 1 repair item yeterli/güvenli mi? | defer | elle |
+| carryover horizon süreleri | 3–5 / 5–7 ders | OPEN | content | smoke sonrası | Item türüne göre kuyruk doğru uzunlukta mı? | defer | elle |
+| repair eligibility eşiği | twice / two-lesson | OPEN | content | ilk error kanıtı | Eşik çok erken/geç mi tetikliyor? | defer | elle |
+| exposure→active eşiği | **OPEN** (yok) | OPEN | content | pedagojik kanıt | Sayısal eşik gerekli mi, yoksa per-lesson karar mı? | defer | — |
+
+Değer evleri: [[Difficulty and Cognitive Load]] · [[Chip Lifecycle]] · [[Error Tracking System]].
+
+### Kabul edilebilir evidence source'lar
+
+authored lesson-batch review · device smoke · gözlemli learner session · per-tag error kanıtı · hint/retry kanıtı · completion/drop-off kanıtı · French QA bulguları · selector fixture · retro-audit.
+
+### TUNABLE değişiklik prosedürü [LOCKED DEFAULT]
+
+1. parametreyi adlandır, 2. review gate/kanıtı belirt, 3. eski→yeni değer, 4. beklenen etki, 5. **primary policy home'u güncelle**, 6. CHANGELOG, 7. validator/config **yalnız ayrıca yetkilendirilmiş bir implementation değişikliğinde**.
+
+> [!warning] Bir TUNABLE değeri **ilgisiz bir ders PR'ında sessizce değiştirilemez.** **Bu docs-only pass runtime sabitlerini değiştirmez.**
+
 ## Related Notes
 
-[[Experiments]] · [[ADR-0009 events-source-of-truth]] · [[Privacy and Data Deletion]] · [[Legal Compliance and Data Governance]] · [[Product Risks]] · [[Content Production Workflow]] · [[05 Open Loops]] · [[Current Priorities]] · [[00 Le Mot Holy Codex]]
+[[Experiments]] · [[ADR-0009 events-source-of-truth]] · [[Privacy and Data Deletion]] · [[Legal Compliance and Data Governance]] · [[Product Risks]] · [[Content Production Workflow]] · [[Difficulty and Cognitive Load]] · [[Chip Lifecycle]] · [[05 Open Loops]] · [[Current Priorities]] · [[00 Le Mot Holy Codex]]

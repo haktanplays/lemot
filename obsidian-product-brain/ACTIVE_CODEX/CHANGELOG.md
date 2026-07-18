@@ -1,5 +1,25 @@
 # CHANGELOG — CAIRN Obsidian Product Brain
 
+## v0.5 content-safety policy-hardening pass — 2026-07-18 (Draft PR #198)
+
+Registry-identity / contextTags / promotion / integration-rhythm / French-QA / TUNABLE **content-safety** policy hardening (docs-only, ACTIVE_CODEX-only). **Runtime/kod/şema/test/validator değişmedi.**
+
+### Kilitlenen policy'ler (sınıf: HARD INVARIANT / LOCKED DEFAULT / TUNABLE / OPEN)
+- **[[Registry Architecture]]** — "No tracked learning item without a canonical registry identity" (§3) + precise **shipped-ID tanımı** ve dormant hijyeni (§4, YASA 2/ADR-0012 ile uzlaşık).
+- **[[Content Selection]]** — controlled **contextTags** vocabulary + fail-closed + normalizasyon + new-tag prosedürü (taksonomi uydurulmadı; seed OPEN).
+- **[[Chip Lifecycle]]** — exposure → recognition → **activeNew promotion** kontratı (8 koşul; sayısal eşik OPEN).
+- **[[Integration Lesson Logic]]** — **integration rhythm** LOCKED DEFAULT + review + counting + doorway anti-gaming.
+- **[[French Linguistic QA]]** — **stage-aware visibility gate** (A–D) + verdict (MINOR/PASS eklendi) + reviewer record; default variety = çağdaş metropolitan Fransızca; skeleton → active.
+- **[[Measurement and Experimentation]]** — **TUNABLE parametre karar-metadata** meta-kuralı + register + değişiklik prosedürü.
+- **[[Decision Index]]** — **ADR promotion rule** + nitelikli ADR adayları (bu pass'te ADR **oluşturulmadı**).
+- **[[Content Production Workflow]]** — content-safety review checklist + anti-gaming (dekoratif-gizleme, exposure-as-learned, doorway-bypass, AI self-PASS yasak).
+
+### Sekonder + meta
+- [[Chip Taxonomy]] → Registry Architecture'a pointer. [[05 Open Loops]] → PH3–PH9 kapandı/daraldı.
+
+### Non-claims (açıkça)
+- Hiçbir runtime implementasyonu yok · contextTag validator eklenmedi · selector weight uydurulmadı · empirik kalibrasyon iddiası yok · native French QA **yapılmadı** · mevcut dersler compliant **ilan edilmedi** · Practice Hub hardening **yapılmadı** · ADR üretilmedi. Mevcut runtime/içerik uyumu **partial/unverified**; retro-audit ayrı görev.
+
 ## v0.4 policy-hardening pass — 2026-07-18 (Draft PR #198)
 
 Chip / lesson / carryover / error-repair / Mon Lexique **policy hardening** (docs-only, ACTIVE_CODEX-only). Mevcut öğrenme-sistemi ana evleri betimleyici → **karar-taşıyan, sınıflandırılmış policy**'ye çevrildi. **Runtime/kod/şema/test değişmedi.**

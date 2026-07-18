@@ -202,7 +202,7 @@ Bu roller **ders-içi**dir; kalıcı mastery statüsü değildir. Sayım karşı
 
 ### Identity, promotion, demotion [LOCKED DEFAULT]
 
-- **Identity stability:** bir `itemId` bir kez atanınca yüzey/anlam kimliği sabit kalır; aynı yüzeyin farklı katmanları (ör. `être` vs yüzey `est`) ayrı ID'ye **körlemesine kanonlaşmaz** — açık identity kararı gerekir.
+- **Identity stability:** bir `itemId` bir kez atanınca yüzey/anlam kimliği sabit kalır; aynı yüzeyin farklı katmanları (ör. `être` vs yüzey `est`) ayrı ID'ye **körlemesine kanonlaşmaz** — açık identity kararı gerekir. *(Tracked item ⇒ registry kimliği kuralının + shipped-ID tanımının tam evi: [[Registry Architecture]].)*
 - **Same-surface ambiguity:** çözülmemişse item carryover/UI'a **eligible değildir** (hard exclusion, [[Content Selection]]).
 - **Promotion:** exposure → recognition → (kanıtla) production; her adım kanıt gerektirir, otomatik değil.
 - **Demotion:** güçlü/aşırı-kullanılmış item recycled/dormant'a iner ([[Chip Lifecycle]]).

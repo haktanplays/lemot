@@ -9,8 +9,8 @@ implementation_status: implemented
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["lemot-app/content/itemRegistry.ts", "lemot-app/scripts/shipped-item-ids.json", "lemot-app/scripts/shippedItemIds.ts", "lemot-app/scripts/validateContent.ts"]
 code_refs: ["lemot-app/content/itemRegistry.ts:3", "lemot-app/content/itemRegistry.ts:702", "lemot-app/content/itemRegistry.ts:704", "lemot-app/content/itemRegistry.ts:706-714", "lemot-app/scripts/shippedItemIds.ts:1-40", "lemot-app/scripts/shippedItemIds.ts:10-12", "lemot-app/scripts/validateContent.ts:37-46", "lemot-app/scripts/validateContent.ts:48-56"]
 test_refs: ["lemot-app/scripts/tests/ (shippedItemIds, shippedErrorTags, canonRules)"]
@@ -36,6 +36,8 @@ tags: [architecture, registry, immutability, validators]
 - [Runtime Implementation](#runtime-implementation)
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Registry-Backed Learning Identity (2026-07-18)](#policy-hardening-registry-backed-learning-identity-2026-07-18)
+- [Policy Hardening — Shipped ID and Dormant Semantics (2026-07-18)](#policy-hardening-shipped-id-and-dormant-semantics-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — `ITEM_REGISTRY`'nin (dondurulmuş 54 öğe) tek gerçek kaynak olarak nasıl çalıştığını, itemId değişmezliğinin (YASA 2) build ile nasıl zorlandığını ve **54-registry vs 56-manifest sürüklenmesini** (K3 çift yönlü kontrol) açıklar.
@@ -117,5 +119,78 @@ Registry tüm yüzeylerin altında bir veri katmanıdır; validator CI/build zam
 ## Open Questions
 > [!open-loop] `validate:content` 54/56 farkıyla şu an geçiyor mu? Çalıştırılıp doğrulanmalı. → [[05 Open Loops]] · [[Needs Verification]].
 
+## Policy Hardening — Registry-Backed Learning Identity (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for **tracked-item ⇒ registry identity**. Rol/UI ayrımları [[Chip Taxonomy]]'de; shipped tanımı aşağıdaki §Shipped ID bölümünde (YASA 2 ile uzlaşık). Sınıf: **[HARD INVARIANT] / [LOCKED DEFAULT]**.
+
+### Kural [HARD INVARIANT]
+
+> **"No tracked learning item without a canonical registry identity."**
+
+Şunlardan **birini** yapan her dil öğesi, **sevkiyattan önce tek, sabit, kanonik bir registry kimliğine** sahip olmalıdır:
+
+- primary UI chip olarak görünür,
+- Main Pieces / `piecesUsed` / recap'te **tracked item** olarak görünür,
+- öğrenci cevabının **gerekli/kabul edilen** parçasıdır,
+- mastery kanıtı **yayar veya alır**,
+- error/weakness kanıtı **yayar veya alır**,
+- carryover'a uygundur,
+- Practice Hub seçimine uygundur,
+- Mon Lexique projeksiyonuna uygundur,
+- exposure → active promotion'a uygundur,
+- bir ders kontratında **authored itemId** ile referanslanır.
+
+### Sınırlar [HARD INVARIANT]
+
+- **Full-sentence model answer** tek bir full-sentence registry kimliği gerektirmez — ama **tracked bileşen item'leri** geçerli kanonik kimliklere sahip olmalı ([[Chip Taxonomy]]: cümle = chip kompoziti).
+- **Inline highlight** mevcut bir item'a *işaret eder*; highlight span'i otomatik yeni item **değildir**.
+- **Accounting item ≠ UI chip** olabilir, ama öğrenci kanıtı **sabit bir accounting kimliğine** çözülmeli.
+- Bir yüzey **yaklaşık/komşu bir itemId'ye sessizce kanıt yayamaz.**
+- **Same-surface identity ambiguity → fail closed** (çözülmeden kanıt/carryover/UI yok; [[Content Selection]] hard exclusion).
+
+### Sınırlı istisna [LOCKED DEFAULT]
+
+Yalnız **atmosferik/dekoratif** dil kayıtsız kalabilir — **tümü** doğruysa: etkileşimli değil · doğruluk için gerekli değil · tracked öğrenme nesnesi olarak highlight edilmemiş · mastery/error event yaymıyor · carryover'a uygun değil · promotion'a uygun değil · Mon Lexique'te gösterilmiyor · chip/piece olarak listelenmiyor.
+
+> [!warning] Bu istisna bir **loophole değildir.** Böyle bir yüzey **tracked / selectable / highlighted / required / promotable** olur olmaz, kullanımdan önce **registry kimliği zorunlu** olur. Sonradan sessizce hedefe dönüşen kayıtsız ghost item'lar bu istisnayı kullanamaz.
+
+### Enforcement status
+
+- **authoring validator candidate** (henüz yok).
+- **build-time check candidate** (mevcut YASA 2/K3'ün üstüne; henüz yok).
+- **live runtime enforcement iddia EDİLMEZ.**
+
+## Policy Hardening — Shipped ID and Dormant Semantics (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the precise **"shipped" tanımı** ve dormant registry hijyeni. Bu, yukarıdaki **YASA 2 (ADR-0012)** immutability kuralını **uzlaştırır ve keskinleştirir** — paralel bir tanım kurmaz. Sınıf: **[HARD INVARIANT] / [LOCKED DEFAULT]**.
+
+### "Shipped identity" tanımı [HARD INVARIANT]
+
+Bir `itemId`, **herhangi bir yayınlanmış veya tester-görünür build** onu **learner-facing veya kanıt-üreten** bir rolde kullandığı anda **shipped ve immutable** sayılır. Bu roller:
+
+- primary UI chip,
+- gerekli/kabul edilen cevap item'i,
+- tracked exposure,
+- mastery/error event,
+- Mon Lexique entry,
+- **gerçek öğrenci geçmişine dayalı** carryover/practice eligibility.
+
+Bir shipped `itemId`:
+
+- **asla** farklı bir anlam için sessizce yeniden kullanılmaz,
+- **asla** farklı bir yüzeye/işleve repoint edilmez,
+- **açık bir migration/retirement kararı olmadan** silinmez,
+- **kimliğini/geçmişini kaybetmeden dormant olabilir** ([[Chip Lifecycle]] dormant semantiği).
+
+### Dormant/unused hijyeni [LOCKED DEFAULT]
+
+**Hiç learner-görünür olmamış, hiç kanıt yaymamış ve hiç dağıtılmış build'de yer almamış** bir registry item, registry hijyeninde düzeltilebilir/kaldırılabilir — **koşuluyla:** repo araması sıfır ders/runtime/history referansı doğrular · hiçbir saklı öğrenci verisi o ID'yi içeremez · değişiklik belgelenir · alias/migration gerektirmez.
+
+> [!note] **YASA 2 ile uzlaşma:** YASA 2/K3 (yukarıdaki "Main Rules (YASA'lar)" · [[ADR-0012 yasa2-itemid-immutability|ADR-0012]]/[[ADR-0018 k3-manifest-rule|ADR-0018]]) "sevkedilen id değişmez + manifest çift yönlü" der; bu bölüm **"sevkedilen"in tam sınırını** verir (learner-facing/evidence-producing rol). İkisi tek ev: bu not. Manifest'e kayıtlı ama hiç learner-görünür olmamış id'ler (54-vs-56 drift gibi) bu LOCKED DEFAULT kapsamında hijyen adayıdır — canlı `validate:content` sonucu ayrı doğrulanmalı ([[05 Open Loops]]).
+
+### Non-claims
+
+- Bu tanımlar **policy**dir; yeni validator **eklenmedi**. Mevcut YASA 2/K3 build-enforced; "shipped = learner-facing/evidence rol" ayrımının **runtime enforcement'ı yoktur** (authoring/review disiplini).
+
 ## Related Notes
-[[Data Flow]] · [[Runtime Content Architecture]] · [[Registry Usage Matrix]] · [[System Architecture]] · [[00 Le Mot Holy Codex]]
+[[Data Flow]] · [[Runtime Content Architecture]] · [[Registry Usage Matrix]] · [[System Architecture]] · [[Chip Taxonomy]] · [[Chip Lifecycle]] · [[Content Selection]] · [[ADR-0012 yasa2-itemid-immutability]] · [[00 Le Mot Holy Codex]]

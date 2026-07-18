@@ -124,6 +124,22 @@ iki roadmap; üç paywall ifadesi; 54/56 id; AI routing tablosu ↔ gerçek sağ
 
 **Açık kalan (bu pass kapatmaz):** selector coefficient kalibrasyonu · smoke-sonrası eşik tuning (horizon süreleri, repair eşiği = TUNABLE) · **D6 Mon Lexique runtime wiring (DEFERRED)** · v1 renderer LearningEvent yayımı · telemetri kalibrasyonu · final learner-facing status kopya. Bu policy'lerin **mevcut runtime/içerik uyumu UNVERIFIED/PARTIAL** — ayrı retro-audit gerekir.
 
+## 7. Content-safety policy-hardening pass (2026-07-18) — kapanan/daralan döngüler
+
+> [!check] Registry-identity / contextTags / promotion / integration-rhythm / French-QA-gate / TUNABLE-metadata **content-safety policy hardening** pass'i. Kararlar **authoring/canon** policy'sidir; **runtime wiring/validator değil.**
+
+| # | Döngü | Yeni statü | Nasıl |
+|---|---|---|---|
+| PH3 | tracked chip without registry identity | **CLOSED (policy)** | "No tracked learning item without a canonical registry identity" ([[Registry Architecture]]). |
+| PH4 | contextTags free-text ambiguity | **NARROWED (policy)** | controlled vocabulary + fail-closed + new-tag prosedürü ([[Content Selection]]); kanonik tag listesi seed'i **OPEN**. |
+| PH5 | exposure-promotion contract absent | **CLOSED (policy)** | 8-koşullu promotion eligibility + activeNew budget consume ([[Chip Lifecycle]]). |
+| PH6 | integration rhythm status | **CLOSED (policy)** | ~3 new-engine → review LOCKED DEFAULT + counting + doorway anti-gaming ([[Integration Lesson Logic]]). |
+| PH7 | French QA visibility gate | **CLOSED (policy)** | Stage A–D gate + verdict + reviewer record + BLOCKER/MAJOR blocking ([[French Linguistic QA]]); default variety = metropolitan. |
+| PH8 | TUNABLE decision trigger absence | **CLOSED (policy)** | her TUNABLE için named review gate + karar-metadata ([[Measurement and Experimentation]]). |
+| PH9 | shipped-ID definition belirsizliği | **CLOSED (policy)** | "shipped = learner-facing/evidence rol" (YASA 2 ile uzlaşık, [[Registry Architecture]]). |
+
+**Açık kalan (bu pass kapatmaz):** selector coefficient/empirik kalibrasyon · **exact numeric exposure threshold** · runtime validator implementasyonu · v1 LearningEvent wiring · Practice Hub readiness/runtime · Mon Lexique public launch stage · **French QA staffing modeli** (kanıt yoksa) · legal/privacy/accessibility · kanonik contextTag listesi seed'i. Bu policy'lerin **mevcut runtime/içerik uyumu UNVERIFIED/PARTIAL** — retro-audit ayrı görev. ADR adayları: [[Decision Index]] ADR Promotion Rule (bu pass'te ADR **oluşturulmadı**).
+
 ## Kapanış kaydı
 
 > Bir döngü kapandığında: satırı **CLOSED** işaretle, kapatan PR/commit/karar

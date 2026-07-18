@@ -35,6 +35,7 @@ tags: [learning, chip, lifecycle]
 - [Known Gaps](#known-gaps)
 - [Open Questions](#open-questions)
 - [Policy Hardening — Default Carryover Horizon (2026-07-18)](#policy-hardening-default-carryover-horizon-2026-07-18)
+- [Policy Hardening — Exposure → Recognition → activeNew Promotion (2026-07-18)](#policy-hardening-exposure-recognition-activenew-promotion-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Bir chip zaman içinde nasıl davranış değiştirir? Unpackable-chunk döngüsü, carryover aşamaları ve Mon Lexique'in iki ayrı yaşam-döngüsü kavramı — hepsi tek yerde, karıştırmadan.
@@ -163,5 +164,50 @@ Sistem şekli kilitli; süreler **TUNABLE** (smoke sonrası):
 
 Dormant item silinmez; şu trigger'larla geri döner (seçim skoru: [[Content Selection]]): mastery weak · context gerekir · recall/decay zamanı · yeni pattern ihtiyacı · scheduled review · exposure-promotion fırsatı · integration/prerequisite ihtiyacı. Yük tavanları: [[Difficulty and Cognitive Load]].
 
+## Policy Hardening — Exposure → Recognition → activeNew Promotion (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the **promotion contract**. Rol tanımları [[Chip Taxonomy]]'de; bütçe [[Difficulty and Cognitive Load]]'ta; kanıt etkileri [[Mastery Model]]'de; registry kimliği [[Registry Architecture]]'da. Sınıf: **[HARD INVARIANT] / [LOCKED DEFAULT] / [OPEN]**.
+
+### Promotion invariants [HARD INVARIANT]
+
+- **Exposure sayısı tek başına sahiplik yaratmaz.**
+- **Tekrarlı görünürlük otomatik promote etmez.**
+- **Ghost/exposure, açık promotion olmadan gerekli üretim cevabı olamaz.**
+- **Promotion `activeNew` bütçesini baypas etmez.**
+- **Üretime terfi eden item, promotion dersinde `activeNew` sayılır.**
+- Önceki exposure **yeniliği azaltabilir**, ama item'ı **"bedava" yapmaz.**
+- **Exposure kanıtı ile production kanıtı ayrı kalır** ([[Mastery Model]]).
+- **Model answer reveal yeterli promotion kanıtı değildir.**
+- **Promotion, sabit registry kimliği gerektirir** ([[Registry Architecture]]).
+
+### Promotion eligibility [LOCKED DEFAULT]
+
+Bir exposure/recognition item `activeNew` adayı olur — **yalnız tümü** doğruysa:
+
+1. sabit kanonik registry kimliği var,
+2. en az bir **authored anlamlı önceki temas veya recognition fırsatı** olmuş,
+3. yaklaşan derste **gerçek bir iletişimsel üretim ihtiyacı** var,
+4. o derste **prerequisite-safe**,
+5. `activeNew` ve `totalProductionLoad` bütçeleri taşıyabilir,
+6. ders promotion'ı **açıkça beyan eder**,
+7. ders bir **introduction/use/evidence planı** içerir,
+8. item artık required-answer bölgelerinde **ghost muamelesi görmez**.
+
+### Netleştirme [HARD INVARIANT]
+
+- **"Anlamlı önceki temas" dekoratif görünme değildir.**
+- Önceki exposure **destekleyici bağlamdır, öğretmenin yerine geçmez.**
+- Bir item pedagojik uygunsa **görülmemişten doğrudan `activeNew`'e** geçebilir — exposure her item için **zorunlu değil.**
+- Bir item, üretim sahipliği yararsızsa **süresiz recognition-only** kalabilir.
+- **Kanıt olmadan global "üç exposure = active" kuralı UYDURULAMAZ** → sayısal eşik **OPEN/TUNABLE**.
+
+### Promoted item için authoring alanları [LOCKED DEFAULT]
+
+`previousRole` · `previousExposureLessons` · `promotionReason` · `promotionLesson` · `newRole = activeNew` · `activeNewBudgetImpact` · `productionEvidencePlan` · `postLessonLifecyclePlan`. (Ledger: [[Content Production Workflow]].)
+
+### Enforcement status
+
+- **authoring/review disiplini + validator candidate**; runtime enforcement iddia edilmez.
+
 ## Related Notes
-[[Chip Taxonomy]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Mon Lexique]] · [[Content Selection]] · [[Review and Recycling System]] · [[Difficulty and Cognitive Load]] · [[Error Tracking System]]
+[[Chip Taxonomy]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Mon Lexique]] · [[Content Selection]] · [[Review and Recycling System]] · [[Difficulty and Cognitive Load]] · [[Error Tracking System]] · [[Registry Architecture]] · [[Mastery Model]]

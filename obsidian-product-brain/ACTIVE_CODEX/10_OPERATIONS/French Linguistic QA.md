@@ -3,21 +3,21 @@ title: French Linguistic QA
 aliases: [French QA, Linguistic QA, Native-Speaker QA, Fransızca QA, Dil Kalite Kontrolü, French Proofreading]
 type: workflow
 domain: ops
-status: skeleton
+status: active
 canon_status: provisional
 implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-17
-last_updated: 2026-07-17
-last_reviewed: 2026-07-17
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["obsidian-product-brain/ACTIVE_CODEX/10_OPERATIONS/Content Production Workflow.md", "obsidian-product-brain/ACTIVE_CODEX/95_SOURCE_LEDGER/Missing Source Inputs.md"]
 code_refs: []
 test_refs: []
 related: ["[[00 Le Mot Holy Codex]]", "[[Content Production Workflow]]", "[[Copy and Tone]]", "[[Missing Source Inputs]]", "[[French Fill]]", "[[05 Open Loops]]"]
 supersedes: []
 superseded_by: []
-tags: [ops, workflow, french, qa, linguistics, proofreading, skeleton]
+tags: [ops, workflow, french, qa, linguistics, proofreading]
 ---
 
 # French Linguistic QA
@@ -35,6 +35,7 @@ tags: [ops, workflow, french, qa, linguistics, proofreading, skeleton]
 - [Handoff Artifact](#handoff-artifact)
 - [Integration with Existing Workflow](#integration-with-existing-workflow)
 - [Open Questions](#open-questions)
+- [Policy Hardening — Stage-Aware Visibility Gate (2026-07-18)](#policy-hardening-stage-aware-visibility-gate-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!warning] Skeleton Banner
@@ -133,10 +134,58 @@ Bir QA turunun ürettiği **teslim çıktısı** (iskelet — alan sözleşmesi 
 > - Native-speaker Fransızca QA'yı kim yürütür? (Gate OPEN — founder-reported.)
 > - Standart hangi kaynaktan gelir? (`L1-L5 Proofreading.md` ingest edilene dek boşluk → [[Missing Source Inputs]].)
 > - QA boru hattının neresinde oturur? (üretim öncesi / `validate:pools` sonrası)
-> - Kabul edilen bölgesel varyant (ör. metropolitan French)?
+> - ~~Kabul edilen bölgesel varyant?~~ **KAPANDI (2026-07-18):** default = çağdaş metropolitan Fransızca (aşağıdaki Stage-Aware Visibility Gate).
 >
 > İzlenen yer: [[05 Open Loops]] · [[Missing Source Inputs]].
 
+## Policy Hardening — Stage-Aware Visibility Gate (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the **French QA visibility gate** (stages, verdicts, reviewer record, blocking). Bu, yukarıdaki iskeleti **operasyonel gate**'e derinleştirir. Ledger alanı [[Content Production Workflow]]'da. Sınıf: **[HARD INVARIANT] / [LOCKED DEFAULT]**.
+
+### Dil varyetesi default'u [LOCKED DEFAULT]
+
+- Varsayılan ürün varyetesi: **çağdaş metropolitan Fransızca.** Kasıtlı bölgesel/varyant kullanım **açıkça beyan edilmeli.**
+- *(Bu, notun önceki "kabul edilen bölgesel varyant?" açık sorusunu kapatır. Çelişen bir kaynak bulunmadı; bulunursa çelişki rapor edilir, sessizce kanonlaşmaz.)*
+
+### Visibility stages [LOCKED DEFAULT]
+
+| Stage | Kapsam | QA gereksinimi |
+|---|---|---|
+| **A — Authoring draft** | yazım taslağı | otomatik kontroller + yazar self-review zorunlu; `FrenchQAStatus: PENDING` olabilir; **learner-görünür değil** |
+| **B — Founder/operator device smoke** | yalnız founder/operator testi | PENDING **yalnız** founder/operator-only test için; build/session açıkça **non-release / QA-pending** işaretli; **davetli öğrenci teması yok** |
+| **C — Invited human learner test** | davetli öğrenci | **nitelikli Fransızca dil incelemesi zorunlu**; **0 unresolved BLOCKER**; **0 unresolved MAJOR**; MINOR/POLISH yalnız kayıtlı + kabul edilmişse kalır |
+| **D — Public/release** | herkese açık | **final French QA verdict zorunlu**; **0 unresolved BLOCKER/MAJOR**; ertelenen MINOR/POLISH **izlenebilir** olmalı |
+
+### Verdict vocabulary (mevcut Severity Model ile uzlaşık)
+
+Yukarıdaki "Severity Model" bölümünün dört şiddeti (BLOCKER/MAJOR/POLISH/PREFERENCE) korunur; gate için **MINOR** ve **PASS** eklenir:
+
+- **BLOCKER** — yanlış/yanıltıcı, öğrenmeyi bozacak kadar doğal-olmayan, veya güvensiz hedef/model cevap.
+- **MAJOR** — öğrenci testinden önce düzeltme gerektiren anlamlı gramer/kullanım/register sorunu.
+- **MINOR** — öğrenme hedefini **bozmayan** yerel doğallık/tutarlılık sorunu.
+- **PREFERENCE / POLISH** — birden fazla kabul edilebilir çözümü olan stilistik tercih.
+- **PASS** — sorun yok.
+
+### HARD INVARIANTS
+
+- **Otomatik validasyon, nitelikli insan Fransızca QA'sının yerine geçmez.**
+- **AI çıktısı dilsel doğruluğu self-certify EDEMEZ.**
+- **Unresolved BLOCKER veya MAJOR**, davetli-öğrenci/public görünürlüğü **engeller.**
+- QA **hedef cümleleri, model cevapları, distraktörleri, hint'leri, TTS metnini, çevirileri, register'ı ve chip segmentasyonunu** inceler — yalnız başlık içeriğini değil.
+- **Bir dilsel sorun, öğrenci weakness/error kanıtına dönüştürülemez** ([[Error Tracking System]]).
+
+### Reviewer requirement [LOCKED DEFAULT]
+
+En azından **adlandırılmış nitelikli bir Fransızca inceleyici** ve **kayıtlı bir verdict** gerekir. Kalıcı bir kadro/staffing modeli **uydurulmaz** (staffing **OPEN** → [[05 Open Loops]]).
+
+### Required lesson/batch QA record
+
+reviewer · review date · French variety/register · reviewed files/lessons · BLOCKER count · MAJOR count · MINOR count · deferred POLISH count · final verdict · unresolved issues · **authorized visibility stage**.
+
+### Non-claims
+
+- **Hiçbir native French QA'nın gerçekleştiği iddia edilmez**; gate execution **OPEN**. `FrenchQAStatus: PASS` **kayıtlı nitelikli inceleme olmadan** (özellikle bir AI agent tarafından) **atanamaz** (anti-gaming, [[Content Production Workflow]]).
+
 ## Related Notes
 
-[[Content Production Workflow]] · [[Copy and Tone]] · [[French Fill]] · [[Missing Source Inputs]] · [[Validation Gates]] · [[05 Open Loops]] · [[Current Priorities]] · [[00 Le Mot Holy Codex]]
+[[Content Production Workflow]] · [[Copy and Tone]] · [[French Fill]] · [[Missing Source Inputs]] · [[Validation Gates]] · [[Error Tracking System]] · [[05 Open Loops]] · [[Current Priorities]] · [[00 Le Mot Holy Codex]]

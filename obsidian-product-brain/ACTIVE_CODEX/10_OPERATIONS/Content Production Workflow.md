@@ -36,6 +36,7 @@ tags: [workflow, content, factory, cairn, ops]
 - [Open Questions](#open-questions)
 - [Decision History](#decision-history)
 - [Policy Hardening — Required Authoring Ledger (2026-07-18)](#policy-hardening-required-authoring-ledger-2026-07-18)
+- [Policy Hardening — Content-Safety Review Checklist (2026-07-18)](#policy-hardening-content-safety-review-checklist-2026-07-18)
 - [Related Notes](#related-notes)
 
 > [!canon] Purpose — Kalan Cairn derslerinin nasıl üretildiği: **CONTENT_FACTORY_CONTRACT** (Faz 6A) + **Training Content Factory** (deriveDrill, practice selector). Batch-küçük, validator-first, Haktan-review'lı.
@@ -135,5 +136,46 @@ Bir ders, fazla eski üretim yükünü `supportedTarget` / carryover / repair / 
 
 - Ledger bir **authoring/review gereksinimidir**; **runtime validator değildir**. **Mevcut derslerin hiçbirinin bu ledger'a uyduğu iddia edilmez** — retro-audit + ledger geriye-doldurma ayrı bir gelecek görevdir. `FrenchQAStatus` alanı native QA'nın **yapıldığını iddia etmez** ([[French Linguistic QA]] gate OPEN).
 
+## Policy Hardening — Content-Safety Review Checklist (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for the **batch/lesson review enforcement checklist**. Her kural kendi ana evine link verir; burada **kontrol listesi** olarak toplanır. Sınıf: **[LOCKED DEFAULT] / [HARD INVARIANT]**.
+
+Her gelecek ders/batch review'ı açıkça kontrol eder:
+
+**Registry identity** ([[Registry Architecture]])
+- her tracked item kanonik `itemId`'ye çözülür,
+- kanıt-üreten kayıtsız item yok,
+- çözülmemiş same-surface ambiguity yok.
+
+**contextTags** ([[Content Selection]])
+- tüm tag'ler controlled vocabulary'de,
+- alias'lar normalize edilmiş,
+- bilinmeyen tag reddedilir.
+
+**Promotion** ([[Chip Lifecycle]])
+- her exposure→active promotion beyan edilmiş,
+- promoted item `activeNew` bütçesini tüketir,
+- önceki exposure mastery gibi gösterilmemiş.
+
+**Integration rhythm** ([[Integration Lesson Logic]])
+- güncel ardışık net-new engine sayısı kaydedilmiş,
+- integration/review gereği karşılanmış **veya** istisna belgelenmiş.
+
+**French QA** ([[French Linguistic QA]])
+- `FrenchQAStatus` doldurulmuş,
+- visibility stage yetkilendirilmiş,
+- BLOCKER/MAJOR gate'ine uyulmuş.
+
+**Tunable metadata** ([[Measurement and Experimentation]])
+- kullanılan değerler güncel default'larla eşleşir,
+- sapmalar onaylı bir review kararına işaret eder.
+
+### Anti-gaming rules [HARD INVARIANT]
+
+- Kayıtsız bir item, gerekli cevap / hint / chip listesi / evidence map / carryover plan / Mon Lexique planında görünürken **"dekoratif" diye gizlenemez.**
+- Exposed bir item, `activeNew` muhasebesinden kaçmak için **"zaten öğrenildi" sayılamaz.**
+- **"doorway" etiketi integration ritmini baypas etmek için kullanılamaz.**
+- **`FrenchQAStatus: PASS`**, kayıtlı nitelikli inceleme olmadan (özellikle bir **AI agent** tarafından) **self-assign edilemez.**
+
 ## Related Notes
-[[Validation Gates]] · [[Syllabus Production Workflow]] · [[Self-Producing Engine]] · [[Content Selection]] · [[PR Discipline]] · [[Documentation Workflow]] · [[French Linguistic QA]] (anadili dil-QA kapısı — süreç OPEN) · [[Chip Taxonomy]] · [[Difficulty and Cognitive Load]] · [[Lesson Anatomy]] · [[00 Le Mot Holy Codex]]
+[[Validation Gates]] · [[Syllabus Production Workflow]] · [[Self-Producing Engine]] · [[Content Selection]] · [[PR Discipline]] · [[Documentation Workflow]] · [[French Linguistic QA]] (anadili dil-QA kapısı — süreç OPEN) · [[Chip Taxonomy]] · [[Difficulty and Cognitive Load]] · [[Lesson Anatomy]] · [[Registry Architecture]] · [[Chip Lifecycle]] · [[Integration Lesson Logic]] · [[Measurement and Experimentation]] · [[00 Le Mot Holy Codex]]

@@ -9,8 +9,8 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-18
+last_reviewed: 2026-07-18
 source_of_truth: ["docs/STATUS.md", "docs/ROADMAP.md", "docs/canon/LESSON_FLOW_CANON_v1.md", "docs/engineering/karpathy.md", "CLAUDE.md"]
 related: ["[[Active Decisions]]", "[[Deferred Decisions]]", "[[Rejected Decisions]]", "[[Superseded Decisions]]", "[[Decision Templates]]", "[[00 Le Mot Holy Codex]]"]
 tags: [index, moc, decision, adr]
@@ -66,8 +66,35 @@ tags: [index, moc, decision, adr]
 ## Kapsanan ama henüz ADR'lenmemiş kararlar
 `06_decisions_history.md`'de kayıtlı ama bu turda ayrı ADR açılmayan kararlar (ileride açılabilir): D-07 (Round 1 spine L1–L6), D-24 (Mon Lexique/Practice Pool selector-derived), D-26 (Instruction Weave thermostat, DEFERRED), D-27 (Readiness Gate, DEFERRED), D-28 (unified hint ladder, DEFERRED), D-29 (11–14 screen budget), D-31 (retrofit wave), D-32 (type-set freeze ~10), D-33 (deterministic engine first, AI dormant), D-35 (Lexique Memory numeric contract), D-36 (Payload Economy v0), D-37 (learner profile & free-tier), D-38 (golden rule of screenless work), D-39 (Round 1 runtime frozen), D-40 (additive remote schema PROPOSAL). Bkz. [[Deferred Decisions]] ve [[05 Open Loops]].
 
+## ADR Promotion Rule (2026-07-18)
+
+> [!canon] **PRIMARY POLICY HOME** for **hangi kararın ADR olacağı**. Her HARD INVARIANT için ADR açılmaz. Sınıf: **[LOCKED DEFAULT]**.
+
+### Bir policy-hardening kararı ADR'ye hak kazanır — eğer:
+
+- cross-system, · uzun-ömürlü, · geri döndürmesi maliyetli, · anlamlı bir alternatif seçime dayalı, · mimari- veya veri-kimliği-şekillendiren, · yalnız tek bir domain notundan okununca yanlış anlaşılması muhtemel.
+
+### Otomatik yeni ADR gerektirmeyen örnekler
+
+tekrarlanan numeric cap · kopya ifadesi · mevcut sentence-chip yasağı · küçük dokümantasyon hijyen kuralları.
+
+### Bu pass'in ADR değerlendirmesi
+
+ADR numaralandırması incelendi: **ADR-0001…ADR-0025 mevcut, sıradaki numara ADR-0026.** Konvansiyon: her ADR bir `decisions-history D-#` kaynağına bağlı (Master ADR tablosu "Kaynak (D-#)" kolonu).
+
+**Nitelikli ADR adayları (bu pass'te OLUŞTURULMADI — deliberate ADR authoring adımına ertelendi):**
+
+| Aday | Neden nitelikli | Not |
+|---|---|---|
+| Registry-backed tracked learning identity | cross-system + veri-kimliği-şekillendiren + geri-dönüşü maliyetli | [[Registry Architecture]]; YASA 2 (ADR-0012) ile bitişik ama daha geniş |
+| Cross-stage French QA visibility architecture | cross-stage + uzun-ömürlü + release-gating | [[French Linguistic QA]] |
+| Carryover horizon hybrid model | cross-system pedagoji + horizon | [[Chip Lifecycle]] (2026-07-18 pass) |
+| Mon Lexique projection architecture | cross-system + veri-kimliği | [[Mon Lexique]] (2026-07-18 pass) |
+
+> [!warning] **Neden oluşturulmadı:** ADR konvansiyonu her ADR'yi bir `decisions-history D-#` kaydına bağlar; bu policy-pass kararlarının henüz D-# karşılığı yok. Dosya sayısı için ADR **üretilmez**. Bu adaylar deliberate bir ADR authoring adımında (D-# atama + Decision Templates ile) açılabilir. Bu pass raporunda aday olarak listelendi.
+
 ## Related
-[[00 Le Mot Holy Codex]] · [[06 Canon and Status Legend]] · [[Product Risks]] · [[Known Gaps]]
+[[00 Le Mot Holy Codex]] · [[06 Canon and Status Legend]] · [[Product Risks]] · [[Known Gaps]] · [[Registry Architecture]] · [[French Linguistic QA]]
 
 <!-- gh-nav -->
 
