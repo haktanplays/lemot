@@ -5,7 +5,7 @@ status: Canonical
 owner: Founder
 product: Cairn
 first_product: Cairn French
-last_updated: 2026-07-20
+last_updated: 2026-07-23
 ---
 
 # Cairn Product Brain v1.0
@@ -96,6 +96,31 @@ Whether B2 ever becomes a public claim is an [[OPEN_QUESTIONS|open question]] an
 **At the end of a Journey the learner enters Journey Reinforcement.** (Canonical) Journey Reinforcement is a focused [[#9. Practice Hub|Practice Hub]] mode covering the completed Journey. It is an integrated consolidation experience that draws material across the Journey's lessons — not a conventional exam.
 
 **Journey Reinforcement is required before the next Journey opens, and it is outcome-based.** (Canonical) The learner must consolidate the Journey to proceed, but the requirement is defined by demonstrated capability, not by an arbitrary, visible session quota. The learner does not see mastery percentages or quota-grinding requirements. The exact completion algorithm is Curriculum/Engineering Bible material and is deferred.
+
+### Progressive Language Independence
+
+**Cairn moves the learner toward independence from their native language as comprehension and confidence grow.** (Canonical) Translation and English support are a scaffold, not the destination. The direction of the path is increasingly direct comprehension and increasingly French-led learning, with decreasing dependence on translation. This is a direction, not a finish line: **success is never defined as a forced state in which English can never appear again.** English support remains available whenever it is genuinely needed.
+
+**Support fades by demonstrated readiness, not by a fixed lesson or Journey number.** (Canonical) The fade is comprehension-gated — a "thermostat" that extends the existing Instruction Weave principle — and it is gradual, adaptive, and **reversible**: when a learner's readiness drops, support returns. Reduced support is earned by ownership of the material, never imposed on a schedule.
+
+**Journey transitions are the primary visible moment this growth is narrated, not the mechanical cause of it.** (Canonical) The distinction is deliberate: **the thermostat determines when support can safely fade; Journey transitions explain, acknowledge, and frame that growth as progress** as the learner enters the next chapter of the path. Completing a Journey does not, by itself, force a predetermined reduction in support regardless of the learner's readiness.
+
+**Native-language support operates at two independent layers that may fade at different rates.** (Canonical)
+
+- **Content support** — Weave, translations, meanings, hints, reveal mechanisms, and bilingual learner-output support.
+- **Product / instruction voice** — exercise instructions, prompts, guidance, and the interface's own learning language.
+
+These are distinct mechanics and are not collapsed into one; learner-output Weave, the instruction voice, prompt support, and translation reveal each fade on their own terms.
+
+**Learner-safety guardrails** (all Canonical):
+
+- Fade is gradual; there is **no abrupt, forced switch to a French-only experience.**
+- **Cairn does not aggressively remove support while substantial new language is being introduced;** new or insufficiently owned language stays scaffolded.
+- Reduced support is reversible when the learner's readiness drops.
+- The learner always keeps a **low-friction way to reveal or temporarily restore native-language support.**
+- Needing or using that support is **never framed as failure, regression, or punishment.** Cairn's aim is to make English less necessary over time, not to shame the learner for relying on it.
+
+The direction and these guardrails are product canon. The progression stages and curricular readiness criteria, the per-content-surface support behavior, the thermostat's thresholds and calculation and reversibility mechanics, and the exact transition-screen expression are owned by the Curriculum, Content, Engineering, and Brand Bibles respectively (see [[#19. Interfaces With Other Bibles]]). This completes the founder decision partially recorded as D-26 / `LESSON_FLOW_CANON_v1.md` §4; it does not restore the archived fixed-L40 monolingual transition, and rigid lesson- or Journey-number gating is superseded by readiness-driven fade.
 
 ## 8. Lesson Philosophy
 
@@ -302,6 +327,7 @@ Only reconciliation-confirmed unresolved questions appear here; the authoritativ
 | Expressive independence; A0–B2 and ~3,000 words internal | [[#5. Product Promise and Destination]] |
 | Journey → Capability Arc → Lessons; Arcs internal; context as scaffold | [[#6. Learning Architecture]] |
 | Visible path; guided linearity; locked lessons explain requirements; Journey Reinforcement gates next Journey | [[#7. Journey and Progression]] |
+| Progressive language independence; readiness-gated support fade (thermostat, not lesson/Journey number); Journey transitions narrate not gate; two support layers; gradual, reversible, learner-restorable support | [[#7. Journey and Progression]] |
 | Lessons introduce; shared rhythm; distinct types; no rigid template; optional Lesson Practice | [[#8. Lesson Philosophy]] |
 | Practice Hub is the mastery engine; Recommended + Choose a Subject; My Errors; finite calm sessions | [[#9. Practice Hub]] |
 | Mon Lexique; faux amis; grammar inside, no grammar tab; search-first, meaning-aware; Practice this | [[#10. Mon Lexique]] |
@@ -315,6 +341,10 @@ Only reconciliation-confirmed unresolved questions appear here; the authoritativ
 | Canon-first governance; every change earns its place | [[#18. Canon Governance]] |
 
 ## 22. Change Log
+
+**Amendment — 2026-07-23**
+
+- Added [[#7. Journey and Progression|Progressive Language Independence]] to §7: native-language support is scaffolding, not the destination; the path moves toward increasingly direct, French-led comprehension with support available on demand; support fades by demonstrated readiness (a comprehension-gated "thermostat"), gradually and reversibly, not by fixed lesson/Journey number; Journey transitions narrate that growth rather than mechanically causing it; content support and instruction-voice support are two independent layers; learners keep a low-friction way to restore native-language support and are never shamed for using it. Completes the founder decision partially recorded as D-26 / `LESSON_FLOW_CANON_v1.md` §4. The archived fixed-L40 monolingual transition is not restored; rigid lesson/Journey-number gating is superseded by readiness-driven fade. Recorded in [[DECISION_REGISTER]] as PB-079–PB-082. Product version remains 1.0 (additive clarification of existing intent, no principle reversed).
 
 **Version 1.0 — 2026-07-20**
 
