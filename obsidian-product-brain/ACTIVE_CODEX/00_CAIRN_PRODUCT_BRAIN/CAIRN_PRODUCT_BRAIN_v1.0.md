@@ -346,6 +346,10 @@ Only reconciliation-confirmed unresolved questions appear here; the authoritativ
 
 - Added [[#7. Journey and Progression|Progressive Language Independence]] to §7: native-language support is scaffolding, not the destination; the path moves toward increasingly direct, French-led comprehension with support available on demand; support fades by demonstrated readiness (a comprehension-gated "thermostat"), gradually and reversibly, not by fixed lesson/Journey number; Journey transitions narrate that growth rather than mechanically causing it; content support and instruction-voice support are two independent layers; learners keep a low-friction way to restore native-language support and are never shamed for using it. Completes the founder decision partially recorded as D-26 / `LESSON_FLOW_CANON_v1.md` §4. The archived fixed-L40 monolingual transition is not restored; rigid lesson/Journey-number gating is superseded by readiness-driven fade. Recorded in [[DECISION_REGISTER]] as PB-079–PB-082. Product version remains 1.0 (additive clarification of existing intent, no principle reversed).
 
+**Amendment — 2026-07-21**
+
+- Refined the Summit principle ([[#12. Motivation and Visual Progression]]; [[DECISION_REGISTER|PB-056]]): the Summit is a **narrative threshold** marking the symbolic transition from foundational communication toward advanced expressive French — **not a mathematically fixed lesson coordinate**. It may align with a major advanced-language transition such as the subjunctive, subject to curriculum design; exact curriculum placement is owned by the Curriculum Bible (no requirement to move the subjunctive earlier). Supersedes the archived vault framing "Summit = paywall ceremony." No other principle changed.
+
 **Version 1.0 — 2026-07-20**
 
 - Initial consolidated founder canon.

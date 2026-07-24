@@ -21,7 +21,9 @@ This register records the durable product decisions consolidated into [[CAIRN_PR
 - **RECON** — "Cairn Product Brain v1.0 — Read-Only Canon Reconciliation" report + delta pass.
 - **D-26 / LFC** — founder decision **D-26** "Instruction Weave = thermostat" (recorded in operator-vault `06_decisions_history.md`, not in-repo) as articulated in `docs/canon/LESSON_FLOW_CANON_v1.md` §4; completed by targeted founder decision **2026-07-23**.
 
-**Status values**: Canonical · Planning band · Open question · Deferred (implementation).
+> **On `FD-n` provenance (source gap, not invention).** The `FD-n` identifiers refer to the operator-vault founder-decision set (the 2026-07 reconciled decisions). The complete **raw** source set is **not currently stored in this repository**; the in-repo rows preserve the **distilled** decisions available to this canon. Missing raw provenance is a **known source gap** — not evidence that any decision was newly invented in this file. A future import of the raw set may improve traceability, but must not silently alter any decision's meaning or authority.
+
+**Status values**: Canonical · Planning band · Open question · Deferred (implementation). A status may also carry a parenthetical scope annotation (e.g. "Canonical (boundary)" for a canonical interface/scoping decision); the governance level is always one of the four listed.
 
 | ID | Title | Status | Brain § | Summary | Provenance | Confirmed | Supersedes / superseded by | Notes |
 |---|---|---|---|---|---|---|---|---|
@@ -86,10 +88,10 @@ This register records the durable product decisions consolidated into [[CAIRN_PR
 | PB-059 | Onboarding demonstrates value before account | Canonical | §13 | No account wall before value | FD-66; BUILDSPEC §32.2 | 2026-07 | — | — |
 | PB-060 | Account after first meaningful micro-experience | Canonical | §13 | Account ask follows value | FD-67 | 2026-07 | — | — |
 | PB-061 | Onboarding questions progressive, asked only when useful | Canonical | §13 | No front-loaded questionnaire | FD-68 | 2026-07 | — | — |
-| PB-062 | Free path exists (~24–26 lessons planning band) | Canonical direction / Planning band | §14 | Meaningful free early journey | FD-10; DEFN-v0.1 §12 | 2026-07 | — | Exact boundary deferred (open, founder) |
+| PB-062 | Free path exists (~24–26 lessons planning band) | Canonical | §14 | Meaningful free early journey | FD-10; DEFN-v0.1 §12 | 2026-07 | — | Direction (a meaningful free early path exists) is Canonical; the ~24–26-lesson size is a Planning band; exact boundary deferred (open, founder) |
 | PB-063 | Campfire begins after the paywall | Canonical | §14 | Sustaining loop from owned inventory + errors | FD-11; ANSWERS §5 | 2026-07 | Supersedes L14/$12.99 hard paywall | — |
 | PB-064 | Campfire retains Practice/Daily Review/Flashcards/Lexique/repair/mastery/lower-AI | Canonical | §14 | Real calm subset, not a dead end | FD-13; ANSWERS §5 | 2026-07 | — | — |
-| PB-065 | Campfire drip ~3 days then ~7 days | Canonical direction / Planning band | §14 | Current product rhythm | FD-12 | 2026-07 | — | Exact intervals are a band |
+| PB-065 | Campfire drip ~3 days then ~7 days | Canonical | §14 | Current product rhythm | FD-12 | 2026-07 | — | Direction (Campfire is drip-paced) is Canonical; the ~3-day-then-~7-day intervals are a Planning band (tunable) |
 | PB-066 | Premium removes waiting | Canonical | §14 | Continuity is the core value premium buys | FD-14 | 2026-07 | — | — |
 | PB-067 | Monetization begins with monthly + annual | Canonical | §14 | Launch commercial model | FD-15 | 2026-07 | Populates BUILDSPEC §66.3 (deferred slot) | Prices deferred |
 | PB-068 | Limited founder Lifetime offer at launch | Canonical | §14 | Launch financing + founder community | FD-16 | 2026-07 | — | Deliberately limited |
