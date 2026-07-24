@@ -1,7 +1,8 @@
 ---
 title: Cairn Content Bible
-version: 1.0-draft
-status: Draft — awaiting founder sign-off
+version: 1.0
+status: Canonical
+signed_off: 2026-07-24 — founder read-through sign-off (Card 8 clarification applied)
 owner: Founder
 product: Cairn
 first_product: Cairn French
@@ -11,7 +12,7 @@ sits_below: CAIRN_PRODUCT_BRAIN_v1.0.md
 siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 ---
 
-# Cairn Content Bible v1.0 (Draft)
+# Cairn Content Bible v1.0 (Canonical)
 
 > This is the durable **authoring** canon for Cairn content. It says **how** content is written, presented, revealed, and quality-checked. It does **not** own the product thesis (Product Brain), the learning sequence (Curriculum Bible), the implementation (Engineering Bible), or naming/visual/tone identity (Brand Bible).
 >
@@ -228,7 +229,7 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 
 **15.1 Natural, not literal.** `[FL]` (CB-68a) Authored French reads as a native would say it, not a literal translation; include the natural "rescue tail." `[DR]` (Q10, CB-68b) Default variety: **contemporary metropolitan French** — a derived design direction, **founder-ratified 2026-07-24** (not founder-locked in origin); deliberate regional use must be declared. `[OPEN]` The full register/style boundaries live in the French style guide (Ch. 18, still to be authored); until it exists, unresolved style matters are **marked open, not invented**. Prerequisite safety and naturalness remain controlling (§15.2).
 
-**15.2 Three distinct properties — never collapsed.** `[FL]` (CB-68/69) **Naturalness**, **grammatical correctness**, and **prerequisite safety** are separate. Prerequisite safety **overrides** grammatical correctness: beginner production must never require an unseen form; an unseen form appears only as `supported`/`recognition`/chunk.
+**15.2 Three distinct properties — never collapsed.** `[FL]` (CB-68/69) **Naturalness**, **grammatical correctness**, and **prerequisite safety** are three **separate** requirements; none is traded for another. French shown to the learner must **always be correct and natural**. **Prerequisite safety overrides only the *decision to require* a grammatically correct but *unseen* form as learner production — it never licenses incorrect or unnatural French.** If a correct form has not been sufficiently introduced, it **must not be required as production**; it may instead appear as **supported**, **recognition-only**, **blocked-production**, or **contextual exposure** where appropriate (§4.7).
 
 **15.3 Survival-formula wording (locked).** `[FL]` (CB-70) `vous pouvez répéter ?` (never inverted); `je ne comprends pas`. Inverted question forms are recognition-only band-wide; an inverted question in a production target is an ERROR. *(Preserve exact French; inversion banding = Curriculum.)*
 
@@ -395,6 +396,14 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 - **Founder ratifications 2026-07-24 (Q1–Q12):** recorded in [Ratification Pack §0](CONTENT_BIBLE_RATIFICATION_PACK_v0.1.md).
 - **Superseded:** listed in §20.4; kept discoverable, never revived.
 
+## Appendix D — Change log & founder sign-off
+
+- **2026-07-24 — Founder read-through sign-off (v1.0-draft → Canonical).** The founder reviewed the 12-card read-through pack ([Read-Through Pack](CONTENT_BIBLE_FOUNDER_READTHROUGH_v0.1.md)). **APPROVED:** Cards 1–7, 9, 12. **APPROVE WITH NOTE:** Card 8 (prerequisite-safety wording clarified — see below). **DEFER AS WRITTEN:** Card 10 (deferred systems). **LEAVE OPEN:** Card 11 (open parameters). **Overall:** apply the Card 8 clarification, then promote to Canonical.
+- **Card 8 clarification applied (§15.2).** "Prerequisite safety overrides correctness" reworded: prerequisite safety overrides only the *decision to require* a grammatically correct but *unseen* form as learner production; it **never** licenses incorrect or unnatural French. Naturalness, grammatical correctness, and prerequisite safety remain **three separate requirements**; an insufficiently-introduced form may appear as supported / recognition-only / blocked-production / contextual exposure, never required as production. No change to the gender (§15.4) or metropolitan-French (§15.1) rules.
+- **Status change:** `Draft — awaiting founder sign-off` → **Canonical** (2026-07-24); version `1.0-draft` → `1.0`.
+- **Preserved as open/deferred by this promotion (NOT closed):** open-but-non-blocking items (§20.2 — item-counting methodology, Reading exercise-family taxonomy/validator, full French style guide, Mon Lexique final band copy, Summit recalibration, Build/Stretch/Challenge runtime); **Stage-C prerequisites** (§18.5 — executable French-QA gate + named human reviewer + sufficient style guidance, which gate invited-learner exposure but not internal/founder-only testing); **deferred systems** (§20.3 — Instruction Weave / monolingual progression, human-recorded audio pipeline + listening contract, unbuilt runtime enforcement).
+- **Canonical ≠ immutable.** Later changes require a **traceable canon or ADR update** (§1.4, §2.3); open tunable parameters may evolve without reopening foundational principles, provided the authority rules are respected (Ch. 19).
+
 ---
 
-*End of Content Bible v1.0 (Draft). Folds the 2026-07-24 founder-ratified decisions. Awaiting founder sign-off before promotion to Canonical. Not committed. Open items (§20.2) and deferred systems (§20.3) are tracked, not lost.*
+*End of Content Bible v1.0 (**Canonical** — founder sign-off 2026-07-24; Card 8 prerequisite-safety wording clarified). Folds the 2026-07-24 founder-ratified decisions. Open items (§20.2), Stage-C prerequisites (§18.5), and deferred systems (§20.3) remain **tracked as open/deferred, not closed** (Appendix D). Canonical ≠ immutable: later changes require a traceable canon/ADR update (§1.4).*
