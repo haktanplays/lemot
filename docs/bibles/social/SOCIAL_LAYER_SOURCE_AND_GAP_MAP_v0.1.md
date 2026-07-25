@@ -1,8 +1,9 @@
 ---
 title: Cairn Social Layer — Source & Gap Map
 version: 0.1
-status: Draft — awaiting founder ratification
+status: Draft — awaiting founder sign-off review
 authority: Read-only provenance map (authorizes nothing)
+founder_decisions: Q1 (2026-07-25) · R1, R2, R5, R6, R8, R9, R10, R11 resolved (2026-07-25) · R3, R4, R7 dormant
 owner: Social Layer
 depends_on:
   - Cairn Product Brain v1.0
@@ -17,7 +18,9 @@ related:
 
 > **What this is.** The provenance backbone for the Social Layer Charter and Register. It records exactly which repo sources were swept, what each contributed, what is authoritative vs. historical, what could not be reached, where sources conflict, and — most importantly — where the record is *blank* (no source at all). Read-only; authorizes nothing.
 >
-> **Headline (corrected + Q1-ratified).** The repository contains no positive social-feature *implementation*, and that remains true. But repository silence is **not** proof of a negative product decision. A prior **founder conversation** supplied real product-direction evidence — a structured, moderated, lesson-connected community concept — that the repo does not durably hold, and the founder has now **ratified it as a preserved future direction (Q1, 2026-07-25)**. The finding: *current product is solo-first with no social build; a bounded structured-community direction is founder-ratified as deferred/post-MVP with no implementation commitment; the repo's earlier silence was a source-coverage limitation, not a decision to be permanently solo.*
+> **Headline (corrected · Q1 + R1–R11 ratified).** The repository contains no positive social-feature *implementation*, and that remains true. But repository silence is **not** proof of a negative product decision. A prior **founder conversation** supplied real product-direction evidence — a structured, moderated, lesson-connected community concept — that the repo did not durably hold; the founder has now **ratified it as a preserved future direction (Q1, 2026-07-25)** and **set its boundaries (R1–R11, 2026-07-25)**. The finding: *current product is solo-first with no social build; a bounded structured-community direction is founder-ratified as post-MVP with no implementation commitment; its boundaries (evidence, identity, gamification, under-13, governance) are now locked; and the repo's earlier silence was a source-coverage limitation, not a decision to be permanently solo.*
+>
+> **Provenance shift worth noting:** the highest-authority Social source is no longer the repo sweep or the conversation — it is the in-repo [`SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md`](SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md). The durability gap that motivated this map is now **largely closed for decisions**, while remaining open for *design detail* (moderation model, evidence contract, under-13 reopen requirements).
 
 ---
 
@@ -36,6 +39,7 @@ related:
 | Status / ops drafts | `docs/status/founder-self-learning-*`, `remote-schema-rls-draft` | Tester cohort + admin analytics = ops/privacy (SOC-015); RLS/consent partial (SOC-006). |
 | Future-features / idea indexes | Future Features / Idea Index / Unmapped Ideas notes | Only solo ideas (Word Graph, Le Carnet, Dream Journal, Mon Lexique) — SOC-014, SOC-016. **No social proposal in these notes.** |
 | **Founder conversation (prior discussion)** | Not a repo file — distilled founder-discussion evidence supplied to this correction | The **structured, moderated, lesson-connected community direction**: ask questions, compare attempts, alternative/approved explanations, belonging/"less alone" value; heavily moderated & bounded; post-MVP/v2; not implementation-committed; open-forum form disfavoured. → SOC-029, SOC-030, SOC-031, SOC-032. **Product-direction evidence the repository does not durably hold.** |
+| **Founder decisions Q1 + R1–R11 (2026-07-25)** | [`SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md`](SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md) — durable, in-repo | **Highest-authority Social source.** Q1 preserved the direction; R1–R11 set the boundaries: form confirmed (SOC-030) · loyalty community external for current scope (SOC-020) · privacy-safe identity default (**SOC-033**) · broad public UGC/feed rejected (SOC-021) · evidence firewall stated precisely (SOC-026) · social anti-gamification permanent (**SOC-034**) · under-13 locked with reopen gate (SOC-028) · governance accepted (SOC-025). R3/R4/R7 dormant. **Authorizes no implementation.** |
 
 ## 2. Current authoritative sources (bind today)
 
@@ -73,17 +77,19 @@ If any of these vault sources contains a social/community decision, it must be s
 
 ## 6. Blind spots (where the record is genuinely blank)
 
-These are the true gaps — **no source exists**, in-repo *or* in founder discussion:
+These remain true gaps — **no source proposes them**, in-repo *or* in founder discussion (all registered `OPEN`, authority `None (unsourced)`):
 
-- No proposal for peer practice / speaking partners (SOC-018).
-- No proposal for profiles / follows / social graph (SOC-019) — **not** inferred from the community direction.
-- No proposal for broad / unrestricted UGC (SOC-021) — distinct from the *bounded, moderated* attempt-comparison the founder discussed (SOC-032).
+- No proposal for peer practice / speaking partners (SOC-018) — *dormant by decision (R4).*
+- No proposal for profiles / follows / social graph (SOC-019) — **not** inferred from the community direction; now *bounded* by the identity default (SOC-033) without being approved.
 - No referral/invite decision (SOC-022).
-- No learner-facing cohort/group-learning proposal (SOC-023).
-- No outward progress-sharing decision (SOC-024).
-- No decision on whether the Lifetime *loyalty* community is in-app or external (SOC-020).
+- No learner-facing cohort/group-learning proposal (SOC-023) — *dormant by decision (R7).*
+- No decision on user-initiated *outward* sharing (SOC-024) — re-scoped by R6 to Product/UX/Brand/Privacy; still undecided.
 
-Each is registered `OPEN` with authority `None (unsourced)`. **The blank is the finding for these** — captured so no future session mistakes silence for a decision, and so the community direction is **not** over-read to imply them.
+**The blank is the finding for these** — captured so no future session mistakes silence for a decision, and so the community direction is **not** over-read to imply them.
+
+> **Closed since the first draft (no longer blanks):** broad public UGC / community feed — now **decided** (`REJECTED`, R6, SOC-021, with direct founder authority); in-app vs. external home for the Lifetime *loyalty* community — now **decided** for current scope (external, `DEFERRED`, R2, SOC-020).
+>
+> **A different kind of gap, newly created by R8:** the **evidence contract** that R8 requires before any social pedagogical action could count as evidence **does not exist**. This is not an unsourced blank — it is a *deliberately deferred design artifact*. Until it exists, **no social action is evidence.**
 
 > **No-longer-blank (moved out of §6 by the correction):** ask-questions, compare-attempts, alternative/approved explanations, structured reflections, and belonging value are **not** blind spots — they are `Founder (conversation)`-sourced (SOC-029/030/032). The prior draft wrongly listed the whole community family here.
 
@@ -96,12 +102,20 @@ Each is registered `OPEN` with authority `None (unsourced)`. **The blank is the 
 
 ## 8. Founder-reconstruction needed (only the founder can close)
 
-- **SOC-017 (root) — RESOLVED 2026-07-25:** founder chose **preserve as deferred direction** (Q1 = YES). No longer open; recorded with decision history. *(The "is solo permanent" framing was the over-reach and is retired.)*
-- **SOC-029/030/032:** further detail on the intended community form and which primitives matter — the distilled, now-ratified direction is captured; the full discussion may hold more (moderation model, QA authority for highlighted answers, phasing).
-- **SOC-009/020:** the intended shape and home of the Lifetime *loyalty* community.
+**Largely closed by the 2026-07-25 decisions:**
+
+- **SOC-017 (root) — RESOLVED:** preserve as deferred direction (Q1 = YES). *(The "is solo permanent" framing was the over-reach and is retired.)*
+- **SOC-020 (loyalty community home) — RESOLVED for current scope:** external (R2); future in-app integration `DEFERRED`.
+- **SOC-030 form · SOC-021 rejected form · SOC-026 evidence · SOC-028 under-13 · SOC-033 identity · SOC-034 gamification · SOC-025 governance — all ratified** (R1, R6, R8, R10, R5, R9, R11).
+
+**Still requiring founder reconstruction (not blocking):**
+
+- **SOC-029/032 detail:** the moderation model, the QA/authority rule for "approved" and "highlighted" answers, and phasing. R3 deliberately left primitives dormant, so this is *intentionally* unresolved rather than missing.
+- **The evidence contract itself (SOC-026):** R8 permits a future social pedagogical action to count as evidence *only* under a separately ratified evidence contract. **No such contract exists.** Designing one is a future Content/Engineering + founder task.
+- **Under-13 reopen requirements (SOC-028):** the child-safety, consent, legal, privacy, moderation, retention, identity, and operational design — plus independent review — that the reopen gate demands. None of it exists yet, by design.
 - Whether any of the §6 genuinely-blank items were ever verbally decided in the vault.
 
-The SOC-017 root is now answered; the remaining items require future founder answers (see Charter §23 R1–R11).
+None of these block Charter sign-off; each is either dormant by decision or gated behind a future explicit opening (§19 / R11).
 
 ## 9. External-policy considerations (flagged, not researched)
 
@@ -124,6 +138,8 @@ These are named so they are not forgotten; they are explicitly out of scope for 
 
 **Correction of the record:** the first draft's estimate — "positive social features ~100% captured, which is ~0; absence is canonical" — conflated *no repository implementation* with *no product intent*. That was a **source-coverage limitation, not proof of a negative decision.** Adding the founder-conversation source class closes that error.
 
-**Overall:** current-scope reality is captured near-completely; the community *direction* is now captured from founder discussion **and ratified (Q1, 2026-07-25)**; residual uncertainty is concentrated in (a) finer community-form detail (moderation model, QA authority, phasing), (b) the Lifetime-loyalty community's home, and (c) inaccessible vault notes. The SOC-017 root decision is now closed; remaining items are flagged for founder/operator, not guessed.
+**Overall:** current-scope reality is captured near-completely; the community *direction* is captured from founder discussion **and ratified (Q1 + R1–R11, 2026-07-25)**; the loyalty-community home is decided for current scope. Residual uncertainty is now concentrated in **design artifacts that were deliberately deferred, not in missing evidence**: (a) the moderation model and QA/authority rule for approved/highlighted answers, (b) **the evidence contract R8 requires**, (c) the under-13 reopen requirement set R10 demands, and (d) inaccessible vault notes. All are flagged for founder/operator, not guessed.
+
+**Coverage of *decisions* is now high; coverage of *design* is intentionally near-zero** — which is the correct state for a layer with no implementation authority.
 
 *End of Source & Gap Map v0.1. Read-only; authorizes nothing.*

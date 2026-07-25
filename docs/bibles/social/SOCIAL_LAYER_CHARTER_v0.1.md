@@ -1,8 +1,9 @@
 ---
 title: Cairn Social Layer Charter
 version: 0.1
-status: Draft — awaiting founder ratification
-authority: Proposed Social Layer canon (this document canonizes nothing)
+status: Draft — awaiting founder sign-off review
+authority: Proposed Social Layer canon; records founder boundary/direction decisions (Q1, R1–R11, 2026-07-25). Authorizes no implementation.
+founder_decisions: Q1 (2026-07-25) · R1, R2, R5, R6, R8, R9, R10, R11 resolved (2026-07-25) · R3, R4, R7 dormant
 owner: Social Layer
 depends_on:
   - Cairn Product Brain v1.0
@@ -23,6 +24,10 @@ related:
 >
 > **Founder decision on file (Q1, 2026-07-25):** *Cairn will preserve a structured, lesson-connected, heavily-moderated community layer as an explicit future product direction while keeping the current validated product solo-first and making no implementation commitment at this stage.* This ratifies a **direction**, not a feature, a schedule, or a build.
 >
+> **Boundary decisions ratified (R1–R11, 2026-07-25):** form confirmed (R1) · loyalty community external for current scope (R2) · privacy-safe identity default (R5) · broad public UGC/feed rejected (R6) · **evidence firewall stated precisely — engagement is never evidence, a pedagogical action may be only under a separately ratified evidence contract (R8)** · anti-gamification permanent for Social (R9) · **under-13 Social locked for current scope with a high-threshold reopen gate (R10)** · governance protocol accepted — documentation is not implementation authority (R11). R3, R4, R7 remain **dormant** by decision. Full record: [`SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md`](SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md).
+>
+> **This ratifies boundaries and a direction. It authorizes no implementation.** The Charter stays **Draft** until a separate sign-off review and promotion task.
+>
 > This Charter does two jobs: it (1) records that reality faithfully — distinguishing *current solo-first product* from *preserved future community direction* — and (2) prepares a disciplined frame so that *if and when* the founder later opens implementation, it starts from canon and inherited principles rather than from drift.
 >
 > Every idea referenced here is registered as `SOC-###` in the companion Register. Every source claim is mapped in the companion Source & Gap Map. **This document does not invent social features.** The one real, founder-discussed community concept is recorded at the status the evidence supports (`DEFERRED` / `RATIFIED_DIRECTION`), never silently promoted to Canonical or PLANNED. Where no source exists — profiles, follows, DMs, social graph, referral, cohort learning, broad UGC — it says so.
@@ -35,7 +40,7 @@ related:
 2. The governing reality: solo-first now, community deferred (not permanently closed)
 3. Status vocabulary (binding definitions)
 4. Ownership-by-layer model
-5. Inherited hard invariants (non-negotiable constraints)
+5. Hard invariants (non-negotiable constraints)
 6. What is explicitly rejected (and what is *not* rejected)
 7. The two real community concepts (Lifetime loyalty + structured learning community)
 8. Adjacent-but-not-social: disambiguation register
@@ -43,13 +48,13 @@ related:
 10. Open social questions: conversation-supported vs. genuinely unsourced
 11. Privacy & consent as the gating spine
 12. Passive-mirror dignity vs. social validation
-13. Events-as-evidence: social is never mastery
-14. Anti-gamification firewall
-15. Audience constraints (no children; no engagement-farming)
+13. Evidence firewall: engagement vs. validated pedagogical action (R8)
+14. Anti-gamification firewall (R9 — permanent Social-Layer principle)
+15. Audience constraints (R10 — locked current scope, high-threshold reopen gate) (no children; no engagement-farming)
 16. Relationship to the AI layer
 17. Relationship to monetization
 18. Relationship to the curriculum ("social" as content, not feature)
-19. Decision protocol: how a social idea would ever move
+19. Decision protocol: how a social idea would ever move (R11 — ACCEPTED)
 20. Non-goals of this Charter
 21. Risks & failure modes
 22. What would have to be true before any build
@@ -119,22 +124,45 @@ Cairn's documentation is partitioned into owning layers so that each decision ha
 
 **Routing rule:** the Social Layer owns *whether* social exists and *what shape* it may take. It does **not** own the constraints it inherits (privacy, anti-gamification, passive mirror, events-as-evidence) — those remain with their home layers and merely bind the Social Layer.
 
-## 5. Inherited hard invariants (non-negotiable constraints)
+## 5. Hard invariants (non-negotiable constraints)
 
-These bind any social layer that might ever exist. They are not Social-owned; the Social Layer may not weaken them.
+Invariants 1, 3 and 5 are **inherited** from other layers and may not be weakened by the Social Layer. Invariants 2, 4, 6 and 7 are **founder-ratified Social-Layer invariants (2026-07-25)** — see the Founder Ratification record for their full text.
 
 1. **Privacy is local-first and consent-gated (ADR-0023 / SOC-006).** No learner data leaves the device or becomes visible to another person without explicit, revocable consent, under RLS.
-2. **Social interaction is never mastery evidence (SOC-007 / SOC-026).** Progress derives only from recorded learning events. Interacting with a person changes no mastery state.
+
+2. **Evidence firewall — engagement is never evidence; a pedagogical action may be, only under a ratified evidence contract (R8 / SOC-026).** The absolute formulation ("nothing occurring in a social context can ever be evidence") is **superseded**. The binding rule is:
+
+   > **Social engagement signals do not constitute mastery evidence. A discrete pedagogical action performed within a future social context may count as learning evidence only if it is governed by a separately ratified evidence contract and satisfies the same validity, prerequisite, attribution, anti-gaming, and error-source requirements as an equivalent non-social action.**
+
+   **Never evidence by themselves:** likes · reactions · replies · posting frequency · time spent in community · participation count · popularity · reputation · partner presence · giving or receiving a correction · social completion · community streaks · peer approval · teacher or moderator approval without an evidence contract.
+
+   **A future speaking/writing action may become evidence only when:** the action is pedagogically defined; learner authorship is attributable; assistance level is known; prerequisites are safe; the result is evaluated by an approved evidence contract; content/validator/peer/AI/UI errors are excluded from learner weakness; and the action would satisfy equivalent standards outside Social. **Social context alone must never upgrade an action into evidence.**
+
 3. **Passive-mirror dignity (ADR-0002 / SOC-005).** The system reflects; it does not praise, shame, rank, or expose the learner. Public praise/correction is incompatible with this and cannot be smuggled in via "social."
-4. **No gamification (ADR-0001 / SOC-002).** No XP, streaks, levels, points, badges — including social variants (competitive streaks, ranked ladders).
+
+4. **Anti-gamification firewall extends permanently to Social (R9 / SOC-034).** No friend streaks · social XP · public ranks · leaderboards · popularity levels · competitive progress comparison · "someone passed you" messaging · pressure-based participation · engagement rewards disconnected from learning value. Trust-and-safety signals may exist operationally but must never be presented as popularity, learner worth, or learning mastery.
+
 5. **No pressure language (SOC-004).** No "come back tomorrow," no fear-of-missing-out re-engagement, including social notifications built on that pattern.
-6. **No children as an audience (SOC-028).** Social + minors is not entertained.
+
+6. **Under-13 Social is a locked current-scope prohibition with a high-threshold reopen gate (R10 / SOC-028).** The absolute formulation ("permanently prohibited regardless of any future change") is **superseded**. The binding rule is:
+
+   > **Cairn does not permit under-13 participation in learner-to-learner Social systems under the current product scope. This boundary may be reopened only through a new explicit founder and canon decision after child-safety, parental-consent, legal, privacy, moderation, data-retention, identity, and operational requirements have been fully designed and independently reviewed.**
+
+   Until all such requirements **and** the explicit reopening decision exist: no under-13 Social pilot · no child-account interaction · no adult–minor matching · no direct communication involving under-13 users · **no assumption that a general age-policy change automatically opens Social access.**
+
+7. **Privacy-safe identity default (R5 / SOC-033).** By default: no public real-name profile · no publicly discoverable learner profile · no public social graph · **no profile required for the current solo-first experience.** *If* a structured community is ever explicitly opened, the minimum viable identity must be pseudonymous or otherwise privacy-preserving, visibility must be opt-in, identity fields minimized, discoverability never silently enabled, and real-name exposure requires a separate explicit decision with privacy justification. **This defines a boundary; it does not approve profiles as a feature.**
 
 ## 6. What is explicitly rejected (and what is *not* rejected)
 
 **Founder-locked rejections** — the specific mechanics most associated with social language apps: leaderboards and ranking (SOC-003), competitive streaks/XP (SOC-002), pressure-driven re-engagement (SOC-004), and the open-ended AI companion as a social substitute (SOC-008).
 
-**Form-level rejection (SOC-031, `REJECTED`):** the founder disfavoured the **classic open / chaotic forum form** — Reddit-style open posting, an infinite social feed, unrestricted free-form UGC conversation, and weakly-moderated general discussion disconnected from lessons. This rejects a *form*, not the idea of community.
+**Form-level rejection (SOC-031, `REJECTED`; confirmed by R1, 2026-07-25):** the **classic open / chaotic forum form** — Reddit-style open posting, an infinite social feed, unrestricted free-form UGC conversation, and weakly-moderated general discussion disconnected from lessons. This rejects a *form*, not the idea of community, and the rejection is **binding**.
+
+**Broad public UGC / community feed rejection (SOC-021, `REJECTED`; R6, 2026-07-25):** open public posting · unrestricted learner-generated-content feeds · public mistake feeds · public performance feeds · infinite community content · popularity-driven content distribution · weakly-moderated public sharing.
+
+> **Do not over-read R6.** It rejects *broad public UGC and feed mechanics*, **not every bounded community contribution.** Lesson-specific questions, bounded attempt comparison, approved explanations, moderated reflections, and selected/reviewed contributions remain **possible only inside the ratified structured direction (SOC-029/030/032) and require separate approval** — they are neither approved nor rejected by R6.
+>
+> **Separate question, kept open:** *user-initiated outward sharing* (a learner deliberately sharing a milestone outside Cairn) is a Product/UX/Brand/Privacy question (SOC-024, `OPEN`), **not** an in-app social feed. R6 does not decide it.
 
 **What is NOT rejected — the key correction:**
 
@@ -147,7 +175,11 @@ So the accurate statement is: *the open-forum form is rejected; competitive/gami
 
 There are **two** distinct, real community ideas. They must never be conflated.
 
-**7.1 — Lifetime loyalty community (SOC-009, `CANONICAL`).** A benefit offered to early/lifetime supporters (PB-068). A loyalty/monetization concept, **not** a peer-learning mechanic and **not** a mastery surface. Whether it ever appears *inside the app* (vs. an external forum/Discord run by the founder) is `OPEN` (SOC-020).
+**7.1 — Lifetime loyalty community (SOC-009, `CANONICAL`).** A benefit offered to early/lifetime supporters (PB-068). A loyalty/monetization concept, **not** a peer-learning mechanic and **not** a mastery surface.
+
+**R2 decision (2026-07-25): EXTERNAL for the current product scope.** The loyalty community remains **outside** the app; **no in-app loyalty-community surface is approved.** Possible future in-app integration stays `DEFERRED` (SOC-020) and must never be labelled `PLANNED`.
+
+**Cross-inheritance bar:** the loyalty community and the learner-learning community (§7.2) are **separate concepts**. Neither automatically inherits the other's permissions, moderation model, or product surface. A decision about one is never a decision about the other.
 
 **7.2 — Structured learning community (SOC-029, `RATIFIED_DIRECTION` as of Q1 2026-07-25; shape SOC-030, `RATIFIED_DIRECTION`; primitives SOC-032, `OPEN`).** A founder-ratified future direction: a bounded, heavily-moderated, lesson-connected discussion layer whose learner value is to **ask questions, compare sentence attempts, see alternative/approved explanations, and feel less alone / a sense of belonging around learning French.**
 
@@ -191,15 +223,17 @@ The open questions split into two clearly different classes.
 
 **10.2 — Genuinely unsourced (no source, no founder discussion):** registered `OPEN`, authority `None (unsourced)`, captured only so silence is never mistaken for a decision — and **explicitly not inferred** from the community direction:
 
-- Peer practice / speaking-partner exchange (SOC-018)
-- Learner profiles / follows / social graph (SOC-019)
-- Broad / unrestricted UGC (SOC-021, leans rejected — distinct from the *bounded, moderated* attempt-comparison in SOC-032)
-- Referral / invite mechanic (SOC-022)
-- Cohort / group learning (SOC-023)
-- Outward sharing of progress/achievements (SOC-024, leans rejected)
-- In-app surface for the *loyalty* community (SOC-020, derived from SOC-009)
+- Peer practice / speaking-partner exchange (SOC-018) — **`OPEN`, dormant** (R4: bounded AI is sufficient for now)
+- Learner profiles / follows / social graph (SOC-019) — **`OPEN`, unapproved**, and now bounded by the privacy-safe identity default (SOC-033 / R5)
+- Referral / invite mechanic (SOC-022) — `OPEN`
+- Cohort / group learning (SOC-023) — **`OPEN`, dormant** (R7)
+- User-initiated *outward* sharing of a milestone outside Cairn (SOC-024) — `OPEN`, routed to Product/UX/Brand/Privacy, **not** an in-app feed
 
-**Non-inference rule:** a moderated lesson-discussion layer does **not** require or imply profiles, follows, direct messaging, partner matching, or a social graph. None of these may be read into SOC-029. Each remains dormant `OPEN` until the founder separately and explicitly scopes it against the §5 invariants.
+**Decided since (no longer open):** broad public UGC / community feed (SOC-021 → `REJECTED`, R6) · in-app loyalty-community surface (SOC-020 → `DEFERRED`, external for current scope, R2).
+
+**Non-inference rule:** a moderated lesson-discussion layer does **not** require or imply profiles, follows, direct messaging, partner matching, or a social graph. None of these may be read into SOC-029. Each remains unapproved until the founder separately and explicitly scopes it against the §5 invariants.
+
+**Blanket non-approval:** any profile, messaging, follows, matching, social graph, peer grading, live audio/video, teacher marketplace, mentor system, or group system **not explicitly decided in the Founder Ratification record remains unapproved.** Silence is never approval.
 
 ## 11. Privacy & consent as the gating spine
 
@@ -209,17 +243,26 @@ Every conceivable social feature implies at least one learner's data becoming vi
 
 The passive-mirror principle (SOC-005) is the sharpest philosophical conflict with conventional social features. Likes, public streak comparisons, visible corrections, and praise loops all convert the calm mirror into a validation machine. Any future social design must demonstrate it does **not** reintroduce praise/shame/comparison. Features that cannot clear this bar (e.g. public leaderboards) are already rejected (§6).
 
-## 13. Events-as-evidence: social is never mastery
+## 13. Evidence firewall: engagement vs. validated pedagogical action (R8)
 
-Cairn's verification model is strictly events-as-evidence (SOC-007). A hard invariant follows (SOC-026): **no social interaction may create, accelerate, or substitute for mastery evidence.** "You practiced with a partner" is not proof you learned. This firewall prevents the most common social-app corruption of a learning model.
+Cairn's verification model is events-as-evidence (SOC-007). The Social Layer's ratified refinement (SOC-026, 2026-07-25) draws the line **precisely**, because the earlier absolute wording was both too strong and too blunt:
 
-## 14. Anti-gamification firewall
+- **Engagement signals are never evidence.** Likes, replies, participation counts, time-in-community, reputation, popularity, partner presence, giving/receiving a correction, community streaks, peer or moderator approval without a contract — none of these say anything about what the learner knows. "You practiced with a partner" is not proof you learned.
+- **A discrete pedagogical action is not disqualified merely by occurring in a social context.** If a future speaking or writing action is pedagogically defined, authored attributably by the learner, produced at a known assistance level, prerequisite-safe, evaluated under a **separately ratified evidence contract**, and shielded from content/validator/peer/AI/UI error attribution — it may count, on exactly the same terms as the equivalent non-social action.
 
-ADR-0001 (SOC-002) removed XP and streaks from the product; the banned-language list keeps them out of copy. The Social Layer inherits this firewall in full: social features may not smuggle gamification back in through the side door (friend streaks, competitive ranks, social XP, achievement sharing). This is treated as a bright line.
+**The asymmetry is the point:** social context never *upgrades* an action into evidence, and never *downgrades* an otherwise-valid pedagogical action merely for having happened near other people. Anything in between requires a ratified evidence contract that does not yet exist. Until such a contract exists, **no social action is evidence.** This changes nothing in the Content Bible or the current mastery implementation.
 
-## 15. Audience constraints
+## 14. Anti-gamification firewall (R9 — permanent Social-Layer principle)
 
-Cairn's audience non-goals exclude children (SOC-028) and reject engagement-farming. Any social layer inherits both: no under-13 interaction, and no mechanic whose primary purpose is time-on-app rather than learning. These constraints alone eliminate most "growth-hack" social patterns.
+ADR-0001 (SOC-002) removed XP and streaks from the product; the banned-language list keeps them out of copy. Founder-ratified 2026-07-25 (SOC-034), the firewall extends **permanently** to any future Social feature: no friend streaks, social XP, public ranks, leaderboards, popularity levels, competitive progress comparison, "someone passed you" messaging, pressure-based participation, or engagement rewards disconnected from learning value.
+
+**Narrow carve-out:** trust-and-safety signals (e.g. moderation standing, spam controls) may exist **operationally**, but must never be surfaced as popularity, learner worth, or learning mastery. This is a bright line, not a tunable.
+
+## 15. Audience constraints (R10 — locked current scope, high-threshold reopen gate)
+
+Cairn's audience non-goals exclude children and reject engagement-farming. The under-13 boundary (SOC-028) is now stated as a **locked current-scope prohibition with an explicit reopening protocol** rather than a silent claim about every possible future product: under-13 participation in learner-to-learner Social is not permitted under the current product scope, and may be reopened **only** by a new explicit founder + canon decision after child-safety, parental-consent, legal, privacy, moderation, data-retention, identity, and operational requirements are fully designed and **independently reviewed**.
+
+Until both those requirements and that explicit decision exist: no under-13 Social pilot, no child-account interaction, no adult–minor matching, no direct communication involving under-13 users, and **no inference that a general age-policy change opens Social access.** The engagement-farming constraint also stands: no mechanic whose primary purpose is time-on-app rather than learning.
 
 ## 16. Relationship to the AI layer
 
@@ -233,27 +276,49 @@ The single real community (SOC-009) is monetization-tied (Lifetime tier). This i
 
 The curriculum teaches social *language* (greetings, small talk, "A1 Social Survival," SOC-011) and depicts social *scenes*. This is Content-Bible territory. The Charter draws a firm line: **teaching social French ≠ building a social product.** The two must never be conflated in scope discussions.
 
-## 19. Decision protocol: how a social idea would ever move
+## 19. Decision protocol: how a social idea would ever move (R11 — ACCEPTED)
 
-Proposed governance (SOC-025), inherited from SOC-001:
+**Founder-accepted governance (SOC-025, 2026-07-25).** The governing rule:
 
-1. **Founder opens SOC-017** with an explicit, scoped "yes."
-2. The specific feature is written as an `OPEN` row, then taken through each §5 invariant with a pass/fail.
-3. Privacy-Legal specifies the data-sharing surface + consent flow (gate 1).
-4. Passive-mirror + events-as-evidence + anti-gamification reviews (gates 2–4).
-5. Only then may the item become `EXPERIMENT` (with success criteria) — never straight to `PLANNED`.
-6. Nothing ships to learners without the Stage-gate discipline the Content Bible established.
+> **Nothing may move from `OPEN`, `DEFERRED`, `EXPERIMENT`, or `RATIFIED_DIRECTION` into design or implementation merely because an agent finds it documented.** Social work may begin only when the founder explicitly opens a scoped Social task.
 
-No step may be skipped, and no session may perform step 1 on the founder's behalf.
+**Documentation is not authority.** A `RATIFIED_DIRECTION` is a preserved direction, not a work order. Finding an idea written down — including in this Charter — confers no permission to build it.
+
+**A general instruction such as "continue the project", "build the future systems", or "implement what's in the docs" is NOT sufficient authority to begin Social implementation.**
+
+**The founder's opening decision must state all ten:**
+
+1. exact primitive or feature
+2. target user
+3. intended value
+4. current status
+5. safety prerequisites
+6. affected Bibles
+7. evidence relationship
+8. implementation boundary
+9. validation plan
+10. stop condition
+
+**Then, and only then, the gate sequence runs:**
+
+1. The specific feature is written as an `OPEN` row and taken through each §5 invariant with a pass/fail.
+2. Privacy-Legal specifies the data-sharing surface + consent flow (gate 1).
+3. Passive-mirror + evidence-firewall + anti-gamification + identity-default reviews (gates 2–5).
+4. Only then may the item become `EXPERIMENT` (with success criteria) — never straight to `PLANNED`.
+5. Nothing ships to learners without the Stage-gate discipline the Content Bible established.
+
+No step may be skipped, and **no session may perform the opening decision on the founder's behalf.**
 
 ## 20. Non-goals of this Charter
 
-- It does **not** decide whether Cairn has a social layer.
-- It does **not** design any social feature.
-- It does **not** modify the Product Brain or Content Bible.
+- It records a preserved **direction** and its **boundaries** (Q1, R1–R11) — it does **not** authorize, schedule, or design any social implementation.
+- It does **not** design any social feature or select a first primitive.
+- It does **not** modify the Product Brain, Content Bible, mastery model, privacy runtime, or release scope.
 - It does **not** introduce code, schema, or UI.
 - It does **not** treat teaching social language as building social product.
-- It does **not** promote any `OPEN` item to `PLANNED`.
+- It does **not** promote any item to `PLANNED`.
+- It does **not** make every conceptual primitive part of the product.
+- It does **not** grant authority to begin work by being read (see §19 / R11).
 
 ## 21. Risks & failure modes
 
@@ -283,24 +348,28 @@ Until all are true, the correct status of the social layer as a whole is: **does
 
 - **Q1 (Root — SOC-017) — RESOLVED 2026-07-25: YES, preserve as deferred direction.** *Should Cairn preserve a structured, lesson-connected, heavily-moderated community layer as an explicit future product direction, while keeping the current validated product solo-first and making no implementation commitment yet?* → **YES.** SOC-017/SOC-029 → `RATIFIED_DIRECTION`; SOC-031 (open-forum form) `REJECTED`. The rejected alternative (archive → permanent solo-only) is preserved in decision history. No lower question was activated.
 
-### Remaining (renumbered R1–R11; Q1 removed from the unresolved count)
+### Resolved 2026-07-25 (R1, R2, R5, R6, R8, R9, R10, R11)
 
-Preserving the direction did **not** make the implementation questions active. Each remaining question is tagged with whether it is **[Required now]** (needed to set the Charter's foundational boundaries), **[Safe to leave open]**, or **[Dormant]** (do not answer until Social implementation is explicitly opened).
+Full text in [`SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md`](SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md).
 
-- **R1 — [Safe to leave open] (SOC-030)** Confirm the intended *form* stays structured / heavily-moderated / lesson-connected (guided discussion, bounded reflection), never an open forum, as the standing direction.
-- **R2 — [Safe to leave open] (SOC-009 / SOC-020)** Separately from the learning community: is the **Lifetime loyalty** community meant to live *inside the app*, or stay an external founder-run space (Discord/forum)?
-- **R3 — [Dormant] (SOC-032)** Which primitives, if any, to explore first — lesson-specific questions, approved explanations, teacher/AI-highlighted answers (QA-bounded), bounded attempt-comparison.
-- **R4 — [Dormant] (SOC-018)** Is peer practice / a speaking-partner exchange ever wanted, or does bounded AI (SOC-008) fill that role? *(Genuinely unsourced.)*
-- **R5 — [Dormant] (SOC-019)** Do learner profiles/identities visible to other learners ever exist, or is identity strictly private? *(Not implied by SOC-029; genuinely unsourced.)*
-- **R6 — [Dormant] (SOC-021 / SOC-024)** Is *any* broad/outward sharing (open UGC, milestone sharing) ever acceptable, or does passive-mirror dignity (SOC-005) rule it out? *(Distinct from bounded moderated comparison, SOC-032.)*
-- **R7 — [Dormant] (SOC-023)** Is group/cohort *learning* (vs. ops tester cohorts, SOC-015) ever in scope? *(Genuinely unsourced.)*
+- **R1 (SOC-030/031) — CONFIRM.** Form stays structured · heavily moderated · lesson-connected · bounded · learning-contextual; not an open forum, not an infinite feed, not unrestricted posting. `RATIFIED_DIRECTION`, not a build commitment. Open-forum rejection binding.
+- **R2 (SOC-009/020) — EXTERNAL for current scope.** No in-app loyalty-community surface approved; future in-app integration `DEFERRED`; loyalty ≠ learning community; no cross-inheritance of permissions/moderation/surface.
+- **R5 (SOC-033, new) — RATIFY PRIVACY-SAFE DEFAULT.** No public real-name profile, no discoverable profile, no public social graph, no profile required — by default. If a community is ever opened: pseudonymous/privacy-preserving minimum identity, opt-in visibility, minimized fields, no silent discoverability, real-name requires separate decision. **Does not approve profiles.**
+- **R6 (SOC-021 `REJECTED`; SOC-024 stays `OPEN`) — REJECT broad public UGC / community feed.** Bounded moderated contributions inside the ratified direction are *not* rejected and still require separate approval. User-initiated outward sharing kept open as a Product/UX/Brand/Privacy question.
+- **R8 (SOC-026) — RATIFY EVIDENCE FIREWALL WITH PRECISE BOUNDARY.** Engagement signals are never evidence; a discrete pedagogical action may be, only under a separately ratified evidence contract meeting equivalent non-social standards. Social context alone never upgrades an action into evidence. (Absolute formulation superseded.)
+- **R9 (SOC-034, new) — YES, permanent Social-Layer principle.** No friend streaks, social XP, public ranks, leaderboards, popularity levels, competitive comparison, "someone passed you", pressure participation, or engagement rewards disconnected from learning value. Trust/safety signals operational only.
+- **R10 (SOC-028) — Locked current-scope prohibition + high-threshold reopen gate.** No under-13 Social participation in current scope; reopening requires a new explicit founder + canon decision after full design and independent review of child-safety/consent/legal/privacy/moderation/retention/identity/operational requirements. (Absolute "permanently, regardless of any future change" formulation superseded.)
+- **R11 (SOC-025) — ACCEPT governance protocol.** Documentation is not implementation authority; a scoped founder opening stating all ten required elements is required before any Social work. "Continue the project" is not authority.
 
-*Standing invariant confirmations — answer once, apply to all future social work:*
+### Dormant (R3, R4, R7) — not blockers to Charter ratification
 
-- **R8 — [Required now] (SOC-026)** Confirm: social interaction must *never* count as mastery evidence — permanent lock?
-- **R9 — [Required now] (SOC-002/003/004)** Confirm the anti-gamification firewall extends fully to any social feature (no friend-streaks, no social XP, no ranks) — permanent?
-- **R10 — [Required now] (SOC-028)** Confirm no social interaction involving under-13 users, permanently, regardless of later audience changes.
-- **R11 — [Required now] (Governance — SOC-025)** Do you accept the decision protocol in §19 (nothing moves from `RATIFIED_DIRECTION`/`OPEN` to build without your explicit scoped "open")?
+These are **intentionally unanswered** and must not be re-presented as blockers. Their alternatives and history are preserved in the register.
+
+- **R3 (SOC-032) — LEAVE DORMANT.** No first primitive selected for design or implementation; all remain conceptual possibilities inside the ratified direction.
+- **R4 (SOC-018) — LEAVE DORMANT.** Bounded AI remains sufficient for the solo-first product; no speaking-partner, peer-practice, matching, or language-exchange system approved. Stays `OPEN`.
+- **R7 (SOC-023) — LEAVE DORMANT.** No cohort, classroom, group-learning, or community-group system approved. Operational tester cohorts (SOC-015) remain non-social and **must not be used as evidence for learner-community design.**
+
+**Reactivation trigger for all three:** (a) an explicit founder opening of Social implementation under §19, **or** (b) discovery of stronger historical source evidence.
 
 ## 24. Change log & ratification status
 
@@ -310,8 +379,12 @@ Preserving the direction did **not** make the implementation questions active. E
 | 2026-07-24 | 0.1 (founder-conversation correction) | Added founder-conversation evidence of a **structured, moderated, lesson-connected community direction** (SOC-029 `DEFERRED`, shape SOC-030 `RATIFIED_DIRECTION`, primitives SOC-032 `OPEN`, open-forum form rejected SOC-031 `REJECTED`). Corrected the executive finding to distinguish *current solo-first product* from *deferred community optionality*; reframed SOC-001 as a current-scope exclusion (not permanent canon); reframed the root question SOC-017 from a false binary to preserve-vs-archive; separated conversation-supported ideas from genuinely-unsourced ones (profiles/follows/DMs/graph/referral/cohort/broad-UGC stay unsourced, not inferred). Recalculated counts (28 → 32 rows). Canonizes nothing. | Cloud session (correction) |
 | 2026-07-25 | 0.1 (Q1 ratification) | **Founder resolved root question Q1: YES — preserve the structured community as a deferred direction; product stays solo-first; no implementation commitment.** SOC-017 and SOC-029 → `RATIFIED_DIRECTION`; SOC-031 open-forum form confirmed `REJECTED` with the structured direction as replacement. Recalculated status counts (`RATIFIED_DIRECTION` 2→4, `OPEN` 9→8, `DEFERRED` 3→2; still 32 rows, PLANNED 0). Marked Q1 resolved and renumbered remaining questions R1–R11. **No implementation approved; no profile/DM/follow/matching/UGC/social-graph approved; Social is not mastery evidence; no Content Bible / mastery / progression rule changed.** Package remains Draft. | Cloud session (ratification record) |
 
-**Founder decision record — Q1 (2026-07-25):** *Cairn will preserve a structured, lesson-connected, heavily-moderated community layer as an explicit future product direction while keeping the current validated product solo-first and making no implementation commitment at this stage.* Ratifies a **direction**, not a feature/schedule/build. Conditional questions (profiles, messaging, social graph, UGC, matching, cohorts, peer feedback, public progress, teacher/mentor roles, monetization) remain `OPEN` / `DEFERRED` / `REJECTED` / unsourced and were **not** activated.
+| 2026-07-25 | 0.1 (R1–R11 ratification) | **Founder resolved the remaining boundary decisions.** R1 form CONFIRM · R2 loyalty community EXTERNAL for current scope (SOC-020 → `DEFERRED`) · R5 privacy-safe identity default ratified (**new SOC-033**) · R6 broad public UGC/feed REJECTED (SOC-021 → `REJECTED`; SOC-024 kept `OPEN` as an outward-sharing Product/UX/Brand/Privacy question) · R8 evidence firewall restated **precisely** (SOC-026 → `FOUNDER_LOCKED`; absolute formulation superseded) · R9 anti-gamification permanent for Social (**new SOC-034**) · R10 under-13 locked for current scope **with high-threshold reopen gate** (SOC-028 reworded; absolute formulation superseded) · R11 governance ACCEPTED (SOC-025 → `FOUNDER_LOCKED`, ten-element opening decision). R3/R4/R7 preserved **dormant**. Counts recalculated (32 → 34 rows; PLANNED still 0). Charter status → `Draft — awaiting founder sign-off review`. **No implementation authorized.** | Cloud session (ratification application) |
 
-**Ratification status:** `Draft — awaiting founder ratification`. The Q1 *direction* decision is on file, but the **Charter as a whole remains Draft and is not promoted to Canonical** in this task. Standing-invariant confirmations (R8–R11) and later direction/implementation questions remain to be answered before any broader promotion.
+**Founder decision record — Q1 (2026-07-25):** *Cairn will preserve a structured, lesson-connected, heavily-moderated community layer as an explicit future product direction while keeping the current validated product solo-first and making no implementation commitment at this stage.* Ratifies a **direction**, not a feature/schedule/build.
 
-*End of Charter v0.1. Draft; canonizes nothing beyond recording one founder direction decision (Q1); authorizes no build.*
+**Founder decision record — R1–R11 (2026-07-25):** eight resolved (R1, R2, R5, R6, R8, R9, R10, R11), three dormant by decision (R3, R4, R7). Full text and non-claims in [`SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md`](SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md). Anything not explicitly decided there — profiles, messaging, follows, matching, social graph, peer grading, live audio/video, teacher marketplace, mentor systems, group systems — **remains unapproved.**
+
+**Ratification status:** `Draft — awaiting founder sign-off review`. The boundary and direction decisions are on file, but the **Charter as a whole remains Draft and is not promoted to Canonical** in this task. Promotion requires a separate sign-off review task.
+
+*End of Charter v0.1. Draft; records founder boundary/direction decisions (Q1, R1–R11); authorizes no build.*
