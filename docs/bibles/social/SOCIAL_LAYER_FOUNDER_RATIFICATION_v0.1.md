@@ -9,7 +9,7 @@ depends_on:
   - Cairn Product Brain v1.0
   - Cairn Content Bible v1.0
 related:
-  - SOCIAL_LAYER_CHARTER_v0.1.md
+  - SOCIAL_LAYER_CHARTER_v1.0.md
   - SOCIAL_LAYER_IDEA_AND_DECISION_REGISTER_v0.1.md
   - SOCIAL_LAYER_SOURCE_AND_GAP_MAP_v0.1.md
 ---
@@ -249,9 +249,12 @@ This record does **NOT**:
 
 ## 11. Cross-layer routes
 
+> Layers other than Product Brain and Content Bible are currently `DEPENDENCY — DOCUMENT NOT YET AUTHORED` (see Charter §4). Routes below **record** the dependency; they do not invent those documents' contents.
+
 | Route | Owner | Trigger |
 |---|---|---|
-| Evidence contract design | Content Bible + Engineering-System + founder | Only if a social pedagogical action is ever proposed as evidence (R8) |
+| Evidence contract design | Content Bible + **Curriculum Bible** + Engineering-System + founder | Only if a social pedagogical action is ever proposed as evidence (R8). **Not authored here; not required today.** |
+| Moderation capacity (human/operational) | Operations-QA | Any opening — **AI moderation is not sufficient coverage** (cf. SOC-008, SOC-032) |
 | Data-sharing surface, consent flow, RLS | Privacy-Legal | Any social surface (SOC-006/027) |
 | Identity model if a community opens | Privacy-Legal + Social Layer | R5 / SOC-033 |
 | Under-13 requirement set + independent review | Privacy-Legal + Operations-QA + founder | R10 reopen gate only |

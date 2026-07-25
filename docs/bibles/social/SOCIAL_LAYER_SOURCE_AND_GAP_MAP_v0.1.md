@@ -10,7 +10,7 @@ depends_on:
   - Cairn Content Bible v1.0
 created: 2026-07-24
 related:
-  - SOCIAL_LAYER_CHARTER_v0.1.md
+  - SOCIAL_LAYER_CHARTER_v1.0.md
   - SOCIAL_LAYER_IDEA_AND_DECISION_REGISTER_v0.1.md
 ---
 

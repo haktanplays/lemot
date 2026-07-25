@@ -1,22 +1,30 @@
 ---
-title: Cairn Social Layer Charter
-version: 0.1
-status: Draft — awaiting founder sign-off review
-authority: Proposed Social Layer canon; records founder boundary/direction decisions (Q1, R1–R11, 2026-07-25). Authorizes no implementation.
-founder_decisions: Q1 (2026-07-25) · R1, R2, R5, R6, R8, R9, R10, R11 resolved (2026-07-25) · R3, R4, R7 dormant
+title: Cairn Social Layer Charter v1.0
+version: 1.0
+status: Canonical
+signed_off: 2026-07-25
+authority: Canonical Social Layer boundary and future-direction contract
 owner: Social Layer
+founder_decisions: Q1 (2026-07-25) · R1, R2, R5, R6, R8, R9, R10, R11 resolved (2026-07-25) · R3, R4, R7 dormant
 depends_on:
   - Cairn Product Brain v1.0
   - Cairn Content Bible v1.0
 created: 2026-07-24
+supersedes: SOCIAL_LAYER_CHARTER_v0.1.md (renamed on promotion; same document lineage)
 related:
+  - SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md
   - SOCIAL_LAYER_IDEA_AND_DECISION_REGISTER_v0.1.md
   - SOCIAL_LAYER_SOURCE_AND_GAP_MAP_v0.1.md
+  - SOCIAL_LAYER_SIGNOFF_REVIEW_v0.1.md
 ---
 
-# Cairn Social Layer Charter v0.1
+# Cairn Social Layer Charter v1.0
 
-> **Draft. Awaiting founder ratification. Canonizes nothing.**
+> **Canonical — signed off 2026-07-25. `Canonical` does NOT mean implemented.**
+>
+> **What this Canonical Charter binds:** Social boundaries · prohibited forms · the ratified future direction · governance · privacy/safety defaults · evidence boundaries · cross-layer ownership.
+>
+> **What it does NOT claim:** runtime implementation · an active Social roadmap · approved primitives · an approved pilot · a Social evidence contract · profiles, messaging, matching, UGC, cohorts, groups, follows, or a social graph · any change to current solo-first release scope.
 >
 > This Charter is the first attempt to give the "social layer" of Cairn a single, honest home. Its central finding, stated precisely:
 >
@@ -26,7 +34,7 @@ related:
 >
 > **Boundary decisions ratified (R1–R11, 2026-07-25):** form confirmed (R1) · loyalty community external for current scope (R2) · privacy-safe identity default (R5) · broad public UGC/feed rejected (R6) · **evidence firewall stated precisely — engagement is never evidence, a pedagogical action may be only under a separately ratified evidence contract (R8)** · anti-gamification permanent for Social (R9) · **under-13 Social locked for current scope with a high-threshold reopen gate (R10)** · governance protocol accepted — documentation is not implementation authority (R11). R3, R4, R7 remain **dormant** by decision. Full record: [`SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md`](SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md).
 >
-> **This ratifies boundaries and a direction. It authorizes no implementation.** The Charter stays **Draft** until a separate sign-off review and promotion task.
+> **This ratifies boundaries and a direction. It authorizes no implementation.** The final sign-off review was completed on 2026-07-25 (verdict `READY FOR CANONICAL PROMOTION`) and this Charter was promoted **Draft → Canonical** on that date. **Canonical status is still not authority to build** — see §19 / R11.
 >
 > This Charter does two jobs: it (1) records that reality faithfully — distinguishing *current solo-first product* from *preserved future community direction* — and (2) prepares a disciplined frame so that *if and when* the founder later opens implementation, it starts from canon and inherited principles rather than from drift.
 >
@@ -110,19 +118,21 @@ The Charter and Register share one vocabulary. Each item carries exactly one **P
 
 Cairn's documentation is partitioned into owning layers so that each decision has exactly one home:
 
-| Layer | Owns |
-|---|---|
-| **Social Layer** | Learner-to-learner interaction, community surfaces, sharing, referral, peer practice — *and the decision not to have them*. |
-| **Product Brain** | Product stance, non-goals, tone, AI philosophy, Campfire, monetization concepts. |
-| **Content Bible** | Lesson content, exercise families, French QA, "social survival" content themes. |
-| **Curriculum Bible** | Syllabus, item budgets, band sequencing. |
-| **Brand Bible** | Voice, naming, visual identity. |
-| **UX-Experience Bible** | Screen states, flows, status wording. |
-| **Engineering-System Bible** | Data model, validators, sync. |
-| **Privacy-Legal** | Consent, RLS, data categories, minors. |
-| **Operations-QA** | Tester cohorts, admin analytics, release gates. |
+| Layer | Owns | Document status |
+|---|---|---|
+| **Social Layer** | Learner-to-learner interaction, community surfaces, sharing, referral, peer practice — *and the decision not to have them*. | This Charter |
+| **Product Brain** | Product stance, non-goals, tone, AI philosophy, Campfire, monetization concepts. | Authored (v1.0) |
+| **Content Bible** | Lesson content, exercise families, French QA, "social survival" content themes; **evidence-contract authorship (with Curriculum + Engineering)**. | Authored (v1.0) |
+| **Curriculum Bible** | Syllabus, item budgets, band sequencing, learner readiness. | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` |
+| **Brand Bible** | Voice, naming, visual identity. | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` |
+| **UX-Experience Bible** | Screen states, exact flows, controls, status wording. | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` |
+| **Engineering-System Bible** | Data model, runtime permissions, moderation architecture, validators, sync. | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` |
+| **Privacy-Legal** | Consent, RLS, data categories, minors, legal interpretation. | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` |
+| **Operations-QA** | Tester cohorts, admin analytics, release gates, **moderation operation and escalation**. | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` |
 
-**Routing rule:** the Social Layer owns *whether* social exists and *what shape* it may take. It does **not** own the constraints it inherits (privacy, anti-gamification, passive mirror, events-as-evidence) — those remain with their home layers and merely bind the Social Layer.
+**Routing rule:** the Social Layer owns *whether* social exists and *what shape* it may take. It does **not** own the constraints it inherits (privacy, anti-gamification, passive mirror, evidence firewall) — those remain with their home layers and merely bind the Social Layer.
+
+**Unauthored-layer rule:** where a layer is marked `DEPENDENCY — DOCUMENT NOT YET AUTHORED`, this Charter **routes** the decision to it and **does not invent its contents.** A dependency on an unauthored document is recorded, never resolved here.
 
 ## 5. Hard invariants (non-negotiable constraints)
 
@@ -184,6 +194,8 @@ There are **two** distinct, real community ideas. They must never be conflated.
 **7.2 — Structured learning community (SOC-029, `RATIFIED_DIRECTION` as of Q1 2026-07-25; shape SOC-030, `RATIFIED_DIRECTION`; primitives SOC-032, `OPEN`).** A founder-ratified future direction: a bounded, heavily-moderated, lesson-connected discussion layer whose learner value is to **ask questions, compare sentence attempts, see alternative/approved explanations, and feel less alone / a sense of belonging around learning French.**
 
 Its intended *form* (SOC-030) is explicitly **structured and moderated, attached to learning context** — closer to lesson discussion / guided community reflection / bounded learning support than to open posting. Candidate primitives (SOC-032, still `OPEN` — conceptual possibilities, not separately approved) include lesson-specific questions, approved explanations, teacher-highlighted answers, AI-highlighted answers *subject to AI-authority and QA constraints*, structured community reflections, and bounded comparison of learner attempts.
+
+> **What "heavily moderated" requires.** Moderation means **human/operational moderation capacity**, owned by Operations-QA (`DEPENDENCY — DOCUMENT NOT YET AUTHORED`, §4). **AI moderation is not sufficient coverage** — consistent with SOC-008 (AI is bounded support, not authority) and SOC-032 (AI-highlighted answers remain subject to authority and QA constraints). AI may *assist* moderation; it may never *constitute* it. Absence of staffed moderation capacity is itself a blocker to any future opening. **Nothing here implies an invited or approved Social pilot.**
 
 **Status discipline (unchanged by ratification):** the Q1 decision ratified a **direction**, not a feature. It is recorded as **founder-ratified direction, post-MVP, not implementation-committed** — `RATIFIED_DIRECTION`. Its implementation state remains **not built · not planned for current build · deferred/post-MVP · requires future founder + cross-layer decisions.** It is **not** `CANONICAL` (not a complete product contract), **not** `PLANNED`, **not** `DESIGN_CANON`, and **not** proof that learner-to-learner social is a core product pillar. It must not be inflated into "Cairn has social features," nor deflated into "Cairn rejected community."
 
@@ -251,6 +263,8 @@ Cairn's verification model is events-as-evidence (SOC-007). The Social Layer's r
 - **A discrete pedagogical action is not disqualified merely by occurring in a social context.** If a future speaking or writing action is pedagogically defined, authored attributably by the learner, produced at a known assistance level, prerequisite-safe, evaluated under a **separately ratified evidence contract**, and shielded from content/validator/peer/AI/UI error attribution — it may count, on exactly the same terms as the equivalent non-social action.
 
 **The asymmetry is the point:** social context never *upgrades* an action into evidence, and never *downgrades* an otherwise-valid pedagogical action merely for having happened near other people. Anything in between requires a ratified evidence contract that does not yet exist. Until such a contract exists, **no social action is evidence.** This changes nothing in the Content Bible or the current mastery implementation.
+
+> **Routed dependency — evidence contract (not authored here).** Any future Social evidence contract is owned by **Content Bible + Curriculum Bible + Engineering-System Bible**, with founder ratification. It is **not** authored in this Charter, is **not** an implementation requirement today, and becomes relevant **only if** a future scoped Social primitive includes a potentially valid pedagogical action. Curriculum Bible and Engineering-System Bible are currently `DEPENDENCY — DOCUMENT NOT YET AUTHORED` (§4).
 
 ## 14. Anti-gamification firewall (R9 — permanent Social-Layer principle)
 
@@ -385,6 +399,16 @@ These are **intentionally unanswered** and must not be re-presented as blockers.
 
 **Founder decision record — R1–R11 (2026-07-25):** eight resolved (R1, R2, R5, R6, R8, R9, R10, R11), three dormant by decision (R3, R4, R7). Full text and non-claims in [`SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md`](SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md). Anything not explicitly decided there — profiles, messaging, follows, matching, social graph, peer grading, live audio/video, teacher marketplace, mentor systems, group systems — **remains unapproved.**
 
-**Ratification status:** `Draft — awaiting founder sign-off review`. The boundary and direction decisions are on file, but the **Charter as a whole remains Draft and is not promoted to Canonical** in this task. Promotion requires a separate sign-off review task.
+| 2026-07-25 | **1.0 (Canonical promotion)** | **Final sign-off review passed** ([`SOCIAL_LAYER_SIGNOFF_REVIEW_v0.1.md`](SOCIAL_LAYER_SIGNOFF_REVIEW_v0.1.md), verdict `READY FOR CANONICAL PROMOTION`; 0 BLOCKER, 0 MAJOR, 3 MINOR + 1 EDITORIAL applied). Corrections: cross-layer table now marks unauthored layers `DEPENDENCY — DOCUMENT NOT YET AUTHORED` (§4); routed evidence-contract dependency added to §13 (Content + Curriculum + Engineering, founder-ratified, not authored here); "heavily moderated" clarified as human/operational capacity with **AI moderation explicitly not sufficient coverage** (§7.2); Ratification routing table aligned. **Status Draft → Canonical; version 0.1 → 1.0; signed off 2026-07-25.** File renamed `SOCIAL_LAYER_CHARTER_v0.1.md` → `SOCIAL_LAYER_CHARTER_v1.0.md` (organization only, not a new authority event; all internal references updated). **No decision changed; no implementation authorized.** | Cloud session (sign-off + promotion) |
 
-*End of Charter v0.1. Draft; records founder boundary/direction decisions (Q1, R1–R11); authorizes no build.*
+**Ratification status:** `Canonical` — **signed off 2026-07-25**.
+
+**Canonical does not mean implemented.** This Charter is the **primary Canonical document** of the Social Layer. Its supporting records — the Register, Source & Gap Map, Founder Ratification Record, and Sign-Off Review — remain **evidence/decision records at v0.1**, not independent product canon, matching the Content Bible convention (`CONTENT_BIBLE_v1.0.md` canonical + `_v0.1` supporting records).
+
+**This Canonical Charter binds:** Social boundaries · prohibited forms · the ratified future direction · governance · privacy/safety defaults · evidence boundaries · cross-layer ownership.
+
+**It does not claim:** runtime implementation · an active Social roadmap · approved primitives · an approved pilot · a Social evidence contract · profiles, messaging, matching, UGC, cohorts, groups, follows, or a social graph · any change to the current solo-first release scope.
+
+**Still true after promotion:** Social is **unimplemented and unplanned** (`PLANNED` = 0, `EXPERIMENT` = 0); R3/R4/R7 remain **dormant**; and per §19/R11, **this Canonical status is still not authority to build.** Opening Social requires an explicit, scoped founder decision stating all ten required elements.
+
+*End of Charter v1.0. Canonical; binds boundaries, prohibited forms, direction, governance, privacy defaults, evidence limits and routing; authorizes no build.*
