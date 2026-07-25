@@ -347,12 +347,14 @@ No step may be skipped, and **no session may perform the opening decision on the
 
 ## 22. What would have to be true before any build
 
-- Founder answers SOC-017 with a scoped YES.
-- A named social feature clears all six §5 invariants.
+- **The founder has issued a NEW explicit, scoped Social opening under §19 / R11, stating all ten required elements.** ⚠️ **The resolved Q1/SOC-017 decision does NOT satisfy this condition** — Q1 ratified a *direction only* and explicitly authorized no design or implementation. A resolved direction is never a build gate.
+- A named social feature clears **every invariant in §5 (all seven)**, including the privacy-safe identity default (SOC-033).
 - Privacy-Legal has specified and approved the data-sharing/consent surface.
+- Staffed **human/operational** moderation capacity exists (Operations-QA); AI moderation does not satisfy this (§7.2).
 - The feature has an owner, a home layer, and success criteria (→ `EXPERIMENT`).
 - It demonstrably does not reintroduce gamification, pressure, or public comparison.
-- It does not involve minors.
+- It does not involve minors (§5(6) / SOC-028 remains in force).
+- If it proposes any action as learning evidence, a **separately ratified evidence contract** exists (§13 / R8) — none exists today.
 
 Until all are true, the correct status of the social layer as a whole is: **does not exist; not planned; awaiting a founder decision.**
 

@@ -1,7 +1,7 @@
 ---
 title: Cairn Social Layer — Founder Ratification Record
 version: 0.1
-status: Draft — durable founder-decision record (Social Charter remains Draft)
+status: Durable founder-decision record (supporting record; the Social Charter was promoted to Canonical on 2026-07-25)
 authority: Highest-authority Social Layer source for boundaries and direction. Authorizes no implementation.
 owner: Social Layer
 decision_date: 2026-07-25
@@ -16,7 +16,7 @@ related:
 
 # Cairn Social Layer — Founder Ratification Record v0.1
 
-> **Read this first.** This document ratifies the Social Layer's **boundaries** and its **future direction**. It does **not** authorize implementation, does **not** make every conceptual primitive part of the product, and does **not** modify the Product Brain, Content Bible, mastery model, privacy runtime, or release scope. **The Social Charter remains Draft** until a separate sign-off review and promotion task.
+> **Read this first.** This document ratifies the Social Layer's **boundaries** and its **future direction**. It does **not** authorize implementation, does **not** make every conceptual primitive part of the product, and does **not** modify the Product Brain, Content Bible, mastery model, privacy runtime, or release scope. **At the time these decisions were recorded the Social Charter was Draft**; the sign-off review was completed and the Charter was promoted to **Canonical on 2026-07-25**. That promotion did not change any decision below, and **still authorizes no implementation**.
 >
 > **Decision date: 2026-07-25.** Decisions recorded: **Q1** (root direction) and **R1–R11** (boundaries). Eight resolved, three dormant by decision.
 
@@ -32,7 +32,7 @@ related:
 **What is NOT ratified:**
 - No feature, no schedule, no design, no primitive selection, no build.
 - No change to any other Bible, to mastery/evidence implementation, to privacy runtime, or to release scope.
-- No promotion of the Charter to Canonical.
+- No promotion of the Charter to Canonical **by this ratification act itself** — promotion was a separate sign-off task, completed 2026-07-25 (Charter now Canonical v1.0). Promotion changed no decision here and authorized no implementation.
 
 **Governing principle over everything below (R11):** documentation is not implementation authority.
 
@@ -235,7 +235,7 @@ This record does **NOT**:
 | Evidence contract for social actions | **Does not exist** → no social action is evidence |
 | Current product | **Solo-first**; runtime, lessons, navigation, release plans do **not** depend on Social |
 | Direction | `RATIFIED_DIRECTION`, post-MVP, no commitment |
-| Charter | **Draft** — awaiting sign-off review |
+| Charter | **Canonical** (v1.0, signed off 2026-07-25) — *Canonical does not mean implemented* |
 
 ## 10. Reopen protocol
 
@@ -271,8 +271,9 @@ This record does **NOT**:
 
 | Date | Version | Change | By |
 |---|---|---|---|
-| 2026-07-25 | 0.1 | **Created.** Records founder decisions Q1 and R1–R11 (nine resolved, three dormant). Establishes five ratified Social-Layer invariants (evidence firewall, anti-gamification, under-13 gate, identity default, governance), the ratified future direction, three rejected forms, the reopen protocols, and the cross-layer routes. Introduces **SOC-033** (privacy-safe identity default) and **SOC-034** (social anti-gamification firewall). Supersedes two earlier absolute formulations: the "nothing social can ever be evidence" rule (R8) and the "permanently prohibited regardless of any future change" under-13 rule (R10). **Authorizes no implementation; the Social Charter remains Draft.** | Cloud session (ratification application) |
+| 2026-07-25 | 0.1 | **Created.** Records founder decisions Q1 and R1–R11 (nine resolved, three dormant). Establishes five ratified Social-Layer invariants (evidence firewall, anti-gamification, under-13 gate, identity default, governance), the ratified future direction, three rejected forms, the reopen protocols, and the cross-layer routes. Introduces **SOC-033** (privacy-safe identity default) and **SOC-034** (social anti-gamification firewall). Supersedes two earlier absolute formulations: the "nothing social can ever be evidence" rule (R8) and the "permanently prohibited regardless of any future change" under-13 rule (R10). **Authorizes no implementation.** *(At the time of writing the Charter was Draft; it was promoted to Canonical later the same day — see the row below.)* | Cloud session (ratification application) |
+| 2026-07-25 | 0.1 (post-promotion status sync) | Charter promoted **Draft → Canonical v1.0** after the final sign-off review. This record's *status statements* were updated to stop asserting the Charter is Draft. **No founder decision in §2 was changed, added, or removed; no implementation authorized.** | Cloud session (merge-readiness correction) |
 
 ---
 
-*End of Founder Ratification Record v0.1. Ratifies boundaries and direction only. Authorizes no implementation. The Cairn Social Layer Charter remains **Draft — awaiting founder sign-off review**.*
+*End of Founder Ratification Record v0.1. Ratifies boundaries and direction only. Authorizes no implementation. The Cairn Social Layer Charter is **Canonical v1.0 (signed off 2026-07-25)** — and Canonical still does not mean implemented, nor is it authority to build (§R11).*

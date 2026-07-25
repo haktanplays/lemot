@@ -95,10 +95,16 @@ These remain true gaps — **no source proposes them**, in-repo *or* in founder 
 
 ## 7. Indirect-only evidence (inferred, not stated)
 
-- **SOC-021/024 "lean rejected"** — no source rejects broad UGC/outward-sharing *by name*, but ADR-0002 (passive mirror) + ADR-0001 (anti-gamification) + SOC-004 (no pressure) + the founder's disfavour of the open-forum form (SOC-031) make them likely to be rejected if scoped. Recorded as *leaning*, not decided.
-- **SOC-025 governance rule** — derived from the "exception must be granted" logic, not stated as a rule anywhere. Proposed, not canon.
-- **SOC-020 external-vs-in-app** — inferred as an open axis from PB-068 describing a "community" without an app surface. Inference, flagged.
-- **SOC-017 reframed as preserve-vs-archive** — inferred from combining the current-scope solo fact (SOC-001) with the founder-discussed direction (SOC-029). The *existence* of the direction is founder-sourced; the *framing as a preserve/archive choice* is this Charter's synthesis, flagged.
+**Still indirect (inference, not a founder statement):**
+
+- **SOC-024 "leans rejected"** — no source rejects user-initiated *outward* sharing *by name*, but ADR-0002 (passive mirror) + ADR-0001 (anti-gamification) + SOC-004 (no pressure) make it likely to be rejected if scoped. Recorded as *leaning*, **not decided**; still `OPEN`, routed to Product/UX/Brand/Privacy.
+
+> **No longer indirect — decided directly by the 2026-07-25 founder decisions.** These four were inferences in the pre-ratification drafts and must **not** be read as inference any more:
+>
+> - **SOC-021 broad public UGC / community feed** — **directly `REJECTED` by R6.** Not "lean rejected", not inferred (cf. §§1, 6 and the Register). Binding boundary with direct founder authority.
+> - **SOC-025 governance rule** — **ACCEPTED by R11** and now `FOUNDER_LOCKED`. No longer "proposed, not canon."
+> - **SOC-020 external-vs-in-app** — **decided by R2** for the current scope (external; in-app integration `DEFERRED`). No longer an open inferred axis.
+> - **SOC-017 preserve-vs-archive** — the framing was this package's synthesis, but the **question was put to the founder and answered YES (Q1)**. The decision is founder-sourced; only the original framing was synthesis.
 
 ## 8. Founder-reconstruction needed (only the founder can close)
 
