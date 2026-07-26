@@ -1,0 +1,274 @@
+---
+title: Cairn Canon Coverage and Gaps
+version: 0.1
+status: Draft — awaiting founder ratification
+authority: Proposed project-level coverage assessment
+owner: Project Canon
+created: 2026-07-25
+related:
+  - CAIRN_PROJECT_CANON_MAP_v0.1.md
+  - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
+  - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
+---
+
+# Cairn Canon Coverage and Gaps v0.1
+
+> **Draft.** What remains to be authored before returning to code — and what "done on paper" would mean. Assesses coverage; authors no missing layer; authorizes no implementation.
+
+---
+
+## 1. Coverage method
+
+A domain counts as **covered** only when all seven hold:
+
+1. **Owned** — exactly one document is authoritative for it.
+2. **Authoritative** — that document has been ratified, not merely written.
+3. **Discoverable** — an agent can find it from the entry point without prior knowledge.
+4. **Cross-linked** — its dependencies are declared in both directions.
+5. **Status-classified** — every claim carries a decision status.
+6. **Implementation state stated** — intent and reality are separately recorded.
+7. **Conflicts resolved or explicitly open** — no silent contradiction.
+
+Ratings: `COMPLETE` · `SUBSTANTIAL` · `PARTIAL` · `FRAGMENTED` · `ABSENT`. **No percentages** — there is no defensible counting unit across domains of such different shape.
+
+> **`FRAGMENTED` ≠ `ABSENT`.** Cairn's characteristic state is *rich material, no owner*. Six domains have substantial documentation and no authoritative document. Treating them as empty would be wrong and would invite an agent to rewrite what already exists.
+
+## 2. Current completed Canonical layers
+
+### 2.1 Product Brain v1.0 — `SUBSTANTIAL`
+
+- **Status:** `CANONICAL`. Path: `obsidian-product-brain/ACTIVE_CODEX/00_CAIRN_PRODUCT_BRAIN/CAIRN_PRODUCT_BRAIN_v1.0.md` (DOC-001), with `DECISION_REGISTER.md` (PB-###) and `OPEN_QUESTIONS.md`.
+- **Scope:** purpose, promise, audience, deliberate non-goals, AI philosophy, Campfire concept, monetization stance, tone.
+- **Strengths:** it is the only document that credibly answers "what is Cairn and what is it deliberately not?" Backed by 25 ADRs and a large `01_PRODUCT` note set. Its non-goals have already proven load-bearing — they are what stopped the Social layer from drifting into gamification.
+- **Open dependencies:** paywall position tension (PRJ-036); Campfire internal mechanics undefined (PRJ-020); Le Mot → Cairn naming migration unfinished (PRJ-030); AI activation deferred (PRJ-024).
+- **Sufficient for an agent within its domain?** **Yes** for product intent. **No** for anything downstream of intent — it does not and should not answer sequencing, flows, or runtime.
+
+### 2.2 Content Bible v1.0 — `SUBSTANTIAL`
+
+- **Status:** `CANONICAL`, signed off 2026-07-24. Path: `docs/bibles/content/CONTENT_BIBLE_v1.0.md` (DOC-004), plus five supporting records.
+- **Scope:** authoring policy, item roles (active/supported/recognition-only/recycled/blocked-production/ghost/exposure), prerequisite safety, insight budgets, French QA standard, Reading principle.
+- **Strengths:** unusually explicit about its own limits — its Source Gaps file (DOC-007) names five blocking gaps rather than papering over them. Provenance tagging (`[FL]`, `[ADR-n]`, `[DC]`, `[DR]`, `[TUNABLE]`, `[OPEN]`) means an agent can see *why* each rule holds.
+- **Open dependencies:** French style guide absent (PRJ-010); named reviewer absent (PRJ-011); Reading taxonomy/validator open (PRJ-012); item-counting methodology open (PRJ-015); Mon Lexique band copy deferred (PRJ-019).
+- **Sufficient for an agent within its domain?** **Yes for authoring**, with one caveat: the French-QA gate is **not executable** today, so no lesson may be claimed QA-passed. Sequencing questions must escape to Curriculum.
+
+### 2.3 Social Layer Charter v1.0 — `COMPLETE` (for its scope)
+
+- **Status:** `CANONICAL`, signed off 2026-07-25. Path: `docs/bibles/social/SOCIAL_LAYER_CHARTER_v1.0.md` (DOC-010), plus four supporting records and SOC-001…SOC-034.
+- **Scope:** Social boundaries, prohibited forms, ratified future direction, governance, privacy defaults, evidence limits, cross-layer routing.
+- **Strengths:** the most rigorously bounded layer. `PLANNED` = 0, `EXPERIMENT` = 0. Every positive feature is explicitly unapproved; every boundary states its reopen gate. Its governance rule (documentation is not implementation authority) is the model generalized in the Authority Spec.
+- **Open dependencies:** evidence contract does not exist (PRJ-009); moderation capacity unstaffed (PRJ-013); loyalty-community in-app surface deferred (SOC-020).
+- **Sufficient for an agent within its domain?** **Yes** — and notably it is sufficient *because* it decides so little: it tells an agent to stop, which is the correct answer for an unbuilt layer.
+
+## 3. Existing partial layers
+
+Domains with meaningful documents but **no complete Canonical owner**. Inventoried, not assumed absent.
+
+### 3.1 Curriculum — `FRAGMENTED`
+- **Source fragments:** DOC-027 (26 vault notes: `Syllabus Overview`, `Syllabus Design Rules`, `Level and Band Map`, `Grammar/Vocabulary/Phenomena Progression`, `Integration Lesson Logic`, `Lesson Status Matrix`, L0–L17 notes, `L18-L24 Roadmap`); DOC-028 (30 lesson/compact specs in `docs/syllabus/`); `docs/architecture/l0-l24-founder-build-matrix-v0.md`.
+- **Current authority:** individual lesson specs act as contracts for lessons already authored. **Nothing governs sequencing policy.**
+- **Contradictions:** L7 full-aller vs compact-doorway (vault C10); item counts 54/56/52 across registry, manifest, and audit (C6); dev-APK scope L1–L5 canon vs L0–L6 runtime (C2).
+- **Risk if an agent acts today:** it would infer a sequencing rule from one lesson spec and generalize it — the exact error the Content Bible avoids by refusing to own sequencing.
+- **Recommended final form:** a **Curriculum Bible** owning band progression, prerequisite ordering, item budgets, integration-lesson cadence, and the counting methodology (PRJ-015).
+
+### 3.2 Engineering / System — `PARTIAL`
+- **Source fragments:** DOC-030 (15 architecture notes incl. `System`, `Storage`, `Sync`, `Supabase`, `Data Flow`, `AI`, `Registry`, `Route`, `Failure and Recovery`); DOC-025 (`learning-engine-v1`); DOC-043 (engine purity rules); DOC-032 (ledger, divergences, technical debt); **ADRs 0009–0022 already bind**.
+- **Current authority:** unusually strong for an unauthored layer — ADRs function as enforceable contracts.
+- **Contradictions:** two disjoint stores `lm7` vs `lm_le_events` with no cutover plan (C9 / PRJ-037); AI model routing table vs actual provider chain (C7); rich chip taxonomy in spec vs single status enum in runtime (C8).
+- **Risk if an agent acts today:** **moderate-to-high** — an agent could implement against the spec side of a known divergence.
+- **Recommended final form:** an **Engineering/System Bible** that adopts the ADRs by reference, resolves the store fork, and states the enforcement status of each rule.
+
+### 3.3 Operations & QA — `PARTIAL`
+- **Source fragments:** DOC-031 (14 notes: `Validation Gates`, `French Linguistic QA`, workflows, `PR Discipline`, `Incident and Blocker Handling`); DOC-042 (smoke checklist); DOC-021 (Master Pipeline); `Test_Checklist.md` (DOC-037).
+- **Current authority:** workflows are actively followed, so this layer is partly *operational* even while undocumented as a Bible.
+- **Missing decisions:** who performs French QA (PRJ-011); moderation staffing (PRJ-013); release engineering and crash reporting (PRJ-028).
+- **Risk if an agent acts today:** **moderate** — an agent might declare a gate passed that has no staffed executor.
+- **Recommended final form:** an **Operations & QA Bible** owning gate definitions, staffing, and the operator/agent boundary.
+
+### 3.4 Privacy / Legal — `PARTIAL`
+- **Source fragments:** ADR-0023 (binding); `06_ARCHITECTURE/Privacy and Data Deletion`, `Legal Compliance and Data Governance`; `docs/status/founder-self-learning-privacy-kvkk-gdpr-architecture-note.md`; `…-remote-schema-rls-draft.md`; `Tech_and_Privacy_Decisions.md` (DOC-037); PR #197 (deletion, open).
+- **Current authority:** ADR-0023 binds the model (local-first, consent-gated). **Legal interpretation is unowned.**
+- **Missing decisions:** retention periods, jurisdiction posture (KVKK/GDPR depth — vault MD13), cloud deletion path completion (PRJ-027).
+- **Risk if an agent acts today:** **high** — privacy errors are not cheaply reversible, and Social/analytics both depend on this layer.
+- **Recommended final form:** a **Privacy/Legal layer** owning data categories, consent surfaces, retention, minors, and deletion.
+
+### 3.5 UX / Experience — `FRAGMENTED`
+- **Source fragments:** DOC-029 (`Navigation Model`, `Lesson Player`, `Home and Journey`, `Design Inventory`, `Interaction Patterns`, `Mon Lexique UI`, `Daily Review UI`, `Practice`, `Progress`, `Accessibility`, `Motion and Animation`, `V4 Studies Disposition`).
+- **Current authority:** design canon fragments; **V4-B direction selected but globally deferred**.
+- **Contradictions:** design inventory classification vs current runtime screens; V4 studies artifact excluded from git (PRJ-035).
+- **Risk if an agent acts today:** **moderate** — a V4-B token refactor could be smuggled into unrelated work, which the Master Pipeline explicitly forbids.
+- **Recommended final form:** a **UX/Experience Bible** owning screen states, flows, empty/error/offline states, and the V4-B activation gate.
+
+### 3.6 Brand — `FRAGMENTED`
+- **Source fragments:** `07_DESIGN/Cairn Brand Direction`, `Visual Language`, `Copy and Tone`, `Naming and Brand Registry`; `Visual_Design_Canon.md` (DOC-037).
+- **Current authority:** tone is partly owned by Product Brain (ADR-0002 passive mirror, banned-language list) — a genuine **cross-domain overlap**.
+- **Missing decisions:** the Le Mot → Cairn naming migration (PRJ-030) is unfinished in repo, package, and storage keys.
+- **Risk if an agent acts today:** **low-to-moderate** — mostly cosmetic, but a half-finished rename is a discoverability hazard.
+- **Recommended final form:** a **Brand Bible** owning name, voice, visual identity, and the migration completion plan.
+
+## 4. Unauthored layers
+
+All six carry `DEPENDENCY — DOCUMENT NOT YET AUTHORED`.
+
+| Layer | Why needed | Must answer | Existing material | Upstream deps | Downstream dependents | Blocks return to code? |
+|---|---|---|---|---|---|---|
+| **Curriculum Bible** | Sequencing is unowned; Content Bible correctly refuses it | When is a concept introduced? What is the band progression? How is an item counted? | DOC-027, DOC-028 | Product Brain, Content Bible | Content authoring, Reading taxonomy, post-L24 | **Yes** — for new lesson work |
+| **Engineering / System Bible** | ADRs bind but no owner resolves divergences | Which store wins? What is the cutover? What is enforced vs advisory? | DOC-030, DOC-025, DOC-043, ADRs | ADRs | Everything runtime | **Yes** — for runtime work |
+| **Privacy / Legal** | Highest-consequence unowned domain | Retention? Jurisdiction? Deletion path? Minors? | ADR-0023, DOC-030, `docs/status/*` | ADR-0023 | Social, analytics, sync, release | **Yes** — for any data work |
+| **Operations & QA Bible** | Gates exist without staffed executors | Who runs French QA? Who moderates? What blocks release? | DOC-031, DOC-042, DOC-021 | Content Bible, Privacy | Release, Stage C, Social | **Partly** — blocks Stage C, not internal work |
+| **UX / Experience Bible** | Flows unowned; V4-B deferred | What screens exist? What are empty/error/offline states? When does V4-B activate? | DOC-029 | Brand, Product Brain | Any UI work | **Partly** — blocks new surfaces |
+| **Brand Bible** | Naming migration unfinished | What is the name, voice, visual identity? | DOC-029, DOC-037 | Product Brain (tone) | UX, copy, store presence | **No** — but blocks public-facing polish |
+| **Future Systems Register** | Five overlapping idea homes | Where does an unowned future idea live? | DOC-035, `Unmapped Ideas` | — | All future work | **No** |
+
+## 5. Project-wide blind spots
+
+Genuine gaps, not merely deferred work:
+
+1. **No owner for mastery/evidence** (PRJ-014) — the single most consequential ownership hole, because Content, Engineering, and Social all touch it and none owns it.
+2. **No evidence contract** (PRJ-009) — created as a requirement by R8, assigned to a joint owner that does not exist.
+3. **No executable French-QA gate** (PRJ-010 + PRJ-011) — a Canonical standard with no standard document and no reviewer.
+4. **No moderation capacity assessment** (PRJ-013) — the Social direction's real-world blocker was never costed.
+5. **No cutover plan for two disjoint stores** (PRJ-037).
+6. **No controlling roadmap** (PRJ-032) — two roadmaps, no precedence.
+7. **Project routing predates the Bibles** (PRJ-033).
+
+## 6. Unrouted historical ideas
+
+Ideas alive in source material with no durable home. **Each has a `PRJ-###` record** (Project Register).
+
+| Idea | Where it survives | Record |
+|---|---|---|
+| Instruction Weave ("thermostat, not ladder") | `Unmapped Ideas` I3 | PRJ-016 |
+| Human-recorded audio | `Future Features` audio cluster | PRJ-017 |
+| Shadowing-first / listening comprehension | same cluster | PRJ-018 |
+| A Small Moment | `Unmapped Ideas` I2 | PRJ-023 |
+| Campfire internal mechanics | `Unmapped Ideas` I1 | PRJ-020 |
+| Word Graph | `Future Features`, I4 | PRJ-022 |
+| Spine narrowness R-A…R-E | `Unmapped Ideas` I5 | *rolled into PRJ-001* |
+| Staged mastery strictness | `Unmapped Ideas` I7 | *rolled into PRJ-014* |
+| Additive remote schema / cohort tables | `Unmapped Ideas` I8 | PRJ-038 |
+| Post-beta expansion list | `Unmapped Ideas` I9 | PRJ-029 |
+| Meet/Insight/Recap interaction upgrade | `Unmapped Ideas` I11 | *rolled into PRJ-003* |
+| Learner profile findings (nerd hobbyist) | `Unmapped Ideas` I10 | *rolled into PRJ-002* |
+
+> Items marked *rolled into* are not lost: they are captured inside a broader project record whose Notes name them, so no idea disappears without a home.
+
+## 7. Contradictions and stale references
+
+| # | Contradiction | Source | Record |
+|---|---|---|---|
+| 1 | Precedence chain omits all three Bibles | DOC-022, ADR-0024 | **PRJ-033** |
+| 2 | Two roadmaps, no precedence | C5 | PRJ-032 |
+| 3 | Paywall: Campfire-L24 locked vs §66.3 re-decide vs legacy L14 | C3 (CROWN) | PRJ-036 |
+| 4 | `CLAUDE.md` banner vs body vs STATUS reality | C1 (CROWN) | PRJ-031 |
+| 5 | STATUS "7 lessons" vs actual file count | C4 (CROWN) | *stale snapshot; Ops* |
+| 6 | Two disjoint stores | C9 | PRJ-037 |
+| 7 | Dev-APK scope L1–L5 canon vs L0–L6 runtime | C2 | *Ops/Curriculum* |
+| 8 | Item counts 54/56/52 | C6 | *rolled into PRJ-015* |
+| 9 | AI routing table vs provider chain | C7 | PRJ-024 |
+| 10 | Chip taxonomy spec vs runtime enum | C8 | PRJ-037 |
+| 11 | L7 full vs compact doorway | C10 | PRJ-001 |
+
+**None of these is resolved here.** Resolution belongs to the owning layer or the founder.
+
+## 8. Implementation-reality gaps
+
+| Category | Examples |
+|---|---|
+| **Missing documentation** (thing exists, no doc) | Edge-function internals (~519 LOC untested, MD3); storage-key lifecycle (MD4); dead-code inventory (MD5) |
+| **Documented but unimplemented** | Social direction entirely; Mon Lexique 6-band UI; Campfire mechanics; Word Graph; v1 pedagogy lint (MD1); deferred validators (MD11) |
+| **Implemented but not canonized** | Parts of the learning-engine runtime ahead of `learning-engine-v1`; progress-bridge behaviour (MD2) |
+| **Implemented differently from canon** | Chip taxonomy vs runtime enum (C8); dev-APK lesson scope (C2); AI routing (C7) |
+| **Intentionally deferred** | V4-B global redesign; paywall/RevenueCat; Mon Lexique surface; AI activation; tester cohort |
+
+## 9. External or inaccessible sources
+
+**Genuinely absent** (contents never invented — PRJ-034): `LeMot.md` · `LeMot - User Journey.md` · `Notes Archive Index.md` · **`L1-L5 Proofreading.md`** (an input to PRJ-010) · TOP CANON `Le_Mot_Locked_Canon…` · `CAIRN_CODEX_v0.1.md` · `CLAUDE_START_CONTEXT.md` · `TASK_CONTEXT_PACKS.md` · `OBSIDIAN_TO_GIT_PROMOTION_RULES.md` · Merged Product Canon 2026-05-11.
+
+**Present in-repo after the 2026-07-14 ingestion** (`SOURCE_ARCHIVE/AVAILABLE_INPUTS/`, DOC-037) — these are **not** missing, contrary to older notes: `Tasarim_Envanteri.md` · `Test_Checklist.md` · `Le_Mot_Round1_Context_Handoff_2026-06-13.md` · `Home_-_Le_Mot.md` · `Visual_Design_Canon.md` · `Tech_and_Privacy_Decisions.md` · `Open_Questions.md` · `Backlog_and_Deferred.md` · `Syllabus_Delta_Log.md` · `Learning_Engine_and_Exercise_Types.md` · `Tester_Feedback_Log.md` · `User_Testing_Protocol.md` · `Agent_Handoff.md` · `PR_and_Smoke_Log.md` · `Sprint_12_Plan_2026-05-16.md` (partial).
+
+**Excluded deliberately:** `Le Mot V4 Studies _standalone_.html` (18 MB, design facts ingested, artifact not in git — PRJ-035).
+
+> **Absence is never treated as rejection.** Each missing file is recorded with the layer that may need it.
+
+## 10. Coverage matrix
+
+| Domain | Canonical owner | Coverage | Source quality | Open decisions | Implementation clarity | Agent-ready | Next action |
+|---|---|---|---|---|---|---|---|
+| **Product** | DOC-001 v1.0 | `SUBSTANTIAL` | High | 4 (PRJ-020, 024, 030, 036) | High | ✅ Yes | Resolve paywall tension |
+| **Content** | DOC-004 v1.0 | `SUBSTANTIAL` | High | 5 (PRJ-010, 011, 012, 015, 019) | High | ✅ Yes (authoring) | Author French style guide |
+| **Social** | DOC-010 v1.0 | `COMPLETE` (for scope) | High | 2 (PRJ-009, 013) | High | ✅ Yes | None — correctly closed |
+| **Curriculum** | — | `FRAGMENTED` | Medium-High | 6 | Medium | ❌ No | **Author Curriculum Bible** |
+| **Engineering** | — (ADRs bind) | `PARTIAL` | Medium-High | 6 | Medium-Low | ⚠️ Partial | **Author Engineering Bible** |
+| **Privacy / Legal** | — (ADR-0023 binds) | `PARTIAL` | Medium | 4 | Medium | ⚠️ Partial | **Author Privacy layer** |
+| **Operations & QA** | — | `PARTIAL` | Medium | 5 | Medium | ⚠️ Partial | **Author Ops Bible** |
+| **UX / Experience** | — | `FRAGMENTED` | Medium | 4 | Low | ❌ No | Author UX Bible |
+| **Brand** | — | `FRAGMENTED` | Medium | 2 | Low | ❌ No | Author Brand Bible |
+| **Mastery / Evidence** | — **DISTRIBUTED** | `PARTIAL` | Medium | 2 (PRJ-009, 014) | Medium | ❌ No | **Founder assigns owner** |
+| **Future Systems** | — | `FRAGMENTED` | Medium | 1 | N/A | ⚠️ Partial | Consolidate five idea homes |
+| **Project Canon** | DOC-045 (draft) | `SUBSTANTIAL` | High | 1 (PRJ-033) | N/A | 🟡 Pending ratification | Ratify this package |
+
+## 11. Recommended authoring sequence
+
+Derived from dependencies, not convenience. **Mastery/Evidence ownership comes first because it is a decision, not a document** — and three later layers depend on the answer.
+
+**Step 0 — Assign the mastery/evidence owner (PRJ-014).** *Why now:* Curriculum, Engineering, and the Social evidence contract all route into it; authoring any of them first would hard-code an assumption. *Prerequisites:* none — it is a founder decision. *Unlocks:* coherent authoring of Steps 1–3. *Later:* rework across three layers. *Too early:* not possible.
+
+**Step 1 — Curriculum Bible (PRJ-001).** *Why now:* the largest fragmented corpus with the clearest boundary; Content Bible is already blocked on it for sequencing. *Prereqs:* Step 0, Content Bible ✅. *Unlocks:* new lesson work, item counting (PRJ-015), post-L24 (PRJ-029), Reading taxonomy (PRJ-012). *Later:* lesson authoring stays blocked. *Too early:* would guess the evidence model.
+
+**Step 2 — Engineering / System Bible (PRJ-004).** *Why now:* ADRs already bind, so the layer is half-written; the two-store fork (PRJ-037) is actively dangerous. *Prereqs:* Step 0. *Unlocks:* runtime work, validators, cutover. *Later:* divergence risk grows with every commit. *Too early:* would freeze a store choice before curriculum load is known.
+
+**Step 3 — Privacy / Legal (PRJ-006).** *Why now:* highest-consequence unowned domain; blocks Social, analytics, sync, and Stage C. *Prereqs:* Step 2 (data model). *Unlocks:* deletion path (PRJ-027), analytics (PRJ-025), any Social opening. *Later:* privacy mistakes are the least reversible. *Too early:* would specify retention for an undecided data model.
+
+**Step 4 — Operations & QA Bible (PRJ-005).** *Why now:* converts unstaffed gates into executable ones. *Prereqs:* Steps 1–3. *Unlocks:* French QA execution (PRJ-011), moderation capacity (PRJ-013), release gates (PRJ-028), Stage C. *Later:* gates stay decorative. *Too early:* would define gates for undecided layers.
+
+**Step 5 — UX / Experience Bible (PRJ-003).** *Why now:* surfaces need a settled engine and curriculum. *Prereqs:* Steps 1–2, plus Brand direction. *Unlocks:* Mon Lexique surface (PRJ-019), Summit copy (PRJ-021), V4-B activation. *Later:* ad-hoc screens accumulate. *Too early:* would design for an unsettled model.
+
+**Step 6 — Brand Bible (PRJ-002).** *Why now:* completes the naming migration and stabilizes voice before public surfaces. *Prereqs:* none hard; pairs naturally with Step 5. *Unlocks:* rename completion (PRJ-030), store presence. *Later:* half-finished rename persists. *Too early:* harmless — **this step could move earlier if the founder prefers.**
+
+**Step 7 — Future Systems Register (PRJ-007).** *Why now:* consolidates five overlapping idea homes once every layer exists to route into. *Prereqs:* Steps 1–6. *Unlocks:* durable home for deferred systems. *Later:* ideas keep scattering. *Too early:* would route to layers that do not exist.
+
+> **Alternative worth the founder's consideration:** Steps 2–3 (Engineering, Privacy) could precede Step 1 (Curriculum) if the intent is to return to *code* soonest rather than to *content* soonest. The sequence above optimizes for content correctness; the inversion optimizes for implementation readiness.
+
+## 12. Definition of "paper complete"
+
+Proposed project-level test. **Paper complete** when all ten hold:
+
+1. Every meaningful idea has a **status and an owner**.
+2. Every active product surface has a stated **intended final behaviour**.
+3. Every future system has a **status and a reopen trigger**.
+4. Every rejected direction remains **discoverable** with its reasoning.
+5. Every layer has an **authoritative owner document**.
+6. Every cross-layer dependency is **routed** to a named owner.
+7. Every implementation area has a **current-reality statement** separate from intent.
+8. Every build gate requires a **scoped authorization event**, not a past decision.
+9. An agent has a **deterministic read route** for every task type.
+10. **No known authority conflict is silently unresolved** — every one is either resolved or explicitly recorded as open.
+
+**Current standing against this test:** 1 ⚠️ partial (25/38 items owned by unwritten layers) · 2 ⚠️ · 3 ✅ · 4 ✅ · 5 ❌ (six layers unowned) · 6 🟡 (routed by this draft, unratified) · 7 🟡 · 8 🟡 (true for Social; not yet project-wide) · 9 🟡 (this draft) · 10 ❌ (PRJ-033 and others open).
+
+**Paper complete is not yet reached.** Criterion 5 is the binding constraint.
+
+## 13. Return-to-code gate
+
+**Proposed** — explicitly **not** declared passed in this task.
+
+Before returning to implementation:
+
+1. Project Canon Map package **ratified** and the precedence conflict (PRJ-033) resolved.
+2. Mastery/evidence **owner assigned** (PRJ-014).
+3. The layers required by the *intended first code task* are **authored** — not all six, but every one the task touches.
+4. Privacy/Legal authored **if** the task touches learner data.
+5. The task has a **scoped implementation opening** with all fourteen elements (Authority Spec §10).
+6. Current-reality statement exists for the area being changed.
+7. Known divergences in that area are recorded and the intended direction chosen.
+8. Operator blockers for that area are identified and assigned.
+
+> **A partial gate is legitimate.** Returning to code for a narrowly scoped task does not require all seven Bibles — it requires the ones that task depends on, plus a scoped opening.
+
+## 14. Change log
+
+| Date | Version | Change | By |
+|---|---|---|---|
+| 2026-07-25 | 0.1 | Initial draft. Assessed coverage across twelve domains from a ~400-document repository sweep; rated three Canonical layers, six partial/fragmented layers, and seven unauthored layers; recorded seven blind spots, eleven contradictions, five implementation-reality categories, and the external-source inventory (ten genuinely absent, fifteen present-after-ingestion, one deliberately excluded); proposed an eight-step authoring sequence led by the mastery/evidence ownership decision, a ten-point paper-completeness test, and an eight-point return-to-code gate. **Authored no missing layer; declared no gate passed.** | Cloud session (project canon mapping) |
+
+*End of Canon Coverage and Gaps v0.1. Draft; assesses coverage; authorizes no build.*

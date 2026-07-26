@@ -1,0 +1,377 @@
+---
+title: Cairn Project Canon Map
+version: 0.1
+status: Draft — awaiting founder ratification
+authority: Proposed project-level canon routing layer
+owner: Project Canon
+created: 2026-07-25
+related:
+  - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
+  - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
+  - CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
+---
+
+# Cairn Project Canon Map v0.1
+
+> **Draft. Routes authority; canonizes no domain content; authorizes no implementation.**
+
+---
+
+## 1. Purpose
+
+Cairn is not short of documentation. As of `origin/main` @ `e0f5801` the repository holds **~400 Markdown documents**, including a mature Product-Brain vault, 25 ADRs, 30 lesson specs, and three Canonical layers. The problem this map solves is not absence — it is **routing**.
+
+**What this map exists to prevent:**
+
+1. **Authority ambiguity.** Three Canonical documents now exist (Product Brain v1.0, Content Bible v1.0, Social Layer Charter v1.0), but the repository's pre-existing routing notes — `08 Source of Truth Map` and `ADR-0024` — were written *before* them and do not mention them. An agent following the older precedence chain today would route around all three Bibles.
+2. **Cross-layer orphaning.** Ideas that belong to no completed layer (evidence contract, French style guide, human audio, moderation capacity) risk vanishing between documents.
+3. **Silent domain overreach.** A high-authority document answering a question it does not own.
+4. **Stale gates.** A build gate that references a decision which has since changed, and therefore passes — or fails — accidentally.
+
+**What this map is not.** It **routes** authority; it does not replace domain documents. It contains no product decision, no lesson content, no Social boundary, and no engineering contract. Where it summarizes, it summarizes *for navigation* and points to the owning document.
+
+> **Documentation authority is not implementation authority.** A complete documentation stack tells an agent what is true and who decides. It never, by itself, authorizes writing code.
+
+## 2. Agent entry protocol
+
+Every agent, every task, in order:
+
+1. **Identify the task type** (product / content / curriculum / brand / UX / engineering / mastery / social / privacy / AI / release / future-exploration / documentation).
+2. **Identify the affected domain**, then find its owner in §5. If two owners appear to claim it, **stop** (§10).
+3. **Read the Canonical owner document** for that domain — not a supporting record, not a summary.
+4. **Read its declared dependencies** (`depends_on`, and §9's graph).
+5. **Inspect relevant ADRs and active implementation contracts.** For runtime questions, code and tests outrank spec (§8).
+6. **Inspect open / deferred / rejected / superseded records** so a settled negative is not re-proposed as new.
+7. **Check whether implementation is explicitly authorized.** Default answer is no.
+8. **Check whether a prerequisite document is unauthored** (§4). If the task would require inventing it, stop.
+9. **Stop and report unresolved authority conflicts.** Never fabricate a reconciliation.
+10. **Do not infer permission from documentation presence.**
+
+> **"Continue the project" is not sufficient authority to implement an `OPEN`, `DEFERRED`, `EXPERIMENT`, or `RATIFIED_DIRECTION` item.** Neither is "build the final version", "implement the future systems", "finish the app", or "proceed with the roadmap." Implementation requires a scoped opening (Authority Spec §10).
+
+## 3. Canonical document registry
+
+IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###` survives (§12).
+
+**Implementation authority** column: `NONE` = document confers no permission to build; `CONTRACT` = document constrains how existing runtime must behave; `EVIDENCE` = document records what runtime actually does.
+
+| ID | Document | Path | Version | Status | Owner | Owns | Does not own | Dependencies | Supporting records | Impl. authority |
+|---|---|---|---|---|---|---|---|---|---|---|
+| DOC-001 | **Cairn Product Brain v1.0** | `obsidian-product-brain/ACTIVE_CODEX/00_CAIRN_PRODUCT_BRAIN/CAIRN_PRODUCT_BRAIN_v1.0.md` | 1.0 | `CANONICAL` | Product Brain | Product purpose, promise, non-goals, audience, AI philosophy, Campfire concept, monetization stance, tone | Lesson authoring, sequencing, exact flows, runtime | ADRs | DOC-002, DOC-003 | NONE |
+| DOC-002 | PB Decision Register | `…/00_CAIRN_PRODUCT_BRAIN/DECISION_REGISTER.md` | — | Supporting record | Product Brain | PB-### decision index | Making decisions | DOC-001 | — | NONE |
+| DOC-003 | PB Open Questions | `…/00_CAIRN_PRODUCT_BRAIN/OPEN_QUESTIONS.md` | — | Supporting record | Product Brain | Unresolved product questions | Resolving them | DOC-001 | — | NONE |
+| DOC-004 | **Cairn Content Bible v1.0** | `docs/bibles/content/CONTENT_BIBLE_v1.0.md` | 1.0 | `CANONICAL` (signed off 2026-07-24) | Content Bible | Content authoring policy, item roles, prerequisite safety, French QA gate, exercise authoring | Sequencing (Curriculum), runtime enforcement (Engineering), Social | DOC-001 | DOC-005…DOC-009 | NONE |
+| DOC-005 | CB Ratification Pack | `docs/bibles/content/CONTENT_BIBLE_RATIFICATION_PACK_v0.1.md` | 0.1 | Supporting record | Content Bible | Ratification evidence | Content policy | DOC-004 | — | NONE |
+| DOC-006 | CB Decision Matrix | `docs/bibles/content/CONTENT_BIBLE_DECISION_MATRIX_v0.1.md` | 0.1 | Supporting record | Content Bible | CB-### decision index | Content policy | DOC-004 | — | NONE |
+| DOC-007 | CB Source Gaps | `docs/bibles/content/CONTENT_BIBLE_SOURCE_GAPS_v0.1.md` | 0.1 | Supporting record | Content Bible | G1–G5 blocking gaps | Content policy | DOC-004 | — | NONE |
+| DOC-008 | CB Founder Sign-Off Review | `docs/bibles/content/CONTENT_BIBLE_FOUNDER_SIGNOFF_REVIEW_v0.1.md` | 0.1 | Supporting record | Content Bible | Review verdict | Content policy | DOC-004 | — | NONE |
+| DOC-009 | CB Founder Read-Through | `docs/bibles/content/CONTENT_BIBLE_FOUNDER_READTHROUGH_v0.1.md` | 0.1 | Supporting record | Content Bible | Founder card responses | Content policy | DOC-004 | — | NONE |
+| DOC-010 | **Cairn Social Layer Charter v1.0** | `docs/bibles/social/SOCIAL_LAYER_CHARTER_v1.0.md` | 1.0 | `CANONICAL` (signed off 2026-07-25) | Social Layer | Social boundaries, prohibited forms, ratified direction, Social governance, Social privacy defaults, Social evidence limits | Content, Curriculum, runtime, moderation ops | DOC-001, DOC-004 | DOC-011…DOC-014 | NONE |
+| DOC-011 | Social Founder Ratification | `docs/bibles/social/SOCIAL_LAYER_FOUNDER_RATIFICATION_v0.1.md` | 0.1 | Supporting record (highest-authority Social decision log) | Social Layer | Q1, R1–R11 decisions | Social policy narrative | DOC-010 | — | NONE |
+| DOC-012 | Social Idea & Decision Register | `docs/bibles/social/SOCIAL_LAYER_IDEA_AND_DECISION_REGISTER_v0.1.md` | 0.1 | Supporting record | Social Layer | SOC-001…SOC-034 | Social policy | DOC-010 | — | NONE |
+| DOC-013 | Social Source & Gap Map | `docs/bibles/social/SOCIAL_LAYER_SOURCE_AND_GAP_MAP_v0.1.md` | 0.1 | Supporting record | Social Layer | Social provenance/gaps | Social policy | DOC-010 | — | NONE |
+| DOC-014 | Social Sign-Off Review | `docs/bibles/social/SOCIAL_LAYER_SIGNOFF_REVIEW_v0.1.md` | 0.1 | Supporting record | Social Layer | Review verdict | Social policy | DOC-010 | — | NONE |
+| DOC-015 | **ADR set ADR-0001…ADR-0025** | `obsidian-product-brain/ACTIVE_CODEX/09_DECISIONS/ADR-*.md` | — | `CANONICAL` within technical/system domain | Decisions | Technical & system decisions (anti-gamification, passive mirror, events-as-truth, engine purity, privacy model, route contract, paywall position, precedence) | Content authoring, Social boundaries | DOC-001 | DOC-016 | `CONTRACT` (several) |
+| DOC-016 | Decision Index + Active/Deferred/Rejected/Superseded | `…/09_DECISIONS/{Decision Index, Active, Deferred, Rejected, Superseded} Decisions.md` | — | Supporting record | Decisions | Decision routing + negative history | Making decisions | DOC-015 | — | NONE |
+| DOC-017 | `CLAUDE.md` | `CLAUDE.md` | — | Agent instruction + current-scope canon (banner-gated) | Project Canon | Agent behaviour rules, current scope banner | Product intent (body is legacy v7, quarantined) | DOC-018, DOC-019 | — | `CONTRACT` |
+| DOC-018 | Status | `docs/STATUS.md` | — | Current-build canon | Operations | Current execution state | Product intent | — | — | `EVIDENCE` |
+| DOC-019 | Dev APK MVP Canon | `docs/DEV_APK_MVP_CANON.md` | — | Current-build canon | Operations | Dev-APK scope | Long-term product | DOC-018 | — | `CONTRACT` |
+| DOC-020 | Cairn Full App One-Shot Build Spec v1.0 | `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` | 1.0 | Approved specification (intent, not build authority) | Product Brain | Long-term product intent | Current build reality | DOC-001 | — | NONE |
+| DOC-021 | Master Pipeline v1.2.1 | `docs/MASTER_PIPELINE_v1.2.1.md` | 1.2.1 | Operational contract | Operations | Workflow, tiers, review-then-commit, cloud rules | Product/content decisions | — | — | `CONTRACT` |
+| DOC-022 | Source of Truth Map | `…/00_START_HERE/08 Source of Truth Map.md` | — | Routing note — **predates the Bibles** | Project Canon | Vault-level source routing | Bible-level authority (stale, see PRJ-033) | DOC-015 | — | NONE |
+| DOC-023 | Canon and Status Legend | `…/00_START_HERE/06 Canon and Status Legend.md` | — | `CANONICAL` status vocabulary | Project Canon | Three-dimensional status model | Domain decisions | — | — | NONE |
+| DOC-024 | Lesson Flow Canon v1 | `docs/canon/LESSON_FLOW_CANON_v1.md` | 1 | Approved specification | Content/Engineering (shared) | Lesson flow spec | Runtime truth | DOC-004 | — | `CONTRACT` |
+| DOC-025 | Learning Engine v1 | `docs/learning-engine-v1.md` | 1 | Approved specification | Engineering (pending) | Learning-object spec | Runtime truth | — | — | `CONTRACT` |
+| DOC-026 | Exercise Canon v0.4 | `docs/EXERCISE_CANON_v0.4.md` | 0.4 | Approved specification | Content Bible | Exercise families | Sequencing | DOC-004 | — | NONE |
+| DOC-027 | Syllabus vault collection | `…/ACTIVE_CODEX/04_SYLLABUS/*` (26) | — | Design canon / fragmented | Curriculum *(unauthored owner)* | L0–L17 design, band map, progression rules | — | DOC-001 | DOC-028 | NONE |
+| DOC-028 | Lesson & compact specs | `docs/syllabus/*` (30) | — | Approved specifications | Curriculum *(unauthored owner)* | Per-lesson specs | Sequencing policy | DOC-027 | — | `CONTRACT` |
+| DOC-029 | Design vault collection | `…/ACTIVE_CODEX/07_DESIGN/*` (17) | — | Design canon / fragmented | Brand + UX *(unauthored owners)* | Brand direction, visual language, tone, navigation, design inventory | Product intent | DOC-001 | DOC-037 | NONE |
+| DOC-030 | Architecture vault collection | `…/ACTIVE_CODEX/06_ARCHITECTURE/*` (15) | — | Design canon / fragmented | Engineering *(unauthored owner)* | System, storage, sync, Supabase, AI, privacy/deletion, legal governance | Product intent | DOC-015 | — | NONE |
+| DOC-031 | Operations vault collection | `…/ACTIVE_CODEX/10_OPERATIONS/*` (14) | — | Operational contracts | Operations & QA *(unauthored owner)* | Workflows, validation gates, French Linguistic QA process | Content policy | DOC-021 | — | `CONTRACT` |
+| DOC-032 | Implementation vault collection | `…/ACTIVE_CODEX/08_IMPLEMENTATION/*` (16) | — | Implementation evidence | Engineering *(unauthored owner)* | Ledger, known gaps, spec-runtime divergences, technical debt, feature flags | Product intent | DOC-018 | — | `EVIDENCE` |
+| DOC-033 | Gaps registers | `…/ACTIVE_CODEX/98_GAPS/*` (5) | — | Supporting record | Project Canon | Contradictions, missing docs, unknowns, unmapped ideas, needs-verification | Resolving them | — | — | NONE |
+| DOC-034 | Source ledger | `…/ACTIVE_CODEX/95_SOURCE_LEDGER/*` (6) | — | Supporting record | Project Canon | Source inventory, missing inputs, external artifacts | Domain decisions | — | — | NONE |
+| DOC-035 | Research & ideas | `…/ACTIVE_CODEX/12_RESEARCH_AND_IDEAS/*` (8) | — | Idea registers | Future Systems *(unauthored owner)* | Future features, idea index/inbox, experiments, watchlist | Approving features | — | — | NONE |
+| DOC-036 | History collection | `…/ACTIVE_CODEX/90_HISTORY/*` (10) | — | `ARCHIVED_REFERENCE` | Project Canon | Historical canon/designs/syllabus/prompt logs, superseded specs | Anything active | — | — | NONE |
+| DOC-037 | Source archive (available inputs) | `obsidian-product-brain/SOURCE_ARCHIVE/AVAILABLE_INPUTS/*` (16) | — | `ARCHIVED_REFERENCE` (ingested originals) | Project Canon | Tasarım Envanteri, Round1 Handoff, Test Checklist, Visual Design Canon, Tech & Privacy Decisions, Home – Le Mot, etc. | Active canon | — | — | NONE |
+| DOC-038 | Known Gaps | `docs/KNOWN_GAPS.md` | — | Supporting record | Operations | Open engineering/product gaps | Resolving them | — | — | NONE |
+| DOC-039 | Roadmaps | `docs/ROADMAP.md`, `docs/CAIRN_ROADMAP_202607.md` | — | Planning documents (**two, in tension — PRJ-032**) | Operations | Execution order | Product intent | DOC-018 | — | NONE |
+| DOC-040 | Cloud Sync Queue | `docs/CLOUD_SYNC_QUEUE.md` | — | Operational contract | Operations | Operator-side sync backlog | Decisions | DOC-021 | — | NONE |
+| DOC-041 | Agent Constitution | `docs/agents/LE_MOT_AGENT_CONSTITUTION.md` | — | Operational contract | Operations | Agent conduct | Product/content decisions | DOC-021 | — | `CONTRACT` |
+| DOC-042 | Dev APK Smoke Checklist | `docs/DEV_APK_SMOKE_TEST_CHECKLIST.md` | — | Operational contract | Operations & QA *(unauthored owner)* | Release smoke steps | Product intent | DOC-019 | DOC-037 | `CONTRACT` |
+| DOC-043 | Engineering house rules | `docs/engineering/karpathy.md` | — | Operational contract | Engineering *(unauthored owner)* | Engine purity, simplicity rules | Product intent | DOC-015 (ADR-0010) | — | `CONTRACT` |
+| DOC-044 | Cairn v0.1 definition + system map | `docs/CAIRN_PRODUCT_DEFINITION_v0.1.md`, `docs/CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md` | 0.1 | `SUPERSEDED` (reference only, per ADR-0024) | Project Canon | Historical product framing | Anything active | — | — | NONE |
+| DOC-045 | **Cairn Project Canon Map v0.1** (this file) | `docs/canon/CAIRN_PROJECT_CANON_MAP_v0.1.md` | 0.1 | `Draft` | Project Canon | Project-level routing, registry, lifecycle, stale-gate protocol | Any domain decision | DOC-001, DOC-004, DOC-010 | DOC-046…DOC-048 | NONE |
+| DOC-046 | Authority & Routing Spec v0.1 | `docs/canon/CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md` | 0.1 | `Draft` | Project Canon | Conflict algorithm, ownership model, implementation-opening contract | Domain decisions | DOC-045 | — | NONE |
+| DOC-047 | Project Idea & Decision Register v0.1 | `docs/canon/CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md` | 0.1 | `Draft` | Project Canon | PRJ-### cross-layer ideas | Domain registers | DOC-045 | — | NONE |
+| DOC-048 | Canon Coverage & Gaps v0.1 | `docs/canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md` | 0.1 | `Draft` | Project Canon | Coverage matrix, authoring sequence, paper-completeness | Domain decisions | DOC-045 | — | NONE |
+
+> **Supporting ≠ Canonical.** DOC-002/003, DOC-005…DOC-009, DOC-011…DOC-014 support Canonical documents but are **not themselves product canon**. They are evidence and decision records.
+
+## 4. Documentation layers
+
+| Layer | State | Primary document | Notes |
+|---|---|---|---|
+| **Product Brain** | ✅ Authored | DOC-001 | Canonical v1.0 |
+| **Content Bible** | ✅ Authored | DOC-004 | Canonical v1.0, signed off 2026-07-24 |
+| **Social Layer** | ✅ Authored | DOC-010 | Canonical v1.0, signed off 2026-07-25 |
+| **Curriculum Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | **Substantial fragments exist**: DOC-027 (26 vault notes: band map, syllabus design rules, grammar/vocabulary/phenomena progression, L0–L17), DOC-028 (30 lesson/compact specs). No single authoritative owner for *sequencing policy*. |
+| **Brand Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-029: `Cairn Brand Direction`, `Visual Language`, `Copy and Tone`, `Naming and Brand Registry`; plus `Visual_Design_Canon.md` (DOC-037). Le Mot → Cairn naming migration unresolved (PRJ-030). |
+| **UX / Experience Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-029: `Navigation Model`, `Lesson Player`, `Home and Journey`, `Design Inventory`, `Mon Lexique UI`, `Interaction Patterns`, `Accessibility`, `V4 Studies Disposition`. V4-B direction selected but deferred. |
+| **Engineering / System Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-030 (15 architecture notes), DOC-025, DOC-043, and ADRs. Several ADRs already act as binding engineering contracts. |
+| **Operations & QA Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-031 (validation gates, French Linguistic QA process, workflows), DOC-042, DOC-021. |
+| **Privacy / Legal layer** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments: ADR-0023, `06_ARCHITECTURE/Privacy and Data Deletion`, `Legal Compliance and Data Governance`, `docs/status/founder-self-learning-privacy-kvkk-gdpr-architecture-note.md`, `…-remote-schema-rls-draft.md`. |
+| **Future Systems Register** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-035 (`Future Features`, `Idea Index`, `Idea Inbox`, `Watchlist`) and `98_GAPS/Unmapped Ideas`. |
+| **Project Canon** | 🟡 This draft | DOC-045…DOC-048 | Awaiting ratification |
+
+> **Nuance that matters:** none of the unauthored layers is *empty*. Each has real source material. What is missing is a **single authoritative owner** that resolves contradictions inside the domain. See Coverage & Gaps §3.
+
+## 5. Ownership matrix
+
+| Question | Primary owner | Consulted | Must **not** decide it | Current state |
+|---|---|---|---|---|
+| What problem does Cairn solve? | Product Brain (DOC-001) | — | Content, Social, Engineering | ✅ Owned |
+| Who is the target learner? | Product Brain | — | Content, Curriculum | ✅ Owned |
+| Is a feature part of the product? | Product Brain | Owning domain layer | Any single spec or code file | ✅ Owned |
+| How is a lesson authored? | Content Bible (DOC-004) | Exercise Canon, Lesson Flow Canon | Curriculum, Engineering | ✅ Owned |
+| When is a concept introduced? | **Curriculum Bible** | Content Bible, PB | Content Bible alone | ⚠️ `NOT YET AUTHORED` — fragments DOC-027/028 |
+| What tone and visual language are used? | **Brand Bible** | PB (tone canon), ADR-0002 | Content Bible | ⚠️ `NOT YET AUTHORED` — fragments DOC-029 |
+| What screen or flow should exist? | **UX / Experience Bible** | Brand, Content, Engineering | Content Bible, ADRs alone | ⚠️ `NOT YET AUTHORED` — fragments DOC-029 |
+| How is data stored? | **Engineering / System Bible** | ADRs (binding), Privacy | Product Brain | ⚠️ `NOT YET AUTHORED` — ADRs partially bind |
+| What counts as mastery evidence? | **Distributed — no single owner** | Content Bible, ADR-0009/0020/0021, Engineering, Social §13 | Social Layer (explicitly bounded out) | ⚠️ Ownership ambiguity — **PRJ-014** |
+| How is French QA performed? | Content Bible (policy) + **Operations & QA** (execution) | Operations fragments | Curriculum | 🟡 Policy owned; executable gate blocked (PRJ-010, PRJ-011) |
+| What is required before invited-learner exposure? | Content Bible (Stage C) + **Operations & QA** | Privacy/Legal | Social | 🟡 Partly owned |
+| Are users allowed to interact socially? | Social Layer (DOC-010) | PB, Privacy | Content, Engineering | ✅ Owned |
+| Who handles moderation? | **Operations & QA** | Social Charter §7.2 (requires human capacity) | Social Layer alone | ⚠️ `NOT YET AUTHORED` — **PRJ-013** |
+| What privacy default applies? | **Privacy / Legal** | ADR-0023 (binding), Social SOC-033 | Product Brain | 🟡 ADR binds; layer unauthored |
+| What is current implementation reality? | Implementation evidence (DOC-032, DOC-018) + code + tests | — | Any spec | ✅ Owned (evidence layer) |
+| What is deferred? | Owning layer's register + DOC-016 | Project register (DOC-047) | — | ✅ Owned |
+| What is rejected? | Owning layer's register + `Rejected Decisions` | Project register | — | ✅ Owned |
+| Who may open implementation? | **Founder only**, via scoped opening | Authority Spec §10 | Every document, including this one | ✅ Owned |
+
+## 6. Task-specific reading routes
+
+Each route: **(1) first read · (2) supporting · (3) authority check · (4) implementation check · (5) stop conditions.**
+
+**Product strategy** — (1) DOC-001. (2) DOC-002/003, `01_PRODUCT/*`, DOC-020. (3) PB owns; ADRs bind technical consequences. (4) None — strategy authorizes nothing. (5) Stop if a founder statement contradicts DOC-001.
+
+**Lesson authoring** — (1) DOC-004. (2) DOC-026, DOC-024, DOC-006/007, relevant `docs/syllabus/*` spec. (3) Content Bible owns authoring; **sequencing questions escape to Curriculum (unauthored)**. (4) Authoring policy ≠ runtime; check DOC-032 for divergence. (5) Stop if the task needs a sequencing decision, an unwritten French style rule (PRJ-010), or a Reading taxonomy (PRJ-012).
+
+**Curriculum sequencing** — (1) DOC-027 (`Syllabus Design Rules`, `Level and Band Map`). (2) DOC-028, DOC-004, `Lesson Status Matrix`. (3) ⚠️ **No Canonical owner.** Fragments may contradict. (4) Specs are contracts for authored lessons only. (5) **Stop and report** if the task requires a binding sequencing policy — it must be founder-decided or await the Curriculum Bible.
+
+**French QA** — (1) DOC-004 §French QA gate. (2) `10_OPERATIONS/French Linguistic QA`, DOC-007 (G2/G3). (3) Content Bible owns the standard; Operations owns execution. (4) The gate is **not executable** — no style guide, no named reviewer. (5) Stop before claiming a lesson passed QA.
+
+**UX design** — (1) DOC-029 (`Navigation Model`, `Design Inventory`). (2) DOC-001 tone, ADR-0002, `V4 Studies Disposition`. (3) ⚠️ No Canonical UX owner. (4) V4-B selected but **deferred**; do not implement globally. (5) Stop if the task implies a binding flow decision.
+
+**Runtime engineering** — (1) ADRs (DOC-015) — several are binding. (2) DOC-030, DOC-025, DOC-043, DOC-032 (`Spec Runtime Divergences`, `Technical Debt`). (3) For "what does it do?", **code and tests outrank spec**. (4) Existing contracts constrain; they do not authorize new features. (5) Stop if canon and code diverge with no source resolving which changes.
+
+**Mastery / evidence** — (1) ADR-0009, ADR-0020, ADR-0021. (2) DOC-004, `02_LEARNING_SYSTEM/Mastery Model`, `05_MATRICES/Mastery Matrix`, `03_EXERCISES/Exercise Evidence Matrix`, Social §13. (3) ⚠️ **Distributed ownership (PRJ-014)** — no single Canonical owner. (4) Events are the source of truth. (5) Stop if the task would let a non-pedagogical signal become evidence, or requires the **non-existent Social evidence contract** (PRJ-009).
+
+**Social work** — (1) DOC-010. (2) DOC-011 (decisions), DOC-012 (SOC-###), DOC-013/014. (3) Social owns boundaries; Operations owns moderation; Privacy owns data. (4) **`PLANNED` = 0. Nothing is authorized.** (5) Stop unless a founder scoped opening with all ten elements exists (Charter §19 / R11).
+
+**Privacy / deletion** — (1) ADR-0023. (2) `06_ARCHITECTURE/Privacy and Data Deletion`, `Legal Compliance and Data Governance`, `docs/status/founder-self-learning-privacy-kvkk-gdpr-*`, `…remote-schema-rls-draft`. (3) ADR binds; **Privacy/Legal layer unauthored**. (4) Deployed-DB migrations are operator-only. (5) Stop if legal interpretation is required.
+
+**AI-system work** — (1) DOC-001 §AI philosophy. (2) `06_ARCHITECTURE/AI Architecture`, `02_LEARNING_SYSTEM/AI Role and Guardrails`, `docs/runbooks/ai-edge-hardening-pr-c.md`, DOC-019 (Chat gating). (3) PB owns AI's role; ADRs bind implementation. (4) AI is bounded support; open companion is founder-locked out. (5) Stop if the task drifts toward open-ended chat or AI-as-authority.
+
+**Release / operator** — (1) DOC-019, DOC-042. (2) DOC-018, DOC-021, `10_OPERATIONS/Validation Gates`, `08_IMPLEMENTATION/Release and Build Process`. (3) Operations owns gates. (4) **Operator-only**: EAS builds, Supabase deploys, secrets, device smoke. (5) Stop before declaring a release complete while operator blockers are open.
+
+**Future-system exploration** — (1) DOC-047 (this package). (2) DOC-035, `98_GAPS/Unmapped Ideas`, owning layer register. (3) No future system has implementation authority. (4) `PLANNED` ≠ implemented; `RATIFIED_DIRECTION` ≠ `PLANNED`. (5) Stop before promoting any status.
+
+**Documentation maintenance** — (1) DOC-045 (this file). (2) DOC-046, DOC-033, DOC-034, DOC-021. (3) Project Canon owns routing only. (4) None. (5) Stop if a change would alter a domain decision — that is the owning layer's call.
+
+## 7. Status vocabulary
+
+Cairn carries **two coexisting vocabularies**, and this map deliberately preserves both rather than flattening them.
+
+**(a) Vault three-dimensional model (DOC-023, Canonical):** `canon_status` ∈ {canonical, provisional, proposed, historical, superseded, unknown} · `implementation_status` ∈ {implemented, partial, spec-only, fixture-only, legacy-active, legacy-unreachable, not-started, unknown} · `verification_status` ∈ {device-verified, integration-tested, unit-tested, source-inspected, reported-only, unverified}.
+
+**(b) Bible decision vocabulary (Content CB-###, Social SOC-###):** `CANONICAL`, `FOUNDER_LOCKED`, `RATIFIED_DIRECTION`, `DESIGN_CANON`, `PLANNED`, `EXPERIMENT`, `OPEN`, `DEFERRED`, `REJECTED`, `SUPERSEDED`, `ARCHIVED_REFERENCE`.
+
+**Project-level reconciliation — four independent fields. Never collapse them.**
+
+| Field | Question | Values |
+|---|---|---|
+| **Decision status** | Is it agreed? | `CANONICAL` · `FOUNDER_LOCKED` · `RATIFIED_DIRECTION` · `DESIGN_CANON` · `PLANNED` · `EXPERIMENT` · `OPEN` · `DEFERRED` · `REJECTED` · `SUPERSEDED` · `ARCHIVED_REFERENCE` |
+| **Document status** | Is the document itself settled? | `Draft` · `Proposed` · `Review` · `Canonical` · `Superseded` · `Archived` |
+| **Implementation status** | Does code exist and run? | `Implemented` · `Partially Implemented` · `Not Implemented` · `Spec-only` · `Fixture-only` · `Legacy-active` · `Legacy-unreachable` |
+| **Enforcement status** | Is it mechanically enforced? | `Runtime Enforced` · `Validator Enforced` · `Test Enforced` · `Authoring Policy Only` · `Unenforced` |
+
+Mapping note: vault `canon_status: canonical` ≈ decision status `CANONICAL`; `proposed` ≈ `OPEN`/`Proposed`; `historical` ≈ `ARCHIVED_REFERENCE`. The Bible vocabulary is **finer-grained on intent** (it distinguishes `RATIFIED_DIRECTION` from `PLANNED`), which the vault model does not express. Both remain valid in their own documents.
+
+## 8. Canon versus implementation
+
+- **Canonical does not mean implemented.** Social Charter v1.0 is Canonical; Social `PLANNED` = 0 and nothing is built.
+- **Documented does not mean approved.** `98_GAPS/Unmapped Ideas` and `Future Features` describe ideas that are explicitly not approved.
+- **Ratified Direction does not mean Planned.** The structured community (SOC-029) is a ratified *direction* with implementation state "not built · not planned for current build".
+- **Planned does not mean implemented.** Several `Future Features` entries are `PLANNED`/`DEFERRED` with no code, or code that exists but is not wired.
+- **Existing code does not automatically mean Canonical.** Legacy v7 (24 lessons, L14 paywall, XP/streak) exists in quarantine under `LEGACY — DO NOT BUILD ON THIS` banners and is *not* canon (ADR-0024).
+- **Repository silence does not prove rejection.** The Social layer's own history is the worked example: a repo-only sweep concluded "permanently solo is canonical", which was wrong — a real founder-discussed community direction existed outside the repo.
+- **Missing implementation does not prove a negative product decision.** "No community plugin exists" is an implementation fact, not a product decision.
+- **A historical founder decision does not automatically satisfy a future build gate.** Worked example: Social Q1 answered `SOC-017` YES (direction only); a build-gate line reading "Founder answers SOC-017 with a scoped YES" was therefore *already satisfied* and had to be rewritten to require a **new** scoped opening. See §13.
+
+## 9. Dependency graph
+
+```text
+                          ┌──────────────────────────────┐
+                          │ DOC-001 Product Brain v1.0   │  CANONICAL
+                          │ purpose · promise · non-goals│
+                          └──────┬───────────────┬───────┘
+                                 │               │
+              ┌──────────────────┘               └──────────────────┐
+              ▼                                                     ▼
+   ┌───────────────────────┐                            ┌────────────────────────┐
+   │ DOC-004 Content Bible │ CANONICAL                  │ DOC-010 Social Charter │ CANONICAL
+   │ authoring policy      │                            │ boundaries · direction │
+   └───┬───────────┬───────┘                            └───┬──────────┬─────────┘
+       │           │                                        │          │
+       │           └─── needs ──► [French style guide]       │          └─ needs ─► [moderation
+       │                          PRJ-010  NOT AUTHORED      │                      capacity]
+       │           └─── needs ──► [named FR reviewer]        │                      PRJ-013
+       │                          PRJ-011  ABSENT            │                      NOT AUTHORED
+       │           └─── needs ──► [Reading taxonomy]         │
+       │                          PRJ-012  NOT AUTHORED      └─ needs ─► [Social evidence contract]
+       │                                                                 PRJ-009  DOES NOT EXIST
+       │                                                                    │
+       ▼                                                                    ▼
+   ┌────────────────────────────┐                        ┌──────────────────────────────┐
+   │ Curriculum Bible           │  DEPENDENCY —          │ Mastery / Evidence ownership │
+   │ sequencing                 │  NOT YET AUTHORED      │ PRJ-014  DISTRIBUTED         │
+   │ frags: DOC-027, DOC-028    │                        │ across DOC-004, ADRs, Eng.   │
+   └────────────────────────────┘                        └──────────────────────────────┘
+
+   ┌────────────────────┐   ┌────────────────────┐   ┌──────────────────────┐
+   │ Brand Bible        │   │ UX / Experience    │   │ Engineering / System │   all three:
+   │ frags: DOC-029     │   │ frags: DOC-029     │   │ frags: DOC-030,      │   DEPENDENCY —
+   │ + Visual_Design_   │   │ + V4 Studies       │   │ DOC-025, DOC-043     │   NOT YET AUTHORED
+   │   Canon (DOC-037)  │   │   Disposition      │   │ + ADRs (binding)     │
+   └────────────────────┘   └────────────────────┘   └──────────────────────┘
+
+   ┌────────────────────┐   ┌────────────────────┐   ┌──────────────────────┐
+   │ Operations & QA    │   │ Privacy / Legal    │   │ Future Systems Reg.  │   all three:
+   │ frags: DOC-031,    │   │ frags: ADR-0023,   │   │ frags: DOC-035,      │   DEPENDENCY —
+   │ DOC-042, DOC-021   │   │ DOC-030, status/*  │   │ Unmapped Ideas       │   NOT YET AUTHORED
+   └────────────────────┘   └────────────────────┘   └──────────────────────┘
+
+   IMPLEMENTATION EVIDENCE (never product intent):
+   DOC-018 STATUS · DOC-032 Implementation ledger / divergences · code · tests
+
+   ROUTING (this layer):
+   DOC-045 Project Canon Map ──► DOC-046 Authority Spec
+                            ├──► DOC-047 Project Idea Register
+                            └──► DOC-048 Coverage & Gaps
+   ⚠️ DOC-022 Source of Truth Map + ADR-0024 precedence chain PREDATE the three
+      Bibles and do not reference them → stale routing, PRJ-033.
+```
+
+## 10. Conflict-resolution protocol
+
+Project-level summary; the full algorithm, conflict taxonomy, and stop conditions live in **DOC-046 (Authority & Routing Spec §8–§9, §14)**.
+
+1. **Name the actual question** — separate "what should the product do?" from "what does it do today?"
+2. **Find the owner** (§5). Authority is applied *within the owned domain first*.
+3. If the owner is unauthored → the conflict is a **missing-owner conflict**; escalate, do not improvise.
+4. **Apply the baseline authority order** only inside the owned domain: explicit current founder decision → current Canonical document → accepted ADR (technical/system) → founder-ratified decision record → design canon → operational contract → approved specification → derived synthesis → historical proposal → archive.
+5. **Spec vs code:** spec is plan, code is reality. Record divergence in `Spec Runtime Divergences`; never silently rewrite either.
+6. **Check supersession and downstream gates** before concluding (§13).
+7. **Preserve unresolved conflicts explicitly.** Fabricated reconciliation is the worst outcome.
+
+## 11. Document lifecycle
+
+`Draft` → `Review` → `Founder Ratification` → `Sign-Off Review` → `Canonical Promotion` → (optionally) `Implementation Contract` → `Supersession` → `Archive`.
+
+- **Draft** — authored, no authority.
+- **Review** — checked for internal consistency and source fidelity.
+- **Founder Ratification** — founder answers the decision surface; decisions recorded durably.
+- **Sign-Off Review** — independent pass for contradictions, stale gates, and status accuracy.
+- **Canonical Promotion** — status/version/sign-off date set; supporting records stay at their own version.
+- **Implementation Contract** — a *separate* act; only some documents ever acquire it.
+- **Supersession / Archive** — replaced content stays discoverable with `supersedes` / `superseded_by`.
+
+Not every small document needs the full lifecycle. **Every authority-bearing change needs traceability**: what changed, on whose authority, on what date, and which documents were re-checked.
+
+## 12. Rename, merge, split, and consolidation rules
+
+- **Filename and title do not create authority.** `SOCIAL_LAYER_CHARTER_v1.0.md` is authoritative because it was ratified and promoted, not because of its name.
+- Documents **may** be renamed, merged, split, moved, or promoted (Charter → Bible).
+- **Stable IDs survive**: `DOC-###`, `PRJ-###`, `PB-###`, `CB-###`, `SOC-###`, `ADR-####`.
+- **Old-to-new mapping must be recorded** (`supersedes:` / `superseded_by:` frontmatter + change log). Worked example: `SOCIAL_LAYER_CHARTER_v0.1.md` → `SOCIAL_LAYER_CHARTER_v1.0.md` carries `supersedes:` and is logged as *organization, not a new authority event*.
+- **Source provenance must survive** a move.
+- **Superseded content stays discoverable** — quarantine with banners (ADR-0024's approach), never delete history.
+- **A structural move is not a product decision.** If a reorganization changes meaning, it is a decision and needs the lifecycle.
+
+## 13. Stale decision and stale gate prevention
+
+**Mandatory.** This is the highest-value section of this map, because it describes a failure Cairn has already experienced twice.
+
+**The failure pattern:**
+1. A decision changes (or is answered for the first time).
+2. An older gate, checklist, validator, or prerequisite still references the *former* state of that decision.
+3. The gate silently becomes **accidentally satisfied** — or **impossible** — without anyone editing it.
+
+**Worked example (real, 2026-07-25).** Social Charter §22's build gate began "Founder answers SOC-017 with a scoped YES." When the founder answered Q1 YES — a *direction-only* decision that explicitly authorized nothing — that gate line became **already true**. A future agent could have walked the checklist and concluded the build gate had passed. It was rewritten to require a **new** ten-element scoped opening. A second instance in the same review: the gate demanded "all six §5 invariants" after §5 had grown to seven, so a binding invariant could have been skipped.
+
+**Required protocol after ANY decision change:**
+
+1. **Inbound-reference scan** — find every document referencing the changed decision ID.
+2. **Gate scan** — find every gate, checklist, validator, prerequisite, or "what must be true" list using it.
+3. **Accidental-pass check** — would any gate now pass without new work?
+4. **Impossibility check** — did any gate become unsatisfiable?
+5. **Status-summary update** — headline findings, executive summaries, "current state" blocks.
+6. **Source-map and count update** — provenance classes, status counts, ID totals.
+7. **Supersession preservation** — mark old wording superseded; do not delete it.
+8. **Exact-head re-validation** — re-run checks against the precise commit under review, not an earlier one.
+
+> **Design rule:** a build gate should depend on a **future scoped authorization event**, never merely on the existence of a previously ratified direction. "The founder decided X" is history; "the founder has opened work on X with scope Y" is authority.
+
+**Known stale reference at project level:** DOC-022 (`Source of Truth Map`) and ADR-0024 define the precedence chain `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. Both predate Product Brain v1.0, Content Bible v1.0, and Social Charter v1.0 and reference none of them. Recorded as **PRJ-033**; resolving it requires a founder decision — it is the first item on the founder-review question surface accompanying this draft package.
+
+## 14. Adding a new idea
+
+Record it; do not promote it. Required fields:
+
+| Field | Rule |
+|---|---|
+| **ID** | Next `PRJ-###` (project-level) or the owning layer's ID series |
+| **Description** | One sentence, neutral |
+| **Source** | Exact document, conversation, or commit — never "inferred" without saying so |
+| **Date** | Recording date |
+| **Owner** | Owning layer, or `NOT YET AUTHORED` |
+| **Status** | Default `OPEN`. A positive feature may **never** be entered as `PLANNED`/`CANONICAL`/`EXPERIMENT` on an agent's own initiative |
+| **Implementation state** | Default `Not Implemented` |
+| **Dependencies** | Upstream decisions or unauthored layers |
+| **Risks** | What breaks if it is done wrong or too early |
+| **Reopen trigger** | The specific event that makes it live again |
+| **Replaces / superseded by** | Preserve negative history |
+| **Next decision required** | The precise question the founder or owner must answer |
+
+## 15. Adding a new document
+
+1. Choose the layer; confirm it does not duplicate an existing owner.
+2. Assign the next `DOC-###`.
+3. Declare frontmatter: `title`, `version`, `status`, `authority`, `owner`, `depends_on`, `related`.
+4. State explicitly whether it carries **implementation authority** (default: `NONE`).
+5. Register it in §3 with owns / does-not-own.
+6. Add dependency edges to §9.
+7. If it supports a Canonical document, mark it **supporting record — not product canon**.
+8. Enter the lifecycle (§11); Draft ≠ authority.
+9. Run the stale-reference audit (§13) against anything it changes.
+
+## 16. Current project-level open dependencies
+
+Summary only — details in DOC-047 and DOC-048.
+
+- **Six unauthored layers**: Curriculum, Brand, UX/Experience, Engineering/System, Operations & QA, Privacy/Legal (plus Future Systems Register).
+- **Mastery/evidence ownership is distributed**, with no single Canonical owner (PRJ-014).
+- **Content Bible executable blockers**: French style guide (PRJ-010), named reviewer (PRJ-011), Reading taxonomy/validator (PRJ-012), item-counting methodology (PRJ-015).
+- **Social prerequisites that do not exist**: evidence contract (PRJ-009), moderation capacity (PRJ-013).
+- **Stale project routing**: precedence chain omits all three Bibles (PRJ-033).
+- **Two roadmaps in tension** (PRJ-032); paywall position tension (PRJ-036).
+- **Genuinely absent operator-vault sources** (PRJ-034), including `L1-L5 Proofreading.md` — an input to PRJ-010.
+
+## 17. Change log
+
+| Date | Version | Change | By |
+|---|---|---|---|
+| 2026-07-25 | 0.1 | Initial draft. Inventoried ~400 repository documents; registered **48 `DOC-###`** records; defined the agent entry protocol, ownership matrix, 13 task reading routes, four-field status reconciliation, dependency graph, lifecycle, rename/merge/split provenance rules, stale-gate protocol, and idea/document intake. Identified six unauthored layers with their existing source fragments and one stale project-level routing chain (PRJ-033). Canonizes no domain content; authorizes no implementation. | Cloud session (project canon mapping) |
+
+*End of Project Canon Map v0.1. Draft; routes authority; authorizes no build.*
