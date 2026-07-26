@@ -1,7 +1,7 @@
 ---
 title: Cairn Authority and Routing Spec
 version: 0.1
-status: Draft — awaiting founder ratification
+status: Draft — awaiting founder sign-off review
 authority: Proposed project-level conflict and routing specification
 owner: Project Canon
 created: 2026-07-25
@@ -9,6 +9,7 @@ related:
   - CAIRN_PROJECT_CANON_MAP_v0.1.md
   - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
   - CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
+  - CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md
 ---
 
 # Cairn Authority and Routing Spec v0.1
@@ -35,22 +36,29 @@ It also does not create implementation permission. Nothing in this document — 
 | **Brand** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Voice, naming, visual identity. Fragments in DOC-029, DOC-037 |
 | **UX** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Screen states, flows, controls. Fragments in DOC-029 |
 | **Engineering** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Data model, runtime, sync, validators. **Several ADRs already bind** (DOC-015) |
-| **Mastery / Evidence** | — | ⚠️ **DISTRIBUTED — no single owner** | See §2.1 |
+| **Mastery / Evidence** | — **Mastery & Evidence Bible** | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` (owner assigned Q2, 2026-07-26) | Single authoritative owner of evidence semantics. See §2.1 |
 | **Social** | DOC-010 Social Layer Charter v1.0 | ✅ Canonical | Boundaries, prohibited forms, direction, Social governance |
 | **Privacy / Legal** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | ADR-0023 binds the model; interpretation unowned |
 | **Operations / QA** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Validation gates, moderation ops, release. Fragments: DOC-031, DOC-042, DOC-021 |
 | **Project Canon** | DOC-045 (this package) | 🟡 Draft | Routing only |
 
-### 2.1 Mastery / Evidence — explicit ownership finding
+### 2.1 Mastery & Evidence — owner assigned (Q2, 2026-07-26)
 
-**Mastery/Evidence does not currently have a completed owner document.** It is distributed across at least four places:
+**Founder decision:** a distinct **Cairn Mastery & Evidence Bible** is the single authoritative owner of the semantic evidence and mastery model. It **does not yet exist** and is marked `DEPENDENCY — DOCUMENT NOT YET AUTHORED`. It must **not** be merged into Content, Curriculum, or Engineering.
 
-- **ADR-0009** (events as source of truth), **ADR-0020** (progress bridge events canonical), **ADR-0021** (mastery precision: near-miss is not failure) — binding technical decisions.
-- **DOC-004 Content Bible** — what an item *is*, item roles, prerequisite safety.
-- **Vault fragments** — `02_LEARNING_SYSTEM/Mastery Model`, `05_MATRICES/Mastery Matrix`, `03_EXERCISES/Exercise Evidence Matrix`.
-- **DOC-010 Social Charter §13** — states what *cannot* be evidence, and defers the positive case to a non-existent evidence contract.
+**The Mastery & Evidence Bible owns:** what qualifies as learning evidence · evidence admissibility · evidence strength and confidence · assistance-level effects · attribution requirements · weakness evidence · near-miss consequences · mastery-state meaning · state transitions · decay/review consequences where applicable · aggregation of multiple evidence events · invalidation caused by content, AI, peer, validator, UI, or system error · equivalence requirements across solo, AI-supported, and any future social pedagogical actions · the semantic contract consumed by runtime.
 
-This is recorded as **PRJ-014**. It is *not* resolved here, and a missing Bible is **not** invented. Until an owner exists, mastery/evidence questions follow the **missing-owner conflict** path (§8.12, §9 step 3).
+**It does not own:**
+
+| Layer | Owns instead |
+|---|---|
+| **Content Bible** | Authored item and role definitions; learner-facing exercise and feedback policy; the intended pedagogical target of an authored action; prerequisite-safe presentation |
+| **Curriculum Bible** | Sequencing; readiness; when evidence opportunities are introduced; expected evidence distribution by level or band |
+| **Engineering / System Bible** | Event schemas; storage; validators; algorithms; sync; runtime enforcement; implementation of the semantic contract |
+| **Social Layer** | Social boundaries; the **negative** rule that engagement signals never become evidence; Social opening governance. **Social never owns positive evidence semantics.** |
+| **Operations & QA** | Evidence-system QA execution; audit procedure; incident handling; release gates |
+
+**Current state.** Recorded as **PRJ-014**, now `FOUNDER_LOCKED — dedicated Mastery & Evidence owner assigned`. Implementation state remains **Partially Implemented / fragmented**, because ADRs (0009/0020/0021), events, matrices, and runtime behaviour already exist. **The Bible is not written, and existing divergences are not resolved.** Until it is authored, mastery/evidence questions that require a *semantic ruling* follow the **missing-owner conflict** path (§8.12, §9 step 3) — but the owner is no longer undecided.
 
 ## 3. Source-authority classes
 
@@ -69,6 +77,8 @@ This is recorded as **PRJ-014**. It is *not* resolved here, and a missing Bible 
 | **K. Implementation evidence** | What the system actually does | code, tests, DOC-018, DOC-032 |
 
 > **Class K is special.** It has *no* authority over intent and *total* authority over fact. "What does it do?" is answered by K. "What should it do?" is never answered by K.
+>
+> **Q1 (2026-07-26) formalizes this as the two-axis model.** Classes A–J serve **Axis A** (intent and authority); class K *is* **Axis B** (current implementation reality). The re-scoped current-build chain (`CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`) operates on Axis B and on already-opened execution scope only — it is **no longer a global product/canon precedence chain** and must not route around a Canonical domain owner.
 
 ## 4. Decision-status model
 
@@ -107,15 +117,18 @@ This field prevents a specific error: assuming a written rule is mechanically pr
 9. **Source-map staleness** — a provenance map still calls something "inferred" after it was directly decided. *Real instance:* SOC-021 remained "lean rejected" after R6 rejected it outright.
 10. **Status-count staleness** — totals no longer match rows after edits.
 11. **Gate-reference staleness** — a gate references a decision whose state changed. → §13, and Canon Map §13.
+11b. **Axis confusion (Q1)** — an intent question answered with implementation evidence, or a reality question answered with a spec. Name the axis first; neither may settle the other's question.
 12. **Missing-owner conflict** — the question's owner document does not exist. **Escalate; never improvise a ruling.**
 
 ## 9. Conflict-resolution algorithm
 
 ```text
-1. STATE THE QUESTION precisely.
-   └─ Split "what should it do?" from "what does it do?"
-      "What does it do?"  → class K governs. STOP. Record divergence if it
-                            contradicts a spec.
+1. STATE THE QUESTION precisely, THEN PICK THE AXIS (Q1, 2026-07-26).
+   ├─ AXIS B "what does it do today?" → class K governs (code, tests,
+   │  status records, ledgers, deployed evidence). STOP. Record divergence
+   │  if it contradicts a spec. The current-build chain applies here.
+   └─ AXIS A "what should it be / how should this domain behave?" → continue.
+      Implementation evidence NEVER settles Axis A.
 
 2. IDENTIFY THE OWNER (Canon Map §5).
    ├─ Owner exists and is Canonical ────────────────► go to 4
@@ -226,7 +239,9 @@ Run after **any** decision change, promotion, supersession, or structural move.
 | **Link scan** | Internal links after any rename |
 | **Exact-head review** | Re-validate against the precise commit under review, not an earlier one |
 
-**Standing project-level finding:** the precedence chain in DOC-022 and ADR-0024 omits all three Bibles (**PRJ-033**). It fails the inbound-reference scan today.
+**Standing project-level finding — decision resolved 2026-07-26, operationally open.** The precedence chain in DOC-022 and ADR-0024 omits all three Bibles (**PRJ-033**). Founder decision Q1 resolves the *model* (domain-first global routing; that chain re-scoped to current-build execution), so PRJ-033 is `FOUNDER_LOCKED` on the decision. **It still fails the inbound-reference scan** because neither source file has been patched.
+
+> **Promotion prerequisite:** DOC-022 and ADR-0024 must gain a supersession/routing banner pointing to the Project Canon Map. Deliberately **not** edited during ratification; required no later than Canonical promotion.
 
 ## 14. Agent stop conditions
 
@@ -254,6 +269,10 @@ All drawn from repository-supported material.
 
 **Social engagement vs pedagogical evidence.** Engagement signals are never evidence. A pedagogical action *may* be — but only under a separately ratified evidence contract that **does not exist** (PRJ-009). So today, no social action is evidence.
 
+**Evidence semantics vs evidence enforcement (Q2).** "Is this action admissible as evidence, and at what strength?" → **Mastery & Evidence Bible** (unauthored → stop). "How is that event stored and validated?" → Engineering. "What was this authored action meant to teach?" → Content. "May a social signal count?" → Social supplies the negative bound only. Four layers, four different questions.
+
+**Axis A vs Axis B (Q1).** "Should Daily Review surface weak items first?" is Axis A → Product/Curriculum intent. "Does it surface them today?" is Axis B → code and tests. Answering the first with the second is the error the two-axis model exists to stop.
+
 **Lesson sequencing vs lesson authoring.** "How do I author L12?" → Content Bible + the L12 spec. "Should L12 come before L13?" → Curriculum, which is **not yet authored**. The Content Bible must not answer the second question merely because it is Canonical.
 
 **Human-audio direction vs current TTS reality.** Vault material treats audio/TTS/shadowing as a future layer (`Future Features`), while the shipped app uses TTS. Direction and reality coexist; neither cancels the other (PRJ-017, PRJ-018).
@@ -265,5 +284,7 @@ All drawn from repository-supported material.
 | Date | Version | Change | By |
 |---|---|---|---|
 | 2026-07-25 | 0.1 | Initial draft. Defined the domain-ownership model (including the explicit finding that **Mastery/Evidence has no single owner**), eleven source-authority classes, four independent status models, twelve conflict types, an eight-step resolution algorithm with a dedicated missing-owner path, the fourteen-element implementation-opening contract, documentation-change and supersession protocols, the seven-scan stale-reference audit, nine agent stop conditions, and six repository-supported worked examples. Decides no domain content; authorizes no implementation. | Cloud session (project canon mapping) |
+
+| 2026-07-26 | 0.1 (founder ratification Q1–Q2) | **Q1** — formalized the two-axis model in §3 and §9 step 1; added conflict type 11b (axis confusion); re-scoped the current-build chain; updated the §13 standing finding to *decision-resolved, operationally open* with an explicit promotion prerequisite. **Q2** — rewrote §2 and §2.1: **Mastery & Evidence Bible** assigned as the single authoritative owner of evidence semantics (`DEPENDENCY — DOCUMENT NOT YET AUTHORED`), with an explicit owns / does-not-own split across Content, Curriculum, Engineering, Social, and Operations. Added two worked examples (§15). **No missing Bible authored; no implementation authorized.** | Cloud session (founder ratification) |
 
 *End of Authority and Routing Spec v0.1. Draft; procedural only; authorizes no build.*

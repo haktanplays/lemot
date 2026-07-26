@@ -1,7 +1,7 @@
 ---
 title: Cairn Canon Coverage and Gaps
 version: 0.1
-status: Draft — awaiting founder ratification
+status: Draft — awaiting founder sign-off review
 authority: Proposed project-level coverage assessment
 owner: Project Canon
 created: 2026-07-25
@@ -9,6 +9,7 @@ related:
   - CAIRN_PROJECT_CANON_MAP_v0.1.md
   - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
   - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
+  - CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md
 ---
 
 # Cairn Canon Coverage and Gaps v0.1
@@ -31,7 +32,7 @@ A domain counts as **covered** only when all seven hold:
 
 Ratings: `COMPLETE` · `SUBSTANTIAL` · `PARTIAL` · `FRAGMENTED` · `ABSENT`. **No percentages** — there is no defensible counting unit across domains of such different shape.
 
-> **`FRAGMENTED` ≠ `ABSENT`.** Cairn's characteristic state is *rich material, no owner*. Six domains have substantial documentation and no authoritative document. Treating them as empty would be wrong and would invite an agent to rewrite what already exists.
+> **`FRAGMENTED` ≠ `ABSENT`.** Cairn's characteristic state is *rich material, no owner*. Seven domains have substantial documentation and no authoritative document (including Mastery & Evidence, whose owner was assigned 2026-07-26 but not yet authored). Treating them as empty would be wrong and would invite an agent to rewrite what already exists.
 
 ## 2. Current completed Canonical layers
 
@@ -111,6 +112,7 @@ All six carry `DEPENDENCY — DOCUMENT NOT YET AUTHORED`.
 
 | Layer | Why needed | Must answer | Existing material | Upstream deps | Downstream dependents | Blocks return to code? |
 |---|---|---|---|---|---|---|
+| **Mastery & Evidence Bible** | **Step 1.** Owner assigned 2026-07-26; Curriculum, Engineering and PRJ-009 all consume its semantics | What is admissible evidence? At what strength? How is it attributed, invalidated, aggregated? What do mastery states mean and how do they transition? | ADR-0009/0020/0021, `Mastery Model`, `Mastery Matrix`, `Exercise Evidence Matrix`, DOC-004 item semantics, DOC-010 §13 (negative bound) | Project Canon promotion | Curriculum, Engineering, Social evidence contract, Operations QA | **Yes** — Step 1 of the founder-fixed sequence |
 | **Curriculum Bible** | Sequencing is unowned; Content Bible correctly refuses it | When is a concept introduced? What is the band progression? How is an item counted? | DOC-027, DOC-028 | Product Brain, Content Bible | Content authoring, Reading taxonomy, post-L24 | **Yes** — for new lesson work |
 | **Engineering / System Bible** | ADRs bind but no owner resolves divergences | Which store wins? What is the cutover? What is enforced vs advisory? | DOC-030, DOC-025, DOC-043, ADRs | ADRs | Everything runtime | **Yes** — for runtime work |
 | **Privacy / Legal** | Highest-consequence unowned domain | Retention? Jurisdiction? Deletion path? Minors? | ADR-0023, DOC-030, `docs/status/*` | ADR-0023 | Social, analytics, sync, release | **Yes** — for any data work |
@@ -123,8 +125,8 @@ All six carry `DEPENDENCY — DOCUMENT NOT YET AUTHORED`.
 
 Genuine gaps, not merely deferred work:
 
-1. **No owner for mastery/evidence** (PRJ-014) — the single most consequential ownership hole, because Content, Engineering, and Social all touch it and none owns it.
-2. **No evidence contract** (PRJ-009) — created as a requirement by R8, assigned to a joint owner that does not exist.
+1. **~~No owner for mastery/evidence~~ — RESOLVED 2026-07-26 (Q2).** A dedicated **Mastery & Evidence Bible** is now the assigned owner (PRJ-014, `FOUNDER_LOCKED`). The *gap that remains* is that the document is **not yet authored** — it is Step 1 of the authoring sequence.
+2. **No evidence contract** (PRJ-009) — created as a requirement by R8; now routed to the Mastery & Evidence Bible (admissibility/semantics), with Content and Curriculum consulted and Engineering enforcing. **Still does not exist.**
 3. **No executable French-QA gate** (PRJ-010 + PRJ-011) — a Canonical standard with no standard document and no reviewer.
 4. **No moderation capacity assessment** (PRJ-013) — the Social direction's real-world blocker was never costed.
 5. **No cutover plan for two disjoint stores** (PRJ-037).
@@ -156,7 +158,7 @@ Ideas alive in source material with no durable home. **Each has a `PRJ-###` reco
 
 | # | Contradiction | Source | Record |
 |---|---|---|---|
-| 1 | Precedence chain omits all three Bibles | DOC-022, ADR-0024 | **PRJ-033** |
+| 1 | Precedence chain omits all three Bibles | DOC-022, ADR-0024 | **PRJ-033 — decision RESOLVED 2026-07-26 (Q1); source banners still owed at promotion** |
 | 2 | Two roadmaps, no precedence | C5 | PRJ-032 |
 | 3 | Paywall: Campfire-L24 locked vs §66.3 re-decide vs legacy L14 | C3 (CROWN) | PRJ-036 |
 | 4 | `CLAUDE.md` banner vs body vs STATUS reality | C1 (CROWN) | PRJ-031 |
@@ -207,68 +209,99 @@ Ideas alive in source material with no durable home. **Each has a `PRJ-###` reco
 | **Future Systems** | — | `FRAGMENTED` | Medium | 1 | N/A | ⚠️ Partial | Consolidate five idea homes |
 | **Project Canon** | DOC-045 (draft) | `SUBSTANTIAL` | High | 1 (PRJ-033) | N/A | 🟡 Pending ratification | Ratify this package |
 
-## 11. Recommended authoring sequence
+## 11. Authoring sequence — FOUNDER-FIXED (Q3, 2026-07-26)
 
-Derived from dependencies, not convenience. **Mastery/Evidence ownership comes first because it is a decision, not a document** — and three later layers depend on the answer.
+> **Founder decision:** optimize for **dependency-correct paper completion**, *not* fastest return to code. This sequence is `FOUNDER_LOCKED`, not a recommendation.
 
-**Step 0 — Assign the mastery/evidence owner (PRJ-014).** *Why now:* Curriculum, Engineering, and the Social evidence contract all route into it; authoring any of them first would hard-code an assumption. *Prerequisites:* none — it is a founder decision. *Unlocks:* coherent authoring of Steps 1–3. *Later:* rework across three layers. *Too early:* not possible.
+**Step 0 — Project Canon Map.** Ratify, review, promote, and merge this package. **Also patch the stale global-routing sources identified by PRJ-033** (DOC-022 `08 Source of Truth Map`, ADR-0024) with supersession/routing banners during Canonical promotion. *Unlocks:* a coherent entry point for every later step. *Risk if later:* every subsequent layer is authored against unpatched routing.
 
-**Step 1 — Curriculum Bible (PRJ-001).** *Why now:* the largest fragmented corpus with the clearest boundary; Content Bible is already blocked on it for sequencing. *Prereqs:* Step 0, Content Bible ✅. *Unlocks:* new lesson work, item counting (PRJ-015), post-L24 (PRJ-029), Reading taxonomy (PRJ-012). *Later:* lesson authoring stays blocked. *Too early:* would guess the evidence model.
+**Step 1 — Mastery & Evidence Bible.** *Why first:* Curriculum and Engineering both **consume its semantics**; the Social evidence contract (PRJ-009) depends on it; authoring Curriculum or Engineering first would encode an ownership assumption. *Prereqs:* Step 0. *Unlocks:* Steps 2 and 4, plus PRJ-009. *Risk if later:* rework across three layers. *Risk if too early:* none — it has no upstream layer dependency.
 
-**Step 2 — Engineering / System Bible (PRJ-004).** *Why now:* ADRs already bind, so the layer is half-written; the two-store fork (PRJ-037) is actively dangerous. *Prereqs:* Step 0. *Unlocks:* runtime work, validators, cutover. *Later:* divergence risk grows with every commit. *Too early:* would freeze a store choice before curriculum load is known.
+**Step 2 — Curriculum Bible.** Must close or route: progression and sequencing · item-counting methodology (PRJ-015) · level and band map · integration cadence · post-L24 direction (PRJ-029) · Reading sequencing dependencies (PRJ-012). *Prereqs:* Steps 0–1. *Risk if later:* lesson authoring stays blocked.
 
-**Step 3 — Privacy / Legal (PRJ-006).** *Why now:* highest-consequence unowned domain; blocks Social, analytics, sync, and Stage C. *Prereqs:* Step 2 (data model). *Unlocks:* deletion path (PRJ-027), analytics (PRJ-025), any Social opening. *Later:* privacy mistakes are the least reversible. *Too early:* would specify retention for an undecided data model.
+**Step 3 — Brand Bible.** Must stabilize: Cairn naming · Le Mot → Cairn migration (PRJ-030) · voice · visual identity · learner-facing naming principles. **Brand must precede final UX authoring.** *Prereqs:* none hard. *Risk if later:* UX is authored against unstable naming and voice.
 
-**Step 4 — Operations & QA Bible (PRJ-005).** *Why now:* converts unstaffed gates into executable ones. *Prereqs:* Steps 1–3. *Unlocks:* French QA execution (PRJ-011), moderation capacity (PRJ-013), release gates (PRJ-028), Stage C. *Later:* gates stay decorative. *Too early:* would define gates for undecided layers.
+**Step 4 — Engineering / System Bible.** Must: adopt binding ADRs by reference · separate intent from current runtime · resolve or explicitly route the two-store/cutover conflict (PRJ-037) · state enforcement status · document validators, storage, sync, AI, and failure behaviour. *Prereqs:* Step 1 (semantic contract). *Risk if later:* divergence risk grows with every commit.
 
-**Step 5 — UX / Experience Bible (PRJ-003).** *Why now:* surfaces need a settled engine and curriculum. *Prereqs:* Steps 1–2, plus Brand direction. *Unlocks:* Mon Lexique surface (PRJ-019), Summit copy (PRJ-021), V4-B activation. *Later:* ad-hoc screens accumulate. *Too early:* would design for an unsettled model.
+**Step 5 — Privacy / Legal layer.** Must follow the Engineering data model and own: data categories · consent · retention · deletion (PRJ-027) · minors · jurisdiction · analytics/privacy boundaries (PRJ-025) · Social data prerequisites. *Prereqs:* Step 4. *Risk if later:* privacy errors are the least reversible.
 
-**Step 6 — Brand Bible (PRJ-002).** *Why now:* completes the naming migration and stabilizes voice before public surfaces. *Prereqs:* none hard; pairs naturally with Step 5. *Unlocks:* rename completion (PRJ-030), store presence. *Later:* half-finished rename persists. *Too early:* harmless — **this step could move earlier if the founder prefers.**
+**Step 6 — UX / Experience Bible.** Must consume Product, Content, Curriculum, **Brand**, Engineering, and Privacy. Owns final surfaces, flows, states, controls, accessibility, offline/error behaviour, and activation gates (V4-B, PRJ-035; Mon Lexique surface, PRJ-019; Summit copy, PRJ-021). *Prereqs:* Steps 2–5.
 
-**Step 7 — Future Systems Register (PRJ-007).** *Why now:* consolidates five overlapping idea homes once every layer exists to route into. *Prereqs:* Steps 1–6. *Unlocks:* durable home for deferred systems. *Later:* ideas keep scattering. *Too early:* would route to layers that do not exist.
+**Step 7 — Operations & QA Bible.** Must consume the completed upstream layers and make their gates **executable**: French QA (PRJ-010/011) · evidence QA · moderation operations (PRJ-013) · release gates (PRJ-028) · operator boundaries · smoke and incident procedures · staffing requirements. *Prereqs:* Steps 1–6. *Risk if earlier:* gates defined for undecided layers stay decorative.
 
-> **Alternative worth the founder's consideration:** Steps 2–3 (Engineering, Privacy) could precede Step 1 (Curriculum) if the intent is to return to *code* soonest rather than to *content* soonest. The sequence above optimizes for content correctness; the inversion optimizes for implementation readiness.
+**Step 8 — Future Systems Register.** Consolidate the five overlapping idea homes **only after** authoritative destination layers exist. *Prereqs:* Steps 1–7.
 
-## 12. Definition of "paper complete"
+**Step 9 — Final project-wide coverage audit.** Run: idea coverage · ownership · cross-links · implementation-reality statements · conflict audit · **stale-reference and stale-gate audit** · negative-history preservation · deterministic agent read routes.
 
-Proposed project-level test. **Paper complete** when all ten hold:
+### Rejected alternative — Engineering/Privacy-first sequencing
 
-1. Every meaningful idea has a **status and an owner**.
-2. Every active product surface has a stated **intended final behaviour**.
-3. Every future system has a **status and a reopen trigger**.
-4. Every rejected direction remains **discoverable** with its reasoning.
-5. Every layer has an **authoritative owner document**.
-6. Every cross-layer dependency is **routed** to a named owner.
-7. Every implementation area has a **current-reality statement** separate from intent.
-8. Every build gate requires a **scoped authorization event**, not a past decision.
-9. An agent has a **deterministic read route** for every task type.
-10. **No known authority conflict is silently unresolved** — every one is either resolved or explicitly recorded as open.
+> **`REJECTED` for the current documentation phase.** An earlier draft offered Engineering/Privacy-first ordering as an equal option optimizing for the fastest return to code.
+>
+> **Reason for rejection:** *founder direction prioritizes completing the interconnected paper model before returning to implementation.* Retained as a documented rejected optimization — **not** as an equal recommendation — so the reasoning stays discoverable if the priority ever changes.
 
-**Current standing against this test:** 1 ⚠️ partial (25/38 items owned by unwritten layers) · 2 ⚠️ · 3 ✅ · 4 ✅ · 5 ❌ (six layers unowned) · 6 🟡 (routed by this draft, unratified) · 7 🟡 · 8 🟡 (true for Social; not yet project-wide) · 9 🟡 (this draft) · 10 ❌ (PRJ-033 and others open).
+## 12. Definition of "paper complete" — FOUNDER-FIXED (Q4, 2026-07-26)
 
-**Paper complete is not yet reached.** Criterion 5 is the binding constraint.
+**Paper complete** requires **all** of the following:
 
-## 13. Return-to-code gate
+**Canonical layers:**
+1. Project Canon Map is Canonical.
+2. Product Brain is Canonical.
+3. Content Bible is Canonical.
+4. Social Layer Charter is Canonical.
+5. **Mastery & Evidence Bible is Canonical.**
+6. Curriculum Bible is Canonical.
+7. Brand Bible is Canonical.
+8. Engineering / System Bible is Canonical.
+9. Privacy / Legal layer has an authoritative ratified form.
+10. UX / Experience Bible is Canonical.
+11. Operations & QA Bible is Canonical.
+12. Future Systems Register has an authoritative ratified form.
 
-**Proposed** — explicitly **not** declared passed in this task.
+**Coverage properties:**
+13. Every meaningful known idea has a status, owner, implementation state, and durable home.
+14. Every future system has a reopen trigger.
+15. Every rejected and superseded direction remains discoverable.
+16. Every cross-layer dependency is routed.
+17. Every active or partially implemented area has a current-reality statement.
+18. No known authority conflict is silently unresolved.
+19. Every build gate requires a **new scoped authorization event**.
+20. Final project-wide coverage and stale-reference audits pass.
 
-Before returning to implementation:
+**Current standing:** 4 of 12 Canonical layers exist (Product Brain, Content, Social — and this package is Draft, not Canonical). **Paper complete is not reached.**
 
-1. Project Canon Map package **ratified** and the precedence conflict (PRJ-033) resolved.
-2. Mastery/evidence **owner assigned** (PRJ-014).
-3. The layers required by the *intended first code task* are **authored** — not all six, but every one the task touches.
-4. Privacy/Legal authored **if** the task touches learner data.
-5. The task has a **scoped implementation opening** with all fourteen elements (Authority Spec §10).
-6. Current-reality statement exists for the area being changed.
-7. Known divergences in that area are recorded and the intended direction chosen.
-8. Operator blockers for that area are identified and assigned.
+## 13. Return-to-code gate — FOUNDER-FIXED (Q4, 2026-07-26)
 
-> **A partial gate is legitimate.** Returning to code for a narrowly scoped task does not require all seven Bibles — it requires the ones that task depends on, plus a scoped opening.
+> **Founder direction: Cairn will complete the full defined documentation stack before normal implementation work resumes.**
+
+**Normal implementation work resumes only after:**
+
+1. **Paper completeness is declared by a separate founder sign-off** (§12);
+2. the intended first implementation task receives a **fourteen-element scoped opening** (Authority Spec §10);
+3. the area's **current implementation reality and divergences** are documented;
+4. **operator constraints** are identified.
+
+**This gate is NOT declared passed in this task, and cannot be passed by any agent.**
+
+### Emergency exception — narrow and founder-authorized
+
+The **only** pre-paper-complete code exception is an explicitly founder-authorized emergency involving **critical security · imminent data loss · urgent legal/compliance exposure · production outage or similarly severe operational harm.**
+
+An emergency opening must: state **why waiting is unsafe** · be **narrowly scoped** · avoid **opportunistic feature work** · **preserve existing canon** · include **validation and rollback** · receive **explicit founder authorization**.
+
+> **Do not qualify automatically:** existing open PRs · routine operator blockers · feature work · refactors · lesson work · general cleanup.
+
+### `SUPERSEDED — founder decision 2026-07-26`
+
+> The earlier draft proposed: *"A partial gate is legitimate. Returning to code for a narrowly scoped task does not require all seven Bibles — it requires the ones that task depends on, plus a scoped opening."*
+>
+> **Superseded.** Its reasoning is preserved, not deleted: it optimized for unblocking narrow work early, and would still be the right rule under a different founder priority. It conflicts with the current explicit direction to complete the interconnected paper model first, so it is **no longer in force**.
 
 ## 14. Change log
 
 | Date | Version | Change | By |
 |---|---|---|---|
 | 2026-07-25 | 0.1 | Initial draft. Assessed coverage across twelve domains from a ~400-document repository sweep; rated three Canonical layers, six partial/fragmented layers, and seven unauthored layers; recorded seven blind spots, eleven contradictions, five implementation-reality categories, and the external-source inventory (ten genuinely absent, fifteen present-after-ingestion, one deliberately excluded); proposed an eight-step authoring sequence led by the mastery/evidence ownership decision, a ten-point paper-completeness test, and an eight-point return-to-code gate. **Authored no missing layer; declared no gate passed.** | Cloud session (project canon mapping) |
+
+| 2026-07-26 | 0.1 (founder ratification Q1–Q4) | **Q2** — mastery/evidence ownership hole closed in §5 and the §10 matrix; **Mastery & Evidence Bible** added as an unauthored layer to be authored at Step 1. **Q3** — §11 replaced with the **founder-fixed ten-step sequence** (Project Canon → Mastery & Evidence → Curriculum → **Brand** → Engineering → Privacy → **UX** → Operations & QA → Future Systems → final audit); Brand now precedes UX; the Engineering/Privacy-first alternative demoted to a **documented rejected optimization**. **Q4** — §12 replaced with the strict 20-point paper-complete definition (12 Canonical layers + 8 coverage properties); §13 replaced with the strict return-to-code gate plus a **narrow founder-authorized emergency exception**; the former "partial gate is legitimate" rule marked **`SUPERSEDED — founder decision 2026-07-26`** with its reasoning preserved. **Q1** — §7 contradiction row 1 updated to decision-resolved with promotion-time source patches outstanding. **No layer authored; no gate declared passed.** | Cloud session (founder ratification) |
 
 *End of Canon Coverage and Gaps v0.1. Draft; assesses coverage; authorizes no build.*

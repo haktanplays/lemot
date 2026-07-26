@@ -1,7 +1,7 @@
 ---
 title: Cairn Project Idea and Decision Register
 version: 0.1
-status: Draft — awaiting founder ratification
+status: Draft — awaiting founder sign-off review
 authority: Proposed project-level cross-layer routing index
 owner: Project Canon
 created: 2026-07-25
@@ -9,6 +9,7 @@ related:
   - CAIRN_PROJECT_CANON_MAP_v0.1.md
   - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
   - CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
+  - CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md
 ---
 
 # Cairn Project Idea and Decision Register v0.1
@@ -54,12 +55,12 @@ This register exists so that **ideas which belong to no completed layer do not d
 
 | ID | Idea / decision | Status | Source authority | Canonical home | Current owner | Dependencies | Implementation state | Reopen trigger | Related | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
-| PRJ-009 | **Social evidence contract** — the only route by which a social pedagogical action could ever count as evidence | `OPEN` | Founder R8 (2026-07-25) | Content + Curriculum + Engineering (joint) | `NOT YET AUTHORED` | SOC-026, PRJ-001, PRJ-004, PRJ-014 | **Does not exist** → no social action is evidence today | A scoped Social opening that proposes a pedagogical action as evidence | SOC-026, PRJ-014 | Created *by* R8, which deliberately left the positive case to a future contract. **Must not be designed inside the Social Charter.** |
+| PRJ-009 | **Social evidence contract** — the only route by which a social pedagogical action could ever count as evidence | `OPEN` | Founder R8 (2026-07-25); routing set by Q2 (2026-07-26) | **Mastery & Evidence Bible** | `NOT YET AUTHORED` | PRJ-014, SOC-026, PRJ-001, PRJ-004 | **Does not exist** → no social action is evidence today | A scoped Social opening that proposes a pedagogical action as evidence | SOC-026, PRJ-014 | **Q2 routing:** the **Mastery & Evidence Bible owns admissibility and evidence semantics**; **Content and Curriculum are required consulted owners**; **Engineering owns enforcement**; **founder ratification remains required**. Created *by* R8, which deliberately left the positive case to a future contract. **Must not be designed inside the Social Charter.** |
 | PRJ-010 | **French style guide** | `OPEN` | Content Bible G2; founder Q10 (accept, with timing) | Content Bible | Content Bible | `L1-L5 Proofreading.md` (**absent**, PRJ-034) | Not Implemented | Required **before Stage C** (invited-learner exposure) | PRJ-011, PRJ-034 | Ratified to be authored; does not block internal authoring or founder-only testing. Blocks the executable French-QA gate. |
 | PRJ-011 | **Named French reviewer / QA staffing** | `OPEN` | Content Bible G3; founder Q10 | Operations & QA | `NOT YET AUTHORED` (PRJ-005) | PRJ-010 | Not Implemented | Stage C preparation | PRJ-010 | A staffing decision, not a missing file. Until it exists, **no lesson may be claimed QA-passed**. |
 | PRJ-012 | **Reading taxonomy + validator** | `OPEN` (implementation detail; principle settled) | Content Bible G1; founder Q7 = YES | Content Bible (taxonomy) + Engineering (validator) | Content Bible / `NOT YET AUTHORED` | DOC-026 §16 (truncated in-repo) | Not Implemented | Exercise System v1 work | PRJ-001, PRJ-004 | The *principle* (action-required, production-conditional) is ratified. The family taxonomy and the validator rule-list remain open. |
 | PRJ-013 | **Social moderation capacity (human/operational)** | `OPEN` | Social Charter §7.2 (2026-07-25) | Operations & QA | `NOT YET AUTHORED` (PRJ-005) | SOC-029/030, PRJ-005 | Not Implemented | A scoped Social opening | SOC-030 | Charter states **AI moderation is not sufficient coverage**; absence of staffed capacity is itself a blocker to any Social opening. Cost/staffing never assessed. |
-| PRJ-014 | **Mastery / evidence architecture ownership** | `OPEN` | Derived (ownership gap) | **Undecided** — candidates: Content, Curriculum, Engineering, or a dedicated layer | **DISTRIBUTED** | ADR-0009/0020/0021, DOC-004, SOC-026 | Partially Implemented | Founder assigns an owner | PRJ-009, PRJ-001, PRJ-004 | Currently spread across ADRs, Content Bible, vault matrices, and the Social Charter's negative bound. **No single Canonical owner.** High risk: two layers could answer the same evidence question differently. |
+| PRJ-014 | **Cairn Mastery & Evidence Bible** — dedicated owner of the semantic evidence and mastery model | `FOUNDER_LOCKED` — dedicated Mastery & Evidence owner assigned (2026-07-26) | Founder Q2 (2026-07-26) | **Mastery & Evidence Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | ADR-0009/0020/0021, DOC-004, SOC-026 | **Partially Implemented / fragmented** — ADRs, events, matrices and runtime behaviour already exist | Founder opens the Mastery & Evidence layer (Step 1 of the authoring sequence) | PRJ-009, PRJ-001, PRJ-004 | **Owner is no longer undecided.** Owns admissibility · strength/confidence · assistance-level effects · attribution · weakness and near-miss evidence · mastery-state meaning and transitions · decay/review · aggregation · invalidation by content/AI/peer/validator/UI/system error · solo↔AI↔future-social equivalence · the semantic contract consumed by runtime. **Must not be merged into Content, Curriculum, or Engineering.** The Bible is **not written** and current divergences are **not resolved**. |
 | PRJ-015 | **Item-counting methodology** | `OPEN` | Content Bible G4; learning-engine-v1 §17 | Curriculum Bible | `NOT YET AUTHORED` (PRJ-001) | PRJ-001 | Not Implemented | Curriculum authoring | PRJ-001 | Blocks precise reconciliation of active-new budgets; the *direction* is settled, the counting rule is not. |
 
 ## C. Major future systems (cross-layer, none authorized)
@@ -88,7 +89,7 @@ This register exists so that **ideas which belong to no completed layer do not d
 | PRJ-030 | **Le Mot → Cairn migration** (product renaming) | `RATIFIED_DIRECTION` (incomplete) | ADR-0024; PB v1.0; repo naming | Brand Bible | `NOT YET AUTHORED` (PRJ-002) | PRJ-002 | Partially Implemented | Brand layer authoring | PRJ-002, PRJ-031 | Repo, app package, and many docs still say "Le Mot" (`lemot-app/`, `LE_MOT_AGENT_CONSTITUTION`, storage key `lm7`). Naming migration is real but unfinished — **an ownership question for Brand**. |
 | PRJ-031 | **Legacy v7 product** (24 lessons, 11-section flow, L14 paywall $12.99, XP/streak, "for English speakers") | `SUPERSEDED` (quarantined, not deleted) | ADR-0024 | Product Brain | Product Brain | — | Legacy-active (behind `LEGACY — DO NOT BUILD ON THIS` banners) | — | ADR-0001, ADR-0025 | Deliberately preserved rather than deleted so history is not overwritten. **A repo-wide grep will still surface v7 language** — agents must check the banner. |
 | PRJ-032 | **Two competing roadmaps** (`ROADMAP.md` vs `CAIRN_ROADMAP_202607.md`) | `OPEN` (contradiction) | Vault `Contradictions` C5 | Operations / Project Canon | Project Canon | — | N/A | Founder picks the controlling roadmap | PRJ-033 | The vault records a crosswalk, but which roadmap controls which question is unresolved. |
-| PRJ-033 | **Precedence chain omits the three Bibles** | `OPEN` (**stale routing**) | Derived; DOC-022, ADR-0024 | Project Canon | Project Canon | DOC-001, DOC-004, DOC-010 | N/A | **Founder Question 1** | PRJ-008 | ADR-0024 and `08 Source of Truth Map` define `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. Both predate Product Brain v1.0, Content Bible v1.0, Social Charter v1.0 and reference none. **A textbook stale reference — the exact failure class this package is built to catch.** |
+| PRJ-033 | **Global precedence model** (chain omitted the three Bibles) | `FOUNDER_LOCKED` — precedence model resolved 2026-07-26 | Founder Q1 (2026-07-26) | Project Canon | Project Canon | DOC-001, DOC-004, DOC-010, DOC-022, DOC-015 | N/A — **decision resolved; source patches outstanding** | Founder revises the precedence model | PRJ-008, PRJ-032 | **Decision resolved:** global routing is **domain-first, two-axis**; the chain `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec` is re-scoped to **current-build execution only** and must not route around a Canonical domain owner. ⚠️ **Not operationally closed:** DOC-022 (`08 Source of Truth Map`) and ADR-0024 still require a supersession/routing banner linking to the Project Canon Map. Those files were **deliberately not edited** during ratification; the patch is a **promotion prerequisite**, required no later than Canonical promotion. |
 | PRJ-034 | **Genuinely absent operator-vault sources** | `OPEN` | `95_SOURCE_LEDGER/Missing Source Inputs` | Project Canon (import routing) | Project Canon | Operator | N/A | Operator supplies files | PRJ-010 | Still absent: `LeMot.md`, `LeMot - User Journey.md`, `Notes Archive Index.md`, **`L1-L5 Proofreading.md`** (input to PRJ-010), TOP CANON `Le_Mot_Locked_Canon…`, `CAIRN_CODEX_v0.1.md`, `CLAUDE_START_CONTEXT.md`, `TASK_CONTEXT_PACKS.md`, `OBSIDIAN_TO_GIT_PROMOTION_RULES.md`, Merged Product Canon 2026-05-11. **Contents were never invented.** |
 | PRJ-035 | **V4 Studies standalone HTML** (18 MB) | `ARCHIVED_REFERENCE` (excluded from git) | `Missing Source Inputs`; `V4 Studies Disposition` | UX/Experience Bible | `NOT YET AUTHORED` (PRJ-003) | PRJ-003 | Not Implemented | UX layer authoring | PRJ-003 | Design *facts* were ingested; the artifact itself is deliberately not in git. V4-B direction selected but **globally deferred**. |
 | PRJ-036 | **Paywall position tension** (Campfire ~L24 locked vs build-spec §66.3 "re-decide" vs legacy L14) | `OPEN` (contradiction) | ADR-0025; vault `Contradictions` C3 (CROWN) | Product Brain | Product Brain | — | Not Implemented (`FEATURES.paywall=false`) | Post-validation re-decision | PRJ-020, PRJ-031 | ADR-0025 locks Campfire ~L24; the build spec reserves a re-decision. Legacy L14 is superseded. |
@@ -99,52 +100,54 @@ This register exists so that **ideas which belong to no completed layer do not d
 
 ## Summaries
 
-**By status — 38 records, PRJ-001…PRJ-038 contiguous:**
+**By status — 38 records, PRJ-001…PRJ-038 contiguous** *(recomputed after founder ratification 2026-07-26)*:
 
-| Status | Count | IDs |
-|---|---|---|
-| `OPEN` | 27 | PRJ-001–015, 018, 023, 025, 026, 027, 028, 029, 032, 033, 034, 036, 037 |
-| `DEFERRED` | 8 | PRJ-016, 017, 019, 020, 021, 022, 024, 038 |
-| `RATIFIED_DIRECTION` | 1 | PRJ-030 |
-| `SUPERSEDED` | 1 | PRJ-031 |
-| `ARCHIVED_REFERENCE` | 1 | PRJ-035 |
-| `CANONICAL` · `FOUNDER_LOCKED` · `DESIGN_CANON` · `PLANNED` · `EXPERIMENT` · `REJECTED` | **0** | — |
+| Status | Count | Change | IDs |
+|---|---|---|---|
+| `OPEN` | 25 | ↓ from 27 | PRJ-001–013, 015, 018, 023, 025, 026, 027, 028, 029, 032, 034, 036, 037 |
+| `DEFERRED` | 8 | — | PRJ-016, 017, 019, 020, 021, 022, 024, 038 |
+| **`FOUNDER_LOCKED`** | **2** | **↑ new** | **PRJ-014** (Mastery & Evidence owner assigned) · **PRJ-033** (precedence model resolved) |
+| `RATIFIED_DIRECTION` | 1 | — | PRJ-030 |
+| `SUPERSEDED` | 1 | — | PRJ-031 |
+| `ARCHIVED_REFERENCE` | 1 | — | PRJ-035 |
+| `CANONICAL` · `DESIGN_CANON` · `PLANNED` · `EXPERIMENT` · `REJECTED` | **0** | — | — |
 
-**`PLANNED` = 0 and `EXPERIMENT` = 0 at project level.** `REJECTED` = 0 here as well — project-level rejections are recorded as `SUPERSEDED` (PRJ-031) or live in the owning domain's own register (e.g. Social SOC-021, SOC-031).
+**`PLANNED` = 0 and `EXPERIMENT` = 0 remain true after ratification.** The founder decisions locked *ownership and routing*, not features.
 
 **By owner (first-listed owner governs routing):**
 
-| Owner | Count | Note |
+| Owner | Count | Change |
 |---|---|---|
-| `NOT YET AUTHORED` | 25 | An unwritten layer owns it — the dominant finding |
-| Project Canon | 4 | PRJ-008, 032, 033, 034 |
-| Content Bible | 4 | PRJ-010, 012, 019, 021 |
-| Product Brain | 4 | PRJ-020, 024, 031, 036 |
-| **DISTRIBUTED — no owner** | 1 | PRJ-014 (mastery/evidence) |
+| `NOT YET AUTHORED` | 26 | ↑ from 25 (PRJ-014 moved here from `DISTRIBUTED`) |
+| Project Canon | 4 | — |
+| Content Bible | 4 | — |
+| Product Brain | 4 | — |
+| **`DISTRIBUTED` — no owner** | **0** | **↓ from 1 — eliminated by Q2** |
 
-> **66% of project-level items (25/38) are owned by a document that does not exist yet.** That single number is the strongest argument for the authoring sequence in the Coverage & Gaps file.
+> **The `DISTRIBUTED` category is now empty.** Every project-level item has a named owner, even where that owner is a document not yet written.
 
-**By Canonical home:** Curriculum 6 · Engineering 6 · Operations & QA 5 · Project Canon 5 · Content Bible 4 · Product Brain 4 · UX/Experience 4 · Privacy/Legal 3 · Brand 2 · Future Systems 1 · **Undecided 1 (PRJ-014)** = 38.
+**By primary Canonical home:** Content 7 · Curriculum 4 · Engineering 4 · Operations & QA 4 · Product Brain 4 · Project Canon 3 · **Mastery & Evidence 2 (new)** · Brand 2 · UX 2 · Privacy 2 · Operations 2 · Future Systems 1 · Content-or-Curriculum 1 = **38**. **Undecided: 0** (was 1).
 
 **By implementation state:**
 
 | State | Count |
 |---|---|
 | Not Implemented | 22 |
-| Partially Implemented | 12 |
+| Partially Implemented | 12 (incl. PRJ-014 *fragmented*) |
 | Legacy-active (quarantined) | 1 (PRJ-031) |
 | N/A (routing/contradiction records) | 3 |
 | **Implemented** | **0** |
 
-**By dependency readiness:**
+**By dependency readiness** *(revised — the authoring sequence is now founder-fixed, Q3)*:
 
 | Readiness | Count | Meaning |
 |---|---|---|
-| **Blocked on an unauthored layer** | 24 | Cannot proceed without a Bible that does not exist |
-| **Blocked on a founder decision** | 6 | PRJ-014, 032, 033, 036 + layer-opening choices |
+| **Blocked on an unauthored layer** | 26 | Cannot proceed without a Bible that does not exist |
+| **Blocked on a founder decision** | 2 | PRJ-032 (roadmap), PRJ-036 (paywall) — Q1/Q2 removed the others |
 | **Blocked on an external/operator input** | 2 | PRJ-034, PRJ-035 |
 | **Blocked on staffing/capacity** | 2 | PRJ-011, PRJ-013 |
-| **Ready to author now** | 4 | PRJ-001, 002, 004, 007 (no upstream blocker) |
+| **Ready to author now** | 1 | **PRJ-014 — Mastery & Evidence Bible is Step 1** of the founder-fixed sequence |
+| **Awaiting promotion of this package** | 5 | PRJ-008, PRJ-033 (banner patches) + downstream |
 
 **Cross-references to domain registers (not duplicated here):** Product Brain `PB-###` (DOC-002) · Content Bible `CB-###` (DOC-006) · Social `SOC-001…SOC-034` (DOC-012) · ADRs `ADR-0001…ADR-0025` (DOC-015).
 
@@ -153,5 +156,7 @@ This register exists so that **ideas which belong to no completed layer do not d
 | Date | Version | Change | By |
 |---|---|---|---|
 | 2026-07-25 | 0.1 | Initial draft. Registered **38 `PRJ-###`** cross-layer records across four groups: unauthored layers (8), cross-layer prerequisites blocking existing Canonical layers (7), major future systems (14), and rejected/superseded/contradiction directions (9). Referenced — did not duplicate — PB/CB/SOC/ADR registers. **`PLANNED` = 0, `EXPERIMENT` = 0, Implemented = 0.** | Cloud session (project canon mapping) |
+
+| 2026-07-26 | 0.1 (founder ratification Q1–Q4) | **PRJ-033** → `FOUNDER_LOCKED — precedence model resolved`; decision closed, **supersession banners on DOC-022 and ADR-0024 recorded as a promotion prerequisite**. **PRJ-014** → `FOUNDER_LOCKED — dedicated Mastery & Evidence owner assigned`; Canonical home **Mastery & Evidence Bible**, owner `DEPENDENCY — DOCUMENT NOT YET AUTHORED`, implementation state **Partially Implemented / fragmented**. **PRJ-009** re-routed: Mastery & Evidence owns admissibility/semantics, Content + Curriculum consulted, Engineering enforces, founder ratification still required, **no contract exists**. All summaries recomputed: `OPEN` 27→25, `FOUNDER_LOCKED` 0→2, `DISTRIBUTED` owner 1→**0**, Mastery & Evidence home **2**. No row added or renumbered; **38 records, PRJ-001…PRJ-038 contiguous**. | Cloud session (founder ratification) |
 
 *End of Project Idea and Decision Register v0.1. Draft; routing index; approves nothing.*
