@@ -67,7 +67,7 @@ It also does not create implementation permission. Nothing in this document — 
 |---|---|---|
 | **A. Explicit current founder decision** | A decision stated by the founder now, for this question | Social Q1/R1–R11 (2026-07-25) |
 | **B. Current Canonical document** | Promoted, signed-off, within its owned domain | DOC-001, DOC-004, DOC-010 |
-| **C. Accepted ADR** | Technical/system decision, within its domain | ADR-0001…ADR-0025 |
+| **C. Accepted ADR** | Technical/system decision, within its domain — **individually accepted or active ADRs, according to each ADR's own metadata and decision status** | e.g. ADR-0001 (anti-gamification), ADR-0002 (passive mirror), ADR-0009/0020 (events canonical), ADR-0010 (engine purity), ADR-0023 (privacy model), ADR-0024 (*within its retained scope*) |
 | **D. Founder-ratified decision record** | Durable log of founder answers | DOC-011, DOC-009 |
 | **E. Design canon** | Settled design principle, derived and accepted | `07_DESIGN/*`, `Visual_Design_Canon` |
 | **F. Operational contract** | Binds how work is done | DOC-021, DOC-041, DOC-031, DOC-042 |
@@ -77,6 +77,8 @@ It also does not create implementation permission. Nothing in this document — 
 | **J. Archive / superseded** | Explicitly replaced | DOC-044, legacy v7, `Superseded Specs` |
 | **K. Implementation evidence** | What the system actually does | code, tests, DOC-018, DOC-032 |
 
+> **The `ADR-####` naming convention and directory membership do not confer Canonical status.** Each ADR carries its own `status` / `canon_status` / `implementation_status` and must be read individually. An ADR that is `deferred`, `proposed`, `superseded`, `rejected`, or `historical` is an **input or an open decision — not class C authority**. *(Live example: **ADR-0025** is `status: deferred` / `canon_status: proposed` and does **not** bind the paywall position — PRJ-036 remains `OPEN`.)*
+>
 > **Class K is special.** It has *no* authority over intent and *total* authority over fact. "What does it do?" is answered by K. "What should it do?" is never answered by K.
 >
 > **Q1 (2026-07-26) formalizes this as the two-axis model.** Classes A–J serve **Axis A** (intent and authority); class K *is* **Axis B** (current implementation reality). The re-scoped current-build chain (`CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`) operates on Axis B and on already-opened execution scope only — it is **no longer a global product/canon precedence chain** and must not route around a Canonical domain owner.
@@ -289,5 +291,7 @@ All drawn from repository-supported material.
 | 2026-07-26 | 0.1 (founder ratification Q1–Q2) | **Q1** — formalized the two-axis model in §3 and §9 step 1; added conflict type 11b (axis confusion); re-scoped the current-build chain; updated the §13 standing finding to *decision-resolved, operationally open* with an explicit promotion prerequisite. **Q2** — rewrote §2 and §2.1: **Mastery & Evidence Bible** assigned as the single authoritative owner of evidence semantics (`DEPENDENCY — DOCUMENT NOT YET AUTHORED`), with an explicit owns / does-not-own split across Content, Curriculum, Engineering, Social, and Operations. Added two worked examples (§15). **No missing Bible authored; no implementation authorized.** | Cloud session (founder ratification) |
 
 | 2026-07-26 | 0.1 (promotion corrections) | **E1** — §2 Privacy row now states the **split ownership** explicitly: ADR-0023 binds the technical data model, the future Privacy/Legal layer owns interpretation (retention, jurisdiction, consent policy, minors, legal posture); **not dual ownership**, and implementation facts never decide legal interpretation. Project Canon row → **Canonical (Map v1.0)** with the no-implementation-authority note. §13 standing finding → **CLOSED** (PRJ-033 source patches applied; both sources retained, not repealed). Status changed from Draft to **supporting specification — ratified with Project Canon Map v1.0**; not independently Canonical. | Cloud session (atomic promotion) |
+
+| 2026-07-26 | 0.1 (ADR status-collection correction) | **PR-review finding (Codex P2).** §3 class C no longer enumerates `ADR-0001…ADR-0025` as if uniformly accepted; it now reads *"individually accepted or active ADRs, according to each ADR's own metadata and decision status"* with concrete active examples. Added the explicit rule that **the `ADR-####` naming convention and directory membership confer no Canonical status**, and that deferred/proposed/superseded/rejected/historical ADRs are inputs or open decisions rather than class C authority — citing **ADR-0025** (`deferred`/`proposed`) as the live example, with PRJ-036 still `OPEN`. **No founder decision changed; no ADR status changed; no implementation authorized.** | Cloud session (PR-review correction) |
 
 *End of Authority and Routing Spec v0.1. Supporting specification; procedural only; authorizes no build.*

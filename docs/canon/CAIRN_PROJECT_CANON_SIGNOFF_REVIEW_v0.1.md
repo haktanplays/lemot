@@ -337,10 +337,23 @@ This review was authored against head `50a8ddd` and its **verdict remains a hist
 
 *"Eleven" was wrong at both points.* **Paper complete is not reached and no code-return gate is passed** in either state.
 
+## 16c. PR-review application note (PR #201, added 2026-07-26 — after promotion)
+
+**This finding was NOT made by the independent sign-off review above.** It was raised by an automated **Codex P2** review on PR #201, *after* the Canonical promotion had been pushed. Provenance is kept in three layers: the **original sign-off review** (head `50a8ddd`), this **later PR-review finding** (head `1c4d3e4`), and the **correction applied on the PR head**.
+
+**Finding — collection-versus-member status error.** The Canon Map's **DOC-015** registry row assigned Canonical status to the *entire* ADR collection (`ADR-0001…ADR-0025`). **ADR-0025 proves the claim false**: its own frontmatter is `status: deferred` / `canon_status: proposed` / `implementation_status: not-started`, and its decision text leaves the Campfire/L24 paywall placement unresolved. An agent routing a paywall or monetization question through the registry could have treated that placement as binding, even though **PRJ-036** records it as an `OPEN` contradiction.
+
+**Verified ADR reality (2026-07-26):** **24** ADRs are `active`/`canonical`; **1** — ADR-0025 — is `deferred`/`proposed`. The blanket claim was wrong by exactly one member, and that member governs a live open contradiction.
+
+**Correction applied.** DOC-015 is now an explicit **mixed-status collection**: each ADR retains its own status; accepted/active Canonical ADRs bind only within their declared domain; deferred/proposed/superseded/rejected/historical ADRs are inputs or open decisions; implementation authority is `CONTRACT` only for individually binding ADRs, never collection-wide. The Authority Spec's class-C example no longer enumerates the full set and now states that **the `ADR-####` naming convention and directory membership confer no Canonical status**. The Source of Truth Map's technical-question row now requires inspecting the individual ADR's status.
+
+**Preserved unchanged:** **ADR-0024** remains `active` / `canonical` within its retained scope, with legacy-v7 quarantine and current-build execution role intact. **ADR-0025** remains `deferred` / `proposed` — **not promoted**. **PRJ-036** remains `OPEN`. **No domain decision was changed, no paywall decision was made, and no implementation was authorized.**
+
 ## 17. Change history
 
 | Date | Version | Change | By |
 |---|---|---|---|
+| 2026-07-26 | 0.1 (PR-review correction note) | Added §16c recording the **Codex P2** PR-review finding raised *after* promotion: DOC-015 had assigned Canonical status to the whole ADR collection, which **ADR-0025** (`deferred`/`proposed`) falsified. Correction preserves individual ADR statuses; ADR-0024 stays active/Canonical in retained scope; ADR-0025 stays deferred/proposed; PRJ-036 stays `OPEN`. **The original independent-review verdict was not rewritten as though it had found this issue.** | Cloud session (PR-review correction) |
 | 2026-07-26 | 0.1 (post-review application note) | Added §16b: recorded that C1–C5 and E1–E2 were applied, C6–C7 corrected two post-banking count/state defects, DOC-022 and ADR-0024 were patched, and promotion conditions were satisfied. Corrected the inaccurate *"Eleven remaining layers"* figure to **9 remaining at reviewed head `50a8ddd`** and **8 remaining after promotion**. The original verdict is preserved as a **historical** review verdict; the review was not rewritten as though it had reviewed the promoted state. | Cloud session (atomic promotion) |
 | 2026-07-26 | 0.1 | **Created.** Independent sign-off review of the five-file Project Canon package at `50a8ddd`, plus read-only inspection of DOC-022 and ADR-0024. Verdict `READY WITH TARGETED CORRECTIONS` — 0 BLOCKER, 1 MAJOR (stale `DISTRIBUTED` owner in the Coverage matrix), 4 MINOR, 2 EDITORIAL. Verified Q1–Q4 application, PRJ-033 dual-state separation, count integrity against actual rows, ten domain-routing tests (no dual-owner cases), and stale-gate safety. Produced exact five-edit DOC-022 and four-edit ADR-0024 patch plans and the Canonical promotion plan. **No file edited; no patch applied; nothing promoted; no implementation authorized.** | Cloud session (independent sign-off review) |
 

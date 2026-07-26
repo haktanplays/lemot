@@ -151,7 +151,7 @@ This register exists so that **ideas which belong to no completed layer do not d
 | **Ready to author now** | 1 | **PRJ-014 — Mastery & Evidence Bible is Step 1** of the founder-fixed sequence |
 | **Closed by the atomic promotion** | 2 | **PRJ-008** (Canonical) · **PRJ-033** (operationally closed — source patches applied) |
 
-**Cross-references to domain registers (not duplicated here):** Product Brain `PB-###` (DOC-002) · Content Bible `CB-###` (DOC-006) · Social `SOC-001…SOC-034` (DOC-012) · ADRs `ADR-0001…ADR-0025` (DOC-015).
+**Cross-references to domain registers (not duplicated here):** Product Brain `PB-###` (DOC-002) · Content Bible `CB-###` (DOC-006) · Social `SOC-001…SOC-034` (DOC-012) · ADRs `ADR-0001…ADR-0025` (DOC-015 — **mixed-status collection; consult each ADR's own status**).
 
 ## Change log
 

@@ -76,7 +76,7 @@ CLAUDE.md → docs/STATUS.md → docs/DEV_APK_MVP_CANON.md → Cairn v1.0 spec
 | "Bir kavram ne zaman tanıtılmalı?" | **Curriculum Bible** — `DEPENDENCY — DOCUMENT NOT YET AUTHORED` → dur ve bildir |
 | "Kanıt/mastery ne sayılır?" | **Mastery & Evidence Bible** — `DEPENDENCY — DOCUMENT NOT YET AUTHORED` → dur ve bildir |
 | "Sosyal etkileşim?" | **Social Layer Charter v1.0** |
-| "Teknik/system kararı?" | ilgili kabul edilmiş **ADR**'ler (kendi domain'i içinde) |
+| "Teknik/system kararı?" | **ilgili kabul edilmiş/aktif ADR** (kendi declared domain'i içinde). ⚠️ **Her ADR'nin kendi statüsünü kontrol et** (`status` / `canon_status`): `deferred` veya `proposed` ADR'ler **bağlayıcı otorite değil**, input ya da açık karardır (ör. **ADR-0025** paywall — `deferred`/`proposed`, nihai yerleşim açık). |
 | "Şu an ne çalışıyor?" | kaynak kod + testler + STATUS.md + implementation evidence |
 | "Current-build scope nedir?" | **STATUS.md + DEV_APK_MVP_CANON.md** |
 | "Doğrulandı mı?" | testler + cihaz smoke (STATUS) |
