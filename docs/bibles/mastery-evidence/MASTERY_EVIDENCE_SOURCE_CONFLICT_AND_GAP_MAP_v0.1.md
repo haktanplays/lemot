@@ -220,14 +220,22 @@ Canonical proof of neither, and **an ambiguous event may not establish weakness*
 | | |
 |---|---|
 | ADR-0021 member list | **AMENDED 2026-07-26** — scope-amended, **not repealed**; still `active`/`canonical`; the four-bucket Decision preserved verbatim as historical record; the fixed member list is no longer the live rule |
-| The three stale documents (§8.1 table rows 2–4) | **CORRECTED 2026-07-26** — together with four further polarity-family sources found later (see §20) |
+| The three stale documents (§8.1 table rows 2–4) | **CORRECTED 2026-07-26** — together with the **eight later-discovered** polarity-family sources; the complete twelve-file inventory, enumerated path by path, is in **§20.1** |
 | Sandbox code accruing weakness for ambiguous events | **Provisional and non-conforming**; **no code change authorized** |
 | `accent_only`'s French counter-examples (`ou`/`où`, `a`/`à`, `sur`/`sûr`) | **CLOSED 2026-07-26** by the FQ-1 **general tag-polarity clarification** — generalized to every technical tag rather than ruled separately; **no ninth founder question was created** |
 
-**Weakest-member result, re-run under the founder rule.** No universal three-tag polarity claim is made
-any more: `punctuation_only` = precision · `accent_only` = precision **with a stated exception** ·
-`spelling_near_miss` = **undetermined**. The old claim *"precision tags never create weakness"* is
-retired, not repaired. → ME-011, ME-012, ME-032.
+**Weakest-member result, re-run under the FQ-1 general clarification.** No universal three-tag polarity
+claim is made any more, and **no member survives as determinate**: `punctuation_only` =
+**context-dependent** · `accent_only` = **context-dependent** · `spelling_near_miss` =
+**context-dependent**. **0 of 3 tags individually determines polarity**; the set shares no common
+polarity. The old claim *"precision tags never create weakness"* is retired, not repaired. This matches
+Decision Matrix **ME-012** exactly. → ME-011, ME-012, ME-032.
+
+> **Convergence note, not a new decision.** An earlier revision of this paragraph still read
+> `punctuation_only` = precision and `accent_only` = precision *with a stated exception*. That wording
+> predates the **FQ-1 general clarification**, which generalized the meaning-based rule to **every**
+> technical tag and therefore removed the per-tag exception framing. The paragraph is aligned with the
+> already-ratified clarification; **no founder decision was changed here**.
 
 ### 8.2 Bucket count — four or five?
 ADR-0021 and three notes say four. The code implements five (success · precision · spelling near-miss ·
@@ -478,10 +486,12 @@ section is retained as the record of *what was required and how each item was di
    retained; the broken `source_of_truth` path was corrected. Its precision *principle* stands and was
    vindicated.
 2. **`Mastery Model.md` bucket table**, **`Feedback and Scoring Philosophy.md` near-miss line**,
-   **precision-policy §2 table** — **APPLIED 2026-07-26**, together with four further polarity-family
-   sources discovered later (`l0-l24 founder build matrix`, `Exercise Error Matrix`, `Learning Engine
-   Context Pack`, `Mastery Matrix`, `Interaction Patterns`, `Error Tracking System`, `Canonical Context
-   Pack`, `Repository Document Index` — full inventory in §20).
+   **precision-policy §2 table** — **APPLIED 2026-07-26**, together with the following **eight**
+   later-discovered polarity-family sources: `l0-l24 founder build matrix`, `Error Tracking System`,
+   `Exercise Error Matrix`, `Mastery Matrix`, `Interaction Patterns`, `Canonical Context Pack`,
+   `Learning Engine Context Pack`, `Repository Document Index`. Counting ADR-0021 (item 1) and these
+   three initially known companions, the polarity family is **twelve documents**; the complete
+   path-by-path inventory and its derived totals are in **§20.1**.
 3. **"9-state mastery"** — **APPLIED 2026-07-26.** The phrase is retired as a live claim: the
    precision-policy §4 deferral is closed, the Mastery Model gap is resolved, `Unknowns` **U8 is closed**,
    and the Mastery Matrix warning was re-framed. Occurrences that remain are **quoted or visibly
@@ -499,6 +509,24 @@ section is retained as the record of *what was required and how each item was di
 
 ---
 
+## 19. Promotion blockers
+
+1. ~~FQ-1, FQ-6, FQ-8 unanswered~~ — **CLEARED 2026-07-26** (Round 1).
+2. ~~FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 unanswered~~ — **CLEARED 2026-07-26** (Round 2). **All eight answered.**
+3. ~~The `accent_only` exception~~ — **CLEARED** by the FQ-1 general clarification.
+4. ~~Source amendments NOT applied~~ — **CLEARED 2026-07-26.** Eighteen source documents reconciled
+   atomically (§20); both ADRs **scope-amended, not repealed**; all historical wording preserved.
+5. **No independent adversarial review performed** (required, §41 of the Bible). **STILL BLOCKING — and
+   now the only blocker.**
+6. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
+   destination yet. This blocks *completeness*, not promotion, and is recorded as such.
+
+> **Every blocker except one is cleared. The Bible is still not promotable.** Reconciling documentation
+> is **not** implementation and **not** review: no code, schema, tag, threshold, interval, validator or
+> runtime changed, and the independent adversarial review by a non-author has not happened.
+
+---
+
 ## 20. Source reconciliation — final scope and how the count moved
 
 **Applied 2026-07-26 as one atomic patch. The counting history is recorded rather than tidied away,
@@ -508,7 +536,7 @@ because two of the three counts I published were wrong.**
 |---|---|---|
 | Source candidates initially named | **7** | The Round-2 report said *"five documents"* — **wrong**; it collapsed "three vault/status docs" into a phrase and dropped two named paths |
 | Amendment-required among those candidates | **6** | `docs/learning-engine-v1.md` proved to **conform** and was removed from scope |
-| First expanded source scope | **13** | A cross-source audit found **7 further** documents carrying the same three retired claims |
+| First expanded source scope | **13** | A cross-source audit found **7 further** documents carrying the same three retired claims. **This 7 is a cross-family count — it spans all three retired claim families and was never the polarity-family member count** (§20.1) |
 | Further stale sources found *after* the 13 were edited | **5** | The audit that found the 7 searched **phrases, not the claim family**; five more surfaced only on the repository-wide sweep, and the stop rule halted the commit |
 | **Final amendment source scope** | **18** | 15 operator-vault + 3 ordinary `docs/` |
 | Package updates | **4** | Bible · Decision Matrix · this file · Founder Ratification |
@@ -530,20 +558,54 @@ because that list conflated the **`itemRegistry` content status field** with a *
 
 **The five late-discovered sources** (`Mastery Matrix`, `Interaction Patterns`, `Error Tracking System`,
 `Canonical Context Pack`, `Repository Document Index`) were **not** modified until the founder expanded
-the authorization. Two were **agent context packs** — the files a future session loads first.
+the authorization. Two were **agent context packs** — the files a future session loads first. **This 5 is
+a cross-family figure too** — sources found after the 13 had already been edited, across all three retired
+claim families. It partitions the sweep by *when* a source was found; **§20.1 partitions the polarity
+family by membership**. Both are correct and neither is the other.
 
-## 19. Promotion blockers
+---
 
-1. ~~FQ-1, FQ-6, FQ-8 unanswered~~ — **CLEARED 2026-07-26** (Round 1).
-2. ~~FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 unanswered~~ — **CLEARED 2026-07-26** (Round 2). **All eight answered.**
-3. ~~The `accent_only` exception~~ — **CLEARED** by the FQ-1 general clarification.
-4. ~~Source amendments NOT applied~~ — **CLEARED 2026-07-26.** Eighteen source documents reconciled
-   atomically (§20); both ADRs **scope-amended, not repealed**; all historical wording preserved.
-5. **No independent adversarial review performed** (required, §41 of the Bible). **STILL BLOCKING — and
-   now the only blocker.**
-6. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
-   destination yet. This blocks *completeness*, not promotion, and is recorded as such.
+### 20.1 Polarity-family source inventory (FQ-1) — the complete set
 
-> **Every blocker except one is cleared. The Bible is still not promotable.** Reconciling documentation
-> is **not** implementation and **not** review: no code, schema, tag, threshold, interval, validator or
-> runtime changed, and the independent adversarial review by a non-author has not happened.
+**This subsection is the single owner of the polarity-family inventory.** The Bible and the Decision
+Matrix point here rather than restating a count, so the number cannot drift between package files again.
+
+**ADR-0021 — the ADR whose member list was scope-amended (1)**
+
+1. `obsidian-product-brain/ACTIVE_CODEX/09_DECISIONS/ADR-0021 mastery-precision-near-miss-not-failure.md`
+
+**Initially known companion sources (3)** — the three documents named in the §8.1 contradiction table,
+rows 2–4:
+
+2. `docs/status/founder-self-learning-mastery-precision-policy.md` — §2 precision table
+3. `obsidian-product-brain/ACTIVE_CODEX/02_LEARNING_SYSTEM/Mastery Model.md` — bucket table
+4. `obsidian-product-brain/ACTIVE_CODEX/02_LEARNING_SYSTEM/Feedback and Scoring Philosophy.md` — near-miss line
+
+**Later-discovered sources (8)** — found only on the repository-wide claim-family sweep, and **not**
+modified until the founder expanded the authorization:
+
+5. `docs/architecture/l0-l24-founder-build-matrix-v0.md`
+6. `obsidian-product-brain/ACTIVE_CODEX/02_LEARNING_SYSTEM/Error Tracking System.md`
+7. `obsidian-product-brain/ACTIVE_CODEX/03_EXERCISES/Exercise Error Matrix.md`
+8. `obsidian-product-brain/ACTIVE_CODEX/05_MATRICES/Mastery Matrix.md`
+9. `obsidian-product-brain/ACTIVE_CODEX/07_DESIGN/Interaction Patterns.md`
+10. `obsidian-product-brain/ACTIVE_CODEX/11_AGENT_CONTEXT/Canonical Context Pack.md`
+11. `obsidian-product-brain/ACTIVE_CODEX/11_AGENT_CONTEXT/Learning Engine Context Pack.md`
+12. `obsidian-product-brain/ACTIVE_CODEX/95_SOURCE_LEDGER/Repository Document Index.md`
+
+**Derived totals — read off the list above, not carried from any earlier report:**
+
+| Quantity | Value |
+|---|---|
+| Total polarity-family sources | **12** |
+| Sources beyond ADR-0021 | **11** |
+| Later-discovered beyond the three initial companions | **8** |
+
+> **Why this subsection exists.** The same set was previously mis-stated at **four sites across three
+> package files**: *"seven further"* in the Bible (§15) and in Decision Matrix **ME-012**, and *"four
+> further"* twice in this file (§8.1 and §18) — while the member list in §18 already enumerated **eight**
+> later-discovered sources. The wrong numerals were **copied**, never re-derived. The **7** in the stage
+> table above is a *cross-family* count — documents carrying **any** of the three retired claim families —
+> and was never the polarity-family member count. Corrected 2026-07-26 by
+> `docs(mastery): correct polarity inventory and gap ordering`. **No founder decision, no semantic rule,
+> no source document and no runtime behaviour changed in that correction.**
