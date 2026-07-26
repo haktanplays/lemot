@@ -20,11 +20,11 @@ Where every claim in the Bible Draft came from, where sources disagree, and wher
 > |---|---|
 > | Semantic decision | **RESOLVED** — FQ-1…FQ-8, all eight |
 > | Implementation divergence | **UNRESOLVED** — every divergence below is still live |
-> | Downstream source patch | **PENDING** — ADR-0021, ADR-0022, Lesson Flow Canon §5.3, three vault/status docs |
+> | Downstream source patch | **APPLIED 2026-07-26 — 18 source documents** (see §20) |
 > | Engineering decision | **UNAUTHORED** — schemas, fields, algorithms, clearing conditions |
 > | Curriculum decision | **UNAUTHORED** — band strictness, readiness, evidence distribution |
 > | Independent adversarial review | **PENDING** — not performed |
-> | Promotion | **BLOCKED** |
+> | Promotion | **BLOCKED — by the independent review alone** |
 >
 > **A complete semantic decision surface is not a resolved system.** Specifically, as of this round:
 >
@@ -463,11 +463,11 @@ Full form in the Founder Review Surface; the ratification record is
 **Proposed for later amendment — none applied in this task, and none may be applied without founder
 ratification:**
 
-1. **ADR-0021 Decision paragraph** — **REQUIRED, NOT YET APPLIED.** FQ-1 ruled that polarity is
-   meaning-based, so ADR-0021's member list (which places `spelling_near_miss` in Precision) needs a
-   **scope amendment**. **The ADR must be amended, not repealed** — its precision principle stands and
-   was in fact vindicated. **ADR-0021 has not been touched**; amending it is a separate, separately
-   authorized documentation task.
+1. **ADR-0021 Decision paragraph** — **APPLIED 2026-07-26.** Scope-amended, **not repealed**: the
+   original Decision text is preserved verbatim, the fixed three-member list is marked historical, and an
+   appended block states that no tag determines polarity. `status: active` / `canon_status: canonical`
+   retained; the broken `source_of_truth` path was corrected. Its precision *principle* stands and was
+   vindicated.
 2. **`Mastery Model.md` bucket table**, **`Feedback and Scoring Philosophy.md` near-miss line**,
    **precision-policy §2 table** — same correction, three files.
 3. **"9-state mastery"** — **REQUIRED, NOT YET APPLIED.** FQ-5 ruled the phrase `SUPERSEDED` and
@@ -481,17 +481,51 @@ ratification:**
 
 ---
 
+## 20. Source reconciliation — final scope and how the count moved
+
+**Applied 2026-07-26 as one atomic patch. The counting history is recorded rather than tidied away,
+because two of the three counts I published were wrong.**
+
+| Stage | Count | What happened |
+|---|---|---|
+| Source candidates initially named | **7** | The Round-2 report said *"five documents"* — **wrong**; it collapsed "three vault/status docs" into a phrase and dropped two named paths |
+| Amendment-required among those candidates | **6** | `docs/learning-engine-v1.md` proved to **conform** and was removed from scope |
+| First expanded source scope | **13** | A cross-source audit found **7 further** documents carrying the same three retired claims |
+| Further stale sources found *after* the 13 were edited | **5** | The audit that found the 7 searched **phrases, not the claim family**; five more surfaced only on the repository-wide sweep, and the stop rule halted the commit |
+| **Final amendment source scope** | **18** | 15 operator-vault + 3 ordinary `docs/` |
+| Package updates | **4** | Bible · Decision Matrix · this file · Founder Ratification |
+| **Atomic patch total** | **22** | One commit; no partial state |
+
+**Final classification:** vault source files **15** · ordinary `docs/` source files **3** · package
+files **4** · total changed **22** · files under `docs/` **7** (3 source + 4 package).
+
+> **A prior classification error is also recorded:** the read-only plan said *"9 vault + 4 docs."* The
+> correct split of the 13 was **10 vault + 3 docs** — `docs/architecture/l0-l24-founder-build-matrix-v0.md`
+> and `docs/status/founder-self-learning-mastery-precision-policy.md` are ordinary `docs/` paths, not
+> vault paths.
+
+**`docs/learning-engine-v1.md` — inspected in full, left UNCHANGED.** It carries no "9-state" reference,
+no weighting-mechanism claim, and no universal-ladder claim. Its five-state ladder is explicitly labelled
+*planning vocabulary*, states *"This doc does not change the runtime field,"* and supplies its own
+mapping — so it already satisfies FQ-5's projection constraints. It appeared on an earlier amendment list
+because that list conflated the **`itemRegistry` content status field** with a **mastery projection**.
+
+**The five late-discovered sources** (`Mastery Matrix`, `Interaction Patterns`, `Error Tracking System`,
+`Canonical Context Pack`, `Repository Document Index`) were **not** modified until the founder expanded
+the authorization. Two were **agent context packs** — the files a future session loads first.
+
 ## 19. Promotion blockers
 
 1. ~~FQ-1, FQ-6, FQ-8 unanswered~~ — **CLEARED 2026-07-26** (Round 1).
 2. ~~FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 unanswered~~ — **CLEARED 2026-07-26** (Round 2). **All eight answered.**
 3. ~~The `accent_only` exception~~ — **CLEARED** by the FQ-1 general clarification.
-4. **Source amendments NOT applied.** ADR-0021 (member list) · ADR-0022 (weighting clause) · Lesson Flow
-   Canon §5.3 · three vault/status documents · `learning-engine-v1.md:100`. **STILL BLOCKING.**
-5. **No independent adversarial review performed** (required, §41 of the Bible). **STILL BLOCKING.**
+4. ~~Source amendments NOT applied~~ — **CLEARED 2026-07-26.** Eighteen source documents reconciled
+   atomically (§20); both ADRs **scope-amended, not repealed**; all historical wording preserved.
+5. **No independent adversarial review performed** (required, §41 of the Bible). **STILL BLOCKING — and
+   now the only blocker.**
 6. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
    destination yet. This blocks *completeness*, not promotion, and is recorded as such.
 
-> **Rounds 1–2 cleared every founder-question blocker and closed the one item Round 1 opened. Two
-> blockers remain, and the Bible is still not promotable.** Answering every question is not a promotion
-> event — the review and the source patches are separate, and neither has happened.
+> **Every blocker except one is cleared. The Bible is still not promotable.** Reconciling documentation
+> is **not** implementation and **not** review: no code, schema, tag, threshold, interval, validator or
+> runtime changed, and the independent adversarial review by a non-author has not happened.

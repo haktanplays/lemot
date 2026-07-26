@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["CLAUDE.md", "docs/STATUS.md", "docs/DEV_APK_MVP_CANON.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
 related: ["[[00 Le Mot Holy Codex]]", "[[Agent Start Here]]", "[[Agent Do Not Assume List]]", "[[06 Canon and Status Legend]]", "[[08 Source of Truth Map]]"]
 tags: [agent, context, canon]
@@ -110,8 +111,17 @@ Ana evi: [[Storage Architecture]] · [[Data Flow]]. Karar D-10/D-11.
 
 ## Mastery (engine, tested-only)
 Saf `scoreEvents()` → counter-derived `MasterySnapshot`; `WEAK_THRESHOLD=3`; Leitner `[0,1,3,7,30]`;
-prompt-fade PF0–PF3; `monLexiqueStatus` hidden/added/weak; **Challenge = weak-only**;
-near-miss (punctuation/accent/spelling) = **soft signal, asla failure değil**.
+prompt-fade PF0–PF3; `monLexiqueStatus` hidden/added/weak; **Challenge = weak-only**.
+Yukarıdakiler **Axis-B (mevcut kod)** gerçekleridir; **hiçbiri semantik kanon değildir** ve
+**hiçbir sayısal değer founder tarafından ratified değildir** (founder FQ-7: locked exact numbers = 0).
+
+**Semantik kanon (founder FQ-1…FQ-8, 2026-07-26) — routing:** near-miss / precision tag'leri
+**polariteyi tek başına belirlemez**; production bağımsız kullanım için recognition'dan **semantik
+olarak güçlüdür** ama **mevcut reducer'da weighting mekanizması yoktur**; sayaç-türevli projeksiyon
+kaynak-of-truth'tur ve **evrensel mastery merdiveni yoktur**. **Mastery/evidence semantik soruları
+şuraya yönlendirilir:** `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md` (**Draft —
+Canonical DEĞİL**) + `MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` (founder kararları).
+**Kaynak dokümanların uzlaştırılması bir uygulama değildir** — runtime değişmedi.
 Ana evi: [[Mastery Model]]. Karar D-23.
 
 ## YASA'lar (her PR ile biner)

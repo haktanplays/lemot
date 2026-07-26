@@ -198,15 +198,22 @@ Practical taxonomy for L0–L24 only. Two layers, by design:
 | pronoun/particle | "Small word (y, à, de) misplaced or missing" | `ped:particle` | L14: «je vais y» instead of «j'y vais» | det |
 | word order | "Pieces are right, order isn't" | `wrong_order` | L12: «est-ce que» inside the clause | det (build) |
 | negation | "ne…pas placement" | `ped:negation` | L3: «je ne pas comprends» | det |
-| accent/orthography | "Spelling/accent precision" (never a failure early) | `accent_only` / `spelling_near_miss` (precision, NOT weak) | L2: «je suis la» vs «là» | det (already implemented in mastery-v0.2) |
+| accent/orthography | "Spelling/accent precision" — **meaning-preserving only** | `accent_only` / `spelling_near_miss` (**technical tags; polarity is semantic, not tag-determined** — FQ-1) | L2: «je suis la» vs «là» — **meaning-changing, so not automatically precision** | det (mastery-v0.2 buckets exist; semantic classification does not) |
 | sound/listening | "What you heard vs what was said" | `ped:listening` | L8: «où» vs «ou» by ear | det (listen variants) |
 | unknown item / out-of-contract | (never shown to learner as error — content bug) | `overproduction_unseen_form` / `blocked_form_used` / `recognition_only_form_used` | exercise demands an item the lesson doesn't own | det (validator already blocks at content time) |
 | over-literal translation | "Word-for-word English shows through" | `ped:over-literal` + `meaning_shift` | L4: «j'ai besoin» dropped «de» — "I have need a coffee" | det early (traps/reveal); AI-light is the long-term home |
 
-**Rules carried from mastery-precision policy (locked):** precision tags (`accent_only`,
-`punctuation_only`, `spelling_near_miss`) never increment weakness, never demote Leitner box,
-never enable challenge eligibility. `empty_or_skip` is neutral. Learner-facing copy stays a calm
-mirror — no "wrong!", no streak/XP language anywhere in feedback.
+**Rules carried from mastery-precision policy — SCOPE-AMENDED 2026-07-26 (Mastery & Evidence FQ-1):**
+a **meaning-preserving** slip never increments weakness, never demotes the Leitner box and never
+enables challenge eligibility. **The technical tags `accent_only`, `punctuation_only` and
+`spelling_near_miss` do not by themselves establish that a slip was meaning-preserving** — each is
+context-dependent, and an event whose semantic effect is unknown establishes **neither weakness nor
+full precision credit**. `empty_or_skip` is neutral. Learner-facing copy stays a calm mirror — no
+"wrong!", no streak/XP language anywhere in feedback.
+
+*(Historical: this paragraph previously stated the three tags never increment weakness. That fixed
+member list is superseded by the founder rule; the principle it protected — meaning-preserving
+precision is not failure — stands. Authority: `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` §2/§4f. No code or threshold change is authorized.)*
 
 ---
 

@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/learning-engine-v1.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/learning-engine/practice-selector.ts", "lemot-app/content/learning-engine/practice-pool.ts", "lemot-app/content/learning-engine/mastery.ts", "lemot-app/components/DailyReviewOverlay.tsx"]
 test_refs: []
@@ -58,7 +59,9 @@ Her ders yayar: Build / Stretch / Challenge / Daily Review / listening traps / w
 ### Practice Hub seçici önceliği (CANONICAL, `LESSON_FLOW_CANON_v1.md §5.2, :230`)
 "SRS due (eski önce) → en zayıf weakPointTag → yaklaşan entegrasyon dersinin ihtiyaç listesi → çeşitlilik (aynı family ardışık ≤2)". "Bugünün seti" = 5–8 micro-action, 3–5 dk, "a set more?" doğal duraklama (§5.1).
 
-> [!canon] **İki ağırlık asla karışmaz** (§5.3): **EVIDENCE WEIGHT** (mastery çarpanı, mastery reducer'da yaşar) vs **SELECTION WEIGHT** (bugün ne teklif, practice selector'da yaşar). Bkz. [[Content Selection]].
+> [!canon] **İki ağırlık asla karışmaz** (§5.3): **EVIDENCE WEIGHT** (kanıtın semantik gücü) vs **SELECTION WEIGHT** (bugün ne teklif, practice selector'da yaşar). Bkz. [[Content Selection]].
+>
+> **[SCOPE-AMENDED 2026-07-26, founder FQ-2]** Evidence weight'in **mastery reducer'da yaşadığı** iddiası geri çekildi — **reducer'da weighting mekanizması yoktur**. Farklılaşmış evidence strength semantik olarak ratified'dir, kavramsal yeri **admission**'dır, **hiçbir sayısal değer ratified değildir**, uygulama Engineering'indir. **Ayrım ilkesi korunur.**
 
 ### Readiness Gate (CANONICAL, §7 — PLANNED)
 Integration-lesson-only "diagnosis + prescription" gate: `assessReadiness` `{ready, coldItems}` döner; eksik/bozuk veride **FAIL-OPEN** (line 270). Scope-locked: "Readiness gate yalnızca review-integration arketipli derslerde yaşar" (line 287). Build fazı FAZ C. **Kodda yok** (grep 0 hit).

@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/learning-engine/carryover-selector.ts", "lemot-app/content/learning-engine/practice-selector.ts", "lemot-app/content/learning-engine/lexique-memory.ts"]
 test_refs: []
@@ -42,11 +43,11 @@ tags: [learning, selection, carryover]
 
 ## Executive Summary
 
-İçerik seçimi Cairn'in "neyin geri döneceğine hafıza karar versin" sözünün mekaniğidir. İki ayrı seçici vardır: **Carryover Selector** (hangi eski chip'ler bu derse aday) ve **Practice Selector** (bugünün pratik seti). İkisi de mastery'yi bir *sinyal* olarak kullanır ama **asla skor üretmez** — bu, kritik ayrımın kalbidir: **EVIDENCE WEIGHT** (mastery çarpanı, reducer'da) ile **SELECTION WEIGHT** (ne teklif edilecek, selector'da) **asla karışmaz** (`LESSON_FLOW_CANON_v1.md §5.3`). Seçim çok-girdili bir skordur (contextFit, weakness, decay, spiralImportance...), mekanik dump değil.
+İçerik seçimi Cairn'in "neyin geri döneceğine hafıza karar versin" sözünün mekaniğidir. İki ayrı seçici vardır: **Carryover Selector** (hangi eski chip'ler bu derse aday) ve **Practice Selector** (bugünün pratik seti). İkisi de mastery'yi bir *sinyal* olarak kullanır ama **asla skor üretmez** — bu, kritik ayrımın kalbidir: **EVIDENCE WEIGHT** (kanıtın semantik gücü) ile **SELECTION WEIGHT** (ne teklif edilecek, selector'da) **asla karışmaz** (`LESSON_FLOW_CANON_v1.md §5.3`; ayrım korunur). Seçim çok-girdili bir skordur (contextFit, weakness, decay, spiralImportance...), mekanik dump değil.
 
 ## Why It Exists
 
-Naif tasarım her eski chip'i her derse döker (yük patlar) ya da mastery çarpanını doğrudan seçime karıştırır (evidence bozulur). Cairn bunları ayırır: mastery sadece "ne kadar zayıf/güçlü" der; selector "bunu bugün göster/gösterme" der. Bu ayrım, kanıt bütünlüğünü korurken pedagojik esneklik verir.
+Naif tasarım her eski chip'i her derse döker (yük patlar) ya da evidence gücünü doğrudan seçime karıştırır (evidence bozulur). Cairn bunları ayırır: mastery sadece "ne kadar zayıf/güçlü" der; selector "bunu bugün göster/gösterme" der. Bu ayrım, kanıt bütünlüğünü korurken pedagojik esneklik verir.
 
 ## Current Canon
 
@@ -62,7 +63,9 @@ mastery weak; context gerektirir; recall/decay zamanı; yeni pattern ihtiyacı; 
 SRS due (eski önce) → en zayıf weakPointTag → yaklaşan integration ihtiyaç listesi → çeşitlilik (family ardışık ≤2). Bkz. [[Review and Recycling System]].
 
 ### İki ağırlık ayrımı (CANONICAL, §5.3)
-> [!canon] **EVIDENCE WEIGHT** = mastery çarpanı, mastery reducer'da yaşar (kanıtı nasıl tartıyoruz). **SELECTION WEIGHT** = bugün ne teklif edilecek, practice selector'da yaşar (ne gösteriyoruz). **İkisi asla karışmaz.** `practice-selector.ts` "SELECTION weight only ... never scores anything".
+> [!canon] **EVIDENCE WEIGHT** = kanıtı nasıl tartıyoruz. **SELECTION WEIGHT** = bugün ne teklif edilecek; `practice-selector.ts`'te yaşar ("SELECTION weight only ... never scores anything"). **İkisi asla karışmaz** — ayrım bağlayıcıdır.
+>
+> **[SCOPE-AMENDED 2026-07-26, founder FQ-2]** Evidence weight'in **mastery reducer'da yaşadığı** iddiası geri çekilmiştir: **mevcut reducer hiçbir weighting mekanizması içermez.** Farklılaşmış evidence strength **semantik olarak ratified**tir (production, bağımsız kullanım için recognition'dan güçlüdür; recognition tek başına en güçlü mastery iddiasına veya en uzun aralığa ulaşamaz) ve kavramsal yeri **admission**'dır. **Hiçbir sayısal ağırlık ratified değildir**; uygulama Engineering'e aittir. Yetki: `MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` §4a.
 
 ### Rolling window (CANONICAL)
 "The global learned chip graph can grow indefinitely" ama "the active carryover window should peak / roll, not grow linearly forever" (`v0.3:380-381`). Recycle Load Protection: target load baskın, recycle destekleyici, exposure capped (`v0.3:388-390`). Bkz. [[Difficulty and Cognitive Load]].

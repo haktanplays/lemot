@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["lemot-app/content/learning-engine/events.ts:31-47", "cairn_build/evidence/03_exercises.md", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Learning_Engine_and_Exercise_Types.md"]
 code_refs: ["lemot-app/content/learning-engine/events.ts:31-47", "lemot-app/content/learning-engine/error-engine.ts"]
 test_refs: []
@@ -53,7 +54,7 @@ Kısaltmalar: cor=correct, av=accepted_variant, punc=punctuation_only, acc=accen
 
 - **v1 emit yok:** Fill/Weave/SayIt doğruluğu lokal hesaplar, `ErrorTagCode` üretmez (Evidence Pack 03 §6, IMPLEMENTED gerçek). Runtime sütunu bu yüzden çoğunlukla `none`/`UNKNOWN`.
 - **Weave open weaves gradesiz (W1):** `matchExpected` → `none` bir *compare* durumudur, hata değil; error-tag emit edilmez. Bkz. [[Weave]].
-- **Precision near-miss** (`punctuation_only`, `accent_only`, `spelling_near_miss`) = soft signal, asla failure (mastery bucket'ı, `mastery.ts`). Yalnız yazım-tipi egzersizlerde doğar. Bkz. [[Mastery Model]].
+- **Precision / near-miss tag'leri** (`punctuation_only`, `accent_only`, `spelling_near_miss`) yalnız yazım-tipi egzersizlerde doğar. **[SCOPE-AMENDED 2026-07-26, founder FQ-1]** Bunlar **teknik tag**'lerdir ve **polariteyi tek başlarına belirlemezler**: anlamı koruyan kayma precision'dır, anlamı değiştiren ikame negatif kanıt olabilir, ve **anlamı bilinmeyen olay ne weakness ne de tam precision kredisi kurar**. Kodda (`mastery.ts`) bugün `punctuation_only`/`accent_only` precision bucket'ında, `spelling_near_miss` ayrı bir bucket'ta `weakTags` biriktirir (Axis-B; audit B7). Bkz. [[Mastery Model]].
 - **Selection-tipi egzersizler** yazım hatası (punc/acc/spell) doğuramaz — sadece `wrong_item`.
 - `grade()` "safe deterministic subset (12 of 16)" emit eder; `wrong_item`/`overproduction_unseen_form`/`meaning_shift` registry-aware adaptör gerektirir (`p0-p2-checkpoint.md:70-72`). Mastery reducer her tag'i generic işler → superset ilişkisi, gap değil.
 

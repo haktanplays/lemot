@@ -1,7 +1,7 @@
 ---
 title: Cairn Mastery & Evidence Bible
 version: 1.0
-status: Draft — all eight founder questions answered; awaiting source amendments and independent adversarial review
+status: Draft — all eight founder questions answered and all source amendments applied; awaiting independent adversarial review
 authority: Proposed semantic owner for evidence and mastery. This document has NO independent authority. Every normative line is either inherited from a named upstream authority or marked `PROPOSED FOR FOUNDER RATIFICATION`.
 owner: Mastery & Evidence
 created: 2026-07-26
@@ -35,12 +35,12 @@ partially_supersedes: []
 > compensating record · **FQ-7** lock promises, keep every number tunable · **FQ-8** domain-wide scope.
 > All are marked `INHERITED — FOUNDER DECISION` below.
 >
-> **This document is still Draft.** Answering every question did **not** promote it. Three promotion
-> prerequisites remain unmet: the **independent adversarial review** has not been performed, the
-> **ADR-0021 and source amendments** have not been applied, and no statement here may become an
-> implementation authorization. **Zero exact numeric values were founder-locked.** No ADR, code,
-> schema, tag, test, validator, threshold or runtime file was changed, and no implementation was
-> opened.
+> **This document is still Draft.** Answering every question did **not** promote it, and neither did
+> reconciling the sources. **Source amendments: APPLIED (2026-07-26, 18 documents).** **One promotion
+> prerequisite remains unmet: the independent adversarial review has not been performed.** No statement
+> here may become an implementation authorization. **Zero exact numeric values were founder-locked.**
+> No code, schema, tag, test, validator, threshold, interval or runtime file was changed, and no
+> implementation was opened.
 
 > **Reading rule.** Every normative statement carries a provenance tag. A statement tagged
 > `CURRENT REALITY — AXIS B` describes *what the code does today*. It is **not** a decision, and
@@ -1116,8 +1116,11 @@ Before this Bible may be promoted Draft → Canonical, **all** of the following 
    Rounds 1 and 2 (2026-07-26).**
 1b. The **ADR-0021 scope amendment** required by FQ-1, and the **ADR-0022 / Lesson Flow Canon §5.3
    amendments** required by FQ-2's retirement of the "weighting mechanism exists" claim, have been
-   applied by a separately authorized documentation task. **NOT MET — no ADR or canon source was
-   amended.**
+   applied by a separately authorized documentation task. **MET — 2026-07-26. Eighteen source documents
+   reconciled** (15 operator-vault + 3 `docs/`), both ADRs **scope-amended, not repealed**, all historical
+   wording preserved. `docs/learning-engine-v1.md` was inspected in full and left **unchanged** because
+   it already conforms. **Reconciling documentation is not implementation: no code, schema, tag,
+   threshold, interval, validator or runtime changed.**
 2. Every `ME-###` row with `founder decision required = yes` has a recorded decision or an explicit
    deferral.
 3. Every universal claim in this document has a completed member audit or is downgraded.

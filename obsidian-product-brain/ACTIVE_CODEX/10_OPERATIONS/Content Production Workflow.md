@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/CONTENT_FACTORY_CONTRACT.md", "docs/PAYLOAD_ECONOMY_v0.md", "docs/canon/LESSON_FLOW_CANON_v1.md", "docs/ROADMAP.md"]
 code_refs: ["lemot-app/content/lessons/v1/", "lemot-app/content/itemRegistry.ts", "lemot-app/content/lessonTypes.ts"]
 test_refs: ["lemot-app/content/learning-engine/*"]
@@ -82,7 +83,7 @@ Dört yeşil: `typecheck`, `validate:content`, `validate:pools`, `test:learning-
 
 ### Training Content Factory (deriveDrill + selector)
 - **deriveDrill** (fail-closed) — item + screen-type template → deterministik üretim ("bu chip'i bir fill formuna dök"), elle yazılmış statikler yerine (D-25, #179).
-- **practice selector v0** — canon 5.2 order: SRS-due → weakest tag → upcoming integration need → variety. **Evidence weight** (mastery çarpanı) ile **selection weight** (bugün ne gösterilecek) ayrı modüller, asla karışmaz.
+- **practice selector v0** — canon 5.2 order: SRS-due → weakest tag → upcoming integration need → variety. **Evidence weight** (kanıtın semantik gücü) ile **selection weight** (bugün ne gösterilecek) **asla karışmaz**. **[SCOPE-AMENDED 2026-07-26, founder FQ-2]**: evidence strength semantik olarak ratified, kavramsal yeri **admission**; **mevcut mastery reducer'da weighting mekanizması yok**; **hiçbir sayısal ağırlık ratified değil**; uygulama Engineering'e ait.
 
 ### Payload Economy pointer (§7)
 Item-katmanı kararları `docs/PAYLOAD_ECONOMY_v0.md` (locked 2026-07-04): her adayı eklemeden önce **engine/payload/ghost/pool** olarak sınıflandır. NEW closed **survival-formula** class (`je ne comprends pas`, `vous pouvez répéter ?`); `PROTECTED_CHUNKS` 2'de frozen; `oui` producible ANSWER olarak rehabilite.

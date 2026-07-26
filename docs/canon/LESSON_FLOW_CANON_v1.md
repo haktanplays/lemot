@@ -233,10 +233,20 @@ yaklaşan entegrasyon dersinin ihtiyaç listesi (§7 bağı) → çeşitlilik (a
 ### 5.3 İki ağırlık — KARIŞTIRILMAZ
 
 ```text
-EVIDENCE WEIGHT  → kanıtın mastery çarpanı (yeri: mastery reducer)
+EVIDENCE WEIGHT  → kanıtın semantik gücü   (yeri: admission — SEMANTİK, henüz uygulanmadı)
 SELECTION WEIGHT → bugün ne sunulacak      (yeri: practice selector)
-Biri puanlama, biri sıralama. Ayrı modül, ayrı test.
+Biri puanlama, biri sıralama. Ayrı sorumluluk, ayrı test.
 ```
+
+> [!canon] **SCOPE-AMENDED 2026-07-26 (Mastery & Evidence FQ-2).** Bu bloğun önceki hâli evidence
+> weight'in yerini **"mastery reducer"** olarak gösteriyordu. **Bu iddia geri çekilmiştir: mevcut
+> mastery reducer hiçbir weighting mekanizması içermez.** Ayrım ilkesi (**evidence weight ≠ selection
+> weight**) **tam olarak korunur** ve bağlayıcıdır. Farklılaşmış evidence strength semantik olarak
+> ratified'dir — production, bağımsız kullanım için recognition'dan güçlüdür; recognition-only kanıt
+> tek başına en uzun aralığa veya en güçlü mastery iddiasına ulaşamaz — ve kavramsal yeri
+> **admission**'dır. Kesin algoritma **Engineering**'e aittir. Bu tasarım kanonu **kod
+> yetkilendirmez** (bkz. Kapsam duvarı). Yetki:
+> `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` §4a.
 
 ### 5.4 Eligibility: yalnız AKTİF (ve olgun recycled) chip'ler egzersiz olur;
 future/ghost sorgulanmaz (§3 4-tip hariç); terfi çizgisi: tohum → aktif → Hub-eligible.
@@ -248,6 +258,12 @@ type LessonEvidenceProfile = { listening: number; production: number; recognitio
 // toplam 1.0; ağırlık ÇARPANDIR, egzersiz ADEDİ değil.
 // %30 listening = 18 listening egzersizi DEĞİL; 2 kanıta 0.30 çarpan.
 ```
+
+> [!warning] **Bu sayılar ILLUSTRATIVE ADAY DEĞERLERDİR (2026-07-26).** **Hiçbiri founder tarafından
+> ratified değildir** ve **hiçbiri mevcut mastery reducer'da uygulanmamıştır** (reducer'da weighting
+> yoktur). Korunan ilke şudur: **production ve recognition farklı kanıt gücü taşıyabilir** — founder
+> FQ-2 bunu doğrular. Kesin değerler **tunable** kalır ve Engineering'e aittir (founder FQ-7:
+> founder-locked exact numeric values = **sıfır**).
 
 ---
 

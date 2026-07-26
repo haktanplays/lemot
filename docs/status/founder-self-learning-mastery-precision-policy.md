@@ -4,6 +4,15 @@
 **`main` HEAD at write time:** `203f817`
 **Scope:** Foundation behavior of the local mastery reducer (`content/learning-engine/mastery.ts`).
 **Status:** Foundation precision policy **implemented**; staged strictness **documented, not implemented**.
+**PARTIALLY SUPERSEDED — 2026-07-26.** This remains a **dated historical status record of what landed on
+2026-06-04** and its body is preserved as evidence. Two parts no longer state current canon:
+(a) the **four-bucket semantics and the fixed three-tag precision list** in §2 are **superseded by
+founder decision FQ-1** — polarity is determined by semantic effect, no technical tag decides it, and an
+event whose meaning is unknown establishes neither weakness nor full precision credit;
+(b) §4's *"should be reconciled in a later docs pass"* item is **CLOSED by founder decision FQ-5** —
+counters are the source of truth and **"9-state mastery" is `SUPERSEDED`**, not pending.
+Authority: `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` §2, §4d, §4f.
+**No code, threshold, tag or runtime change is authorized by this note.**
 
 > Code + docs alignment patch. Touches only the pure mastery reducer and this note — no
 > renderer/route/event/`LearningEvent`/`LocalRepository`/session-controller/`grade()`/validator/
@@ -29,6 +38,12 @@ as a **full failure**: it incremented `wrongCount` / `productionFailure` / `reco
 **prompt-fade level** down.
 
 ## 2. New foundation behavior
+
+> [!historical] **Superseded semantics (2026-07-26).** Everything in this section is the behaviour
+> **as designed on 2026-06-04**. It was later changed in code by audit **B7** / PR-E1 #193 (which
+> removed `spelling_near_miss` from the precision set), and superseded in **semantics** by founder
+> decision **FQ-1**: a **technical bucket does not settle pedagogical polarity**. Current code uses
+> **five** technical result buckets. Preserved verbatim below as the original record.
 
 `event.result` is now classified into **four** buckets:
 
@@ -82,6 +97,12 @@ These levers would likely live as a small policy function over `(event, item, le
 keeping the reducer pure and deterministic.
 
 ## 4. Mastery model note (9-state vs counter-derived)
+
+> [!canon] **CLOSED 2026-07-26 by founder decision FQ-5.** The reconciliation this section defers is
+> **settled**: counter-derived evidence projection **is** the semantic source of truth; **no universal
+> named mastery ladder exists**; the phrase **"9-state mastery" is `SUPERSEDED`**. Purpose-specific
+> projections remain allowed only where they name their purpose and mapping. **No "later docs pass" is
+> outstanding.** The paragraph below is preserved as the 2026-06-04 record.
 
 Some conceptual material elsewhere describes mastery as a **"9-state"** progression. That language is
 **conceptual only**. The **source of truth today is the counter-derived `MasterySnapshot`** produced by

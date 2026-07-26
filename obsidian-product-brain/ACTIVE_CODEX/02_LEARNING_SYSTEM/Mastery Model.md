@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["lemot-app/content/learning-engine/mastery.ts", "docs/founder-self-learning-mastery-precision-policy.md"]
 code_refs: ["lemot-app/content/learning-engine/mastery.ts:26-36", "lemot-app/content/learning-engine/mastery.ts:273-297", "lemot-app/content/learning-engine/events.ts"]
 test_refs: ["lemot-app/content/learning-engine/**/mastery*.test.ts"]
@@ -67,12 +68,21 @@ Mastery, "neyin geri döneceğine hafıza karar versin" sözünün motorudur. Am
 - **Snapshot her çalıştırmada event'lerden yeniden hesaplanır, persist edilmez** → `MASTERY_SNAPSHOT_VERSION` `v0.1 → v0.2`, "no migration is required" (precision-policy.md:96-98).
 
 ### Near-miss / precision politikası (IMPLEMENTED, 2026-06-04)
-Önceden **tüm near-miss = tam başarısızlık** (HISTORICAL). Şimdi 4-bucket sınıflandırıcı:
+Önceden **tüm near-miss = tam başarısızlık** (HISTORICAL). Kod bugün **beş teknik result bucket**
+kullanır (aşağıdaki tablo Axis-B'dir).
+
+> [!canon] **SCOPE-AMENDED 2026-07-26 (founder FQ-1).** **Hiçbir bucket sayısı evrensel mastery modeli
+> değildir ve hiçbir teknik tag polariteyi tek başına belirlemez.** Semantik polarite **bağlamsaldır**:
+> anlamı koruyan kayma precision'dır; anlamı değiştiren ikame negatif kanıt olabilir; **semantik etkisi
+> bilinmeyen bir olay ne weakness ne de tam precision kredisi kurar.** Bu `punctuation_only`,
+> `accent_only`, `spelling_near_miss` ve gelecekteki her tag için geçerlidir. Aşağıdaki tablo **mevcut
+> kodu** tarif eder, kanonik anlamı değil.
 
 | Bucket | Tag'ler | Etki |
 |---|---|---|
 | **Success** | `correct`, `accepted_variant` | success sayacı; kutu + prompt-fade **ilerler** |
-| **Precision / near-miss** | `punctuation_only`, `accent_only`, `spelling_near_miss` | **soft signal** |
+| **Precision (kod)** | `punctuation_only`, `accent_only` | soft signal — *polarite yine de semantiktir* |
+| **Spelling near-miss (kod)** | `spelling_near_miss` | kredi yok, indirme yok, ama **`weakTags` biriktirir** (audit B7) — **founder FQ-1 ile anlamın bilinmediği yerde non-conforming** |
 | **Skip** | `empty_or_skip` | `skipCount++`, nötr |
 | **Failure** | diğer tüm `ErrorTagCode` | failure sayacı; weakTags; kutu + prompt-fade **iner** |
 
@@ -91,7 +101,7 @@ Snapshot stateless-türetilir: events → reducer → snapshot, her çalıştır
 
 ### Guardrails
 - Karpathy purity: `now` bir parametre; engine'de `Date.now`/`Math.random` yok.
-- Precision asla failure değil.
+- **Anlamı koruyan** precision asla failure değildir — ama **teknik tag polariteyi belirlemez** (founder FQ-1, 2026-07-26).
 - recognition tek başına Mon Lexique'e eklemez.
 
 ## Diagrams
@@ -108,7 +118,7 @@ flowchart LR
   Fail --> Snap
   Snap --> Proj["monLexiqueStatus · practiceEligibility · dueAt"]
 ```
-Her event dört bucket'tan birine düşer; yalnızca gerçek başarı/başarısızlık kutuyu oynatır. Snapshot, sayaçlardan Mon Lexique ve Practice projeksiyonlarını türetir.
+Kodda her event **beş teknik bucket**'tan birine düşer; yalnızca gerçek başarı/başarısızlık kutuyu oynatır. Snapshot, sayaçlardan Mon Lexique ve Practice projeksiyonlarını türetir. **Teknik bucket ≠ semantik polarite** (founder FQ-1).
 
 ## Runtime Implementation
 ### Code References
@@ -122,7 +132,7 @@ Engine unit testleri (mastery reducer). Cihaz doğrulaması **YOK**.
 
 ## Known Gaps
 - v1 renderer event yaymaz → mastery canlı beslenmez (integration blocker).
-- 9-state dili ile sayaç modeli docs-drift olarak uzlaştırılmadı.
+- ~~9-state dili ile sayaç modeli docs-drift olarak uzlaştırılmadı.~~ **RESOLVED 2026-07-26 (founder FQ-5):** sayaç-türevli projeksiyon semantik kaynak-of-truth'tur; **evrensel adlandırılmış mastery merdiveni yoktur**; "9-state mastery" `SUPERSEDED`. Amaç-adlı türetilmiş projeksiyonlar (Mon Lexique, Practice, Curriculum readiness, UX) **amacını ve eşlemesini belirtmek koşuluyla** serbesttir ve hiçbiri evrensel değildir.
 - Staged strictness DEFERRED.
 
 ## Open Questions
@@ -137,7 +147,7 @@ Engine unit testleri (mastery reducer). Cihaz doğrulaması **YOK**.
 - **Bir item'ı göstermek, bir model answer'ı açmak veya bir dersi tamamlamak tek başına mastery kurmaz** (Non-Signals: completion ≠ mastery · reveal ≠ anlama · display ≠ ownership · AI övgüsü ≠ validation — [[Error Tracking System]]).
 - **`recycled` bir query-time ders rolüdür**, kalıcı saklanan bir mastery statüsü **değildir** (`carryover-selector.ts`: recycled = query-time rol, mastery mutasyonu değil).
 - **recognition tek başına Mon Lexique'e eklemez** (`productionSuccess > 0` gerekir; mastery.ts:283-288).
-- **Precision-only asla failure değildir** (yukarıdaki 4-bucket precision politikası); `isWeak` yapmaz, kutu/PF indirmez.
+- **Anlamı koruyan precision asla failure değildir**; `isWeak` yapmaz, kutu/PF indirmez. **[SCOPE-AMENDED 2026-07-26, founder FQ-1]** Bu, bir *tag listesi* iddiası değil bir *anlam* iddiasıdır: `punctuation_only`/`accent_only`/`spelling_near_miss` tek başına precision kanıtlamaz ve **anlamı bilinmeyen olay ne weakness ne de tam precision kredisi kurar.**
 - Mastery **saklanan durum makinesi değildir** — event log üzerinden her çalıştırmada yeniden türetilir (counter'lar kazanır).
 
 ### Decay boundaries [LOCKED DEFAULT / TUNABLE PARAMETER]

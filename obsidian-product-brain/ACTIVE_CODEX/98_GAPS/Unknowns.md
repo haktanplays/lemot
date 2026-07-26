@@ -9,8 +9,9 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-17
-last_reviewed: 2026-07-17
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/KNOWN_GAPS.md", "docs/STATUS.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
 related: ["[[Contradictions]]", "[[Needs Verification]]", "[[05 Open Loops]]", "[[Deferred Decisions]]", "[[Missing Source Inputs]]", "[[Known Gaps]]"]
 tags: [gap, unknown, open-loop]
@@ -29,7 +30,7 @@ tags: [gap, unknown, open-loop]
 - [U5 — Mon Lexique'in public'e ne zaman açılacağı](#u5-mon-lexiquein-publice-ne-zaman-açılacağı)
 - [U6 — Canonical itemId migration timing (colon vs hyphen)](#u6-canonical-itemid-migration-timing-colon-vs-hyphen)
 - [U7 — Completion strictness / canonical completion unit (D6)](#u7-completion-strictness-canonical-completion-unit-d6)
-- [U8 — "9-state mastery" vs counter-derived snapshot uzlaşması](#u8-9-state-mastery-vs-counter-derived-snapshot-uzlaşması)
+- [U8 — "9-state mastery" vs counter-derived snapshot uzlaşması — **RESOLVED 2026-07-26**](#u8-9-state-mastery-vs-counter-derived-snapshot-uzlaşması)
 - [U9 — Repair-kit canon kararı (spine narrowness R-B)](#u9-repair-kit-canon-kararı-spine-narrowness-r-b)
 - [U10 — L1 chip listesi (deliberately NOT finalized)](#u10-l1-chip-listesi-deliberately-not-finalized)
 - [U11 — oui nihai statüsü (R2)](#u11-oui-nihai-statüsü-r2)
@@ -75,6 +76,21 @@ completion unit ne? Daily Review ne zaman available olur? Progress ne zaman lega
 24-ders/264-section taksonomisini göstermeyi bırakır? → [[Data Flow]], [[Progress]].
 
 ## U8 — "9-state mastery" vs counter-derived snapshot uzlaşması
+
+> [!canon] **RESOLVED — 2026-07-26** (founder decision FQ-5). Artık açık bir soru değildir.
+>
+> - **Sayaç-türevli (counter-derived) evidence projeksiyonu semantik kaynak-of-truth'tur.**
+> - **Evrensel, saklanan bir mastery merdiveni YOKTUR.**
+> - **"9-state mastery" ifadesi `SUPERSEDED`**tir.
+> - **Amaç-özel projeksiyonlar serbesttir** (Mon Lexique · Practice · Curriculum readiness ·
+>   learner-facing UX) — ancak her biri **amacını ve snapshot'tan eşlemesini belirtmek**, **evrensel
+>   mastery durumu olduğunu iddia etmemek** ve **başka bir projeksiyonun yerine geçmemek** zorundadır.
+> - Mevcut sekiz Lexique lifecycle statüsü **evrensel sözlük olarak kabul edilmemiştir.**
+>
+> Yetki: `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` §4d.
+> **Hiçbir kod, şema veya runtime değişikliği yetkilendirilmemiştir.**
+
+**Historical record (pre-2026-07-26, preserved):**
 9-state mastery dili conceptual/docs-drift; counter'lar kazanır ama "later docs pass"'te
 uzlaştırılacak — ne zaman/nasıl belirsiz. → [[Mastery Model]].
 

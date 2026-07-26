@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/engineering/karpathy.md", "docs/canon/LESSON_FLOW_CANON_v1.md", "docs/ROADMAP.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
 related: ["[[Canonical Context Pack]]", "[[Learning Engine Architecture]]", "[[Mastery Model]]", "[[Error Tracking System]]", "[[Self-Producing Engine]]"]
 tags: [agent, context, learning-engine]
@@ -53,9 +54,13 @@ Her modül: **PURE** (storage/network/React/AI/gizli state yok) · **DETERMINIST
 ## Mastery modeli (D-23, foundation IMPLEMENTED/tested; wiring DEFERRED)
 Saf `scoreEvents()` → `MasterySnapshot`. `WEAK_THRESHOLD=3`. Leitner box interval `[0,1,3,7,30]`.
 Prompt-fade PF0–PF3. `monLexiqueStatus`: hidden/added/weak. **Challenge = weak-only**; precision-only item Build-only.
-**Near-miss precision** (`punctuation_only`/`accent_only`/`spelling_near_miss`) = **soft signal**:
-`precisionCount`/`precisionTags` yazar; wrongCount artırmaz; `isWeak` yapmaz; Leitner box/prompt-fade düşürmez;
-Mon Lexique'e otomatik eklemez. Staged strictness (L60/L70+, monolingual) **DEFERRED**. `MASTERY_SNAPSHOT_VERSION`: `v0.2` (her koşuda recompute, migration yok).
+**Near-miss / precision tag'leri** (`punctuation_only`/`accent_only`/`spelling_near_miss`) —
+**[SCOPE-AMENDED 2026-07-26, founder FQ-1]**: bunlar **teknik tag**'lerdir, polariteyi tek başlarına
+belirlemezler. **Anlamı koruyan** kayma precision'dır (`precisionCount`/`precisionTags` yazar;
+wrongCount artırmaz; `isWeak` yapmaz; Leitner box/prompt-fade düşürmez; Mon Lexique'e otomatik
+eklemez). **Anlamı değiştiren** ikame negatif kanıt olabilir. **Anlamı bilinmeyen olay ne weakness ne
+de tam precision kredisi kurar.** Axis-B: kodda `punctuation_only`/`accent_only` precision,
+`spelling_near_miss` ise `weakTags` biriktirir (audit B7). Staged strictness (L60/L70+, monolingual) **DEFERRED**. `MASTERY_SNAPSHOT_VERSION`: `v0.2` (her koşuda recompute, migration yok).
 
 ## Error tracking (D-15)
 **16-değerli `ErrorTagCode`** union; `weakTags`/`precisionTags`/`resultTag` = learner-evidence key'leri;
@@ -80,7 +85,7 @@ oku; **sahte `lm7` bridge marker YAZMA**. Ana evi: [[Data Flow]].
 ## Deterministik drill derivation (D-25, shipped #179)
 Hub egzersizleri **DERIVED** (item + screen-type template → deterministik "chip'i fill formuna dök"),
 elle statik değil. `deriveDrill` fail-closed + practice selector v0 (order: SRS-due → weakest tag →
-upcoming integration need → variety). **Evidence weight ≠ selection weight** (ayrı modüller, asla karışmaz).
+upcoming integration need → variety). **Evidence weight ≠ selection weight** (asla karışmaz — ayrım korunur). **[SCOPE-AMENDED 2026-07-26, founder FQ-2]**: farklılaşmış evidence strength **semantik olarak ratified**tir (production > recognition, bağımsız kullanım için) ve kavramsal yeri **admission**'dır; ancak **mevcut mastery reducer'da hiçbir weighting mekanizması yoktur** ve **hiçbir sayısal ağırlık ratified değildir** (`lexique-memory.ts` değerleri yalnız aday). Uygulama Engineering'e aittir.
 Ana evi: [[Self-Producing Engine]] · [[Content Selection]].
 
 ## Kanon ama IMPLEMENTATION ertelenmiş (dikkat: motor var ≠ bağlı)
