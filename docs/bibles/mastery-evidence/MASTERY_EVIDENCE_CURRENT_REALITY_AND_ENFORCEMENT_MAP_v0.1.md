@@ -13,10 +13,11 @@ axis: B (current implementation reality)
 **This file is Axis B only.** It records what the repository contains **today**. Nothing here is a
 semantic ruling, and promoting the Bible does **not** canonize anything in this file.
 
-> **Round 1 founder decisions (2026-07-26) changed no fact in this file.** Every runtime description
-> below is unchanged. Three **divergence annotations** were added, marked `⚠ DIVERGENCE`, recording
-> where current behaviour differs from newly-ratified semantics. **No runtime correction was
-> authorized**, and none was made.
+> **Rounds 1–2 founder decisions (2026-07-26) changed no fact in this file.** All eight questions are
+> answered; **every runtime description below is unchanged**. Only `⚠ DIVERGENCE` annotations were
+> added, recording where current behaviour differs from ratified semantics. **No runtime correction was
+> authorized**, and none was made. A `⚠ DIVERGENCE` marker is a record of non-conformance, **never a
+> work item**.
 
 Two words are used strictly:
 
@@ -123,7 +124,15 @@ Intent-or-implementation: implementation. Future owning layer: Engineering.
 `practiceEligibility`. Snapshot version `mastery-v0.2`. All counters are monotone increments; only
 `leitnerBox` and `promptFadeLevel` decrease.
 
-Source: `mastery.ts:45-80`. Tested. Not shipped. Future owner: Mastery & Evidence.
+Source: `mastery.ts:45-80`. Tested. Not shipped.
+
+**⚠ DIVERGENCE (added 2026-07-26).** Founder FQ-4 ratified a split between **`currently weak`
+(recoverable)** and **`ever weak` (persistent caution)**. **Neither exists.** Because every counter is a
+monotone increment, once `wrongCount >= 3` an item is weak **permanently**, regardless of later success
+— **weakness is permanent due to monotone counters**. The founder confirmed this is **Axis-B reality,
+not intended semantics**. Of five weakness members (current · historical · repair completed · spaced
+confirmation completed · chronic), **0 of 5 are represented**. **No code change was authorized.**
+Future owner: Mastery & Evidence (semantics) / Engineering + Curriculum (clearing conditions).
 
 ## 6. Weak thresholds
 
@@ -170,7 +179,15 @@ domain enforced at build time in a shipping configuration.** Future owner: Engin
 
 `PF_LEVELS = ["PF0","PF1","PF2","PF3"]`, `MAX_PF_INDEX = 3`; +1 on success, −1 on failure, unchanged
 on precision / spelling near-miss / skip. Source `mastery.ts:34-40, 219-272`. Tested. Not shipped.
-Carried on the event as `promptLevel`. Future owner: Mastery & Evidence.
+Carried on the event as `promptLevel`.
+
+**⚠ DIVERGENCE (added 2026-07-26).** Founder FQ-3 ratified that **assistance changes what a success
+proves** and that **prompt-fade history is not a substitute for attempt-level assistance attribution**.
+**Assistance is not captured**: of eight assistance members (unaided · hint L1 · hint L2 · reveal ·
+model answer · prompt-fade history · AI support · unknown), **only prompt-fade reaches the event — 1 of
+8 — and the founder rule explicitly rules it insufficient.** The level count is `TUNABLE` (FQ-7) and
+**not founder-ratified**. **No field was added and none was authorized.**
+Future owner: Mastery & Evidence (semantics) / Engineering + UX (fields, representation).
 
 ## 10. Due-date behaviour
 
@@ -186,10 +203,14 @@ A precision event increments `precisionCount` and `precisionTags` and the releva
 touches nothing else. **Member audit: both members read; `spelling_near_miss` verified absent from the
 set.** Divergence: §4 above.
 
-**⚠ DIVERGENCE (added 2026-07-26).** The set is defined by *tag*, not by *meaning*. Under FQ-1 that is
-the wrong axis: `accent_only` is treated as unconditionally precision, but French counter-examples
-(`ou`/`où`, `a`/`à`, `sur`/`sûr`) are meaning-changing and the tag cannot distinguish them. **Recorded
-as a fact and a new open item; no code change authorized.** Future owner: Mastery & Evidence.
+**⚠ DIVERGENCE (added 2026-07-26, widened by the FQ-1 clarification).** The set is defined by *tag*,
+not by *meaning*. Under FQ-1 as clarified that is the wrong axis for **every** member: `accent_only` is
+treated as unconditionally precision, but `ou`/`où`, `a`/`à`, `sur`/`sûr` are meaning-changing;
+**`punctuation_only` must likewise be evaluated against the authored target**, because punctuation can
+change the communicative act. **Tag classification is too coarse for founder semantics — 0 of 3 tags is
+individually determinate.** The Round-1 `accent_only` open item is **closed by generalization**.
+**Recorded as fact; no code change authorized.** Future owner: Mastery & Evidence (semantics) /
+Content + Engineering (classification, unauthored).
 
 ## 12. Skip handling
 
@@ -202,7 +223,14 @@ null, empty, or whitespace-only answer. Tested. Not shipped. Future owner: Maste
 is counted as recognition**, including — defensively — any reveal or non-production operation.
 A recognition success advances box and prompt-fade **identically** to a production success.
 Divergence: canon asserts differential evidence weight (ADR-0022, Lesson Flow Canon §5.3/§5.5); the
-reducer has none. Future owner: Mastery & Evidence (FQ-2).
+reducer has none.
+
+**⚠ DIVERGENCE (added 2026-07-26).** Founder FQ-2 ratified that **production is stronger than
+recognition for independent use** and that **recognition-only evidence must never independently reach
+the longest review interval or the strongest mastery claim**. **Recognition and production currently
+advance boxes equally**, so a recognition-only item can reach the 30-day box — **directly
+non-conforming**. The reducer implements **no weighting of any kind**. **No code change was authorized.**
+Future owner: Mastery & Evidence (semantics, ratified) / Engineering (algorithm, unauthored).
 
 ## 14. Production counters
 
@@ -251,6 +279,13 @@ zero implementation. Future owner: Mastery & Evidence (semantics), Engineering (
 | Time-based strength decay | **absent from the reducer** | — |
 | Half-life decay (5 d default, 14 d strong) | `lexique-memory.ts:38-39` | Fixture/spec-only, **unwired** |
 | Weakness residual floor (`WEAKNESS_K 2.0`, floor `0.15`) | `lexique-memory.ts:35,37,182-183` | Fixture/spec-only, **unwired** |
+
+**⚠ DIVERGENCE (added 2026-07-26).** **No universal state ladder exists in runtime** — and under
+founder FQ-5 none should: counters are the source of truth, and the **eight lifecycle statuses were
+explicitly NOT adopted** as universal vocabulary. Runtime therefore *conforms by absence, not by
+design*. Separately, **all exact constants below are implementation values only**: FQ-7 ratified their
+class as `TUNABLE` and **founder-ratified no value**; FQ-2 classified the weights as **candidate values
+only**. **Nothing here is Canonical.**
 
 `lexique-memory.ts` also defines evidence weights (production 1.0 · recognition 0.25 · transfer 0.7 ·
 recombination 0.7 · repair 0.5), thresholds (0.4 / 0.7) and 8 intrinsic lifecycle statuses with
@@ -320,14 +355,18 @@ false in both shipping stages.**
 |---|---|---|
 | R1 | Shipped surface emits no events → no production evidence | §0 |
 | R2 | `spelling_near_miss` weakness-accruing vs ADR-0021 precision **and** vs founder FQ-1 where meaning is unknown | §4, §11 |
-| R3 | No evidence weighting despite canon asserting one | §13 |
+| R3 | No evidence weighting despite canon asserting one — **and now despite founder FQ-2 ratifying differential strength**; recognition and production advance boxes equally | §13 |
 | R4 | No attribution / error-source field despite a `[HARD INVARIANT]` | §2 |
 | R5 | No invalidation mechanism — **founder FQ-6 ratified one semantically; none exists** | §2, §21 |
 | R6 | Repair fully unimplemented | §18 |
 | R7 | Two weakness systems, same threshold, different keys — **both now governed (FQ-8); the shipped one is non-conforming and frozen** | §6 |
 | R8 | Two Leitner systems, same intervals, different demotion | §8 |
 | R9 | Chain aggregation lives in the controller, not the reducer | §20 |
-| R10 | Assistance (hint) never reaches the event | §2 |
+| R10 | Assistance (hint) never reaches the event — **founder FQ-3 ratified that assistance scopes the claim; 1 of 8 assistance members is captured, and that one is ruled insufficient** | §2, §9 |
+| R13 | **Weakness is permanent** via monotone counters — founder FQ-4 ratified a recoverable/historical split; **0 of 5 weakness members represented** | §5 |
+| R14 | **No universal state ladder in runtime** — conforms to FQ-5 **by absence, not by design** | §19 |
+| R15 | **Every exact constant is an implementation value only** — FQ-7 founder-ratified **zero** numbers | §19, §6, §8 |
+| R16 | **Tag classification is too coarse for founder semantics** — no tag carries polarity; `punctuation_only` and `accent_only` are context-dependent too | §4, §11 |
 | R11 | Legacy stores unversioned (B18); unbounded re-derivation (B10) | §1, §21 |
 | R12 | Daily Review reads legacy `lm7`, not engine projections | ADR-0020 consequences |
 
@@ -337,6 +376,7 @@ It does not claim any behaviour above is correct, intended, final, or canonical.
 tested behaviour is shipped. It does not claim an absent behaviour was rejected. It does not authorize
 changing any value, shape, gate, or module recorded here.
 
-**Round 1 specifically.** The founder decisions of 2026-07-26 ratified *semantics*. This file records
-that **no runtime fact changed**, **no correction was authorized**, and **every divergence annotated
-above remains live**. A `⚠ DIVERGENCE` marker is a record of non-conformance, never a work item.
+**Rounds 1–2 specifically.** The founder decisions of 2026-07-26 ratified *semantics* — all eight
+questions. This file records that **no runtime fact changed**, **no correction was authorized**, and
+**every divergence annotated above remains live**. A `⚠ DIVERGENCE` marker is a record of
+non-conformance, never a work item. **No exact constant recorded in this file is founder-ratified.**

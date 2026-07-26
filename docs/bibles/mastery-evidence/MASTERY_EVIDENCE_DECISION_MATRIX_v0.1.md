@@ -12,11 +12,15 @@ created: 2026-07-26
 Every semantic question this domain must answer, registered once. **`ME-001` … `ME-060`, contiguous,
 no gaps, no duplicate semantic questions.**
 
-> **Round 1 partial ratification (2026-07-26).** Founder decisions **FQ-1**, **FQ-6** and **FQ-8** are
-> applied. **Eight rows** moved to `INH-FOUNDER` / `LOCKED`: ME-004, ME-007, ME-011, ME-012, ME-027,
-> ME-032, ME-047, ME-048. **FQ-2, FQ-3, FQ-4, FQ-5 and FQ-7 remain unanswered** — seven rows still
-> require a founder decision. **Every ratification is semantic only: no code, tag, threshold, ADR,
-> validator or legacy system changed, and no implementation was authorized.**
+> **All eight founder questions answered (Rounds 1–2, 2026-07-26).** **18 rows** are now `INH-FOUNDER`.
+> Round 1: ME-004, ME-007, ME-011, ME-012, ME-027, ME-032, ME-047, ME-048. Round 2: ME-017, ME-020,
+> ME-022, ME-026, ME-030, ME-033, ME-034, ME-046 (plus ME-006 and ME-054 from earlier founder
+> decisions). **Zero rows require a founder decision.**
+>
+> **That is not the same as "resolved".** 5 rows remain `OPEN` (cross-layer dependencies and one
+> unruled Axis-B question), 16 remain `DESCRIPTIVE`, 2 remain `PROPOSED`. **Every ratification is
+> semantic only: no code, tag, threshold, interval, ADR, canon source, validator or legacy system
+> changed, and no implementation was authorized. Founder-locked exact numeric values: zero.**
 
 > **This register decides nothing on its own.** A row marked `PROPOSED` is this Draft's proposal, not a
 > rule. A row marked `CURRENT-REALITY` describes code and is **not** a decision. A row marked
@@ -57,36 +61,36 @@ weakest-member audit result, notes). Every ID appears in both.
 | ME-014 | Is `meaning_shift` ever emitted? | No — no safe deterministic trigger exists. | `CURRENT-REALITY` | `DESCRIPTIVE` | Engineering | No | — |
 | ME-015 | May AI produce or override a grade? | AI explains; it never overrides. | `INH-ADR` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-016 | Are recognition and production distinct evidence types? | Yes; counted separately. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
-| ME-017 | Should recognition success advance scheduling as much as production success? | Today it does, identically. Canon implies it should not. | `OPEN` | `OPEN` | Mastery & Evidence | **Yes — FQ-2** | Before promotion |
+| ME-017 | Should recognition success advance scheduling as much as production success? | **No.** Recognition-only evidence must never independently reach the longest review interval or the strongest mastery claim. Exact algorithm is Engineering's. | `INH-FOUNDER` (FQ-2, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering (algorithm) | Answered — FQ-2 | Answered 2026-07-26 |
 | ME-018 | What promotes an item into Mon Lexique? | `productionSuccess > 0`. Recognition alone never auto-adds. | `INH-CANONICAL` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-019 | May evidence weight and selection weight mix? | Never. Separate modules, separate tests. | `INH-ADR` | `LOCKED` | Mastery & Evidence | No | — |
-| ME-020 | Does differential evidence weighting exist? | Canon asserts a multiplier in the reducer; the reducer has none. | `OPEN` | `OPEN` | Mastery & Evidence | **Yes — FQ-2** | Before promotion |
-| ME-021 | How is assistance level represented? | Prompt-fade PF0–PF3 only. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
-| ME-022 | Does hint usage change evidence strength? | It cannot today — hint level never reaches the event. | `OPEN` | `OPEN` | Mastery & Evidence | **Yes — FQ-3** | Before promotion |
-| ME-023 | Is a reveal evidence? | No. | `NON-SIGNAL` | `LOCKED` | Mastery & Evidence | No | — |
+| ME-020 | Does differential evidence weighting exist? | **Semantically yes — strength attaches at admission.** Production > recognition for independent use. **The claim that a weighting mechanism already exists in the reducer is retired.** No multiplier, interval or weight is founder-ratified. | `INH-FOUNDER` (FQ-2, 2026-07-26) | `LOCKED` (semantics; **all values `TUNABLE`**) | Mastery & Evidence (semantics) / Engineering (algorithm) | Answered — FQ-2 | Answered 2026-07-26 |
+| ME-021 | How is assistance level represented? | Prompt-fade PF0–PF3 only. **FQ-3 rules this insufficient**: prompt-fade history is not a substitute for attempt-level assistance attribution, which does not exist. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence (semantics) / Engineering + UX (fields) | No | — |
+| ME-022 | Does hint usage change evidence strength? | **Assistance changes what a success proves, not whether the action exists.** Assisted success is valid evidence of *supported* performance, never equivalent to independent production. Unknown assistance does **not** invalidate history but cannot establish independent production. Prompt-fade is **not** a substitute for attempt-level attribution. | `INH-FOUNDER` (FQ-3, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering + UX (fields, representation) | Answered — FQ-3 | Answered 2026-07-26 |
+| ME-023 | Is a reveal evidence? | No. **FQ-3 rule 4 confirms and widens this**: reveal, answer exposure, model answer and copy-ready output are **exposure/support events**, never mastery evidence. | `NON-SIGNAL` (reaffirmed by FQ-3, 2026-07-26) | `LOCKED` | Mastery & Evidence | No | — |
 | ME-024 | Are open Weave and Say It Your Way graded? | No — grading an open mixed Weave is a validator ERROR; Say It never grades. | `INH-CANONICAL` | `LOCKED` | Content | No | — |
 | ME-025 | Do discovery screens produce evidence? | No. Assessment begins after Build. | `INH-CANONICAL` | `LOCKED` | Content / Curriculum | No | — |
-| ME-026 | What is the weakness threshold? | `wrongCount >= 3` OR any single weak tag `>= 3`. **FQ-1 constrains what may count toward it** — an ambiguous event may not contribute to weakness — but the threshold class itself is still FQ-7. | `CURRENT-REALITY` | `OPEN` | Mastery & Evidence | Yes — FQ-7 (class, not value) | Before promotion |
+| ME-026 | What is the weakness threshold? | **Class ratified as `TUNABLE`; the value `3` is NOT founder-locked.** The locked promise is only that *one isolated error does not automatically establish weakness*. FQ-1 additionally bars ambiguous events from contributing. | `INH-FOUNDER` (FQ-7, 2026-07-26 — **class only**) | `LOCKED` (class = `TUNABLE`; **value unratified**) | Mastery & Evidence (promise) / Engineering (value) | Answered — FQ-7 | Answered 2026-07-26 |
 | ME-027 | What is weakness keyed by? | Engine: `ItemId`. Legacy shipped: the correct-answer string. **Both systems are inside this Bible's domain; the legacy one is non-conforming, frozen, and not authorized for modification.** The keying divergence itself remains an unresolved Axis-B fact. | `INH-FOUNDER` (FQ-8, 2026-07-26 — scope only) | `LOCKED` (scope) | Mastery & Evidence (scope) / Engineering (convergence) | Answered — FQ-8 | Answered 2026-07-26 |
 | ME-028 | Does a single miss force a return? | No. | `INH-CANONICAL` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-029 | When is an item repair-eligible? | Same error twice in one lesson, or once in each of two lessons. | `INH-CANONICAL` | `LOCKED` (threshold `TUNABLE`) | Mastery & Evidence | No | — |
-| ME-030 | What does a successful repair do? | Reduces urgency only. Never restores mastery, never erases history. | `INH-CANONICAL` | `LOCKED` | Mastery & Evidence | No | — |
+| ME-030 | What does a successful repair do? | Reduces urgency only. **Does not instantly establish strong mastery.** Clears `currently weak` only together with spaced confirmation; never erases `ever weak`. | `INH-FOUNDER` (FQ-4, 2026-07-26; was `INH-CANONICAL`) | `LOCKED` | Mastery & Evidence | Answered — FQ-4 | Answered 2026-07-26 |
 | ME-031 | How does a repair override close? | One successful spaced confirmation in the next 1–2 lessons. | `INH-CANONICAL` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-032 | May precision-only become conceptual weakness? | Never silently — and, under FQ-1, an event whose semantic class is not attributable may not establish weakness at all. | `INH-FOUNDER` (FQ-1, 2026-07-26; was `INH-CANONICAL`) | `LOCKED` | Mastery & Evidence | Answered — FQ-1 | Answered 2026-07-26 |
-| ME-033 | Is mastery a named state ladder or counters? | Counters win today; no nine-state set exists anywhere. | `SUPERSEDED` (the "9-state" description) | `OPEN` | Mastery & Evidence | **Yes — FQ-5** | Before promotion |
-| ME-034 | What is the spacing schedule? | Leitner boxes `[0,1,3,7,30]` days, 5 boxes. | `CURRENT-REALITY` | `OPEN` (class) | Mastery & Evidence | Yes — FQ-7 | Before promotion |
+| ME-033 | Is mastery a named state ladder or counters? | **Counters are the semantic source of truth; Cairn has no universal named ladder.** "9-state" is `SUPERSEDED`. Domain consumers may define **purpose-named derived projections** that state their mapping and never claim universality. **The eight lifecycle statuses are NOT adopted as universal.** | `INH-FOUNDER` (FQ-5, 2026-07-26; the "9-state" phrase remains `SUPERSEDED`) | `LOCKED` (semantics) | Mastery & Evidence (truth) / each domain owner (own projection) | Answered — FQ-5 | Answered 2026-07-26 |
+| ME-034 | What is the spacing schedule? | **The locked promise is only that spaced return exists.** The intervals `[0,1,3,7,30]`, the box count, and the prompt-fade level count are all **`TUNABLE` and NOT founder-locked**. | `INH-FOUNDER` (FQ-7, 2026-07-26 — **class only**) | `LOCKED` (class = `TUNABLE`; **values unratified**) | Mastery & Evidence (promise) / Engineering + Curriculum (values) | Answered — FQ-7 | Answered 2026-07-26 |
 | ME-035 | When is `dueAt` rescheduled? | Only on box-moving success/failure; precision, near-miss and skip stay due now. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
 | ME-036 | How is `monLexiqueStatus` derived? | weak → weak; else productionSuccess>0 → added; else hidden. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
 | ME-037 | How is practice eligibility derived? | weak → challenge; produced → stretch; seen/recognized → build; else none. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
 | ME-038 | Is `recycled` a mastery status? | No — a query-time carryover role. | `INH-CANONICAL` | `LOCKED` | Mastery & Evidence | No | — |
-| ME-039 | What is the Lexique lifecycle status set? | 8 intrinsic statuses; `recycled` deliberately absent. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
+| ME-039 | What is the Lexique lifecycle status set? | 8 intrinsic statuses; `recycled` deliberately absent. **FQ-5 rule 6 explicitly declines to adopt these as the universal mastery vocabulary** — they remain one projection among several. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
 | ME-040 | How are duplicate events handled? | Idempotent by `clientEventId`. | `CURRENT-REALITY` | `DESCRIPTIVE` | Engineering | No | — |
 | ME-041 | How is a multi-step chain aggregated? | Repeated successes within one chain attempt de-duplicated; every non-success always carries targets. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence (semantics) / Engineering (placement) | No | — |
-| ME-042 | Can later evidence undo earlier evidence? | Counters are monotone; only box and prompt-fade move both ways. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
+| ME-042 | Can later evidence undo earlier evidence? | Counters are monotone; only box and prompt-fade move both ways. **FQ-4 confirms the resulting permanent weakness is Axis-B reality, not intended semantics** — recorded, **not authorized for change**. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
 | ME-043 | Is the reducer order-invariant? | No. Counters are order-independent; box, prompt-fade and `dueAt` are not. | `CURRENT-REALITY` | `OPEN` | Mastery & Evidence | No (routed) | Deferred |
 | ME-044 | Does evidence decay with time? | Not in the reducer. Only the due date passes. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
-| ME-045 | Is there a second decay model? | Yes — Lexique Memory half-lives 5/14 days, unwired. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
-| ME-046 | Is weakness permanently residual? | Lexique Memory floors it at 0.15 once ever-weak; the reducer has no such concept. | `OPEN` | `OPEN` | Mastery & Evidence | **Yes — FQ-4** | Before promotion |
+| ME-045 | Is there a second decay model? | Yes — Lexique Memory half-lives 5/14 days, unwired. **FQ-7 classifies every one of its constants as `TUNABLE` and founder-ratifies none**; FQ-2 classifies its weights as **candidate values only**. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
+| ME-046 | Is weakness permanently residual? | **Two facts, not one.** `currently weak` is **recoverable** (successful repair **plus** spaced confirmation); `ever weak` **persists** as a caution signal. History alone must never keep an item permanently in Challenge. Repair does not instantly establish strong mastery. | `INH-FOUNDER` (FQ-4, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering + Curriculum (clearing conditions, windows) | Answered — FQ-4 | Answered 2026-07-26 |
 | ME-047 | How is a non-learner-sourced event excluded? | **Refused at admission** where the error is knowable beforehand. Semantics ratified; **no mechanism exists.** | `INH-FOUNDER` (FQ-6, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering (mechanism) | Answered — FQ-6 | Answered 2026-07-26 |
 | ME-048 | How is an already-recorded event invalidated? | **Append-only compensating invalidation record.** The historical event stays immutable; projections neutralize its pedagogical effect; audit history stays intact; evidence is never deleted or silently mutated. | `INH-FOUNDER` (FQ-6, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering (mechanism) | Answered — FQ-6 | Answered 2026-07-26 |
 | ME-049 | Must solo, AI-supported and future-social actions meet one standard? | Yes — the same six admissibility conditions. | `PROPOSED` | `PROPOSED` | Mastery & Evidence | No | Before promotion |
@@ -124,24 +128,24 @@ weakest-member audit result, notes). Every ID appears in both.
 | ME-014 | Current reality | `grade.ts:119,224` | — | Never emitted | Unit-tested | — | — | ME-010 | 4 of 16 codes never emitted, all four named | A registry-aware adapter could emit 3 of the 4 later. |
 | ME-015 | Active ADR | ADR-0009 | AI layer | AI is not in the grading path | Structural | — | Invariant | ME-050 | n/a | — |
 | ME-016 | Current reality | `mastery.ts:45-73,222-268` | — | Six separate counters | Unit-tested | — | Descriptive | ME-017, ME-018 | n/a | — |
-| ME-017 | Current reality vs canon | `mastery.ts:224-252` vs ADR-0022, Lesson Flow Canon §5.3/§5.5 | Curriculum, Content | **Identical box/PF advance** | Unit-tested | **Canon-vs-code** | Open | ME-020, ME-034 | `PRODUCTION_OPS` = 4 of 4 members read | Recognition is gated for Mon Lexique but not for scheduling. |
+| ME-017 | **Founder decision FQ-2** (2026-07-26) | Bible §11, §13; Ratification record §5 | Curriculum, Content, Engineering | **Identical box/PF advance — unchanged** | **None** | **Now explicitly non-conforming**: a recognition-only item can reach the 30-day interval, which the ratified rule forbids | Invariant I-31 (semantics); **all values `TUNABLE`** | ME-020, ME-034 | `PRODUCTION_OPS` = 4 of 4 re-read | Semantics ratified; **no code change authorized**. |
 | ME-018 | Canonical domain source + code | Mon Lexique note; `mastery.ts:283-288` | Content | Implemented | Unit-tested, sandbox-only | — | Invariant | ME-036 | n/a | — |
 | ME-019 | Active ADR | ADR-0022; Lesson Flow Canon §5.3 | — | `practice-selector.ts` "never scores anything" | Unit-tested + module separation | — | Invariant | ME-020, ME-026 | n/a | — |
-| ME-020 | Canon asserts; code absent | ADR-0022 ("evidence weight = mastery multiplier"); §5.5 `LessonEvidenceProfile`; `lexique-memory.ts` weights | Curriculum, Content | **No weighting in the reducer**; weights exist only in an unwired projection | **None** | **Canon asserts an implementation that does not exist** | Open | ME-017, ME-045 | 3 sources compared; all three differ | Canon names the reducer as the home; the reducer has no such concept. |
+| ME-020 | **Founder decision FQ-2** (2026-07-26) | Bible §11, §13; Ratification record §5 | Curriculum, Content, Engineering | **No weighting in the reducer** — unchanged; weights exist only in an unwired projection | **None** | **Resolved semantically; the "mechanism already exists" claim is RETIRED.** ADR-0022 / Lesson Flow Canon §5.3 **source patch PENDING** | Invariant I-29, I-30 (semantics); **every number `TUNABLE`** | ME-017, ME-045 | 3 sources compared; **`lexique-memory` weights are candidate values only** | Strength is now a semantic property at admission. **No numeric weight ratified. No implementation authorized.** |
 | ME-021 | Current reality | `mastery.ts:35-36` | — | PF0–PF3 | Unit-tested | — | Tunable (depth) | ME-022 | 4 of 4 levels enumerated | — |
-| ME-022 | Gap | EXERCISE_CANON §8 (ladder exists); `events.ts:107-126` (no hint field) | Content, Engineering | **Hint level never reaches the event** | None | Semantic gap | Open | ME-004, ME-049 | n/a | A hinted and unhinted success are indistinguishable to mastery. |
+| ME-022 | **Founder decision FQ-3** (2026-07-26) | Bible §12; Ratification record §4 | Content, Engineering, UX | **Hint level never reaches the event — unchanged** | **None** | Semantics ratified; **no attempt-level assistance field exists** | Invariant I-26, I-27, I-28 (semantics) | ME-004, ME-021, ME-049 | **8 assistance members audited; 1 of 8 (prompt-fade) reaches the event, and FQ-3 rule 7 rules it insufficient** | Unknown assistance **does not invalidate** historical evidence — it only bars an independent-production claim. **This amends the Draft's own I-19.** |
 | ME-023 | Canonical domain source | imported measurement taxonomy | Content | Reveal is a UI action, not an event input | Policy only | — | Invariant | ME-005 | n/a | — |
 | ME-024 | Canonical domain source | EXERCISE_CANON §16; `SayItYourWayV1.tsx` | Content | Implemented and shipped | Validator ERROR + component contract | — | Invariant | ME-025 | n/a | Content-owned; recorded here as an input. |
 | ME-025 | Canonical domain source | Lesson Flow Canon §1.3 | Content, Curriculum | Implemented in flow | Design canon | — | Invariant | ME-005 | n/a | — |
-| ME-026 | Current reality | `mastery.ts:26,279-281` | Curriculum | `WEAK_THRESHOLD = 3` | Unit-tested | Value has no founder source | **Tunable (proposed)** | ME-027, ME-037 | n/a | A constant is not a decision. |
+| ME-026 | **Founder decision FQ-7** (2026-07-26) — class only | Bible §34; Ratification record §8 | Curriculum, Engineering | `WEAK_THRESHOLD = 3` — unchanged | Unit-tested | **Value still has no founder source, and now never will by default** | **`TUNABLE` (ratified class)**; the locked promise is only *one isolated error ≠ weakness* | ME-027, ME-037 | **~25 constants enumerated; founder-locked exact values: 0** | A constant is still not a decision — that is now the ratified rule. |
 | ME-027 | **Founder decision FQ-8** (2026-07-26) | Bible §2.1, §14; Ratification record §4 | Engineering, Product | **Both live, in different stages** | Legacy shipped; engine sandbox-only | **Scope resolved; the two-system divergence is NOT resolved** | Locked (scope) / Open (convergence) | ME-057, ME-058 | 4 evidence systems audited: engine (conforming, unshipped) · legacy weak spots ✘ · legacy SRS ✘ · per-section thresholds ✘ | Both governed. Legacy = legacy-active, non-conforming, frozen for replacement. **Not authorized for modification.** |
 | ME-028 | Canonical domain source | Error Tracking Policy Hardening | Curriculum | Not implemented | Policy only | — | Invariant | ME-029 | n/a | — |
 | ME-029 | Canonical domain source | same, `[LOCKED DEFAULT]` / threshold `[TUNABLE]` | Curriculum, Content | **Not implemented** — no `repairEligible` field | Policy only | — | Locked shape, tunable value | ME-030, ME-031 | n/a | Source explicitly says the number is not empirical. |
-| ME-030 | Canonical domain source | Mastery Model + Error Tracking Policy Hardening | — | Not implemented | Policy only | — | Invariant | ME-046 | n/a | — |
+| ME-030 | **Founder decision FQ-4** (2026-07-26; was `INH-CANONICAL`) | Bible §14, §16; Ratification record §6 | Curriculum, Engineering | Not implemented | Policy only | — | Invariant I-33; repair counts/timing **`TUNABLE`** | ME-046, ME-031 | n/a | Repair clears `currently weak` only **with** spaced confirmation; never erases `ever weak`; never instantly strong. |
 | ME-031 | Canonical domain source | Error Tracking Policy Hardening | Curriculum | Not implemented | Policy only | — | Locked default | ME-030 | n/a | — |
 | ME-032 | **Founder decision FQ-1** (2026-07-26), on top of Error Tracking Policy Hardening | Bible §15; Ratification record §2 | Content | **Still contradicted in practice by ME-012** | Policy only | Conflicts with current code, unchanged | Invariant (I-24) | ME-012 | See ME-012 — no universal three-tag claim is made | Strengthened: ambiguity now blocks weakness, not just "silent" conversion. **No implementation.** |
-| ME-033 | Superseded description | precision-policy §4; `learning-engine-v1.md:100` | Content, Curriculum | 3 / 4 / 8 / 5 / 4 candidate ladders; **no set of nine** | Docs only | Docs-drift | Open | ME-036, ME-037, ME-039 | **Five candidate ladders enumerated; none has nine members** | "Counters win" is the only stated resolution. |
-| ME-034 | Current reality | `mastery.ts:29-32` | Curriculum | `[0,1,3,7,30]`, 5 boxes | Unit-tested | Value has no founder source | **Tunable** | ME-035, ME-045 | 5 of 5 intervals listed | — |
+| ME-033 | **Founder decision FQ-5** (2026-07-26) | Bible §18; Ratification record §7 | Content, Curriculum, UX | Six candidate ladders (3 · 4 · 8 · 5 · 3 · 4); **no set of nine**; nothing stores a universal ladder | **Conforms by absence, not by design** | "9-state" remains `SUPERSEDED`; docs-drift **source patch PENDING** | Invariant I-34, I-35 | ME-036, ME-037, ME-039 | **Six candidate projections enumerated; none becomes universal.** The 8 lifecycle statuses were **explicitly declined** | Purpose-named derived projections permitted under five constraints; each domain owner names its own. |
+| ME-034 | **Founder decision FQ-7** (2026-07-26) — class only | Bible §34; Ratification record §8 | Curriculum, Engineering | `[0,1,3,7,30]`, 5 boxes — unchanged | Unit-tested | Value has no founder source | **`TUNABLE` (ratified class)**; the locked promise is only *spaced return exists* | ME-035, ME-045, ME-017 | 5 of 5 intervals re-read; box count and PF level count also `TUNABLE` | **No interval is founder-ratified.** |
 | ME-035 | Current reality | `mastery.ts:273-277` (audit B12) | — | Implemented | Unit-tested | — | Descriptive | ME-013 | 3 keep-due-now classes enumerated | — |
 | ME-036 | Current reality | `mastery.ts:283-288` | Content | Implemented | Unit-tested | — | Descriptive | ME-018 | 3 of 3 statuses | — |
 | ME-037 | Current reality | `mastery.ts:291-298` | — | Implemented | Unit-tested | — | Descriptive | ME-026 | 4 of 4 values; `challenge ⟹ isWeak` verified | Precision-only reaches `build`, never `challenge`. |
@@ -153,7 +157,7 @@ weakest-member audit result, notes). Every ID appears in both.
 | ME-043 | Current reality | `mastery.ts:219-277` | Engineering | Order-dependent for box/PF/`dueAt` | Unit-tested (given an order) | Never stated as a decision | Open | ME-021, ME-042 | n/a | Deterministic ≠ order-invariant. |
 | ME-044 | Current reality | `mastery.ts` (no time term) | — | No time decay | Unit-tested | — | Descriptive | ME-045 | n/a | — |
 | ME-045 | Current reality | `lexique-memory.ts:27-45` | Curriculum | Half-lives 5/14 d; `WEAKNESS_K 2.0`; floor 0.15 | Unit-tested, **unwired** | Two decay models coexist | **Tunable** | ME-046 | 16 constants read individually | — |
-| ME-046 | Current reality vs absence | `lexique-memory.ts:182-183` vs reducer | Curriculum, Content | Floor exists in one unwired module only | Unit-tested, unwired | — | Open | ME-030 | n/a | Pedagogical, not engineering. |
+| ME-046 | **Founder decision FQ-4** (2026-07-26) | Bible §14; Ratification record §6 | Curriculum, Content, Engineering | Floor exists in one unwired module only; **the reducer makes weakness permanent via monotone counters** | **None** | **Founder confirms the reducer's permanence is Axis-B reality, NOT intended semantics** | Invariant I-32, I-33; clearing conditions **`TUNABLE`** | ME-030, ME-042 | **5 weakness members audited** (current · historical · repair completed · spaced confirmation completed · chronic); **0 of 5 represented in the reducer** | Two facts split. **No code change authorized.** |
 | ME-047 | **Founder decision FQ-6** (2026-07-26) | Bible §23; Ratification record §3 | Content, Engineering, Operations | **No mechanism** | **None** | Ratified semantics with no implementation | Invariant (I-21) | ME-004, ME-048 | 7 of 7 non-learner error-source classes covered by the rule; **0 of 7 enforced** | Semantics only. **No implementation authorized.** |
 | ME-048 | **Founder decision FQ-6** (2026-07-26) | Bible §23; Ratification record §3 | Engineering, Privacy | Append-only, **no delete, no compensating record type exists**; tags frozen | **None** | Ratified semantics with no implementation | Invariant (I-20, I-22) | ME-010, ME-042, ME-060 | n/a | Schema, event names, cache invalidation, reconciliation and storage are **Engineering's**, undecided. Compaction still complicates any retroactive change. |
 | ME-049 | This Draft, generalizing R8 | Bible §6, §24; R8 seven conditions | Content, Curriculum, Social | Absent | None | — | Invariant (proposed) | ME-004, ME-006, ME-022 | R8's 7 conditions mapped to 6 general conditions | Gives "equivalent standards outside Social" something to point at. |
@@ -179,50 +183,56 @@ Counted strictly from **Table A**, one state per row. A row cites at most one ra
 a row's *content* touches two axes (e.g. ME-017 is an `OPEN` question *about* a current-reality fact),
 it is counted **once**, under the state in Table A's column.
 
-### By ratification state (post-Round 1)
+### By ratification state (post-Round 2)
 
-| State | Count | Δ vs pre-Round 1 | IDs |
+| State | Count | Δ vs Round 1 | IDs |
 |---|---|---|---|
-| `CURRENT-REALITY` | 19 | −2 | ME-013, 014, 016, 021, 026, 034, 035, 036, 037, 039, 040, 041, 042, 043, 044, 045, 057, 059, 060 |
-| `INH-CANONICAL` | 11 | −2 | ME-008, 009, 018, 024, 025, 028, 029, 030, 031, 038, 051 |
-| **`INH-FOUNDER`** | **10** | **+8** | ME-004, 006, **007, 011, 012, 027, 032, 047, 048**, 054 |
+| **`INH-FOUNDER`** | **18** | **+8** | ME-004, 006, 007, 011, 012, **017, 020, 022, 026**, 027, **030**, 032, **033, 034, 046**, 047, 048, 054 |
+| `CURRENT-REALITY` | 17 | −2 | ME-013, 014, 016, 021, 035, 036, 037, 039, 040, 041, 042, 043, 044, 045, 057, 059, 060 |
+| `INH-CANONICAL` | 10 | −1 | ME-008, 009, 018, 024, 025, 028, 029, 031, 038, 051 |
 | `INH-ADR` | 6 | — | ME-001, 002, 010, 015, 019, 058 |
-| `OPEN` | 4 | −2 | ME-017, ME-020, ME-022, ME-046 |
 | `DEPENDENCY` | 4 | — | ME-052, ME-053, ME-055, ME-056 |
 | `NON-SIGNAL` | 3 | — | ME-005, ME-023, ME-050 |
-| `PROPOSED` | 2 | −2 | ME-003, ME-049 |
-| `SUPERSEDED` | 1 | — | ME-033 |
+| `PROPOSED` | 2 | — | ME-003, ME-049 |
+| `OPEN` | **0** | −4 | — |
+| `SUPERSEDED` | **0** | −1 | — (ME-033 became `INH-FOUNDER`; the *phrase* "9-state" is still `SUPERSEDED` inside its rule) |
 | **Total** | **60** | — | — |
 
-### By decision status (post-Round 1)
+### By decision status (post-Round 2)
 
 | Status | Count | Δ | IDs |
 |---|---|---|---|
-| `LOCKED` | 30 | +6 | ME-001, 002, **004**, 005, 006, 007, 008, 009, 010, **011, 012**, 015, 018, 019, 023, 024, 025, **027**, 028, 029, 030, 031, 032, 038, **047, 048**, 050, 051, 054, 058 |
+| `LOCKED` | 37 | +7 | ME-001, 002, 004, 005, 006, 007, 008, 009, 010, 011, 012, 015, **017**, 018, 019, **020, 022**, 023, 024, 025, **026**, 027, 028, 029, **030**, 031, 032, **033, 034**, 038, **046**, 047, 048, 050, 051, 054, 058 |
 | `DESCRIPTIVE` | 16 | — | ME-013, 014, 016, 021, 035, 036, 037, 039, 040, 041, 042, 044, 045, 057, 059, 060 |
-| `OPEN` | 12 | −5 | ME-017, 020, 022, 026, 033, 034, 043, 046, 052, 053, 055, 056 |
-| `PROPOSED` | 2 | −1 | ME-003, ME-049 |
+| `OPEN` | 5 | −7 | ME-043 (reducer order-invariance, never ruled) · ME-052, ME-053, ME-055, ME-056 (unauthored layers) |
+| `PROPOSED` | 2 | — | ME-003, ME-049 |
 | **Total** | **60** | — | — |
 
-> `LOCKED` means **a decision exists in an upstream authority** — not that the rule is implemented.
-> **30 locked rows and zero shipped conforming evidence semantics are not in tension** (ME-057, ME-027).
+> **`LOCKED` means a decision exists — never that the rule is implemented.** 37 locked rows and **zero**
+> conforming shipped evidence semantics are not in tension (ME-057, ME-027). **No row was moved to
+> `LOCKED` merely because the founder questions ran out**: ME-043 and the four `DEPENDENCY` rows stayed
+> `OPEN`, and ME-003 / ME-049 stayed `PROPOSED`, because nothing decided them.
 
-### Founder decisions — answered and outstanding
+### Founder decisions — all answered
 
 | | Count | IDs |
 |---|---|---|
-| **Answered 2026-07-26 (Round 1)** | **8** | ME-004, ME-007 (FQ-6) · ME-011, ME-012, ME-032 (FQ-1) · ME-027 (FQ-8) · ME-047, ME-048 (FQ-6) |
-| **Still require a founder decision** | **7** | ME-017, ME-020 (FQ-2) · ME-022 (FQ-3) · ME-026, ME-034 (FQ-7) · ME-033 (FQ-5) · ME-046 (FQ-4) |
-| `Required now` outstanding | **0** | — all three `REQUIRED NOW` questions were answered in Round 1 |
+| **Answered 2026-07-26, Round 1** | 8 | ME-004, ME-007 (FQ-6) · ME-011, ME-012, ME-032 (FQ-1) · ME-027 (FQ-8) · ME-047, ME-048 (FQ-6) |
+| **Answered 2026-07-26, Round 2** | 8 | ME-017, ME-020 (FQ-2) · ME-022 (FQ-3) · ME-030, ME-046 (FQ-4) · ME-033 (FQ-5) · ME-026, ME-034 (FQ-7) |
+| **Still require a founder decision** | **0** | — |
+| `REQUIRED NOW` / `REQUIRED BEFORE PROMOTION` outstanding | **0** | — |
 
-Rows with `Founder decision required = No` but timing `Before promotion` (editorial/structural, not a
-founder call): ME-003, ME-049. Rows routed to an unauthored layer and therefore **deferred, not asked**:
-ME-043, ME-052, ME-053, ME-055, ME-056 (5).
+Rows still `PROPOSED` (editorial/structural, not a founder call): ME-003, ME-049. Rows routed to an
+unauthored layer and therefore **deferred, not asked**: ME-052, ME-053, ME-055, ME-056. One Axis-B
+question was **never put to the founder and remains open**: ME-043 (the reducer is deterministic but not
+order-invariant).
 
 ### Deliberately zero
 
-`PLANNED` **0** · `EXPERIMENT` **0** · **Implemented as ratified semantics: 0 — unchanged by Round 1.**
+`PLANNED` **0** · `EXPERIMENT` **0** · **Implemented as ratified semantics: 0 — unchanged by Rounds 1–2.**
+**Founder-locked exact numeric values: 0** (FQ-7).
 
-Round 1 ratified eight rows and implemented none of them. No row in this matrix records a ratified
-Mastery & Evidence rule that is live and conforming on any shipping surface: the engine conforms but
-does not ship (ME-057), and the shipped legacy systems are governed but non-conforming (ME-027).
+Rounds 1 and 2 ratified sixteen rows and implemented none of them. No row in this matrix records a
+ratified Mastery & Evidence rule that is live and conforming on any shipping surface: the engine
+conforms but does not ship (ME-057), and the shipped legacy systems are governed but non-conforming
+(ME-027). **The semantic decision surface is complete; the implementation surface is untouched.**

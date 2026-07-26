@@ -1,13 +1,13 @@
 ---
 title: Cairn Mastery & Evidence Bible
 version: 1.0
-status: Draft — awaiting founder ratification
+status: Draft — all eight founder questions answered; awaiting source amendments and independent adversarial review
 authority: Proposed semantic owner for evidence and mastery. This document has NO independent authority. Every normative line is either inherited from a named upstream authority or marked `PROPOSED FOR FOUNDER RATIFICATION`.
 owner: Mastery & Evidence
 created: 2026-07-26
 upstream_authorities:
   - Founder decision Q2 (2026-07-26) — dedicated Mastery & Evidence owner assigned
-  - Founder decisions FQ-1, FQ-6, FQ-8 (2026-07-26, Round 1 partial ratification) — see MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md
+  - Founder decisions FQ-1…FQ-8 (2026-07-26, Rounds 1–2 — all eight answered) — see MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md
   - PRJ-014 (`FOUNDER_LOCKED`), PRJ-009 (`OPEN`)
   - docs/canon/CAIRN_PROJECT_CANON_MAP_v1.0.md (Canonical)
   - docs/canon/CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md §2.1
@@ -27,13 +27,20 @@ partially_supersedes: []
 > [`MASTERY_EVIDENCE_FOUNDER_REVIEW_SURFACE_v0.1.md`](MASTERY_EVIDENCE_FOUNDER_REVIEW_SURFACE_v0.1.md)
 > and (b) an independent adversarial review by someone other than this document's author (§41).
 
-> **Round 1 partial ratification (2026-07-26).** The founder has answered **FQ-8** (domain-wide
-> scope), **FQ-6** (admission refusal + append-only compensating invalidation) and **FQ-1**
-> (meaning-based polarity; `spelling_near_miss` is an ambiguous technical tag). Those three rules are
-> now `INHERITED — FOUNDER DECISION` and are marked as such below. **FQ-2, FQ-3, FQ-4, FQ-5 and FQ-7
-> remain unanswered**, so this document remains **Draft**. Ratifying a semantic rule is not
-> implementing it: no ADR, code, schema, tag, threshold, validator or runtime file was changed, and no
-> implementation was opened.
+> **All eight founder questions are answered (Rounds 1–2, both 2026-07-26).**
+> **FQ-1** meaning-based polarity, generalized to *every* technical tag · **FQ-2** differential
+> evidence strength at admission, numeric weights unratified · **FQ-3** assistance changes what a
+> success *proves* · **FQ-4** current weakness recoverable, history persists · **FQ-5** counters are
+> the source of truth; no universal named ladder · **FQ-6** refuse at admission + append-only
+> compensating record · **FQ-7** lock promises, keep every number tunable · **FQ-8** domain-wide scope.
+> All are marked `INHERITED — FOUNDER DECISION` below.
+>
+> **This document is still Draft.** Answering every question did **not** promote it. Three promotion
+> prerequisites remain unmet: the **independent adversarial review** has not been performed, the
+> **ADR-0021 and source amendments** have not been applied, and no statement here may become an
+> implementation authorization. **Zero exact numeric values were founder-locked.** No ADR, code,
+> schema, tag, test, validator, threshold or runtime file was changed, and no implementation was
+> opened.
 
 > **Reading rule.** Every normative statement carries a provenance tag. A statement tagged
 > `CURRENT REALITY — AXIS B` describes *what the code does today*. It is **not** a decision, and
@@ -223,6 +230,14 @@ so that "equivalent standards outside Social" has a definition to point at.
 > **Correctness is not admissibility.** A `correct` result on an inadmissible opportunity is not
 > positive evidence. The current runtime does not implement this distinction. `CURRENT REALITY — AXIS B`
 
+**Strength attaches here.** `INHERITED — FOUNDER DECISION` (FQ-2) — **evidence strength is a semantic
+property attached at admission**, not a number computed downstream. Admission answers two questions at
+once: *may this inform mastery at all?* and *how strong a claim does it support?* (§13).
+
+**Assistance scopes the claim, not the existence.** `INHERITED — FOUNDER DECISION` (FQ-3) — an event
+with unknown assistance is still an event and still admissible; it simply **may not establish
+independent production** (§12).
+
 ## 7. Attribution
 
 - **Only a verified learner-sourced error creates weakness.**
@@ -319,9 +334,30 @@ tag**: see §15. It is an ambiguous technical tag, not a polarity.
 - **A recognition success currently advances the Leitner box and prompt-fade level by exactly the same
   amount as a production success.** `CURRENT REALITY — AXIS B` (`mastery.ts:224-252`)
 
-> **This is the sharpest unresolved semantic question in the domain.** Canon says an *evidence weight
-> multiplier* exists and lives in the mastery reducer (ADR-0022; Lesson Flow Canon §5.3, §5.5). The
-> reducer implements **no weighting at all** — every admitted event weighs 1. See §13 and **FQ-2**.
+### The founder rule (FQ-2, ratified 2026-07-26)
+
+`INHERITED — FOUNDER DECISION`:
+
+1. **Production evidence is stronger than recognition evidence for independent language use.**
+2. **Recognition is valid evidence** but does not alone prove independent production or ownership.
+3. **Evidence strength is a semantic property attached at admission.**
+4. Strength **may** influence mastery projections and scheduling — **exact algorithms are Engineering's**.
+5. **Recognition-only evidence must not independently produce the longest review interval** or an
+   equivalent strongest mastery claim.
+6. The existing `lexique-memory.ts` weights are **candidate values only**.
+7. **No current multiplier, interval, or numeric weight is founder-ratified.**
+8. **Any claim that a weighting mechanism already exists in the current mastery reducer is retired.**
+9. **Evidence strength and selection priority remain separate concepts.**
+
+> **Retirement notice.** ADR-0022's phrase *"evidence weight (mastery multiplier)"* and Lesson Flow
+> Canon §5.3's placement of that multiplier **in the mastery reducer** describe a mechanism that does
+> not exist. Under rule 8 those claims are **retired as descriptions of current reality**; whether the
+> ADR text itself is amended is a **pending source-patch task**, not done here. The *separation*
+> principle (rule 9, ADR-0022) is untouched and still binding.
+
+`CURRENT REALITY — AXIS B`, **unchanged and now explicitly non-conforming**: recognition success
+advances the Leitner box and prompt-fade **identically** to production success, so a recognition-only
+item can reach the longest (30-day) interval — which rule 5 forbids. **No code change is authorized.**
 
 ## 12. Assistance, hints, reveal, and model answers
 
@@ -336,8 +372,33 @@ tag**: see §15. It is an ambiguous technical tag, not a polarity.
 - **Boundary "later form" cards are not failures.** A learner meeting an untaught form is shown a soft
   "a form for later" card, never a failure card. `INHERITED — ACTIVE ADR` (ADR-0016)
 
-`PROPOSED FOR FOUNDER RATIFICATION`: assistance level is an **admissibility input** (§6.3) *and* a
-**strength modifier** (§13). It is not merely a UI concern.
+### The founder rule (FQ-3, ratified 2026-07-26)
+
+`INHERITED — FOUNDER DECISION` — **assistance changes what a success proves, not whether the learner
+action exists.**
+
+1. **An unaided success may support a claim of independent performance.**
+2. **A hinted or assisted success is valid evidence of supported performance.**
+3. **Assisted success must not be treated as equivalent to independent production.**
+4. **Reveal, answer exposure, model answer, and copy-ready output are exposure/support events, not
+   mastery evidence.**
+5. **Unknown assistance does not automatically invalidate historical evidence.**
+6. **Evidence with unknown assistance may not establish independent production.**
+7. **Prompt-fade history is not a substitute for attempt-level assistance attribution.**
+8. Exact assistance fields, event representation, UX treatment and strength calculations belong to
+   **Engineering and UX**.
+9. **This decision authorizes documentation semantics only.**
+
+> **Rule 5 corrects the Draft's own proposal.** The Draft had proposed (I-19) that an event with
+> unknown assistance is "not fully admissible." The founder rule is narrower and better: such an event
+> **stays admissible and is not invalidated** — it simply **cannot support an independent-production
+> claim**. Every event recorded so far therefore remains valid evidence of *something*, which the
+> Draft's proposal would have discarded. **I-19 is amended accordingly (§33).**
+
+> **Rule 7 is the sharp one.** `CURRENT REALITY — AXIS B`: prompt-fade is a property of the *item's
+> history*, not of the *attempt*, and it is the only assistance signal that reaches the event. Under
+> rule 7 it is **explicitly not a substitute** for attempt-level attribution. **No attempt-level
+> assistance field exists, and none was authorized.**
 
 ## 13. Evidence strength and confidence
 
@@ -353,10 +414,18 @@ the shipped path.
 
 **Three sources, three different answers, none of them shipped.** ADR-0022 and Lesson Flow Canon §5.3
 both name the **mastery reducer** as evidence weight's home; the reducer has none; the module that does
-have weights is explicitly *not* the reducer. This is recorded as a conflict, not resolved here (§39,
-**FQ-2**).
+have weights is explicitly *not* the reducer.
 
-**Confidence** has no representation anywhere in the corpus. `OPEN`.
+**Resolved semantically (FQ-2, 2026-07-26).** `INHERITED — FOUNDER DECISION` — **differential strength
+exists and is attached at admission**; production > recognition for independent use; recognition alone
+never reaches the strongest claim or the longest interval; **selection priority stays a separate
+concept**. **The claim that a weighting mechanism already exists in the reducer is retired** (§11).
+
+**Every number stays unratified.** `TUNABLE` — the `lexique-memory.ts` weights (production 1.0 ·
+recognition 0.25 · transfer 0.7 · recombination 0.7 · repair 0.5) are **candidate values only**, and
+**no multiplier, interval or weight is founder-ratified** (§34, FQ-7).
+
+**Confidence** has no representation anywhere in the corpus. `OPEN` — untouched by Round 2.
 
 ## 14. Weakness semantics
 
@@ -368,6 +437,26 @@ Current runtime rules (`CURRENT REALITY — AXIS B`):
 - `isWeak` ⟺ `wrongCount >= 3` **OR** any single `weakTags` counter `>= 3`. (`WEAK_THRESHOLD = 3`)
 - `weakTags` accrue the failing `result` plus its `errorTags`, de-duplicated per event.
 - Weakness is **item-keyed** (`ItemId`).
+
+### The founder rule (FQ-4, ratified 2026-07-26) — two facts, not one
+
+`INHERITED — FOUNDER DECISION` — **current weakness is recoverable; weakness history persists.**
+
+| Concept | Drives | Clears? |
+|---|---|---|
+| **`currently weak`** | immediate repair, return, and Challenge eligibility | **Yes** — after successful repair **plus spaced confirmation** |
+| **`ever weak`** | a **caution signal** only | **No** — history persists |
+
+- **Historical weakness alone must not keep an item permanently in Challenge.**
+- **Successful repair does not instantly establish strong mastery.**
+- **The current reducer's permanent weakness — caused by monotone counters — is Axis-B reality, not
+  intended semantics.** `CURRENT REALITY — AXIS B`
+- Exact clearing conditions, counters, time windows and data structures remain **Engineering and
+  Curriculum** decisions. `DEPENDENCY — OWNER NOT YET AUTHORED`
+
+> The Draft flagged that permanence in the reducer was an *accident* of monotone counters rather than a
+> choice. The founder confirmed it: it is **reality, not semantics**. Recording it as unintended does
+> **not** authorize changing it.
 
 Inherited invariants:
 
@@ -439,19 +528,41 @@ amendment** to match the meaning-based rule. It has **not** been amended — ADR
 pre-B7 four-bucket rule and remains `active` / `canonical` and untouched. Amending it is a separate,
 separately-authorized documentation task (§41).
 
-**Member audit (re-run under the founder rule).** The three tags formerly grouped as "near-miss" do
-**not** share one polarity, and this Bible makes no such universal claim:
+### FQ-1 general clarification (2026-07-26) — tags are not semantic polarity
 
-| Tag | Polarity under FQ-1 | Basis |
+`INHERITED — FOUNDER DECISION` — the meaning-based principle **generalizes to every technical error
+tag**, not only `spelling_near_miss`:
+
+1. The meaning-based polarity principle applies to **every** technical error tag.
+2. **A technical tag describes an observed surface relation; it does not automatically decide the
+   pedagogical meaning.**
+3. **`accent_only` may be meaning-preserving *or* meaning-changing.**
+4. `ou`/`où`, `a`/`à`, `sur`/`sûr` **prevent a universal claim that every accent-only event is
+   precision.**
+5. **`punctuation_only` must likewise be evaluated against the authored target** where punctuation
+   changes the intended communicative act.
+6. **Where semantic effect is unknown, the event may not independently establish weakness *or* full
+   precision credit.**
+7. Exact classification and implementation remain future **Content and Engineering** work.
+8. **This is a clarification of FQ-1's founder rule, not an implementation opening.**
+
+> **This closes the `accent_only` item opened in Round 1** — by generalizing the principle rather than
+> by adding a ninth question. It also goes further than the Round-1 record did: rule 5 puts
+> `punctuation_only` on the same footing, which no source had previously questioned. A question mark
+> versus a full stop *is* a different communicative act.
+
+**Member audit (re-run under the clarification).** No tag carries a polarity on its own:
+
+| Tag | Polarity under FQ-1 as clarified | Basis |
 |---|---|---|
-| `punctuation_only` | **Precision** | Trailing punctuation cannot change lexical meaning |
-| `accent_only` | **Precision — with a stated exception** | Usually meaning-preserving; French counter-examples exist (`ou`/`où`, `a`/`à`, `sur`/`sûr`) which the tag cannot distinguish today |
-| `spelling_near_miss` | **Undetermined** | Edit distance cannot separate a typo from `un`/`on` |
+| `punctuation_only` | **Context-dependent** | Usually meaning-preserving, but punctuation can change the communicative act; must be evaluated against the authored target |
+| `accent_only` | **Context-dependent** | `ou`/`où`, `a`/`à`, `sur`/`sûr` are meaning-changing; the tag cannot distinguish them |
+| `spelling_near_miss` | **Context-dependent** | Edit distance cannot separate a typo from `un`/`on` |
 
-**The claim "these three tags share a polarity" is false, and so is "these three tags are each
-individually determinate."** `accent_only` is the weakest member of the precision claim, and it is
-recorded as a stated exception rather than smoothed over. Whether the `accent_only` exception needs
-its own ruling is `OPEN` and is **not** silently folded into FQ-1.
+**No tag in this set is individually determinate, and the set shares no common polarity.** Where the
+semantic effect is unknown, the event establishes **neither weakness nor full precision credit**. The
+Round-1 `accent_only` open item is **closed by this clarification**; **no ninth founder question was
+created**.
 
 **Staged strictness** — later bands (L60+/L70+), monolingual phase, high prompt-fade, item maturity,
 and a future `accentCriticality` field may tighten near-miss toward partial or full failure.
@@ -521,10 +632,29 @@ model. Attempting to enumerate its nine members against the code produces **no s
 
 **Member audit: six candidate ladders enumerated, with 3, 4, 8, 5, 3 and 4 members. None has nine.**
 The nearest is the eight intrinsic Lexique lifecycle
-statuses — and `recycled` is explicitly *excluded* from that set because it is a query-time role
-(§26). The "9-state" phrase is `SUPERSEDED` as a description of current reality and should not be used
-without a source. Whether Cairn *should* have a named state ladder at all is founder question **FQ-5**.
-`OPEN`
+statuses — and `recycled` is explicitly *excluded* from that set because it is a query-time role (§26).
+
+### The founder rule (FQ-5, ratified 2026-07-26)
+
+`INHERITED — FOUNDER DECISION` — **counter-derived mastery is the source of truth; Cairn has no single
+universal named mastery ladder.**
+
+1. **Counter-derived evidence projection remains the semantic source of truth.**
+2. **The phrase "9-state mastery" is `SUPERSEDED`.**
+3. **No named state ladder is stored as the universal mastery truth.**
+4. Domain consumers **may** define explicit derived projections for their own purpose — **Mon Lexique ·
+   Practice · Curriculum readiness · learner-facing UX**.
+5. A derived projection **must** name its purpose · **must** define its mapping from the source
+   snapshot · **must not** claim to be the universal mastery state · **must not** be substituted for
+   another projection.
+6. **The existing eight lifecycle statuses are not automatically adopted** as the universal vocabulary.
+7. Future projection naming belongs to the **relevant domain owner** and must remain **derivable from
+   evidence truth**.
+
+> Rule 6 explicitly declines the Draft's recommendation. The Draft proposed adopting the eight Lexique
+> lifecycle statuses as the shared vocabulary *because they already exist and are tested*. The founder
+> refused: **existence and convenience do not confer universality.** That is the same principle as
+> DOC-015's directory-membership rule, applied to a status enum.
 
 ## 19. State transitions
 
@@ -783,7 +913,7 @@ and require ratification.
 | I-16 | No social action is evidence without a separately ratified evidence contract. | `INHERITED — FOUNDER DECISION` (R8) |
 | I-17 | Admissibility and attribution are gates that precede any mastery effect. | `PROPOSED FOR FOUNDER RATIFICATION` |
 | I-18 | Correctness alone is not admissibility. | `PROPOSED FOR FOUNDER RATIFICATION` |
-| I-19 | An event whose assistance level is unknown is not fully admissible evidence. | `PROPOSED FOR FOUNDER RATIFICATION` |
+| I-19 | ~~An event whose assistance level is unknown is not fully admissible evidence.~~ **AMENDED by FQ-3:** such an event **remains admissible and is not invalidated**; it may not establish *independent production*. | `INHERITED — FOUNDER DECISION` (FQ-3) — amends the Draft's own proposal |
 | I-20 | Evidence is never deleted and never silently mutated; invalidation is a compensating record. | `INHERITED — FOUNDER DECISION` (FQ-6) |
 | I-21 | Where a non-learner error is knowable before admission, the result is not admitted as evidence. | `INHERITED — FOUNDER DECISION` (FQ-6) |
 | I-22 | Mastery projections must neutralize invalidated evidence's pedagogical effect; audit history stays intact. | `INHERITED — FOUNDER DECISION` (FQ-6) |
@@ -791,8 +921,21 @@ and require ratification.
 | I-24 | An ambiguous event may not establish weakness until its semantic class is attributable. | `INHERITED — FOUNDER DECISION` (FQ-1) |
 | I-25 | This Bible governs every evidence-bearing Cairn system; domain coverage authorizes no modification of any of them. | `INHERITED — FOUNDER DECISION` (FQ-8) |
 
-> **I-20 through I-25 are ratified semantics with zero implementation.** Each is a rule about what
-> Cairn *means*, not a statement that Cairn *does* it. None is enforced anywhere today (§38).
+| I-26 | Assistance changes what a success proves, never whether the learner action exists. | `INHERITED — FOUNDER DECISION` (FQ-3) |
+| I-27 | Reveal, answer exposure, model answer and copy-ready output are support events, never mastery evidence. | `INHERITED — FOUNDER DECISION` (FQ-3) |
+| I-28 | Prompt-fade history is not a substitute for attempt-level assistance attribution. | `INHERITED — FOUNDER DECISION` (FQ-3) |
+| I-29 | Evidence strength is a semantic property attached at admission. | `INHERITED — FOUNDER DECISION` (FQ-2) |
+| I-30 | Production is stronger than recognition for independent use; recognition alone proves neither independent production nor ownership. | `INHERITED — FOUNDER DECISION` (FQ-2) |
+| I-31 | Recognition-only evidence must never independently reach the longest review interval or the strongest mastery claim. | `INHERITED — FOUNDER DECISION` (FQ-2) |
+| I-32 | Current weakness is recoverable; weakness history persists as caution and never as permanent punishment. | `INHERITED — FOUNDER DECISION` (FQ-4) |
+| I-33 | Successful repair does not instantly establish strong mastery. | `INHERITED — FOUNDER DECISION` (FQ-4) |
+| I-34 | Counter-derived projection is the semantic source of truth; no named ladder is the universal mastery state. | `INHERITED — FOUNDER DECISION` (FQ-5) |
+| I-35 | A derived projection must name its purpose and mapping, and must never be substituted for another. | `INHERITED — FOUNDER DECISION` (FQ-5) |
+| I-36 | A technical tag describes a surface relation and never decides pedagogical meaning by itself. | `INHERITED — FOUNDER DECISION` (FQ-1 clarification) |
+| I-37 | No exact numeric value is founder-locked; semantic promises and structural shapes are. | `INHERITED — FOUNDER DECISION` (FQ-7) |
+
+> **I-19 through I-37 are ratified semantics with zero implementation.** Each is a rule about what
+> Cairn *means*, not a statement that Cairn *does* it. **None is enforced anywhere today** (§38).
 
 ## 34. Tunable parameters
 
@@ -803,8 +946,29 @@ Shape fixed; value changeable without a founder decision, *once the shape is rat
 `MAX_CONSECUTIVE_SAME_FAMILY` · Lexique Memory weights, thresholds and half-lives ·
 `WEAKNESS_K` · `WEAK_RESIDUAL_FLOOR`.
 
-> **A constant is not a decision.** Every value above currently exists in code with no founder ruling.
-> Listing it as `TUNABLE` is a proposal about its *class*, not a ratification of its *value*. See **FQ-7**.
+### The founder rule (FQ-7, ratified 2026-07-26)
+
+`INHERITED — FOUNDER DECISION` — **lock the promises and the shapes; keep every number tunable.**
+
+**Founder-locked semantic promises (eight):**
+
+1. One isolated error does not automatically establish weakness.
+2. Production is stronger evidence than recognition for independent use.
+3. Assistance changes the evidentiary claim.
+4. Weakness can recover.
+5. Weakness history may persist without permanent punishment.
+6. Spaced return exists.
+7. Repair requires later confirmation.
+8. Non-learner error never creates learner weakness.
+
+**Tunable and explicitly NOT founder-locked (twelve classes):** weakness threshold values · Leitner
+intervals · box count · prompt-fade level count · daily-set sizes · diversity caps · decay rates and
+floors · repair success counts and timing · recognition/production numeric weights · Lexique Memory
+constants · legacy section thresholds · **all other current numeric constants**.
+
+> **No exact number becomes Canonical through this decision.** `TUNABLE` is now a *ratified class
+> assignment*, not a proposal — but the value inside each constant remains an implementation value with
+> no founder ruling behind it. **Founder-locked exact numbers: zero.**
 
 ## 35. Current runtime constants
 
@@ -876,9 +1040,15 @@ Mixed and source-specific. **These four dimensions must not be collapsed.**
 | Invalidation (FQ-6, ratified) | ✘ | ✘ | ✘ | **ratified semantics; no mechanism exists** |
 | Meaning-based polarity (FQ-1, ratified) | ✘ | ✘ | ✘ | **ratified semantics; the tag cannot carry it** |
 | Domain coverage of legacy systems (FQ-8, ratified) | n/a | n/a | n/a | **ratified scope; legacy systems non-conforming and frozen** |
+| Differential evidence strength (FQ-2, ratified) | ✘ | ✘ | ✘ | **ratified semantics; the reducer has no weighting at all** |
+| Assistance scopes the claim (FQ-3, ratified) | ✘ | ✘ | ✘ | **ratified semantics; no attempt-level assistance field exists** |
+| Recoverable weakness / persistent history (FQ-4, ratified) | ✘ | ✘ | ✘ | **ratified semantics; monotone counters make weakness permanent** |
+| No universal named ladder (FQ-5, ratified) | ✔ *by absence* | — | — | **nothing stores a universal ladder — conformance is accidental, not designed** |
+| Locked promises / tunable numbers (FQ-7, ratified) | n/a | n/a | n/a | **classification only; every value is still an unratified implementation number** |
 
-> **Round 1 ratified three rules and enforced none of them.** A ratified semantic rule with an empty
-> enforcement row is the honest state, not an omission.
+> **Rounds 1–2 ratified eight decisions and enforced none of them.** A ratified semantic rule with an
+> empty enforcement row is the honest state, not an omission. The single ✔ above (FQ-5) holds only
+> because no universal ladder was ever built — conformance by accident is still recorded as such.
 
 ## 39. Open decisions
 
@@ -892,16 +1062,25 @@ Each maps to a founder question in the Review Surface and to `ME-###` rows in th
 | **FQ-6** invalidation model | **A** — refuse at admission; append-only compensating record afterwards (§23) |
 | **FQ-8** domain scope | **A** — all evidence-bearing systems; legacy governed, non-conforming, not authorized for change (§2.1) |
 
-**Still open — the Bible cannot be promoted until these are answered:**
+**Resolved in Round 2 (2026-07-26) — semantics only, no implementation:**
 
-1. **Differential evidence weight** — canon asserts a multiplier; the reducer has none. **FQ-2**
-2. **Assistance as an evidence input** — hint usage never reaches evidence. **FQ-3**
-3. **Weakness permanence** — residual floor vs full recovery. **FQ-4**
-4. **Mastery vocabulary** — counters only, or a named ladder. **FQ-5**
-5. **Which constants are founder-locked vs tunable.** **FQ-7**
+| | Decision |
+|---|---|
+| **FQ-2** differential evidence strength | **A** — strength attaches at admission; production > recognition; **no number ratified** (§11, §13) |
+| **FQ-3** assistance | **C** — assistance changes what a success *proves*, not whether the action exists (§12) |
+| **FQ-4** weakness permanence | **A** — `currently weak` recoverable; `ever weak` persists as caution (§14) |
+| **FQ-5** mastery vocabulary | **C** — counters are truth; no universal named ladder; purpose-named projections allowed (§18) |
+| **FQ-7** locked vs tunable | **A** — eight promises locked; **zero exact numbers locked** (§34) |
+| **FQ-1 clarification** | Tags never carry polarity — generalized to every tag (§15) |
 
-New `OPEN` item created by Round 1: whether `accent_only`'s French meaning-changing counter-examples
-(`ou`/`où`, `a`/`à`, `sur`/`sûr`) need their own ruling, or fall under FQ-1's ambiguity clause (§15).
+**The Round-1 `accent_only` open item is CLOSED** by the FQ-1 clarification, which generalized the
+principle instead of adding a ninth question.
+
+**No founder question remains unanswered. All eight are answered.**
+
+> **That does not promote this document.** Three promotion prerequisites remain unmet (§41): the
+> independent adversarial review, the ADR-0021 and source amendments, and the standing prohibition on
+> any statement here becoming an implementation authorization.
 
 Additionally `OPEN` without a founder question (routed elsewhere or lower priority): confidence
 representation (§13); conflicting-evidence ordering (§21); cross-session/lesson/family aggregation
@@ -919,6 +1098,11 @@ representation (§13); conflicting-evidence ordering (§21); cross-session/lesso
   threshold or legacy system. It changed what Cairn *means*, not what Cairn *does*.
 - It **does not claim** the ADR-0021 amendment required by FQ-1 has been made. It has not.
 - It **does not claim** that governing a legacy system (§2.1) is permission to modify it.
+- It **does not claim** any exact number is Canonical. **Founder-locked exact values: zero** (§34).
+- It **does not claim** a weighting mechanism exists in the mastery reducer — that claim is **retired**
+  (§11), and the reducer still has none.
+- It **does not claim** that answering all eight founder questions promotes this document, satisfies any
+  build gate, or opens implementation. It does none of those things (§41).
 - It **does not claim** authority over Content, Curriculum, Engineering, Social, Privacy or Operations.
 - It **does not claim** that founder Q2 authorized any implementation. It authorized an *owner*.
 - Absence of a rule here is **not** a rejection of that rule.
@@ -928,10 +1112,12 @@ representation (§13); conflicting-evidence ordering (§21); cross-session/lesso
 Before this Bible may be promoted Draft → Canonical, **all** of the following must hold:
 
 1. Every founder question in the Review Surface marked `REQUIRED NOW` or `REQUIRED BEFORE PROMOTION`
-   is answered and recorded in a founder ratification record. **Round 1 (2026-07-26) answered FQ-1,
-   FQ-6 and FQ-8. FQ-2, FQ-3, FQ-4, FQ-5 and FQ-7 remain unanswered — this condition is NOT met.**
-1b. The **ADR-0021 scope amendment** required by FQ-1 has been applied by a separately authorized
-   documentation task. **Not done — ADR-0021 is unchanged.**
+   is answered and recorded in a founder ratification record. **MET — all eight answered across
+   Rounds 1 and 2 (2026-07-26).**
+1b. The **ADR-0021 scope amendment** required by FQ-1, and the **ADR-0022 / Lesson Flow Canon §5.3
+   amendments** required by FQ-2's retirement of the "weighting mechanism exists" claim, have been
+   applied by a separately authorized documentation task. **NOT MET — no ADR or canon source was
+   amended.**
 2. Every `ME-###` row with `founder decision required = yes` has a recorded decision or an explicit
    deferral.
 3. Every universal claim in this document has a completed member audit or is downgraded.
@@ -956,5 +1142,6 @@ This is recorded here as a permanent property of the domain, not a one-off condi
 
 | Date | Version | Change | Author |
 |---|---|---|---|
+| 2026-07-26 | 1.0 Draft (Round 2 — all eight answered) | **FQ-2** applied — §11 and §13: differential strength attached **at admission**; production > recognition; recognition-only may never reach the longest interval or strongest claim; the claim that a weighting mechanism exists in the reducer is **retired**; all numeric weights remain **candidate values**. **FQ-3** applied — §12: assistance changes what a success *proves*, not whether the action exists; support events are not evidence; unknown assistance does **not** invalidate history but cannot establish independent production; prompt-fade is **not** a substitute for attempt-level attribution; **I-19 amended** by the founder rule. **FQ-4** applied — §14: `currently weak` (recoverable, after repair **plus** spaced confirmation) split from `ever weak` (persistent caution, never permanent Challenge); the reducer's accidental permanence confirmed as Axis-B, not semantics. **FQ-5** applied — §18: counters are the source of truth; "9-state" `SUPERSEDED`; purpose-named derived projections permitted under five constraints; **the eight lifecycle statuses explicitly NOT adopted** as universal. **FQ-7** applied — §34: **eight** semantic promises founder-locked, **twelve** classes of numbers tunable, **zero exact values ratified**. **FQ-1 clarification** applied — §15: tags never carry polarity; generalized to `punctuation_only` and `accent_only`; the Round-1 `accent_only` item **closed without a ninth question**. Invariants **I-26…I-37** added; **I-19 amended**. §38, §39, §40, §41 updated; **promotion gate still NOT met** (independent review pending; ADR/canon amendments pending). **No ADR, canon source, code, schema, tag, test, validator, threshold or runtime file changed; no implementation opened; document remains Draft.** | Cloud session (Round 2 ratification) |
 | 2026-07-26 | 1.0 Draft (Round 1 founder decisions) | **FQ-8** applied — §2.1 added: the Bible governs all evidence-bearing systems (engine · legacy `lm7` weak spots · legacy `lm7_srs` · legacy per-section thresholds · future replacements); telemetry excluded; legacy recorded as Axis-B, legacy-active, non-conforming, frozen for replacement, **not authorized for modification**. **FQ-6** applied — §23 rewritten: refuse at admission where knowable, append-only compensating record afterwards, never delete or mutate, projections neutralize effect, audit intact; all **seven** non-learner error-source classes covered (founder wording adds *system*); schema/names/cache/reconciliation/storage remain Engineering's. **FQ-1** applied — §10 and §15 rewritten: polarity is meaning-based; `spelling_near_miss` is an ambiguous technical tag proving neither precision nor weakness; ambiguous events may not establish weakness; the five-bucket table demoted to a description of code; **`accent_only` recorded with a stated French counter-example exception** and a new `OPEN` item. Invariants **I-20…I-25** added as `INHERITED — FOUNDER DECISION`. §39 split into resolved/still-open. §41 gate updated and explicitly **not met**. **ADR-0021 not amended; no code, schema, tag, threshold, validator, runtime or legacy system changed; no implementation opened; document remains Draft.** | Cloud session (Round 1 ratification) |
 | 2026-07-26 | 1.0 Draft | Initial Draft authored under the founder's Step 1 scoped opening. Recovered sources repository-wide; classified every normative statement by provenance; recorded five bucket classes against the code's actual behaviour; documented the `spelling_near_miss` contradiction, the missing evidence-weight implementation, the absent admissibility/attribution/invalidation mechanisms, the "9-state" claim failure, and the two-disjoint-store reality. **No file outside `docs/bibles/mastery-evidence/` modified. No code, schema, event, threshold, validator or UI changed. No implementation authorized. Not Canonical.** | Cloud session (Step 1 draft) |

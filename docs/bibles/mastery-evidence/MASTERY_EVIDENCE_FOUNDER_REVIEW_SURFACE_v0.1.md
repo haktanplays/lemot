@@ -1,7 +1,7 @@
 ---
 title: Mastery & Evidence Founder Review Surface v0.1
 version: 0.1
-status: Draft — bounded founder decision surface; 3 of 8 answered (Round 1, 2026-07-26)
+status: Draft — bounded founder decision surface; **8 of 8 answered** (Rounds 1–2, 2026-07-26)
 authority: none — a question set, not a decision
 owner: Mastery & Evidence
 created: 2026-07-26
@@ -13,11 +13,18 @@ questions: 8
 **Eight questions.** Every one of them is a question the repository genuinely cannot answer, because
 two sources disagree or because nothing exists at all.
 
-> **Round 1 — three answered (2026-07-26).** **FQ-1 = C** · **FQ-6 = A** · **FQ-8 = A**. The answered
-> cards are kept in full, with their original recommendation and strongest alternative intact for
-> provenance, and are headed `FOUNDER ANSWERED — 2026-07-26`. **FQ-2, FQ-3, FQ-4, FQ-5 and FQ-7 remain
-> unanswered.** All three `REQUIRED NOW` questions are now closed; five `REQUIRED BEFORE PROMOTION`
-> questions remain, so the Bible stays Draft. **No answer authorized any implementation.**
+> **All eight answered (Rounds 1–2, both 2026-07-26).**
+> **Round 1:** FQ-1 = **C** · FQ-6 = **A** · FQ-8 = **A**.
+> **Round 2:** FQ-2 = **A** · FQ-3 = **C** · FQ-4 = **A** · FQ-5 = **C** · FQ-7 = **A**, plus a general
+> **FQ-1 clarification** that closes the Round-1 `accent_only` item without creating a ninth question.
+>
+> **Three answers were `C`** — FQ-1, FQ-3 and FQ-5 — meaning the founder declined *both* offered options
+> and reframed the question. Those cards say so explicitly. Every card is kept in full, with its
+> original recommendation and strongest alternative intact for provenance.
+>
+> **Zero unanswered founder slots remain. The Bible is still Draft**: promotion additionally requires
+> the source amendments and the independent adversarial review, neither of which has happened.
+> **No answer authorized any implementation, and no exact number was founder-locked.**
 
 **Deliberately not asked here:** facts the repository already proves (recorded in the Current Reality
 Map instead) · module placement, schema shape and algorithm choice (Engineering) · sequencing and
@@ -53,6 +60,28 @@ band-strictness (Curriculum) · retention, lawful basis and minors (Privacy/Lega
 >
 > **Neither the recommendation nor the alternative below was adopted.** Both are preserved unchanged
 > as provenance — the founder rejected the precision/weakness framing itself.
+>
+> ### `FOUNDER CLARIFICATION — 2026-07-26` · tags are not semantic polarity
+>
+> The founder generalized the FQ-1 rule to **every** technical error tag:
+>
+> 1. The meaning-based polarity principle applies to **every** technical error tag, not only
+>    `spelling_near_miss`.
+> 2. **A technical tag describes an observed surface relation; it does not automatically decide the
+>    pedagogical meaning.**
+> 3. **`accent_only` may be meaning-preserving *or* meaning-changing.**
+> 4. `ou`/`où`, `a`/`à`, `sur`/`sûr` **prevent a universal claim that every accent-only event is
+>    precision**.
+> 5. **`punctuation_only` must likewise be evaluated against the authored target** where punctuation
+>    changes the intended communicative act.
+> 6. **Where semantic effect is unknown, the event may not independently establish weakness *or* full
+>    precision credit.**
+> 7. Exact classification and implementation remain future **Content and Engineering** work.
+> 8. **This is a clarification of FQ-1's founder rule, not an implementation opening.**
+>
+> **This closes the Round-1 `accent_only` open item** by generalizing the principle. **No ninth founder
+> question was created.** Rule 5 goes further than the Round-1 record did: it puts `punctuation_only`
+> — which no source had previously questioned — on the same footing.
 
 **1. Question ID:** FQ-1
 **2. Exact decision.** Does `spelling_near_miss` belong in the precision bucket (soft, never weakness),
@@ -102,10 +131,12 @@ meaning-distinct confusions become invisible to mastery until a new mechanism ex
 weakness"* was tested against each member: `punctuation_only` ✔ · `accent_only` ✔ ·
 `spelling_near_miss` ✘. **The universal claim is false as written in four documents.** Either the claim
 or the member list must move.
-**12b. Re-run after the answer (2026-07-26).** The founder retired the claim rather than repairing it.
-Under FQ-1: `punctuation_only` = **precision** · `accent_only` = **precision, with a stated French
-counter-example exception** (`ou`/`où`, `a`/`à`, `sur`/`sûr` — a new open item) · `spelling_near_miss` =
-**undetermined**. **No universal claim that the three share a polarity is made anywhere in the package.**
+**12b. Re-run after the answer and clarification (2026-07-26).** The founder retired the claim rather
+than repairing it, then generalized the principle. Under FQ-1 **as clarified**, no tag carries a
+polarity on its own: `punctuation_only` = **context-dependent** (must be evaluated against the authored
+target) · `accent_only` = **context-dependent** (`ou`/`où`, `a`/`à`, `sur`/`sûr`) · `spelling_near_miss`
+= **context-dependent**. **0 of 3 tags is individually determinate, and the set shares no common
+polarity.** The Round-1 `accent_only` item is **closed by generalization**, not by a separate ruling.
 **13. Timing:** `REQUIRED NOW` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-1 = [A] amend ADR-0021, keep code · [B] restore 3-member precision, change code · [C] other — ______`
 **→ ANSWERED: C** (meaning-based polarity; see the answer block at the top of this card).
@@ -113,6 +144,30 @@ counter-example exception** (`ou`/`où`, `a`/`à`, `sur`/`sûr` — a new open i
 ---
 
 ## FQ-2 — Does evidence have differential weight, and if so, where does it live?
+
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-2 = A**
+>
+> **Founder wording:** *"evidence has differential semantic strength at admission; exact numeric weights
+> remain tunable and unratified."*
+>
+> **Final semantic rule:**
+> 1. **Production evidence is stronger than recognition evidence for independent language use.**
+> 2. **Recognition is valid evidence** but does not alone prove independent production or ownership.
+> 3. **Evidence strength is a semantic property attached at admission.**
+> 4. Strength **may** influence mastery projections and scheduling, but **exact algorithms belong to
+>    Engineering**.
+> 5. **Recognition-only evidence must not independently produce the longest review interval** or
+>    equivalent strongest mastery claim.
+> 6. Existing `lexique-memory.ts` weights are **current candidate values only**.
+> 7. **No current multiplier, interval, or numeric weight is founder-ratified.**
+> 8. **Retire or amend any claim that a weighting mechanism already exists in the current mastery
+>    reducer.**
+> 9. **Evidence strength and selection priority remain separate concepts.**
+>
+> This matches the recommendation below (**A**), including its stated cost: a genuinely new semantic
+> mechanism, and every existing interval value becomes provisional. Rule 8 additionally **retires a
+> claim in two active canon sources** (ADR-0022, Lesson Flow Canon §5.3) — a source amendment that is
+> **pending, not applied**.
 
 **1. Question ID:** FQ-2
 **2. Exact decision.** Should a recognition success count for less than a production success in mastery
@@ -160,12 +215,36 @@ could reach a 30-day interval having never produced the item.
 **12. Weakest-member test.** The claim *"evidence weight lives in the mastery reducer"* was tested
 against its only member — the reducer — and **fails**: no weighting term exists in any branch. The
 claim is currently false of 1 of 1 members.
-**13. Timing:** `REQUIRED BEFORE PROMOTION`.
+**13. Timing:** `REQUIRED BEFORE PROMOTION` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-2 = [A] ratify differential weight at admission · [B] all evidence equal; amend canon · [C] other — ______`
+**→ ANSWERED: A** (see the answer block at the top of this card).
 
 ---
 
 ## FQ-3 — Does assistance change what an action proves?
+
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-3 = C** *(neither A nor B)*
+>
+> **Founder wording:** *"assistance changes what a success proves, not whether the learner action
+> exists."*
+>
+> **Final semantic rule:**
+> 1. An **unaided success may support a claim of independent performance**.
+> 2. A **hinted or assisted success is valid evidence of supported performance**.
+> 3. **Assisted success must not be treated as equivalent to independent production.**
+> 4. **Reveal, answer exposure, model answer, or copy-ready output are exposure/support events, not
+>    mastery evidence.**
+> 5. **Unknown assistance does not automatically invalidate historical evidence.**
+> 6. **Evidence with unknown assistance may not establish independent production.**
+> 7. **Prompt-fade history is not a substitute for attempt-level assistance attribution.**
+> 8. Exact assistance fields, event representation, UX treatment and strength calculations belong to
+>    **Engineering and UX**.
+> 9. **This decision authorizes documentation semantics only.**
+>
+> **The founder chose C, rejecting both options below.** Rule 5 in particular **corrects the Draft's own
+> recommendation**: the Draft proposed that unknown assistance makes an event "not fully admissible,"
+> which would have devalued every event ever recorded. The founder rule keeps such events admissible
+> and merely bars the *independent-production* claim. **Bible invariant I-19 was amended accordingly.**
 
 **1. Question ID:** FQ-3
 **2. Exact decision.** Should hint usage (and other assistance) reduce, or gate, the evidentiary force
@@ -206,12 +285,33 @@ support. False mastery becomes structurally possible.
 **12. Weakest-member test.** The assistance set was enumerated: hint L0 · hint L1 · hint L2 · reveal ·
 model answer · prompt-fade level · AI support. **Only prompt-fade reaches the evidence layer — 1 of 7.**
 Any claim that "assistance is accounted for" fails on the other six.
-**13. Timing:** `REQUIRED BEFORE PROMOTION`.
+**13. Timing:** `REQUIRED BEFORE PROMOTION` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-3 = [A] assistance is an admissibility + strength input · [B] assistance has no evidentiary effect · [C] other — ______`
+**→ ANSWERED: C** — neither option; assistance scopes the *claim*, not admissibility. See the answer block above.
 
 ---
 
 ## FQ-4 — Is weakness permanently residual, or fully recoverable?
+
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-4 = A**
+>
+> **Founder wording:** *"current weakness is recoverable; weakness history persists."*
+>
+> **Final semantic rule:**
+> 1. Distinguish **`currently weak`** from **`ever weak`**.
+> 2. **Current weakness drives immediate repair, return, and challenge eligibility.**
+> 3. **Current weakness may clear after successful repair plus spaced confirmation.**
+> 4. **Historical weakness remains available as a caution signal.**
+> 5. **Historical weakness alone must not keep an item permanently in Challenge.**
+> 6. **Successful repair does not instantly establish strong mastery.**
+> 7. **The current reducer's permanent weakness caused by monotone counters is Axis-B reality, not
+>    intended semantics.**
+> 8. Exact clearing conditions, counters, time windows and data structures remain **Engineering and
+>    Curriculum** decisions.
+>
+> This matches the recommendation below (**A**) — two fields, two facts. Rule 7 confirms the Draft's
+> finding that the reducer's permanence was an **accident of monotone counters**, not a choice.
+> **Confirming it as unintended does not authorize changing it.**
 
 **1. Question ID:** FQ-4
 **2. Exact decision.** Once an item has been weak, may it ever return to a state indistinguishable from
@@ -253,12 +353,37 @@ scope-amended, and Lexique Memory's floor becomes dead. Risk: a chronic difficul
 **12. Weakest-member test.** The claim *"weakness decays over time"* was tested against every decay
 mechanism in the repo: Leitner ✘ (moves due dates, not strength) · reducer time-decay ✘ (absent) ·
 Lexique Memory half-life ✔ but unwired. **1 of 3, and the one that works is not connected.**
-**13. Timing:** `REQUIRED BEFORE PROMOTION`.
+**13. Timing:** `REQUIRED BEFORE PROMOTION` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-4 = [A] residual floor + recoverable current state · [B] full recovery on confirmation · [C] other — ______`
+**→ ANSWERED: A** (see the answer block at the top of this card).
 
 ---
 
 ## FQ-5 — Does Cairn have named mastery states, or only counters?
+
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-5 = C** *(neither A nor B)*
+>
+> **Founder wording:** *"counter-derived mastery is the source of truth; Cairn has no single universal
+> named mastery ladder."*
+>
+> **Final semantic rule:**
+> 1. **Counter-derived evidence projection remains the semantic source of truth.**
+> 2. **The phrase "9-state mastery" is `SUPERSEDED`.**
+> 3. **No named state ladder is stored as the universal mastery truth.**
+> 4. Domain consumers **may** define explicit derived projections for their own purpose: **Mon Lexique ·
+>    Practice · Curriculum readiness · learner-facing UX**.
+> 5. A derived projection **must name its purpose**, **must define its mapping from the source
+>    snapshot**, **must not claim to be the universal mastery state**, and **must not be substituted for
+>    another projection**.
+> 6. **The existing eight lifecycle statuses are not automatically adopted** as the universal mastery
+>    vocabulary.
+> 7. Future projection naming belongs to the **relevant domain owner** and must remain **derivable from
+>    evidence truth**.
+>
+> **The founder chose C, rejecting both options below.** Rule 6 specifically **declines the Draft's
+> recommendation** to adopt the eight Lexique lifecycle statuses *because they already exist and are
+> tested* — existence and convenience do not confer universality. But unlike option B, projections are
+> permitted; they simply must be purpose-named and honestly mapped.
 
 **1. Question ID:** FQ-5
 **2. Exact decision.** Is the canonical mastery vocabulary the counter-derived snapshot alone, or a
@@ -298,8 +423,9 @@ harder — but zero risk of a named ladder drifting from what the counters actua
 **12. Weakest-member test.** The claim *"Cairn has a 9-state mastery model"* was tested against all six
 candidate ladders (3 · 4 · 8 · 5 · 3 · 4). **0 of 6 have nine members.** The claim is false against
 every member of its own candidate set.
-**13. Timing:** `REQUIRED BEFORE PROMOTION`.
+**13. Timing:** `REQUIRED BEFORE PROMOTION` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-5 = [A] counters + one named projection (8 lifecycle statuses) · [B] counters only, no named ladder · [C] other — ______`
+**→ ANSWERED: C** — neither option; counters are truth **and** purpose-named projections are permitted, but no ladder is universal. See the answer block above.
 
 ---
 
@@ -377,6 +503,30 @@ classes total and **seven** in the excluded set: content · validator · UI-flow
 
 ## FQ-7 — Which numbers are yours, and which are Engineering's?
 
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-7 = A**
+>
+> **Founder wording:** *"founder-lock semantic promises and structural shapes; keep all exact numeric
+> values tunable."*
+>
+> **Founder-locked semantic promises (eight):**
+> 1. One isolated error does not automatically establish weakness.
+> 2. Production is stronger evidence than recognition for independent use.
+> 3. Assistance changes the evidentiary claim.
+> 4. Weakness can recover.
+> 5. Weakness history may persist without permanent punishment.
+> 6. Spaced return exists.
+> 7. Repair requires later confirmation.
+> 8. Non-learner error never creates learner weakness.
+>
+> **Tunable and NOT founder-locked:** weakness threshold values · Leitner intervals · box count ·
+> prompt-fade level count · daily-set sizes · diversity caps · decay rates and floors · repair success
+> counts and timing · recognition/production numeric weights · Lexique Memory constants · legacy section
+> thresholds · **all other current numeric constants**.
+>
+> **No exact number becomes Canonical through this decision. Founder-locked exact values: zero.**
+>
+> This matches the recommendation below (**A**) — lock the promises, tune the numbers.
+
 **1. Question ID:** FQ-7
 **2. Exact decision.** Which of the domain's constants are founder-locked (changeable only by founder
 decision), and which are tunable by Engineering within a fixed shape?
@@ -413,8 +563,9 @@ commitments, and any future reader can change any threshold citing the absence o
 **11. Affected downstream layers:** Engineering (tuning authority), Curriculum (pacing), Operations (release gates).
 **12. Weakest-member test.** The claim *"the domain's constants are canonical"* was tested against every
 constant listed above. **Founder decisions found: 0 of ~25.** The weakest member is the entire set.
-**13. Timing:** `REQUIRED BEFORE PROMOTION`.
+**13. Timing:** `REQUIRED BEFORE PROMOTION` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-7 = [A] lock promises, tune numbers · [B] lock nothing numeric yet · [C] other — ______`
+**→ ANSWERED: A** (see the answer block at the top of this card).
 
 ---
 
@@ -494,33 +645,34 @@ holds for 1 of 4 real systems — and not the one that ships.**
 Copy, fill, return. `A` = Draft recommendation, `B` = strongest alternative, `C` = your own wording.
 
 ```
-Mastery & Evidence — Founder Decisions
+Mastery & Evidence — Founder Decisions — COMPLETE (2026-07-26)
 
-ROUND 1 — ANSWERED 2026-07-26  (semantics only; no implementation)
+ROUND 1 — ANSWERED  (semantics only; no implementation)
 FQ-1  near-miss polarity          = [C] polarity is meaning-based; the tag is ambiguous
 FQ-6  invalidation model          = [A] refuse at admission + append-only compensating record
 FQ-8  scope over legacy surface   = [A] domain-wide; legacy governed, non-conforming, frozen
 
-ROUND 2 — STILL OPEN  (all REQUIRED BEFORE PROMOTION; date: ________)
-FQ-2  differential evidence weight= [ A / B / C ] ______________________
-FQ-3  assistance as evidence input= [ A / B / C ] ______________________
-FQ-4  weakness permanence         = [ A / B / C ] ______________________
-FQ-5  mastery vocabulary          = [ A / B / C ] ______________________
-FQ-7  locked vs tunable constants = [ A / B / C ] ______________________
+ROUND 2 — ANSWERED  (semantics only; no implementation)
+FQ-2  differential evidence weight= [A] strength at admission; NO number ratified
+FQ-3  assistance as evidence input= [C] assistance scopes the claim, not the action's existence
+FQ-4  weakness permanence         = [A] currently-weak recoverable; ever-weak persists as caution
+FQ-5  mastery vocabulary          = [C] counters are truth; purpose-named projections; no universal ladder
+FQ-7  locked vs tunable constants = [A] 8 promises locked; 0 exact numbers locked
 
-New item opened by Round 1 (not yet a numbered question):
-  accent_only French counter-examples (ou/où, a/à, sur/sûr) — own ruling, or
-  covered by FQ-1's ambiguity clause?   ______________________
+FQ-1 CLARIFICATION — ANSWERED
+  No technical tag decides pedagogical meaning. Applies to punctuation_only and
+  accent_only as well. CLOSES the Round-1 accent_only item. No ninth question.
 
-Notes / additional instruction:
-____________________________________________________________________
+UNANSWERED FOUNDER SLOTS REMAINING: 0
 
-Explicitly NOT authorized by the Round 1 answers (confirmed by this record):
+Explicitly NOT authorized by these answers (confirmed by this record):
   - no code, schema, event, threshold, tag, manifest, test, validator or UI change
   - no promotion of this Bible to Canonical
-  - no amendment applied to ADR-0021 or any vault file
+  - no amendment applied to ADR-0021, ADR-0022, Lesson Flow Canon or any vault file
   - no modification of any legacy system
+  - no exact numeric value founder-locked
   - no implementation opening
+  - the independent adversarial review is NOT performed by answering these
 ```
 
 > **Answering these questions does not open implementation and does not promote this Bible.** Promotion
