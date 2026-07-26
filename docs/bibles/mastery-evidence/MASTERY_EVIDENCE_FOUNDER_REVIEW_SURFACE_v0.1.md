@@ -22,8 +22,9 @@ two sources disagree or because nothing exists at all.
 > and reframed the question. Those cards say so explicitly. Every card is kept in full, with its
 > original recommendation and strongest alternative intact for provenance.
 >
-> **Zero unanswered founder slots remain. The Bible is still Draft**: promotion additionally requires
-> the source amendments and the independent adversarial review, neither of which has happened.
+> **Zero unanswered founder slots remain. The Bible is still Draft.** The **source amendments were
+> applied on 2026-07-26** (commit `e577954`, 18 source documents); the **independent adversarial review
+> by a non-author has NOT been performed and is the sole remaining promotion prerequisite.**
 > **No answer authorized any implementation, and no exact number was founder-locked.**
 
 **Deliberately not asked here:** facts the repository already proves (recorded in the Current Reality
@@ -55,7 +56,8 @@ band-strictness (Curriculum) · retention, lawful basis and minors (Privacy/Lega
 >    attributable.**
 > 5. Current sandbox code that automatically accrues weakness for this tag is `CURRENT REALITY —
 >    AXIS B`, **provisional**, and **non-conforming** where meaning is unknown.
-> 6. **ADR-0021's member list requires a future scope amendment** — not applied.
+> 6. **ADR-0021's member list requires a future scope amendment** — not applied *at the time of this
+>    answer*; **applied on 2026-07-26** (commit `e577954`, scope-amended not repealed).
 > 7. **No ADR, code, schema, manifest, tag, test, validator or runtime file was changed.**
 >
 > **Neither the recommendation nor the alternative below was adopted.** Both are preserved unchanged
@@ -166,8 +168,9 @@ polarity.** The Round-1 `accent_only` item is **closed by generalization**, not 
 >
 > This matches the recommendation below (**A**), including its stated cost: a genuinely new semantic
 > mechanism, and every existing interval value becomes provisional. Rule 8 additionally **retires a
-> claim in two active canon sources** (ADR-0022, Lesson Flow Canon §5.3) — a source amendment that is
-> **pending, not applied**.
+> claim in two active canon sources** (ADR-0022, Lesson Flow Canon §5.3) — a source amendment that was
+> **pending at the time of this answer** and was **applied on 2026-07-26** (commit `e577954`;
+> scope-amended, not repealed).
 
 **1. Question ID:** FQ-2
 **2. Exact decision.** Should a recognition success count for less than a production success in mastery

@@ -351,9 +351,12 @@ tag**: see §15. It is an ambiguous technical tag, not a polarity.
 
 > **Retirement notice.** ADR-0022's phrase *"evidence weight (mastery multiplier)"* and Lesson Flow
 > Canon §5.3's placement of that multiplier **in the mastery reducer** describe a mechanism that does
-> not exist. Under rule 8 those claims are **retired as descriptions of current reality**; whether the
-> ADR text itself is amended is a **pending source-patch task**, not done here. The *separation*
-> principle (rule 9, ADR-0022) is untouched and still binding.
+> not exist. Under rule 8 those claims are **retired as descriptions of current reality**. **Both source
+> texts were amended on 2026-07-26** (commit `e577954`): ADR-0022 was **scope-amended, not repealed**
+> and remains `active` / `canonical`; Lesson Flow Canon §5.3 no longer locates the mechanism in the
+> reducer, and §5.5's multipliers are marked **illustrative candidates, not ratified**. The *separation*
+> principle (rule 9, ADR-0022) **survives intact and is still binding**. **The reducer still implements
+> no weighting** — amending documentation changed no runtime behaviour.
 
 `CURRENT REALITY — AXIS B`, **unchanged and now explicitly non-conforming**: recognition success
 advances the Leitner box and prompt-fade **identically** to production success, so a recognition-only
@@ -523,10 +526,13 @@ reducer accrues `weakTags` for every `spelling_near_miss`, including events whos
 That behaviour is **provisional and non-conforming** with the founder rule wherever meaning is not
 attributable. **No code change is authorized by this ratification** (§40).
 
-**Future documentation prerequisite, not yet done.** ADR-0021's member list requires a **scope
-amendment** to match the meaning-based rule. It has **not** been amended — ADR-0021 still states the
-pre-B7 four-bucket rule and remains `active` / `canonical` and untouched. Amending it is a separate,
-separately-authorized documentation task (§41).
+**Documentation prerequisite — APPLIED 2026-07-26.** ADR-0021's member list required a **scope
+amendment** to match the meaning-based rule, and it was applied by a separately authorized
+source-reconciliation task (commit `e577954`). ADR-0021 was **scope-amended, not repealed**: it remains
+`status: active` / `canon_status: canonical` with `superseded_by: []`, its original pre-B7 four-bucket
+Decision text is **preserved verbatim as historical record**, and **its fixed three-tag member list is no
+longer the live semantic rule**. Seven further polarity-family sources were reconciled in the same patch.
+**No code, tag, threshold or runtime changed** (§41).
 
 ### FQ-1 general clarification (2026-07-26) — tags are not semantic polarity
 
@@ -1126,7 +1132,9 @@ Before this Bible may be promoted Draft → Canonical, **all** of the following 
 3. Every universal claim in this document has a completed member audit or is downgraded.
 4. All derived counts are recalculated from actual rows.
 5. **An independent adversarial review by a reviewer other than this document's author** is completed
-   and its findings resolved. That review must specifically test: authority · status · source routing ·
+   and its findings resolved. **NOT MET — and as of 2026-07-26 this is the SOLE remaining promotion
+   prerequisite:** all eight founder questions are answered and all source amendments are applied.
+   That review must specifically test: authority · status · source routing ·
    universal claims · collection/member boundaries · counts · gates · supersession · current reality ·
    implementation authority · weakest-member exceptions · silent no-op edits · already-satisfied build
    gates · current-reality-versus-intended-semantics confusion · accidental implementation authority.

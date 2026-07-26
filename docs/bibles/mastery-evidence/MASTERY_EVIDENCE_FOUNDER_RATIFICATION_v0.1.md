@@ -62,8 +62,14 @@ implementation_authority: none
    - **ambiguous events may not establish weakness until their semantic class is attributable.**
 5. Current sandbox code that automatically accrues weakness for this tag is `CURRENT REALITY — AXIS B`,
    **provisional**, and **non-conforming** with the founder rule where meaning is unknown.
-6. **ADR-0021's current member list requires a future scope amendment.**
-7. **No ADR, code, schema, manifest, tag, test, validator or runtime file was changed.**
+6. **ADR-0021's member list required a scope amendment** — **applied 2026-07-26** by a separately
+   authorized source-reconciliation task (commit `e577954`). ADR-0021 was **scope-amended, not
+   repealed**: it remains `status: active` / `canon_status: canonical`, its original Decision text
+   remains **visible historically**, and **its fixed tag-member list is no longer the live semantic
+   rule**.
+7. **This founder decision itself authorized no implementation**, and **no code, schema, event, tag,
+   manifest, test, validator, threshold, interval or runtime file was changed** — not by the ratification
+   and not by the later reconciliation, which was documentation-only.
 
 **Notable:** the founder rejected *both* framings offered. Neither the Draft recommendation (keep the
 code, amend the ADR) nor the strongest alternative (restore the three-member bucket) was adopted — the
@@ -126,10 +132,14 @@ verbatim in the review card for provenance.
 8. **Retire or amend any claim that a weighting mechanism already exists in the current mastery reducer.**
 9. **Evidence strength and selection priority remain separate concepts.**
 
-**Consequence:** rule 8 retires a claim carried by **two active canon sources** — ADR-0022's *"evidence
+**Consequence:** rule 8 retired a claim carried by **two active canon sources** — ADR-0022's *"evidence
 weight (mastery multiplier)"* and Lesson Flow Canon §5.3's placement of that multiplier in the reducer.
-**The separation principle (rule 9 / ADR-0022) survives untouched.** The source amendments are
-**pending, not applied**.
+**Those source amendments were applied 2026-07-26** (commit `e577954`): ADR-0022 was **scope-amended, not
+repealed** and remains `status: active` / `canon_status: canonical`; Lesson Flow Canon §5.3 no longer
+places a weighting mechanism in the reducer and §5.5's multipliers are marked **illustrative candidates,
+not ratified**. **The separation principle (rule 9 / ADR-0022) survives untouched.** **No numeric weight
+was ratified, and no reducer or runtime weighting implementation was added** — the reducer still has
+none.
 
 ---
 
@@ -228,7 +238,8 @@ principle to `punctuation_only`, which no source had previously questioned.
 
 ## 5. Semantic consequences
 
-Applied across the Draft package:
+**Record of what Rounds 1–2 applied across the Draft package** (state as at each round; the
+post-reconciliation state is §7 and §10):
 
 | Where | Change |
 |---|---|
@@ -240,7 +251,7 @@ Applied across the Draft package:
 | Bible §33 | **I-20 … I-25** added as `INHERITED — FOUNDER DECISION` |
 | Bible §37, §38 | Scope consequence recorded; three ratified-but-unenforced rows added to the enforcement table |
 | Bible §39 | Split into *resolved in Round 1* and *still open* |
-| Bible §41 | Promotion gate updated — and explicitly **not met** |
+| Bible §41 | Promotion gate updated — **not met at the time of Rounds 1–2**, because the source amendments were still outstanding. **Since 2026-07-26 the source-amendment prerequisite is MET** and only the independent adversarial review remains (§7, §10). |
 | Decision Matrix | **8 rows** moved to `INH-FOUNDER` / `LOCKED`: ME-004, ME-007, ME-011, ME-012, ME-027, ME-032, ME-047, ME-048; ME-026 annotated; distributions recalculated from rows |
 | Gap Map | §8.1, §8.3, §13, §15, §18, §19 updated with a five-way status split (semantic / patch / runtime / review / remaining questions) |
 | Review Surface | FQ-1, FQ-6, FQ-8 headed `FOUNDER ANSWERED — 2026-07-26`; cards preserved in full; compact template rewritten |
@@ -294,18 +305,34 @@ conforming evidence.**
 
 ---
 
-## 7. Required future source amendments
+## 7. Source amendments — applied 2026-07-26
 
-**None of these has been applied. Each requires its own authorization.**
+**Applied in full as one atomic patch** (commit `e577954`), under a separate founder authorization.
+**Reconciling documentation is not implementation:** no runtime behaviour changed.
 
-1. **ADR-0021 scope amendment** — its member list places `spelling_near_miss` in Precision. FQ-1 makes
-   that member list wrong. **The ADR must be amended, not repealed** — its precision *principle* stands
-   and was vindicated. **ADR-0021 is untouched** and remains `status: active` / `canon_status:
-   canonical`.
-2. **Three stale source documents** repeating the same claim: `docs/status/founder-self-learning-mastery-precision-policy.md`
-   §2 table · vault `Mastery Model.md` bucket table · vault `Feedback and Scoring Philosophy.md`
-   near-miss line. All are operator-vault or status records; none was changed.
-3. **A ruling (or explicit deferral) on the `accent_only` exception** opened by Round 1.
+- **18 source documents reconciled** — **15** operator-vault files + **3** ordinary `docs/` files.
+- **ADR-0021** — **scope-amended, not repealed.** `status: active` / `canon_status: canonical` retained;
+  `superseded_by: []`; the original Decision text preserved verbatim; the fixed three-tag member list
+  marked historical; the broken `source_of_truth` path corrected. Its precision *principle* stands and
+  was vindicated.
+- **ADR-0022** — **scope-amended, not repealed.** Same status retained. Only the *implementation-exists*
+  implication was withdrawn; **the evidence-weight ≠ selection-weight separation principle survives
+  intact**.
+- **Lesson Flow Canon §5.3/§5.5** — clarified. The reducer-location claim withdrawn; the
+  production-vs-recognition principle kept; multipliers marked **illustrative candidates, not ratified**.
+- **All discovered live claim-family sources reconciled** across the three retired families (tag
+  polarity · weighting-exists · universal mastery ladder).
+- **`docs/learning-engine-v1.md` — unchanged**, because it already conforms: its five-state ladder is
+  explicitly labelled planning vocabulary, supplies its own mapping, and never claims universality.
+- **`accent_only`** — the Round-1 item is **closed by the general tag-polarity rule** (§4f), not by a
+  separate ruling and not by a ninth founder question.
+- **Historical wording preserved throughout.** Every original Decision, dated status body and prior
+  gap-register entry remains discoverable; nothing was silently repealed.
+- **No exact numeric value became Canonical.** Founder-locked numbers remain **zero**.
+
+**Detailed 18-file inventory and the full counting history are owned by**
+[`MASTERY_EVIDENCE_SOURCE_CONFLICT_AND_GAP_MAP_v0.1.md`](MASTERY_EVIDENCE_SOURCE_CONFLICT_AND_GAP_MAP_v0.1.md)
+**§20** — including the two prior mis-counts and why they were wrong. This record does not duplicate it.
 
 ---
 
@@ -316,7 +343,10 @@ This ratification does **not**:
 - promote the Bible or any supporting record to Canonical;
 - open any implementation, of any part, in any system;
 - authorize modifying **any legacy system** — governing a system is not permission to change it;
-- amend ADR-0021 or any other ADR;
+- **directly amend any ADR.** *(Chronology: the ratification act itself amended nothing. A **later,
+  separately authorized** atomic reconciliation task — commit `e577954`, 2026-07-26 — scope-amended
+  **ADR-0021** and **ADR-0022**. Those were **documentation changes only**; both ADRs remain `active` /
+  `canonical`, neither was repealed, and **no implementation authority resulted**. See §7.)*;
 - change any code, schema, event shape, event name, tag, manifest, test, validator, threshold, interval,
   feature gate, or runtime file;
 - decide schema, cache invalidation, reconciliation algorithm or storage — those are **Engineering's**;
@@ -346,7 +376,9 @@ the FQ-1 clarification.
 
 ## 10. Promotion state
 
-**NOT PROMOTED.** The Bible remains `Draft — awaiting founder ratification`.
+**NOT PROMOTED.** The Bible remains **`Draft — awaiting independent adversarial review`**. Founder
+ratification is complete and source reconciliation is applied; **the independent adversarial review by a
+non-author is the sole remaining prerequisite**, and implementation remains closed.
 
 | Promotion prerequisite | State |
 |---|---|
@@ -448,6 +480,8 @@ separately and must never be conflated.
 
 | Date | Version | Change | Author |
 |---|---|---|---|
+| 2026-07-26 | 0.1 (package-state convergence) | **Converged the six-file package on one current state. Mechanical documentation reconciliation only — no semantic decision, no source document outside the package, no implementation.** Root cause recorded honestly: during the 2026-07-26 reconciliation commit a batched edit script **failed mid-batch on its last pair and exited before writing**, so **three Decision Matrix Table-B rows (ME-011, ME-012, ME-020) were never updated** even though the commit reported reconciliation complete. Corrected now: **ME-011** notes → ADR-0021 scope-amended (runtime unchanged); **ME-012** notes → scope amendment **APPLIED**, plus its weakest-member cell refreshed to the post-clarification result (**0 of 3 tags individually determinate**); **ME-020** conflict → *source patch **APPLIED — 2026-07-26***; **Gap Map §4** ADR-0021 row → **SCOPE-AMENDED** (was *"UNCHANGED / NOT yet amended in text"*); **Review Surface** three live summaries date-scoped (header *"neither of which has happened"*, FQ-1 rule-6 annotation, FQ-2 closing note) with **founder wording preserved verbatim**. **No Table-A field changed, so no distribution moved; no row became Implemented or Runtime Enforced.** Current Reality & Enforcement Map **unchanged** — its Axis-B divergences are implementation facts, not package-state contradictions. **Bible remains Draft; independent adversarial review remains the sole promotion prerequisite; no code, runtime, threshold or numeric value changed; no promotion occurred.** | Cloud session (package convergence) |
+| 2026-07-26 | 0.1 (post-reconciliation state correction) | **Corrected post-reconciliation live-state wording. No semantic decision, source document or implementation state changed.** Removed stale *"pending / not applied / untouched / requires a future scope amendment"* claims that were true before commit `e577954` and false after it: **FQ-1** rules 6–7 now record the ADR-0021 scope amendment as **applied** and separate the ratification act from the later reconciliation; **FQ-2**'s consequence no longer says the source amendments are *"pending, not applied"*; **§7** renamed *Required future source amendments* → **Source amendments — applied 2026-07-26**, with an exact pointer to the Gap Map §20 inventory instead of a duplicated file list; **§8** non-authorization clarified chronologically (**the ratification itself amended no ADR; a later separately authorized task scope-amended ADR-0021 and ADR-0022, documentation-only**); **§10** promotion wording corrected from *"awaiting founder ratification"* to **"awaiting independent adversarial review"**. **Prior change-history entries were not rewritten. Historical provenance retained everywhere. Both ADRs remain `active`/`canonical` and scope-amended, not repealed. Zero numeric values ratified. Bible remains Draft; independent adversarial review remains the sole promotion blocker; no code, schema, event, tag, threshold, interval, validator, test or runtime changed; no implementation opened; no promotion occurred.** | Cloud session (state correction) |
 | 2026-07-26 | 0.1 (source reconciliation) | **Source amendments APPLIED — one atomic 22-file patch.** 18 source documents reconciled with FQ-1/FQ-2/FQ-5: **15 operator-vault + 3 ordinary `docs/`**, plus **4** package files. **ADR-0021** and **ADR-0022** both **scope-amended, not repealed** (original Decision text verbatim; `status: active` / `canon_status: canonical` retained; ADR-0021's broken `source_of_truth` path corrected). **Lesson Flow Canon §5.3** no longer places a weighting mechanism in the reducer; **§5.5 multipliers marked illustrative candidates, not ratified**. **Precision policy** banner-marked partially superseded, body preserved. **`Unknowns` U8 CLOSED.** **Counting history recorded, not tidied:** candidates named 7 → amendment-required 6 → expanded 13 → **5 further stale sources found after the 13 were edited**, which triggered the stop rule and halted the commit until the founder expanded authorization → final 18. Prior mis-counts (*"five documents"*, *"9 vault + 4 docs"*) are recorded in the Gap Map §20. **`docs/learning-engine-v1.md` inspected and left unchanged — it conforms.** **Promotion gate: source amendments now MET; the independent adversarial review remains the ONLY unmet prerequisite. Bible remains Draft. No code, test, schema, event, tag, threshold, interval, validator or runtime changed. No implementation opened. No numeric value ratified. No promotion occurred.** | Cloud session (atomic source reconciliation) |
 | 2026-07-26 | 0.1 (Round 2 — complete) | **All eight founder questions answered.** **FQ-2 = A** (differential strength at admission; production > recognition; recognition-only never reaches the longest interval; **the "weighting mechanism exists" claim in ADR-0022 / Lesson Flow Canon §5.3 is retired**; every number remains a candidate value). **FQ-3 = C** (assistance changes what a success *proves*, not whether the action exists; support events are not evidence; **unknown assistance does not invalidate history**; prompt-fade is not attempt-level attribution; **Draft invariant I-19 amended by the founder rule**). **FQ-4 = A** (`currently weak` recoverable via repair **plus** spaced confirmation; `ever weak` persists as caution only; the reducer's permanence confirmed as **Axis-B reality, not semantics**). **FQ-5 = C** (counters are the source of truth; "9-state" `SUPERSEDED`; purpose-named derived projections permitted under five constraints; **the eight lifecycle statuses explicitly NOT adopted**). **FQ-7 = A** (**eight** semantic promises locked; **twelve** classes of numbers tunable; **zero exact values ratified**). **FQ-1 general clarification** (no technical tag decides pedagogical meaning; extended to `accent_only` and `punctuation_only`; **closes the Round-1 `accent_only` item without a ninth question**). Invariants **I-26…I-37** added, **I-19 amended**; 8 further matrix rows to `INH-FOUNDER`/`LOCKED`; five further `⚠ DIVERGENCE` annotations. **Status raised to a complete founder-decision record.** **The Bible remains Draft: source amendments not applied, independent adversarial review not performed, no implementation opened, no code/threshold/interval/tag/schema changed, no legacy system authorized for retrofit, no exact number founder-locked, no promotion occurred.** | Cloud session (Round 2 application) |
 | 2026-07-26 | 0.1 | **Round 1 partial founder ratification.** FQ-1 = C (meaning-based polarity; `spelling_near_miss` ambiguous), FQ-6 = A (admission refusal + append-only compensating record), FQ-8 = A (domain-wide scope; legacy governed, non-conforming, frozen, not authorized for change). Applied across five Draft files; 8 matrix rows moved to `INH-FOUNDER`/`LOCKED`; invariants I-20…I-25 added; four `⚠ DIVERGENCE` annotations added to the Axis-B map; one new open item recorded (`accent_only`). **This is partial ratification. FQ-2/3/4/5/7 remain unresolved. The Bible remains Draft. ADR-0021 was not amended. No implementation was opened. No code or threshold changed. No legacy system was authorized for retrofit. No promotion occurred.** | Cloud session (Round 1 application) |

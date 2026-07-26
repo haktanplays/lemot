@@ -20,6 +20,7 @@ Where every claim in the Bible Draft came from, where sources disagree, and wher
 > |---|---|
 > | Semantic decision | **RESOLVED** — FQ-1…FQ-8, all eight |
 > | Implementation divergence | **UNRESOLVED** — every divergence below is still live |
+> | Runtime implementation | **NONE — not authorized, not opened.** Source reconciliation is complete; **that is not implementation** |
 > | Downstream source patch | **APPLIED 2026-07-26 — 18 source documents** (see §20) |
 > | Engineering decision | **UNAUTHORED** — schemas, fields, algorithms, clearing conditions |
 > | Curriculum decision | **UNAUTHORED** — band strictness, readiness, evidence distribution |
@@ -138,8 +139,8 @@ ADR-0025 is `status: deferred` / `canon_status: proposed`.** In-domain: **0009, 
 | 0013 YASA 3 error-tag immutability | `active`/`canonical` | 54 frozen tags; bidirectional validator hard error |
 | 0016 boundary "later form" UI | `active`/`canonical` | An untaught form is not a failure |
 | 0020 progress bridge | `active`/`canonical` | No fake `lm7` markers; two-system debt stays visible |
-| 0021 precision policy | `active`/`canonical`, **UNCHANGED** | **Four buckets, `spelling_near_miss` = precision** — **now superseded in substance by founder FQ-1 but NOT yet amended in text.** See §8.1, §18. |
-| 0022 hub-derived drills — *the weighting clause* | `active`/`canonical`, **UNCHANGED** | *"evidence weight (mastery multiplier)"* names a mechanism the reducer does not have. **Claim retired in substance by FQ-2; ADR text NOT amended.** The *separation* principle (evidence weight ≠ selection weight) is untouched and still binding. See §8.4, §18. |
+| 0021 precision policy | `active`/`canonical`, **SCOPE-AMENDED 2026-07-26** | **Four buckets, `spelling_near_miss` = precision** — **superseded in substance by founder FQ-1 and amended in text 2026-07-26** (`e577954`): scope-amended, **not repealed**; original Decision preserved verbatim; the fixed member list is no longer the live rule. See §8.1, §18, §20. |
+| 0022 hub-derived drills — *the weighting clause* | `active`/`canonical`, **SCOPE-AMENDED 2026-07-26** | *"evidence weight (mastery multiplier)"* named a mechanism the reducer does not have. **Claim retired by FQ-2 and the ADR text amended 2026-07-26** — scope-amended, **not repealed**; original Decision preserved verbatim. The *separation* principle (evidence weight ≠ selection weight) **survives intact and is still binding**. **The reducer still has no weighting.** See §8.4, §18, §20. |
 | 0022 hub-derived drills | `active`/`canonical` | Evidence weight ≠ selection weight; derivation fail-closed |
 | 0023 privacy local-first | `active`/`canonical` | Local-first; consent gate; no client `service_role`; RLS on |
 
@@ -218,10 +219,10 @@ Canonical proof of neither, and **an ambiguous event may not establish weakness*
 
 | | |
 |---|---|
-| ADR-0021 member list | **PENDING amendment** — ADR-0021 is unchanged, still `active`/`canonical`, still stating the four-bucket rule |
-| The three stale documents (§8.1 table rows 2–4) | **PENDING correction** |
+| ADR-0021 member list | **AMENDED 2026-07-26** — scope-amended, **not repealed**; still `active`/`canonical`; the four-bucket Decision preserved verbatim as historical record; the fixed member list is no longer the live rule |
+| The three stale documents (§8.1 table rows 2–4) | **CORRECTED 2026-07-26** — together with four further polarity-family sources found later (see §20) |
 | Sandbox code accruing weakness for ambiguous events | **Provisional and non-conforming**; **no code change authorized** |
-| `accent_only`'s French counter-examples (`ou`/`où`, `a`/`à`, `sur`/`sûr`) | **NEW OPEN ITEM** — not folded into FQ-1 |
+| `accent_only`'s French counter-examples (`ou`/`où`, `a`/`à`, `sur`/`sûr`) | **CLOSED 2026-07-26** by the FQ-1 **general tag-polarity clarification** — generalized to every technical tag rather than ruled separately; **no ninth founder question was created** |
 
 **Weakest-member result, re-run under the founder rule.** No universal three-tag polarity claim is made
 any more: `punctuation_only` = precision · `accent_only` = precision **with a stated exception** ·
@@ -265,7 +266,7 @@ selection priority stay separate concepts.
 | | |
 |---|---|
 | **The reducer still has no weighting** | Unchanged. A recognition-only item can still reach the 30-day interval — **now explicitly non-conforming** |
-| ADR-0022's *"mastery multiplier"* wording and Lesson Flow Canon §5.3's placement | **Claim RETIRED semantically; source text PENDING amendment** |
+| ADR-0022's *"mastery multiplier"* wording and Lesson Flow Canon §5.3's placement | **Claim RETIRED semantically and both source texts AMENDED 2026-07-26** — ADR-0022 scope-amended (not repealed); §5.3 no longer locates the mechanism in the reducer; §5.5 multipliers marked illustrative candidates. **Separation principle preserved.** |
 | `lexique-memory.ts` weights (1.0 / 0.25 / 0.7 / 0.7 / 0.5) | **Candidate values only — none ratified** |
 | Any exact number | **Zero founder-locked** (FQ-7) |
 
@@ -281,8 +282,15 @@ Curriculum readiness · learner-facing UX) that name their purpose and mapping, 
 and are never substituted for one another. **The eight Lexique lifecycle statuses were explicitly NOT
 adopted** — existence and test coverage do not confer universality.
 
-**What is NOT resolved:** the docs-drift itself. `learning-engine-v1.md:100` and the precision-policy
-note still carry unreconciled ladder language. **Source patch PENDING.** → ME-033, ME-036, ME-037, ME-039.
+**Docs-drift RECONCILED 2026-07-26.** The precision-policy note's §4 deferral is **closed**, the Mastery
+Model gap is **resolved**, `Unknowns` **U8 is closed**, and the Mastery Matrix warning was re-framed.
+**`docs/learning-engine-v1.md` was inspected in full and left unchanged because it already conforms** —
+its five-state ladder is explicitly labelled *planning vocabulary*, states that it does not change the
+runtime field, and supplies its own mapping, satisfying FQ-5's projection constraints. An earlier
+amendment list named it in error by conflating the **`itemRegistry` content status field** with a
+**mastery projection** (see §20). **What remains NOT resolved is the runtime, not the docs:** nothing
+stores a universal ladder, so runtime conforms **by absence, not by design**.
+→ ME-033, ME-036, ME-037, ME-039.
 
 ### 8.7 Assistance — ruled, unrepresented
 The hint ladder is canonical (0 → 1 → 2, never copy-ready), but `LearningEvent` carries **no hint or
@@ -460,8 +468,9 @@ Full form in the Founder Review Surface; the ratification record is
 
 ## 18. Supersession candidates
 
-**Proposed for later amendment — none applied in this task, and none may be applied without founder
-ratification:**
+**ALL APPLIED — 2026-07-26**, under a separate founder authorization, as one atomic patch (§20). This
+section is retained as the record of *what was required and how each item was discharged*.
+**Reconciling documentation changed no runtime behaviour.**
 
 1. **ADR-0021 Decision paragraph** — **APPLIED 2026-07-26.** Scope-amended, **not repealed**: the
    original Decision text is preserved verbatim, the fixed three-member list is marked historical, and an
@@ -469,15 +478,24 @@ ratification:**
    retained; the broken `source_of_truth` path was corrected. Its precision *principle* stands and was
    vindicated.
 2. **`Mastery Model.md` bucket table**, **`Feedback and Scoring Philosophy.md` near-miss line**,
-   **precision-policy §2 table** — same correction, three files.
-3. **"9-state mastery"** — **REQUIRED, NOT YET APPLIED.** FQ-5 ruled the phrase `SUPERSEDED` and
-   declined to define nine members. The phrase must be retired wherever it appears live.
-4. **`learning-engine-v1.md:100` reconciliation note** — **REQUIRED, NOT YET APPLIED.** FQ-5 settles the
-   question it defers; the note's "open decision" framing is now stale.
-5. **ADR-0022 weighting clause + Lesson Flow Canon §5.3** — **REQUIRED, NOT YET APPLIED.** FQ-2 rule 8
-   retires the claim that a weighting mechanism already exists in the mastery reducer. **The separation
-   principle must survive the amendment**; only the "already exists / lives in the reducer" assertion is
-   retired.
+   **precision-policy §2 table** — **APPLIED 2026-07-26**, together with four further polarity-family
+   sources discovered later (`l0-l24 founder build matrix`, `Exercise Error Matrix`, `Learning Engine
+   Context Pack`, `Mastery Matrix`, `Interaction Patterns`, `Error Tracking System`, `Canonical Context
+   Pack`, `Repository Document Index` — full inventory in §20).
+3. **"9-state mastery"** — **APPLIED 2026-07-26.** The phrase is retired as a live claim: the
+   precision-policy §4 deferral is closed, the Mastery Model gap is resolved, `Unknowns` **U8 is closed**,
+   and the Mastery Matrix warning was re-framed. Occurrences that remain are **quoted or visibly
+   historical**, never live.
+4. **`learning-engine-v1.md` — NO AMENDMENT REQUIRED; file left unchanged.** It was **inspected in full**
+   and **already conforms**: its five-state ladder is explicitly labelled *planning vocabulary*, it states
+   that it does not change the runtime field, and it supplies its own mapping — satisfying FQ-5's
+   projection constraints. Its line-100 note defers a **`itemRegistry` content-status-field** question,
+   which FQ-5 does **not** settle. **This item appeared on an earlier amendment list in error**, by
+   conflating a content status field with a mastery projection (§20).
+5. **ADR-0022 weighting clause + Lesson Flow Canon §5.3** — **APPLIED 2026-07-26.** ADR-0022 was
+   **scope-amended, not repealed**; §5.3 no longer locates the mechanism in the reducer; §5.5's
+   multipliers are marked **illustrative candidates, not ratified**. **The separation principle survived
+   the amendment intact** — only the "already exists / lives in the reducer" assertion was retired.
 
 ---
 
