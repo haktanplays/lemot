@@ -9,12 +9,13 @@ implementation_status: implemented
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["Project Canon Map Q1 (2026-07-26)"]
 decision_date: 2026-07-02
 source_of_truth: ["docs/STATUS.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md", "CLAUDE.md"]
 code_refs: ["data/lessons/", "flashcards.ts", "milestones.ts"]
-related: ["[[Product Vision]]", "[[06 Canon and Status Legend]]", "[[ADR-0025 paywall-campfire-l24]]", "[[Decision Index]]"]
+related: ["[[CAIRN_PROJECT_CANON_MAP_v1.0]]", "[[Product Vision]]", "[[06 Canon and Status Legend]]", "[[ADR-0025 paywall-campfire-l24]]", "[[Decision Index]]"]
 supersedes: []
 superseded_by: []
 tags: [decision, adr, product, canon, precedence]
@@ -24,11 +25,20 @@ tags: [decision, adr, product, canon, precedence]
 
 > [!decision] Status: **ACTIVE** (v0.1 Cairn + legacy = SUPERSEDED/quarantined)
 
+> [!important] **Scope amended 2026-07-26 by Cairn Project Canon Map founder decision Q1.**
+> The precedence chain below governs **current-build execution scope only**.
+> **Global cross-domain routing is governed by Cairn Project Canon Map v1.0**
+> (`docs/canon/CAIRN_PROJECT_CANON_MAP_v1.0.md`), which routes each question to its
+> **Canonical domain owner**.
+> **This ADR's legacy-v7 quarantine and v0.1 supersession remain fully active and unchanged.**
+
 ## Context
 Çok sayıda kanon katmanı (CLAUDE.md, STATUS, DEV_APK_MVP_CANON, Cairn spec'leri, legacy v7) çakışıyor. Hangisi kazanır?
 
 ## Decision
 `CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` verbatim import edildi (2026-07-02); v0.1 Cairn dokümanları (`CAIRN_PRODUCT_DEFINITION_v0.1`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1`) **SUPERSEDED reference-only** işaretlendi. Precedence: **`CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`**. Legacy `LEGACY — DO NOT BUILD ON THIS` banner'larıyla karantinaya alındı (`data/lessons/*`, `flashcards.ts`, `milestones.ts`, practice/chat routes). Superseded v0.3 materyali reading-guide banner arkasında tutulur (§48–64, §31–47'yi yener), fiziksel olarak silinmez.
+
+**Amendment (2026-07-26).** As of 2026-07-26, this chain is **no longer the global project/canon precedence chain**. It may not bypass **Product Brain v1.0, Content Bible v1.0, Social Layer Charter v1.0, Project Canon Map v1.0**, or future Canonical domain owners. Global routing is domain-first and two-axis; see `docs/canon/CAIRN_PROJECT_CANON_MAP_v1.0.md` §2. *(The original Decision text above is unchanged.)*
 
 ## Why
 Tek, net bir precedence zinciri olmadan ajanlar stale kanonu diriltir. "Newer active > current codebase > older active > design ref > archive."
@@ -50,7 +60,16 @@ STATUS header; CLOUD_SYNC_QUEUE 2026-07-02; KNOWN_GAPS #7/#12; `2bfc1b6` (#146),
 Source-inspected (STATUS + banner'lar + import commit'leri).
 
 ## Supersedes / Superseded By
-Supersedes: Cairn v0.1 docs; legacy v7 aktiflik iddiası (SUPERSEDED/quarantined). Superseded by: —
+Supersedes: Cairn v0.1 docs; legacy v7 aktiflik iddiası (SUPERSEDED/quarantined).
+
+**Partially superseded — global routing only:** by **Cairn Project Canon Map founder decision Q1, 2026-07-26**. Global cross-domain precedence now runs through the Project Canon Map v1.0.
+
+**NOT superseded — fully retained and active:**
+- the **legacy-v7 quarantine** (`LEGACY — DO NOT BUILD ON THIS` banners);
+- the **v0.1-document supersession** (`CAIRN_PRODUCT_DEFINITION_v0.1`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1`);
+- the **current-build execution chain** (`CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`) within that scope.
+
+**This ADR is scope-amended, not repealed.**
 
 ## Source Evidence
 `06_decisions_history.md` D-34.

@@ -1,20 +1,21 @@
 ---
 title: Cairn Canon Coverage and Gaps
 version: 0.1
-status: Draft — awaiting founder sign-off review
-authority: Proposed project-level coverage assessment
+status: Supporting coverage assessment — current (ratified with Project Canon Map v1.0)
+authority: Supporting coverage assessment under Project Canon Map v1.0. Not independent product canon. Authorizes no implementation.
 owner: Project Canon
 created: 2026-07-25
 related:
-  - CAIRN_PROJECT_CANON_MAP_v0.1.md
+  - CAIRN_PROJECT_CANON_MAP_v1.0.md
   - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
   - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
   - CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md
+  - CAIRN_PROJECT_CANON_SIGNOFF_REVIEW_v0.1.md
 ---
 
 # Cairn Canon Coverage and Gaps v0.1
 
-> **Draft.** What remains to be authored before returning to code — and what "done on paper" would mean. Assesses coverage; authors no missing layer; authorizes no implementation.
+> **Supporting coverage assessment — current.** Not independent canon; ratified alongside Project Canon Map v1.0. What remains to be authored before returning to code — and what "done on paper" would mean. Assesses coverage; authors no missing layer; authorizes no implementation.
 
 ---
 
@@ -131,7 +132,7 @@ Genuine gaps, not merely deferred work:
 4. **No moderation capacity assessment** (PRJ-013) — the Social direction's real-world blocker was never costed.
 5. **No cutover plan for two disjoint stores** (PRJ-037).
 6. **No controlling roadmap** (PRJ-032) — two roadmaps, no precedence.
-7. **Project routing predates the Bibles** (PRJ-033).
+7. ~~**Project routing predates the Bibles**~~ — **CLOSED 2026-07-26** (PRJ-033): decision resolved by Q1 and both source documents scope-amended atomically with Project Canon Map v1.0 promotion.
 
 ## 6. Unrouted historical ideas
 
@@ -158,7 +159,7 @@ Ideas alive in source material with no durable home. **Each has a `PRJ-###` reco
 
 | # | Contradiction | Source | Record |
 |---|---|---|---|
-| 1 | Precedence chain omits all three Bibles | DOC-022, ADR-0024 | **PRJ-033 — decision RESOLVED 2026-07-26 (Q1); source banners still owed at promotion** |
+| 1 | ~~Precedence chain omits all three Bibles~~ — **RESOLVED** | DOC-022, ADR-0024 | **PRJ-033 — decision resolved (Q1) and source patches applied 2026-07-26; operationally closed** |
 | 2 | Two roadmaps, no precedence | C5 | PRJ-032 |
 | 3 | Paywall: Campfire-L24 locked vs §66.3 re-decide vs legacy L14 | C3 (CROWN) | PRJ-036 |
 | 4 | `CLAUDE.md` banner vs body vs STATUS reality | C1 (CROWN) | PRJ-031 |
@@ -196,24 +197,24 @@ Ideas alive in source material with no durable home. **Each has a `PRJ-###` reco
 
 | Domain | Canonical owner | Coverage | Source quality | Open decisions | Implementation clarity | Agent-ready | Next action |
 |---|---|---|---|---|---|---|---|
-| **Product** | DOC-001 v1.0 | `SUBSTANTIAL` | High | 4 (PRJ-020, 024, 030, 036) | High | ✅ Yes | Resolve paywall tension |
-| **Content** | DOC-004 v1.0 | `SUBSTANTIAL` | High | 5 (PRJ-010, 011, 012, 015, 019) | High | ✅ Yes (authoring) | Author French style guide |
+| **Product** | DOC-001 v1.0 | `SUBSTANTIAL` | High | 4 (PRJ-020, 024, 030, 036) | High | ✅ Yes | Domain work (outside the authoring sequence): resolve paywall tension |
+| **Content** | DOC-004 v1.0 | `SUBSTANTIAL` | High | 5 (PRJ-010, 011, 012, 015, 019) | High | ✅ Yes (authoring) | Domain work (outside the authoring sequence): author French style guide |
 | **Social** | DOC-010 v1.0 | `COMPLETE` (for scope) | High | 2 (PRJ-009, 013) | High | ✅ Yes | None — correctly closed |
-| **Curriculum** | — | `FRAGMENTED` | Medium-High | 6 | Medium | ❌ No | **Author Curriculum Bible** |
-| **Engineering** | — (ADRs bind) | `PARTIAL` | Medium-High | 6 | Medium-Low | ⚠️ Partial | **Author Engineering Bible** |
-| **Privacy / Legal** | — (ADR-0023 binds) | `PARTIAL` | Medium | 4 | Medium | ⚠️ Partial | **Author Privacy layer** |
-| **Operations & QA** | — | `PARTIAL` | Medium | 5 | Medium | ⚠️ Partial | **Author Ops Bible** |
-| **UX / Experience** | — | `FRAGMENTED` | Medium | 4 | Low | ❌ No | Author UX Bible |
-| **Brand** | — | `FRAGMENTED` | Medium | 2 | Low | ❌ No | Author Brand Bible |
-| **Mastery / Evidence** | — **DISTRIBUTED** | `PARTIAL` | Medium | 2 (PRJ-009, 014) | Medium | ❌ No | **Founder assigns owner** |
-| **Future Systems** | — | `FRAGMENTED` | Medium | 1 | N/A | ⚠️ Partial | Consolidate five idea homes |
-| **Project Canon** | DOC-045 (draft) | `SUBSTANTIAL` | High | 1 (PRJ-033) | N/A | 🟡 Pending ratification | Ratify this package |
+| **Curriculum** | — | `FRAGMENTED` | Medium-High | 6 | Medium | ❌ No | **Step 2 — Author Curriculum Bible** |
+| **Engineering** | — (ADRs bind) | `PARTIAL` | Medium-High | 6 | Medium-Low | ⚠️ Partial | **Step 4 — Author Engineering / System Bible** |
+| **Privacy / Legal** | — (ADR-0023 binds) | `PARTIAL` | Medium | 4 | Medium | ⚠️ Partial | **Step 5 — Author Privacy / Legal layer** |
+| **Operations & QA** | — | `PARTIAL` | Medium | 5 | Medium | ⚠️ Partial | **Step 7 — Author Operations & QA Bible** |
+| **UX / Experience** | — | `FRAGMENTED` | Medium | 4 | Low | ❌ No | **Step 6 — Author UX / Experience Bible** |
+| **Brand** | — | `FRAGMENTED` | Medium | 2 | Low | ❌ No | **Step 3 — Author Brand Bible** |
+| **Mastery / Evidence** | **Mastery & Evidence Bible** — `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | `PARTIAL` | Medium | 2 (PRJ-009, 014) | Medium | ❌ No | **Step 1 — Author Mastery & Evidence Bible** |
+| **Future Systems** | — | `FRAGMENTED` | Medium | 1 | N/A | ⚠️ Partial | **Step 8 — Future Systems Register** (consolidate five idea homes) |
+| **Project Canon** | **DOC-045 v1.0** | `COMPLETE` (for routing scope) | High | 0 — **PRJ-033 operationally closed 2026-07-26** | N/A | ✅ Yes | **Step 1 — Mastery & Evidence Bible** |
 
 ## 11. Authoring sequence — FOUNDER-FIXED (Q3, 2026-07-26)
 
 > **Founder decision:** optimize for **dependency-correct paper completion**, *not* fastest return to code. This sequence is `FOUNDER_LOCKED`, not a recommendation.
 
-**Step 0 — Project Canon Map.** Ratify, review, promote, and merge this package. **Also patch the stale global-routing sources identified by PRJ-033** (DOC-022 `08 Source of Truth Map`, ADR-0024) with supersession/routing banners during Canonical promotion. *Unlocks:* a coherent entry point for every later step. *Risk if later:* every subsequent layer is authored against unpatched routing.
+**Step 0 — Project Canon Map. ✅ COMPLETE 2026-07-26** (pending merge). Ratified (Q1–Q4), independently sign-off reviewed, corrected (C1–C7, E1–E2), and promoted to **v1.0 / Canonical**. The stale global-routing sources identified by PRJ-033 (DOC-022 `08 Source of Truth Map`, ADR-0024) were **scope-amended in the same atomic change**, so PRJ-033 is operationally closed. *Unlocked:* a coherent entry point for every later step.
 
 **Step 1 — Mastery & Evidence Bible.** *Why first:* Curriculum and Engineering both **consume its semantics**; the Social evidence contract (PRJ-009) depends on it; authoring Curriculum or Engineering first would encode an ownership assumption. *Prereqs:* Step 0. *Unlocks:* Steps 2 and 4, plus PRJ-009. *Risk if later:* rework across three layers. *Risk if too early:* none — it has no upstream layer dependency.
 
@@ -267,7 +268,11 @@ Ideas alive in source material with no durable home. **Each has a `PRJ-###` reco
 19. Every build gate requires a **new scoped authorization event**.
 20. Final project-wide coverage and stale-reference audits pass.
 
-**Current standing:** 4 of 12 Canonical layers exist (Product Brain, Content, Social — and this package is Draft, not Canonical). **Paper complete is not reached.**
+**Current standing (2026-07-26, post-promotion):** **4 of 12 required layers now satisfy the paper-complete layer criterion** — **Project Canon** (Map v1.0, Canonical), **Product Brain** v1.0, **Content Bible** v1.0, and **Social Layer** Charter v1.0.
+
+**Eight required layers remain:** Mastery & Evidence · Curriculum · Brand · Engineering/System · Privacy/Legal · UX/Experience · Operations & QA · Future Systems Register.
+
+**Paper complete is NOT reached, and no code-return gate is passed.** Criterion 5 (every layer has an authoritative owner document) remains the binding constraint.
 
 ## 13. Return-to-code gate — FOUNDER-FIXED (Q4, 2026-07-26)
 
@@ -304,4 +309,6 @@ An emergency opening must: state **why waiting is unsafe** · be **narrowly scop
 
 | 2026-07-26 | 0.1 (founder ratification Q1–Q4) | **Q2** — mastery/evidence ownership hole closed in §5 and the §10 matrix; **Mastery & Evidence Bible** added as an unauthored layer to be authored at Step 1. **Q3** — §11 replaced with the **founder-fixed ten-step sequence** (Project Canon → Mastery & Evidence → Curriculum → **Brand** → Engineering → Privacy → **UX** → Operations & QA → Future Systems → final audit); Brand now precedes UX; the Engineering/Privacy-first alternative demoted to a **documented rejected optimization**. **Q4** — §12 replaced with the strict 20-point paper-complete definition (12 Canonical layers + 8 coverage properties); §13 replaced with the strict return-to-code gate plus a **narrow founder-authorized emergency exception**; the former "partial gate is legitimate" rule marked **`SUPERSEDED — founder decision 2026-07-26`** with its reasoning preserved. **Q1** — §7 contradiction row 1 updated to decision-resolved with promotion-time source patches outstanding. **No layer authored; no gate declared passed.** | Cloud session (founder ratification) |
 
-*End of Canon Coverage and Gaps v0.1. Draft; assesses coverage; authorizes no build.*
+| 2026-07-26 | 0.1 (promotion corrections) | **Sign-off corrections applied atomically with Project Canon Map v1.0 promotion.** **C1** — §10 Mastery / Evidence row: owner `— DISTRIBUTED` → **`Mastery & Evidence Bible — DEPENDENCY — DOCUMENT NOT YET AUTHORED`**, next action → `Step 1 — Author Mastery & Evidence Bible` (the MAJOR finding). **C2** — §10 Project Canon row set to final promoted state (`DOC-045 v1.0`, `COMPLETE` for routing scope, 0 open decisions, agent-ready ✅). **C3** — every unauthored-layer next action now carries its founder-fixed step number (Steps 1–8); Product/Content/Social marked as domain work outside the authoring sequence. **C6** — paper-complete standing corrected to **4 of 12 required layers satisfied** (Project Canon, Product Brain, Content, Social), **8 remaining**, paper complete **not** reached, no gate passed. §5 blind spot 7, §7 contradiction 1, and §11 Step 0 updated to reflect PRJ-033 operational closure. Status changed from Draft to **supporting coverage assessment — current**; **not independently Canonical**. | Cloud session (atomic promotion) |
+
+*End of Canon Coverage and Gaps v0.1. Supporting assessment; assesses coverage; authorizes no build.*

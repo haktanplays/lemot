@@ -1,20 +1,21 @@
 ---
 title: Cairn Authority and Routing Spec
 version: 0.1
-status: Draft — awaiting founder sign-off review
-authority: Proposed project-level conflict and routing specification
+status: Supporting specification — ratified with Project Canon Map v1.0
+authority: Supporting conflict and routing specification under Project Canon Map v1.0. Not independent product canon. Procedural only; authorizes no implementation.
 owner: Project Canon
 created: 2026-07-25
 related:
-  - CAIRN_PROJECT_CANON_MAP_v0.1.md
+  - CAIRN_PROJECT_CANON_MAP_v1.0.md
   - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
   - CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
   - CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md
+  - CAIRN_PROJECT_CANON_SIGNOFF_REVIEW_v0.1.md
 ---
 
 # Cairn Authority and Routing Spec v0.1
 
-> **Draft.** The detailed conflict, ownership, and routing specification behind the Project Canon Map (DOC-045). Decides no domain content; authorizes no implementation.
+> **Supporting specification — ratified with Project Canon Map v1.0.** The detailed conflict, ownership, and routing specification behind the Project Canon Map (DOC-045). Not independent canon. Decides no domain content; authorizes no implementation.
 
 ---
 
@@ -38,9 +39,9 @@ It also does not create implementation permission. Nothing in this document — 
 | **Engineering** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Data model, runtime, sync, validators. **Several ADRs already bind** (DOC-015) |
 | **Mastery / Evidence** | — **Mastery & Evidence Bible** | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` (owner assigned Q2, 2026-07-26) | Single authoritative owner of evidence semantics. See §2.1 |
 | **Social** | DOC-010 Social Layer Charter v1.0 | ✅ Canonical | Boundaries, prohibited forms, direction, Social governance |
-| **Privacy / Legal** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | ADR-0023 binds the model; interpretation unowned |
+| **Privacy / Legal** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | **Split ownership, not dual ownership (E1):** ADR-0023 **binds the current privacy/data model within its technical scope**; the future Privacy / Legal layer **owns interpretation** — retention, jurisdiction, consent policy, minors, and legal posture. **Implementation facts never decide legal interpretation.** Same ADR-binds/layer-owns pattern as Engineering. |
 | **Operations / QA** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Validation gates, moderation ops, release. Fragments: DOC-031, DOC-042, DOC-021 |
-| **Project Canon** | DOC-045 (this package) | 🟡 Draft | Routing only |
+| **Project Canon** | **DOC-045 Project Canon Map v1.0** | ✅ Canonical (signed off 2026-07-26) | Routing only — **Canonical routing authority confers no implementation authority** |
 
 ### 2.1 Mastery & Evidence — owner assigned (Q2, 2026-07-26)
 
@@ -239,9 +240,9 @@ Run after **any** decision change, promotion, supersession, or structural move.
 | **Link scan** | Internal links after any rename |
 | **Exact-head review** | Re-validate against the precise commit under review, not an earlier one |
 
-**Standing project-level finding — decision resolved 2026-07-26, operationally open.** The precedence chain in DOC-022 and ADR-0024 omits all three Bibles (**PRJ-033**). Founder decision Q1 resolves the *model* (domain-first global routing; that chain re-scoped to current-build execution), so PRJ-033 is `FOUNDER_LOCKED` on the decision. **It still fails the inbound-reference scan** because neither source file has been patched.
+**Project-level finding — CLOSED 2026-07-26.** The precedence chain in DOC-022 and ADR-0024 omitted all three Bibles (**PRJ-033**). Founder decision Q1 resolved the *model* (domain-first global routing; that chain re-scoped to current-build execution), and both source files were **scope-amended atomically with Project Canon Map v1.0 promotion**. PRJ-033 now **passes the inbound-reference scan** and is operationally closed.
 
-> **Promotion prerequisite:** DOC-022 and ADR-0024 must gain a supersession/routing banner pointing to the Project Canon Map. Deliberately **not** edited during ratification; required no later than Canonical promotion.
+> **Retained, not repealed:** DOC-022 remains Canonical for current-build source routing; ADR-0024 remains active with its legacy-v7 quarantine and v0.1 supersession fully intact. Both now carry a forward link to Project Canon Map v1.0.
 
 ## 14. Agent stop conditions
 
@@ -287,4 +288,6 @@ All drawn from repository-supported material.
 
 | 2026-07-26 | 0.1 (founder ratification Q1–Q2) | **Q1** — formalized the two-axis model in §3 and §9 step 1; added conflict type 11b (axis confusion); re-scoped the current-build chain; updated the §13 standing finding to *decision-resolved, operationally open* with an explicit promotion prerequisite. **Q2** — rewrote §2 and §2.1: **Mastery & Evidence Bible** assigned as the single authoritative owner of evidence semantics (`DEPENDENCY — DOCUMENT NOT YET AUTHORED`), with an explicit owns / does-not-own split across Content, Curriculum, Engineering, Social, and Operations. Added two worked examples (§15). **No missing Bible authored; no implementation authorized.** | Cloud session (founder ratification) |
 
-*End of Authority and Routing Spec v0.1. Draft; procedural only; authorizes no build.*
+| 2026-07-26 | 0.1 (promotion corrections) | **E1** — §2 Privacy row now states the **split ownership** explicitly: ADR-0023 binds the technical data model, the future Privacy/Legal layer owns interpretation (retention, jurisdiction, consent policy, minors, legal posture); **not dual ownership**, and implementation facts never decide legal interpretation. Project Canon row → **Canonical (Map v1.0)** with the no-implementation-authority note. §13 standing finding → **CLOSED** (PRJ-033 source patches applied; both sources retained, not repealed). Status changed from Draft to **supporting specification — ratified with Project Canon Map v1.0**; not independently Canonical. | Cloud session (atomic promotion) |
+
+*End of Authority and Routing Spec v0.1. Supporting specification; procedural only; authorizes no build.*

@@ -1,20 +1,31 @@
 ---
-title: Cairn Project Canon Map
-version: 0.1
-status: Draft — awaiting founder sign-off review
-authority: Proposed project-level canon routing layer; founder decisions Q1–Q4 ratified 2026-07-26 (FOUNDER_LOCKED)
+title: Cairn Project Canon Map v1.0
+version: 1.0
+status: Canonical
+signed_off: 2026-07-26
+authority: Canonical project-level routing, ownership, and governance contract
 owner: Project Canon
+supersedes: CAIRN_PROJECT_CANON_MAP_v0.1.md
+partially_supersedes: ["08 Source of Truth Map (global routing only)", "ADR-0024 (global routing only)"]
+founder_decisions: Q1–Q4 ratified 2026-07-26 (FOUNDER_LOCKED)
 created: 2026-07-25
 related:
   - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
   - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
   - CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
   - CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md
+  - CAIRN_PROJECT_CANON_SIGNOFF_REVIEW_v0.1.md
 ---
 
-# Cairn Project Canon Map v0.1
+# Cairn Project Canon Map v1.0
 
-> **Draft. Routes authority; canonizes no domain content; authorizes no implementation.**
+> ## **Canonical — signed off 2026-07-26.**
+>
+> ### **Canonical routing authority does not confer implementation authority.**
+>
+> **This Map:** routes questions to domain owners · governs conflict resolution and document lifecycle · **owns project-level routing only** · **does not own domain substance** · **partially supersedes** `08 Source of Truth Map` (DOC-022) and `ADR-0024` **for global routing only**, retaining both for **current-build execution scope**.
+>
+> **It does not:** decide product, content, curriculum, brand, UX, engineering, privacy, operations, or mastery substance · authorize code, features, schedules, or prototypes · declare paper completeness · open any documentation layer.
 
 ---
 
@@ -24,7 +35,10 @@ Cairn is not short of documentation. As of `origin/main` @ `e0f5801` the reposit
 
 **What this map exists to prevent:**
 
-1. **Authority ambiguity.** Three Canonical documents exist (Product Brain v1.0, Content Bible v1.0, Social Layer Charter v1.0), but the repository's pre-existing routing notes — `08 Source of Truth Map` and `ADR-0024` — were written *before* them and do not mention them. **Founder decision Q1 (2026-07-26) resolves this**: global routing is domain-first and two-axis, and that chain is re-scoped to current-build execution. Until the two source files receive supersession banners (a promotion prerequisite), an agent reading them in isolation would still route around all three Bibles (PRJ-033).
+1. **Authority ambiguity — resolved (E2).** Three sub-statements, kept distinct:
+   - **Historical problem.** The repository's pre-existing routing notes — `08 Source of Truth Map` and `ADR-0024` — were written *before* Product Brain v1.0, Content Bible v1.0, and Social Layer Charter v1.0, and referenced none of them. An agent following the old chain would route around all three.
+   - **Current resolution.** Founder decision **Q1 (2026-07-26)** adopted **domain-first, two-axis routing**; the old chain is re-scoped to **current-build execution scope**.
+   - **Operational closure.** Both source documents were **scope-amended atomically with this Map's v1.0 promotion (2026-07-26)**, so **PRJ-033 is operationally closed**. Neither source was repealed.
 2. **Cross-layer orphaning.** Ideas that belong to no completed layer (evidence contract, French style guide, human audio, moderation capacity) risk vanishing between documents.
 3. **Silent domain overreach.** A high-authority document answering a question it does not own.
 4. **Stale gates.** A build gate that references a decision which has since changed, and therefore passes — or fails — accidentally.
@@ -93,14 +107,14 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | DOC-012 | Social Idea & Decision Register | `docs/bibles/social/SOCIAL_LAYER_IDEA_AND_DECISION_REGISTER_v0.1.md` | 0.1 | Supporting record | Social Layer | SOC-001…SOC-034 | Social policy | DOC-010 | — | NONE |
 | DOC-013 | Social Source & Gap Map | `docs/bibles/social/SOCIAL_LAYER_SOURCE_AND_GAP_MAP_v0.1.md` | 0.1 | Supporting record | Social Layer | Social provenance/gaps | Social policy | DOC-010 | — | NONE |
 | DOC-014 | Social Sign-Off Review | `docs/bibles/social/SOCIAL_LAYER_SIGNOFF_REVIEW_v0.1.md` | 0.1 | Supporting record | Social Layer | Review verdict | Social policy | DOC-010 | — | NONE |
-| DOC-015 | **ADR set ADR-0001…ADR-0025** | `obsidian-product-brain/ACTIVE_CODEX/09_DECISIONS/ADR-*.md` | — | `CANONICAL` within technical/system domain | Decisions | Technical & system decisions (anti-gamification, passive mirror, events-as-truth, engine purity, privacy model, route contract, paywall position) | Content authoring, Social boundaries, **global canon precedence** (ADR-0024's chain re-scoped to current-build execution by Q1, 2026-07-26 — patch pending, see §13) | DOC-001 | DOC-016 | `CONTRACT` (several) |
+| DOC-015 | **ADR set ADR-0001…ADR-0025** | `obsidian-product-brain/ACTIVE_CODEX/09_DECISIONS/ADR-*.md` | — | **`CANONICAL` within technical/system domains** (all ADRs remain Canonical; **only ADR-0024 was scope-amended, for global routing, 2026-07-26** — its legacy-v7 quarantine and current-build execution role remain **active**) | Decisions | Technical & system decisions (anti-gamification, passive mirror, events-as-truth, engine purity, privacy model, route contract, paywall position) | Content authoring, Social boundaries, **global cross-domain routing** (now DOC-045) | DOC-001, DOC-045 | DOC-016 | `CONTRACT` (several) |
 | DOC-016 | Decision Index + Active/Deferred/Rejected/Superseded | `…/09_DECISIONS/{Decision Index, Active, Deferred, Rejected, Superseded} Decisions.md` | — | Supporting record | Decisions | Decision routing + negative history | Making decisions | DOC-015 | — | NONE |
 | DOC-017 | `CLAUDE.md` | `CLAUDE.md` | — | Agent instruction + current-scope canon (banner-gated) | Project Canon | Agent behaviour rules, current scope banner | Product intent (body is legacy v7, quarantined) | DOC-018, DOC-019 | — | `CONTRACT` |
 | DOC-018 | Status | `docs/STATUS.md` | — | Current-build canon | Operations | Current execution state | Product intent | — | — | `EVIDENCE` |
 | DOC-019 | Dev APK MVP Canon | `docs/DEV_APK_MVP_CANON.md` | — | Current-build canon | Operations | Dev-APK scope | Long-term product | DOC-018 | — | `CONTRACT` |
 | DOC-020 | Cairn Full App One-Shot Build Spec v1.0 | `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` | 1.0 | Approved specification (intent, not build authority) | Product Brain | Long-term product intent | Current build reality | DOC-001 | — | NONE |
 | DOC-021 | Master Pipeline v1.2.1 | `docs/MASTER_PIPELINE_v1.2.1.md` | 1.2.1 | Operational contract | Operations | Workflow, tiers, review-then-commit, cloud rules | Product/content decisions | — | — | `CONTRACT` |
-| DOC-022 | Source of Truth Map | `…/00_START_HERE/08 Source of Truth Map.md` | — | Routing note — **superseded as global routing** by Q1 (2026-07-26); retained for current-build execution scope | Project Canon | Vault-level source routing **for current-build questions** | Global product/canon precedence; Bible-level authority (**PRJ-033** — banner patch required at promotion) | DOC-015 | — | NONE |
+| DOC-022 | Source of Truth Map | `…/00_START_HERE/08 Source of Truth Map.md` | — | **Canonical routing note within current-build execution scope — globally scope-amended 2026-07-26 by Project Canon Map v1.0** | Project Canon | Vault-level source routing **for current-build questions**; current-implementation-fact routing | Global product/canon precedence; Bible-level authority | DOC-015, DOC-045 | — | NONE |
 | DOC-023 | Canon and Status Legend | `…/00_START_HERE/06 Canon and Status Legend.md` | — | `CANONICAL` status vocabulary | Project Canon | Three-dimensional status model | Domain decisions | — | — | NONE |
 | DOC-024 | Lesson Flow Canon v1 | `docs/canon/LESSON_FLOW_CANON_v1.md` | 1 | Approved specification | Content/Engineering (shared) | Lesson flow spec | Runtime truth | DOC-004 | — | `CONTRACT` |
 | DOC-025 | Learning Engine v1 | `docs/learning-engine-v1.md` | 1 | Approved specification | Engineering (pending) | Learning-object spec | Runtime truth | — | — | `CONTRACT` |
@@ -123,11 +137,12 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | DOC-042 | Dev APK Smoke Checklist | `docs/DEV_APK_SMOKE_TEST_CHECKLIST.md` | — | Operational contract | Operations & QA *(unauthored owner)* | Release smoke steps | Product intent | DOC-019 | DOC-037 | `CONTRACT` |
 | DOC-043 | Engineering house rules | `docs/engineering/karpathy.md` | — | Operational contract | Engineering *(unauthored owner)* | Engine purity, simplicity rules | Product intent | DOC-015 (ADR-0010) | — | `CONTRACT` |
 | DOC-044 | Cairn v0.1 definition + system map | `docs/CAIRN_PRODUCT_DEFINITION_v0.1.md`, `docs/CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md` | 0.1 | `SUPERSEDED` (reference only, per ADR-0024) | Project Canon | Historical product framing | Anything active | — | — | NONE |
-| DOC-045 | **Cairn Project Canon Map v0.1** (this file) | `docs/canon/CAIRN_PROJECT_CANON_MAP_v0.1.md` | 0.1 | `Draft` | Project Canon | Project-level routing, registry, lifecycle, stale-gate protocol | Any domain decision | DOC-001, DOC-004, DOC-010 | DOC-046…DOC-048 | NONE |
-| DOC-046 | Authority & Routing Spec v0.1 | `docs/canon/CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md` | 0.1 | `Draft` | Project Canon | Conflict algorithm, ownership model, implementation-opening contract | Domain decisions | DOC-045 | — | NONE |
-| DOC-047 | Project Idea & Decision Register v0.1 | `docs/canon/CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md` | 0.1 | `Draft` | Project Canon | PRJ-### cross-layer ideas | Domain registers | DOC-045 | — | NONE |
-| DOC-048 | Canon Coverage & Gaps v0.1 | `docs/canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md` | 0.1 | `Draft` | Project Canon | Coverage matrix, authoring sequence, paper-completeness | Domain decisions | DOC-045 | — | NONE |
-| DOC-049 | **Project Canon Founder Ratification v0.1** | `docs/canon/CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md` | 0.1 | Supporting record (**`FOUNDER_LOCKED` decisions**, 2026-07-26) | Project Canon | Founder decisions Q1–Q4; promotion prerequisites | Any domain decision; authoring any Bible | DOC-045 | — | NONE |
+| DOC-045 | **Cairn Project Canon Map v1.0** (this file) | `docs/canon/CAIRN_PROJECT_CANON_MAP_v1.0.md` | **1.0** | **`Canonical`** (signed off 2026-07-26) | Project Canon | Project-level routing, registry, lifecycle, stale-gate protocol | Any domain decision | DOC-001, DOC-004, DOC-010 | DOC-046…DOC-050 | NONE |
+| DOC-046 | Authority & Routing Spec v0.1 | `docs/canon/CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md` | 0.1 | Supporting specification | Project Canon | Conflict algorithm, ownership model, implementation-opening contract | Domain decisions | DOC-045 | — | NONE |
+| DOC-047 | Project Idea & Decision Register v0.1 | `docs/canon/CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md` | 0.1 | Supporting register | Project Canon | PRJ-### cross-layer ideas | Domain registers | DOC-045 | — | NONE |
+| DOC-048 | Canon Coverage & Gaps v0.1 | `docs/canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md` | 0.1 | Supporting assessment | Project Canon | Coverage matrix, authoring sequence, paper-completeness | Domain decisions | DOC-045 | — | NONE |
+| DOC-049 | **Project Canon Founder Ratification v0.1** | `docs/canon/CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md` | 0.1 | Supporting record (**`FOUNDER_LOCKED` decisions**, 2026-07-26) | Project Canon | Founder decisions Q1–Q4 | Any domain decision; authoring any Bible | DOC-045 | — | NONE |
+| DOC-050 | **Project Canon Sign-Off Review v0.1** | `docs/canon/CAIRN_PROJECT_CANON_SIGNOFF_REVIEW_v0.1.md` | 0.1 | Supporting review record — **not independent product canon** | Project Canon | Independent sign-off findings; reviewed head `50a8ddd`; verdict `READY WITH TARGETED CORRECTIONS`; **promotion corrections subsequently applied** | Any domain decision; promotion authority | DOC-045 | — | NONE |
 
 > **Supporting ≠ Canonical.** DOC-002/003, DOC-005…DOC-009, DOC-011…DOC-014 support Canonical documents but are **not themselves product canon**. They are evidence and decision records.
 
@@ -146,7 +161,7 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | **Operations & QA Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-031 (validation gates, French Linguistic QA process, workflows), DOC-042, DOC-021. |
 | **Privacy / Legal layer** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments: ADR-0023, `06_ARCHITECTURE/Privacy and Data Deletion`, `Legal Compliance and Data Governance`, `docs/status/founder-self-learning-privacy-kvkk-gdpr-architecture-note.md`, `…-remote-schema-rls-draft.md`. |
 | **Future Systems Register** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-035 (`Future Features`, `Idea Index`, `Idea Inbox`, `Watchlist`) and `98_GAPS/Unmapped Ideas`. |
-| **Project Canon** | 🟡 This draft | DOC-045…DOC-048 | Awaiting ratification |
+| **Project Canon** | ✅ **Canonical v1.0** (signed off 2026-07-26) | DOC-045 (Map) + DOC-046…DOC-050 supporting | Routing only — confers no implementation authority |
 
 > **Nuance that matters:** none of the unauthored layers is *empty*. Each has real source material. What is missing is a **single authoritative owner** that resolves contradictions inside the domain. See Coverage & Gaps §3.
 
@@ -356,11 +371,13 @@ Not every small document needs the full lifecycle. **Every authority-bearing cha
 
 > **Design rule:** a build gate should depend on a **future scoped authorization event**, never merely on the existence of a previously ratified direction. "The founder decided X" is history; "the founder has opened work on X with scope Y" is authority.
 
-**Project-level stale reference — DECISION RESOLVED 2026-07-26, operationally open.** DOC-022 (`Source of Truth Map`) and ADR-0024 define the precedence chain `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. Both predate Product Brain v1.0, Content Bible v1.0, and Social Charter v1.0 and reference none of them.
+**Project-level stale reference — ✅ CLOSED 2026-07-26.** DOC-022 (`Source of Truth Map`) and ADR-0024 defined the precedence chain `CLAUDE.md → STATUS.md → DEV_APK_MVP_CANON.md → Cairn v1.0 spec`. Both predated Product Brain v1.0, Content Bible v1.0, and Social Charter v1.0 and referenced none of them.
 
-**Founder decision Q1 (2026-07-26) resolves the model:** that chain is re-scoped to **current-build execution only**; global routing is domain-first via this map. **PRJ-033 is therefore `FOUNDER_LOCKED` on the decision — but not operationally closed.**
+**Founder decision Q1 (2026-07-26) resolved the model** — that chain is re-scoped to **current-build execution only**; global routing is domain-first via this Map. **Both source documents were then scope-amended atomically with this Map's v1.0 promotion**, so **PRJ-033 is operationally closed.**
 
-> **Promotion prerequisite (blocking Canonical promotion of this package):** DOC-022 and ADR-0024 must receive a supersession/routing banner linking forward to this map. **Those source files were deliberately not edited in the ratification task**; the patch must land no later than Canonical promotion. Until then, an agent reading either source in isolation still sees the old global chain.
+> **Retained, not repealed.** DOC-022 remains **Canonical for current-build source routing** and now carries a scope banner, a re-scoped authority-order heading, a no-bypass warning on the chain, a re-routed question table (product intent → Product Brain v1.0; authoring → Content Bible v1.0; sequencing → Curriculum *unauthored*; evidence → Mastery & Evidence *unauthored*; social → Social Charter v1.0), and a forward link to this Map. ADR-0024 remains **active and Canonical in its retained scope**, with its **legacy-v7 quarantine and v0.1 supersession fully intact**, plus a scope-amendment banner, an appended Decision amendment, and a partial-supersession record covering global routing only.
+>
+> **This is the worked example of the protocol above:** a decision changed, every inbound reference and gate was re-scanned, and the source documents were patched in the same atomic change rather than left to drift.
 
 ## 14. Adding a new idea
 
@@ -399,7 +416,7 @@ Summary only — details in DOC-047 and DOC-048.
 
 - **Seven unauthored layers**: **Mastery & Evidence**, Curriculum, Brand, Engineering/System, Privacy/Legal, UX/Experience, Operations & QA (plus Future Systems Register).
 - **Mastery/evidence ownership is now assigned** to a dedicated Mastery & Evidence Bible (Q2, 2026-07-26) — but the document is **not yet authored** (PRJ-014).
-- **Promotion prerequisite:** DOC-022 and ADR-0024 need supersession/routing banners (PRJ-033).
+- ~~**Promotion prerequisite:** DOC-022 and ADR-0024 need supersession/routing banners~~ — **✅ applied 2026-07-26; PRJ-033 operationally closed.**
 - **Content Bible executable blockers**: French style guide (PRJ-010), named reviewer (PRJ-011), Reading taxonomy/validator (PRJ-012), item-counting methodology (PRJ-015).
 - **Social prerequisites that do not exist**: evidence contract (PRJ-009), moderation capacity (PRJ-013).
 - **Stale project routing**: precedence chain omits all three Bibles (PRJ-033).
@@ -416,4 +433,12 @@ Summary only — details in DOC-047 and DOC-048.
 
 **Founder decision record — Q1–Q4 (2026-07-26):** full text in [`CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md`](CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md) (DOC-049). Decisions are `FOUNDER_LOCKED`; **this package remains `Draft — awaiting founder sign-off review`** and is not promoted to Canonical.
 
-*End of Project Canon Map v0.1. Draft; routes authority; authorizes no build.*
+| 2026-07-26 | **1.0 (Canonical promotion)** | **Independent sign-off review** (DOC-050, verdict `READY WITH TARGETED CORRECTIONS`; 0 BLOCKER, 1 MAJOR, 4 MINOR, 2 EDITORIAL) followed by **atomic promotion**. Corrections applied: **C1** Coverage-matrix Mastery owner `DISTRIBUTED` → `Mastery & Evidence Bible — NOT YET AUTHORED` (the MAJOR); **C2** Project Canon coverage row → final promoted state; **C3** founder-fixed step numbers on every unauthored-layer next action; **C4** counting convention stated, `Operations` normalized into `Operations & QA`; **C5** registry final-state wording for DOC-022 and the ADR set; **C6** paper-complete standing corrected to **4 of 12 layer criteria satisfied, 8 remaining**; **C7** sign-off review's inaccurate "eleven remaining layers" corrected (9 at reviewed head, 8 after promotion) with a post-review application note; **E1** Privacy split-ownership clarified; **E2** purpose paragraph split into historical problem / current resolution / operational closure. **DOC-022 scope-amended (D1–D5)** and **ADR-0024 scope-amended (A1–A4)** — both retained, neither repealed, legacy-v7 quarantine intact → **PRJ-033 operationally closed**. **PRJ-008 → `CANONICAL`** (implementation state `N/A — documentation/routing layer`). Registered **DOC-050**. Counts recomputed from actual rows (`OPEN` 25→24, `CANONICAL` 0→1, Not Implemented 22→21, N/A 3→4; **`PLANNED` = 0, `EXPERIMENT` = 0, Implemented = 0**). **Status `Draft` → `Canonical`; version `0.1` → `1.0`; signed off 2026-07-26.** File renamed `CAIRN_PROJECT_CANON_MAP_v0.1.md` → `CAIRN_PROJECT_CANON_MAP_v1.0.md` (organization, not a new authority event). **Canonical does not mean implemented — normal code work remains frozen and no gate was passed.** | Cloud session (atomic promotion) |
+
+**Ratification status:** `Canonical` — **signed off 2026-07-26**.
+
+**Canonical does not mean implemented.** This Map is the **primary Canonical document** of the Project Canon layer. Its supporting records — Authority & Routing Spec (DOC-046), Project Idea & Decision Register (DOC-047), Canon Coverage & Gaps (DOC-048), Founder Ratification (DOC-049), and Sign-Off Review (DOC-050) — remain **supporting records at v0.1**, not independent product canon, matching the Content Bible and Social Charter convention.
+
+**Still true after promotion:** paper completeness is **not** reached (**4 of 12** layer criteria satisfied, **8 remaining**) · **normal code work remains frozen** (Q4) · the **Mastery & Evidence Bible is unauthored** and Step 1 is **not** automatically opened · `PLANNED` = 0 · `EXPERIMENT` = 0 · **no implementation was authorized**.
+
+*End of Project Canon Map v1.0. Canonical; routes authority; authorizes no build.*

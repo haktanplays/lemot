@@ -1,7 +1,7 @@
 ---
 title: Cairn Project Canon — Founder Ratification Record
 version: 0.1
-status: Durable founder-decision record (supporting record; the Project Canon package remains Draft)
+status: Founder-ratified supporting decision record (Project Canon Map promoted v1.0 / Canonical 2026-07-26)
 authority: Highest-authority Project Canon source for routing, ownership, sequence, and code-return governance. Authorizes no implementation.
 owner: Project Canon
 decision_date: 2026-07-26
@@ -10,15 +10,18 @@ depends_on:
   - Cairn Content Bible v1.0
   - Cairn Social Layer Charter v1.0
 related:
-  - CAIRN_PROJECT_CANON_MAP_v0.1.md
+  - CAIRN_PROJECT_CANON_MAP_v1.0.md
   - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
   - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
   - CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
+  - CAIRN_PROJECT_CANON_SIGNOFF_REVIEW_v0.1.md
 ---
 
 # Cairn Project Canon — Founder Ratification Record v0.1
 
-> **Read this first.** This record ratifies the **project-level routing model**, the **Mastery & Evidence ownership assignment**, the **authoring sequence**, and the **code-return governance**. It **authorizes no implementation**, **authors no missing Bible**, and does **not** promote the Project Canon package to Canonical.
+> **Read this first.** This record ratifies the **project-level routing model**, the **Mastery & Evidence ownership assignment**, the **authoring sequence**, and the **code-return governance**. It **authorizes no implementation** and **authors no missing Bible**.
+>
+> **Status update 2026-07-26:** the Project Canon Map was subsequently promoted to **v1.0 / Canonical** by a separate sign-off review and atomic promotion. That promotion changed **no decision below** and authorized **no implementation**.
 >
 > **Decision date: 2026-07-26.** Decisions recorded: **Q1–Q4**, all `FOUNDER_LOCKED`.
 
@@ -52,14 +55,11 @@ It is **no longer the global product/canon precedence chain**, and it **must not
 
 ### PRJ-033 treatment
 
-`FOUNDER_LOCKED — precedence model resolved 2026-07-26`.
+`FOUNDER_LOCKED — decision resolved and source patches applied 2026-07-26`.
 
-- The **decision is resolved**.
-- The stale source documents **still require a supersession/routing banner**.
-- Those source patches must occur **no later than Project Canon Canonical promotion**.
-- **PRJ-033 is not fully operationally closed** until the old routing sources link forward to the new Canonical map.
+> **State at ratification (historical, preserved).** At the moment these decisions were recorded the position was: *the decision is resolved; the stale source documents still require a supersession/routing banner; those patches must occur no later than Project Canon Canonical promotion; PRJ-033 is not fully operationally closed until the old routing sources link forward to the new Canonical map.* **ADR-0024 and `08 Source of Truth Map` were deliberately NOT edited in the ratification task**, and their patch was recorded as a promotion prerequisite (§11).
 
-**ADR-0024 and `08 Source of Truth Map` were deliberately NOT edited in this ratification task.** Their patch is recorded as a promotion prerequisite (§11).
+> **Current state.** ✅ **Operationally closed 2026-07-26.** Both sources were scope-amended atomically with Project Canon Map v1.0 promotion. Neither was repealed: DOC-022 remains Canonical for current-build source routing, and ADR-0024 remains active with its legacy-v7 quarantine and v0.1 supersession fully intact. **No further founder decision is required.**
 
 ### Worked routing examples
 
@@ -177,13 +177,13 @@ The general rule permitting a narrow implementation task to resume after only th
 
 ## 11. Promotion prerequisites
 
-Before the Project Canon package may be promoted to Canonical:
+**✅ All satisfied 2026-07-26** by the independent sign-off review and the atomic promotion. Recorded for traceability:
 
-1. **Patch DOC-022 (`08 Source of Truth Map`) and ADR-0024** with supersession/routing banners pointing to the Project Canon Map (**PRJ-033 operational closure**).
-2. Complete an **independent sign-off review** of the package.
-3. Run the **stale-reference audit** across PRJ-033, PRJ-014, PRJ-009, "distributed owner" wording, the old precedence chain, the old sequence, and the partial return-to-code rule.
-4. Confirm all counts and summaries match actual rows.
-5. Confirm no gate passes accidentally.
+1. ✅ **Patched DOC-022 (`08 Source of Truth Map`) and ADR-0024** with scope-amendment banners pointing to Project Canon Map v1.0 (**PRJ-033 operationally closed**).
+2. ✅ **Independent sign-off review** completed (DOC-050; verdict `READY WITH TARGETED CORRECTIONS`).
+3. ✅ **Stale-reference audit** run across PRJ-033, PRJ-014, PRJ-009, "distributed owner" wording, the old precedence chain, the old sequence, and the partial return-to-code rule.
+4. ✅ Counts and summaries recomputed from actual rows.
+5. ✅ No gate passes accidentally; code-return gate remains closed.
 
 ## 12. Non-claims
 
@@ -191,11 +191,11 @@ This record does **NOT**:
 
 - author the Mastery & Evidence Bible or any other missing layer;
 - authorize implementation, code, prototypes, or scheduling;
-- promote the Project Canon package to Canonical;
+- *(satisfied separately 2026-07-26 — promotion was performed by the sign-off + promotion task, not by this ratification)*;
 - declare paper completeness reached;
 - declare the return-to-code gate passed;
 - mark any project feature `PLANNED`;
-- claim PRJ-033 is operationally closed;
+- *(superseded 2026-07-26 — PRJ-033 is now operationally closed by the atomic promotion; this non-claim applied to the ratification act itself)*;
 - claim mastery/evidence divergences are resolved;
 - modify Product Brain, Content Bible, Social Charter, ADRs, runtime, lessons, or syllabus.
 
@@ -209,4 +209,6 @@ This record does **NOT**:
 
 ---
 
-*End of Project Canon Founder Ratification Record v0.1. Ratifies routing, ownership, sequence, and governance only. Authorizes no implementation. The Cairn Project Canon package remains **Draft — awaiting founder sign-off review**.*
+| 2026-07-26 | 0.1 (post-promotion status sync) | Project Canon Map promoted **v1.0 / Canonical**. §11 promotion prerequisites marked satisfied; two non-claims annotated as superseded by the promotion act. **No founder decision in §2–§5 was changed, added, or removed; no implementation authorized.** | Cloud session (atomic promotion) |
+
+*End of Project Canon Founder Ratification Record v0.1. Ratifies routing, ownership, sequence, and governance only. Authorizes no implementation. The Cairn Project Canon Map is **Canonical v1.0 (signed off 2026-07-26)** — and Canonical routing authority still confers no implementation authority.*

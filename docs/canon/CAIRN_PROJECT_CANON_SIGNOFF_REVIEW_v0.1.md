@@ -1,14 +1,14 @@
 ---
 title: Cairn Project Canon — Independent Sign-Off Review
 version: 0.1
-status: Review record (supporting document — not independent product canon)
+status: Independent sign-off review record (supporting document — not independent product canon)
 authority: Read-only independent review. Applies no patch; promotes nothing; authorizes no implementation.
 owner: Project Canon
 review_date: 2026-07-26
 reviewed_head: 50a8dddc9543ca7869187a0a59b479e327c32171
 verdict: READY WITH TARGETED CORRECTIONS
 related:
-  - CAIRN_PROJECT_CANON_MAP_v0.1.md
+  - CAIRN_PROJECT_CANON_MAP_v1.0.md
   - CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md
   - CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md
   - CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
@@ -306,7 +306,7 @@ supersedes: CAIRN_PROJECT_CANON_MAP_v0.1.md (renamed on promotion; same lineage)
 1. **PRJ-033 operational closure** — DOC-022 and ADR-0024 banner patches (§12, §13). **Blocks promotion.**
 2. **Sign-off corrections** C1–C5 (§11). **Blocks promotion** (C1 is MAJOR).
 3. **Mastery & Evidence Bible** — Step 1; unauthored; owner assigned but layer not opened.
-4. **Eleven remaining layers** toward the 20-point paper-complete definition.
+4. **Remaining layers toward the 20-point paper-complete definition** — *see the correction note below; the original "eleven" figure was inaccurate.*
 5. **PRJ-009** Social evidence contract — does not exist; blocked behind Step 1.
 6. **PRJ-032** two-roadmap contradiction and **PRJ-036** paywall tension — still `OPEN`, unaffected by Q1–Q4.
 
@@ -318,10 +318,30 @@ Apply C1–C5, then the DOC-022 and ADR-0024 patches, then promote — **all in 
 
 **Do not promote if** the external patches are deferred: the package would then assert global routing authority that its own source documents still contradict, which is precisely the failure class (PRJ-033) this package was built to eliminate.
 
+## 16b. Post-review application note (added 2026-07-26, after the reviewed head)
+
+This review was authored against head `50a8ddd` and its **verdict remains a historical review verdict** for that state. It was **not** rewritten to describe the promoted state. Recorded here for traceability:
+
+- **C1–C5 applied** — including the MAJOR-1 Coverage-matrix owner fix.
+- **E1–E2 applied.**
+- **C6–C7 corrected two count/state defects discovered after this review was banked** (see below).
+- **DOC-022 and ADR-0024 patched** (D1–D5, A1–A4) — scope-amended, not repealed; legacy-v7 quarantine intact.
+- **Promotion conditions satisfied**; Project Canon Map promoted **v1.0 / Canonical**, signed off 2026-07-26.
+
+**C7 — remaining-layer count correction.** §15 item 4 said *"Eleven remaining layers"*. Correct figures, stated as a historical/final distinction:
+
+| Point in time | Layer criteria satisfied | Remaining |
+|---|---|---|
+| **At reviewed head `50a8ddd`** | **3 of 12** — Product Brain, Content Bible, Social Layer (the Project Canon package was still Draft) | **9** |
+| **After this promotion (2026-07-26)** | **4 of 12** — + Project Canon Map v1.0 | **8** |
+
+*"Eleven" was wrong at both points.* **Paper complete is not reached and no code-return gate is passed** in either state.
+
 ## 17. Change history
 
 | Date | Version | Change | By |
 |---|---|---|---|
+| 2026-07-26 | 0.1 (post-review application note) | Added §16b: recorded that C1–C5 and E1–E2 were applied, C6–C7 corrected two post-banking count/state defects, DOC-022 and ADR-0024 were patched, and promotion conditions were satisfied. Corrected the inaccurate *"Eleven remaining layers"* figure to **9 remaining at reviewed head `50a8ddd`** and **8 remaining after promotion**. The original verdict is preserved as a **historical** review verdict; the review was not rewritten as though it had reviewed the promoted state. | Cloud session (atomic promotion) |
 | 2026-07-26 | 0.1 | **Created.** Independent sign-off review of the five-file Project Canon package at `50a8ddd`, plus read-only inspection of DOC-022 and ADR-0024. Verdict `READY WITH TARGETED CORRECTIONS` — 0 BLOCKER, 1 MAJOR (stale `DISTRIBUTED` owner in the Coverage matrix), 4 MINOR, 2 EDITORIAL. Verified Q1–Q4 application, PRJ-033 dual-state separation, count integrity against actual rows, ten domain-routing tests (no dual-owner cases), and stale-gate safety. Produced exact five-edit DOC-022 and four-edit ADR-0024 patch plans and the Canonical promotion plan. **No file edited; no patch applied; nothing promoted; no implementation authorized.** | Cloud session (independent sign-off review) |
 
 ---
