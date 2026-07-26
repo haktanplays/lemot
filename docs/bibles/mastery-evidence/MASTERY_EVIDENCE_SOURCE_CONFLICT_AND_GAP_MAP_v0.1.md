@@ -13,6 +13,21 @@ Where every claim in the Bible Draft came from, where sources disagree, and wher
 
 > **Absence is never rejection.** A missing source means *undecided*, never *decided against*.
 
+> **Round 1 status (2026-07-26).** Three conflicts below now have a **ratified semantic decision**:
+> near-miss polarity (§8.1), the invalidation model (§13/§19), and domain scope (§8.3). For each, the
+> five-way status is stated explicitly:
+>
+> | Layer | State |
+> |---|---|
+> | Semantic decision | **RESOLVED** (FQ-1 / FQ-6 / FQ-8, 2026-07-26) |
+> | ADR / code / source patch | **PENDING** — nothing amended |
+> | Runtime implementation | **NOT AUTHORIZED** |
+> | Independent adversarial review | **PENDING** |
+> | Remaining founder questions | **OPEN** — FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 |
+>
+> **A resolved semantic decision is not a resolved divergence.** Every implementation divergence
+> recorded below is still live.
+
 ---
 
 ## 1. Source inventory
@@ -68,7 +83,7 @@ ADR-0025 is `status: deferred` / `canon_status: proposed`.** In-domain: **0009, 
 
 | Class | Sources | Binding on this domain? |
 |---|---|---|
-| **Founder decision** | Q2 (2026-07-26); R8 / SOC-026 (2026-07-25) | **Yes, absolutely** |
+| **Founder decision** | Q2 (2026-07-26); R8 / SOC-026 (2026-07-25); **FQ-1 / FQ-6 / FQ-8 (2026-07-26)** | **Yes, absolutely** |
 | **Canonical project authority** | Project Canon Map v1.0; Authority & Routing Spec §2.1 | **Yes** — for routing and ownership |
 | **Canonical domain source** | Content Bible v1.0; Social Charter v1.0 (negative bound only); Product Brain v1.0 | **Yes**, within their own domains |
 | **Active ADR** | 0009, 0010, 0013, 0016, 0020, 0021, 0022, 0023 — **each by its own metadata** | **Yes**, within each ADR's declared domain |
@@ -96,6 +111,9 @@ ADR-0025 is `status: deferred` / `canon_status: proposed`.** In-domain: **0009, 
 | Two-axis precedence | Founder Q1 | Code is Axis B, never intent |
 | Domain-first routing | Founder Q1 | §27–§32 route-and-stop |
 | Documentation is not implementation authority | R11 / fourteen-element contract | §41 build gate |
+| **Domain-wide scope (FQ-8)** | **Founder, 2026-07-26** | §8.3 — all evidence-bearing systems governed; legacy non-conforming, frozen, **not authorized for change** |
+| **Invalidation model (FQ-6)** | **Founder, 2026-07-26** | §13, §19 — refuse at admission; append-only compensating record; never delete or mutate |
+| **Meaning-based polarity (FQ-1)** | **Founder, 2026-07-26** | §8.1 — `spelling_near_miss` is an ambiguous tag; ambiguity blocks weakness |
 
 ---
 
@@ -108,7 +126,7 @@ ADR-0025 is `status: deferred` / `canon_status: proposed`.** In-domain: **0009, 
 | 0013 YASA 3 error-tag immutability | `active`/`canonical` | 54 frozen tags; bidirectional validator hard error |
 | 0016 boundary "later form" UI | `active`/`canonical` | An untaught form is not a failure |
 | 0020 progress bridge | `active`/`canonical` | No fake `lm7` markers; two-system debt stays visible |
-| 0021 precision policy | `active`/`canonical` | **Four buckets, `spelling_near_miss` = precision** — see §8.1 |
+| 0021 precision policy | `active`/`canonical`, **UNCHANGED** | **Four buckets, `spelling_near_miss` = precision** — **now superseded in substance by founder FQ-1 but NOT yet amended in text.** See §8.1, §18. |
 | 0022 hub-derived drills | `active`/`canonical` | Evidence weight ≠ selection weight; derivation fail-closed |
 | 0023 privacy local-first | `active`/`canonical` | Local-first; consent gate; no client `service_role`; RLS on |
 
@@ -177,17 +195,44 @@ legacy `useErrors.ts` / `useSRS.ts` / `constants/sections.ts` (**the system that
 *Consequences* line acknowledges the refinement while its *Decision* paragraph still states the old
 rule. A reader consulting the ADR's decision gets the wrong answer.
 
-**Weakest-member result.** The universal claim *"precision tags never create weakness"* is **true for 2
-of its 3 stated members and false for the third.** → **FQ-1**, ME-011/ME-012.
+**FQ-1 — SEMANTIC DECISION RESOLVED (2026-07-26).** The founder answered **C**: neither side was right.
+**Polarity is determined by semantic effect, not by the tag.** A meaning-preserving orthographic slip is
+precision; a meaning-changing lexical, grammatical or minimal-pair substitution may be negative evidence
+and may create weakness. `spelling_near_miss` is **too coarse to establish which occurred**, so it is
+Canonical proof of neither, and **an ambiguous event may not establish weakness**.
+
+**What is NOT resolved:**
+
+| | |
+|---|---|
+| ADR-0021 member list | **PENDING amendment** — ADR-0021 is unchanged, still `active`/`canonical`, still stating the four-bucket rule |
+| The three stale documents (§8.1 table rows 2–4) | **PENDING correction** |
+| Sandbox code accruing weakness for ambiguous events | **Provisional and non-conforming**; **no code change authorized** |
+| `accent_only`'s French counter-examples (`ou`/`où`, `a`/`à`, `sur`/`sûr`) | **NEW OPEN ITEM** — not folded into FQ-1 |
+
+**Weakest-member result, re-run under the founder rule.** No universal three-tag polarity claim is made
+any more: `punctuation_only` = precision · `accent_only` = precision **with a stated exception** ·
+`spelling_near_miss` = **undetermined**. The old claim *"precision tags never create weakness"* is
+retired, not repaired. → ME-011, ME-012, ME-032.
 
 ### 8.2 Bucket count — four or five?
 ADR-0021 and three notes say four. The code implements five (success · precision · spelling near-miss ·
 skip · failure). Directly downstream of 8.1. → ME-011.
 
-### 8.3 Weakness key — item or string?
+### 8.3 Weakness key — item or string? / domain scope
 Engine: `ItemId`, with tag-level counters and (in policy) attribution. Legacy shipped: the
 correct-answer string, no tags, no attribution. **Both use the threshold 3**, which makes them look
-like the same rule. They are not. → **FQ-8**, ME-027.
+like the same rule. They are not.
+
+**FQ-8 — SEMANTIC DECISION RESOLVED (2026-07-26).** The founder answered **A**: the Bible governs the
+domain across **all** evidence-bearing systems — the learning engine, legacy `lm7` weak spots, legacy
+`lm7_srs`, legacy per-section thresholds, and any future replacement. Telemetry and engagement data
+stay out of scope. Legacy systems are recorded as **Axis-B current reality**, **legacy-active**,
+**non-conforming**, and **frozen for replacement rather than retrofit**.
+
+**What is NOT resolved:** the keying divergence itself. Scope was decided; convergence was not.
+**Domain coverage authorizes no modification of any legacy system** — Engineering later owns
+replacement and convergence mechanics. → ME-027, ME-057, ME-058.
 
 ### 8.4 Evidence weight — asserted but absent
 ADR-0022: *"evidence weight (mastery multiplier) and selection weight are separate modules."*
@@ -264,9 +309,10 @@ Audit B12 flagged the old behaviour and called the near-miss case *documented* b
 
 | Rule | Stated by | Enforced by | Gap |
 |---|---|---|---|
-| Attribution / error source | `[HARD INVARIANT]` | nothing | **Total** |
-| Admissibility gate | this Draft | nothing | **Total** |
-| Invalidation | policy | nothing | **Total** |
+| Attribution / error source | `[HARD INVARIANT]` + **founder FQ-6 (2026-07-26)** | nothing | **Total — ratified, unimplemented** |
+| Admissibility gate | **founder FQ-6 (2026-07-26)** | nothing | **Total — ratified, unimplemented** |
+| Invalidation (refuse at admission + compensating record) | **founder FQ-6 (2026-07-26)** | nothing | **Total — ratified, unimplemented** |
+| Meaning-based polarity | **founder FQ-1 (2026-07-26)** | nothing (the tag cannot carry meaning) | **Total — ratified, unimplemented** |
 | Evidence weighting | ADR-0022, design canon | nothing | **Total** |
 | Repair eligibility & flow | `[LOCKED DEFAULT]` | nothing | **Total** |
 | Confidence | nobody | nothing | Concept absent |
@@ -290,10 +336,17 @@ None invented here.
 
 ## 15. Founder decisions required
 
-**FQ-1** near-miss polarity · **FQ-2** differential evidence weight · **FQ-3** assistance as evidence
-input · **FQ-4** weakness permanence · **FQ-5** mastery vocabulary · **FQ-6** invalidation model ·
-**FQ-7** locked-vs-tunable constants · **FQ-8** scope over the legacy shipped surface.
-Full form in the Founder Review Surface.
+**Answered in Round 1 (2026-07-26), semantics only:** **FQ-1** near-miss polarity → **C** ·
+**FQ-6** invalidation model → **A** · **FQ-8** domain scope → **A**.
+
+**Still open — promotion blockers:** **FQ-2** differential evidence weight · **FQ-3** assistance as an
+evidence input · **FQ-4** weakness permanence · **FQ-5** mastery vocabulary · **FQ-7** locked-vs-tunable
+constants.
+
+**New open item created by Round 1:** the `accent_only` French counter-example exception (§8.1).
+
+Full form in the Founder Review Surface; the ratification record is
+[`MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md`](MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md).
 
 ---
 
@@ -328,9 +381,11 @@ Full form in the Founder Review Surface.
 **Proposed for later amendment — none applied in this task, and none may be applied without founder
 ratification:**
 
-1. **ADR-0021 Decision paragraph** — scope-amend to match the post-B7 five-bucket behaviour, *or*
-   change the code back. Whichever the founder chooses (FQ-1), one of the two must move. **The ADR must
-   be amended, not repealed** — its precision principle stands.
+1. **ADR-0021 Decision paragraph** — **REQUIRED, NOT YET APPLIED.** FQ-1 ruled that polarity is
+   meaning-based, so ADR-0021's member list (which places `spelling_near_miss` in Precision) needs a
+   **scope amendment**. **The ADR must be amended, not repealed** — its precision principle stands and
+   was in fact vindicated. **ADR-0021 has not been touched**; amending it is a separate, separately
+   authorized documentation task.
 2. **`Mastery Model.md` bucket table**, **`Feedback and Scoring Philosophy.md` near-miss line**,
    **precision-policy §2 table** — same correction, three files.
 3. **"9-state mastery"** — retire the phrase or define the nine members (FQ-5).
@@ -340,11 +395,15 @@ ratification:**
 
 ## 19. Promotion blockers
 
-1. FQ-1, FQ-6, FQ-8 unanswered (`REQUIRED NOW`).
-2. FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 unanswered (`REQUIRED BEFORE PROMOTION`).
-3. The §8.1 contradiction unresolved — the Bible cannot state a near-miss rule while an active ADR and
-   the code disagree.
-4. The §8.4 gap unresolved — the Bible cannot claim an evidence-weight model that has no home.
-5. No independent adversarial review performed (required, §41 of the Bible).
-6. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
+1. ~~FQ-1, FQ-6, FQ-8 unanswered~~ — **CLEARED 2026-07-26** (Round 1 partial ratification).
+2. **FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 unanswered** (`REQUIRED BEFORE PROMOTION`). **STILL BLOCKING.**
+3. **The ADR-0021 scope amendment required by FQ-1 has not been applied.** §18 item 1. **STILL BLOCKING.**
+4. The §8.4 gap unresolved — the Bible cannot claim an evidence-weight model that has no home (FQ-2).
+   **STILL BLOCKING.**
+5. **No independent adversarial review performed** (required, §41 of the Bible). **STILL BLOCKING.**
+6. The `accent_only` exception opened by Round 1 (§8.1) has no ruling. **Open, not yet classified as
+   blocking.**
+7. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
    destination yet. This blocks *completeness*, not promotion, and is recorded as such.
+
+> **Round 1 cleared one blocker and created one new open item. The Bible is not promotable.**

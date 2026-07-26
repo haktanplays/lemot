@@ -1,7 +1,7 @@
 ---
 title: Mastery & Evidence Founder Review Surface v0.1
 version: 0.1
-status: Draft — bounded founder decision surface for the Mastery & Evidence Bible v1.0 Draft
+status: Draft — bounded founder decision surface; 3 of 8 answered (Round 1, 2026-07-26)
 authority: none — a question set, not a decision
 owner: Mastery & Evidence
 created: 2026-07-26
@@ -12,6 +12,12 @@ questions: 8
 
 **Eight questions.** Every one of them is a question the repository genuinely cannot answer, because
 two sources disagree or because nothing exists at all.
+
+> **Round 1 — three answered (2026-07-26).** **FQ-1 = C** · **FQ-6 = A** · **FQ-8 = A**. The answered
+> cards are kept in full, with their original recommendation and strongest alternative intact for
+> provenance, and are headed `FOUNDER ANSWERED — 2026-07-26`. **FQ-2, FQ-3, FQ-4, FQ-5 and FQ-7 remain
+> unanswered.** All three `REQUIRED NOW` questions are now closed; five `REQUIRED BEFORE PROMOTION`
+> questions remain, so the Bible stays Draft. **No answer authorized any implementation.**
 
 **Deliberately not asked here:** facts the repository already proves (recorded in the Current Reality
 Map instead) · module placement, schema shape and algorithm choice (Engineering) · sequencing and
@@ -25,6 +31,28 @@ band-strictness (Curriculum) · retention, lawful basis and minors (Privacy/Lega
 ---
 
 ## FQ-1 — Is a French minimal-pair spelling slip a precision signal or a weakness signal?
+
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-1 = C**
+>
+> **Founder wording:** *"polarity is determined by semantic effect, not by the `spelling_near_miss` tag
+> alone."*
+>
+> **Final semantic rule:**
+> 1. A **meaning-preserving orthographic slip is a precision signal** — no failure, no weakness, no
+>    mastery demotion solely from that slip.
+> 2. A **meaning-changing lexical, grammatical, or minimal-pair substitution may be negative evidence
+>    and may create weakness.**
+> 3. The existing **`spelling_near_miss` tag is too coarse** to establish which case occurred.
+> 4. Therefore the tag alone is **not Canonical proof of precision** and **not Canonical proof of
+>    weakness**; **ambiguous events may not establish weakness until their semantic class is
+>    attributable.**
+> 5. Current sandbox code that automatically accrues weakness for this tag is `CURRENT REALITY —
+>    AXIS B`, **provisional**, and **non-conforming** where meaning is unknown.
+> 6. **ADR-0021's member list requires a future scope amendment** — not applied.
+> 7. **No ADR, code, schema, manifest, tag, test, validator or runtime file was changed.**
+>
+> **Neither the recommendation nor the alternative below was adopted.** Both are preserved unchanged
+> as provenance — the founder rejected the precision/weakness framing itself.
 
 **1. Question ID:** FQ-1
 **2. Exact decision.** Does `spelling_near_miss` belong in the precision bucket (soft, never weakness),
@@ -70,11 +98,17 @@ meaning-distinct confusions become invisible to mastery until a new mechanism ex
 
 **10. Affected `ME-###` rows:** ME-011, ME-012, ME-032; consequential ME-026.
 **11. Affected downstream layers:** Content (minimal-pair item design), Curriculum (band strictness), Engineering (if the code changes back).
-**12. Weakest-member test.** The claim *"precision tags never create weakness"* was tested against each
-member: `punctuation_only` ✔ · `accent_only` ✔ · `spelling_near_miss` ✘. **The universal claim is false
-as written in four documents.** Either the claim or the member list must move.
-**13. Timing:** `REQUIRED NOW`.
+**12. Weakest-member test.** *(As put to the founder.)* The claim *"precision tags never create
+weakness"* was tested against each member: `punctuation_only` ✔ · `accent_only` ✔ ·
+`spelling_near_miss` ✘. **The universal claim is false as written in four documents.** Either the claim
+or the member list must move.
+**12b. Re-run after the answer (2026-07-26).** The founder retired the claim rather than repairing it.
+Under FQ-1: `punctuation_only` = **precision** · `accent_only` = **precision, with a stated French
+counter-example exception** (`ou`/`où`, `a`/`à`, `sur`/`sûr` — a new open item) · `spelling_near_miss` =
+**undetermined**. **No universal claim that the three share a polarity is made anywhere in the package.**
+**13. Timing:** `REQUIRED NOW` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-1 = [A] amend ADR-0021, keep code · [B] restore 3-member precision, change code · [C] other — ______`
+**→ ANSWERED: C** (meaning-based polarity; see the answer block at the top of this card).
 
 ---
 
@@ -271,6 +305,27 @@ every member of its own candidate set.
 
 ## FQ-6 — How is bad evidence undone?
 
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-6 = A**
+>
+> **Founder wording:** *"refuse inadmissible evidence at admission; use an append-only compensating
+> invalidation record for defects discovered later."*
+>
+> **Final semantic rule:**
+> 1. Where a **non-learner error is knowable before evidence admission**, the result **is not admitted**
+>    as learning evidence.
+> 2. Where the error is **discovered after admission**: the historical event **remains immutable**; a
+>    **compensating invalidation record** references the affected evidence; **mastery projections must
+>    neutralize the invalidated evidence's pedagogical effect**; **audit history remains intact**.
+> 3. **Evidence is never deleted or silently mutated.**
+> 4. **Content, validator, UI-flow, tone, AI-generator, system, and mastery-mapping errors must never
+>    create learner weakness.**
+> 5. **Exact schema, event names, cache invalidation, reconciliation algorithm and storage
+>    implementation remain Engineering decisions.**
+> 6. **This authorizes documentation semantics only and no implementation.**
+>
+> This matches the recommendation below (**A**), including its stated cost: the invariant is now real
+> in canon and still unimplemented in runtime.
+
 **1. Question ID:** FQ-6
 **2. Exact decision.** When a recorded event turns out not to be learner-sourced (a broken validator, a
 bad distractor, a UI bug, an AI-generated item that was wrong), is it **refused at admission** or
@@ -306,12 +361,17 @@ best-effort, and that downgrade must be stated in canon rather than left implici
 
 **10. Affected `ME-###` rows:** ME-047, ME-048; consequential ME-004, ME-007, ME-042.
 **11. Affected downstream layers:** Engineering (schema, reconciliation), Operations (incident handling), Content (defect reporting path).
-**12. Weakest-member test.** The claim *"non-learner errors never become weakness"* was tested against
-all seven error-source classes. **Learner ✔ (trivially). Content ✘ · validator ✘ · UI-flow ✘ · tone ✘ ·
-AI-generator ✘ · mastery-mapping ✘.** The invariant holds for 1 of 7 — and only because that member is
-the one that *should* count.
-**13. Timing:** `REQUIRED NOW`.
+**12. Weakest-member test.** *(As put to the founder, over the seven classes then enumerated.)* The
+claim *"non-learner errors never become weakness"* was tested against all seven. **Learner ✔
+(trivially). Content ✘ · validator ✘ · UI-flow ✘ · tone ✘ · AI-generator ✘ · mastery-mapping ✘.** The
+invariant held for 1 of 7 — and only because that member is the one that *should* count.
+**12b. Re-run after the answer (2026-07-26).** The founder's wording **adds `system`**, making **eight**
+classes total and **seven** in the excluded set: content · validator · UI-flow · tone · AI-generator ·
+**system** · mastery-mapping. **All seven are covered by the ratified rule; none is enforced —
+0 of 7 implemented.** The count change is recorded, not silently absorbed.
+**13. Timing:** `REQUIRED NOW` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-6 = [A] refuse at admission + compensating record for later discovery · [B] admission-time only; downgrade the invariant · [C] other — ______`
+**→ ANSWERED: A** (see the answer block at the top of this card).
 
 ---
 
@@ -360,6 +420,25 @@ constant listed above. **Founder decisions found: 0 of ~25.** The weakest member
 
 ## FQ-8 — Does this Bible bind the surface that actually ships?
 
+> ### `FOUNDER ANSWERED — 2026-07-26` · **FQ-8 = A**
+>
+> **Founder wording:** *"the Bible governs the Mastery & Evidence domain across all Cairn
+> evidence-bearing systems."*
+>
+> **Final rule:**
+> - Governs semantic evidence and mastery rules across: the **learning engine**; **legacy `lm7` weak
+>   spots**; **legacy `lm7_srs`**; **legacy per-section mastery thresholds**; **any future replacement
+>   system**.
+> - **Telemetry or engagement data that is not learning evidence remains outside scope.**
+> - Legacy systems are recorded as **current Axis-B reality**, **legacy-active** where applicable,
+>   **non-conforming** where they conflict, and **frozen and intended for replacement/convergence
+>   rather than retrofit**.
+> - **Domain coverage does not authorize modifying legacy systems.**
+> - **Engineering will later own replacement and convergence mechanics.**
+>
+> This matches the recommendation below (**A**), including its stated discomfort: the Bible now says
+> plainly that the shipping evidence behaviour does not conform to it.
+
 **1. Question ID:** FQ-8
 **2. Exact decision.** Is the Mastery & Evidence Bible's scope (a) the learning engine only, with the
 legacy shipped surface explicitly out of scope, or (b) all of Cairn's evidence handling, including the
@@ -404,8 +483,9 @@ produced this contradiction in the first place.
 evidence-bearing system: engine mastery ✔ · legacy `lm7` weak spots ✘ · legacy `lm7_srs` ✘ ·
 legacy per-section thresholds ✘ · telemetry (correctly out of scope) n/a. **Under scope (a) the claim
 holds for 1 of 4 real systems — and not the one that ships.**
-**13. Timing:** `REQUIRED NOW`.
+**13. Timing:** `REQUIRED NOW` — **ANSWERED 2026-07-26**.
 **14. Founder response template:** `FQ-8 = [A] domain scope; legacy recorded as non-conforming · [B] engine-only scope · [C] other — ______`
+**→ ANSWERED: A** (see the answer block at the top of this card).
 
 ---
 
@@ -414,27 +494,32 @@ holds for 1 of 4 real systems — and not the one that ships.**
 Copy, fill, return. `A` = Draft recommendation, `B` = strongest alternative, `C` = your own wording.
 
 ```
-Mastery & Evidence — Founder Decisions (date: ________)
+Mastery & Evidence — Founder Decisions
 
-REQUIRED NOW
-FQ-1  near-miss polarity          = [ A / B / C ] ______________________
-FQ-6  invalidation model          = [ A / B / C ] ______________________
-FQ-8  scope over legacy surface   = [ A / B / C ] ______________________
+ROUND 1 — ANSWERED 2026-07-26  (semantics only; no implementation)
+FQ-1  near-miss polarity          = [C] polarity is meaning-based; the tag is ambiguous
+FQ-6  invalidation model          = [A] refuse at admission + append-only compensating record
+FQ-8  scope over legacy surface   = [A] domain-wide; legacy governed, non-conforming, frozen
 
-REQUIRED BEFORE PROMOTION
+ROUND 2 — STILL OPEN  (all REQUIRED BEFORE PROMOTION; date: ________)
 FQ-2  differential evidence weight= [ A / B / C ] ______________________
 FQ-3  assistance as evidence input= [ A / B / C ] ______________________
 FQ-4  weakness permanence         = [ A / B / C ] ______________________
 FQ-5  mastery vocabulary          = [ A / B / C ] ______________________
 FQ-7  locked vs tunable constants = [ A / B / C ] ______________________
 
+New item opened by Round 1 (not yet a numbered question):
+  accent_only French counter-examples (ou/où, a/à, sur/sûr) — own ruling, or
+  covered by FQ-1's ambiguity clause?   ______________________
+
 Notes / additional instruction:
 ____________________________________________________________________
 
-Explicitly NOT authorized by these answers (leave as-is to confirm):
-  - no code, schema, event, threshold, validator or UI change
+Explicitly NOT authorized by the Round 1 answers (confirmed by this record):
+  - no code, schema, event, threshold, tag, manifest, test, validator or UI change
   - no promotion of this Bible to Canonical
   - no amendment applied to ADR-0021 or any vault file
+  - no modification of any legacy system
   - no implementation opening
 ```
 

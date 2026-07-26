@@ -13,6 +13,11 @@ axis: B (current implementation reality)
 **This file is Axis B only.** It records what the repository contains **today**. Nothing here is a
 semantic ruling, and promoting the Bible does **not** canonize anything in this file.
 
+> **Round 1 founder decisions (2026-07-26) changed no fact in this file.** Every runtime description
+> below is unchanged. Three **divergence annotations** were added, marked `⚠ DIVERGENCE`, recording
+> where current behaviour differs from newly-ratified semantics. **No runtime correction was
+> authorized**, and none was made.
+
 Two words are used strictly:
 
 - **Tested** = a unit test exercises it.
@@ -67,6 +72,11 @@ Two words are used strictly:
 - `userAnswer` stores **raw learner text** inside the evidence record.
 - Implementation: types only, no runtime. Tested indirectly. Not shipped.
 - Divergence: §12 of the Bible (assistance) and §7 (attribution) are unimplementable against this shape.
+- **⚠ DIVERGENCE (added 2026-07-26).** Founder FQ-6 ratified admission refusal plus an append-only
+  compensating invalidation record. **No such mechanism exists**: the event shape has no error-source,
+  admissibility or invalidation field, there is no compensating record type, and no reconciliation
+  path. The ratified rule is **semantics only** — schema, event names, cache invalidation,
+  reconciliation and storage remain **undecided Engineering questions**. **Nothing was built.**
 - Future owning layer: Engineering (shape), Privacy (`userAnswer` retention).
 
 ## 3. Reducers
@@ -96,8 +106,14 @@ Intent-or-implementation: implementation. Future owning layer: Engineering.
 - **Known divergence: ADR-0021 says four buckets and places `spelling_near_miss` in Precision.** The
   code implements five and treats it as weakness-accruing (audit B7). Three further documents repeat
   the ADR's version.
-- Intent or implementation: **implementation, contradicting an active ADR.** Not a resolution.
-- Future owning layer: Mastery & Evidence (semantics) — pending FQ-1.
+- **⚠ DIVERGENCE (added 2026-07-26).** Founder FQ-1 ruled that polarity is determined by **semantic
+  effect**, and that an **ambiguous event may not establish weakness**. The reducer accrues `weakTags`
+  for **every** `spelling_near_miss`, including events whose meaning is unknown — so **current
+  behaviour differs from founder semantics wherever meaning is not attributable**. This behaviour is
+  **provisional and non-conforming**. **No runtime correction was authorized.**
+- Intent or implementation: **implementation, contradicting both an active ADR and (where meaning is
+  unknown) the founder rule.** Not a resolution.
+- Future owning layer: Mastery & Evidence (semantics, ratified) / Engineering (mechanism, unopened).
 
 ## 5. Counters
 
@@ -120,7 +136,11 @@ Source: `mastery.ts:45-80`. Tested. Not shipped. Future owner: Mastery & Evidenc
 - Divergence: same number, different key, different store, and the legacy path performs **no
   attribution** — every logged wrong answer counts.
 - Neither value has a founder decision behind it.
-- Future owning layer: Mastery & Evidence (threshold class), Engineering (convergence).
+- **⚠ DIVERGENCE (added 2026-07-26).** Under founder FQ-8 **both** systems are inside the Bible's
+  domain. The legacy shipped tracker performs no attribution and is therefore **non-conforming** with
+  the ratified attribution rule; it is recorded as **legacy-active, frozen, intended for replacement,
+  and explicitly NOT authorized for modification.** Nothing about it changed.
+- Future owning layer: Mastery & Evidence (threshold class), Engineering (replacement/convergence).
 
 ## 7. Weak tags
 
@@ -164,7 +184,12 @@ Tested (`nearMissMasteryTiming.test.ts`). Not shipped. Known divergence: audit B
 `PRECISION_TAGS` = **exactly two** members: `punctuation_only`, `accent_only` (`mastery.ts:141-144`).
 A precision event increments `precisionCount` and `precisionTags` and the relevant attempt counter, and
 touches nothing else. **Member audit: both members read; `spelling_near_miss` verified absent from the
-set.** Divergence: §4 above. Future owner: Mastery & Evidence (FQ-1).
+set.** Divergence: §4 above.
+
+**⚠ DIVERGENCE (added 2026-07-26).** The set is defined by *tag*, not by *meaning*. Under FQ-1 that is
+the wrong axis: `accent_only` is treated as unconditionally precision, but French counter-examples
+(`ou`/`où`, `a`/`à`, `sur`/`sûr`) are meaning-changing and the tag cannot distinguish them. **Recorded
+as a fact and a new open item; no code change authorized.** Future owner: Mastery & Evidence.
 
 ## 12. Skip handling
 
@@ -294,12 +319,12 @@ false in both shipping stages.**
 | # | Divergence | Evidence |
 |---|---|---|
 | R1 | Shipped surface emits no events → no production evidence | §0 |
-| R2 | `spelling_near_miss` weakness-accruing vs ADR-0021 precision | §4, §11 |
+| R2 | `spelling_near_miss` weakness-accruing vs ADR-0021 precision **and** vs founder FQ-1 where meaning is unknown | §4, §11 |
 | R3 | No evidence weighting despite canon asserting one | §13 |
 | R4 | No attribution / error-source field despite a `[HARD INVARIANT]` | §2 |
-| R5 | No invalidation mechanism | §2, §21 |
+| R5 | No invalidation mechanism — **founder FQ-6 ratified one semantically; none exists** | §2, §21 |
 | R6 | Repair fully unimplemented | §18 |
-| R7 | Two weakness systems, same threshold, different keys | §6 |
+| R7 | Two weakness systems, same threshold, different keys — **both now governed (FQ-8); the shipped one is non-conforming and frozen** | §6 |
 | R8 | Two Leitner systems, same intervals, different demotion | §8 |
 | R9 | Chain aggregation lives in the controller, not the reducer | §20 |
 | R10 | Assistance (hint) never reaches the event | §2 |
@@ -311,3 +336,7 @@ false in both shipping stages.**
 It does not claim any behaviour above is correct, intended, final, or canonical. It does not claim a
 tested behaviour is shipped. It does not claim an absent behaviour was rejected. It does not authorize
 changing any value, shape, gate, or module recorded here.
+
+**Round 1 specifically.** The founder decisions of 2026-07-26 ratified *semantics*. This file records
+that **no runtime fact changed**, **no correction was authorized**, and **every divergence annotated
+above remains live**. A `⚠ DIVERGENCE` marker is a record of non-conformance, never a work item.
