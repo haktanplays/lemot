@@ -1,7 +1,7 @@
 ---
 title: Cairn Social Layer — Idea & Decision Register
 version: 0.1
-status: Draft — awaiting founder sign-off review
+status: Supporting record for the Canonical Social Layer Charter v1.0 — not independent canon
 authority: Proposed Social Layer canon; records founder boundary/direction decisions (Q1, R1–R11, 2026-07-25). Authorizes no implementation.
 founder_decisions: Q1 (2026-07-25) · R1, R2, R5, R6, R8, R9, R10, R11 resolved (2026-07-25) · R3, R4, R7 dormant
 owner: Social Layer
