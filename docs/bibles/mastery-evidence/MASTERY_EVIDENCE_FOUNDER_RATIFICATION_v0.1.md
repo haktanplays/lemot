@@ -1,7 +1,7 @@
 ---
 title: Mastery & Evidence Founder Ratification v0.1
 version: 0.1
-status: Founder-ratified decision record — all eight review questions answered
+status: Founder-ratified decision record — all eight review questions answered; supporting record for the Canonical Mastery & Evidence Bible v1.0 (promoted 2026-07-27), not independent canon
 authority: founder decisions FQ-1…FQ-8 (all eight) + the FQ-1 general tag clarification
 decision_date: 2026-07-26
 owner: Mastery & Evidence
@@ -11,7 +11,7 @@ implementation_authority: none
 # Mastery & Evidence — Founder Ratification v0.1 (Rounds 1–2, complete)
 
 **All eight founder questions are answered.** The **semantic decision surface is complete**. The Bible
-**remains Draft**, and this record **remains supporting and non-Canonical**.
+is **Canonical (promoted 2026-07-27)**, and this record **remains supporting and non-Canonical**.
 
 > **What this record is.** A durable statement of eight semantic rulings, one clarification, and their
 > exact boundaries.
@@ -21,10 +21,12 @@ implementation_authority: none
 > **Completing the question set was not a promotion event, and neither was reconciling the sources.**
 > **Source amendments: APPLIED 2026-07-26 — 18 source documents** (15 operator-vault + 3 ordinary
 > `docs/`), delivered as one atomic 22-file patch. **`docs/learning-engine-v1.md` was inspected in full
-> and left unchanged because it already conforms.** **One promotion prerequisite remains open: the
-> independent-review gate. An independent adversarial review by a non-author was performed on 2026-07-27
-> against commit `13cac69` and returned `FAIL — PROMOTION BLOCKED`; its blocking findings were remediated
-> in `c103ea5`, and a clean independent follow-up review of the remediated tip is pending.**
+> and left unchanged because it already conforms.** **The independent-review gate is closed: an
+> independent adversarial review by a non-author was performed on 2026-07-27 against commit `13cac69`
+> and returned `FAIL — PROMOTION BLOCKED`; its blocking findings were remediated in `c103ea5`; and the
+> independent follow-up review of the remediated tip passed (`PASS WITH NON-BLOCKING FINDINGS` —
+> [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)).
+> The founder then authorized promotion: the Bible is Canonical as of 2026-07-27 (§10).**
 > **Founder-locked exact numeric values: zero.**
 
 ---
@@ -42,8 +44,8 @@ implementation_authority: none
 | Documents **not** amended | **`docs/learning-engine-v1.md`** (inspected in full; already conforms) · the Current Reality & Enforcement Map (Axis-B facts unchanged) · the Founder Review Surface (historical question-card provenance preserved) · every other ADR · every unrelated vault file |
 | Code, schema, tags, manifests, tests, validators, thresholds, runtime | **Unchanged** |
 | Implementation | **Not opened** |
-| Independent adversarial review | **Performed 2026-07-27 against `13cac69` — verdict `FAIL — PROMOTION BLOCKED`; blocking findings remediated in `c103ea5`; clean follow-up review pending** |
-| Promotion | **Did not occur** |
+| Independent adversarial review | **Performed 2026-07-27 against `13cac69` — verdict `FAIL — PROMOTION BLOCKED`; blocking findings remediated in `c103ea5`; independent follow-up review of `db65db0` passed: `PASS WITH NON-BLOCKING FINDINGS`** |
+| Promotion | **Did not occur as part of this ratification.** The Bible was later promoted Draft → Canonical on **2026-07-27** by a separate founder authorization, after the follow-up review passed (§10) |
 
 ---
 
@@ -378,12 +380,15 @@ the FQ-1 clarification.
 
 ## 10. Promotion state
 
-**NOT PROMOTED.** The Bible remains **`Draft — awaiting a clean independent follow-up review`**. Founder
-ratification is complete and source reconciliation is applied. An **independent adversarial review by a
-non-author was performed on 2026-07-27 against commit `13cac69`** and returned **`FAIL — PROMOTION
-BLOCKED`** (stale live-state wording in Bible §39/§40); those blocking findings were **remediated in
-`c103ea5`**. A failed review does not close the gate: **a clean independent follow-up review of the
-remediated tip is the sole remaining prerequisite**, and implementation remains closed.
+**PROMOTED.** The Bible is **`Canonical` — promoted Draft → Canonical on 2026-07-27, founder-authorized.**
+Founder ratification is complete and source reconciliation is applied. An **independent adversarial
+review by a non-author was performed on 2026-07-27 against commit `13cac69`** and returned
+**`FAIL — PROMOTION BLOCKED`** (stale live-state wording in Bible §39/§40); those blocking findings
+were **remediated in `c103ea5`** (chronology aligned in `db65db0`), and the **independent follow-up
+review of the remediated tip passed** — **`PASS WITH NON-BLOCKING FINDINGS`** (0 BLOCK, 0 MAJOR,
+2 NOTE; recommendation `PROMOTE`; full record:
+[`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)).
+Implementation remains closed.
 
 | Promotion prerequisite | State |
 |---|---|
@@ -393,11 +398,11 @@ remediated tip is the sole remaining prerequisite**, and implementation remains 
 | Counts recalculated from rows | ✔ — recalculated mechanically |
 | No statement became an implementation authorization | ✔ |
 | **Source amendments applied** — 18 documents (15 vault + 3 `docs/`), both ADRs scope-amended | **✔ — APPLIED 2026-07-26** |
-| **Independent adversarial review by a non-author** | **✘ — performed 2026-07-27, verdict `FAIL — PROMOTION BLOCKED`; findings remediated (`c103ea5`); clean follow-up review PENDING** |
+| **Independent adversarial review by a non-author** | **✔ — performed 2026-07-27 (`FAIL — PROMOTION BLOCKED`), remediated, follow-up review of `db65db0` PASSED: `PASS WITH NON-BLOCKING FINDINGS`** |
 
-**Six of seven met. The Bible is not promotable — the independent-review gate is the only remaining
-blocker: the first review failed with blocking findings, and a clean independent follow-up review of
-the remediated tip has not yet occurred.**
+**Seven of seven met. The Bible was promoted on 2026-07-27. Promotion changed no founder decision and
+no runtime, and opened no implementation; the two non-blocking review NOTEs are preserved as
+recorded.**
 
 > **That last gate cannot be satisfied by answering questions or by amending documents.** It requires a
 > reviewer **other than this package's author**. It is not satisfied by this record, by the commit that
@@ -486,6 +491,7 @@ separately and must never be conflated.
 
 | Date | Version | Change | Author |
 |---|---|---|---|
+| 2026-07-27 | 0.1 (Bible promotion recorded) | **Live promotion state converged after the founder-authorized promotion of the Bible (Draft → Canonical, 2026-07-27).** The independent follow-up review of tip `db65db0` passed (`PASS WITH NON-BLOCKING FINDINGS`; 0 BLOCK, 0 MAJOR, 2 NOTE; recommendation `PROMOTE` — new supporting record `MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`), closing the last prerequisite. Header, §1 Scope table (review + promotion rows) and §10 updated to **seven of seven prerequisites met / PROMOTED**. **Every founder decision (FQ-1…FQ-8 + clarification) and every dated change-history row preserved verbatim. This record remains supporting and non-Canonical. No semantic rule, source document, numeric value or runtime changed; no implementation authorized.** | Cloud session (founder-authorized promotion) |
 | 2026-07-26 | 0.1 (package-state convergence) | **Converged the six-file package on one current state. Mechanical documentation reconciliation only — no semantic decision, no source document outside the package, no implementation.** Root cause recorded honestly: during the 2026-07-26 reconciliation commit a batched edit script **failed mid-batch on its last pair and exited before writing**, so **three Decision Matrix Table-B rows (ME-011, ME-012, ME-020) were never updated** even though the commit reported reconciliation complete. Corrected now: **ME-011** notes → ADR-0021 scope-amended (runtime unchanged); **ME-012** notes → scope amendment **APPLIED**, plus its weakest-member cell refreshed to the post-clarification result (**0 of 3 tags individually determinate**); **ME-020** conflict → *source patch **APPLIED — 2026-07-26***; **Gap Map §4** ADR-0021 row → **SCOPE-AMENDED** (was *"UNCHANGED / NOT yet amended in text"*); **Review Surface** three live summaries date-scoped (header *"neither of which has happened"*, FQ-1 rule-6 annotation, FQ-2 closing note) with **founder wording preserved verbatim**. **No Table-A field changed, so no distribution moved; no row became Implemented or Runtime Enforced.** Current Reality & Enforcement Map **unchanged** — its Axis-B divergences are implementation facts, not package-state contradictions. **Bible remains Draft; independent adversarial review remains the sole promotion prerequisite; no code, runtime, threshold or numeric value changed; no promotion occurred.** | Cloud session (package convergence) |
 | 2026-07-26 | 0.1 (post-reconciliation state correction) | **Corrected post-reconciliation live-state wording. No semantic decision, source document or implementation state changed.** Removed stale *"pending / not applied / untouched / requires a future scope amendment"* claims that were true before commit `e577954` and false after it: **FQ-1** rules 6–7 now record the ADR-0021 scope amendment as **applied** and separate the ratification act from the later reconciliation; **FQ-2**'s consequence no longer says the source amendments are *"pending, not applied"*; **§7** renamed *Required future source amendments* → **Source amendments — applied 2026-07-26**, with an exact pointer to the Gap Map §20 inventory instead of a duplicated file list; **§8** non-authorization clarified chronologically (**the ratification itself amended no ADR; a later separately authorized task scope-amended ADR-0021 and ADR-0022, documentation-only**); **§10** promotion wording corrected from *"awaiting founder ratification"* to **"awaiting independent adversarial review"**. **Prior change-history entries were not rewritten. Historical provenance retained everywhere. Both ADRs remain `active`/`canonical` and scope-amended, not repealed. Zero numeric values ratified. Bible remains Draft; independent adversarial review remains the sole promotion blocker; no code, schema, event, tag, threshold, interval, validator, test or runtime changed; no implementation opened; no promotion occurred.** | Cloud session (state correction) |
 | 2026-07-26 | 0.1 (source reconciliation) | **Source amendments APPLIED — one atomic 22-file patch.** 18 source documents reconciled with FQ-1/FQ-2/FQ-5: **15 operator-vault + 3 ordinary `docs/`**, plus **4** package files. **ADR-0021** and **ADR-0022** both **scope-amended, not repealed** (original Decision text verbatim; `status: active` / `canon_status: canonical` retained; ADR-0021's broken `source_of_truth` path corrected). **Lesson Flow Canon §5.3** no longer places a weighting mechanism in the reducer; **§5.5 multipliers marked illustrative candidates, not ratified**. **Precision policy** banner-marked partially superseded, body preserved. **`Unknowns` U8 CLOSED.** **Counting history recorded, not tidied:** candidates named 7 → amendment-required 6 → expanded 13 → **5 further stale sources found after the 13 were edited**, which triggered the stop rule and halted the commit until the founder expanded authorization → final 18. Prior mis-counts (*"five documents"*, *"9 vault + 4 docs"*) are recorded in the Gap Map §20. **`docs/learning-engine-v1.md` inspected and left unchanged — it conforms.** **Promotion gate: source amendments now MET; the independent adversarial review remains the ONLY unmet prerequisite. Bible remains Draft. No code, test, schema, event, tag, threshold, interval, validator or runtime changed. No implementation opened. No numeric value ratified. No promotion occurred.** | Cloud session (atomic source reconciliation) |

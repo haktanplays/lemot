@@ -1,14 +1,15 @@
 ---
 title: Mastery & Evidence Founder Review Surface v0.1
 version: 0.1
-status: Draft — bounded founder decision surface; **8 of 8 answered** (Rounds 1–2, 2026-07-26)
+status: Supporting provenance record — **8 of 8 answered** (Rounds 1–2, 2026-07-26); supports the Canonical Mastery & Evidence Bible v1.0 (promoted 2026-07-27); not independent canon
 authority: none — a question set, not a decision
 owner: Mastery & Evidence
 created: 2026-07-26
+last_updated: 2026-07-27
 questions: 8
 ---
 
-# Mastery & Evidence — Founder Review Surface v0.1 — DRAFT
+# Mastery & Evidence — Founder Review Surface v0.1 — supporting provenance record
 
 **Eight questions.** Every one of them is a question the repository genuinely cannot answer, because
 two sources disagree or because nothing exists at all.
@@ -22,11 +23,15 @@ two sources disagree or because nothing exists at all.
 > and reframed the question. Those cards say so explicitly. Every card is kept in full, with its
 > original recommendation and strongest alternative intact for provenance.
 >
-> **Zero unanswered founder slots remain. The Bible is still Draft.** The **source amendments were
-> applied on 2026-07-26** (commit `e577954`, 18 source documents). An **independent adversarial review
-> by a non-author was performed on 2026-07-27 against commit `13cac69`** and returned
-> **`FAIL — PROMOTION BLOCKED`**; its blocking findings were remediated in `c103ea5`, and **a clean
-> independent follow-up review of the remediated tip is the sole remaining promotion prerequisite.**
+> **Zero unanswered founder slots remain. The Bible is Canonical (promoted 2026-07-27).** The
+> **source amendments were applied on 2026-07-26** (commit `e577954`, 18 source documents). An
+> **independent adversarial review by a non-author was performed on 2026-07-27 against commit
+> `13cac69`** and returned **`FAIL — PROMOTION BLOCKED`**; its blocking findings were remediated in
+> `c103ea5`, and the **independent follow-up review of the remediated tip passed**
+> (`PASS WITH NON-BLOCKING FINDINGS` —
+> [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)),
+> after which the founder authorized the promotion. This surface remains a supporting provenance
+> record; every card below is preserved verbatim.
 > **No answer authorized any implementation, and no exact number was founder-locked.**
 
 **Deliberately not asked here:** facts the repository already proves (recorded in the Current Reality
@@ -680,6 +685,8 @@ Explicitly NOT authorized by these answers (confirmed by this record):
   - the independent adversarial review is NOT performed by answering these
 ```
 
-> **Answering these questions does not open implementation and does not promote this Bible.** Promotion
-> additionally requires an independent adversarial review by someone other than this Draft's author, and
-> any future build requires a **new**, scoped, fourteen-element founder opening issued afterwards.
+> **Answering these questions does not open implementation and did not, by itself, promote this
+> Bible.** Promotion additionally required an independent adversarial review by someone other than
+> this document's author — **completed and passed 2026-07-27**, after which the founder authorized
+> the promotion — and any future build still requires a **new**, scoped, fourteen-element founder
+> opening issued afterwards.

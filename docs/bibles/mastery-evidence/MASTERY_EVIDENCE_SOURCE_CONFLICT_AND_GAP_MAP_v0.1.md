@@ -1,13 +1,14 @@
 ---
 title: Mastery & Evidence Source, Conflict, and Gap Map v0.1
 version: 0.1
-status: Draft — supporting record for the Mastery & Evidence Bible v1.0 Draft
+status: Supporting record for the Canonical Mastery & Evidence Bible v1.0 — not independent canon
 authority: none — an inventory, not a decision
 owner: Mastery & Evidence
 created: 2026-07-26
+last_updated: 2026-07-27
 ---
 
-# Mastery & Evidence — Source, Conflict, and Gap Map v0.1 — DRAFT
+# Mastery & Evidence — Source, Conflict, and Gap Map v0.1 — supporting record
 
 Where every claim in the Bible Draft came from, where sources disagree, and where nothing exists.
 
@@ -24,8 +25,8 @@ Where every claim in the Bible Draft came from, where sources disagree, and wher
 > | Downstream source patch | **APPLIED 2026-07-26 — 18 source documents** (see §20) |
 > | Engineering decision | **UNAUTHORED** — schemas, fields, algorithms, clearing conditions |
 > | Curriculum decision | **UNAUTHORED** — band strictness, readiness, evidence distribution |
-> | Independent adversarial review | **PERFORMED 2026-07-27 against `13cac69` — verdict `FAIL — PROMOTION BLOCKED`**; blocking findings remediated; **a clean independent follow-up review is pending** |
-> | Promotion | **BLOCKED — the independent-review gate remains unmet (failed review + follow-up pending)** |
+> | Independent adversarial review | **PERFORMED 2026-07-27 against `13cac69` — verdict `FAIL — PROMOTION BLOCKED`**; blocking findings remediated; **independent follow-up review of `db65db0` PASSED — `PASS WITH NON-BLOCKING FINDINGS`** ([`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)) |
+> | Promotion | **COMPLETED 2026-07-27 — the Bible is Canonical (Draft → Canonical, founder-authorized).** Promotion is a documentation lifecycle event only: **it does not make the runtime conforming** — every implementation divergence below remains live |
 >
 > **A complete semantic decision surface is not a resolved system.** Specifically, as of this round:
 >
@@ -509,25 +510,29 @@ section is retained as the record of *what was required and how each item was di
 
 ---
 
-## 19. Promotion blockers
+## 19. Promotion blockers — ALL CLEARED; Bible promoted 2026-07-27
 
 1. ~~FQ-1, FQ-6, FQ-8 unanswered~~ — **CLEARED 2026-07-26** (Round 1).
 2. ~~FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 unanswered~~ — **CLEARED 2026-07-26** (Round 2). **All eight answered.**
 3. ~~The `accent_only` exception~~ — **CLEARED** by the FQ-1 general clarification.
 4. ~~Source amendments NOT applied~~ — **CLEARED 2026-07-26.** Eighteen source documents reconciled
    atomically (§20); both ADRs **scope-amended, not repealed**; all historical wording preserved.
-5. **Independent adversarial review** (required, §41 of the Bible): **performed 2026-07-27 against
-   `13cac69`, verdict `FAIL — PROMOTION BLOCKED`** (stale live-state wording in Bible §39/§40).
-   Blocking findings remediated; **a failed review does not close the gate** — a clean independent
-   follow-up review of the remediated tip is required. **STILL BLOCKING — and the only blocker.**
+5. ~~**Independent adversarial review** (required, §41 of the Bible)~~ — **CLEARED 2026-07-27.**
+   Performed 2026-07-27 against `13cac69`, verdict `FAIL — PROMOTION BLOCKED` (stale live-state
+   wording in Bible §39/§40); blocking findings remediated (`c103ea5`, `db65db0`); **independent
+   follow-up review of the remediated tip passed: `PASS WITH NON-BLOCKING FINDINGS`** (0 BLOCK,
+   0 MAJOR, 2 NOTE; recommendation `PROMOTE` —
+   [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)).
 6. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
-   destination yet. This blocks *completeness*, not promotion, and is recorded as such.
+   destination yet. This blocks *completeness*, not promotion, and is recorded as such — it survives
+   promotion unchanged.
 
-> **Every blocker except one is cleared. The Bible is still not promotable.** Reconciling documentation
-> is **not** implementation and **not** review: no code, schema, tag, threshold, interval, validator or
-> runtime changed. The independent adversarial review by a non-author **was performed on 2026-07-27 and
-> failed with blocking findings**; remediation of those findings does not satisfy the gate, which stays
-> open until a clean independent follow-up review of the remediated tip.
+> **Every promotion blocker is cleared, and the Bible was promoted to Canonical on 2026-07-27
+> (founder-authorized).** Promotion is a documentation lifecycle event, **not** implementation and
+> **not** runtime conformance: no code, schema, tag, threshold, interval, validator or runtime
+> changed; every implementation divergence in this file remains live; the downstream unauthored
+> layers (item 6) remain unauthored; and PRJ-009 (positive Social evidence contract) still does not
+> exist.
 
 ---
 

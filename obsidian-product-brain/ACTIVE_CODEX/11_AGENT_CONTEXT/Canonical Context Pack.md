@@ -119,8 +119,9 @@ Yukarıdakiler **Axis-B (mevcut kod)** gerçekleridir; **hiçbiri semantik kanon
 **polariteyi tek başına belirlemez**; production bağımsız kullanım için recognition'dan **semantik
 olarak güçlüdür** ama **mevcut reducer'da weighting mekanizması yoktur**; sayaç-türevli projeksiyon
 kaynak-of-truth'tur ve **evrensel mastery merdiveni yoktur**. **Mastery/evidence semantik soruları
-şuraya yönlendirilir:** `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md` (**Draft —
-Canonical DEĞİL**) + `MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` (founder kararları).
+şuraya yönlendirilir:** `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md` (**Canonical —
+promoted 2026-07-27**, DOC-051; Canonical ≠ implemented) + `MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md`
+(founder kararları).
 **Kaynak dokümanların uzlaştırılması bir uygulama değildir** — runtime değişmedi.
 Ana evi: [[Mastery Model]]. Karar D-23.
 

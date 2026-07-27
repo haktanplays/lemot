@@ -1,10 +1,19 @@
 ---
 title: Cairn Mastery & Evidence Bible
 version: 1.0
-status: Draft — all eight founder questions answered and all source amendments applied; independent adversarial review (2026-07-27) returned FAIL — PROMOTION BLOCKED; blocking findings remediated; awaiting a clean independent follow-up review
-authority: Proposed semantic owner for evidence and mastery. This document has NO independent authority. Every normative line is either inherited from a named upstream authority or marked `PROPOSED FOR FOUNDER RATIFICATION`.
+status: Canonical
+signed_off: 2026-07-27 — founder promotion following independent adversarial review PASS WITH NON-BLOCKING FINDINGS
+authority: Canonical semantic owner for evidence and mastery. Owns intent and semantic policy within its declared domain; confers no implementation authority. Every normative line carries a provenance tag naming how it entered.
 owner: Mastery & Evidence
 created: 2026-07-26
+last_updated: 2026-07-27
+related:
+  - MASTERY_EVIDENCE_DECISION_MATRIX_v0.1.md
+  - MASTERY_EVIDENCE_SOURCE_CONFLICT_AND_GAP_MAP_v0.1.md
+  - MASTERY_EVIDENCE_CURRENT_REALITY_AND_ENFORCEMENT_MAP_v0.1.md
+  - MASTERY_EVIDENCE_FOUNDER_REVIEW_SURFACE_v0.1.md
+  - MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md
+  - MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md
 upstream_authorities:
   - Founder decision Q2 (2026-07-26) — dedicated Mastery & Evidence owner assigned
   - Founder decisions FQ-1…FQ-8 (2026-07-26, Rounds 1–2 — all eight answered) — see MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md
@@ -19,13 +28,33 @@ supersedes: []
 partially_supersedes: []
 ---
 
-# Cairn Mastery & Evidence Bible v1.0 — DRAFT
+# Cairn Mastery & Evidence Bible v1.0 (Canonical)
 
-> **This is a Draft.** It is not Canonical, and it authorizes nothing. It does not change a
-> threshold, an event shape, a validator, a renderer, a lesson, or a line of code. Canonical
-> promotion requires (a) founder answers to the questions in
-> [`MASTERY_EVIDENCE_FOUNDER_REVIEW_SURFACE_v0.1.md`](MASTERY_EVIDENCE_FOUNDER_REVIEW_SURFACE_v0.1.md)
-> and (b) an independent adversarial review by someone other than this document's author (§41).
+> **Canonical — signed off 2026-07-27. `Canonical` does NOT mean implemented.**
+>
+> This is the **Canonical semantic owner for Cairn Mastery & Evidence**. It owns intent and semantic
+> policy within its declared domain (§2): evidence admissibility, attribution, polarity, strength,
+> assistance effects, weakness and repair semantics, mastery representation meaning, transitions,
+> aggregation, invalidation, and solo/AI/future-social equivalence.
+>
+> **What Canonical status does NOT confer:** permission to implement anything. It does not change a
+> threshold, an event shape, a validator, a renderer, a lesson, or a line of code. **Code and tests
+> remain Axis-B truth** — they establish what runs today, never what should be canon — and **legacy
+> systems remain current reality and may remain non-conforming** (§2.1, §37): they are governed,
+> frozen, and not authorized for modification.
+>
+> **Promotion basis.** All §41 prerequisites were met: founder decisions FQ-1…FQ-8, source
+> reconciliation (2026-07-26, `e577954`), and an independent adversarial review by a non-author —
+> performed 2026-07-27 against `13cac69` (`FAIL — PROMOTION BLOCKED`), remediated (`c103ea5`,
+> `db65db0`), and passed on independent follow-up
+> (**`PASS WITH NON-BLOCKING FINDINGS`**, recommendation **`PROMOTE`** — see
+> [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)).
+> The founder authorized promotion Draft → Canonical on **2026-07-27**. The promotion modified no
+> runtime and opened no implementation.
+>
+> **Provenance note.** Statements tagged `PROPOSED FOR FOUNDER RATIFICATION` became part of this
+> Bible's Canonical semantic policy with the 2026-07-27 promotion; the tag is retained as provenance
+> of how each statement entered.
 
 > **All eight founder questions are answered (Rounds 1–2, both 2026-07-26).**
 > **FQ-1** meaning-based polarity, generalized to *every* technical tag · **FQ-2** differential
@@ -35,13 +64,15 @@ partially_supersedes: []
 > compensating record · **FQ-7** lock promises, keep every number tunable · **FQ-8** domain-wide scope.
 > All are marked `INHERITED — FOUNDER DECISION` below.
 >
-> **This document is still Draft.** Answering every question did **not** promote it, and neither did
-> reconciling the sources. **Source amendments: APPLIED (2026-07-26, 18 documents).** **An independent
-> adversarial review by a non-author was performed on 2026-07-27 against commit `13cac69` and returned
-> `FAIL — PROMOTION BLOCKED`; its blocking findings are remediated, and a clean independent follow-up
-> review of the remediated tip is the sole remaining promotion prerequisite.** No statement
-> here may become an implementation authorization. **Zero exact numeric values were founder-locked.**
-> No code, schema, tag, test, validator, threshold, interval or runtime file was changed, and no
+> **This document is Canonical (promoted 2026-07-27).** Answering every question did **not** promote
+> it, and neither did reconciling the sources. **Source amendments: APPLIED (2026-07-26, 18
+> documents).** An independent adversarial review by a non-author was performed on 2026-07-27 against
+> commit `13cac69` and returned `FAIL — PROMOTION BLOCKED`; its blocking findings were remediated, and
+> the **independent follow-up review of the remediated tip passed
+> (`PASS WITH NON-BLOCKING FINDINGS`)** — closing the last promotion prerequisite, after which the
+> founder authorized promotion. No statement here may become an implementation authorization.
+> **Zero exact numeric values were founder-locked.** No code, schema, tag, test, validator,
+> threshold, interval or runtime file was changed by ratification, review, or promotion, and no
 > implementation was opened.
 
 > **Reading rule.** Every normative statement carries a provenance tag. A statement tagged
@@ -135,12 +166,14 @@ remains outside — it never updates mastery).
 
 ### 2.2 Limits
 
-**This document has no independent authority.** `INHERITED — FOUNDER DECISION`
+**This document's authority is semantic only.** `INHERITED — FOUNDER DECISION`
 
-- It is the **proposed** semantic owner. It becomes an owner on founder ratification, not on merge.
+- It is the **Canonical** semantic owner (promoted 2026-07-27). It became an owner through founder
+  ratification, independent review, and founder-authorized promotion — not through merge or
+  authorship.
 - It **never** authorizes implementation. Under the Authority & Routing Spec's fourteen-element
-  implementation-opening contract, a Canonical document is not a build instruction. Promotion of this
-  Bible to Canonical would still not open any code work. `INHERITED — CANONICAL DOMAIN SOURCE`
+  implementation-opening contract, a Canonical document is not a build instruction. The 2026-07-27
+  promotion of this Bible to Canonical opened no code work. `INHERITED — CANONICAL DOMAIN SOURCE`
 - It **does not** own a question outside its domain. Domain-first routing (founder Q1, 2026-07-26)
   means a higher-class document must not answer questions it does not own. Where this Bible reaches a
   boundary it **routes and stops** (§27–§32).
@@ -1088,11 +1121,13 @@ principle instead of adding a ninth question.
 
 **No founder question remains unanswered. All eight are answered.**
 
-> **That does not promote this document.** Founder decisions and source reconciliation are complete.
-> The permanent prohibition against accidental implementation authority still applies, but it is a
-> standing guardrail (§41 item 6), not a separate unmet prerequisite. The independent adversarial
-> review was performed (2026-07-27) and returned blocking findings; the independent-review gate
-> (§41 item 5) therefore remains unmet pending remediation and a clean independent follow-up review.
+> **Answering the questions did not, by itself, promote this document.** Founder decisions and source
+> reconciliation are complete. The permanent prohibition against accidental implementation authority
+> still applies as a standing guardrail (§41 item 6). The independent adversarial review was
+> performed (2026-07-27), returned blocking findings, was remediated, and the **independent
+> follow-up review passed** (`PASS WITH NON-BLOCKING FINDINGS`) — after which the founder authorized
+> promotion on **2026-07-27**. Every §41 prerequisite is now met; the routed-elsewhere items below
+> remain `OPEN` and are unaffected by promotion.
 
 Additionally `OPEN` without a founder question (routed elsewhere or lower priority): confidence
 representation (§13); conflicting-evidence ordering (§21); cross-session/lesson/family aggregation
@@ -1124,9 +1159,10 @@ representation (§13); conflicting-evidence ordering (§21); cross-session/lesso
 - It **does not claim** that founder Q2 authorized any implementation. It authorized an *owner*.
 - Absence of a rule here is **not** a rejection of that rule.
 
-## 41. Promotion prerequisites
+## 41. Promotion prerequisites — ALL MET; promoted 2026-07-27
 
-Before this Bible may be promoted Draft → Canonical, **all** of the following must hold:
+Before this Bible could be promoted Draft → Canonical, **all** of the following had to hold. **Every
+prerequisite is met, and the founder authorized the promotion on 2026-07-27.** Promotion is complete:
 
 1. Every founder question in the Review Surface marked `REQUIRED NOW` or `REQUIRED BEFORE PROMOTION`
    is answered and recorded in a founder ratification record. **MET — all eight answered across
@@ -1143,15 +1179,19 @@ Before this Bible may be promoted Draft → Canonical, **all** of the following 
 3. Every universal claim in this document has a completed member audit or is downgraded.
 4. All derived counts are recalculated from actual rows.
 5. **An independent adversarial review by a reviewer other than this document's author** is completed
-   and its findings resolved. **NOT MET — a genuinely independent review was performed on 2026-07-27
+   and its findings resolved. **MET — a genuinely independent review was performed on 2026-07-27
    against commit `13cac69` and returned `FAIL — PROMOTION BLOCKED` (stale live-state wording in §39
-   and §40). Those blocking findings are remediated, but a failed review does not close this gate: a
-   clean independent follow-up review of the remediated tip is the sole remaining promotion
-   prerequisite.** That review must specifically test: authority · status · source routing ·
+   and §40); those blocking findings were remediated (`c103ea5`, `db65db0`); and an independent
+   follow-up review of the remediated tip (`db65db0`) returned
+   `PASS WITH NON-BLOCKING FINDINGS` — 0 BLOCK, 0 MAJOR, 2 NOTE — with recommendation `PROMOTE`.
+   Full record:
+   [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md).**
+   The review tested: authority · status · source routing ·
    universal claims · collection/member boundaries · counts · gates · supersession · current reality ·
    implementation authority · weakest-member exceptions · silent no-op edits · already-satisfied build
    gates · current-reality-versus-intended-semantics confusion · accidental implementation authority.
-6. No statement in this document has become an implementation authorization.
+6. No statement in this document has become an implementation authorization. **MET — and permanent:**
+   this holds after promotion exactly as before it.
 
 **Standing requirement.** Every authority-bearing Mastery & Evidence promotion — this one and every
 future one — requires an independent adversarial review by a reviewer other than the primary author.
@@ -1166,6 +1206,7 @@ This is recorded here as a permanent property of the domain, not a one-off condi
 
 | Date | Version | Change | Author |
 |---|---|---|---|
+| 2026-07-27 | **1.0 (Canonical promotion)** | **Promoted Draft → Canonical, founder-authorized.** The independent follow-up review of tip `db65db0` returned **`PASS WITH NON-BLOCKING FINDINGS`** (**0 BLOCK, 0 MAJOR**, 2 NOTE; recommendation **`PROMOTE`**), closing the §41 item-5 gate; the founder then authorized promotion. New supporting record registered: [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md). Frontmatter `status` → `Canonical`, `signed_off: 2026-07-27`; title, header banner, §2.2, §39 and §41 converged to the promoted state; the two non-blocking review NOTEs are **preserved, not remediated**. **No founder decision, semantic rule, FQ text, invariant, count basis, source-amendment state or runtime behaviour changed. Supporting records remain non-Canonical. Promotion confers no implementation authority; no code, schema, tag, threshold, interval, test or runtime file changed; implementation remains closed.** | Cloud session (founder-authorized promotion) |
 | 2026-07-27 | 1.0 Draft (independent-review remediation) | **A genuinely independent adversarial review by a non-author was completed against commit `13cac69` and returned `FAIL — PROMOTION BLOCKED`.** Blocking findings were stale live-state wording in this document: **§39** claimed *"three promotion prerequisites remain unmet"* and **§40** claimed the ADR-0021 amendment *"has not"* been made — both contradicted the source reconciliation applied on 2026-07-26 (`e577954`). Both sites corrected to the converged state; §40's precision non-claim converged with the already-ratified **FQ-1 general clarification** (no technical tag independently determines polarity; all three tags context-dependent); §41 item 5 and the header updated to record the performed-and-failed review. Non-blocking findings remediated in the same commit: **F3** — the retired *"mastery çarpanı"* gloss in `Review and Recycling System.md`'s executive summary replaced with the semantic-strength wording; **F5** — *"45 test files"* corrected to **42 test files + 3 harness/support entries** in the Current Reality Map and the Gap Map. **F4 deferred** (historical-checkpoint consistency, non-blocking); **F6/F7** are notes requiring no change. **No founder decision, semantic rule, source-amendment state, count basis or runtime behaviour changed. The independent-review gate remains OPEN — this remediation does not satisfy it; a clean independent follow-up review of the new tip is the sole remaining promotion prerequisite. Bible remains Draft; no implementation authorized; no promotion occurred.** | Cloud session (review remediation) |
 | 2026-07-26 | 1.0 Draft (polarity-inventory count correction) | **Count-copying defect corrected. No founder decision, semantic rule, source document or runtime behaviour changed.** §15's stale copied numeral (*"Seven further …"*) replaced with a pointer to the **single owning inventory** at Gap Map **§20.1**, which enumerates the polarity family **path by path** and states its derived totals there. Per the **single-inventory rule**, those totals are deliberately **not** repeated in this row. The stale numeral was **copied between package files, never re-derived from the member list**; the same defect was corrected at Decision Matrix **ME-012** and at two sites in the Gap Map (§8.1, §18) — **four sites across three files**. The Gap Map's §8.1 weakest-member paragraph was also converged with the already-ratified **FQ-1 general clarification** (`punctuation_only`, `accent_only`, `spelling_near_miss` all **context-dependent**; **0 of 3** individually determines polarity), and Gap Map sections were reordered to **§18 → §19 → §20**. **ADR-0021 remains scope-amended, not repealed. No code, schema, event, tag, threshold, interval, validator, test or runtime changed. No implementation authorized. Bible remains Draft; the independent adversarial review by a non-author remains the sole promotion prerequisite and was NOT satisfied by the author self-audit that found this defect.** | Cloud session (count correction) |
 | 2026-07-26 | 1.0 Draft (Round 2 — all eight answered) | **FQ-2** applied — §11 and §13: differential strength attached **at admission**; production > recognition; recognition-only may never reach the longest interval or strongest claim; the claim that a weighting mechanism exists in the reducer is **retired**; all numeric weights remain **candidate values**. **FQ-3** applied — §12: assistance changes what a success *proves*, not whether the action exists; support events are not evidence; unknown assistance does **not** invalidate history but cannot establish independent production; prompt-fade is **not** a substitute for attempt-level attribution; **I-19 amended** by the founder rule. **FQ-4** applied — §14: `currently weak` (recoverable, after repair **plus** spaced confirmation) split from `ever weak` (persistent caution, never permanent Challenge); the reducer's accidental permanence confirmed as Axis-B, not semantics. **FQ-5** applied — §18: counters are the source of truth; "9-state" `SUPERSEDED`; purpose-named derived projections permitted under five constraints; **the eight lifecycle statuses explicitly NOT adopted** as universal. **FQ-7** applied — §34: **eight** semantic promises founder-locked, **twelve** classes of numbers tunable, **zero exact values ratified**. **FQ-1 clarification** applied — §15: tags never carry polarity; generalized to `punctuation_only` and `accent_only`; the Round-1 `accent_only` item **closed without a ninth question**. Invariants **I-26…I-37** added; **I-19 amended**. §38, §39, §40, §41 updated; **promotion gate still NOT met** (independent review pending; ADR/canon amendments pending). **No ADR, canon source, code, schema, tag, test, validator, threshold or runtime file changed; no implementation opened; document remains Draft.** | Cloud session (Round 2 ratification) |

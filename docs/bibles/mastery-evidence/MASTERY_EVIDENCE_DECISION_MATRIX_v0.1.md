@@ -1,13 +1,14 @@
 ---
 title: Mastery & Evidence Decision Matrix v0.1
 version: 0.1
-status: Draft — supporting record for the Mastery & Evidence Bible v1.0 Draft
+status: Supporting record for the Canonical Mastery & Evidence Bible v1.0 — not independent canon
 authority: none — a register, not a decision
 owner: Mastery & Evidence
 created: 2026-07-26
+last_updated: 2026-07-27
 ---
 
-# Mastery & Evidence Decision Matrix v0.1 — DRAFT
+# Mastery & Evidence Decision Matrix v0.1 — supporting record
 
 Every semantic question this domain must answer, registered once. **`ME-001` … `ME-060`, contiguous,
 no gaps, no duplicate semantic questions.**
@@ -22,12 +23,15 @@ no gaps, no duplicate semantic questions.**
 > semantic only: no code, tag, threshold, interval, ADR, canon source, validator or legacy system
 > changed, and no implementation was authorized. Founder-locked exact numeric values: zero.**
 
-> **Promotion state.** The Bible this register supports **remains `Draft`**. A genuinely **independent
-> adversarial review by a non-author was performed on 2026-07-27 against commit `13cac69`** and returned
-> **`FAIL — PROMOTION BLOCKED`**; its blocking findings were remediated in `c103ea5`. **A clean
-> independent follow-up review of the remediated tip is the sole remaining promotion prerequisite** —
-> the independent-review gate remains open, and an author self-audit does not satisfy it. **No promotion
-> has occurred and no implementation was authorized.**
+> **Promotion state.** The Bible this register supports is **`Canonical` — promoted Draft → Canonical
+> on 2026-07-27, founder-authorized.** A genuinely **independent adversarial review by a non-author
+> was performed on 2026-07-27 against commit `13cac69`** and returned **`FAIL — PROMOTION BLOCKED`**;
+> its blocking findings were remediated in `c103ea5`, and the **independent follow-up review of the
+> remediated tip passed** (`PASS WITH NON-BLOCKING FINDINGS` — see
+> [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)),
+> closing the independent-review gate. **This register remains a supporting record at v0.1 — not
+> Canonical. Promotion changed no Matrix row, count, distribution, implementation or enforcement
+> field, and no implementation was authorized.**
 
 > **This register decides nothing on its own.** A row marked `PROPOSED` is this Draft's proposal, not a
 > rule. A row marked `CURRENT-REALITY` describes code and is **not** a decision. A row marked

@@ -1,17 +1,20 @@
 ---
 title: Mastery & Evidence Current Reality and Enforcement Map v0.1
 version: 0.1
-status: Draft — supporting record for the Mastery & Evidence Bible v1.0 Draft
+status: Supporting record for the Canonical Mastery & Evidence Bible v1.0 — not independent canon
 authority: none — Axis B description only. Nothing here is a decision or an intent.
 owner: Mastery & Evidence
 created: 2026-07-26
+last_updated: 2026-07-27
 axis: B (current implementation reality)
 ---
 
-# Mastery & Evidence — Current Reality and Enforcement Map v0.1 — DRAFT
+# Mastery & Evidence — Current Reality and Enforcement Map v0.1 — supporting record
 
 **This file is Axis B only.** It records what the repository contains **today**. Nothing here is a
-semantic ruling, and promoting the Bible does **not** canonize anything in this file.
+semantic ruling, and the Bible's promotion to Canonical (2026-07-27) did **not** canonize anything in
+this file: every fact, constant, and `⚠ DIVERGENCE` below is unchanged by promotion, and the runtime
+remains exactly as non-conforming as recorded.
 
 > **Rounds 1–2 founder decisions (2026-07-26) changed no fact in this file.** All eight questions are
 > answered; **every runtime description below is unchanged**. Only `⚠ DIVERGENCE` annotations were
