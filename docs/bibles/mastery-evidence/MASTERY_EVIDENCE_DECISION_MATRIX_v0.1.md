@@ -14,12 +14,12 @@ Every semantic question this domain must answer, registered once. **`ME-001` …
 no gaps, no duplicate semantic questions.**
 
 > **All eight founder questions answered (Rounds 1–2, 2026-07-26).** **20 rows** now carry founder
-> authority: **18** derive from the FQ-1…FQ-8 founder decisions — Round 1: ME-004, ME-007, ME-011,
-> ME-012, ME-027, ME-032, ME-047, ME-048; Round 2: ME-017, ME-020, ME-022, ME-026, ME-030, ME-033,
-> ME-034, ME-046 (plus ME-006 and ME-054 from earlier founder decisions) — and **ME-003 / ME-049 were
-> additionally adopted through the founder-authorized Canonical promotion of 2026-07-27**. The eight
-> founder questions remain **eight**; the promotion created no ninth or tenth. **Zero rows require a
-> founder decision.**
+> authority: **18** were already `INH-FOUNDER` after Rounds 1–2 — **16** from the FQ-1…FQ-8 founder
+> decisions (Round 1: ME-004, ME-007, ME-011, ME-012, ME-027, ME-032, ME-047, ME-048; Round 2:
+> ME-017, ME-020, ME-022, ME-026, ME-030, ME-033, ME-034, ME-046) plus ME-006 and ME-054 from earlier
+> founder decisions — and **ME-003 / ME-049 were additionally adopted through the founder-authorized
+> Canonical promotion of 2026-07-27**. The eight founder questions remain **eight**; the promotion
+> created no ninth or tenth. **Zero rows require a founder decision.**
 >
 > **That is not the same as "resolved".** 5 rows remain `OPEN` (cross-layer dependencies and one
 > unruled Axis-B question), 16 remain `DESCRIPTIVE`, **0 remain `PROPOSED`** (ME-003 and ME-049 were
@@ -205,7 +205,7 @@ it is counted **once**, under the state in Table A's column.
 
 | State | Count | Δ vs Round 2 | IDs |
 |---|---|---|---|
-| **`INH-FOUNDER`** | **20** | **+2 (promotion adoption)** | **ME-003**, 004, 006, 007, 011, 012, 017, 020, 022, 026, 027, 030, 032, 033, 034, 046, 047, 048, **049**, 054 — 18 derive from the FQ-1…FQ-8 founder decisions; ME-003 and ME-049 were additionally adopted through the 2026-07-27 founder-authorized promotion |
+| **`INH-FOUNDER`** | **20** | **+2 (promotion adoption)** | **ME-003**, 004, 006, 007, 011, 012, 017, 020, 022, 026, 027, 030, 032, 033, 034, 046, 047, 048, **049**, 054 — 16 from the FQ-1…FQ-8 founder decisions, ME-006 and ME-054 from earlier founder decisions, and ME-003 / ME-049 adopted through the 2026-07-27 founder-authorized promotion |
 | `CURRENT-REALITY` | 17 | — | ME-013, 014, 016, 021, 035, 036, 037, 039, 040, 041, 042, 043, 044, 045, 057, 059, 060 |
 | `INH-CANONICAL` | 10 | — | ME-008, 009, 018, 024, 025, 028, 029, 031, 038, 051 |
 | `INH-ADR` | 6 | — | ME-001, 002, 010, 015, 019, 058 |
@@ -213,6 +213,7 @@ it is counted **once**, under the state in Table A's column.
 | `NON-SIGNAL` | 3 | — | ME-005, ME-023, ME-050 |
 | `PROPOSED` | **0** | −2 | — (ME-003 and ME-049 adopted by the 2026-07-27 promotion) |
 | `OPEN` | **0** | — | — |
+| `DEFERRED` | **0** | — | — |
 | `SUPERSEDED` | **0** | — | — (ME-033 became `INH-FOUNDER`; the *phrase* "9-state" is still `SUPERSEDED` inside its rule) |
 | **Total** | **60** | — | — |
 
