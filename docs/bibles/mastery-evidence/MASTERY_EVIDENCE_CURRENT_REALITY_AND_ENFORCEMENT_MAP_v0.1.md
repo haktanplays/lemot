@@ -313,7 +313,8 @@ re-reads all events and re-runs `scoreEvents(all)` — unbounded growth, O(n²)-
 
 ## 22. Tests
 
-45 test files exist; **10 are in-domain**: `mastery.test.ts` · `nearMissMasteryTiming.test.ts` ·
+The tests directory holds **45 entries: 42 test files + 3 harness/support files** (`harness.ts`,
+`helpers.ts`, `run.ts`); **10 test files are in-domain**: `mastery.test.ts` · `nearMissMasteryTiming.test.ts` ·
 `gradeAnswerCheck.test.ts` · `lessonProgress.test.ts` · `lexiqueMemory.test.ts` ·
 `practiceSelector.test.ts` · `carryoverSelector.test.ts` · `errorEngine.test.ts` ·
 `contextChainMasteryWeight.test.ts` · `shippedErrorTags.test.ts` (+ `compaction.test.ts` adjacent).

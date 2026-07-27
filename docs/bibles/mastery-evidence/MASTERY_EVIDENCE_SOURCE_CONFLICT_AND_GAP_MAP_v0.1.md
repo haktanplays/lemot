@@ -24,8 +24,8 @@ Where every claim in the Bible Draft came from, where sources disagree, and wher
 > | Downstream source patch | **APPLIED 2026-07-26 — 18 source documents** (see §20) |
 > | Engineering decision | **UNAUTHORED** — schemas, fields, algorithms, clearing conditions |
 > | Curriculum decision | **UNAUTHORED** — band strictness, readiness, evidence distribution |
-> | Independent adversarial review | **PENDING** — not performed |
-> | Promotion | **BLOCKED — by the independent review alone** |
+> | Independent adversarial review | **PERFORMED 2026-07-27 against `13cac69` — verdict `FAIL — PROMOTION BLOCKED`**; blocking findings remediated; **a clean independent follow-up review is pending** |
+> | Promotion | **BLOCKED — the independent-review gate remains unmet (failed review + follow-up pending)** |
 >
 > **A complete semantic decision surface is not a resolved system.** Specifically, as of this round:
 >
@@ -77,7 +77,7 @@ All 25 were opened and their own metadata read. **24 are `status: active` / `can
 ADR-0025 is `status: deferred` / `canon_status: proposed`.** In-domain: **0009, 0010, 0013, 0016,
 0020, 0021, 0022, 0023**. Adjacent: 0001, 0002, 0007, 0012, 0017.
 
-### Runtime (Axis B) — 31 engine modules + 45 test files
+### Runtime (Axis B) — 31 engine modules + 42 test files (45 test-directory entries incl. 3 harness/support files)
 `mastery.ts` · `events.ts` · `grade.ts` · `error-engine.ts` · `mon-lexique.ts` · `lexique-memory.ts` ·
 `practice-pool.ts` · `practice-selector.ts` · `carryover-selector.ts` · `lesson-progress.ts` ·
 `session-controller.ts` · `repository/local.ts` · `compaction.ts` · `telemetry.ts` · `privacy-data.ts` ·
@@ -157,7 +157,7 @@ assumes the ADR directory is uniformly canonical.
 / `carryover-selector.ts` (selection only) · `lesson-progress.ts` (attempt coverage) · `telemetry.ts`
 (non-evidence) · `config/productStage.ts` (**the gate that makes all of the above sandbox-only**) ·
 legacy `useErrors.ts` / `useSRS.ts` / `constants/sections.ts` (**the system that actually ships**) ·
-45 test files, 10 of them in-domain.
+42 test files (45 test-directory entries: 42 tests + `harness.ts` / `helpers.ts` / `run.ts` support), 10 of them in-domain.
 
 ---
 
@@ -516,14 +516,18 @@ section is retained as the record of *what was required and how each item was di
 3. ~~The `accent_only` exception~~ — **CLEARED** by the FQ-1 general clarification.
 4. ~~Source amendments NOT applied~~ — **CLEARED 2026-07-26.** Eighteen source documents reconciled
    atomically (§20); both ADRs **scope-amended, not repealed**; all historical wording preserved.
-5. **No independent adversarial review performed** (required, §41 of the Bible). **STILL BLOCKING — and
-   now the only blocker.**
+5. **Independent adversarial review** (required, §41 of the Bible): **performed 2026-07-27 against
+   `13cac69`, verdict `FAIL — PROMOTION BLOCKED`** (stale live-state wording in Bible §39/§40).
+   Blocking findings remediated; **a failed review does not close the gate** — a clean independent
+   follow-up review of the remediated tip is required. **STILL BLOCKING — and the only blocker.**
 6. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
    destination yet. This blocks *completeness*, not promotion, and is recorded as such.
 
 > **Every blocker except one is cleared. The Bible is still not promotable.** Reconciling documentation
 > is **not** implementation and **not** review: no code, schema, tag, threshold, interval, validator or
-> runtime changed, and the independent adversarial review by a non-author has not happened.
+> runtime changed. The independent adversarial review by a non-author **was performed on 2026-07-27 and
+> failed with blocking findings**; remediation of those findings does not satisfy the gate, which stays
+> open until a clean independent follow-up review of the remediated tip.
 
 ---
 

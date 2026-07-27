@@ -42,7 +42,7 @@ tags: [learning, review, srs, recycling]
 
 ## Executive Summary
 
-Cairn'in retention katmanı üç parçadan oluşur: **Daily Review** (küçük günlük retrieval teklifi), **Practice Hub** (bugünün seti — 5–8 micro-action), ve **SRS/zaman katmanı** (chip'in geri dönme takvimi). Ortak ilke: **asla baskı üretmez** — "come back tomorrow", streak dili yasak; "a calm offer of retrieval" (`learning-engine-v1.md:216`). Practice Hub seçici sabit bir önceliğe uyar: SRS due → en zayıf weakPointTag → yaklaşan integration ihtiyacı → çeşitlilik. Kritik ayrım: **EVIDENCE WEIGHT** (mastery çarpanı) ile **SELECTION WEIGHT** (bugün ne teklif edilecek) **asla karışmaz.** Runtime'da: engine seçiciler fixture/spec-only; legacy Daily Review dev-apk'te kapalı; canonical SRS ritüeli PLANNED.
+Cairn'in retention katmanı üç parçadan oluşur: **Daily Review** (küçük günlük retrieval teklifi), **Practice Hub** (bugünün seti — 5–8 micro-action), ve **SRS/zaman katmanı** (chip'in geri dönme takvimi). Ortak ilke: **asla baskı üretmez** — "come back tomorrow", streak dili yasak; "a calm offer of retrieval" (`learning-engine-v1.md:216`). Practice Hub seçici sabit bir önceliğe uyar: SRS due → en zayıf weakPointTag → yaklaşan integration ihtiyacı → çeşitlilik. Kritik ayrım: **EVIDENCE STRENGTH** (kanıtın semantik gücü — admission'da iliştirilen semantik bir özellik; **mevcut mastery reducer'da uygulanmış değildir**) ile **SELECTION WEIGHT** (bugün ne teklif edilecek) **asla karışmaz** — iki kavram ayrı kalır. Runtime'da: engine seçiciler fixture/spec-only; legacy Daily Review dev-apk'te kapalı; canonical SRS ritüeli PLANNED.
 
 ## Why It Exists
 

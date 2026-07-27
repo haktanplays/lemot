@@ -1,7 +1,7 @@
 ---
 title: Cairn Mastery & Evidence Bible
 version: 1.0
-status: Draft — all eight founder questions answered and all source amendments applied; awaiting independent adversarial review
+status: Draft — all eight founder questions answered and all source amendments applied; independent adversarial review (2026-07-27) returned FAIL — PROMOTION BLOCKED; blocking findings remediated; awaiting a clean independent follow-up review
 authority: Proposed semantic owner for evidence and mastery. This document has NO independent authority. Every normative line is either inherited from a named upstream authority or marked `PROPOSED FOR FOUNDER RATIFICATION`.
 owner: Mastery & Evidence
 created: 2026-07-26
@@ -36,8 +36,10 @@ partially_supersedes: []
 > All are marked `INHERITED — FOUNDER DECISION` below.
 >
 > **This document is still Draft.** Answering every question did **not** promote it, and neither did
-> reconciling the sources. **Source amendments: APPLIED (2026-07-26, 18 documents).** **One promotion
-> prerequisite remains unmet: the independent adversarial review has not been performed.** No statement
+> reconciling the sources. **Source amendments: APPLIED (2026-07-26, 18 documents).** **An independent
+> adversarial review by a non-author was performed on 2026-07-27 against commit `13cac69` and returned
+> `FAIL — PROMOTION BLOCKED`; its blocking findings are remediated, and a clean independent follow-up
+> review of the remediated tip is the sole remaining promotion prerequisite.** No statement
 > here may become an implementation authorization. **Zero exact numeric values were founder-locked.**
 > No code, schema, tag, test, validator, threshold, interval or runtime file was changed, and no
 > implementation was opened.
@@ -1086,9 +1088,11 @@ principle instead of adding a ninth question.
 
 **No founder question remains unanswered. All eight are answered.**
 
-> **That does not promote this document.** Three promotion prerequisites remain unmet (§41): the
-> independent adversarial review, the ADR-0021 and source amendments, and the standing prohibition on
-> any statement here becoming an implementation authorization.
+> **That does not promote this document.** Founder decisions and source reconciliation are complete.
+> The permanent prohibition against accidental implementation authority still applies, but it is a
+> standing guardrail (§41 item 6), not a separate unmet prerequisite. The independent adversarial
+> review was performed (2026-07-27) and returned blocking findings; the independent-review gate
+> (§41 item 5) therefore remains unmet pending remediation and a clean independent follow-up review.
 
 Additionally `OPEN` without a founder question (routed elsewhere or lower priority): confidence
 representation (§13); conflicting-evidence ordering (§21); cross-session/lesson/family aggregation
@@ -1100,11 +1104,16 @@ representation (§13); conflicting-evidence ordering (§21); cross-session/lesso
 - It **does not claim** the current implementation is correct, complete, or intended.
 - It **does not claim** that a rule with a test is therefore shipped — most are sandbox-only (§37).
 - It **does not claim** the "9-state" model exists (§18).
-- It **does not claim** that precision is universally harmless (§15 — the claim fails on
-  `spelling_near_miss`, and `accent_only` carries a stated exception).
+- It **does not claim** that precision is universally harmless (§15 — no technical tag independently
+  determines polarity: `punctuation_only`, `accent_only` and `spelling_near_miss` are all
+  context-dependent, and an ambiguous event establishes neither weakness nor full precision credit).
 - It **does not claim** that the Round 1 ratification changed any runtime behaviour, ADR, tag,
   threshold or legacy system. It changed what Cairn *means*, not what Cairn *does*.
-- It **does not claim** the ADR-0021 amendment required by FQ-1 has been made. It has not.
+- It **does not claim** that founder ratification itself amended ADR-0021. A later, separately
+  authorized documentation reconciliation **scope-amended ADR-0021 on 2026-07-26** (commit `e577954`)
+  without repealing it: the ADR remains `status: active` / `canon_status: canonical`, its original
+  Decision text stays visible historically, and the amendment changed documentation only — no code,
+  tag, threshold, interval or runtime changed.
 - It **does not claim** that governing a legacy system (§2.1) is permission to modify it.
 - It **does not claim** any exact number is Canonical. **Founder-locked exact values: zero** (§34).
 - It **does not claim** a weighting mechanism exists in the mastery reducer — that claim is **retired**
@@ -1134,9 +1143,11 @@ Before this Bible may be promoted Draft → Canonical, **all** of the following 
 3. Every universal claim in this document has a completed member audit or is downgraded.
 4. All derived counts are recalculated from actual rows.
 5. **An independent adversarial review by a reviewer other than this document's author** is completed
-   and its findings resolved. **NOT MET — and as of 2026-07-26 this is the SOLE remaining promotion
-   prerequisite:** all eight founder questions are answered and all source amendments are applied.
-   That review must specifically test: authority · status · source routing ·
+   and its findings resolved. **NOT MET — a genuinely independent review was performed on 2026-07-27
+   against commit `13cac69` and returned `FAIL — PROMOTION BLOCKED` (stale live-state wording in §39
+   and §40). Those blocking findings are remediated, but a failed review does not close this gate: a
+   clean independent follow-up review of the remediated tip is the sole remaining promotion
+   prerequisite.** That review must specifically test: authority · status · source routing ·
    universal claims · collection/member boundaries · counts · gates · supersession · current reality ·
    implementation authority · weakest-member exceptions · silent no-op edits · already-satisfied build
    gates · current-reality-versus-intended-semantics confusion · accidental implementation authority.
@@ -1155,6 +1166,7 @@ This is recorded here as a permanent property of the domain, not a one-off condi
 
 | Date | Version | Change | Author |
 |---|---|---|---|
+| 2026-07-27 | 1.0 Draft (independent-review remediation) | **A genuinely independent adversarial review by a non-author was completed against commit `13cac69` and returned `FAIL — PROMOTION BLOCKED`.** Blocking findings were stale live-state wording in this document: **§39** claimed *"three promotion prerequisites remain unmet"* and **§40** claimed the ADR-0021 amendment *"has not"* been made — both contradicted the source reconciliation applied on 2026-07-26 (`e577954`). Both sites corrected to the converged state; §40's precision non-claim converged with the already-ratified **FQ-1 general clarification** (no technical tag independently determines polarity; all three tags context-dependent); §41 item 5 and the header updated to record the performed-and-failed review. Non-blocking findings remediated in the same commit: **F3** — the retired *"mastery çarpanı"* gloss in `Review and Recycling System.md`'s executive summary replaced with the semantic-strength wording; **F5** — *"45 test files"* corrected to **42 test files + 3 harness/support entries** in the Current Reality Map and the Gap Map. **F4 deferred** (historical-checkpoint consistency, non-blocking); **F6/F7** are notes requiring no change. **No founder decision, semantic rule, source-amendment state, count basis or runtime behaviour changed. The independent-review gate remains OPEN — this remediation does not satisfy it; a clean independent follow-up review of the new tip is the sole remaining promotion prerequisite. Bible remains Draft; no implementation authorized; no promotion occurred.** | Cloud session (review remediation) |
 | 2026-07-26 | 1.0 Draft (polarity-inventory count correction) | **Count-copying defect corrected. No founder decision, semantic rule, source document or runtime behaviour changed.** §15's stale copied numeral (*"Seven further …"*) replaced with a pointer to the **single owning inventory** at Gap Map **§20.1**, which enumerates the polarity family **path by path** and states its derived totals there. Per the **single-inventory rule**, those totals are deliberately **not** repeated in this row. The stale numeral was **copied between package files, never re-derived from the member list**; the same defect was corrected at Decision Matrix **ME-012** and at two sites in the Gap Map (§8.1, §18) — **four sites across three files**. The Gap Map's §8.1 weakest-member paragraph was also converged with the already-ratified **FQ-1 general clarification** (`punctuation_only`, `accent_only`, `spelling_near_miss` all **context-dependent**; **0 of 3** individually determines polarity), and Gap Map sections were reordered to **§18 → §19 → §20**. **ADR-0021 remains scope-amended, not repealed. No code, schema, event, tag, threshold, interval, validator, test or runtime changed. No implementation authorized. Bible remains Draft; the independent adversarial review by a non-author remains the sole promotion prerequisite and was NOT satisfied by the author self-audit that found this defect.** | Cloud session (count correction) |
 | 2026-07-26 | 1.0 Draft (Round 2 — all eight answered) | **FQ-2** applied — §11 and §13: differential strength attached **at admission**; production > recognition; recognition-only may never reach the longest interval or strongest claim; the claim that a weighting mechanism exists in the reducer is **retired**; all numeric weights remain **candidate values**. **FQ-3** applied — §12: assistance changes what a success *proves*, not whether the action exists; support events are not evidence; unknown assistance does **not** invalidate history but cannot establish independent production; prompt-fade is **not** a substitute for attempt-level attribution; **I-19 amended** by the founder rule. **FQ-4** applied — §14: `currently weak` (recoverable, after repair **plus** spaced confirmation) split from `ever weak` (persistent caution, never permanent Challenge); the reducer's accidental permanence confirmed as Axis-B, not semantics. **FQ-5** applied — §18: counters are the source of truth; "9-state" `SUPERSEDED`; purpose-named derived projections permitted under five constraints; **the eight lifecycle statuses explicitly NOT adopted** as universal. **FQ-7** applied — §34: **eight** semantic promises founder-locked, **twelve** classes of numbers tunable, **zero exact values ratified**. **FQ-1 clarification** applied — §15: tags never carry polarity; generalized to `punctuation_only` and `accent_only`; the Round-1 `accent_only` item **closed without a ninth question**. Invariants **I-26…I-37** added; **I-19 amended**. §38, §39, §40, §41 updated; **promotion gate still NOT met** (independent review pending; ADR/canon amendments pending). **No ADR, canon source, code, schema, tag, test, validator, threshold or runtime file changed; no implementation opened; document remains Draft.** | Cloud session (Round 2 ratification) |
 | 2026-07-26 | 1.0 Draft (Round 1 founder decisions) | **FQ-8** applied — §2.1 added: the Bible governs all evidence-bearing systems (engine · legacy `lm7` weak spots · legacy `lm7_srs` · legacy per-section thresholds · future replacements); telemetry excluded; legacy recorded as Axis-B, legacy-active, non-conforming, frozen for replacement, **not authorized for modification**. **FQ-6** applied — §23 rewritten: refuse at admission where knowable, append-only compensating record afterwards, never delete or mutate, projections neutralize effect, audit intact; all **seven** non-learner error-source classes covered (founder wording adds *system*); schema/names/cache/reconciliation/storage remain Engineering's. **FQ-1** applied — §10 and §15 rewritten: polarity is meaning-based; `spelling_near_miss` is an ambiguous technical tag proving neither precision nor weakness; ambiguous events may not establish weakness; the five-bucket table demoted to a description of code; **`accent_only` recorded with a stated French counter-example exception** and a new `OPEN` item. Invariants **I-20…I-25** added as `INHERITED — FOUNDER DECISION`. §39 split into resolved/still-open. §41 gate updated and explicitly **not met**. **ADR-0021 not amended; no code, schema, tag, threshold, validator, runtime or legacy system changed; no implementation opened; document remains Draft.** | Cloud session (Round 1 ratification) |
