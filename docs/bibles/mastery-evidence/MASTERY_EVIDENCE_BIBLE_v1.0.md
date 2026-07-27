@@ -311,7 +311,7 @@ The following are `NON-SIGNAL` — they never, alone, establish mastery:
 | Piece display ≠ piece ownership | same |
 | AI praise ≠ validation | same |
 | Screen viewed / audio played / time-on-screen | Event signals, not evidence |
-| Social engagement signals — likes · reactions · replies · posting frequency · time in community · participation count · popularity · reputation · partner presence · receiving or giving a correction · social completion · community streaks · peer approval · moderator approval without an evidence contract | `INHERITED — FOUNDER DECISION` R8 / SOC-026 |
+| Social engagement signals — likes · reactions · replies · posting frequency · time in community · participation count · popularity · reputation · partner presence · receiving or giving a correction · social completion · community streaks · peer approval · teacher or moderator approval without an evidence contract | `INHERITED — FOUNDER DECISION` R8 / SOC-026 |
 
 **Member audit (§ universal-claim protocol).** The social non-signal list above is quoted in full from
 R8 — all fourteen enumerated members, not a sample. The four pedagogical non-signals are the complete
@@ -838,6 +838,18 @@ social action is evidence today.**
 semantics*; Content and Curriculum are required consulted owners; Engineering owns enforcement;
 founder ratification remains required. The contract **must not be designed inside the Social Charter**
 — and it is not designed here either. `DEPENDENCY — OWNER NOT YET AUTHORED` for the Curriculum input.
+
+**Peer error-source prerequisite (PRJ-009 dependency, `OPEN`).** R8's sixth condition requires that
+`content / validator / peer / AI / UI` errors be excluded from learner weakness. The error-source
+taxonomy of §7 enumerates **eight classes and does not contain a `peer` class** — the seven non-learner
+classes it does enumerate are the *non-social* set. Therefore any future positive social evidence
+contract **must supply a `peer` error-source classification, or an equivalent mechanism**, before
+social-context evidence may be activated: peer-caused error, peer disagreement, an incorrect peer
+correction, or invalid peer judgment **must never be attributed to learner weakness**. This is a
+**prerequisite for activation, not a present capability** — no `peer` class exists today. The gap is
+**non-operational** while the layer is dormant: no social surface exists, no supported path can
+currently produce a peer-caused error, and **no social action counts as evidence today**. Recording
+this dependency creates no positive social evidence rule and does not resolve PRJ-009.
 
 `PROPOSED FOR FOUNDER RATIFICATION` — adopted as Canonical semantic policy through the
 founder-authorized promotion of 2026-07-27 (ME-049): the same six admissibility conditions (§6) apply
