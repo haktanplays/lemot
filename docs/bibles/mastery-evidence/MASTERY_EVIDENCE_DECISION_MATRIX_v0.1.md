@@ -22,10 +22,12 @@ no gaps, no duplicate semantic questions.**
 > semantic only: no code, tag, threshold, interval, ADR, canon source, validator or legacy system
 > changed, and no implementation was authorized. Founder-locked exact numeric values: zero.**
 
-> **Promotion state.** The Bible this register supports **remains `Draft`**. The **independent
-> adversarial review by a non-author is the sole remaining promotion prerequisite** and has **not** been
-> performed — an author self-audit does not satisfy it. **No promotion has occurred and no implementation
-> was authorized.**
+> **Promotion state.** The Bible this register supports **remains `Draft`**. A genuinely **independent
+> adversarial review by a non-author was performed on 2026-07-27 against commit `13cac69`** and returned
+> **`FAIL — PROMOTION BLOCKED`**; its blocking findings were remediated in `c103ea5`. **A clean
+> independent follow-up review of the remediated tip is the sole remaining promotion prerequisite** —
+> the independent-review gate remains open, and an author self-audit does not satisfy it. **No promotion
+> has occurred and no implementation was authorized.**
 
 > **This register decides nothing on its own.** A row marked `PROPOSED` is this Draft's proposal, not a
 > rule. A row marked `CURRENT-REALITY` describes code and is **not** a decision. A row marked

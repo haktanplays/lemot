@@ -22,7 +22,9 @@ implementation_authority: none
 > **Source amendments: APPLIED 2026-07-26 — 18 source documents** (15 operator-vault + 3 ordinary
 > `docs/`), delivered as one atomic 22-file patch. **`docs/learning-engine-v1.md` was inspected in full
 > and left unchanged because it already conforms.** **One promotion prerequisite remains open: the
-> independent adversarial review, which has NOT been performed.**
+> independent-review gate. An independent adversarial review by a non-author was performed on 2026-07-27
+> against commit `13cac69` and returned `FAIL — PROMOTION BLOCKED`; its blocking findings were remediated
+> in `c103ea5`, and a clean independent follow-up review of the remediated tip is pending.**
 > **Founder-locked exact numeric values: zero.**
 
 ---
@@ -40,7 +42,7 @@ implementation_authority: none
 | Documents **not** amended | **`docs/learning-engine-v1.md`** (inspected in full; already conforms) · the Current Reality & Enforcement Map (Axis-B facts unchanged) · the Founder Review Surface (historical question-card provenance preserved) · every other ADR · every unrelated vault file |
 | Code, schema, tags, manifests, tests, validators, thresholds, runtime | **Unchanged** |
 | Implementation | **Not opened** |
-| Independent adversarial review | **Not performed** |
+| Independent adversarial review | **Performed 2026-07-27 against `13cac69` — verdict `FAIL — PROMOTION BLOCKED`; blocking findings remediated in `c103ea5`; clean follow-up review pending** |
 | Promotion | **Did not occur** |
 
 ---
@@ -376,9 +378,12 @@ the FQ-1 clarification.
 
 ## 10. Promotion state
 
-**NOT PROMOTED.** The Bible remains **`Draft — awaiting independent adversarial review`**. Founder
-ratification is complete and source reconciliation is applied; **the independent adversarial review by a
-non-author is the sole remaining prerequisite**, and implementation remains closed.
+**NOT PROMOTED.** The Bible remains **`Draft — awaiting a clean independent follow-up review`**. Founder
+ratification is complete and source reconciliation is applied. An **independent adversarial review by a
+non-author was performed on 2026-07-27 against commit `13cac69`** and returned **`FAIL — PROMOTION
+BLOCKED`** (stale live-state wording in Bible §39/§40); those blocking findings were **remediated in
+`c103ea5`**. A failed review does not close the gate: **a clean independent follow-up review of the
+remediated tip is the sole remaining prerequisite**, and implementation remains closed.
 
 | Promotion prerequisite | State |
 |---|---|
@@ -388,10 +393,11 @@ non-author is the sole remaining prerequisite**, and implementation remains clos
 | Counts recalculated from rows | ✔ — recalculated mechanically |
 | No statement became an implementation authorization | ✔ |
 | **Source amendments applied** — 18 documents (15 vault + 3 `docs/`), both ADRs scope-amended | **✔ — APPLIED 2026-07-26** |
-| **Independent adversarial review by a non-author** | **✘ — NOT PERFORMED** |
+| **Independent adversarial review by a non-author** | **✘ — performed 2026-07-27, verdict `FAIL — PROMOTION BLOCKED`; findings remediated (`c103ea5`); clean follow-up review PENDING** |
 
-**Six of seven met. The Bible is not promotable — the independent adversarial review is the only
-remaining blocker.**
+**Six of seven met. The Bible is not promotable — the independent-review gate is the only remaining
+blocker: the first review failed with blocking findings, and a clean independent follow-up review of
+the remediated tip has not yet occurred.**
 
 > **That last gate cannot be satisfied by answering questions or by amending documents.** It requires a
 > reviewer **other than this package's author**. It is not satisfied by this record, by the commit that

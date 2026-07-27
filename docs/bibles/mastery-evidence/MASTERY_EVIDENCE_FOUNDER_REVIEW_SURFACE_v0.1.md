@@ -23,8 +23,10 @@ two sources disagree or because nothing exists at all.
 > original recommendation and strongest alternative intact for provenance.
 >
 > **Zero unanswered founder slots remain. The Bible is still Draft.** The **source amendments were
-> applied on 2026-07-26** (commit `e577954`, 18 source documents); the **independent adversarial review
-> by a non-author has NOT been performed and is the sole remaining promotion prerequisite.**
+> applied on 2026-07-26** (commit `e577954`, 18 source documents). An **independent adversarial review
+> by a non-author was performed on 2026-07-27 against commit `13cac69`** and returned
+> **`FAIL — PROMOTION BLOCKED`**; its blocking findings were remediated in `c103ea5`, and **a clean
+> independent follow-up review of the remediated tip is the sole remaining promotion prerequisite.**
 > **No answer authorized any implementation, and no exact number was founder-locked.**
 
 **Deliberately not asked here:** facts the repository already proves (recorded in the Current Reality
