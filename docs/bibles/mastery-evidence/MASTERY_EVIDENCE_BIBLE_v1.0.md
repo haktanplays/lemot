@@ -89,7 +89,7 @@ partially_supersedes: []
 | `INHERITED — FOUNDER DECISION` | A founder ratified this. This Bible restates; it does not re-decide. |
 | `INHERITED — CANONICAL DOMAIN SOURCE` | A Canonical document in another domain binds this. |
 | `INHERITED — ACTIVE ADR` | An individually active/accepted ADR binds this, within its own declared domain. |
-| `PROPOSED FOR FOUNDER RATIFICATION` | This Bible's own proposal. **Not yet binding.** |
+| `PROPOSED FOR FOUNDER RATIFICATION` | Provenance: the statement originated as this Bible's own pre-promotion proposal. Statements carrying this tag that were present at the founder-authorized Canonical promotion of **2026-07-27** were **adopted as Canonical semantic policy by that promotion** (registered in the Decision Matrix as ME-003 and ME-049); for them the tag records origin and **no longer means "not binding."** Any statement newly written under this tag **after** 2026-07-27 remains **non-binding until explicitly ratified** — writing a proposal into a Canonical document does not adopt it. |
 | `CURRENT REALITY — AXIS B` | A fact about shipped or existing code/tests. Descriptive only. |
 | `TUNABLE` | A parameter whose *shape* is fixed but whose *value* may change without a founder decision. |
 | `OPEN` | No position taken. A decision is required. |
@@ -118,8 +118,11 @@ QA boundary · 33. Invariants · 34. Tunables · 35. Current runtime constants �
 
 ## 1. Purpose
 
-Cairn has, today, **three partially-overlapping systems that assign meaning to a learner action** and
-**no document that says which meaning is correct**. This Bible is proposed as that document.
+Cairn still has **multiple partially-overlapping runtime systems that assign meaning to a learner
+action** (§2.1, §37). Since the founder-authorized promotion of 2026-07-27, **this Bible (DOC-051) is
+the Canonical semantic owner that determines which meaning is intended.** Current runtime systems may
+remain non-conforming with that intended meaning — Canonical status records intent; it authorizes no
+implementation and changes no runtime.
 
 Its single job is to make the following sentence answerable, once, for the whole product:
 
@@ -185,7 +188,8 @@ remains outside — it never updates mastery).
 ## 3. Domain vocabulary
 
 These terms are **not** interchangeable. Most existing contradictions in the corpus come from using
-one where another was meant. `PROPOSED FOR FOUNDER RATIFICATION`
+one where another was meant. `PROPOSED FOR FOUNDER RATIFICATION` — adopted as Canonical semantic
+policy through the founder-authorized promotion of 2026-07-27 (ME-003).
 
 | Term | Definition | Not to be confused with |
 |---|---|---|
@@ -210,7 +214,9 @@ one where another was meant. `PROPOSED FOR FOUNDER RATIFICATION`
 
 ## 4. Evidence lifecycle
 
-`PROPOSED FOR FOUNDER RATIFICATION` — the ordered pipeline this Bible proposes as the canonical frame:
+`PROPOSED FOR FOUNDER RATIFICATION` — adopted as Canonical semantic policy through the
+founder-authorized promotion of 2026-07-27 (ME-003 family) — the ordered pipeline this Bible holds as
+the canonical frame:
 
 ```
 evidence opportunity
@@ -245,7 +251,8 @@ largest structural gap between this frame and the code. `CURRENT REALITY — AXI
 
 ## 6. Admissibility
 
-`PROPOSED FOR FOUNDER RATIFICATION`
+`PROPOSED FOR FOUNDER RATIFICATION` — adopted as Canonical semantic policy through the
+founder-authorized promotion of 2026-07-27 (ME-049).
 
 An event is **admissible** only if all of the following hold:
 
@@ -258,9 +265,10 @@ An event is **admissible** only if all of the following hold:
 6. No content / validator / UI-flow / tone / AI-generator / mastery-mapping error is implicated (§23).
 
 These six conditions are the generalization of the **seven conditions founder R8 imposed on a future
-social pedagogical action** (§24). This Bible proposes them as the *universal* admissibility standard,
+social pedagogical action** (§24). This Bible holds them as the *universal* admissibility standard,
 so that "equivalent standards outside Social" has a definition to point at.
-`INHERITED — FOUNDER DECISION` (R8 / SOC-026) for the social case; the generalization is `PROPOSED`.
+`INHERITED — FOUNDER DECISION` (R8 / SOC-026) for the social case; the generalization was **adopted as
+Canonical semantic policy through the founder-authorized promotion of 2026-07-27** (ME-049).
 
 > **Correctness is not admissibility.** A `correct` result on an inadmissible opportunity is not
 > positive evidence. The current runtime does not implement this distinction. `CURRENT REALITY — AXIS B`
@@ -829,8 +837,9 @@ semantics*; Content and Curriculum are required consulted owners; Engineering ow
 founder ratification remains required. The contract **must not be designed inside the Social Charter**
 — and it is not designed here either. `DEPENDENCY — OWNER NOT YET AUTHORED` for the Curriculum input.
 
-`PROPOSED FOR FOUNDER RATIFICATION`: the same six admissibility conditions (§6) apply identically to
-solo, AI-supported and any future social action. **AI praise is not validation**; an AI-supported
+`PROPOSED FOR FOUNDER RATIFICATION` — adopted as Canonical semantic policy through the
+founder-authorized promotion of 2026-07-27 (ME-049): the same six admissibility conditions (§6) apply
+identically to solo, AI-supported and any future social action. **AI praise is not validation**; an AI-supported
 success is admissible only if the assistance level is recorded (§12) — which today it is not.
 
 ## 25. Mon Lexique relationship
@@ -933,8 +942,10 @@ is. It does record (§38) what is currently tested and what is not.
 
 ## 33. Invariants
 
-Proposed hard invariants. Those marked *inherited* are restatements; those marked *proposed* are new
-and require ratification.
+Hard invariants. Those marked *inherited* are restatements. Those tagged
+`PROPOSED FOR FOUNDER RATIFICATION` originated as this Bible's own proposals and were **adopted as
+Canonical semantic policy through the founder-authorized promotion of 2026-07-27** (ME-003 / ME-049
+families); adoption made them binding semantics, not implementations.
 
 | # | Invariant | Provenance |
 |---|---|---|
@@ -954,8 +965,8 @@ and require ratification.
 | I-14 | Opening a learner-facing projection must not move mastery. | `INHERITED — CANONICAL DOMAIN SOURCE` |
 | I-15 | The learner never sees raw grading codes, counters, or internal ids. | `INHERITED — CANONICAL DOMAIN SOURCE` |
 | I-16 | No social action is evidence without a separately ratified evidence contract. | `INHERITED — FOUNDER DECISION` (R8) |
-| I-17 | Admissibility and attribution are gates that precede any mastery effect. | `PROPOSED FOR FOUNDER RATIFICATION` |
-| I-18 | Correctness alone is not admissibility. | `PROPOSED FOR FOUNDER RATIFICATION` |
+| I-17 | Admissibility and attribution are gates that precede any mastery effect. | `PROPOSED FOR FOUNDER RATIFICATION` — adopted by the 2026-07-27 promotion |
+| I-18 | Correctness alone is not admissibility. | `PROPOSED FOR FOUNDER RATIFICATION` — adopted by the 2026-07-27 promotion |
 | I-19 | ~~An event whose assistance level is unknown is not fully admissible evidence.~~ **AMENDED by FQ-3:** such an event **remains admissible and is not invalidated**; it may not establish *independent production*. | `INHERITED — FOUNDER DECISION` (FQ-3) — amends the Draft's own proposal |
 | I-20 | Evidence is never deleted and never silently mutated; invalidation is a compensating record. | `INHERITED — FOUNDER DECISION` (FQ-6) |
 | I-21 | Where a non-learner error is knowable before admission, the result is not admitted as evidence. | `INHERITED — FOUNDER DECISION` (FQ-6) |
@@ -1041,7 +1052,11 @@ legacy `MASTERY_THRESHOLDS` (0.6–0.7 per section) · legacy weak spot = 3+ err
 
 `CURRENT REALITY — AXIS B` — the single most important fact about this domain:
 
-> **The shipped surface emits no learning events. Therefore no evidence exists in production.**
+> **Shipping stages emit no new-engine `LearningEvent` evidence — the v1 lesson engine is reachable
+> only in sandbox. Shipped legacy systems still record learner-error / progress / mastery signals
+> through `lm7` and the legacy section/mastery paths; under FQ-8 they are evidence-bearing current
+> reality — governed, non-conforming, and frozen. No shipping build produces *conforming* evidence,
+> and no runtime change is authorized.**
 
 - `FEATURES.v1LessonEngine` is `true` **only** in `sandbox`; it is `false` in **both** `dev-apk` and
   `public-beta`. **Member audit: all three stages were read; there are exactly three, and only one
@@ -1135,7 +1150,8 @@ representation (§13); conflicting-evidence ordering (§21); cross-session/lesso
 
 ## 40. Non-claims
 
-- This Bible **does not claim** any of its proposed rules is in force.
+- This Bible **does not claim** any of its rules — inherited, or adopted at promotion — is
+  implemented or enforced anywhere.
 - It **does not claim** the current implementation is correct, complete, or intended.
 - It **does not claim** that a rule with a test is therefore shipped — most are sandbox-only (§37).
 - It **does not claim** the "9-state" model exists (§18).
@@ -1206,6 +1222,7 @@ This is recorded here as a permanent property of the domain, not a one-off condi
 
 | Date | Version | Change | Author |
 |---|---|---|---|
+| 2026-07-27 | 1.0 (post-promotion convergence — PR #202 review findings) | **Persistence/convergence correction for the already-authorized 2026-07-27 promotion. No new founder decision; no new founder question; no implementation authorized.** (1) Stale live claims converged with the promoted state: §1 Purpose no longer says "no document says which meaning is correct — this Bible is proposed as that document"; it records that this Bible (DOC-051) **is** the Canonical semantic owner while runtime systems may remain non-conforming. (2) The `PROPOSED FOR FOUNDER RATIFICATION` vocabulary entry made chronology-aware: statements present at the 2026-07-27 promotion (ME-003, ME-049 families — §3, §4, §6, §24, I-17, I-18, §33 preamble) were **adopted as Canonical semantic policy by that promotion** and are no longer "not yet binding"; future proposals remain non-binding until explicitly ratified. (3) §37's governing fact corrected from "no evidence exists in production" to the accurate two-system reality: shipping stages emit no new-engine `LearningEvent`s, while shipped legacy `lm7` / section-mastery paths remain evidence-bearing, governed, non-conforming and frozen. **ME-049's adoption does not create the positive Social evidence contract — PRJ-009 remains `OPEN`. FQ count remains eight. No code, schema, tag, threshold, interval, test or runtime file changed.** | Cloud session (PR #202 review-finding resolution) |
 | 2026-07-27 | **1.0 (Canonical promotion)** | **Promoted Draft → Canonical, founder-authorized.** The independent follow-up review of tip `db65db0` returned **`PASS WITH NON-BLOCKING FINDINGS`** (**0 BLOCK, 0 MAJOR**, 2 NOTE; recommendation **`PROMOTE`**), closing the §41 item-5 gate; the founder then authorized promotion. New supporting record registered: [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md). Frontmatter `status` → `Canonical`, `signed_off: 2026-07-27`; title, header banner, §2.2, §39 and §41 converged to the promoted state; the two non-blocking review NOTEs are **preserved, not remediated**. **No founder decision, semantic rule, FQ text, invariant, count basis, source-amendment state or runtime behaviour changed. Supporting records remain non-Canonical. Promotion confers no implementation authority; no code, schema, tag, threshold, interval, test or runtime file changed; implementation remains closed.** | Cloud session (founder-authorized promotion) |
 | 2026-07-27 | 1.0 Draft (independent-review remediation) | **A genuinely independent adversarial review by a non-author was completed against commit `13cac69` and returned `FAIL — PROMOTION BLOCKED`.** Blocking findings were stale live-state wording in this document: **§39** claimed *"three promotion prerequisites remain unmet"* and **§40** claimed the ADR-0021 amendment *"has not"* been made — both contradicted the source reconciliation applied on 2026-07-26 (`e577954`). Both sites corrected to the converged state; §40's precision non-claim converged with the already-ratified **FQ-1 general clarification** (no technical tag independently determines polarity; all three tags context-dependent); §41 item 5 and the header updated to record the performed-and-failed review. Non-blocking findings remediated in the same commit: **F3** — the retired *"mastery çarpanı"* gloss in `Review and Recycling System.md`'s executive summary replaced with the semantic-strength wording; **F5** — *"45 test files"* corrected to **42 test files + 3 harness/support entries** in the Current Reality Map and the Gap Map. **F4 deferred** (historical-checkpoint consistency, non-blocking); **F6/F7** are notes requiring no change. **No founder decision, semantic rule, source-amendment state, count basis or runtime behaviour changed. The independent-review gate remains OPEN — this remediation does not satisfy it; a clean independent follow-up review of the new tip is the sole remaining promotion prerequisite. Bible remains Draft; no implementation authorized; no promotion occurred.** | Cloud session (review remediation) |
 | 2026-07-26 | 1.0 Draft (polarity-inventory count correction) | **Count-copying defect corrected. No founder decision, semantic rule, source document or runtime behaviour changed.** §15's stale copied numeral (*"Seven further …"*) replaced with a pointer to the **single owning inventory** at Gap Map **§20.1**, which enumerates the polarity family **path by path** and states its derived totals there. Per the **single-inventory rule**, those totals are deliberately **not** repeated in this row. The stale numeral was **copied between package files, never re-derived from the member list**; the same defect was corrected at Decision Matrix **ME-012** and at two sites in the Gap Map (§8.1, §18) — **four sites across three files**. The Gap Map's §8.1 weakest-member paragraph was also converged with the already-ratified **FQ-1 general clarification** (`punctuation_only`, `accent_only`, `spelling_near_miss` all **context-dependent**; **0 of 3** individually determines polarity), and Gap Map sections were reordered to **§18 → §19 → §20**. **ADR-0021 remains scope-amended, not repealed. No code, schema, event, tag, threshold, interval, validator, test or runtime changed. No implementation authorized. Bible remains Draft; the independent adversarial review by a non-author remains the sole promotion prerequisite and was NOT satisfied by the author self-audit that found this defect.** | Cloud session (count correction) |

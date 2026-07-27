@@ -13,15 +13,19 @@ last_updated: 2026-07-27
 Every semantic question this domain must answer, registered once. **`ME-001` … `ME-060`, contiguous,
 no gaps, no duplicate semantic questions.**
 
-> **All eight founder questions answered (Rounds 1–2, 2026-07-26).** **18 rows** are now `INH-FOUNDER`.
-> Round 1: ME-004, ME-007, ME-011, ME-012, ME-027, ME-032, ME-047, ME-048. Round 2: ME-017, ME-020,
-> ME-022, ME-026, ME-030, ME-033, ME-034, ME-046 (plus ME-006 and ME-054 from earlier founder
-> decisions). **Zero rows require a founder decision.**
+> **All eight founder questions answered (Rounds 1–2, 2026-07-26).** **20 rows** now carry founder
+> authority: **18** derive from the FQ-1…FQ-8 founder decisions — Round 1: ME-004, ME-007, ME-011,
+> ME-012, ME-027, ME-032, ME-047, ME-048; Round 2: ME-017, ME-020, ME-022, ME-026, ME-030, ME-033,
+> ME-034, ME-046 (plus ME-006 and ME-054 from earlier founder decisions) — and **ME-003 / ME-049 were
+> additionally adopted through the founder-authorized Canonical promotion of 2026-07-27**. The eight
+> founder questions remain **eight**; the promotion created no ninth or tenth. **Zero rows require a
+> founder decision.**
 >
 > **That is not the same as "resolved".** 5 rows remain `OPEN` (cross-layer dependencies and one
-> unruled Axis-B question), 16 remain `DESCRIPTIVE`, 2 remain `PROPOSED`. **Every ratification is
-> semantic only: no code, tag, threshold, interval, ADR, canon source, validator or legacy system
-> changed, and no implementation was authorized. Founder-locked exact numeric values: zero.**
+> unruled Axis-B question), 16 remain `DESCRIPTIVE`, **0 remain `PROPOSED`** (ME-003 and ME-049 were
+> adopted by the 2026-07-27 promotion). **Every ratification is semantic only: no code, tag,
+> threshold, interval, ADR, canon source, validator or legacy system changed, and no implementation
+> was authorized. Founder-locked exact numeric values: zero.**
 
 > **Promotion state.** The Bible this register supports is **`Canonical` — promoted Draft → Canonical
 > on 2026-07-27, founder-authorized.** A genuinely **independent adversarial review by a non-author
@@ -30,13 +34,16 @@ no gaps, no duplicate semantic questions.**
 > remediated tip passed** (`PASS WITH NON-BLOCKING FINDINGS` — see
 > [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)),
 > closing the independent-review gate. **This register remains a supporting record at v0.1 — not
-> Canonical. Promotion changed no Matrix row, count, distribution, implementation or enforcement
-> field, and no implementation was authorized.**
+> Canonical. The promotion adopted the two surviving pre-promotion proposals (ME-003, ME-049) as
+> Canonical semantic policy — their rows now record that adoption — and changed no other Matrix row,
+> no implementation or enforcement field, and authorized no implementation.**
 
-> **This register decides nothing on its own.** A row marked `PROPOSED` is this Draft's proposal, not a
-> rule. A row marked `CURRENT-REALITY` describes code and is **not** a decision. A row marked
-> `INH-FOUNDER` restates a founder decision — and a ratified *semantic* rule is never a statement that
-> the runtime does it (see each row's "current implementation" column in Table B).
+> **This register decides nothing on its own.** A row marked `PROPOSED` would be a pre-adoption
+> proposal, not a rule — **no current row is `PROPOSED`**; the last two (ME-003, ME-049) were adopted
+> by the founder-authorized promotion of 2026-07-27. A row marked `CURRENT-REALITY` describes code and
+> is **not** a decision. A row marked `INH-FOUNDER` restates a founder decision — and a ratified
+> *semantic* rule is never a statement that the runtime does it (see each row's "current
+> implementation" column in Table B).
 
 **Presentation note.** The eighteen required fields are split across two tables that share the `ME-###`
 key, because an eighteen-column table is unreadable. **Table A** carries the ruling fields (question,
@@ -58,7 +65,7 @@ weakest-member audit result, notes). Every ID appears in both.
 |---|---|---|---|---|---|---|---|
 | ME-001 | What is the canonical source of truth for evidence? | An append-only event log; everything else is a projection. | `INH-ADR` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-002 | Is mastery stored state or derived? | Derived. A policy change re-derives, never migrates. | `INH-ADR` | `LOCKED` | Mastery & Evidence | No | — |
-| ME-003 | Are "opportunity", "action", "result", "event", "evidence" distinct? | Yes — five distinct concepts, never interchangeable. | `PROPOSED` | `PROPOSED` | Mastery & Evidence | No | Before promotion |
+| ME-003 | Are "opportunity", "action", "result", "event", "evidence" distinct? | Yes — five distinct concepts, never interchangeable. | `INH-FOUNDER` (promotion adoption, 2026-07-27) | `LOCKED` | Mastery & Evidence | No | Ratified with Canonical promotion, 2026-07-27 |
 | ME-004 | Does an event automatically constitute admissible evidence? | **No.** Admissibility is a separate gate: where a non-learner error is knowable before admission, the result is not admitted. | `INH-FOUNDER` (FQ-6, 2026-07-26) | `LOCKED` | Mastery & Evidence | Answered — FQ-6 | Answered 2026-07-26 |
 | ME-005 | Are completion / reveal / display / AI praise mastery? | No — all four are non-signals. | `NON-SIGNAL` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-006 | May a social action be evidence? | Engagement never; a pedagogical action only under a separately ratified contract. | `INH-FOUNDER` | `LOCKED` | Mastery & Evidence (Social supplies the negative bound) | No | — |
@@ -104,7 +111,7 @@ weakest-member audit result, notes). Every ID appears in both.
 | ME-046 | Is weakness permanently residual? | **Two facts, not one.** `currently weak` is **recoverable** (successful repair **plus** spaced confirmation); `ever weak` **persists** as a caution signal. History alone must never keep an item permanently in Challenge. Repair does not instantly establish strong mastery. | `INH-FOUNDER` (FQ-4, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering + Curriculum (clearing conditions, windows) | Answered — FQ-4 | Answered 2026-07-26 |
 | ME-047 | How is a non-learner-sourced event excluded? | **Refused at admission** where the error is knowable beforehand. Semantics ratified; **no mechanism exists.** | `INH-FOUNDER` (FQ-6, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering (mechanism) | Answered — FQ-6 | Answered 2026-07-26 |
 | ME-048 | How is an already-recorded event invalidated? | **Append-only compensating invalidation record.** The historical event stays immutable; projections neutralize its pedagogical effect; audit history stays intact; evidence is never deleted or silently mutated. | `INH-FOUNDER` (FQ-6, 2026-07-26) | `LOCKED` (semantics) | Mastery & Evidence (semantics) / Engineering (mechanism) | Answered — FQ-6 | Answered 2026-07-26 |
-| ME-049 | Must solo, AI-supported and future-social actions meet one standard? | Yes — the same six admissibility conditions. | `PROPOSED` | `PROPOSED` | Mastery & Evidence | No | Before promotion |
+| ME-049 | Must solo, AI-supported and future-social actions meet one standard? | Yes — the same six admissibility conditions. | `INH-FOUNDER` (promotion adoption, 2026-07-27) | `LOCKED` | Mastery & Evidence | No | Ratified with Canonical promotion, 2026-07-27 |
 | ME-050 | Is AI praise validation? | No. | `NON-SIGNAL` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-051 | Who owns what an authored action was meant to teach? | Content. | `INH-CANONICAL` | `LOCKED` | Content | No | — |
 | ME-052 | Who owns when evidence opportunities appear? | Curriculum. | `DEPENDENCY` | `OPEN` | Curriculum | No (routed) | Deferred |
@@ -112,7 +119,7 @@ weakest-member audit result, notes). Every ID appears in both.
 | ME-054 | Who owns positive social evidence semantics? | Not Social. Mastery & Evidence, under a ratified contract. | `INH-FOUNDER` | `LOCKED` | Mastery & Evidence | No | — |
 | ME-055 | Who owns retention of learner answer text? | Privacy / Legal. | `DEPENDENCY` | `OPEN` | Privacy / Legal | No (routed) | Deferred |
 | ME-056 | Who owns evidence-system QA and audit cadence? | Operations & QA. | `DEPENDENCY` | `OPEN` | Operations & QA | No (routed) | Deferred |
-| ME-057 | Does evidence exist in the shipped product today? | No — the shipped renderer emits no learning events. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
+| ME-057 | Does the new learning engine emit `LearningEvent` evidence in shipping stages — and does the shipped product carry any evidence-bearing behaviour? | New-engine `LearningEvent`s in shipping stages: **no** — the engine is sandbox-only. Evidence-bearing legacy behaviour in the shipped product: **yes** — the legacy `lm7` error/progress paths and per-section mastery thresholds ship, governed and non-conforming; canonical semantics remain unimplemented. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
 | ME-058 | May engine progress be written into the legacy store? | No fake `lm7` markers; a shim must be stage-guarded, temporary, non-canonical, documented. | `INH-ADR` | `LOCKED` | Engineering | No | — |
 | ME-059 | Is telemetry evidence? | No — local-only content debugging; never updates mastery; no raw learner text. | `CURRENT-REALITY` | `DESCRIPTIVE` | Mastery & Evidence | No | — |
 | ME-060 | Is the mastery snapshot persisted as primary state? | No — recomputed from events each run; compaction stores a cursor snapshot, not truth. | `CURRENT-REALITY` | `DESCRIPTIVE` | Engineering | No | — |
@@ -125,7 +132,7 @@ weakest-member audit result, notes). Every ID appears in both.
 |---|---|---|---|---|---|---|---|---|---|---|
 | ME-001 | Active ADR | ADR-0009 (`active`/`canonical`) | Engineering | `lm_le_events` + `scoreEvents` | Unit-tested, sandbox-only | — | Invariant | ME-002, ME-023, ME-048 | n/a | North star: "Events remember." |
 | ME-002 | Active ADR | ADR-0009 | Engineering | Snapshot recomputed each run | Unit-tested | — | Invariant | ME-060 | n/a | Version bump v0.1→v0.2 needed no migration. |
-| ME-003 | This Draft | Bible §3 | all | No such distinction in code | None | — | Invariant (proposed) | ME-004, ME-011 | n/a | Most existing contradictions trace to conflating these. |
+| ME-003 | Originated as this Bible's proposal; **adopted by the founder-authorized Canonical promotion, 2026-07-27** | Bible §3; promotion record (Bible §41; Ratification §10) | all | No such distinction in code — **implementation remains absent** | None | — | Invariant (adopted) | ME-004, ME-011 | n/a | Most existing contradictions trace to conflating these. **Adoption authorized no runtime change.** |
 | ME-004 | **Founder decision FQ-6** (2026-07-26) | Bible §6, §23; Ratification record §3 | Content, Engineering | **Absent** — classification flows straight to counters | **None** | Semantic rule ratified; implementation gap unchanged | Invariant (I-21) | ME-047, ME-048, ME-049 | n/a | Ratified 2026-07-26. **No implementation authorized.** Still the largest structural gap. |
 | ME-005 | Canonical domain source | Error Tracking System §4 (imported taxonomy); Mastery Model Policy Hardening | Content | Not expressed | Policy only | — | Invariant | ME-023, ME-050 | 4 of 4 members checked | Complete set, not a sample. |
 | ME-006 | Founder decision | R8 / SOC-026; Social Charter §13 | Social, Content, Curriculum | No social surface exists | n/a | — | Invariant | ME-049, ME-054, PRJ-009 | 14 of 14 enumerated non-signals quoted | No contract exists → nothing social is evidence today. |
@@ -171,7 +178,7 @@ weakest-member audit result, notes). Every ID appears in both.
 | ME-046 | **Founder decision FQ-4** (2026-07-26) | Bible §14; Ratification record §6 | Curriculum, Content, Engineering | Floor exists in one unwired module only; **the reducer makes weakness permanent via monotone counters** | **None** | **Founder confirms the reducer's permanence is Axis-B reality, NOT intended semantics** | Invariant I-32, I-33; clearing conditions **`TUNABLE`** | ME-030, ME-042 | **5 weakness members audited** (current · historical · repair completed · spaced confirmation completed · chronic); **0 of 5 represented in the reducer** | Two facts split. **No code change authorized.** |
 | ME-047 | **Founder decision FQ-6** (2026-07-26) | Bible §23; Ratification record §3 | Content, Engineering, Operations | **No mechanism** | **None** | Ratified semantics with no implementation | Invariant (I-21) | ME-004, ME-048 | 7 of 7 non-learner error-source classes covered by the rule; **0 of 7 enforced** | Semantics only. **No implementation authorized.** |
 | ME-048 | **Founder decision FQ-6** (2026-07-26) | Bible §23; Ratification record §3 | Engineering, Privacy | Append-only, **no delete, no compensating record type exists**; tags frozen | **None** | Ratified semantics with no implementation | Invariant (I-20, I-22) | ME-010, ME-042, ME-060 | n/a | Schema, event names, cache invalidation, reconciliation and storage are **Engineering's**, undecided. Compaction still complicates any retroactive change. |
-| ME-049 | This Draft, generalizing R8 | Bible §6, §24; R8 seven conditions | Content, Curriculum, Social | Absent | None | — | Invariant (proposed) | ME-004, ME-006, ME-022 | R8's 7 conditions mapped to 6 general conditions | Gives "equivalent standards outside Social" something to point at. |
+| ME-049 | Originated as this Bible's proposal generalizing R8; **adopted by the founder-authorized Canonical promotion, 2026-07-27** | Bible §6, §24; R8 seven conditions; promotion record (Bible §41; Ratification §10) | Content, Curriculum, Social | Absent — **implementation remains absent** | None | — | Invariant (adopted) | ME-004, ME-006, ME-022 | R8's 7 conditions mapped to 6 general conditions | Gives "equivalent standards outside Social" something to point at. **Does not create the positive Social evidence contract — PRJ-009 remains `OPEN`; no runtime change was authorized.** |
 | ME-050 | Canonical domain source | imported measurement taxonomy; R8 | AI layer | AI not in the grading path | Structural | — | Invariant | ME-005, ME-015 | n/a | — |
 | ME-051 | Canonical domain source | Authority & Routing Spec §2.1 | Content | — | Routing | — | Invariant | ME-024, ME-025 | n/a | — |
 | ME-052 | Unauthored dependency | Authority & Routing Spec §2.1 | Curriculum | — | None | — | Dependency | ME-025, ME-034, ME-046 | n/a | Routed and stopped. |
@@ -179,7 +186,7 @@ weakest-member audit result, notes). Every ID appears in both.
 | ME-054 | Founder decision | Authority & Routing Spec §2.1; R8 | Social | — | Routing | — | Invariant | ME-006, PRJ-009 | n/a | "Social never owns positive evidence semantics." |
 | ME-055 | Unauthored dependency | ADR-0023; Authority & Routing Spec §2.1 | Privacy / Legal | `userAnswer` stores raw learner text | Partial (ADR-0023) | — | Dependency | ME-059 | n/a | Retention lands directly on the evidence log. |
 | ME-056 | Unauthored dependency | Authority & Routing Spec §2.1 | Operations & QA | — | None | — | Dependency | ME-038 (audit) | n/a | Routed and stopped. |
-| ME-057 | Current reality | `config/productStage.ts`; P3 checkpoint §3; Error Tracking System warning | Engineering, Product | `v1LessonEngine` true **only** in sandbox | n/a | — | Descriptive | ME-027, ME-058 | **All 3 product stages read; exactly one enables the engine** | The domain's most important fact. Under FQ-8: the conforming system does not ship and the shipping systems do not conform. |
+| ME-057 | Current reality | `config/productStage.ts`; P3 checkpoint §3; Error Tracking System warning | Engineering, Product | `v1LessonEngine` true **only** in sandbox; legacy `lm7` evidence-bearing paths ship | n/a | — | Descriptive | ME-027, ME-058 | **All 3 product stages read; exactly one enables the engine** | The domain's most important fact. Under FQ-8: the conforming system does not ship and the shipping systems bear evidence but do not conform. |
 | ME-058 | Active ADR | ADR-0020 | Engineering | Honoured — no fake markers written | Source-inspected | — | Invariant | ME-027, ME-057 | n/a | Prevents hiding the two-system debt. |
 | ME-059 | Current reality | `telemetry.ts:1-30` | Privacy | Local-only; constructor rejects unknown keys | Runtime rejection + tests | — | Invariant | ME-055 | 15 v0 event types; `repair_*` named as future | Explicitly "NOT a second mastery pipeline". |
 | ME-060 | Current reality | `compaction.ts`; `mastery.ts` | Engineering | Snapshot recomputed; compaction stores a cursor | Unit-tested (`compaction.test.ts`) | — | Descriptive | ME-002, ME-048 | n/a | — |
@@ -194,35 +201,38 @@ Counted strictly from **Table A**, one state per row. A row cites at most one ra
 a row's *content* touches two axes (e.g. ME-017 is an `OPEN` question *about* a current-reality fact),
 it is counted **once**, under the state in Table A's column.
 
-### By ratification state (post-Round 2)
+### By ratification state (post-promotion adoption, 2026-07-27)
 
-| State | Count | Δ vs Round 1 | IDs |
+| State | Count | Δ vs Round 2 | IDs |
 |---|---|---|---|
-| **`INH-FOUNDER`** | **18** | **+8** | ME-004, 006, 007, 011, 012, **017, 020, 022, 026**, 027, **030**, 032, **033, 034, 046**, 047, 048, 054 |
-| `CURRENT-REALITY` | 17 | −2 | ME-013, 014, 016, 021, 035, 036, 037, 039, 040, 041, 042, 043, 044, 045, 057, 059, 060 |
-| `INH-CANONICAL` | 10 | −1 | ME-008, 009, 018, 024, 025, 028, 029, 031, 038, 051 |
+| **`INH-FOUNDER`** | **20** | **+2 (promotion adoption)** | **ME-003**, 004, 006, 007, 011, 012, 017, 020, 022, 026, 027, 030, 032, 033, 034, 046, 047, 048, **049**, 054 — 18 derive from the FQ-1…FQ-8 founder decisions; ME-003 and ME-049 were additionally adopted through the 2026-07-27 founder-authorized promotion |
+| `CURRENT-REALITY` | 17 | — | ME-013, 014, 016, 021, 035, 036, 037, 039, 040, 041, 042, 043, 044, 045, 057, 059, 060 |
+| `INH-CANONICAL` | 10 | — | ME-008, 009, 018, 024, 025, 028, 029, 031, 038, 051 |
 | `INH-ADR` | 6 | — | ME-001, 002, 010, 015, 019, 058 |
 | `DEPENDENCY` | 4 | — | ME-052, ME-053, ME-055, ME-056 |
 | `NON-SIGNAL` | 3 | — | ME-005, ME-023, ME-050 |
-| `PROPOSED` | 2 | — | ME-003, ME-049 |
-| `OPEN` | **0** | −4 | — |
-| `SUPERSEDED` | **0** | −1 | — (ME-033 became `INH-FOUNDER`; the *phrase* "9-state" is still `SUPERSEDED` inside its rule) |
+| `PROPOSED` | **0** | −2 | — (ME-003 and ME-049 adopted by the 2026-07-27 promotion) |
+| `OPEN` | **0** | — | — |
+| `SUPERSEDED` | **0** | — | — (ME-033 became `INH-FOUNDER`; the *phrase* "9-state" is still `SUPERSEDED` inside its rule) |
 | **Total** | **60** | — | — |
 
-### By decision status (post-Round 2)
+### By decision status (post-promotion adoption, 2026-07-27)
 
-| Status | Count | Δ | IDs |
+| Status | Count | Δ vs Round 2 | IDs |
 |---|---|---|---|
-| `LOCKED` | 37 | +7 | ME-001, 002, 004, 005, 006, 007, 008, 009, 010, 011, 012, 015, **017**, 018, 019, **020, 022**, 023, 024, 025, **026**, 027, 028, 029, **030**, 031, 032, **033, 034**, 038, **046**, 047, 048, 050, 051, 054, 058 |
+| `LOCKED` | 39 | +2 | ME-001, 002, **003**, 004, 005, 006, 007, 008, 009, 010, 011, 012, 015, 017, 018, 019, 020, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 038, 046, 047, 048, **049**, 050, 051, 054, 058 |
 | `DESCRIPTIVE` | 16 | — | ME-013, 014, 016, 021, 035, 036, 037, 039, 040, 041, 042, 044, 045, 057, 059, 060 |
-| `OPEN` | 5 | −7 | ME-043 (reducer order-invariance, never ruled) · ME-052, ME-053, ME-055, ME-056 (unauthored layers) |
-| `PROPOSED` | 2 | — | ME-003, ME-049 |
+| `OPEN` | 5 | — | ME-043 (reducer order-invariance, never ruled) · ME-052, ME-053, ME-055, ME-056 (unauthored layers) |
+| `PROPOSED` | **0** | −2 | — |
 | **Total** | **60** | — | — |
 
-> **`LOCKED` means a decision exists — never that the rule is implemented.** 37 locked rows and **zero**
+> **`LOCKED` means a decision exists — never that the rule is implemented.** 39 locked rows and **zero**
 > conforming shipped evidence semantics are not in tension (ME-057, ME-027). **No row was moved to
-> `LOCKED` merely because the founder questions ran out**: ME-043 and the four `DEPENDENCY` rows stayed
-> `OPEN`, and ME-003 / ME-049 stayed `PROPOSED`, because nothing decided them.
+> `LOCKED` merely because the founder questions ran out**: ME-043 and the four `DEPENDENCY` rows stay
+> `OPEN`. ME-003 and ME-049 moved to `LOCKED` because something did decide them — the founder-authorized
+> Canonical promotion of 2026-07-27 adopted the Bible's two surviving pre-promotion proposals as
+> Canonical semantic policy. That adoption is not a new founder decision, created no ninth or tenth
+> founder question, and authorized no implementation.
 
 ### Founder decisions — all answered
 
@@ -230,20 +240,25 @@ it is counted **once**, under the state in Table A's column.
 |---|---|---|
 | **Answered 2026-07-26, Round 1** | 8 | ME-004, ME-007 (FQ-6) · ME-011, ME-012, ME-032 (FQ-1) · ME-027 (FQ-8) · ME-047, ME-048 (FQ-6) |
 | **Answered 2026-07-26, Round 2** | 8 | ME-017, ME-020 (FQ-2) · ME-022 (FQ-3) · ME-030, ME-046 (FQ-4) · ME-033 (FQ-5) · ME-026, ME-034 (FQ-7) |
+| **Adopted by the founder-authorized Canonical promotion, 2026-07-27** | 2 | ME-003, ME-049 — not a new founder question; the authorization to promote the complete Bible adopted its surviving proposals |
 | **Still require a founder decision** | **0** | — |
 | `REQUIRED NOW` / `REQUIRED BEFORE PROMOTION` outstanding | **0** | — |
 
-Rows still `PROPOSED` (editorial/structural, not a founder call): ME-003, ME-049. Rows routed to an
-unauthored layer and therefore **deferred, not asked**: ME-052, ME-053, ME-055, ME-056. One Axis-B
-question was **never put to the founder and remains open**: ME-043 (the reducer is deterministic but not
-order-invariant).
+No row remains `PROPOSED`: ME-003 and ME-049 — editorial/structural proposals that never required a
+standalone founder call — were adopted through the founder-authorized Canonical promotion of
+2026-07-27. The eight founder questions remain **eight**; the promotion created no ninth or tenth.
+Rows routed to an unauthored layer and therefore **deferred, not asked**: ME-052, ME-053, ME-055,
+ME-056. One Axis-B question was **never put to the founder and remains open**: ME-043 (the reducer is
+deterministic but not order-invariant).
 
 ### Deliberately zero
 
 `PLANNED` **0** · `EXPERIMENT` **0** · **Implemented as ratified semantics: 0 — unchanged by Rounds 1–2.**
 **Founder-locked exact numeric values: 0** (FQ-7).
 
-Rounds 1 and 2 ratified sixteen rows and implemented none of them. No row in this matrix records a
-ratified Mastery & Evidence rule that is live and conforming on any shipping surface: the engine
-conforms but does not ship (ME-057), and the shipped legacy systems are governed but non-conforming
-(ME-027). **The semantic decision surface is complete; the implementation surface is untouched.**
+Rounds 1 and 2 ratified sixteen rows and implemented none of them; the 2026-07-27 promotion
+additionally adopted two rows (ME-003, ME-049) and implemented neither. No row in this matrix records
+a ratified Mastery & Evidence rule that is live and conforming on any shipping surface: the engine
+conforms but does not ship (ME-057), and the shipped legacy systems bear evidence but are governed and
+non-conforming (ME-027). **The semantic decision surface is complete; the implementation surface is
+untouched.**

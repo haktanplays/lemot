@@ -371,8 +371,11 @@ the FQ-1 clarification.
 |---|---|---|
 | ME-043 — the reducer is deterministic but **not order-invariant** | Engineering | An Axis-B property never ruled on; needs a mechanism decision, not a semantic one |
 | ME-052 · ME-053 · ME-055 · ME-056 | Curriculum · Engineering · Privacy/Legal · Operations & QA | Routed to layers that **do not exist yet** |
-| ME-003 · ME-049 | Mastery & Evidence | Editorial/structural proposals, resolvable without the founder |
 | Confidence representation | Mastery & Evidence | No source anywhere; not yet worth a question |
+
+**No longer open:** ME-003 and ME-049 — listed here before promotion as editorial/structural
+proposals resolvable without the founder — were **adopted by the founder-authorized Canonical
+promotion of 2026-07-27** and are closed (see the promotion-adoption note in §10).
 
 **Every implementation divergence remains unresolved** — see §6.
 
@@ -403,6 +406,19 @@ Implementation remains closed.
 **Seven of seven met. The Bible was promoted on 2026-07-27. Promotion changed no founder decision and
 no runtime, and opened no implementation; the two non-blocking review NOTEs are preserved as
 recorded.**
+
+**Promotion-adoption note (2026-07-27).** The founder authorization to promote the complete Bible
+adopted its two surviving pre-promotion proposals as Canonical semantic policy:
+
+- **ME-003** — domain vocabulary distinction: opportunity, action, result, event and evidence are
+  distinct concepts, never interchangeable (Bible §3);
+- **ME-049** — universal admissibility equivalence: solo, AI-supported and future-social actions must
+  meet the same universal admissibility standard (Bible §6, §24).
+
+**FQ-1…FQ-8 remain unchanged; the promotion created no ninth or tenth founder question.** This is an
+adoption through the already-authorized promotion, not a new founder decision. **No numeric value and
+no implementation was authorized.** ME-049's adoption does **not** create the positive Social evidence
+contract — **PRJ-009 remains `OPEN`.**
 
 > **That last gate cannot be satisfied by answering questions or by amending documents.** It requires a
 > reviewer **other than this package's author**. It is not satisfied by this record, by the commit that
@@ -491,6 +507,7 @@ separately and must never be conflated.
 
 | Date | Version | Change | Author |
 |---|---|---|---|
+| 2026-07-27 | 0.1 (promotion-adoption note — PR #202 review findings) | **Recorded that the founder-authorized Canonical promotion of 2026-07-27 adopted the two surviving pre-promotion proposals — ME-003 (domain vocabulary distinction) and ME-049 (universal admissibility equivalence) — as Canonical semantic policy.** §10 gained the durable promotion-adoption note; §9's open-items table no longer lists ME-003/ME-049 as open. **This is a persistence correction for the already-authorized promotion, not a new founder decision: FQ-1…FQ-8 remain unchanged, no ninth or tenth founder question exists, no numeric value or implementation was authorized, and PRJ-009 remains `OPEN`. Original founder cards and prior dated history untouched.** | Cloud session (PR #202 review-finding resolution) |
 | 2026-07-27 | 0.1 (Bible promotion recorded) | **Live promotion state converged after the founder-authorized promotion of the Bible (Draft → Canonical, 2026-07-27).** The independent follow-up review of tip `db65db0` passed (`PASS WITH NON-BLOCKING FINDINGS`; 0 BLOCK, 0 MAJOR, 2 NOTE; recommendation `PROMOTE` — new supporting record `MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`), closing the last prerequisite. Header, §1 Scope table (review + promotion rows) and §10 updated to **seven of seven prerequisites met / PROMOTED**. **Every founder decision (FQ-1…FQ-8 + clarification) and every dated change-history row preserved verbatim. This record remains supporting and non-Canonical. No semantic rule, source document, numeric value or runtime changed; no implementation authorized.** | Cloud session (founder-authorized promotion) |
 | 2026-07-26 | 0.1 (package-state convergence) | **Converged the six-file package on one current state. Mechanical documentation reconciliation only — no semantic decision, no source document outside the package, no implementation.** Root cause recorded honestly: during the 2026-07-26 reconciliation commit a batched edit script **failed mid-batch on its last pair and exited before writing**, so **three Decision Matrix Table-B rows (ME-011, ME-012, ME-020) were never updated** even though the commit reported reconciliation complete. Corrected now: **ME-011** notes → ADR-0021 scope-amended (runtime unchanged); **ME-012** notes → scope amendment **APPLIED**, plus its weakest-member cell refreshed to the post-clarification result (**0 of 3 tags individually determinate**); **ME-020** conflict → *source patch **APPLIED — 2026-07-26***; **Gap Map §4** ADR-0021 row → **SCOPE-AMENDED** (was *"UNCHANGED / NOT yet amended in text"*); **Review Surface** three live summaries date-scoped (header *"neither of which has happened"*, FQ-1 rule-6 annotation, FQ-2 closing note) with **founder wording preserved verbatim**. **No Table-A field changed, so no distribution moved; no row became Implemented or Runtime Enforced.** Current Reality & Enforcement Map **unchanged** — its Axis-B divergences are implementation facts, not package-state contradictions. **Bible remains Draft; independent adversarial review remains the sole promotion prerequisite; no code, runtime, threshold or numeric value changed; no promotion occurred.** | Cloud session (package convergence) |
 | 2026-07-26 | 0.1 (post-reconciliation state correction) | **Corrected post-reconciliation live-state wording. No semantic decision, source document or implementation state changed.** Removed stale *"pending / not applied / untouched / requires a future scope amendment"* claims that were true before commit `e577954` and false after it: **FQ-1** rules 6–7 now record the ADR-0021 scope amendment as **applied** and separate the ratification act from the later reconciliation; **FQ-2**'s consequence no longer says the source amendments are *"pending, not applied"*; **§7** renamed *Required future source amendments* → **Source amendments — applied 2026-07-26**, with an exact pointer to the Gap Map §20 inventory instead of a duplicated file list; **§8** non-authorization clarified chronologically (**the ratification itself amended no ADR; a later separately authorized task scope-amended ADR-0021 and ADR-0022, documentation-only**); **§10** promotion wording corrected from *"awaiting founder ratification"* to **"awaiting independent adversarial review"**. **Prior change-history entries were not rewritten. Historical provenance retained everywhere. Both ADRs remain `active`/`canonical` and scope-amended, not repealed. Zero numeric values ratified. Bible remains Draft; independent adversarial review remains the sole promotion blocker; no code, schema, event, tag, threshold, interval, validator, test or runtime changed; no implementation opened; no promotion occurred.** | Cloud session (state correction) |

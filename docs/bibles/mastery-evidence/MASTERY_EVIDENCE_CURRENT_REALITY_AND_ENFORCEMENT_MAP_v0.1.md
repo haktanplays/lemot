@@ -35,7 +35,7 @@ Two words are used strictly:
 
 | | |
 |---|---|
-| **Statement** | The shipped surface emits **no** `LearningEvent`. Therefore **no evidence exists in production.** |
+| **Statement** | Shipping stages emit **no** new-engine `LearningEvent` evidence — the v1 lesson engine is reachable only in sandbox. Shipped legacy systems still record learner-error / progress / mastery signals through `lm7` and the legacy section/mastery paths (§1, §6, §24); under FQ-8 those legacy systems are **evidence-bearing current reality — governed, non-conforming, and frozen**. No shipping build produces **conforming** evidence, and no runtime change is authorized. |
 | Source path | `lemot-app/config/productStage.ts`; `lemot-app/app/lesson/[id].tsx`; `docs/status/founder-self-learning-p3-learner-renderer-checkpoint.md` §3 |
 | Reference | `FEATURES_BY_STAGE` — `v1LessonEngine: true` in `sandbox`, `false` in `dev-apk`, `false` in `public-beta` |
 | Member audit | **All three product stages read.** Exactly one enables the engine. No fourth stage exists. |
@@ -44,7 +44,7 @@ Two words are used strictly:
 | Test | `productStage` fail-closed behaviour tested |
 | Shipped | **The engine is not reachable in any shipping stage** |
 | Intent or implementation? | Implementation reality only |
-| Known divergence | Every canonical evidence rule in the domain describes a system real users cannot reach |
+| Known divergence | The only conforming system is one real users cannot reach; the evidence-bearing systems users do reach are non-conforming |
 | Future owning layer | Engineering (integration), Product (stage exposure) |
 
 ---
@@ -74,7 +74,13 @@ Two words are used strictly:
 - **Fields that do not exist:** hint level · assistance used · error source · admissibility ·
   evidence strength · confidence · invalidation.
 - `userAnswer` stores **raw learner text** inside the evidence record.
-- Implementation: types only, no runtime. Tested indirectly. Not shipped.
+- Implementation: **real, and sandbox-only.** `LearningSessionController.buildEvent()`
+  (`session-controller.ts:240`) constructs complete `LearningEvent` objects; `enqueue()`
+  (`session-controller.ts:276-278`) passes them through the serialized write queue to
+  `LocalRepository.appendEvent()` (`repository/local.ts:156`), which persists them append-only under
+  `lm_le_events` (`repository/local.ts:36`). Tested (`localRepository.test.ts`;
+  `contextChainMasteryWeight.test.ts` exercises the controller → repository → reducer path
+  end-to-end). Not reachable in `dev-apk` or `public-beta`; not shipped.
 - Divergence: §12 of the Bible (assistance) and §7 (attribution) are unimplementable against this shape.
 - **⚠ DIVERGENCE (added 2026-07-26).** Founder FQ-6 ratified admission refusal plus an append-only
   compensating invalidation record. **No such mechanism exists**: the event shape has no error-source,
@@ -357,7 +363,7 @@ false in both shipping stages.**
 
 | # | Divergence | Evidence |
 |---|---|---|
-| R1 | Shipped surface emits no events → no production evidence | §0 |
+| R1 | Shipping stages emit no new-engine `LearningEvent`s; shipped legacy systems still bear non-conforming evidence → no shipping build produces conforming evidence | §0 |
 | R2 | `spelling_near_miss` weakness-accruing vs ADR-0021 precision **and** vs founder FQ-1 where meaning is unknown | §4, §11 |
 | R3 | No evidence weighting despite canon asserting one — **and now despite founder FQ-2 ratifying differential strength**; recognition and production advance boxes equally | §13 |
 | R4 | No attribution / error-source field despite a `[HARD INVARIANT]` | §2 |
