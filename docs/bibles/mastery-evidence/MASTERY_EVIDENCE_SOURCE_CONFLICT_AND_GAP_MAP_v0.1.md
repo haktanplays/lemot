@@ -1,0 +1,620 @@
+---
+title: Mastery & Evidence Source, Conflict, and Gap Map v0.1
+version: 0.1
+status: Supporting record for the Canonical Mastery & Evidence Bible v1.0 — not independent canon
+authority: none — an inventory, not a decision
+owner: Mastery & Evidence
+created: 2026-07-26
+last_updated: 2026-07-27
+---
+
+# Mastery & Evidence — Source, Conflict, and Gap Map v0.1 — supporting record
+
+Where every claim in the Bible Draft came from, where sources disagree, and where nothing exists.
+
+> **Absence is never rejection.** A missing source means *undecided*, never *decided against*.
+
+> **Rounds 1–2 status (2026-07-26) — all eight founder questions answered.** For **every** decision the
+> seven-way status is the same, and it is stated once here rather than repeated per section:
+>
+> | Layer | State |
+> |---|---|
+> | Semantic decision | **RESOLVED** — FQ-1…FQ-8, all eight |
+> | Implementation divergence | **UNRESOLVED** — every divergence below is still live |
+> | Runtime implementation | **NONE — not authorized, not opened.** Source reconciliation is complete; **that is not implementation** |
+> | Downstream source patch | **APPLIED 2026-07-26 — 18 source documents** (see §20) |
+> | Engineering decision | **UNAUTHORED** — schemas, fields, algorithms, clearing conditions |
+> | Curriculum decision | **UNAUTHORED** — band strictness, readiness, evidence distribution |
+> | Independent adversarial review | **PERFORMED 2026-07-27 against `13cac69` — verdict `FAIL — PROMOTION BLOCKED`**; blocking findings remediated; **independent follow-up review of `db65db0` PASSED — `PASS WITH NON-BLOCKING FINDINGS`** ([`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)) |
+> | Promotion | **COMPLETED 2026-07-27 — the Bible is Canonical (Draft → Canonical, founder-authorized).** Promotion is a documentation lifecycle event only: **it does not make the runtime conforming** — every implementation divergence below remains live |
+>
+> **A complete semantic decision surface is not a resolved system.** Specifically, as of this round:
+>
+> - **evidence weighting exists semantically, but no current reducer implements it** (§8.4);
+> - **assistance affects claim scope, but no attempt-level assistance field exists** (§8.7);
+> - **current weakness is accidentally permanent** in the reducer (§8.8);
+> - **no universal mastery ladder exists**, and none was created (§8.5);
+> - **all exact constants remain tunable**; **zero numbers were founder-locked** (§8.9);
+> - **tag polarity remains semantically contextual** — no tag decides meaning alone (§8.1).
+
+---
+
+## 1. Source inventory
+
+Recovered by repository-wide sweep (not by trusting the opening's file list — three of the paths named
+in the opening resolve differently on disk; see §7).
+
+### Project-level authority (6)
+`docs/canon/CAIRN_PROJECT_CANON_MAP_v1.0.md` · `CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md` ·
+`CAIRN_PROJECT_IDEA_AND_DECISION_REGISTER_v0.1.md` · `CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md` ·
+`CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md` · `CAIRN_PROJECT_CANON_SIGNOFF_REVIEW_v0.1.md`
+
+### Canonical domain sources (3 + supporting records)
+`obsidian-product-brain/ACTIVE_CODEX/00_CAIRN_PRODUCT_BRAIN/CAIRN_PRODUCT_BRAIN_v1.0.md` ·
+`docs/bibles/content/CONTENT_BIBLE_v1.0.md` · `docs/bibles/social/SOCIAL_LAYER_CHARTER_v1.0.md`
+(+ Social Register, Ratification, Source & Gap Map, Sign-off Review)
+
+### Design canon (1, high-relevance)
+`docs/canon/LESSON_FLOW_CANON_v1.md` — §5.1/§5.2 selector priority, **§5.3 evidence-weight vs
+selection-weight**, §5.5 `LessonEvidenceProfile`, §1.3 discovery-vs-assessment, §7 Readiness Gate.
+Self-declared scope wall: *"design canon does not authorize code."*
+
+### Vault learning-system notes (18 in `02_LEARNING_SYSTEM/`, 9 directly in-domain)
+`Mastery Model.md` · `Error Tracking System.md` · `Review and Recycling System.md` · `Mon Lexique.md` ·
+`Feedback and Scoring Philosophy.md` · `Content Selection.md` · `Chip Lifecycle.md` ·
+`Difficulty and Cognitive Load.md` · `Self-Producing Engine.md`
+(+ `05_MATRICES/Mastery Matrix.md`, `07_DESIGN/Mon Lexique UI.md`)
+
+### Repo status / audit records (21 + 4)
+`docs/status/founder-self-learning-mastery-precision-policy.md` ·
+`founder-self-learning-p3-learner-renderer-checkpoint.md` · `p0-p2-spine-audit-checkpoint.md` ·
+`p4-mon-lexique-practice-pool-checkpoint.md` · `p5-local-privacy-data-rights-checkpoint.md` ·
+`learning-engine-progress-bridge-decision.md` · `founder-self-learning-build-architecture-review.md` ·
+`docs/learning-engine-v1.md` · `docs/audits/2026-07-08-final-loop-audit.md` (findings **B7, B12, B23**)
+· `docs/audits/2026-07-09-loop-audit-v2.md`
+
+### ADRs (25 inspected individually)
+All 25 were opened and their own metadata read. **24 are `status: active` / `canon_status: canonical`;
+ADR-0025 is `status: deferred` / `canon_status: proposed`.** In-domain: **0009, 0010, 0013, 0016,
+0020, 0021, 0022, 0023**. Adjacent: 0001, 0002, 0007, 0012, 0017.
+
+### Runtime (Axis B) — 31 engine modules + 42 test files (45 test-directory entries incl. 3 harness/support files)
+`mastery.ts` · `events.ts` · `grade.ts` · `error-engine.ts` · `mon-lexique.ts` · `lexique-memory.ts` ·
+`practice-pool.ts` · `practice-selector.ts` · `carryover-selector.ts` · `lesson-progress.ts` ·
+`session-controller.ts` · `repository/local.ts` · `compaction.ts` · `telemetry.ts` · `privacy-data.ts` ·
+`answer-check.ts` · `boundary.ts` · `derive-drill.ts` · `weakPointTags.ts` · `shipped-error-tags.json` ·
+`config/productStage.ts` · legacy `hooks/useErrors.ts`, `hooks/useSRS.ts`, `constants/sections.ts`,
+`app/lesson/[id].tsx`
+
+---
+
+## 2. Source-authority classification
+
+| Class | Sources | Binding on this domain? |
+|---|---|---|
+| **Founder decision** | Q2 (2026-07-26); R8 / SOC-026 (2026-07-25); **FQ-1…FQ-8, all eight (2026-07-26)** | **Yes, absolutely** |
+| **Canonical project authority** | Project Canon Map v1.0; Authority & Routing Spec §2.1 | **Yes** — for routing and ownership |
+| **Canonical domain source** | Content Bible v1.0; Social Charter v1.0 (negative bound only); Product Brain v1.0 | **Yes**, within their own domains |
+| **Active ADR** | 0009, 0010, 0013, 0016, 0020, 0021, 0022, 0023 — **each by its own metadata** | **Yes**, within each ADR's declared domain |
+| **Design canon** | Lesson Flow Canon v1 | Binds *design intent*; explicitly does **not** authorize code |
+| **Vault system-spec notes** | `02_LEARNING_SYSTEM/*` (`canon_status: canonical`) | Binding as a *record of canon*; **secondary to the ADRs and code they cite** |
+| **Status / checkpoint records** | `docs/status/*` | Axis B evidence of what landed; **not decisions** |
+| **Audit findings** | B7, B12, B23 etc. | Axis B evidence; a finding is not a ratified rule |
+| **Runtime code + tests** | engine modules | Axis B **only** — establishes existence, never intent |
+| **Deferred/proposed ADR** | ADR-0025 | **Not binding**; not in this domain |
+
+> **Directory membership confers nothing.** A file's presence in `09_DECISIONS/` or an `ADR-####`
+> prefix is not a status. A file's presence in `02_LEARNING_SYSTEM/` does not make its claims
+> Canonical beyond its own `canon_status` field — and, as §8 shows, three such files carry a claim
+> their own cited code contradicts.
+
+---
+
+## 3. Current Canonical and founder decisions in force
+
+| Decision | Source | Effect here |
+|---|---|---|
+| Mastery & Evidence has a dedicated owner | Founder Q2 | This Bible exists as a proposal |
+| Evidence firewall, stated precisely | Founder R8 / SOC-026 | §8 non-signals; §24 equivalence |
+| No social action is evidence today | R8 (no contract exists) | PRJ-009 stays `OPEN` |
+| Two-axis precedence | Founder Q1 | Code is Axis B, never intent |
+| Domain-first routing | Founder Q1 | §27–§32 route-and-stop |
+| Documentation is not implementation authority | R11 / fourteen-element contract | §41 build gate |
+| **Domain-wide scope (FQ-8)** | **Founder, 2026-07-26** | §8.3 — all evidence-bearing systems governed; legacy non-conforming, frozen, **not authorized for change** |
+| **Invalidation model (FQ-6)** | **Founder, 2026-07-26** | §13, §19 — refuse at admission; append-only compensating record; never delete or mutate |
+| **Meaning-based polarity (FQ-1 + clarification)** | **Founder, 2026-07-26** | §8.1 — **no technical tag decides pedagogical meaning**; applies to `punctuation_only` and `accent_only` too |
+| **Differential evidence strength (FQ-2)** | **Founder, 2026-07-26** | §8.4 — strength at admission; production > recognition; **no number ratified** |
+| **Assistance scopes the claim (FQ-3)** | **Founder, 2026-07-26** | §8.7 — assisted ≠ independent; unknown assistance does not invalidate history |
+| **Recoverable weakness (FQ-4)** | **Founder, 2026-07-26** | §8.8 — `currently weak` clears; `ever weak` persists as caution only |
+| **No universal mastery ladder (FQ-5)** | **Founder, 2026-07-26** | §8.5 — counters are truth; purpose-named projections only |
+| **Locked promises, tunable numbers (FQ-7)** | **Founder, 2026-07-26** | §8.9 — 8 promises locked; **0 exact values locked** |
+
+---
+
+## 4. Active ADRs bearing on this domain
+
+| ADR | Own status | Binds |
+|---|---|---|
+| 0009 events-source-of-truth | `active`/`canonical` | Event log canonical; projections re-derive; AI never overrides |
+| 0010 karpathy engine purity | `active`/`canonical` | Pure, deterministic, explicit `now`, fail-closed |
+| 0013 YASA 3 error-tag immutability | `active`/`canonical` | 54 frozen tags; bidirectional validator hard error |
+| 0016 boundary "later form" UI | `active`/`canonical` | An untaught form is not a failure |
+| 0020 progress bridge | `active`/`canonical` | No fake `lm7` markers; two-system debt stays visible |
+| 0021 precision policy | `active`/`canonical`, **SCOPE-AMENDED 2026-07-26** | **Four buckets, `spelling_near_miss` = precision** — **superseded in substance by founder FQ-1 and amended in text 2026-07-26** (`e577954`): scope-amended, **not repealed**; original Decision preserved verbatim; the fixed member list is no longer the live rule. See §8.1, §18, §20. |
+| 0022 hub-derived drills — *the weighting clause* | `active`/`canonical`, **SCOPE-AMENDED 2026-07-26** | *"evidence weight (mastery multiplier)"* named a mechanism the reducer does not have. **Claim retired by FQ-2 and the ADR text amended 2026-07-26** — scope-amended, **not repealed**; original Decision preserved verbatim. The *separation* principle (evidence weight ≠ selection weight) **survives intact and is still binding**. **The reducer still has no weighting.** See §8.4, §18, §20. |
+| 0022 hub-derived drills | `active`/`canonical` | Evidence weight ≠ selection weight; derivation fail-closed |
+| 0023 privacy local-first | `active`/`canonical` | Local-first; consent gate; no client `service_role`; RLS on |
+
+**Not binding:** ADR-0025 (`deferred`/`proposed`) — paywall, out of domain. Recorded so no later reader
+assumes the ADR directory is uniformly canonical.
+
+---
+
+## 5. Current-reality sources (Axis B)
+
+`mastery.ts` (reducer + all constants) · `events.ts` (frozen vocabulary, event shape) · `grade.ts`
+(deterministic classifier, 12 of 16 codes) · `session-controller.ts` (append + chain aggregation) ·
+`lexique-memory.ts` (weights, decay, 8 lifecycle statuses) · `practice-selector.ts` / `practice-pool.ts`
+/ `carryover-selector.ts` (selection only) · `lesson-progress.ts` (attempt coverage) · `telemetry.ts`
+(non-evidence) · `config/productStage.ts` (**the gate that makes all of the above sandbox-only**) ·
+legacy `useErrors.ts` / `useSRS.ts` / `constants/sections.ts` (**the system that actually ships**) ·
+42 test files (45 test-directory entries: 42 tests + `harness.ts` / `helpers.ts` / `run.ts` support), 10 of them in-domain.
+
+---
+
+## 6. Historical and superseded material
+
+| Item | Status | Preserved because |
+|---|---|---|
+| "All near-miss = full failure" (pre-2026-06-04) | `SUPERSEDED` | Makes the precision policy legible |
+| "9-state mastery" | `SUPERSEDED` as a description of current reality | Still appears in conceptual material; §18 of the Bible shows no nine-member set exists |
+| Legacy 24-lesson `MASTERY_THRESHOLDS` (0.6–0.7 per section) | Legacy, still shipping | It is the only mastery rule a real tester experiences |
+| Legacy `lm7` weak-spot tracker | Legacy, still shipping | ME-027 conflict |
+| Carryover stage table (v0.3 §10) | **`PROPOSAL — revisable`**, with an explicit canonical correction: *"There is no numeric carryover window currently canonized"* | A table that looks canonical but is not |
+| `mastery-v0.1` snapshot version | Superseded by v0.2 | No migration was needed (re-derive principle) |
+
+---
+
+## 7. Missing or unavailable sources
+
+| Referenced as | Reality | Handling |
+|---|---|---|
+| `docs/founder-self-learning-mastery-precision-policy.md` | Actual path is `docs/status/founder-self-learning-mastery-precision-policy.md` | Path drift; source located and read |
+| `02_LEARNING_SYSTEM/Mastery Model.md` | Actual path is `obsidian-product-brain/ACTIVE_CODEX/02_LEARNING_SYSTEM/Mastery Model.md` | Located and read |
+| `docs/workstreams/founder-self-learning-mastery-precision-policy.md` (cited by ADR-0021 `source_of_truth`) | **Does not exist at that path** | ADR-0021's own source pointer is stale |
+| `docs/workstreams/founder-self-learning-p5.md` (cited by ADR-0023) | Not at that path | Equivalent record found under `docs/status/` |
+| Curriculum Bible | **Does not exist** | Routed, not invented |
+| Engineering / System Bible | **Does not exist** (several ADRs bind parts) | Routed, not invented |
+| Privacy / Legal layer | **Does not exist** (ADR-0023 binds part) | Routed, not invented |
+| Operations & QA Bible | **Does not exist** | Routed, not invented |
+| UX / Experience Bible | **Does not exist** | Routed, not invented |
+| A social evidence contract | **Does not exist** (PRJ-009 `OPEN`) | Not created here |
+| `docs/DEV_APK_SMOKE_TEST_CHECKLIST.md` | Placeholder per the Master Pipeline | Noted |
+
+---
+
+## 8. Same-domain contradictions
+
+### 8.1 `spelling_near_miss` — precision or weakness? *(the sharpest one)*
+
+| Source | Claim | Own status |
+|---|---|---|
+| **ADR-0021** Decision paragraph | Four buckets; `spelling_near_miss` is Precision; *"does not set `isWeak`"* | `active` / `canonical` |
+| `docs/status/…precision-policy.md` §2 | Same three-member precision bucket; `NEAR_MISS_TAGS` | 2026-06-04 record |
+| vault `Mastery Model.md` bucket table | Same three-member precision bucket | `canon_status: canonical`, updated 2026-07-18 |
+| vault `Feedback and Scoring Philosophy.md` | *"punctuation_only/accent_only/spelling_near_miss … does not make the learner weak"* | `canon_status: canonical` |
+| **`mastery.ts:132-145, 234-237, 257-259`** | `PRECISION_TAGS` has **two** members; `spelling_near_miss` **accrues `weakTags`** → 3 of them make the item weak | shipped in engine, unit-tested |
+| **audit B7** | The old behaviour was a **confirmed defect**: FR minimal pairs (un/on, le/la, et/est) are meaning-distinct | audit finding, remediated in PR-E1/#193 |
+
+**Diagnosis.** The code was deliberately corrected; **four documents were not updated**, and ADR-0021's
+*Consequences* line acknowledges the refinement while its *Decision* paragraph still states the old
+rule. A reader consulting the ADR's decision gets the wrong answer.
+
+**FQ-1 — SEMANTIC DECISION RESOLVED (2026-07-26).** The founder answered **C**: neither side was right.
+**Polarity is determined by semantic effect, not by the tag.** A meaning-preserving orthographic slip is
+precision; a meaning-changing lexical, grammatical or minimal-pair substitution may be negative evidence
+and may create weakness. `spelling_near_miss` is **too coarse to establish which occurred**, so it is
+Canonical proof of neither, and **an ambiguous event may not establish weakness**.
+
+**What is NOT resolved:**
+
+| | |
+|---|---|
+| ADR-0021 member list | **AMENDED 2026-07-26** — scope-amended, **not repealed**; still `active`/`canonical`; the four-bucket Decision preserved verbatim as historical record; the fixed member list is no longer the live rule |
+| The three stale documents (§8.1 table rows 2–4) | **CORRECTED 2026-07-26** — together with the **eight later-discovered** polarity-family sources; the complete twelve-file inventory, enumerated path by path, is in **§20.1** |
+| Sandbox code accruing weakness for ambiguous events | **Provisional and non-conforming**; **no code change authorized** |
+| `accent_only`'s French counter-examples (`ou`/`où`, `a`/`à`, `sur`/`sûr`) | **CLOSED 2026-07-26** by the FQ-1 **general tag-polarity clarification** — generalized to every technical tag rather than ruled separately; **no ninth founder question was created** |
+
+**Weakest-member result, re-run under the FQ-1 general clarification.** No universal three-tag polarity
+claim is made any more, and **no member survives as determinate**: `punctuation_only` =
+**context-dependent** · `accent_only` = **context-dependent** · `spelling_near_miss` =
+**context-dependent**. **0 of 3 tags individually determines polarity**; the set shares no common
+polarity. The old claim *"precision tags never create weakness"* is retired, not repaired. This matches
+Decision Matrix **ME-012** exactly. → ME-011, ME-012, ME-032.
+
+> **Convergence note, not a new decision.** An earlier revision of this paragraph still read
+> `punctuation_only` = precision and `accent_only` = precision *with a stated exception*. That wording
+> predates the **FQ-1 general clarification**, which generalized the meaning-based rule to **every**
+> technical tag and therefore removed the per-tag exception framing. The paragraph is aligned with the
+> already-ratified clarification; **no founder decision was changed here**.
+
+### 8.2 Bucket count — four or five?
+ADR-0021 and three notes say four. The code implements five (success · precision · spelling near-miss ·
+skip · failure). Directly downstream of 8.1. → ME-011.
+
+### 8.3 Weakness key — item or string? / domain scope
+Engine: `ItemId`, with tag-level counters and (in policy) attribution. Legacy shipped: the
+correct-answer string, no tags, no attribution. **Both use the threshold 3**, which makes them look
+like the same rule. They are not.
+
+**FQ-8 — SEMANTIC DECISION RESOLVED (2026-07-26).** The founder answered **A**: the Bible governs the
+domain across **all** evidence-bearing systems — the learning engine, legacy `lm7` weak spots, legacy
+`lm7_srs`, legacy per-section thresholds, and any future replacement. Telemetry and engagement data
+stay out of scope. Legacy systems are recorded as **Axis-B current reality**, **legacy-active**,
+**non-conforming**, and **frozen for replacement rather than retrofit**.
+
+**What is NOT resolved:** the keying divergence itself. Scope was decided; convergence was not.
+**Domain coverage authorizes no modification of any legacy system** — Engineering later owns
+replacement and convergence mechanics. → ME-027, ME-057, ME-058.
+
+### 8.4 Evidence weight — asserted, absent, now semantically ratified
+ADR-0022: *"evidence weight (mastery multiplier) and selection weight are separate modules."*
+Lesson Flow Canon §5.3 names the mastery reducer as evidence weight's home; §5.5 defines a
+`LessonEvidenceProfile` multiplier. **The reducer implements no weighting.** The module that does
+(`lexique-memory.ts`, production 1.0 / recognition 0.25 / …) is explicitly *not* the reducer and is
+unwired.
+
+**FQ-2 — SEMANTIC DECISION RESOLVED (2026-07-26).** Answer **A**: **differential strength exists and is
+attached at admission.** Production is stronger than recognition for independent use; recognition is
+valid evidence but proves neither independent production nor ownership; **recognition-only evidence must
+never independently reach the longest review interval or the strongest mastery claim**; strength and
+selection priority stay separate concepts.
+
+**What is NOT resolved:**
+
+| | |
+|---|---|
+| **The reducer still has no weighting** | Unchanged. A recognition-only item can still reach the 30-day interval — **now explicitly non-conforming** |
+| ADR-0022's *"mastery multiplier"* wording and Lesson Flow Canon §5.3's placement | **Claim RETIRED semantically and both source texts AMENDED 2026-07-26** — ADR-0022 scope-amended (not repealed); §5.3 no longer locates the mechanism in the reducer; §5.5 multipliers marked illustrative candidates. **Separation principle preserved.** |
+| `lexique-memory.ts` weights (1.0 / 0.25 / 0.7 / 0.7 / 0.5) | **Candidate values only — none ratified** |
+| Any exact number | **Zero founder-locked** (FQ-7) |
+
+→ ME-017, ME-020, ME-045.
+
+### 8.5 "9-state mastery" / mastery vocabulary
+No nine-member set exists. Six candidate ladders have 3, 4, 8, 5, 3 and 4 members.
+
+**FQ-5 — SEMANTIC DECISION RESOLVED (2026-07-26).** Answer **C**: **counter-derived projection is the
+semantic source of truth; Cairn has no single universal named mastery ladder.** "9-state" is
+`SUPERSEDED`. Domain consumers **may** define purpose-named derived projections (Mon Lexique · Practice ·
+Curriculum readiness · learner-facing UX) that name their purpose and mapping, never claim universality,
+and are never substituted for one another. **The eight Lexique lifecycle statuses were explicitly NOT
+adopted** — existence and test coverage do not confer universality.
+
+**Docs-drift RECONCILED 2026-07-26.** The precision-policy note's §4 deferral is **closed**, the Mastery
+Model gap is **resolved**, `Unknowns` **U8 is closed**, and the Mastery Matrix warning was re-framed.
+**`docs/learning-engine-v1.md` was inspected in full and left unchanged because it already conforms** —
+its five-state ladder is explicitly labelled *planning vocabulary*, states that it does not change the
+runtime field, and supplies its own mapping, satisfying FQ-5's projection constraints. An earlier
+amendment list named it in error by conflating the **`itemRegistry` content status field** with a
+**mastery projection** (see §20). **What remains NOT resolved is the runtime, not the docs:** nothing
+stores a universal ladder, so runtime conforms **by absence, not by design**.
+→ ME-033, ME-036, ME-037, ME-039.
+
+### 8.7 Assistance — ruled, unrepresented
+The hint ladder is canonical (0 → 1 → 2, never copy-ready), but `LearningEvent` carries **no hint or
+assistance field**. A hinted and an unhinted success are indistinguishable to mastery.
+
+**FQ-3 — SEMANTIC DECISION RESOLVED (2026-07-26).** Answer **C**: **assistance changes what a success
+proves, not whether the learner action exists.** Assisted success is valid evidence of *supported*
+performance and must not be treated as equivalent to independent production. Reveal, answer exposure,
+model answer and copy-ready output are **support events, not evidence**. **Unknown assistance does not
+invalidate historical evidence** — it only bars an independent-production claim. **Prompt-fade history is
+not a substitute for attempt-level attribution.**
+
+**What is NOT resolved:** **no attempt-level assistance field exists.** Fields, event representation, UX
+treatment and strength calculation are **Engineering and UX**, both unauthored. → ME-021, ME-022.
+
+### 8.8 Weakness permanence — accidental, now named as such
+`isWeak` is recomputed from monotone counters, so once `wrongCount >= 3` an item is weak **forever**,
+regardless of later success. Verified by reading every counter mutation: all are increments.
+
+**FQ-4 — SEMANTIC DECISION RESOLVED (2026-07-26).** Answer **A**: **`currently weak` is recoverable**
+(successful repair **plus** spaced confirmation); **`ever weak` persists** as a caution signal only;
+**historical weakness must never keep an item permanently in Challenge**; repair never instantly
+establishes strong mastery.
+
+**What is NOT resolved:** **the reducer's permanence is confirmed as Axis-B reality, not intended
+semantics — and is not authorized for change.** Clearing conditions, counters, time windows and data
+structures are **Engineering and Curriculum**, both unauthored. → ME-030, ME-042, ME-046.
+
+### 8.9 Constants — every number stays tunable
+**FQ-7 — SEMANTIC DECISION RESOLVED (2026-07-26).** Answer **A**: **eight semantic promises are
+founder-locked**; **twelve classes of numbers are tunable**; **no exact number becomes Canonical.**
+
+**What is NOT resolved:** nothing about the values themselves. Every constant in the domain remains an
+implementation value with no founder ruling behind it — that is now the *ratified* state rather than an
+accident. **Founder-locked exact values: zero.** → ME-013, ME-026, ME-029, ME-034, ME-045.
+
+### 8.6 Skip's due-date treatment
+Audit B12 flagged the old behaviour and called the near-miss case *documented* but the skip case
+*questionable*. Current code keeps both due now. The skip semantics were never separately decided.
+→ ME-013/ME-035.
+
+---
+
+## 9. Cross-domain overlaps
+
+| Overlap | Resolution |
+|---|---|
+| Content owns feedback policy; M&E owns what a result *means* | Two languages, one bridge: `ErrorTagCode` (stored) → `FeedbackVerdict` (learner-facing). The learner never sees a raw code. |
+| Curriculum owns sequencing; M&E owns admissibility | Staged strictness by band is **Curriculum's**, routed and stopped |
+| Engineering owns schemas; M&E owns semantics | The chain-aggregation rule currently lives in the controller — a placement question, routed |
+| Social owns the negative bound only | Positive social evidence semantics are M&E's, under a contract that does not exist |
+| Privacy owns retention; M&E owns the record | `userAnswer` puts raw learner text inside the evidence record — the two collide directly |
+| Product owns stage exposure; M&E owns meaning | Mon Lexique's public availability is Product's `OPEN` decision |
+
+---
+
+## 10. Canon-versus-code divergences
+
+| # | Canon says | Code does | Severity |
+|---|---|---|---|
+| D1 | `spelling_near_miss` is precision (ADR-0021) | Accrues weakness | **High — active ADR contradicted** |
+| D2 | Evidence weight is a multiplier in the reducer (ADR-0022, §5.3) | No weighting exists | **High — canon asserts a non-existent mechanism** |
+| D3 | Only verified learner-sourced error creates weakness | No error-source field; all non-success attributed to the learner | **High — invariant unimplementable as written** |
+| D4 | Repair eligibility, flow, spaced confirmation (`LOCKED DEFAULT`) | Not implemented at all | Medium — policy-only, honestly labelled |
+| D5 | Feedback must pass through `FeedbackVerdict` | The shipped v1 renderer computes feedback locally and bypasses the bridge | Medium |
+| D6 | Readiness Gate (design canon §7) | Zero code | Low — labelled PLANNED |
+| D7 | Daily Review should read engine projections (ADR-0020 consequence) | Legacy `lm7` `dr:{date,count}` | Medium |
+
+---
+
+## 11. Conceptual-versus-runtime divergences
+
+- **Named state ladders vs counters** — five conceptual ladders, one counter record (§8.5).
+- **"Mastery states" as an input to Mon Lexique** (`learning-engine-v1.md:241`) vs a three-value
+  projection in code.
+- **Lexique Memory's 8 intrinsic statuses** — a rich conceptual model that no shipped surface reads.
+- **`LessonEvidenceProfile`** — a per-lesson multiplier with no runtime type.
+- **Carryover stage table** — a five-stage lifecycle explicitly marked `PROPOSAL — revisable`, with a
+  canonical correction saying no numeric carryover window is canonized. A reader could easily take
+  the table as canon.
+
+---
+
+## 12. Status conflicts
+
+| Item | Conflict |
+|---|---|
+| ADR-0021 | Decision paragraph states the pre-B7 rule; Consequences acknowledges the refinement. Both `active`. |
+| `Mastery Model.md` | `implementation_status: partial`, `verification_status: unit-tested` — accurate; but its bucket table is stale (§8.1) |
+| `Feedback and Scoring Philosophy.md` | `last_updated: 2026-07-14`, predates nothing relevant — the stale precision claim was never revisited |
+| Precision-policy note | Correctly labelled *"Status: implemented"* for a behaviour later changed by B7 |
+| Legacy `MASTERY_THRESHOLDS` | Live in the shipped build, absent from every canon document in this domain |
+
+---
+
+## 13. Enforcement gaps
+
+| Rule | Stated by | Enforced by | Gap |
+|---|---|---|---|
+| Attribution / error source | `[HARD INVARIANT]` + **founder FQ-6 (2026-07-26)** | nothing | **Total — ratified, unimplemented** |
+| Admissibility gate | **founder FQ-6 (2026-07-26)** | nothing | **Total — ratified, unimplemented** |
+| Invalidation (refuse at admission + compensating record) | **founder FQ-6 (2026-07-26)** | nothing | **Total — ratified, unimplemented** |
+| Meaning-based polarity | **founder FQ-1 (2026-07-26)** | nothing (the tag cannot carry meaning) | **Total — ratified, unimplemented** |
+| Evidence weighting | ADR-0022, design canon | nothing | **Total** |
+| Repair eligibility & flow | `[LOCKED DEFAULT]` | nothing | **Total** |
+| Confidence | nobody | nothing | Concept absent |
+| Precision policy | ADR-0021 | unit tests — **but implementing a different rule than the ADR states** | Divergent |
+| Tag immutability | ADR-0013 | `validate:content` hard error, bidirectional | **None — strongest in the domain** |
+| No XP/streak language | ADR-0001 | build-time copy guards | **None** |
+| `recycled` is not a status | canon | test asserts its absence from the status list | **None** |
+
+---
+
+## 14. Unowned dependencies
+
+Curriculum (staged strictness, readiness, evidence distribution) · Engineering (schemas, invalidation
+mechanism, store convergence, aggregation placement) · Privacy/Legal (retention of `userAnswer`,
+lawful basis, minors, export depth) · Operations & QA (audit cadence, incident handling) ·
+UX (how weakness and repair are shown without punitive tone) · **the social evidence contract itself**.
+
+None invented here.
+
+---
+
+## 15. Founder decisions required
+
+**All eight answered (2026-07-26), semantics only:**
+
+| Round 1 | Round 2 |
+|---|---|
+| **FQ-1** meaning-based polarity → **C** | **FQ-2** differential evidence strength → **A** |
+| **FQ-6** invalidation model → **A** | **FQ-3** assistance scopes the claim → **C** |
+| **FQ-8** domain scope → **A** | **FQ-4** recoverable weakness → **A** |
+| | **FQ-5** mastery vocabulary → **C** |
+| | **FQ-7** locked promises / tunable numbers → **A** |
+| | **FQ-1 clarification** — tags never carry polarity |
+
+**Zero founder questions remain.** The Round-1 `accent_only` open item is **closed** by the FQ-1
+clarification — generalized, not answered separately, and **no ninth question was created**.
+
+**Three of five founder answers were `C` or otherwise reframed the question** (FQ-1, FQ-3, FQ-5): the
+founder declined the offered A/B framing in each case. That is recorded so no later reader mistakes a
+Draft recommendation for the ruling.
+
+Full form in the Founder Review Surface; the ratification record is
+[`MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md`](MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md).
+
+---
+
+## 16. Decisions not requiring founder input
+
+- Restating an inherited invariant (all `INH-*` rows).
+- Vocabulary discipline (§3 of the Bible) — editorial.
+- Correcting a stale count or a stale path — mechanical.
+- Recording that a mechanism does not exist — factual.
+- Routing a question to an unauthored layer — the routing rule already decided this.
+- Anything Engineering owns (schema shape, module placement, algorithm choice).
+
+---
+
+## 17. Source adoption plan
+
+| Source | Adopt as |
+|---|---|
+| Founder Q2, R8 | Inherited, verbatim, never re-litigated |
+| ADRs 0009/0010/0013/0016/0020/0022/0023 | Inherited within each ADR's own domain |
+| **ADR-0021** | Inherited **as a decision-in-need-of-amendment** — quoted, contradiction flagged, not silently overwritten |
+| Lesson Flow Canon §5.3/§5.5/§1.3 | Inherited as design intent; **not** as an implementation claim |
+| Vault `02_LEARNING_SYSTEM` policy-hardening blocks | Inherited as the current policy home for repair, non-signals, decay bounds |
+| `docs/status/*` checkpoints and audits | Axis B only |
+| Runtime code | Axis B only; recorded in the Current Reality Map |
+| Legacy shipped surface | Recorded as reality; **its scope is FQ-8, not assumed** |
+
+---
+
+## 18. Supersession candidates
+
+**ALL APPLIED — 2026-07-26**, under a separate founder authorization, as one atomic patch (§20). This
+section is retained as the record of *what was required and how each item was discharged*.
+**Reconciling documentation changed no runtime behaviour.**
+
+1. **ADR-0021 Decision paragraph** — **APPLIED 2026-07-26.** Scope-amended, **not repealed**: the
+   original Decision text is preserved verbatim, the fixed three-member list is marked historical, and an
+   appended block states that no tag determines polarity. `status: active` / `canon_status: canonical`
+   retained; the broken `source_of_truth` path was corrected. Its precision *principle* stands and was
+   vindicated.
+2. **`Mastery Model.md` bucket table**, **`Feedback and Scoring Philosophy.md` near-miss line**,
+   **precision-policy §2 table** — **APPLIED 2026-07-26**, together with the following **eight**
+   later-discovered polarity-family sources: `l0-l24 founder build matrix`, `Error Tracking System`,
+   `Exercise Error Matrix`, `Mastery Matrix`, `Interaction Patterns`, `Canonical Context Pack`,
+   `Learning Engine Context Pack`, `Repository Document Index`. Counting ADR-0021 (item 1) and these
+   three initially known companions, the polarity family is **twelve documents**; the complete
+   path-by-path inventory and its derived totals are in **§20.1**.
+3. **"9-state mastery"** — **APPLIED 2026-07-26.** The phrase is retired as a live claim: the
+   precision-policy §4 deferral is closed, the Mastery Model gap is resolved, `Unknowns` **U8 is closed**,
+   and the Mastery Matrix warning was re-framed. Occurrences that remain are **quoted or visibly
+   historical**, never live.
+4. **`learning-engine-v1.md` — NO AMENDMENT REQUIRED; file left unchanged.** It was **inspected in full**
+   and **already conforms**: its five-state ladder is explicitly labelled *planning vocabulary*, it states
+   that it does not change the runtime field, and it supplies its own mapping — satisfying FQ-5's
+   projection constraints. Its line-100 note defers a **`itemRegistry` content-status-field** question,
+   which FQ-5 does **not** settle. **This item appeared on an earlier amendment list in error**, by
+   conflating a content status field with a mastery projection (§20).
+5. **ADR-0022 weighting clause + Lesson Flow Canon §5.3** — **APPLIED 2026-07-26.** ADR-0022 was
+   **scope-amended, not repealed**; §5.3 no longer locates the mechanism in the reducer; §5.5's
+   multipliers are marked **illustrative candidates, not ratified**. **The separation principle survived
+   the amendment intact** — only the "already exists / lives in the reducer" assertion was retired.
+
+---
+
+## 19. Promotion blockers — ALL CLEARED; Bible promoted 2026-07-27
+
+1. ~~FQ-1, FQ-6, FQ-8 unanswered~~ — **CLEARED 2026-07-26** (Round 1).
+2. ~~FQ-2, FQ-3, FQ-4, FQ-5, FQ-7 unanswered~~ — **CLEARED 2026-07-26** (Round 2). **All eight answered.**
+3. ~~The `accent_only` exception~~ — **CLEARED** by the FQ-1 general clarification.
+4. ~~Source amendments NOT applied~~ — **CLEARED 2026-07-26.** Eighteen source documents reconciled
+   atomically (§20); both ADRs **scope-amended, not repealed**; all historical wording preserved.
+5. ~~**Independent adversarial review** (required, §41 of the Bible)~~ — **CLEARED 2026-07-27.**
+   Performed 2026-07-27 against `13cac69`, verdict `FAIL — PROMOTION BLOCKED` (stale live-state
+   wording in Bible §39/§40); blocking findings remediated (`c103ea5`, `db65db0`); **independent
+   follow-up review of the remediated tip passed: `PASS WITH NON-BLOCKING FINDINGS`** (0 BLOCK,
+   0 MAJOR, 2 NOTE; recommendation `PROMOTE` —
+   [`MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md`](MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md)).
+6. Curriculum, Engineering, Privacy and Operations are unauthored — several routed questions have no
+   destination yet. This blocks *completeness*, not promotion, and is recorded as such — it survives
+   promotion unchanged.
+
+> **Every promotion blocker is cleared, and the Bible was promoted to Canonical on 2026-07-27
+> (founder-authorized).** Promotion is a documentation lifecycle event, **not** implementation and
+> **not** runtime conformance: no code, schema, tag, threshold, interval, validator or runtime
+> changed; every implementation divergence in this file remains live; the downstream unauthored
+> layers (item 6) remain unauthored; and PRJ-009 (positive Social evidence contract) still does not
+> exist.
+
+---
+
+## 20. Source reconciliation — final scope and how the count moved
+
+**Applied 2026-07-26 as one atomic patch. The counting history is recorded rather than tidied away,
+because two of the three counts I published were wrong.**
+
+| Stage | Count | What happened |
+|---|---|---|
+| Source candidates initially named | **7** | The Round-2 report said *"five documents"* — **wrong**; it collapsed "three vault/status docs" into a phrase and dropped two named paths |
+| Amendment-required among those candidates | **6** | `docs/learning-engine-v1.md` proved to **conform** and was removed from scope |
+| First expanded source scope | **13** | A cross-source audit found **7 further** documents carrying the same three retired claims. **This 7 is a cross-family count — it spans all three retired claim families and was never the polarity-family member count** (§20.1) |
+| Further stale sources found *after* the 13 were edited | **5** | The audit that found the 7 searched **phrases, not the claim family**; five more surfaced only on the repository-wide sweep, and the stop rule halted the commit |
+| **Final amendment source scope** | **18** | 15 operator-vault + 3 ordinary `docs/` |
+| Package updates | **4** | Bible · Decision Matrix · this file · Founder Ratification |
+| **Atomic patch total** | **22** | One commit; no partial state |
+
+**Final classification:** vault source files **15** · ordinary `docs/` source files **3** · package
+files **4** · total changed **22** · files under `docs/` **7** (3 source + 4 package).
+
+> **A prior classification error is also recorded:** the read-only plan said *"9 vault + 4 docs."* The
+> correct split of the 13 was **10 vault + 3 docs** — `docs/architecture/l0-l24-founder-build-matrix-v0.md`
+> and `docs/status/founder-self-learning-mastery-precision-policy.md` are ordinary `docs/` paths, not
+> vault paths.
+
+**`docs/learning-engine-v1.md` — inspected in full, left UNCHANGED.** It carries no "9-state" reference,
+no weighting-mechanism claim, and no universal-ladder claim. Its five-state ladder is explicitly labelled
+*planning vocabulary*, states *"This doc does not change the runtime field,"* and supplies its own
+mapping — so it already satisfies FQ-5's projection constraints. It appeared on an earlier amendment list
+because that list conflated the **`itemRegistry` content status field** with a **mastery projection**.
+
+**The five late-discovered sources** (`Mastery Matrix`, `Interaction Patterns`, `Error Tracking System`,
+`Canonical Context Pack`, `Repository Document Index`) were **not** modified until the founder expanded
+the authorization. Two were **agent context packs** — the files a future session loads first. **This 5 is
+a cross-family figure too** — sources found after the 13 had already been edited, across all three retired
+claim families. It partitions the sweep by *when* a source was found; **§20.1 partitions the polarity
+family by membership**. Both are correct and neither is the other.
+
+---
+
+### 20.1 Polarity-family source inventory (FQ-1) — the complete set
+
+**This subsection is the single owner of the polarity-family inventory.** The Bible and the Decision
+Matrix point here rather than restating a count, so the number cannot drift between package files again.
+
+**ADR-0021 — the ADR whose member list was scope-amended (1)**
+
+1. `obsidian-product-brain/ACTIVE_CODEX/09_DECISIONS/ADR-0021 mastery-precision-near-miss-not-failure.md`
+
+**Initially known companion sources (3)** — the three documents named in the §8.1 contradiction table,
+rows 2–4:
+
+2. `docs/status/founder-self-learning-mastery-precision-policy.md` — §2 precision table
+3. `obsidian-product-brain/ACTIVE_CODEX/02_LEARNING_SYSTEM/Mastery Model.md` — bucket table
+4. `obsidian-product-brain/ACTIVE_CODEX/02_LEARNING_SYSTEM/Feedback and Scoring Philosophy.md` — near-miss line
+
+**Later-discovered sources (8)** — found only on the repository-wide claim-family sweep, and **not**
+modified until the founder expanded the authorization:
+
+5. `docs/architecture/l0-l24-founder-build-matrix-v0.md`
+6. `obsidian-product-brain/ACTIVE_CODEX/02_LEARNING_SYSTEM/Error Tracking System.md`
+7. `obsidian-product-brain/ACTIVE_CODEX/03_EXERCISES/Exercise Error Matrix.md`
+8. `obsidian-product-brain/ACTIVE_CODEX/05_MATRICES/Mastery Matrix.md`
+9. `obsidian-product-brain/ACTIVE_CODEX/07_DESIGN/Interaction Patterns.md`
+10. `obsidian-product-brain/ACTIVE_CODEX/11_AGENT_CONTEXT/Canonical Context Pack.md`
+11. `obsidian-product-brain/ACTIVE_CODEX/11_AGENT_CONTEXT/Learning Engine Context Pack.md`
+12. `obsidian-product-brain/ACTIVE_CODEX/95_SOURCE_LEDGER/Repository Document Index.md`
+
+**Derived totals — read off the list above, not carried from any earlier report:**
+
+| Quantity | Value |
+|---|---|
+| Total polarity-family sources | **12** |
+| Sources beyond ADR-0021 | **11** |
+| Later-discovered beyond the three initial companions | **8** |
+
+> **Why this subsection exists.** The same set was previously mis-stated at **four sites across three
+> package files**: *"seven further"* in the Bible (§15) and in Decision Matrix **ME-012**, and *"four
+> further"* twice in this file (§8.1 and §18) — while the member list in §18 already enumerated **eight**
+> later-discovered sources. The wrong numerals were **copied**, never re-derived. The **7** in the stage
+> table above is a *cross-family* count — documents carrying **any** of the three retired claim families —
+> and was never the polarity-family member count. Corrected 2026-07-26 by
+> `docs(mastery): correct polarity inventory and gap ordering`. **No founder decision, no semantic rule,
+> no source document and no runtime behaviour changed in that correction.**

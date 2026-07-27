@@ -83,7 +83,7 @@ Every agent, every task, in order:
 | "What is in the current APK scope?" | B | **`docs/STATUS.md` + `docs/DEV_APK_MVP_CANON.md`** (current-build chain, still valid here) |
 | "What does the renderer actually do today?" | B | **Code and tests** establish the fact; record any divergence |
 | "What problem does Cairn solve?" | A | **Product Brain v1.0** (DOC-001) |
-| "Does a forum reply count as evidence?" | A | **Mastery & Evidence Bible** — `NOT YET AUTHORED`; Social Charter §13 supplies the negative bound → **stop and report** |
+| "Does a forum reply count as evidence?" | A | **Mastery & Evidence Bible v1.0 (DOC-051, Canonical)** — engagement is never evidence; a pedagogical action would require the separately ratified evidence contract that does not exist (PRJ-009); Social Charter §13 supplies the negative bound → **today the answer is no** |
 
 ## 3. Canonical document registry
 
@@ -143,8 +143,15 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | DOC-048 | Canon Coverage & Gaps v0.1 | `docs/canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md` | 0.1 | Supporting assessment | Project Canon | Coverage matrix, authoring sequence, paper-completeness | Domain decisions | DOC-045 | — | NONE |
 | DOC-049 | **Project Canon Founder Ratification v0.1** | `docs/canon/CAIRN_PROJECT_CANON_FOUNDER_RATIFICATION_v0.1.md` | 0.1 | Supporting record (**`FOUNDER_LOCKED` decisions**, 2026-07-26) | Project Canon | Founder decisions Q1–Q4 | Any domain decision; authoring any Bible | DOC-045 | — | NONE |
 | DOC-050 | **Project Canon Sign-Off Review v0.1** | `docs/canon/CAIRN_PROJECT_CANON_SIGNOFF_REVIEW_v0.1.md` | 0.1 | Supporting review record — **not independent product canon** | Project Canon | Independent sign-off findings; reviewed head `50a8ddd`; verdict `READY WITH TARGETED CORRECTIONS`; **promotion corrections subsequently applied** | Any domain decision; promotion authority | DOC-045 | — | NONE |
+| DOC-051 | **Cairn Mastery & Evidence Bible v1.0** | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md` | 1.0 | **`CANONICAL`** (signed off 2026-07-27, after independent adversarial review `PASS WITH NON-BLOCKING FINDINGS`) | Mastery & Evidence | Evidence semantics across every evidence-bearing Cairn system (FQ-8): admissibility · attribution · polarity · evidence strength and confidence · assistance effects · weakness and repair semantics · mastery-representation meaning and transitions · aggregation · invalidation · solo/AI/future-social equivalence · the semantic contract consumed by runtime | Content authoring and pedagogical targets (DOC-004) · sequencing/readiness (Curriculum, unauthored) · schemas, storage, algorithms, enforcement (Engineering, unauthored; in-domain ADRs bind) · Social boundaries (DOC-010 — §13 negative evidence bound only) · privacy interpretation · ops execution. **Canonical ≠ implemented: legacy systems remain non-conforming Axis-B reality, frozen, not authorized for modification** | DOC-001, DOC-004, DOC-010 (§13 negative bound), DOC-015 (active in-domain ADRs 0009/0010/0013/0016/0020/0021/0022/0023) | DOC-052…DOC-057 | NONE |
+| DOC-052 | M&E Decision Matrix | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_DECISION_MATRIX_v0.1.md` | 0.1 | Supporting record | Mastery & Evidence | ME-001…ME-060 decision register | Evidence policy | DOC-051 | — | NONE |
+| DOC-053 | M&E Source Conflict & Gap Map | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_SOURCE_CONFLICT_AND_GAP_MAP_v0.1.md` | 0.1 | Supporting record | Mastery & Evidence | Provenance, conflicts, gaps, polarity-family inventory (§20.1) | Evidence policy | DOC-051 | — | NONE |
+| DOC-054 | M&E Current Reality & Enforcement Map | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_CURRENT_REALITY_AND_ENFORCEMENT_MAP_v0.1.md` | 0.1 | Supporting record (Axis B only) | Mastery & Evidence | Runtime facts, divergences, enforcement state | Evidence policy; any intent | DOC-051 | — | `EVIDENCE` |
+| DOC-055 | M&E Founder Review Surface | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_REVIEW_SURFACE_v0.1.md` | 0.1 | Supporting record (question-card provenance) | Mastery & Evidence | FQ-1…FQ-8 question cards | Evidence policy | DOC-051 | — | NONE |
+| DOC-056 | M&E Founder Ratification | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` | 0.1 | Supporting record (highest-authority M&E decision log) | Mastery & Evidence | FQ-1…FQ-8 founder decisions + clarification | Evidence policy narrative | DOC-051 | — | NONE |
+| DOC-057 | **M&E Independent Adversarial Review** | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md` | 0.1 | Supporting review record — verdict `PASS WITH NON-BLOCKING FINDINGS` (2026-07-27, reviewed tip `db65db0`) | Mastery & Evidence | Independent-review evidence for the DOC-051 promotion | Any domain decision; promotion authority | DOC-051 | — | NONE |
 
-> **Supporting ≠ Canonical.** DOC-002/003, DOC-005…DOC-009, DOC-011…DOC-014 support Canonical documents but are **not themselves product canon**. They are evidence and decision records.
+> **Supporting ≠ Canonical.** DOC-002/003, DOC-005…DOC-009, DOC-011…DOC-014, and DOC-052…DOC-057 support Canonical documents but are **not themselves product canon**. They are evidence and decision records.
 
 ## 4. Documentation layers
 
@@ -153,7 +160,7 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | **Product Brain** | ✅ Authored | DOC-001 | Canonical v1.0 |
 | **Content Bible** | ✅ Authored | DOC-004 | Canonical v1.0, signed off 2026-07-24 |
 | **Social Layer** | ✅ Authored | DOC-010 | Canonical v1.0, signed off 2026-07-25 |
-| **Mastery & Evidence Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | **Founder-created layer (Q2, 2026-07-26).** Single authoritative owner of the semantic evidence and mastery model. Fragments today: ADR-0009/0020/0021, `02_LEARNING_SYSTEM/Mastery Model`, `05_MATRICES/Mastery Matrix`, `03_EXERCISES/Exercise Evidence Matrix`, DOC-004 item semantics, DOC-010 §13 negative bound. **Must not be merged into Curriculum or Engineering.** |
+| **Mastery & Evidence Bible** | ✅ **Authored — Canonical v1.0** (signed off 2026-07-27) | DOC-051 | **Founder-created layer (Q2, 2026-07-26); authored and promoted 2026-07-27** after founder ratification (FQ-1…FQ-8), source reconciliation, and an independent adversarial review (`PASS WITH NON-BLOCKING FINDINGS`, DOC-057). Single authoritative owner of the semantic evidence and mastery model, across every evidence-bearing system (FQ-8). Supporting records DOC-052…DOC-057. **Canonical ≠ implemented: the shipped runtime remains non-conforming Axis-B reality (DOC-054), and no implementation is authorized.** **Must not be merged into Curriculum or Engineering.** |
 | **Curriculum Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | **Substantial fragments exist**: DOC-027 (26 vault notes: band map, syllabus design rules, grammar/vocabulary/phenomena progression, L0–L17), DOC-028 (30 lesson/compact specs). No single authoritative owner for *sequencing policy*. |
 | **Brand Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-029: `Cairn Brand Direction`, `Visual Language`, `Copy and Tone`, `Naming and Brand Registry`; plus `Visual_Design_Canon.md` (DOC-037). Le Mot → Cairn naming migration unresolved (PRJ-030). |
 | **UX / Experience Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-029: `Navigation Model`, `Lesson Player`, `Home and Journey`, `Design Inventory`, `Mon Lexique UI`, `Interaction Patterns`, `Accessibility`, `V4 Studies Disposition`. V4-B direction selected but deferred. |
@@ -177,8 +184,8 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | What tone and visual language are used? | **Brand Bible** | PB (tone canon), ADR-0002 | Content Bible | ⚠️ `NOT YET AUTHORED` — fragments DOC-029 |
 | What screen or flow should exist? | **UX / Experience Bible** | Brand, Content, Engineering | Content Bible, ADRs alone | ⚠️ `NOT YET AUTHORED` — fragments DOC-029 |
 | How is data stored? | **Engineering / System Bible** | ADRs (binding), Privacy | Product Brain | ⚠️ `NOT YET AUTHORED` — ADRs partially bind |
-| What counts as mastery evidence? | **Mastery & Evidence Bible** (founder-assigned Q2, 2026-07-26) | Content (pedagogical target), Curriculum (readiness), Engineering (enforcement), ADR-0009/0020/0021, Social §13 (negative bound) | Content, Curriculum, Engineering, or Social **alone**; Social never owns positive evidence semantics | ⚠️ Owner assigned; `NOT YET AUTHORED` — **PRJ-014** |
-| Is an action admissible as evidence, and at what strength? | **Mastery & Evidence Bible** | Content, Curriculum, Engineering | Social Layer | ⚠️ `NOT YET AUTHORED` |
+| What counts as mastery evidence? | **Mastery & Evidence Bible v1.0 (DOC-051)** | Content (pedagogical target), Curriculum (readiness), Engineering (enforcement), ADR-0009/0020/0021, Social §13 (negative bound) | Content, Curriculum, Engineering, or Social **alone**; Social never owns positive evidence semantics | ✅ Owned — Canonical 2026-07-27 (**PRJ-014** complete as a documentation-owner item) |
+| Is an action admissible as evidence, and at what strength? | **Mastery & Evidence Bible v1.0 (DOC-051)** | Content, Curriculum, Engineering | Social Layer | ✅ Owned — semantics Canonical; exact numeric strengths remain `TUNABLE`, none founder-locked |
 | How is French QA performed? | Content Bible (policy) + **Operations & QA** (execution) | Operations fragments | Curriculum | 🟡 Policy owned; executable gate blocked (PRJ-010, PRJ-011) |
 | What is required before invited-learner exposure? | Content Bible (Stage C) + **Operations & QA** | Privacy/Legal | Social | 🟡 Partly owned |
 | Are users allowed to interact socially? | Social Layer (DOC-010) | PB, Privacy | Content, Engineering | ✅ Owned |
@@ -205,7 +212,7 @@ Each route: **(1) first read · (2) supporting · (3) authority check · (4) imp
 
 **Runtime engineering** — (1) ADRs (DOC-015) — several are binding. (2) DOC-030, DOC-025, DOC-043, DOC-032 (`Spec Runtime Divergences`, `Technical Debt`). (3) For "what does it do?", **code and tests outrank spec**. (4) Existing contracts constrain; they do not authorize new features. (5) Stop if canon and code diverge with no source resolving which changes.
 
-**Mastery / evidence** — (1) **Mastery & Evidence Bible — `DEPENDENCY — DOCUMENT NOT YET AUTHORED`** (owner assigned by Q2, 2026-07-26). (2) Until it exists: ADR-0009, ADR-0020, ADR-0021 (binding), DOC-004 item semantics, `02_LEARNING_SYSTEM/Mastery Model`, `05_MATRICES/Mastery Matrix`, `03_EXERCISES/Exercise Evidence Matrix`, Social §13 (negative bound). (3) The Mastery & Evidence Bible owns admissibility, strength, attribution, state semantics and transitions; **no other layer may decide them**. (4) Events are the source of truth; Engineering owns enforcement. (5) **Stop** if the task would let a non-pedagogical signal become evidence, requires the non-existent Social evidence contract (PRJ-009), or requires a semantic ruling the unwritten Bible must make.
+**Mastery / evidence** — (1) **DOC-051 Mastery & Evidence Bible v1.0 (Canonical, signed off 2026-07-27)**. (2) DOC-052 (ME-### register), DOC-054 (Axis-B reality and divergences), DOC-053 (provenance/gaps), DOC-056 (founder decisions), DOC-057 (independent review); in-domain ADRs 0009/0020/0021 (binding); Social §13 (negative bound). (3) DOC-051 owns admissibility, strength, attribution, state semantics and transitions; **no other layer may decide them**. (4) Events are the source of truth; Engineering owns enforcement; **the Bible is Canonical but unimplemented — the shipped runtime is non-conforming (DOC-054), and Canonical status opens no code work**. (5) **Stop** if the task would let a non-pedagogical signal become evidence, requires the non-existent Social evidence contract (PRJ-009), or would modify any evidence-bearing runtime (legacy systems are frozen; implementation requires a new founder scoped opening).
 
 **Social work** — (1) DOC-010. (2) DOC-011 (decisions), DOC-012 (SOC-###), DOC-013/014. (3) Social owns boundaries; Operations owns moderation; Privacy owns data. (4) **`PLANNED` = 0. Nothing is authorized.** (5) Stop unless a founder scoped opening with all ten elements exists (Charter §19 / R11).
 
@@ -275,17 +282,18 @@ Mapping note: vault `canon_status: canonical` ≈ decision status `CANONICAL`; `
        │                                                                    │
        ▼                                                                    ▼
    ┌────────────────────────────┐                ┌──────────────────────────────────────┐
-   │ Curriculum Bible           │  DEPENDENCY —  │ ★ MASTERY & EVIDENCE BIBLE           │
-   │ sequencing · readiness     │  NOT YET       │   DEPENDENCY — NOT YET AUTHORED      │
-   │ frags: DOC-027, DOC-028    │  AUTHORED      │   founder-assigned owner (Q2)        │
-   └─────────────┬──────────────┘                │   owns: admissibility · strength ·   │
-                 │                               │   attribution · state semantics ·    │
-                 │ consumes semantics            │   transitions · equivalence          │
-                 └──────────────────────────────►│   frags: ADR-0009/0020/0021,         │
-                                                 │   Mastery Model/Matrix, DOC-004,     │
-   ┌────────────────────────────┐                │   DOC-010 §13 (negative bound only)  │
-   │ Engineering / System       ├───enforces────►│   PRJ-014 · feeds PRJ-009            │
-   └────────────────────────────┘                └──────────────────────────────────────┘
+   │ Curriculum Bible           │  DEPENDENCY —  │ ★ DOC-051 MASTERY & EVIDENCE BIBLE   │
+   │ sequencing · readiness     │  NOT YET       │   v1.0 — CANONICAL (2026-07-27)      │
+   │ frags: DOC-027, DOC-028    │  AUTHORED      │   owns: admissibility · strength ·   │
+   └─────────────┬──────────────┘                │   attribution · state semantics ·    │
+                 │                               │   transitions · equivalence          │
+                 │ consumes semantics            │   supporting: DOC-052…DOC-057        │
+                 └──────────────────────────────►│   deps: DOC-001, DOC-004, in-domain  │
+                                                 │   ADRs, DOC-010 §13 (negative bound) │
+   ┌────────────────────────────┐                │   PRJ-014 ✅ · feeds PRJ-009 (open)  │
+   │ Engineering / System       ├───enforces────►│   Canonical ≠ implemented: runtime   │
+   └────────────────────────────┘                │   remains non-conforming (DOC-054)   │
+                                                 └──────────────────────────────────────┘
 
    ┌────────────────────┐   ┌────────────────────┐   ┌──────────────────────┐
    │ Brand Bible        │   │ UX / Experience    │   │ Engineering / System │   all three:
@@ -414,8 +422,8 @@ Record it; do not promote it. Required fields:
 
 Summary only — details in DOC-047 and DOC-048.
 
-- **Seven unauthored layers**: **Mastery & Evidence**, Curriculum, Brand, Engineering/System, Privacy/Legal, UX/Experience, Operations & QA (plus Future Systems Register).
-- **Mastery/evidence ownership is now assigned** to a dedicated Mastery & Evidence Bible (Q2, 2026-07-26) — but the document is **not yet authored** (PRJ-014).
+- **Six unauthored layers**: Curriculum, Brand, Engineering/System, Privacy/Legal, UX/Experience, Operations & QA (plus Future Systems Register). *(Mastery & Evidence left this list on 2026-07-27 — see next item.)*
+- **Mastery & Evidence Bible authored and Canonical** (DOC-051, signed off 2026-07-27, after independent review DOC-057) — **PRJ-014 complete as a documentation-owner item**. Implementation reality remains partial/fragmented and non-conforming (DOC-054); no implementation opened. Next founder-fixed authoring step: **Step 2 — Curriculum Bible**.
 - ~~**Promotion prerequisite:** DOC-022 and ADR-0024 need supersession/routing banners~~ — **✅ applied 2026-07-26; PRJ-033 operationally closed.**
 - **Content Bible executable blockers**: French style guide (PRJ-010), named reviewer (PRJ-011), Reading taxonomy/validator (PRJ-012), item-counting methodology (PRJ-015).
 - **Social prerequisites that do not exist**: evidence contract (PRJ-009), moderation capacity (PRJ-013).
@@ -437,10 +445,12 @@ Summary only — details in DOC-047 and DOC-048.
 
 | 2026-07-26 | 1.0 (ADR status-collection correction) | **PR #201 review finding (Codex P2), raised after promotion.** **DOC-015** had assigned Canonical status to the entire ADR collection; **ADR-0025** (`status: deferred`, `canon_status: proposed`, `implementation_status: not-started`) falsified that claim and could have made the Campfire/L24 paywall placement read as binding while **PRJ-036** records it `OPEN`. DOC-015 is now an explicit **mixed-status collection** (each ADR retains its own status; accepted/active ADRs bind only within their declared domain; deferred/proposed/superseded/rejected/historical ADRs are inputs, not authority; `CONTRACT` only for individually binding ADRs). Authority Spec class C de-enumerated with the rule that **`ADR-####` naming and directory membership confer no status**; Source of Truth Map now requires per-ADR status inspection. **ADR-0024 unchanged (active/Canonical, retained scope, quarantine intact); ADR-0025 unchanged (deferred/proposed, not promoted); PRJ-036 still `OPEN`; no paywall decision; no implementation authorized.** | Cloud session (PR-review correction) |
 
+| 2026-07-27 | 1.0 (Mastery & Evidence promotion integration) | **Registered DOC-051…DOC-057** — the **Cairn Mastery & Evidence Bible v1.0** promoted to **`CANONICAL`** (signed off 2026-07-27, founder-authorized) with six supporting records (Decision Matrix, Source Conflict & Gap Map, Current Reality & Enforcement Map, Founder Review Surface, Founder Ratification, **Independent Adversarial Review** — verdict `PASS WITH NON-BLOCKING FINDINGS`, 0 BLOCK / 0 MAJOR / 2 NOTE, recommendation `PROMOTE`). §4 layer table: Mastery & Evidence → ✅ Authored/Canonical (DOC-051). §5 ownership rows → ✅ Owned. §6 Mastery/evidence route now reads DOC-051 first. §2 worked example and §9 graph updated. §16: unauthored layers **7 → 6**; **PRJ-014 complete as a documentation-owner item**; next founder-fixed step is **Step 2 — Curriculum Bible**. Counts re-derived from the §12 layer list in Coverage & Gaps: **5 of 12** paper-complete layer criteria satisfied, **7 remaining**. **PRJ-009 remains `OPEN` — no Social evidence contract exists. Canonical ≠ implemented: the evidence runtime remains non-conforming Axis-B reality (DOC-054); normal code work remains frozen (Q4); no implementation was authorized; paper completeness is NOT reached.** | Cloud session (founder-authorized promotion) |
+
 **Ratification status:** `Canonical` — **signed off 2026-07-26**.
 
-**Canonical does not mean implemented.** This Map is the **primary Canonical document** of the Project Canon layer. Its supporting records — Authority & Routing Spec (DOC-046), Project Idea & Decision Register (DOC-047), Canon Coverage & Gaps (DOC-048), Founder Ratification (DOC-049), and Sign-Off Review (DOC-050) — remain **supporting records at v0.1**, not independent product canon, matching the Content Bible and Social Charter convention.
+**Canonical does not mean implemented.** This Map is the **primary Canonical document** of the Project Canon layer. Its supporting records — Authority & Routing Spec (DOC-046), Project Idea & Decision Register (DOC-047), Canon Coverage & Gaps (DOC-048), Founder Ratification (DOC-049), and Sign-Off Review (DOC-050) — remain **supporting records at v0.1**, not independent product canon, matching the Content Bible and Social Charter convention. The same convention holds in every domain: **DOC-052…DOC-057 remain supporting records** of the Canonical Mastery & Evidence Bible (DOC-051).
 
-**Still true after promotion:** paper completeness is **not** reached (**4 of 12** layer criteria satisfied, **8 remaining**) · **normal code work remains frozen** (Q4) · the **Mastery & Evidence Bible is unauthored** and Step 1 is **not** automatically opened · `PLANNED` = 0 · `EXPERIMENT` = 0 · **no implementation was authorized**.
+**Still true after the 2026-07-27 Mastery & Evidence promotion:** paper completeness is **not** reached (**5 of 12** layer criteria satisfied — Project Canon, Product Brain, Content, Social, Mastery & Evidence — **7 remaining**, per the §12 list in Coverage & Gaps) · **normal code work remains frozen** (Q4) · Step 1 of the founder-fixed authoring sequence is **complete**; **Step 2 (Curriculum Bible) is not automatically opened** · `PLANNED` = 0 · `EXPERIMENT` = 0 · **no implementation was authorized**.
 
 *End of Project Canon Map v1.0. Canonical; routes authority; authorizes no build.*

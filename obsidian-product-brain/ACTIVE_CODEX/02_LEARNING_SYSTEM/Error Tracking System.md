@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["lemot-app/content/learning-engine/events.ts:31-47", "lemot-app/content/weakPointTags.ts", "docs/ROADMAP.md:31-40", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Learning_Engine_and_Exercise_Types.md"]
 code_refs: ["lemot-app/content/learning-engine/events.ts:31-47", "lemot-app/content/learning-engine/events.ts:107-134", "lemot-app/content/weakPointTags.ts:1-28", "lemot-app/content/learning-engine/error-engine.ts", "lemot-app/scripts/shipped-error-tags.json"]
 test_refs: ["lemot-app/**/events*.test.ts", "lemot-app/**/canonRules.test.ts"]
@@ -82,7 +83,7 @@ Girdi: egzersiz cevabı. `grade()` → tek `ErrorTagCode` (`result`) + `errorTag
 ### Guardrails
 - Learner asla ham `ErrorTagCode` görmez → hep `FeedbackVerdict`.
 - YASA 3: tag immutability, validator hard error.
-- Precision tag'leri (punctuation/accent/spelling) failure değil (bkz. [[Mastery Model]]).
+- **Precision/near-miss tag'leri polariteyi tek başına belirlemez** (founder FQ-1, 2026-07-26): *anlamı koruyan* kayma failure değildir; *anlamı değiştiren* ikame negatif kanıt olabilir; **anlamı bilinmeyen olay ne weakness ne de tam precision kredisi kurar**. Bu `punctuation_only`, `accent_only`, `spelling_near_miss` ve gelecekteki her teknik tag için geçerlidir (bkz. [[Mastery Model]]).
 
 ## Diagrams
 ```mermaid
@@ -140,6 +141,15 @@ Bu taksonomi bu notun mevcut kanonuyla **çelişmez**: runtime `ErrorTagCode`/`W
 - Error tracking **kanıt kaydeder; doğrudan pedagoji icat etmez.**
 - **Tek bir miss** item'ı otomatik olarak sonraki derse **zorlamaz.**
 - Yalnız **doğrulanmış öğrenci-kaynaklı hata** weakness yaratır.
+- **[SCOPE-AMENDED 2026-07-26, founder FQ-6]** Amaçlanan semantik model: hata **kabul öncesinde**
+  bilinebiliyorsa olay **kanıt olarak kabul edilmez**; sonradan keşfedilirse tarihsel olay
+  **değiştirilmez**, **append-only bir compensating invalidation kaydı** ilgili kanıta atıf yapar,
+  **projeksiyonlar o kanıtın pedagojik etkisini nötralize eder** ve **audit geçmişi korunur**. Kanıt
+  **asla silinmez veya sessizce değiştirilmez**. **Axis-B divergence (görünür kalır):** bugün ne
+  **error-source alanı**, ne **admissibility aşaması**, ne de **invalidation mekanizması vardır** — her
+  non-success varsayılan olarak öğrenciye atfedilir. Bu bir **policy**dir, çalışan runtime değil; şema,
+  alan adları, cache invalidation, reconciliation ve depolama **Engineering**'e aittir. **Hiçbir kod
+  değişikliği yetkilendirilmemiştir.**
 - **content / validator / UI-flow / tone / AI-generator / mastery-mapping** hatası öğrenci zayıflığı **değildir** (yukarıdaki §Kaynak içe aktarımı §5 sınıflandırması).
 - **exposure/ghost üretim başarısızlığı weakness yaratamaz** — üretim gerekmedi.
 - **Precision-only** (punctuation/accent/spelling) mevcut precision politikasını izler ([[Mastery Model]]); **sessizce tam kavramsal weakness'a çevrilemez.**

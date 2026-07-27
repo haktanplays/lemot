@@ -9,8 +9,9 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/README.md"]
 related: ["[[Source Ledger]]", "[[Code Source Index]]", "[[Missing Source Inputs]]", "[[08 Source of Truth Map]]"]
 tags: [source, meta, index]
@@ -69,7 +70,7 @@ Repo HEAD = `02f9f7a` (#196). Statü: **CURRENT** (aktif) · **SUPERSEDED** · *
 ## `docs/canon/`
 | Dosya | Açıklama | Statü |
 |---|---|---|
-| `LESSON_FLOW_CANON_v1.md` | Ders akışı kapalı tasarım kanonu (3 katman, 11-14 ekran, 7 tip, V1-V9 validator) | CURRENT (kod yetkilendirmez) |
+| `LESSON_FLOW_CANON_v1.md` | Ders akışı kapalı tasarım kanonu (3 katman, 11-14 ekran, 7 tip, V1-V9 validator). **§5.3 scope-amended (2026-07-26, founder FQ-2):** evidence weight ≠ selection weight ayrımı korunur; "mastery reducer'da yaşar" iddiası geri çekildi; §5.5 çarpanları **illustrative aday**, ratified değil | CURRENT (kod yetkilendirmez) · **§5.3/§5.5 scope-amended** |
 
 ## `docs/engineering/`
 | Dosya | Açıklama | Statü |
@@ -140,7 +141,7 @@ Repo HEAD = `02f9f7a` (#196). Statü: **CURRENT** (aktif) · **SUPERSEDED** · *
 | `founder-self-learning-p5-local-privacy-data-rights-checkpoint.md` | P5.1-P5.4C local privacy | CURRENT (checkpoint) |
 | `founder-self-learning-privacy-kvkk-gdpr-architecture-note.md` | KVKK/GDPR mimari notu (design-only) | CURRENT (design) |
 | `founder-self-learning-remote-schema-rls-draft.md` | `le_*`/`learning_*` remote şema taslağı (PROPOSED) | CURRENT (PROPOSED) |
-| `founder-self-learning-mastery-precision-policy.md` | Near-miss ≠ failure; 4-bucket sınıflandırıcı | CURRENT (D-23) |
+| `founder-self-learning-mastery-precision-policy.md` | **Dated status record (2026-06-04)**; near-miss ≠ failure ilkesi korunur, ama **4-bucket semantiği ve sabit üç-tag precision listesi founder FQ-1 ile SUPERSEDED**; "9-state uzlaştırma" maddesi **FQ-5 ile KAPANDI** | **HISTORICAL / PARTIALLY SUPERSEDED (2026-07-26)** |
 | `boundary-recognition-ui-decision.md` | "Later form" soft kart kararı | CURRENT (D-22) |
 | `learning-engine-progress-bridge-decision.md` | `lm_le_events` canonical; sahte `lm7` yok | CURRENT (D-10) |
 | `learning-engine-v0.1-baseline.md` | Contract engine baseline (#18-#22) | CURRENT (baseline) |

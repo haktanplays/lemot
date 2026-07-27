@@ -9,8 +9,9 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-07-26
+last_reviewed: 2026-07-26
+amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/canon/LESSON_FLOW_CANON_v1.md", "docs/EXERCISE_CANON.md", "lemot-app/content/learning-engine/error-engine.ts"]
 code_refs: ["lemot-app/components/lesson-v1/screens/Weave.tsx:26-30", "lemot-app/components/lesson-v1/screens/SayItYourWayV1.tsx", "lemot-app/components/lesson-v1/LessonRendererV1.tsx:82-83", "lemot-app/content/learning-engine/error-engine.ts"]
 test_refs: ["lemot-app/**/componentCopyGuard.test.ts", "lemot-app/**/devApkCopyGuard.test.ts"]
@@ -58,8 +59,8 @@ Açık karışık Weave derecelenmez; reveal feedback'tir. Grading an open mixed
 ### Say It Your Way asla grade etmez (CANONICAL)
 "never grades, never blocks beyond empty" (`SayItYourWayV1.tsx` comment 25-27, 42-46). Anti-pattern (§16): "Speaking gives praise without target detection = ERROR" — model-answer-only asla sahte övgü uydurmaz. Bkz. [[Say It Your Way]].
 
-### Near-miss soft signal (CANONICAL + IMPLEMENTED)
-Precision tag'leri (punctuation_only/accent_only/spelling_near_miss) failure değil; soft signal (bkz. [[Mastery Model]]). Öğrenciyi weak yapmaz, kutusunu indirmez.
+### Near-miss polaritesi semantiktir (CANONICAL — SCOPE-AMENDED 2026-07-26, founder FQ-1)
+**Anlamı koruyan** bir kayma failure değildir; soft signal'dir (bkz. [[Mastery Model]]) — öğrenciyi weak yapmaz, kutusunu indirmez. Ama **teknik tag polariteyi belirlemez**: `punctuation_only`, `accent_only` ve `spelling_near_miss` her biri **bağlamsaldır** (`ou`/`où`, `a`/`à`, `sur`/`sûr` gibi karşı örnekler evrensel bir precision iddiasını engeller), ve **semantik etkisi bilinmeyen bir olay ne weakness ne de tam precision kredisi kurar.** *(Historical: bu satır önceden üç tag'i topluca "failure değil" sayıyordu.)*
 
 ### FeedbackVerdict ayrımı (CANONICAL, IMPLEMENTED engine)
 > [!canon] "Anything that renders feedback to the learner must consume a `FeedbackVerdict` (via `resolveFeedback` / `feedbackVerdictFromGrade`), never a raw `ErrorTagCode`." — `error-engine.ts` header. `ErrorTagCode` = stored/grading dili (arkada); `FeedbackVerdict` = learner-facing dili (önde). Bkz. [[Error Tracking System]].

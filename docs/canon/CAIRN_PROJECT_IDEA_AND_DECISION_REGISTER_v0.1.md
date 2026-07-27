@@ -56,12 +56,12 @@ This register exists so that **ideas which belong to no completed layer do not d
 
 | ID | Idea / decision | Status | Source authority | Canonical home | Current owner | Dependencies | Implementation state | Reopen trigger | Related | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
-| PRJ-009 | **Social evidence contract** — the only route by which a social pedagogical action could ever count as evidence | `OPEN` | Founder R8 (2026-07-25); routing set by Q2 (2026-07-26) | **Mastery & Evidence Bible** | `NOT YET AUTHORED` | PRJ-014, SOC-026, PRJ-001, PRJ-004 | **Does not exist** → no social action is evidence today | A scoped Social opening that proposes a pedagogical action as evidence | SOC-026, PRJ-014 | **Q2 routing:** the **Mastery & Evidence Bible owns admissibility and evidence semantics**; **Content and Curriculum are required consulted owners**; **Engineering owns enforcement**; **founder ratification remains required**. Created *by* R8, which deliberately left the positive case to a future contract. **Must not be designed inside the Social Charter.** |
+| PRJ-009 | **Social evidence contract** — the only route by which a social pedagogical action could ever count as evidence | `OPEN` | Founder R8 (2026-07-25); routing set by Q2 (2026-07-26) | **Mastery & Evidence Bible (DOC-051)** | **Cairn Mastery & Evidence Bible v1.0** (semantics owner — Canonical since 2026-07-27) | PRJ-014, SOC-026, PRJ-001, PRJ-004 | **Does not exist** → no social action is evidence today | A scoped Social opening that proposes a pedagogical action as evidence | SOC-026, PRJ-014 | **The semantics owner now exists (DOC-051), but the contract itself still does not** — DOC-051 §24/§30 explicitly decline to create it. **Content and Curriculum are required consulted owners**; **Engineering owns enforcement**; **founder ratification remains required**; **no Social implementation is authorized**. Created *by* R8, which deliberately left the positive case to a future contract. **Must not be designed inside the Social Charter — and the existence of DOC-051 does not close this item.** |
 | PRJ-010 | **French style guide** | `OPEN` | Content Bible G2; founder Q10 (accept, with timing) | Content Bible | Content Bible | `L1-L5 Proofreading.md` (**absent**, PRJ-034) | Not Implemented | Required **before Stage C** (invited-learner exposure) | PRJ-011, PRJ-034 | Ratified to be authored; does not block internal authoring or founder-only testing. Blocks the executable French-QA gate. |
 | PRJ-011 | **Named French reviewer / QA staffing** | `OPEN` | Content Bible G3; founder Q10 | Operations & QA | `NOT YET AUTHORED` (PRJ-005) | PRJ-010 | Not Implemented | Stage C preparation | PRJ-010 | A staffing decision, not a missing file. Until it exists, **no lesson may be claimed QA-passed**. |
 | PRJ-012 | **Reading taxonomy + validator** | `OPEN` (implementation detail; principle settled) | Content Bible G1; founder Q7 = YES | Content Bible (taxonomy) + Engineering (validator) | Content Bible / `NOT YET AUTHORED` | DOC-026 §16 (truncated in-repo) | Not Implemented | Exercise System v1 work | PRJ-001, PRJ-004 | The *principle* (action-required, production-conditional) is ratified. The family taxonomy and the validator rule-list remain open. |
 | PRJ-013 | **Social moderation capacity (human/operational)** | `OPEN` | Social Charter §7.2 (2026-07-25) | Operations & QA | `NOT YET AUTHORED` (PRJ-005) | SOC-029/030, PRJ-005 | Not Implemented | A scoped Social opening | SOC-030 | Charter states **AI moderation is not sufficient coverage**; absence of staffed capacity is itself a blocker to any Social opening. Cost/staffing never assessed. |
-| PRJ-014 | **Cairn Mastery & Evidence Bible** — dedicated owner of the semantic evidence and mastery model | `FOUNDER_LOCKED` — dedicated Mastery & Evidence owner assigned (2026-07-26) | Founder Q2 (2026-07-26) | **Mastery & Evidence Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | ADR-0009/0020/0021, DOC-004, SOC-026 | **Partially Implemented / fragmented** — ADRs, events, matrices and runtime behaviour already exist | Founder opens the Mastery & Evidence layer (Step 1 of the authoring sequence) | PRJ-009, PRJ-001, PRJ-004 | **Owner is no longer undecided.** Owns admissibility · strength/confidence · assistance-level effects · attribution · weakness and near-miss evidence · mastery-state meaning and transitions · decay/review · aggregation · invalidation by content/AI/peer/validator/UI/system error · solo↔AI↔future-social equivalence · the semantic contract consumed by runtime. **Must not be merged into Content, Curriculum, or Engineering.** The Bible is **not written** and current divergences are **not resolved**. |
+| PRJ-014 | **Cairn Mastery & Evidence Bible** — dedicated owner of the semantic evidence and mastery model | **`CANONICAL`** — document authored and promoted 2026-07-27 (founder-authorized, after independent adversarial review `PASS WITH NON-BLOCKING FINDINGS`, DOC-057) | Founder Q2 (2026-07-26); founder promotion authorization (2026-07-27) | **Mastery & Evidence Bible (DOC-051)** | **Cairn Mastery & Evidence Bible v1.0** (`docs/bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md`) | ADR-0009/0020/0021, DOC-004, SOC-026 | **Partially Implemented / fragmented** — ADRs, events, matrices and runtime behaviour already exist; the shipped evidence runtime remains **non-conforming** (DOC-054); **no implementation opened** | Explicit Canonical revision of DOC-051, or a founder-authorized scope change | PRJ-009, PRJ-001, PRJ-004 | **Step 1 of the founder-fixed authoring sequence is complete.** DOC-051 owns admissibility · strength/confidence · assistance-level effects · attribution · weakness and near-miss evidence · mastery-state meaning and transitions · decay/review · aggregation · invalidation by content/AI/peer/validator/UI/system error · solo↔AI↔future-social equivalence · the semantic contract consumed by runtime. Supporting records DOC-052…DOC-057 remain non-Canonical. **Must not be merged into Content, Curriculum, or Engineering. Canonical ≠ implemented: current divergences are recorded, not resolved, and no exact numeric value is founder-locked.** |
 | PRJ-015 | **Item-counting methodology** | `OPEN` | Content Bible G4; learning-engine-v1 §17 | Curriculum Bible | `NOT YET AUTHORED` (PRJ-001) | PRJ-001 | Not Implemented | Curriculum authoring | PRJ-001 | Blocks precise reconciliation of active-new budgets; the *direction* is settled, the counting rule is not. |
 
 ## C. Major future systems (cross-layer, none authorized)
@@ -101,30 +101,31 @@ This register exists so that **ideas which belong to no completed layer do not d
 
 ## Summaries
 
-**By status — 38 records, PRJ-001…PRJ-038 contiguous** *(recomputed after founder ratification 2026-07-26)*:
+**By status — 38 records, PRJ-001…PRJ-038 contiguous** *(recomputed after the Mastery & Evidence promotion 2026-07-27)*:
 
 | Status | Count | Change | IDs |
 |---|---|---|---|
-| `OPEN` | 24 | ↓ from 25 | PRJ-001–007, 009–013, 015, 018, 023, 025, 026, 027, 028, 029, 032, 034, 036, 037 |
+| `OPEN` | 24 | — | PRJ-001–007, 009–013, 015, 018, 023, 025, 026, 027, 028, 029, 032, 034, 036, 037 |
 | `DEFERRED` | 8 | — | PRJ-016, 017, 019, 020, 021, 022, 024, 038 |
-| `FOUNDER_LOCKED` | 2 | — | PRJ-014 (Mastery & Evidence owner assigned) · **PRJ-033** (decision resolved **and source patches applied**) |
-| **`CANONICAL`** | **1** | **↑ new** | **PRJ-008** — Project Canon Map promoted v1.0 / Canonical 2026-07-26 |
+| `FOUNDER_LOCKED` | 1 | ↓ from 2 | **PRJ-033** (decision resolved **and source patches applied**) |
+| **`CANONICAL`** | **2** | **↑ from 1** | **PRJ-008** — Project Canon Map v1.0 (2026-07-26) · **PRJ-014** — Mastery & Evidence Bible v1.0 promoted 2026-07-27 |
 | `RATIFIED_DIRECTION` | 1 | — | PRJ-030 |
 | `SUPERSEDED` | 1 | — | PRJ-031 |
 | `ARCHIVED_REFERENCE` | 1 | — | PRJ-035 |
 | `DESIGN_CANON` · `PLANNED` · `EXPERIMENT` · `REJECTED` | **0** | — | — |
 
-**`PLANNED` = 0 and `EXPERIMENT` = 0 remain true after promotion.** The single `CANONICAL` row is a **documentation/routing layer**, not a feature: **no code became implemented, and no feature was planned or sanctioned.**
+**`PLANNED` = 0 and `EXPERIMENT` = 0 remain true after both promotions.** Both `CANONICAL` rows are **documentation layers**, not features: **no code became implemented, and no feature was planned or sanctioned.**
 
 **By owner (first-listed owner governs routing):**
 
 | Owner | Count | Change |
 |---|---|---|
-| `NOT YET AUTHORED` | 26 | ↑ from 25 (PRJ-014 moved here from `DISTRIBUTED`) |
+| `NOT YET AUTHORED` | 24 | ↓ from 26 (PRJ-009 and PRJ-014 now owned by DOC-051) |
 | Project Canon | 4 | — |
 | Content Bible | 4 | — |
 | Product Brain | 4 | — |
-| **`DISTRIBUTED` — no owner** | **0** | **↓ from 1 — eliminated by Q2** |
+| **Mastery & Evidence Bible v1.0 (DOC-051)** | **2** | **↑ new — PRJ-009 (semantics owner), PRJ-014** |
+| **`DISTRIBUTED` — no owner** | **0** | — (eliminated by Q2) |
 
 > **The `DISTRIBUTED` category is now empty.** Every project-level item has a named owner, even where that owner is a document not yet written.
 
@@ -144,12 +145,12 @@ This register exists so that **ideas which belong to no completed layer do not d
 
 | Readiness | Count | Meaning |
 |---|---|---|
-| **Blocked on an unauthored layer** | 26 | Cannot proceed without a Bible that does not exist |
+| **Blocked on an unauthored layer** | 25 | ↓ from 26 — PRJ-001 unblocked by Step 1 completion; cannot proceed without a Bible that does not exist |
 | **Blocked on a founder decision** | 2 | PRJ-032 (roadmap), PRJ-036 (paywall) — Q1/Q2 removed the others |
 | **Blocked on an external/operator input** | 2 | PRJ-034, PRJ-035 |
 | **Blocked on staffing/capacity** | 2 | PRJ-011, PRJ-013 |
-| **Ready to author now** | 1 | **PRJ-014 — Mastery & Evidence Bible is Step 1** of the founder-fixed sequence |
-| **Closed by the atomic promotion** | 2 | **PRJ-008** (Canonical) · **PRJ-033** (operationally closed — source patches applied) |
+| **Ready to author now** | 1 | **PRJ-001 — Curriculum Bible is Step 2** of the founder-fixed sequence (Step 1 complete 2026-07-27; Step 2 is **not** automatically opened) |
+| **Closed / completed** | 3 | **PRJ-008** (Canonical 2026-07-26) · **PRJ-033** (operationally closed) · **PRJ-014** (Canonical 2026-07-27 — documentation-owner item complete; implementation reality unchanged) |
 
 **Cross-references to domain registers (not duplicated here):** Product Brain `PB-###` (DOC-002) · Content Bible `CB-###` (DOC-006) · Social `SOC-001…SOC-034` (DOC-012) · ADRs `ADR-0001…ADR-0025` (DOC-015 — **mixed-status collection; consult each ADR's own status**).
 
@@ -162,5 +163,7 @@ This register exists so that **ideas which belong to no completed layer do not d
 | 2026-07-26 | 0.1 (founder ratification Q1–Q4) | **PRJ-033** → `FOUNDER_LOCKED — precedence model resolved`; decision closed, **supersession banners on DOC-022 and ADR-0024 recorded as a promotion prerequisite**. **PRJ-014** → `FOUNDER_LOCKED — dedicated Mastery & Evidence owner assigned`; Canonical home **Mastery & Evidence Bible**, owner `DEPENDENCY — DOCUMENT NOT YET AUTHORED`, implementation state **Partially Implemented / fragmented**. **PRJ-009** re-routed: Mastery & Evidence owns admissibility/semantics, Content + Curriculum consulted, Engineering enforces, founder ratification still required, **no contract exists**. All summaries recomputed: `OPEN` 27→25, `FOUNDER_LOCKED` 0→2, `DISTRIBUTED` owner 1→**0**, Mastery & Evidence home **2**. No row added or renumbered; **38 records, PRJ-001…PRJ-038 contiguous**. | Cloud session (founder ratification) |
 
 | 2026-07-26 | 0.1 (promotion corrections) | **C4** — counting convention stated explicitly (first-listed primary owner/home; compound labels are consulted/downstream and never double-counted), compound rows named (PRJ-012, 019, 020, 024), and `Operations` normalized into `Operations & QA` (home count 4+2 → **6**). **PRJ-008** → `CANONICAL` (Map v1.0, signed off 2026-07-26), implementation state **`N/A — documentation/routing layer`**. **PRJ-033** → `FOUNDER_LOCKED — decision resolved and source patches applied`, **operationally closed**, with the prior open state preserved in its decision history. Totals recomputed from actual rows: `OPEN` 25→24, `CANONICAL` 0→**1**, Not Implemented 22→21, N/A 3→4. **`PLANNED` = 0, `EXPERIMENT` = 0, Implemented = 0 unchanged.** 38 rows, PRJ-001…PRJ-038 contiguous. Status changed from Draft to **supporting register — current**; not independently Canonical. | Cloud session (atomic promotion) |
+
+| 2026-07-27 | 0.1 (Mastery & Evidence promotion) | **PRJ-014 → `CANONICAL`**: the Cairn Mastery & Evidence Bible v1.0 (DOC-051) was authored and promoted 2026-07-27, founder-authorized, after an independent adversarial review passed on follow-up (`PASS WITH NON-BLOCKING FINDINGS`, DOC-057). Owner column now names the document; implementation state stays **Partially Implemented / fragmented** (runtime non-conforming, DOC-054); reopen trigger → explicit Canonical revision or founder-authorized scope change. **PRJ-009 remains `OPEN`**: the semantics owner now exists (DOC-051) but the positive Social evidence contract still does not — no social action is evidence today and no Social implementation is authorized; **the existence of DOC-051 does not close PRJ-009**. Totals recomputed from actual rows: `FOUNDER_LOCKED` 2→1, `CANONICAL` 1→**2**, owner `NOT YET AUTHORED` 26→24, new owner row **Mastery & Evidence Bible (DOC-051) = 2**; readiness — blocked-on-unauthored 26→25, ready-to-author = PRJ-001 (Step 2, not auto-opened), closed 2→3. **`OPEN` = 24 unchanged; `PLANNED` = 0, `EXPERIMENT` = 0, Implemented = 0 unchanged.** 38 rows, PRJ-001…PRJ-038 contiguous. | Cloud session (founder-authorized promotion) |
 
 *End of Project Idea and Decision Register v0.1. Supporting register; routing index; approves nothing.*
