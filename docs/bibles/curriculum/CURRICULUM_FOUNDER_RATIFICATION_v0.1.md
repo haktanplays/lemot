@@ -97,11 +97,17 @@ remain in their classified states.
 - **Superseded/demoted:** nothing; per-lesson statuses are preserved, not
   flattened.
 - **Preserved open work:** post-L17 order; any L7–L15 revision requires
-  future scoped Curriculum authority with provenance.
+  future scoped Curriculum authority with provenance; per-lesson numeric
+  payloads that conflict with upstream Content authority (notably L17's
+  "3–5 active" working-spec note, which remains subject to the Content
+  Bible's active-new **1–4** invariant and the PRJ-015 accounting
+  clarification).
 - **Implementation consequence:** none. Current runtime visibility (Home cap
   `<=6`) and all implementation freezes remain unchanged.
 - **Non-consequence:** no lesson is built, unhidden, renumbered, or
-  reordered by this decision.
+  reordered by this decision. **Spine ratification does not ratify
+  per-lesson item counts that conflict with upstream Content authority —
+  no exception to the active-new 1–4 invariant was approved.**
 
 ### FQ-C2 — Macro-map status — APPROVED 2026-07-28
 
@@ -217,10 +223,22 @@ process (a Sync-Queue-able follow-up, not done unilaterally here).
 
 Nothing in this record: opens code work (the Q4 freeze stands); changes
 runtime visibility; modifies any lesson file, registry, schema, validator,
-or test; alters any PRJ status (PRJ-001 remains `OPEN` until the layer is
-authored and promoted; PRJ-015/029/036 remain `OPEN`); or satisfies any
-build gate. `Canonical ≠ implemented` continues to apply to every document
-in this directory.
+or test; alters any PRJ status; or satisfies any build gate.
+`Canonical ≠ implemented` continues to apply to every document in this
+directory.
+
+**PRJ-001 in particular remains `OPEN`, and Charter promotion does not
+automatically close or change it.** The Charter may narrow the gap — by
+creating a Curriculum authority and governing the current L0–L17 spine —
+but it does not complete post-L17 sequencing, Capability Arc composition,
+the item-counting methodology, the tense architecture, skill progression,
+assessment/remediation, or the full Curriculum Bible. The intended reading
+is: *PRJ-001 remains OPEN with narrowed scope: the current L0–L17 spine is
+governed, while post-L17 sequencing and the full sequencing architecture
+remain unauthored.* Any PRJ-001 status change requires an explicit Project
+Register decision/update, with the remaining sequencing-policy scope
+assessed at that time. PRJ-015, PRJ-029, and PRJ-036 likewise remain
+`OPEN`.
 
 ## 8. Open dependencies
 

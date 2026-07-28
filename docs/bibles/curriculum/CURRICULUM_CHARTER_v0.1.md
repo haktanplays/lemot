@@ -74,8 +74,16 @@ specs and the shipped lesson order.
 - **Mastery & Evidence Bible** owns evidence admissibility and mastery
   derivation. Curriculum decides *where opportunities and gates occur*,
   never what an action proves.
-- **Social Layer Charter** owns social bounds and activation decisions; no
-  social activity enters the sequence while PRJ-009 is `OPEN`.
+- **Social Layer Charter** owns the boundaries and activation of actual
+  **learner-to-learner product interaction**. **Social-pragmatic French
+  content** — tu/vous, politeness, repair chunks, human-context lessons,
+  emotional check-ins, conversation openings and closings — remains
+  Content/Curriculum material and is *not* the Social product layer.
+  PRJ-009 being `OPEN` means **no learner-to-learner social action may
+  count as mastery evidence today**; PRJ-009 alone is not the activation
+  contract for every non-evidence social feature. No actual Social product
+  feature is activated by this Charter; Social remains dormant, and AI
+  interaction is not peer social interaction.
 - **Engineering** owns runtime enforcement, schemas, registries,
   persistence, and unlock behavior; implementation traces are Axis-B fact,
   never curriculum intent.
@@ -141,6 +149,10 @@ discovery §5–§6.*
 | L16–L17 | Approved spec-only continuation | Authored (compact specs + gate reviews), not implemented |
 | L18+ | Open / provisional | No authoritative sequence |
 
+> **Ratifying the current spine ratifies order, lesson purpose, and tiered
+> status. It does not ratify every numeric payload recorded in historical
+> or working specs. Upstream Content constraints continue to govern.**
+
 **The authoritative current order and purposes (L0–L17):**
 
 | L | Title | Purpose (one line) |
@@ -162,7 +174,17 @@ discovery §5–§6.*
 | L14 | J'y vais | Place-`y` chunk-first doorway |
 | L15 | Il faut | Obligation-light, asymmetric (`il faut` primary, `je dois` supported) |
 | L16 | A Small Moment | Integration + bounded reading-response seed (model-answer-only; spec-only) |
-| L17 | Ça va ? | Human context / feelings light (operator-locked 3–5 active; spec-only) |
+| L17 | Ça va ? | Human context / feelings light (spec-only; payload count gated — see L17 payload note) |
+
+**L17 payload note.** L17 remains the approved spec-only lesson in its
+ratified slot. Its historical/operator note records **"3–5 active"** (and
+the compact spec lists 5 active-new items) — a recorded working-spec value.
+The Content Bible's founder-ratified learner-facing invariant is
+**active-new 1–4**; any value above that maximum is **not ratified by this
+Charter**. Before implementation, the L17 payload must be **reconciled to
+the 1–4 invariant or shown through PRJ-015 to be counting a different
+unit**; until that reconciliation, "5" may not be used as a learner-facing
+active-new allowance.
 
 "Authoritative current spine" means **the default source for current
 planning and dependency reasoning**. It does **not** mean: every lesson is
@@ -316,6 +338,12 @@ Recorded honestly, ratifying nothing beyond the sources:
 
 Preserved explicitly — none is resolved, and silence is never approval:
 
+- **PRJ-001** — the Curriculum layer itself remains `OPEN` **with narrowed
+  scope**: upon promotion this Charter governs the current L0–L17 spine,
+  while post-L17 sequencing and the full sequencing architecture remain
+  unauthored. **Charter promotion does not automatically close or change
+  PRJ-001** — any status change requires an explicit Project Register
+  decision/update;
 - **PRJ-015** — item-counting methodology (first dedicated post-opening
   decision track);
 - **PRJ-029** — post-L24 progression;
@@ -397,10 +425,10 @@ Statuses per §5; per-lesson detail in the discovery §5 and the underlying
 | Artifact | Location | Status after FQ-C2 |
 |---|---|---|
 | 12-unit / 180-lesson CEFR-topic map | `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` §38–§39 | Historical/reference planning input (file unedited; non-curriculum content unaffected) |
-| "Core 150" | `…/10_OPERATIONS/Syllabus Production Workflow.md` | Historical/reference planning input (file unedited) |
+| "Core 150" | `obsidian-product-brain/ACTIVE_CODEX/10_OPERATIONS/Syllabus Production Workflow.md` | Historical/reference planning input (file unedited) |
 | "120–200 lessons" | `docs/CAIRN_PRODUCT_DEFINITION_v0.1.md` (already SUPERSEDED) | Remains superseded |
-| Legacy v7 24-lesson syllabus (M1–M4, L14 paywall) | `data/lessons/*`, `90_HISTORY/Historical Syllabus.md` | Remains SUPERSEDED and quarantined — never revive |
-| "2→1; never >2" cadence; "every 4–5 lessons" | `…/04_SYLLABUS/Integration Lesson Logic.md` | Superseded rule / historical heuristic per §6 (file unedited) |
+| Legacy v7 24-lesson syllabus (M1–M4, L14 paywall) | `lemot-app/data/lessons/*`, `obsidian-product-brain/ACTIVE_CODEX/90_HISTORY/Historical Syllabus.md` | Remains SUPERSEDED and quarantined — never revive |
+| "2→1; never >2" cadence; "every 4–5 lessons" | `obsidian-product-brain/ACTIVE_CODEX/04_SYLLABUS/Integration Lesson Logic.md` | Superseded rule / historical heuristic per §6 (file unedited) |
 
 ## Appendix C — Open-dependency register (pointer)
 

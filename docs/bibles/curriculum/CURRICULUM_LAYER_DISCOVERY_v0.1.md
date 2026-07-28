@@ -194,7 +194,7 @@ this table does not replace them.
 | L14 J'y vais | place-`y` chunk-first doorway | spec: 5 | ~14 | L7 `à + place`, L13 seed | gate review + compact spec; patches `2f3c94d` | compact spec | REG, hidden | Medium |
 | L15 Il faut | obligation-light, asymmetric (`il faut` primary, `je dois` supported) | spec: 6 | ~15 | L9/L7/L6/L1 infinitives, L11 contrast | gate review + compact spec; patches `b04ab00` | compact spec | REG, hidden — **latest runtime file** | Medium |
 | L16 A Small Moment | integration + bounded reading-response seed (model-answer-only) | 3 (meta, 0 lexis) | ~25 | L11–L15 | gate review + compact spec, 5 locked gates; patches `f47d62f` | **SPEC only — no runtime file** | not built | Medium |
-| L17 Ça va ? | human context / feelings light (band-map override: 3–5 active, operator-locked) | spec: 5 | ~24 | L2/L4/L6 state frames, L15, L11/L12 | gate review + compact spec; operator-locked override; patches `6b9506f` | **SPEC only** — latest authored spec | not built | Medium |
+| L17 Ça va ? | human context / feelings light (band-map override: 3–5 active, operator-locked) | spec: 5 — a recorded working-spec value, unresolved against the Canonical 1–4 learner-facing invariant; not promoted by FQ-C1; reconcile via PRJ-015 before implementation | ~24 | L2/L4/L6 state frames, L15, L11/L12 | gate review + compact spec; operator-locked override; patches `6b9506f` | **SPEC only** — latest authored spec | not built | Medium |
 | L18 (planned) | futur proche **stronger preview, NOT owned** | 0 by design | mostly recycled | L7 | L18-L24 Roadmap `provisional`; band map gate 4 **OPEN** | roadmap intent only | not built | Low |
 | L19 (planned) | integration / repair / A Small Moment recurrence | ~0–2 meta | high | L16 seed | roadmap `PLANNED` | roadmap intent | not built | Low |
 | L20 (planned) | pre-Campfire checkpoint (milestone) | ~0–2 | proof-oriented | L1–L19 | roadmap `PLANNED`; band map gate 10 OPEN | roadmap intent | not built | Low |
@@ -524,7 +524,7 @@ are reported as findings):
 | What counts as evidence at an integration lesson? | Mastery & Evidence Bible v1.0 | §26–§28 |
 | Where do integration lessons go? | STOP (cadence rule in CONFLICT, §17-C2) unless quoting an existing spec | Integration Lesson Logic |
 | How is an item counted? | OPEN — PRJ-015, home = future Curriculum document | Content Bible §20.2 |
-| May a social activity enter the sequence? | Social Charter (negative bounds; PRJ-009 OPEN — no) | Charter §13 |
+| May a learner-to-learner Social product activity enter the sequence or count as evidence? | Social Charter (dormant; PRJ-009 OPEN — no social action is evidence). Social-pragmatic French content (tu/vous, politeness, repair, human-context lessons) is Content/Curriculum material, not the Social layer | Charter §13 |
 | May L7+ be implemented or made visible? | NO — blocked (device smoke + Round 1 closeout + separate reviewed Home-cap decision + Q4 code freeze) | STATUS.md; compact L7 spec; Coverage & Gaps §13 |
 | Paywall/Campfire position? | Product Brain (PRJ-036 OPEN; ADR-0025 deferred/proposed — working direction only) | not Curriculum's call |
 
@@ -914,7 +914,7 @@ Status per the task vocabulary. "Impl." = relation to shipped runtime.
 | CUR-004 | L7 = compact frozen-chunk doorway (`chunk-je-vais` + `chunk-a-la-maison`); full aller spec superseded-not-cancelled | PR #142; both L7 docs | CURRENT_APPROVED_SPEC | SETTLED (direction) / DEFERRED (impl., blocked) | Curriculum | Registered, hidden | Canon Map contradiction C10 closed for next-PR purposes |
 | CUR-005 | L8=où, L9=faire, L10=integration, L11=pouvoir, L12=est-ce que, L13=integration, L14=y, L15=devoir/falloir placements | full/compact specs; band map Option C | CURRENT_APPROVED_SPEC | PARTIALLY_SPECIFIED (approved working plan, "not a locked sequence") | Curriculum | Registered, hidden | ratification = FQ-C1 |
 | CUR-006 | L16 = integration + bounded A-Small-Moment seed (model-answer-only, 5 locked gates) | L16 gate review + compact spec | CURRENT_APPROVED_SPEC | SETTLED (spec) | Curriculum + Content | Spec-only, no runtime file | PRJ-023 partial |
-| CUR-007 | L17 = human context/feelings light; active-new cut to 3–5 by operator-locked band-map override | L17 compact spec | FOUNDER_LOCKED (override) + CURRENT_APPROVED_SPEC | SETTLED (spec) | Curriculum | Spec-only | latest authored spec |
+| CUR-007 | L17 = human context/feelings light; active-new cut to 3–5 by operator-locked band-map override | L17 compact spec | FOUNDER_LOCKED (override) + CURRENT_APPROVED_SPEC | SETTLED (slot & purpose); payload count unresolved vs the Content 1–4 invariant (PRJ-015) | Curriculum | Spec-only | latest authored spec; the 3–5/5 figure is a working-spec value — not promoted by FQ-C1; requires reconciliation before implementation |
 | CUR-008 | L18 = futur proche stronger preview, NOT owned, 0 active by design | L18-L24 Roadmap; band map | CURRENT_APPROVED_SPEC (provisional) | DEFERRED-ownership / OPEN (gate 4) | Curriculum | Not built | top-named risk |
 | CUR-009 | L19 = integration/repair; L20 = pre-Campfire checkpoint | L18-L24 Roadmap | HISTORICAL_PROPOSAL→CURRENT plan (provisional) | PARTIALLY_SPECIFIED | Curriculum | Not built | roles only |
 | CUR-010 | L21–L23 content undecided | L18-L24 Roadmap (D2) | AMBIGUOUS | OPEN | Curriculum | Not built | candidates recorded, nothing more |
