@@ -124,9 +124,15 @@ fragmented in *ownership*, not in *philosophy*:
 1. **Capability-first, not topic-first.** Canonical at product level (PB-016
    "context is a scaffold"); realized in the syllabus as intent-function
    growth ("vocab grows by intent function, not theme clusters").
-2. **Prerequisite safety overrides correctness.** A valid French form that is
-   not active/supported/recognition may not be required as production
-   (Syllabus Design Rules rule 2; Content Bible §15.2 — Canonical).
+2. **Prerequisite safety overrides only the requirement to produce unseen or
+   unsupported language; it never overrides French correctness or
+   naturalness.** A correct, natural form may still be unavailable for
+   *required production* when it is not active, supported, or otherwise
+   prerequisite-safe; the learner is never required to produce unseen
+   language; and incorrect or unnatural French is never licensed as a
+   workaround (Content Bible §15.2, Card-8 wording — Canonical. Syllabus
+   Design Rules rule 2 states the same rule in a compressed form that must
+   be read through §15.2, never as a license against correctness).
 3. **Split-sense doorways instead of paradigm ladders.** Own one narrow sense,
    defer neighbors: aller L7 (movement), faire L9 (small action), pouvoir L11
    (help/permission), devoir/falloir L15 (obligation-light). Architecture
@@ -620,84 +626,150 @@ Genuinely open, with current owner-of-record:
 
 ## 20. Candidate founder decisions
 
-Eight questions (target 5–10). None asks the founder to approve a sequence
-invented in this audit — every option cited already exists in a source.
+Nine cards. Only **five** require an answer before Charter drafting
+(FQ-C0, C1, C2, C4, C8); the rest are derived actions, current-state
+records, or deferrals — retained with their original identifiers for
+traceability, not because they are urgent. None asks the founder to approve
+a sequence invented in this audit — every option cited already exists in a
+source.
 
-**FQ-C1 — Spine ratification scope.** Context: L0–L6 locked+shipped; L7–L15
-authored compact specs (accepted working plan, "documented"); L16–L17
-spec-only; Option C explicitly "working arc, not a locked sequence". Conflict:
-nothing governs sequencing policy, so even the authored spine is formally
-unowned. Recommended: ratify L0–L17 as the authoritative spine *at its
-current per-lesson statuses* (locked / approved-spec / spec-only), without
-locking L18+. Alternative: ratify only L0–L6 and leave L7–L17 as working
-plan. Consequence: determines what a Charter may state as settled vs working.
+### Founder review summary
+
+| Card | Decision | Classification | Recommended answer | Needed before Charter? |
+|---|---|---|---|---|
+| FQ-C0 | Step-2 vehicle | BLOCKING FOR CHARTER DRAFT | Charter = v0.x governance/ratification stage of Step 2, not a Bible substitute | **Yes** |
+| FQ-C1 | Spine ratification scope | BLOCKING FOR CHARTER | Ratify L0–L17 at honest tiered statuses; L18+ not ratified | **Yes** |
+| FQ-C2 | Macro-map status | BLOCKING FOR CHARTER | Demote 12-unit/180 map and "Core 150" to historical/reference inputs | **Yes** |
+| FQ-C4 | Integration cadence | BLOCKING FOR CHARTER | Adopt the 2026-07-18 Integration Rhythm Contract as the single rule | **Yes** |
+| FQ-C8 | Repair pair / functional holes | REQUIRED CORRECTION BEFORE SPINE RATIFICATION IS COMPLETE | Repair pair homes in the L1 Survival Kit redesign | **Yes** (for clean spine ratification) |
+| FQ-C3 | Item-counting contract | DERIVED ACTION — NO NEW OWNERSHIP DECISION | PRJ-015 stays OPEN; first dedicated post-opening decision track | No |
+| FQ-C5 | Futur proche ownership | DEFER UNTIL POST-L17 PLANNING / PRJ-036 | Record L18 preview-only as provisional; ownership open | No |
+| FQ-C6 | Tense architecture | DERIVED CURRENT-STATE RECORD | Record placements as UNPLANNED; no CEFR backfill | No |
+| FQ-C7 | L18–L24 horizon | DEFER UNTIL NEXT AUTHORING HORIZON | Provisional roles stand; L21–L23 open; PRJ-036 pending | No |
+
+### The cards
+
+**FQ-C0 — Step-2 vehicle.** `BLOCKING FOR CHARTER DRAFT`
+Context: the founder-locked canon authoring sequence (Q3, 2026-07-26) names
+Step 2 as "Curriculum Bible," while this discovery recommends "Curriculum
+Charter first." Nothing in existing canon independently authorizes changing
+the Step-2 vehicle. Recommended: authorize the Curriculum Charter as the
+**v0.x governance and ratification stage of Step 2**, not a permanent
+substitute for the Curriculum Bible. The Charter should: establish ownership
+boundaries; ratify the curriculum thesis; record the honest tiered status of
+the existing spine; resolve only the minimum live contradictions; and
+preserve band architecture, counting methodology, post-L17 sequence, and
+tense placement as **explicit open work**. A full Curriculum Bible is
+authored only when enough sequence and band architecture exist to justify
+it. Alternative: require a full Curriculum Bible immediately. Consequence:
+the recommended answer avoids padding a Bible with invented placements while
+still creating a governing Curriculum authority. Founder authority is
+required because the locked authoring sequence names a Bible and does not
+independently authorize changing the Step-2 vehicle.
+
+**FQ-C1 — Spine ratification scope.** `BLOCKING FOR CHARTER`
+Context: L0–L6 locked+shipped; L7–L15 authored compact specs (accepted
+working plan, "documented"); L16–L17 spec-only; Option C explicitly "working
+arc, not a locked sequence". Conflict: nothing governs sequencing policy, so
+even the authored spine is formally unowned. Recommended: ratify **L0–L17 as
+the authoritative current spine while preserving tiered statuses** —
+L0–L6 founder-locked, shipped and frozen; L7–L15 approved working sequence,
+registered but hidden, **not immutable**; L16–L17 approved spec-only
+continuation, not built; **L18+ not ratified as sequence**. "Authoritative
+spine" means the current order is the **default source for planning**; it
+does not promote any lesson to locked or implemented beyond its actual
+status. Alternative: ratify only L0–L6 and leave L7–L17 as working plan.
+Consequence: determines what a Charter may state as settled vs working.
 Founder authority required because the fragments were never ratified as a
 sequence.
 
-**FQ-C2 — Band architecture and course-length model.** Context: Canonical
-Journey→Capability-Arc (capability-organized, 120–180 planning band) vs Build
-Spec 12-unit/180 CEFR-topic map vs "Core 150" vs L0–L24+topic-map. Conflict:
-C3/C4. Recommended: confirm the Product Brain model controls; demote the
-12-unit map and "Core 150" to reference inputs; task the Curriculum layer
-with composing the first Capability Arcs; keep every count a planning band.
-Alternative: adopt the 12-unit map as the working macro-map under the
-Journey framing. Consequence: decides the organizing principle for all
-post-L17 planning. Founder authority: two approved documents disagree.
+**FQ-C2 — Status of the conflicting macro-maps.** `BLOCKING FOR CHARTER`
+Context: Canonical precedence **already establishes** that the Product
+Brain's Journey → Capability Arc → Lesson model controls over lower-authority
+planning artifacts — the founder is *not* being asked which authority wins.
+The open decision is narrower: whether the Build Spec's 12-unit/180
+CEFR-topic map and the "Core 150" figure should now be **formally labeled
+historical/reference-only planning inputs**, or whether either survives as a
+non-authoritative working input beneath the Capability Arc model.
+Recommended: Product Brain hierarchy controls (already settled); the
+12-unit/180 map and "Core 150" are **demoted to historical/reference
+planning inputs**; all total lesson counts remain planning bands, never
+promises; Curriculum later composes actual Capability Arcs rather than
+inheriting topic units. Alternative: retain the 12-unit map as a
+non-authoritative working input under the Journey framing. Consequence:
+fixes the organizing principle for all post-L17 planning and removes the
+C3/C4 ambiguity. Founder authority: formal disposition of two approved
+planning artifacts.
 
-**FQ-C3 — Item-counting contract opening (PRJ-015).** Context: 1–4
-founder-locked learner-facing invariant vs ~8–15 planning-item band vs
-per-band Build-Spec budgets; frame+fillers counting open; 52/54/56 history.
-Recommended: confirm the future Curriculum document as sole owner, open
-PRJ-015 as its first dedicated decision, and freeze all numeric budget
-enforcement claims until the unit is defined. Alternative: delegate to
-Content-ops. Consequence: unblocks G4 reconciliation and validator precision.
-Founder authority: cross-layer ownership confirmation.
+**FQ-C3 — Item-counting contract (PRJ-015).**
+`DERIVED ACTION — NO NEW OWNERSHIP DECISION`
+Existing Canonical routing already assigns PRJ-015 to the Curriculum layer
+(Content Bible §20.2; Project Register) — ownership needs no re-decision.
+Recorded for the Charter: PRJ-015 remains `OPEN`; Charter authoring triggers
+a **dedicated counting-contract decision track** (the first post-opening
+track); no numeric validator or budget reconciliation may claim precision
+until the accounting unit is defined; the founder will later decide the
+**methodology itself**, not re-decide its owner. The methodology is not
+resolved in this discovery.
 
 **FQ-C4 — Integration cadence: pick the single binding formulation.**
-Context: three incompatible formulations (C2), the newest marked
-`[LOCKED DEFAULT]` 2026-07-18. Recommended: the Integration Rhythm Contract
-(≤3 consecutive new-engine lessons, review before a fourth) becomes the one
-rule; the "2→1 / never >2" and "every 4–5" phrasings are marked historical.
-Alternative: keep "every 4–5" as heuristic + contract as hard review rule.
-Consequence: removes a live contradiction every future lesson placement hits.
-Founder authority: two of the three carry `[CANONICAL]` markers.
+`BLOCKING FOR CHARTER`
+Context: three incompatible formulations (§17-C2), the newest marked
+`[LOCKED DEFAULT]` 2026-07-18. Recommended: adopt the **2026-07-18
+Integration Rhythm Contract** as the one rule — after three consecutive
+materially-new-engine lessons, the sequence must be reviewed before placing
+a fourth; this is an authoring/review rule, **not runtime enforcement**;
+integration may occur *earlier* when load or transfer needs justify it;
+"2 new engines → 1 integration; never more than 2" is **superseded**;
+"every 4–5 lessons" survives only as historical heuristic/context, not a
+binding rule. This formulation fits the actual authored record (the L7–L9
+run closed by L10) and avoids retroactively invalidating existing planned
+sequences, which the "never >2" phrasing would. Alternative: keep "every
+4–5" as heuristic plus the contract as hard review rule. Consequence:
+removes a live contradiction every future lesson placement hits. Founder
+authority: two of the three formulations carry `[CANONICAL]` markers.
 
-**FQ-C5 — Futur proche ownership point.** Context: gate 4 OPEN, "the #1
-temptation"; L18 defined as preview-only 0-active; ownership recommended
-post-Campfire paid zone. Recommended: confirm the recommendation (L18
-preview-only; ownership deferred beyond L24, exact lesson unassigned).
-Alternative: assign an ownership lesson now. Consequence: closes the band
-map's named top risk; keeps the free zone's promise-value intact.
-Founder authority: commercial-depth + sequencing crossover.
+**FQ-C5 — Futur proche ownership point.**
+`DEFER UNTIL POST-L17 PLANNING / PRJ-036`
+Not required to draft the Charter. For Charter purposes the record is only:
+L18 preview-only is a **provisional working direction**; no ownership lesson
+is ratified; **no pre-L24 production ownership may be inferred**; exact
+ownership remains open (band map gate 4, the named #1 risk). The decision
+becomes live at post-L17 planning and interacts with PRJ-036
+(Campfire/paywall position).
 
-**FQ-C6 — Tense architecture beyond futur proche.** Context: passé composé
-promised at Campfire but unplaced; imparfait/futur simple/conditionnel/
-subjunctive entirely unplaced; Summit *may* align with subjunctive (open).
-Recommended: explicitly record the full tense ladder as UNPLANNED (not
-silently missing), owned by the Curriculum layer, to be designed with the
-first post-Campfire band — no placements invented now. Alternative: sketch a
-provisional paid-zone tense order at Charter time. Consequence: prevents
-CEFR-convention backfilling by future agents. Founder authority: destination-
-shaping.
+**FQ-C6 — Tense architecture beyond futur proche.**
+`DERIVED CURRENT-STATE RECORD`
+No founder choice is required merely to record that these placements do not
+exist. The accurate state: passé composé has promise-level adjacency
+(Campfire) but **no lesson placement**; imparfait, futur simple,
+conditionnel systems, and subjunctive placement are **unplanned**; future
+agents must not fill these gaps from generic CEFR convention; the Curriculum
+layer owns the future design. A real founder decision will be required when
+an actual tense architecture is proposed — not now.
 
-**FQ-C7 — L18–L24 and the open zone.** Context: L18–L20 provisional roles;
-L21–L23 `PROPOSED/UNKNOWN` (D2); L24 Campfire landmark Canonical, content
-unplanned; paywall *position* formally OPEN (PRJ-036, ADR-0025 deferred).
-Recommended: ratify L18/L19/L20 *roles* (preview / integration-repair /
-checkpoint) as the working plan, keep L21–L23 open, and reaffirm that
-Campfire-at-L24 remains working direction pending PRJ-036 — Curriculum plans
-against it without hardening it. Alternative: leave all of L18–L24 open.
-Consequence: bounds the next authoring horizon. Founder authority: D2 and the
-paywall adjacency.
+**FQ-C7 — L18–L24 working horizon.**
+`DEFER UNTIL NEXT AUTHORING HORIZON`
+Not required to draft the Charter. For Charter purposes: L18–L20 remain
+provisional roles (preview / integration-repair / checkpoint); L21–L23
+remain open (D2); L24 remains a product landmark with **unplanned content**;
+the Campfire/paywall position remains dependent on PRJ-036.
 
-**FQ-C8 — Functional holes and the repair pair (R-A…R-E).** Context: the
-vault records four holes awaiting founder input; L13 assumes an unshipped
-repair pair; the "oui paradox". Conflict: C9. Recommended: decide the repair
-pair's home (restore at L1-redesign vs insert at next content wave) and
-dispose of the other three holes explicitly. Alternative: defer all to the
-L1 chip-list redesign (itself explicitly unlocked). Consequence: resolves the
-one live spec-vs-shipped pedagogical inconsistency. Founder authority: the
-vault marks these "Haktan onayı bekliyor".
+**FQ-C8 — Functional holes and the repair pair (R-A…R-E).**
+`REQUIRED CORRECTION BEFORE SPINE RATIFICATION IS COMPLETE`
+Context: the vault records four holes awaiting founder input; L13 assumes an
+unshipped repair pair; the "oui paradox". Conflict: §17-C9. Recommended: the
+canonical curriculum home of `je ne comprends pas` and
+`vous pouvez répéter ?` is the **L1 Survival Kit redesign**; they are
+repair/survival chunks, **not a later grammar engine**; L13 may assume them
+only **after** the relevant Content/runtime correction lands;
+implementation remains separately gated and must not bypass the current
+Round-1 freeze; the other three functional holes remain recorded for the L1
+redesign unless a separate placement decision is made. Alternative: insert
+the pair in the next content wave rather than L1 — downstream cost: the
+current L13 assumption remains unresolved and the spine keeps an implicit
+prerequisite that never actually shipped. Founder authority: the vault marks
+these "Haktan onayı bekliyor" (awaiting founder approval).
 
 ---
 
@@ -734,18 +806,23 @@ Governance note: the founder-locked authoring sequence names "Step 2 —
 Curriculum Bible" (Q3, 2026-07-26), and Step 2 is **not automatically
 opened**. A Charter-first path either (a) serves as the v0.x draft stage of
 that same step, or (b) requires the founder to accept a Charter as the Step-2
-vehicle. This is surfaced, not decided — it belongs in the founder review of
-this discovery alongside FQ-C1…C8.
+vehicle. This is surfaced, not decided — it is **FQ-C0**, the first blocking
+card of the founder review (§20).
 
 ---
 
 ## 22. Smallest next action
 
-Present this discovery + the eight founder questions (§20) for founder
-review. No Charter, Brief, or Bible drafting, no ID allocation beyond this
-document's provisional CUR- rows, and no Step-2 opening until the founder
-answers — at minimum — FQ-C1 (spine scope), FQ-C2 (band model), and FQ-C4
-(cadence rule), which together determine what a Charter could honestly state.
+Present this discovery + the §20 decision surface for founder review.
+**No Charter drafting begins until the founder answers FQ-C0 (Step-2
+vehicle), FQ-C1 (spine scope), FQ-C2 (macro-map status), FQ-C4 (cadence),
+and FQ-C8 (repair pair)** — together they determine what a Charter could
+honestly state and whether a Charter is the authorized vehicle at all.
+FQ-C3 becomes the first dedicated post-opening decision track (the counting
+contract, PRJ-015); FQ-C5 and FQ-C7 are deferred to post-L17 planning and
+the next authoring horizon respectively; FQ-C6 is recorded as an open
+factual state, not a present decision. No ID allocation beyond this
+document's provisional CUR- rows, and no Step-2 opening, in the meantime.
 
 ---
 
@@ -821,7 +898,7 @@ Status per the task vocabulary. "Impl." = relation to shipped runtime.
 | CUR-013 | Destination: expressive independence (Canonical); ~A0→B2, ~3,000 words, ~120–180 lessons are planning bands | Product Brain §5–§6 (PB-010/011/012/015) | CANONICAL_DOMAIN_CONSTRAINT (promise) / planning bands (numbers) | SETTLED (promise) / OPEN (B2-public) | Product Brain | n/a | B2≈3,000 must NOT be treated as curriculum canon |
 | CUR-014 | 180-lesson 12-unit CEFR band map (A0…B2 capstone) | Build Spec §38–§39 | CURRENT_APPROVED_SPEC (intent only) | CONFLICT with CUR-012 framing (C4) | Product Brain (intent) | Not built | reconciliation = FQ-C2 |
 | CUR-015 | "Core 150" spine figure | Syllabus Production Workflow | HISTORICAL_PROPOSAL | CONFLICT (C3) | unowned | n/a | unreconciled with L0–L24/180/120–180 |
-| CUR-016 | Prerequisite safety overrides correctness | Syllabus Design Rules r2; Content Bible §15.2 | CANONICAL_DOMAIN_CONSTRAINT | SETTLED | Content (rule) / Curriculum (application) | Partially enforced (learning-engine blockedProduction; not in v1 renderer) | |
+| CUR-016 | Prerequisite safety: an unseen/unsupported form may not be *required as production*; French correctness and naturalness are never waived | Content Bible §15.2 (Card-8 wording); Syllabus Design Rules r2 (compressed form) | CANONICAL_DOMAIN_CONSTRAINT | SETTLED | Content (rule) / Curriculum (application) | Partially enforced (learning-engine blockedProduction; not in v1 renderer) | r2's shorthand must not be read as licensing incorrect French |
 | CUR-017 | Active-new 1–4 per teaching lesson; integrations 0; per-archetype bands (doorway 1–2 etc.) | Content Bible §5.2/§6.8; LFC §1.1 | FOUNDER_LOCKED (via Content Bible) | SETTLED | Content | Authoring policy only | Curriculum consumes, must not restate as its own invention |
 | CUR-018 | Planning-item budget "~8–15 active-new / ~30–45 total exposure" | Syllabus Design Rules r3; template §6 | CURRENT_APPROVED_SPEC (planning) | CONFLICT (C1) with CUR-017 pending PRJ-015 | future Curriculum doc | Authoring policy only | "may be measuring differently" (G4) |
 | CUR-019 | Item-counting methodology undefined (frame+fillers, multiword chunks, linked granularities) | template §17; ID convention; PRJ-015 | AMBIGUOUS | OPEN | Curriculum Bible (Canonical home) | n/a | NOT resolved in this discovery |
