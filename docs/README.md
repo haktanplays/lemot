@@ -1,143 +1,145 @@
-# Le Mot / Cairn — Docs Map & Precedence
+# Cairn / Le Mot — Documentation Entry Point
 
-> **Public-safe index.** This file is navigation only. It authorizes no code,
-> no lesson implementation, no Home-visibility change, and does not unblock L7.
-> For current build work, `docs/DEV_APK_MVP_CANON.md` + `docs/STATUS.md` win.
-> Process and full precedence rules: `docs/MASTER_PIPELINE_v1.2.1.md` §2 (source
-> of truth — this file summarizes, it does not replace it).
-
-This is the entry point for the `docs/` tree. Start here, then read the root
-`CLAUDE.md` and the canon files below.
-
-> **Active sprint specs (2026-07-05):** `docs/canon/LESSON_FLOW_CANON_v1.md`
-> (Ders Akışı Kanonu v1.0 — lesson/hub/gate/hint/instruction-weave design
-> canon; authorizes no code by itself) and `docs/ROADMAP.md` (Deployment
-> Roadmap v1.0 — the closed five-stone PR list + system laws YASA 1/YASA 2).
-> On conflict, the Dev APK canon wins, per both documents' own scope walls.
+> **Navigation only.** This file routes readers to the current sources of truth.
+> It creates no authority, replaces no domain canon, and authorizes no
+> implementation. Where this file and a Canonical document disagree, the
+> Canonical document wins.
 
 ---
 
-## Precedence (summary — `MASTER_PIPELINE_v1.2.1.md` §2 is authoritative)
+## 1. Start here
 
-For anything being **built now**, the order is:
+Project-wide authority, precedence, ownership, and conflict routing live in the
+**Cairn Project Canon Map v1.0** — read it before anything else:
 
-1. **Current-build canon** — `docs/DEV_APK_MVP_CANON.md` + `docs/STATUS.md`.
-2. **Process canon** — `docs/MASTER_PIPELINE_v1.2.1.md`.
-3. **Product vision / build intent** —
-   `docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md` (v1.0, imported
-   2026-07-02; execution order in `docs/CAIRN_ROADMAP_202607.md`, open gaps in
-   `docs/KNOWN_GAPS.md`). It sits **below** current-build canon; the Dev APK
-   canon wins for anything built now. The v0.1 docs
-   (`CAIRN_PRODUCT_DEFINITION_v0.1.md`, `CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md`) are
-   SUPERSEDED reference only.
-4. **Active workstream** for the current sprint (`docs/workstreams/round1-*`).
-5. **Syllabus specs / matrices** (`docs/syllabus/*`, `docs/architecture/*`) —
-   planning material, not build-ready unless explicitly promoted.
-6. **Status / checkpoint docs** (`docs/status/*`) — historical record unless
-   `STATUS.md` or current-build canon says otherwise.
-7. **Archive / superseded / legacy** — never overrides 1–2.
+- `docs/canon/CAIRN_PROJECT_CANON_MAP_v1.0.md` (Canonical, signed off 2026-07-26)
 
-Conflict rule (from the pipeline): *newer active canon > current codebase canon >
-older active canon > design reference > archive.* If two docs disagree, current
-build canon wins and the gap is surfaced.
+If you are new to this tree, read in this order:
+
+1. **Project Canon Map** — who owns which domain, how conflicts resolve, where
+   the gaps are.
+2. **Product Brain v1.0** — product promise, identity, and major scope
+   decisions.
+3. The **domain Bible or Charter** that owns your question (table below).
+
+Supporting routing documents (under the Canon Map, not independent canon):
+`docs/canon/CAIRN_AUTHORITY_AND_ROUTING_SPEC_v0.1.md` (conflict algorithm,
+stop conditions, implementation-opening protocol) and
+`docs/canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md` (what is and is not covered).
 
 ---
 
-## Document categories
+## 2. Current Canonical stack
 
-| Category | Files | What it is | Authorizes implementation? | Overridden by |
-|---|---|---|---|---|
-| **Current-build canon** | `DEV_APK_MVP_CANON.md`, `STATUS.md` | The scope and state of what ships now (Round 1 L0-L6) | Within Round 1 scope, yes — this is the build authority | Newer entries in the same files |
-| **Process canon** | `MASTER_PIPELINE_v1.2.1.md` | How work is done; precedence; cloud rules | No (process, not feature) | Operator decision |
-| **Product vision** | `CAIRN_PRODUCT_DEFINITION_v0.1.md` | Long-term vision, promise, learner, boundaries | **No** — vision only | Current-build canon |
-| **Product system map** | `CAIRN_PRODUCT_SYSTEM_MAP_v0.1.md` | Index of systems + gaps, pointing at repo homes | **No** — index/map only | Current-build canon |
-| **Operational / release** | `DEV_APK_SMOKE_TEST_CHECKLIST.md`, `EAS_PREVIEW_BUILD.md`, `CLOUD_SYNC_QUEUE.md`, `status/release-guardrail-audit-plan.md` | Build, smoke, release, operator worklist | No (operator runs these) | Current-build canon |
-| **Workstream** | `workstreams/*` (see `workstreams/README.md`) | Per-sprint step specs and the Round 1 plan / post-smoke framework | Only the active, in-scope workstream; the rest are historical | Current-build canon |
-| **Syllabus / planning** | `syllabus/*`, `architecture/*` | Lesson specs, compact-specs, gate-reviews, matrices, templates, contracts | **No** — planning/spec unless explicitly promoted | Current-build canon |
-| **Status / checkpoint** | `status/*` | Point-in-time checkpoints, baselines, decisions | **No** — historical unless STATUS.md says current | `STATUS.md` |
-| **Agent docs** | `agents/*` | Agent constitution, away-agent template/queue | No (process) | Operator decision |
-| **Obsidian / operator planning** | `obsidian/*` | Operator-side note-tree / dashboard planning | No | Operator decision |
-| **Archive / superseded** | any file marked `SUPERSEDED` | Replaced material kept for history | **No** | Already overridden |
+| Domain | Primary authority | Status | Use for |
+|---|---|---|---|
+| Project-wide routing | [Cairn Project Canon Map v1.0](canon/CAIRN_PROJECT_CANON_MAP_v1.0.md) | Canonical | Authority, precedence, ownership, and gap routing |
+| Product | [Cairn Product Brain v1.0](../obsidian-product-brain/ACTIVE_CODEX/00_CAIRN_PRODUCT_BRAIN/CAIRN_PRODUCT_BRAIN_v1.0.md) | Canonical | Product promise, identity, major scope decisions |
+| Content | [Cairn Content Bible v1.0](bibles/content/CONTENT_BIBLE_v1.0.md) | Canonical | Content authoring, activity contracts, French-content safety boundaries |
+| Social | [Cairn Social Layer Charter v1.0](bibles/social/SOCIAL_LAYER_CHARTER_v1.0.md) | Canonical, dormant | Negative bounds and future social direction |
+| Mastery & evidence | [Cairn Mastery & Evidence Bible v1.0](bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md) | Canonical | Evidence admissibility and mastery derivation |
 
-### Explicit reminders
-- **Product Definition** is vision/promise — not implementation authorization.
-- **Product System Map** is index/map only — not implementation authorization.
-- **Syllabus specs** are planning/spec material and do **not** override current
-  Dev APK canon unless explicitly promoted (see Promotion, below).
-- **Status / checkpoint docs** are historical unless `STATUS.md` or current-build
-  canon says otherwise. Example: `syllabus/L07-aller-movement-next-step.lesson-spec.md`
-  is superseded by `syllabus/L07-compact-doorway.compact-spec.md`, and L7
-  remains blocked regardless.
+**Canonical does not mean implemented.** None of these documents authorizes
+code. The Social layer is dormant: nothing social is built, planned, or
+authorized, and no positive social evidence contract exists (PRJ-009 is
+`OPEN`) — no social action counts as evidence today. The shipped
+mastery/evidence runtime does **not** conform to the Canonical Bible; current
+runtime reality is recorded separately in
+`docs/bibles/mastery-evidence/MASTERY_EVIDENCE_CURRENT_REALITY_AND_ENFORCEMENT_MAP_v0.1.md`.
 
 ---
 
-## Git (public-safe) vs Obsidian (private)
+## 3. Domain-first routing
 
-- **Git holds public-safe build / product / index docs** — what's in this `docs/`
-  tree.
-- **The real/private Cairn Codex, raw strategy, raw idea dumps, founder notes,
-  private tester feedback, competitor/market notes, and sensitive roadmap live
-  outside git** (likely in Obsidian / the operator vault).
-- **No raw Obsidian note enters git directly.** Any Obsidian-to-repo promotion
-  must first be **summarized, sanitized, classified by category, and reviewed**
-  before it lands as a public-safe doc.
-- Durable cross-over actions that a cloud session cannot complete route through
-  `docs/CLOUD_SYNC_QUEUE.md`, not into the docs tree.
+Route a question to its owner first, not to the newest or nearest document:
 
----
+- **Product promise and major scope** → Product Brain v1.0
+- **Content correctness and authoring contracts** → Content Bible v1.0
+- **Exact course sequencing and lesson placement** → Curriculum Bible —
+  **not yet authored** (fragments exist; no authoritative owner)
+- **Evidence admissibility and mastery derivation** → Mastery & Evidence
+  Bible v1.0
+- **Social negative bounds and future direction** → Social Layer Charter v1.0
+- **Runtime schemas, persistence, validators, enforcement** → Engineering
+  Bible — **not yet authored**; accepted, in-domain implementation ADRs bind
+  (check each ADR's own status — the `ADR-####` name alone confers none)
+- **Cross-domain authority conflict** → Project Canon Map v1.0
 
-## Status-banner convention (going forward)
-
-New docs should open with a one-line status banner. Use one of:
-
-- **current-build canon** — authoritative for what ships now.
-- **process canon** — how work is done.
-- **planning/vision only** — no implementation authorization.
-- **system-map/index only** — no implementation authorization.
-- **workstream / decision framework** — scoped to a sprint or a decision.
-- **archive / superseded** — historical, never authoritative.
-- **public-safe index** — navigation only (this file).
-
-This convention applies to **new and edited** docs going forward. It is **not**
-retrofitted across existing files in this patch.
+**Stop condition:** if a task requires authority owned by an unauthored layer
+(e.g. a binding sequencing decision), **stop and report**. Do not improvise the
+missing owner, and do not infer permission from documentation presence.
 
 ---
 
-## Archive / superseded rule
+## 4. Canon versus supporting records
 
-- When a file is later superseded, add **`SUPERSEDED`** at the top and link the
-  current alternative when known.
-- Archived / superseded files **never authorize implementation**.
-- Never silently delete a superseded doc that others may reference; mark it and
-  point forward (see `MASTER_PIPELINE_v1.2.1.md` §5 archive tier).
+**Primary authority:**
 
----
+- Canonical Bibles, Charters, and the Project Canon Map
+- accepted ADRs, within each ADR's own declared scope
 
-## Promotion path (idea → build)
-
-```
-raw idea / strategy (Obsidian, private)
-  → sanitized + classified into a public-safe planning doc (syllabus / workstream)
-  → System Map candidate (named gap, still not built)
-  → specialized spec (only when building, in scope, current canon allows)
-  → PR → review → implementation
-```
-Location does not grant authority — promotion to canon happens by editing a
-current-build canon doc in a reviewed PR.
+**Supporting provenance** (decision matrices, ratification records, founder
+reviews, sign-off reviews, source and gap maps, read-through packs,
+enforcement/current-reality maps): these explain how a Canonical document got
+its status and what remains open. They never independently outrank their
+Canonical parent.
 
 ---
 
-## Do not infer authorization
+## 5. Execution documents (current build)
 
-Nothing in `docs/` (outside current-build canon, within its stated scope) is a
-green light to build. Specifically:
+`docs/MASTER_PIPELINE_v1.2.1.md` is authoritative for the **current-build
+execution pipeline** within its defined scope: how work is done, task tiers,
+review-then-commit discipline, cloud-session rules, and the operator/agent
+role split. Follow it for any code PR.
 
-- **No L7 implementation** — blocked until the operator device smoke passes
-  **and** an explicit closeout decision is made.
-- **No Home-visibility change** (`<=6 → <=7` stays a separate reviewed decision).
-- **No runtime changes** inferred from planning, vision, system-map, or status
-  docs.
-- **No smoke-pass claim** — Android/device smoke is pending and operator-only.
-- **No feature implementation** derived from a planning or vision doc.
+It is **not** the top-level authority for project identity, cross-domain
+canon, Content rules, Social rules, Mastery semantics, or unauthored
+Curriculum decisions — those route through the Project Canon Map to their
+domain owners.
 
-Current shippable scope remains the Round 1 Dev APK (L0-L6).
+The same scoping applies to the current-build chain
+(`CLAUDE.md → docs/STATUS.md → docs/DEV_APK_MVP_CANON.md → Cairn v1.0 spec`):
+it remains valid for current-build execution scope only — what ships now, what
+the active branch may touch — and must not be used to route around any
+Canonical domain owner (founder decision Q1, 2026-07-26; ADR-0024 as
+scope-amended). For "what actually runs today," code, tests, and
+`docs/STATUS.md` govern factual reality; implementation evidence never
+determines product intent.
+
+---
+
+## 6. Important open layers and dependencies
+
+Pointer only — the authoritative current list lives in the Canon Map (§16) and
+`docs/canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md`. At minimum, know that:
+
+- **Curriculum Bible** — not yet authored (sequencing has no owner)
+- **Engineering Bible** — not yet authored (ADRs partially bind)
+- **Operations & QA authority** — not yet authored
+- **PRJ-009** positive social evidence contract — `OPEN`; no social action is
+  evidence today
+- **French style guide / named reviewer / Reading validator** — open
+  dependencies under Content (PRJ-010/011/012); the French QA gate is not yet
+  executable
+- **Mastery runtime conformance** — an implementation gap; documentation does
+  not close it
+
+None of these gaps is filled by writing code, and none of these layers may be
+invented by an agent mid-task (see the stop condition in §3).
+
+---
+
+## 7. Historical and superseded documents
+
+Superseded or historical material may remain useful for provenance — it is
+kept discoverable, marked `SUPERSEDED`, and never silently deleted. But:
+
+- **Recency alone does not create authority.** A newer file wins nothing by
+  date; authority comes from ratified ownership.
+- **An old implementation document does not override current Canonical domain
+  decisions**, no matter how detailed it is.
+- **Historical proposals must not be presented as current product intent.**
+  Legacy v7 material (24 lessons, L14 paywall, XP/streak) is quarantined under
+  `LEGACY — DO NOT BUILD ON THIS` banners and is not canon (ADR-0024).
+- Archived and superseded files **never authorize implementation**.
