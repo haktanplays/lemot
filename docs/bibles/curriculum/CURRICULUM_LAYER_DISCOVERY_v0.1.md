@@ -30,6 +30,16 @@ implementation_authority: none
 
 **Recommendation: CURRICULUM CHARTER FIRST** (full rationale §21).
 
+> **Founder review completed 2026-07-28.** FQ-C0, FQ-C1, FQ-C2, FQ-C4, and
+> FQ-C8 were **APPROVED as recommended**; FQ-C3/C5/C6/C7 remain
+> derived/deferred/current-state exactly as classified. **Curriculum Charter
+> drafting is authorized as the v0.x governance and ratification phase of
+> Step 2.** Durable decision record:
+> [`CURRICULUM_FOUNDER_RATIFICATION_v0.1.md`](CURRICULUM_FOUNDER_RATIFICATION_v0.1.md).
+> Draft under review: [`CURRICULUM_CHARTER_v0.1.md`](CURRICULUM_CHARTER_v0.1.md).
+> This discovery itself remains non-Canonical, non-authoritative
+> discovery/provenance material.
+
 The curriculum layer is exactly what Coverage & Gaps calls it: `FRAGMENTED` —
 rich material, no owner. The audit found:
 
@@ -626,30 +636,39 @@ Genuinely open, with current owner-of-record:
 
 ## 20. Candidate founder decisions
 
-Nine cards. Only **five** require an answer before Charter drafting
+Nine cards. Only **five** required an answer before Charter drafting
 (FQ-C0, C1, C2, C4, C8); the rest are derived actions, current-state
 records, or deferrals — retained with their original identifiers for
 traceability, not because they are urgent. None asks the founder to approve
 a sequence invented in this audit — every option cited already exists in a
 source.
 
+> **Founder decisions 2026-07-28:** the five blocking/required cards were
+> **APPROVED with their recommended answers**. The full context,
+> alternatives, and consequences below are preserved as the decision trail —
+> they are not erased by the approval. FQ-C3/C5/C6/C7 are **not** approved,
+> resolved, or rejected: they remain open, derived, or deferred as
+> classified. Binding record:
+> [`CURRICULUM_FOUNDER_RATIFICATION_v0.1.md`](CURRICULUM_FOUNDER_RATIFICATION_v0.1.md).
+
 ### Founder review summary
 
-| Card | Decision | Classification | Recommended answer | Needed before Charter? |
+| Card | Decision | Classification | Recommended answer | Founder decision |
 |---|---|---|---|---|
-| FQ-C0 | Step-2 vehicle | BLOCKING FOR CHARTER DRAFT | Charter = v0.x governance/ratification stage of Step 2, not a Bible substitute | **Yes** |
-| FQ-C1 | Spine ratification scope | BLOCKING FOR CHARTER | Ratify L0–L17 at honest tiered statuses; L18+ not ratified | **Yes** |
-| FQ-C2 | Macro-map status | BLOCKING FOR CHARTER | Demote 12-unit/180 map and "Core 150" to historical/reference inputs | **Yes** |
-| FQ-C4 | Integration cadence | BLOCKING FOR CHARTER | Adopt the 2026-07-18 Integration Rhythm Contract as the single rule | **Yes** |
-| FQ-C8 | Repair pair / functional holes | REQUIRED CORRECTION BEFORE SPINE RATIFICATION IS COMPLETE | Repair pair homes in the L1 Survival Kit redesign | **Yes** (for clean spine ratification) |
-| FQ-C3 | Item-counting contract | DERIVED ACTION — NO NEW OWNERSHIP DECISION | PRJ-015 stays OPEN; first dedicated post-opening decision track | No |
-| FQ-C5 | Futur proche ownership | DEFER UNTIL POST-L17 PLANNING / PRJ-036 | Record L18 preview-only as provisional; ownership open | No |
-| FQ-C6 | Tense architecture | DERIVED CURRENT-STATE RECORD | Record placements as UNPLANNED; no CEFR backfill | No |
-| FQ-C7 | L18–L24 horizon | DEFER UNTIL NEXT AUTHORING HORIZON | Provisional roles stand; L21–L23 open; PRJ-036 pending | No |
+| FQ-C0 | Step-2 vehicle | BLOCKING FOR CHARTER DRAFT | Charter = v0.x governance/ratification stage of Step 2, not a Bible substitute | **APPROVED 2026-07-28** |
+| FQ-C1 | Spine ratification scope | BLOCKING FOR CHARTER | Ratify L0–L17 at honest tiered statuses; L18+ not ratified | **APPROVED 2026-07-28** |
+| FQ-C2 | Macro-map status | BLOCKING FOR CHARTER | Demote 12-unit/180 map and "Core 150" to historical/reference inputs | **APPROVED 2026-07-28** |
+| FQ-C4 | Integration cadence | BLOCKING FOR CHARTER | Adopt the 2026-07-18 Integration Rhythm Contract as the single rule | **APPROVED 2026-07-28** |
+| FQ-C8 | Repair pair / functional holes | REQUIRED CORRECTION BEFORE SPINE RATIFICATION IS COMPLETE | Repair pair homes in the L1 Survival Kit redesign | **APPROVED 2026-07-28** |
+| FQ-C3 | Item-counting contract | DERIVED ACTION — NO NEW OWNERSHIP DECISION | PRJ-015 stays OPEN; first dedicated post-opening decision track | not a decision — remains derived |
+| FQ-C5 | Futur proche ownership | DEFER UNTIL POST-L17 PLANNING / PRJ-036 | Record L18 preview-only as provisional; ownership open | remains deferred |
+| FQ-C6 | Tense architecture | DERIVED CURRENT-STATE RECORD | Record placements as UNPLANNED; no CEFR backfill | remains a factual record |
+| FQ-C7 | L18–L24 horizon | DEFER UNTIL NEXT AUTHORING HORIZON | Provisional roles stand; L21–L23 open; PRJ-036 pending | remains deferred |
 
 ### The cards
 
-**FQ-C0 — Step-2 vehicle.** `BLOCKING FOR CHARTER DRAFT`
+**FQ-C0 — Step-2 vehicle.** `BLOCKING FOR CHARTER DRAFT` — **APPROVED
+2026-07-28 (recommended answer adopted).**
 Context: the founder-locked canon authoring sequence (Q3, 2026-07-26) names
 Step 2 as "Curriculum Bible," while this discovery recommends "Curriculum
 Charter first." Nothing in existing canon independently authorizes changing
@@ -667,7 +686,8 @@ still creating a governing Curriculum authority. Founder authority is
 required because the locked authoring sequence names a Bible and does not
 independently authorize changing the Step-2 vehicle.
 
-**FQ-C1 — Spine ratification scope.** `BLOCKING FOR CHARTER`
+**FQ-C1 — Spine ratification scope.** `BLOCKING FOR CHARTER` — **APPROVED
+2026-07-28 (recommended answer adopted).**
 Context: L0–L6 locked+shipped; L7–L15 authored compact specs (accepted
 working plan, "documented"); L16–L17 spec-only; Option C explicitly "working
 arc, not a locked sequence". Conflict: nothing governs sequencing policy, so
@@ -683,7 +703,8 @@ Consequence: determines what a Charter may state as settled vs working.
 Founder authority required because the fragments were never ratified as a
 sequence.
 
-**FQ-C2 — Status of the conflicting macro-maps.** `BLOCKING FOR CHARTER`
+**FQ-C2 — Status of the conflicting macro-maps.** `BLOCKING FOR CHARTER` —
+**APPROVED 2026-07-28 (recommended answer adopted).**
 Context: Canonical precedence **already establishes** that the Product
 Brain's Journey → Capability Arc → Lesson model controls over lower-authority
 planning artifacts — the founder is *not* being asked which authority wins.
@@ -713,7 +734,8 @@ until the accounting unit is defined; the founder will later decide the
 resolved in this discovery.
 
 **FQ-C4 — Integration cadence: pick the single binding formulation.**
-`BLOCKING FOR CHARTER`
+`BLOCKING FOR CHARTER` — **APPROVED 2026-07-28 (recommended answer
+adopted).**
 Context: three incompatible formulations (§17-C2), the newest marked
 `[LOCKED DEFAULT]` 2026-07-18. Recommended: adopt the **2026-07-18
 Integration Rhythm Contract** as the one rule — after three consecutive
@@ -756,7 +778,8 @@ remain open (D2); L24 remains a product landmark with **unplanned content**;
 the Campfire/paywall position remains dependent on PRJ-036.
 
 **FQ-C8 — Functional holes and the repair pair (R-A…R-E).**
-`REQUIRED CORRECTION BEFORE SPINE RATIFICATION IS COMPLETE`
+`REQUIRED CORRECTION BEFORE SPINE RATIFICATION IS COMPLETE` — **APPROVED
+2026-07-28 (recommended answer adopted).**
 Context: the vault records four holes awaiting founder input; L13 assumes an
 unshipped repair pair; the "oui paradox". Conflict: §17-C9. Recommended: the
 canonical curriculum home of `je ne comprends pas` and
@@ -813,16 +836,18 @@ card of the founder review (§20).
 
 ## 22. Smallest next action
 
-Present this discovery + the §20 decision surface for founder review.
-**No Charter drafting begins until the founder answers FQ-C0 (Step-2
-vehicle), FQ-C1 (spine scope), FQ-C2 (macro-map status), FQ-C4 (cadence),
-and FQ-C8 (repair pair)** — together they determine what a Charter could
-honestly state and whether a Charter is the authorized vehicle at all.
-FQ-C3 becomes the first dedicated post-opening decision track (the counting
-contract, PRJ-015); FQ-C5 and FQ-C7 are deferred to post-L17 planning and
-the next authoring horizon respectively; FQ-C6 is recorded as an open
-factual state, not a present decision. No ID allocation beyond this
-document's provisional CUR- rows, and no Step-2 opening, in the meantime.
+*(Updated 2026-07-28.)* The five blocking/required answers now exist
+(FQ-C0/C1/C2/C4/C8 approved — see the ratification record), so **Curriculum
+Charter drafting is authorized as the v0.x governance and ratification
+phase of Step 2**. The draft is
+[`CURRICULUM_CHARTER_v0.1.md`](CURRICULUM_CHARTER_v0.1.md) —
+`Draft — awaiting founder sign-off`; it becomes Canonical only by explicit
+founder sign-off and promotion. The next action is founder review of that
+draft. Meanwhile: FQ-C3 remains the first dedicated post-opening decision
+track (the counting contract, PRJ-015); FQ-C5 and FQ-C7 remain deferred to
+post-L17 planning and the next authoring horizon respectively; FQ-C6
+remains an open factual state, not a present decision. No full Curriculum
+Bible may be drafted at this stage.
 
 ---
 
