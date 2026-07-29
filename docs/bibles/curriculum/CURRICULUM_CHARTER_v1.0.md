@@ -273,7 +273,9 @@ CUR-016, CUR-025, CUR-029; FQ-C8.*
 conflated:
 
 1. **Curriculum item accounting** — items by status tier (the syllabus
-   specs' unit); its methodology is open (PRJ-015).
+   specs' unit); its methodology is now owned by the **Item-Counting
+   Contract v1.0** (Canonical 2026-07-29; PRJ-015 resolved,
+   implementation deferred).
 2. **Pedagogical beats** — the 8–12-beat lesson spine (Content Bible).
 3. **Authored lesson sections** — the ten named sections of the spec
    template.
@@ -281,8 +283,10 @@ conflated:
    budget; shipped lessons carry 8–12).
 
 The **mapping between sections, beats, and rendered screens remains open**
-at the Curriculum/Engineering seam. This Charter does not resolve PRJ-015,
-and no numeric counting rule may claim precision before it is resolved.
+at the Curriculum/Engineering seam. *(2026-07-29: PRJ-015 was resolved by
+the Item-Counting Contract v1.0; per that Contract, no validator may
+claim precision until the relevant rule is Canonical **and**
+implemented.)*
 
 ## 10. Spiral and recycle (CC-009)
 
@@ -349,8 +353,11 @@ Preserved explicitly — none is resolved, and silence is never approval:
   unauthored. **Charter promotion does not automatically close or change
   PRJ-001** — any status change requires an explicit Project Register
   decision/update;
-- **PRJ-015** — item-counting methodology (first dedicated post-opening
-  decision track);
+- **PRJ-015 — RESOLVED 2026-07-29** as a subordinate Canonical Curriculum
+  authority: the **Item-Counting Contract v1.0**
+  ([`PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md`](PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md))
+  now owns the counting methodology (Canonical; **implementation remains
+  deferred** — no validator, registry, or runtime enforcement exists);
 - **PRJ-029** — post-L24 progression;
 - **PRJ-036** — Campfire/paywall position (Product Brain-owned; Curriculum
   plans against the working direction without hardening it);
@@ -373,7 +380,8 @@ Work must **stop and report** — not improvise — when a task requires:
 
 - an unratified post-L17 placement;
 - a tense order not established by source;
-- a numeric counting rule before PRJ-015 is resolved;
+- a counting question not answered by the Item-Counting Contract v1.0,
+  or a task that infers runtime enforcement from that Contract;
 - a Capability Arc composition not yet authored;
 - a new mastery meaning (Mastery Bible territory);
 - a social-evidence contract (PRJ-009 is `OPEN`; the answer today is no);
@@ -401,7 +409,9 @@ The full Curriculum Bible is authored only when the layer is mature enough
 to justify it — at minimum:
 
 - the **first Capability Arcs are composed**;
-- the **PRJ-015 accounting contract is resolved**;
+- ~~the **PRJ-015 accounting contract is resolved**~~ — **✅ satisfied
+  2026-07-29** (Item-Counting Contract v1.0, Canonical). The Curriculum
+  Bible **still remains blocked** by every other condition below;
 - the **post-L17 horizon is meaningfully authored** (not just banded);
 - the **tense architecture is at least bounded** (which systems, in what
   macro-order, even if exact lessons stay open);

@@ -33,7 +33,17 @@ Kurallar tek bir omurgadan doğar: **"correct French is not sufficient"**. Bir f
 Item yalnız owned bir şeye ya da bu derste supported/recognition olarak verilene dayanıyorsa izinli. "Correct French is not sufficient" (`lesson-spec-template-v1.1.md:51`). **[CANONICAL]**
 
 ### 3. Item budget = planning target, validator değil
-Erken dersler ~30–45 total exposure; ~8–15 active-new; ~8–15 supported-new; ~10–20 recognition (`lesson-spec-template-v1.1.md:108-114`). L0 budget'ın **altında** olabilir (`:117`). **Bantlar aynı anda maks'lanamaz** (`:121`). **[CANONICAL]**
+
+> [!important] **Scope amended 2026-07-29 — PRJ-015 Item-Counting Contract v1.0**
+> (`docs/bibles/curriculum/PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md`, DOC-062, Canonical).
+> **Active-new sayımı artık Contract'a gider:** active-new = **yeni learner-facing
+> aktif üretim talebi** (normal **1–3**, hard maksimum **4** — dördüncü talep kısa
+> bir bilişsel-yük gerekçesi ister; integration **0**; meta/`phen:` ve `sent:`
+> anchor'lar sayılmaz). Aşağıdaki **`~8–15 active-new` SUPERSEDED'dır** ve bağlayıcı
+> yazım kuralı olarak kullanılamaz; **`~30–45 total exposure` tarihsel/bağlayıcı-olmayan
+> bir heuristiktir**. Orijinal metin tarihsel provenance olarak korunur.
+
+Erken dersler ~30–45 total exposure; ~8–15 active-new; ~8–15 supported-new; ~10–20 recognition (`lesson-spec-template-v1.1.md:108-114`). L0 budget'ın **altında** olabilir (`:117`). **Bantlar aynı anda maks'lanamaz** (`:121`). **[CANONICAL — scope-amended above; active-new figures SUPERSEDED]**
 
 > [!warning] Bunlar **hedef**, geçme/kalma eşiği değil. Chip audit'e göre L1–L6 için "30-item floor" fabrikasyon olmadan ulaşılamaz; owned havuz o kadar erken küçük (`audit:171`).
 

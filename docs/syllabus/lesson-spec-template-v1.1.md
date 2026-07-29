@@ -103,22 +103,35 @@ A lesson spec built from this template is a **planning document**. It does not d
 
 ## 6. Item Budget
 
-> **Planning targets, not hard validators** (engine §7). Use them to feel overload/underweight; a validator may *report* counts but must not fail a lesson for being slightly outside the bands.
+> **Counting governance (2026-07-29):** this section follows the **PRJ-015
+> Item-Counting Contract v1.0**
+> (`docs/bibles/curriculum/PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md`, Canonical).
+> **Active-new counts *new learner-facing active production demands*** — not raw
+> IDs: normal **1–3**, hard maximum **4** (a fourth demand requires a short
+> cognitive-load rationale in this spec); **integration lessons: 0** (and no
+> in-lesson promotion to active); meta/accounting entries (`phen:` etc.) and
+> `sent:` model-answer anchors are **listed separately, never counted as
+> active-new**; a linked concept-cluster (chunk + its frame + its phenomenon)
+> counts **once**; fillers count only via their own acquisition status.
+> Presentation/exposure numbers must **name their unit**. The former binding
+> bands (`~8–15` active-new, `~30–45` total exposure) are **superseded /
+> historical** and must not be used as targets.
 
-| Field | Target (early lessons) | This lesson |
+| Field | Guidance | This lesson |
 |---|---|---|
-| **Active new items** | ~8–15 | _…_ |
-| **Supported new items** | ~8–15 | _…_ |
-| **Recognition / ambient items** | ~10–20 | _…_ |
+| **Active-new production demands** | normal 1–3; hard max 4 (rationale required for a 4th); integration 0 | _…_ |
+| **Meta / accounting IDs (`phen:` etc.)** | listed separately — never counted as active-new | _…_ |
+| **Supported new items** | authoring default +2–3 (Content Bible) | _…_ |
+| **Recognition / ambient items** | keep light; name the unit | _…_ |
 | **Recycled items** | grows over time | _…_ |
-| **Total exposure estimate** | ~30–45 | _…_ |
-| **Production target count** | _# of items the learner must actively/transformed-produce this lesson_ | _…_ |
+| **Exposure estimate** | historical ~30–45 heuristic is non-binding; if stated, name the unit | _…_ |
+| **Production target count** | _# of sentences the learner must actively/transformed-produce this lesson_ | _…_ |
 
-> **L0 vs L1.** **L0 / Lesson Zero** may intentionally sit *below* the normal early-lesson item budget — it is an onboarding moment, not a full lesson. **L1** should normally target the early-lesson planning budget (the bands above) unless a future explicit canon decision says otherwise. The **L1 pilot** should be used precisely to test whether the ~30–45 total exposure / ~8–15 active / ~8–15 supported / ~10–20 recognition range is workable for a *first full lesson*. Document any deliberate underweight in §17 reasoning, not as a failure.
+> **L0 vs L1.** *(Historical pilot framing — the band figures below are superseded per the §6 banner; active-new is governed by the Contract's 1–3/4 rule.)* **L0 / Lesson Zero** may intentionally sit *below* the normal early-lesson item budget — it is an onboarding moment, not a full lesson. The **L1 pilot** was used to test whether the historical ~30–45 total exposure / ~8–15 active / ~8–15 supported / ~10–20 recognition range was workable for a *first full lesson*. Document any deliberate underweight in §17 reasoning, not as a failure.
 
-> **Chunk-dense social / survival lessons.** Lessons built mostly from fixed social chunks (greetings, polite formulas, rescue phrases) may legitimately sit at the **lower end of the active-new band** — roughly **~8–12 active-new** is acceptable for them, *provided* total exposure, supported items, recognition input, and production targets all remain strong. **Do not inflate the active-new count by forcing fixed social phrases into full active production** — that produces a phrasebook, the failure mode the engine warns against (engine §11, anti-scope). Prefer a generative *frame* (e.g. `je voudrais ___`) carrying the active load over a long list of memorized phrases.
+> **Chunk-dense social / survival lessons.** *(The "~8–12" figure below is a superseded planning-unit count — under the Contract, active-new production demands stay within 1–3/4; fixed chunks that jointly open one capability count as linked clusters.)* Lessons built mostly from fixed social chunks (greetings, polite formulas, rescue phrases) historically sat at roughly **~8–12** in the old mixed planning count, *provided* total exposure, supported items, recognition input, and production targets all remained strong. **Do not inflate the active-new count by forcing fixed social phrases into full active production** — that produces a phrasebook, the failure mode the engine warns against (engine §11, anti-scope). Prefer a generative *frame* (e.g. `je voudrais ___`) carrying the active load over a long list of memorized phrases.
 
-> **Budget interaction — don't max every tier.** In **transformation-heavy lessons** (negation/question, review, tense-doorway), **recycled / carry-in items naturally run high** because the lesson *operates on* prior engines. When recycled is high, **active-new should sit at the lower end** of its band. The per-tier bands **cannot all be maximized at once** — maxing active-new + supported-new + recognition + recycled simultaneously blows the total-exposure band. **Total exposure (~30–45) and production quality matter more than hitting every tier maximum.**
+> **Budget interaction — don't max every tier.** In **transformation-heavy lessons** (negation/question, review, tense-doorway), **recycled / carry-in items naturally run high** because the lesson *operates on* prior engines. When recycled is high, **active-new should sit at the lower end** of the Contract's 1–3 normal range. The tiers **cannot all be maximized at once**; exposure figures are non-binding heuristics (name the unit if stated) — **production quality matters more than hitting any tier maximum.**
 
 ---
 
@@ -394,11 +407,12 @@ For **each** section fill: purpose · input used · learner action · expected o
 - Forbidden / not-yet-ready substitutions:
 
 ## 5. Item Budget (planning targets, not validators)
-- Active new items (~8–15):
-- Supported new items (~8–15):
+- Active-new production demands (normal 1–3; hard max 4 with rationale; integration 0 — per PRJ-015 Contract v1.0):
+- Meta / accounting IDs (listed separately, never counted as active-new):
+- Supported new items (+2–3 authoring default):
 - Recognition / ambient items (~10–20):
 - Recycled items (grows over time):
-- Total exposure estimate (~30–45):
+- Exposure estimate (non-binding heuristic; name the unit if stated):
 - Production target count:
 
 ## 6. Item Tables
