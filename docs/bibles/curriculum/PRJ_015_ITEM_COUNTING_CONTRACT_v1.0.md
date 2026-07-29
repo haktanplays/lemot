@@ -1,23 +1,27 @@
 ---
 title: Cairn PRJ-015 Item-Counting Contract
-version: 0.1
-status: Draft — awaiting founder sign-off
-authority: Draft Curriculum counting-governance contract. Becomes binding only after explicit founder sign-off and Canonical promotion.
+version: 1.0
+status: Canonical
+authority: Canonical Curriculum counting-governance contract, founder-signed 2026-07-29. Governs counting language and authoring interpretation; confers no implementation authority.
 owner: Curriculum
 date: 2026-07-29
+founder_signoff: 2026-07-29
 implementation_authority: none
-prj_status: OPEN
+prj_status: CANONICAL
+supersedes: PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md (renamed on promotion; same document lineage)
 source_discovery: PRJ_015_ITEM_COUNTING_DISCOVERY_v0.1.md
 ---
 
-# Cairn PRJ-015 Item-Counting Contract v0.1 (Draft)
+# Cairn PRJ-015 Item-Counting Contract v1.0 (Canonical)
 
 ## 1. Status, purpose and boundaries
 
-**Draft — awaiting founder sign-off. PRJ-015 remains `OPEN`.** Canonical
-will not mean implemented: this Contract governs **counting language**,
-not technical storage — it authorizes no database, store, schema,
-registry change, migration, or validator. Boundaries: **Content** owns
+**Canonical — founder-signed 2026-07-29**, after the independent sign-off
+review (`READY WITH NON-BLOCKING NOTES`). **Canonical does not mean
+implemented**: this Contract governs **counting language and authoring
+interpretation**, not technical storage — it authorizes no database,
+store, schema, registry change, migration, validator, or any other
+runtime enforcement, and the §10 deferrals remain binding. Boundaries: **Content** owns
 the active-new **1–4** invariant itself; **Mastery & Evidence** owns all
 evidence and mastery consequences of linked or separated identities;
 **Engineering** owns runtime identity, ID syntax, and migration;
@@ -197,11 +201,12 @@ classification, must state whether the pair is one linked cluster or two
 separate active demands — the range is not silently settled here. Either
 candidate remains within the hard maximum of 4. This plausibly reconciles
 the historical "3–5 / 5 vs 1–4" conflict without a payload change, but
-this draft **does not alter L17**, does **not** claim runtime compliance,
-and authorizes **no payload edit**; the reconciliation becomes
-authoritative **only after founder sign-off and Canonical promotion of
-this Contract plus the proper lesson classification**. Until then the
-Charter's L17 payload gate stands unchanged.
+this Contract **does not alter L17**, does **not** claim runtime
+compliance, and authorizes **no payload edit**. The Contract is now
+Canonical (2026-07-29); the reconciliation becomes authoritative for L17
+**only once the lesson-level classification is properly stated in a
+separate reviewed task**. Until then the Charter's L17 payload gate
+stands unchanged.
 
 ## 10. Explicit deferrals
 
@@ -227,13 +232,20 @@ Stop and report when a task involves:
 - a lexical word-total calculation (the 3,000-word band is not an
   operational counter under this Contract).
 
-## 12. Next step
+## 12. Status record
 
-Independent sign-off review of this draft; only after that review may
-founder promotion be considered. **PRJ-015 remains `OPEN` during draft
-and review**, and implementation remains a separate, later concern.
+Reviewed (`READY WITH NON-BLOCKING NOTES`,
+[`PRJ_015_ITEM_COUNTING_SIGNOFF_REVIEW_v0.1.md`](PRJ_015_ITEM_COUNTING_SIGNOFF_REVIEW_v0.1.md))
+and **founder-signed 2026-07-29; promoted Draft v0.1 → Canonical v1.0**
+the same day. PRJ-015's semantic counting methodology is resolved by this
+Contract (register decision: `OPEN` → `CANONICAL`, implementation state
+Not Implemented). **Implementation remains a separate, later concern** —
+Content, Mastery, Engineering, and Product boundaries are unchanged, and
+the L17 cluster-vs-separate lesson classification (§9) remains a
+separate reviewed Curriculum/content task.
 
 ---
 
-*End of PRJ-015 Item-Counting Contract v0.1 — Draft, awaiting founder
-sign-off. Counting language only; authorizes nothing.*
+*End of PRJ-015 Item-Counting Contract v1.0 — Canonical, founder-signed
+2026-07-29. Counting language only; Canonical ≠ implemented; authorizes
+nothing beyond authoring interpretation.*

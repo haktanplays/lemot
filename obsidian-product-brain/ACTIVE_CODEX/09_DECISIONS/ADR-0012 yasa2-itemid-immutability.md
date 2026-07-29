@@ -43,6 +43,17 @@ Shipped itemId rename/delete; id değişimini yalnızca uyarıyla geçirmek.
 ## Consequences
 Enforced #177 (`fd3d29b`). 54-id manifest ile `shipped-item-ids.json`'daki 56 id arasında bilinen 54-vs-56 drift var; K3 çift yönlü kontrol bunu yakalamak için var ([[ADR-0018 k3-manifest-rule]]).
 
+> [!note] **Clarification (2026-07-29, PRJ-015 Item-Counting Contract v1.0 / DOC-062 audit):**
+> yukarıdaki "54-vs-56 drift" cümlesi **bayat bir sayım artefaktıdır** — `56`,
+> hiçbir zaman gerçek bir manifest sayısı olmadı (`grep -c '"'` JSON'daki `note`
+> ve `ids` anahtar satırlarını da saydı). Git geçmişi: manifest her iki commit'inde
+> de tam **54** id içerdi. Güncel denetlenmiş gerçekler: **52** = hijyen-öncesi
+> (`84a5b8e`) registry snapshot'ı · **54** = güncel v1 registry ≡ manifest (çift
+> yönlü test-enforced) · **59** = ayrı learning-engine fixture registry'si
+> (`content/learning-engine/items.ts`). Registry sayıları kaynak ve snapshot
+> adı verilmeden karşılaştırılamaz. **YASA 2 immutability tam olarak bağlayıcı
+> kalır — bu not karara dokunmaz.**
+
 ## Implementation References
 ROADMAP YASA 2; STATUS #177/`fd3d29b`; karpathy §5; `itemRegistry.ts` (`ITEM_REGISTRY`), `shipped-item-ids.json`.
 

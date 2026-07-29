@@ -277,7 +277,7 @@
 - **When to use**: periodic consolidation; no major new system.
 - **Teaches best**: growing old engines, mixed production, weak-point repair, cumulative Weave.
 - **Section weighting**: **Strong** — Weave It, Natural Reveal, Stay With It (Practice-Pool-style items). **Light** — Meet It / Why This Works (little new to meet or explain).
-- **Item budget**: total ~25–35. **Active-new ~0–4** (mostly recycled). Production targets ~6–8 (volume of *retrieval*, not novelty).
+- **Item budget**: total ~25–35. **Active-new: 0** (binding — PRJ-015 Item-Counting Contract v1.0 / Content Bible §6.8; meta/accounting entries do **not** count as active and no in-lesson promotion to active is allowed; supported/recognition/recycle material may still appear). Production targets ~6–8 (volume of *retrieval*, not novelty). *(The former "~0–4" figure is superseded 2026-07-29.)*
 - **Active/supported/recognition split**: roughly active 10% / supported 20% / recognition 15% / **recycled 55%** — recycle-dominant by design.
 - **Carry-in / carry-out**: maximal carry-in across recent lessons; carries out consolidated, faded-to-active items.
 - **Mon Lexique**: mostly *updates* (mastery events, strengthened entries); few or no new entries.

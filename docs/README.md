@@ -61,6 +61,12 @@ Route a question to its owner first, not to the newest or nearest document:
   sequence remains open** and the **full Curriculum Bible does not yet
   exist** — post-spine sequencing questions still stop and report.
   Implementation remains separate (Canonical ≠ implemented)
+- **Item counting** (what active-new 1–4 counts; frames + linked IDs;
+  fillers; chunks, packages, senses, inflection, gender; which historical
+  numbers remain valid) → **PRJ-015 Item-Counting Contract v1.0**
+  (`bibles/curriculum/PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md`, Canonical
+  2026-07-29 — a subordinate Curriculum authority; counting language
+  only, no enforcement exists)
 - **Evidence admissibility and mastery derivation** → Mastery & Evidence
   Bible v1.0
 - **Social negative bounds and future direction** → Social Layer Charter v1.0

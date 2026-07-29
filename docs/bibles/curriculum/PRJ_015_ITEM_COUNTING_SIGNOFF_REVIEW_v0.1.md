@@ -5,7 +5,8 @@ status: Founder sign-off review
 authority: Review record only. Does not resolve PRJ-015, create Canonical authority, or authorize implementation.
 owner: Project Canon / Curriculum review
 date: 2026-07-29
-reviewed_document: PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md
+reviewed_document: PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md at review time (promoted 2026-07-29 to PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md)
+final_disposition: founder sign-off granted 2026-07-29; promotion performed
 implementation_authority: none
 ---
 
@@ -133,4 +134,19 @@ wording; no Canonical, lesson, registry, manifest, schema, validator,
 test, runtime, or PRJ-status file was changed by this review cycle; no
 new decision was created by this record.
 
-*End of sign-off review. Verdict: READY WITH NON-BLOCKING NOTES.*
+## Final disposition (2026-07-29)
+
+**Founder sign-off granted** on this review's `READY WITH NON-BLOCKING
+NOTES` verdict; the reviewed Draft lineage was **promoted to
+`PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md` (Canonical)** the same day, and
+**PRJ-015 moved `OPEN` → `CANONICAL` through an explicit Project
+Register decision** (implementation state Not Implemented). **N1**
+remains a separate spec-level follow-up (L17 cluster-vs-separate
+classification); **N2** was handled in the promotion package's minimal
+source-synchronization pass (Design Rules banner, template and archetype
+corrections, ADR-0012 clarification); **N3** remains harmless
+provenance. This review remains a **supporting, non-Canonical record**;
+the findings above are preserved unrewritten.
+
+*End of sign-off review. Verdict: READY WITH NON-BLOCKING NOTES —
+disposition: signed off and promoted 2026-07-29.*

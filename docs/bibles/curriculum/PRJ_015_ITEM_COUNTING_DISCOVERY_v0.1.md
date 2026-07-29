@@ -45,12 +45,21 @@ lexical-destination ledger; full rationale §12–§13, honest caveats §13.4).
 > conceptual model** — an accounting distinction, not a technical
 > multi-store architecture; no databases, stores, schemas, registry
 > unification, or validators are authorized, and no lexical-destination
-> ledger is opened. **Lean Contract drafting is authorized**:
-> [`PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md`](PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md)
-> (Draft — awaiting founder sign-off). **PRJ-015 remains `OPEN`** through
-> draft and review. This discovery remains non-Canonical provenance; all
-> CNT rows, source analysis, and the L17 "3–5 / 5" facts stand unchanged,
-> and L17 is still **not** declared runtime-compliant.
+> ledger is opened. **Lean Contract drafting was authorized and
+> completed.**
+>
+> **Outcome (2026-07-29):** the draft was reviewed (`READY WITH
+> NON-BLOCKING NOTES`), **founder sign-off was granted on 2026-07-29**,
+> and the Contract was **promoted to Canonical v1.0**:
+> [`PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md`](PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md).
+> **PRJ-015's semantic counting methodology is resolved** (register
+> decision `OPEN` → `CANONICAL`; implementation state Not Implemented —
+> implementation remains deferred). N1 (the L17 cluster-vs-separate
+> lesson classification) remains a **separate** spec-level issue. This
+> discovery remains non-Canonical provenance; all CNT rows, source
+> analysis, original alternatives, historical terminology, the
+> 52/54/56/59 audit, and the L17 "3–5 / 5" facts stand unchanged, and
+> L17 is still **not** declared runtime-compliant.
 
 The audit's core findings:
 
@@ -823,15 +832,14 @@ The eventual Item-Counting Contract (NOT drafted here) should be small:
 
 ## 20. Smallest next action
 
-*(Updated 2026-07-29.)* All six cards are answered, so **lean Contract
-drafting is authorized and done**:
-[`PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md`](PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md)
-— `Draft — awaiting founder sign-off`. The next action is an independent
-sign-off review of that draft, then (and only then) founder promotion may
-be considered. **PRJ-015 remains `OPEN` throughout draft and review.**
-No validator, no registry or spec edit, no migration, and no PRJ-015
-status change in the meantime. L17 stays gated exactly as the Charter
-states until the Contract is Canonical.
+*(Updated 2026-07-29, promotion.)* The Contract was drafted, reviewed,
+**founder-signed, and promoted to Canonical v1.0**
+([`PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md`](PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md));
+PRJ-015's methodology is resolved (`CANONICAL`, Not Implemented). The
+remaining follow-ups are: the L17 cluster-vs-separate lesson
+classification (separate reviewed task — the Charter's L17 gate stands
+until it lands) and, later, Engineering implementation under its own
+gates. No validator, registry edit, or migration was opened.
 
 ---
 
