@@ -9,7 +9,7 @@ source_discovery: CURRICULUM_LAYER_DISCOVERY_v0.1.md
 implementation_authority: none
 related:
   - CURRICULUM_LAYER_DISCOVERY_v0.1.md
-  - CURRICULUM_CHARTER_v0.1.md
+  - CURRICULUM_CHARTER_v1.0.md
   - ../../canon/CAIRN_PROJECT_CANON_MAP_v1.0.md
   - ../../canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md
 ---
@@ -27,8 +27,9 @@ related:
 
 This record preserves the founder decisions that opened Curriculum Charter
 drafting, in durable, quotable form. Its authority is exactly this: the
-recorded decisions bind the content of `CURRICULUM_CHARTER_v0.1.md` and any
-revision of it prior to promotion. It does not decide anything beyond the
+recorded decisions bind the content of the Curriculum Charter (drafted as
+`CURRICULUM_CHARTER_v0.1.md`; promoted 2026-07-28 as
+`CURRICULUM_CHARTER_v1.0.md`) and any revision of it. It does not decide anything beyond the
 five recorded answers, does not alter any Canonical document, does not
 change any PRJ status, and authorizes no code, content, schema, runtime
 visibility, or release change.
@@ -251,19 +252,37 @@ lists, `LessonEvidenceProfile`, and staged strictness routed by the Mastery
 Bible §28; the lesson-section ↔ beat ↔ screen mapping; and the discovery's
 §18 open-decision list.
 
-## 9. Charter drafting authorization
+## 9. Charter drafting authorization — and sign-off (2026-07-28)
 
-By FQ-C0, drafting of `CURRICULUM_CHARTER_v0.1.md` is authorized as the
-v0.x governance and ratification phase of Step 2. The Charter must carry
-`Draft — awaiting founder sign-off` until the founder explicitly signs off
-and promotes it; promotion is a separate future event with its own review.
-Drafting the full Curriculum Bible remains unauthorized.
+By FQ-C0, drafting of the Curriculum Charter was authorized as the v0.x
+governance and ratification phase of Step 2. The draft was reviewed
+(`READY WITH NON-BLOCKING NOTES`,
+[`CURRICULUM_CHARTER_SIGNOFF_REVIEW_v0.1.md`](CURRICULUM_CHARTER_SIGNOFF_REVIEW_v0.1.md)).
+
+**Founder sign-off — 2026-07-28.** The founder explicitly signed off the
+reviewed Charter draft and authorized its promotion to Canonical:
+*"Cairn Curriculum Charter v0.1 is approved for founder sign-off and
+Canonical promotion in its current reviewed form. Preserve N1–N3 as
+non-blocking follow-up notes. PRJ-001 remains OPEN with narrowed scope;
+promotion must not automatically close or otherwise change any PRJ item."*
+The Charter was promoted **Draft v0.1 → Canonical v1.0** the same day
+(file renamed
+[`CURRICULUM_CHARTER_v1.0.md`](CURRICULUM_CHARTER_v1.0.md) — same document
+lineage; organization, not a new authority event). The Charter remains the
+v0.x/v1.0 **governance stage of Step 2, not the Curriculum Bible**;
+PRJ-001 remains `OPEN` with narrowed scope; **no PRJ item changes
+automatically**; N1–N3 remain non-blocking follow-ups. The sign-off did
+not authorize: Curriculum Bible drafting; lesson, code, schema, validator,
+runtime-visibility, or release changes; PRJ-001 closure; PRJ-015
+resolution; post-L17 sequencing; Capability Arc composition; tense
+placement; social activation; or repair-pair implementation.
 
 ## 10. Change log
 
 | Date | Version | Change | By |
 |---|---|---|---|
 | 2026-07-28 | 0.1 | Initial record: FQ-C0/C1/C2/C4/C8 approved with recommended answers; non-decisions and supersession effects recorded; Charter drafting authorized. | Cloud session (founder decisions folded) |
+| 2026-07-28 | 0.1 (sign-off appended) | Founder sign-off recorded; Charter promoted Draft v0.1 → Canonical v1.0; PRJ-001 stays `OPEN` (narrowed scope); N1–N3 preserved as follow-ups. FQ-C0/C1/C2/C4/C8 decisions unchanged. | Cloud session (atomic promotion) |
 
 *End of Curriculum Founder Ratification v0.1. Binds the Charter draft;
 authorizes no implementation; is not the Curriculum Bible.*

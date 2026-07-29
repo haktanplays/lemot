@@ -36,9 +36,14 @@ implementation_authority: none
 > drafting is authorized as the v0.x governance and ratification phase of
 > Step 2.** Durable decision record:
 > [`CURRICULUM_FOUNDER_RATIFICATION_v0.1.md`](CURRICULUM_FOUNDER_RATIFICATION_v0.1.md).
-> Draft under review: [`CURRICULUM_CHARTER_v0.1.md`](CURRICULUM_CHARTER_v0.1.md).
-> This discovery itself remains non-Canonical, non-authoritative
-> discovery/provenance material.
+>
+> **Outcome (2026-07-28):** Charter drafting completed; the sign-off review
+> returned `READY WITH NON-BLOCKING NOTES`; the founder signed off; and the
+> Charter was **promoted to Canonical v1.0**:
+> [`CURRICULUM_CHARTER_v1.0.md`](CURRICULUM_CHARTER_v1.0.md). This
+> discovery's recommendation is **fulfilled at Charter stage**; the full
+> Curriculum Bible remains future work. The discovery itself remains
+> non-Canonical, non-authoritative discovery/provenance material.
 
 The curriculum layer is exactly what Coverage & Gaps calls it: `FRAGMENTED` —
 rich material, no owner. The audit found:
@@ -839,11 +844,10 @@ card of the founder review (§20).
 *(Updated 2026-07-28.)* The five blocking/required answers now exist
 (FQ-C0/C1/C2/C4/C8 approved — see the ratification record), so **Curriculum
 Charter drafting is authorized as the v0.x governance and ratification
-phase of Step 2**. The draft is
-[`CURRICULUM_CHARTER_v0.1.md`](CURRICULUM_CHARTER_v0.1.md) —
-`Draft — awaiting founder sign-off`; it becomes Canonical only by explicit
-founder sign-off and promotion. The next action is founder review of that
-draft. Meanwhile: FQ-C3 remains the first dedicated post-opening decision
+phase of Step 2**. *(Completed 2026-07-28: the draft was reviewed —
+`READY WITH NON-BLOCKING NOTES` — founder-signed, and promoted to
+[`CURRICULUM_CHARTER_v1.0.md`](CURRICULUM_CHARTER_v1.0.md), Canonical.)*
+Meanwhile: FQ-C3 remains the first dedicated post-opening decision
 track (the counting contract, PRJ-015); FQ-C5 and FQ-C7 remain deferred to
 post-L17 planning and the next authoring horizon respectively; FQ-C6
 remains an open factual state, not a present decision. No full Curriculum

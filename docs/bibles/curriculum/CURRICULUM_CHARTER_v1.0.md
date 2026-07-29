@@ -1,10 +1,12 @@
 ---
 title: Cairn Curriculum Charter
-version: 0.1
-status: Draft — awaiting founder sign-off
-authority: Draft Curriculum governance document. It becomes Canonical only after explicit founder sign-off and promotion.
+version: 1.0
+status: Canonical
+authority: Canonical Curriculum governance authority, founder-signed 2026-07-28. Governs its defined Charter-stage scope; it is not the full Curriculum Bible and confers no implementation authority.
 owner: Curriculum
 date: 2026-07-28
+founder_signoff: 2026-07-28
+supersedes: CURRICULUM_CHARTER_v0.1.md (renamed on promotion; same document lineage — organization, not a new authority event)
 depends_on:
   - CAIRN_PRODUCT_BRAIN_v1.0.md (Canonical)
   - CONTENT_BIBLE_v1.0.md (Canonical)
@@ -17,15 +19,18 @@ supporting_records:
 implementation_authority: none
 ---
 
-# Cairn Curriculum Charter v0.1 (Draft)
+# Cairn Curriculum Charter v1.0 (Canonical)
 
-> **Draft — awaiting founder sign-off.** This Charter is the **v0.x
-> governance and ratification phase of Step 2** of the founder-locked
-> authoring sequence (FQ-C0, approved 2026-07-28). It is **not** the
-> Curriculum Bible, and it does not pretend to provide a complete
-> scope-and-sequence architecture. **Canonical does not mean implemented**,
-> and Draft means less still: nothing here authorizes code, content,
-> schema, runtime-visibility, or release changes. Provenance:
+> **Canonical — founder-signed 2026-07-28.** This Charter is the
+> **governance and ratification stage of Step 2** of the founder-locked
+> authoring sequence (FQ-C0, approved 2026-07-28) — it is **not** the
+> Curriculum Bible, it does not complete Step 2's full scope, and it does
+> not pretend to provide a complete scope-and-sequence architecture.
+> **Canonical does not mean implemented**: nothing here authorizes code,
+> content, schema, runtime-visibility, or release changes, and every open
+> dependency (§13) and stop condition (§14) remains binding. Promotion
+> preceded by the sign-off review verdict `READY WITH NON-BLOCKING NOTES`
+> (N1–N3 preserved as follow-ups). Provenance:
 > [`CURRICULUM_LAYER_DISCOVERY_v0.1.md`](CURRICULUM_LAYER_DISCOVERY_v0.1.md)
 > (discovery) and
 > [`CURRICULUM_FOUNDER_RATIFICATION_v0.1.md`](CURRICULUM_FOUNDER_RATIFICATION_v0.1.md)
@@ -37,12 +42,12 @@ discovery rows). Only the rulings that needed stable identity received IDs.
 
 ## 1. Status and authority
 
-- **Draft until founder sign-off.** Promotion to Canonical is a separate,
-  explicit future event with its own review.
-- **Canonical will not mean implemented.** Even after promotion, this
-  Charter confers no implementation authority; implementation requires
-  separate Engineering and content tasks under their own gates (the Round-1
-  runtime freeze and Q4 code freeze stand).
+- **Canonical — founder-signed 2026-07-28**, after the independent sign-off
+  review (`READY WITH NON-BLOCKING NOTES`).
+- **Canonical does not mean implemented.** This Charter confers no
+  implementation authority; implementation requires separate Engineering
+  and content tasks under their own gates (the Round-1 runtime freeze and
+  Q4 code freeze stand).
 - **This Charter is not the final Curriculum Bible.** It governs the
   Charter-stage scope listed in §2–§15 and deliberately leaves Bible-scope
   work open (§13, §16).
@@ -455,5 +460,7 @@ cite provenance inline (CC-001…CC-010 ↔ FQ/CUR references).
 
 ---
 
-*End of Cairn Curriculum Charter v0.1 — Draft, awaiting founder sign-off.
-Not the Curriculum Bible. Authorizes no implementation.*
+*End of Cairn Curriculum Charter v1.0 — Canonical, founder-signed
+2026-07-28. Not the Curriculum Bible; Step 2's full scope remains open.
+Canonical does not mean implemented; authorizes no implementation. Open
+dependencies (§13) and stop conditions (§14) remain binding.*

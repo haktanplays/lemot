@@ -36,6 +36,7 @@ stop conditions, implementation-opening protocol) and
 | Project-wide routing | [Cairn Project Canon Map v1.0](canon/CAIRN_PROJECT_CANON_MAP_v1.0.md) | Canonical | Authority, precedence, ownership, and gap routing |
 | Product | [Cairn Product Brain v1.0](../obsidian-product-brain/ACTIVE_CODEX/00_CAIRN_PRODUCT_BRAIN/CAIRN_PRODUCT_BRAIN_v1.0.md) | Canonical | Product promise, identity, major scope decisions |
 | Content | [Cairn Content Bible v1.0](bibles/content/CONTENT_BIBLE_v1.0.md) | Canonical | Content authoring, activity contracts, French-content safety boundaries |
+| Curriculum | [Cairn Curriculum Charter v1.0](bibles/curriculum/CURRICULUM_CHARTER_v1.0.md) | Canonical; Charter-stage authority | Current L0–L17 tiered spine, sequencing governance, curriculum boundaries and stop conditions |
 | Social | [Cairn Social Layer Charter v1.0](bibles/social/SOCIAL_LAYER_CHARTER_v1.0.md) | Canonical, dormant | Negative bounds and future social direction |
 | Mastery & evidence | [Cairn Mastery & Evidence Bible v1.0](bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md) | Canonical | Evidence admissibility and mastery derivation |
 
@@ -55,8 +56,11 @@ Route a question to its owner first, not to the newest or nearest document:
 
 - **Product promise and major scope** → Product Brain v1.0
 - **Content correctness and authoring contracts** → Content Bible v1.0
-- **Exact course sequencing and lesson placement** → Curriculum Bible —
-  **not yet authored** (fragments exist; no authoritative owner)
+- **Exact course sequencing and lesson placement** → Curriculum Charter
+  v1.0 for the current **L0–L17 tiered spine**; the **exact post-L17
+  sequence remains open** and the **full Curriculum Bible does not yet
+  exist** — post-spine sequencing questions still stop and report.
+  Implementation remains separate (Canonical ≠ implemented)
 - **Evidence admissibility and mastery derivation** → Mastery & Evidence
   Bible v1.0
 - **Social negative bounds and future direction** → Social Layer Charter v1.0
@@ -114,7 +118,10 @@ determines product intent.
 Pointer only — the authoritative current list lives in the Canon Map (§16) and
 `docs/canon/CAIRN_CANON_COVERAGE_AND_GAPS_v0.1.md`. At minimum, know that:
 
-- **Curriculum Bible** — not yet authored (sequencing has no owner)
+- **Curriculum Bible** — not yet authored; the Curriculum Charter v1.0
+  (Canonical, 2026-07-28) governs only the current L0–L17 spine — post-L17
+  sequencing and the full sequencing architecture remain open (PRJ-001
+  `OPEN`, narrowed scope)
 - **Engineering Bible** — not yet authored (ADRs partially bind)
 - **Operations & QA authority** — not yet authored
 - **PRJ-009** positive social evidence contract — `OPEN`; no social action is

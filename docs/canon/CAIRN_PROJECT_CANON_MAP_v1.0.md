@@ -79,7 +79,7 @@ Every agent, every task, in order:
 | Question | Axis | Routes to |
 |---|---|---|
 | "How do I author lesson L12?" | A | **Content Bible v1.0** (DOC-004) |
-| "Should L12 come before L13?" | A | **Curriculum Bible** — `DEPENDENCY — DOCUMENT NOT YET AUTHORED` → **stop and report** |
+| "Should L12 come before L13?" | A | **Curriculum Charter v1.0 (DOC-058, Canonical 2026-07-28)** — L12→L13 sits inside the ratified L0–L17 tiered spine, so the current order answers it. A **post-L17** sequencing question still has no owner → **stop and report** |
 | "What is in the current APK scope?" | B | **`docs/STATUS.md` + `docs/DEV_APK_MVP_CANON.md`** (current-build chain, still valid here) |
 | "What does the renderer actually do today?" | B | **Code and tests** establish the fact; record any divergence |
 | "What problem does Cairn solve?" | A | **Product Brain v1.0** (DOC-001) |
@@ -151,7 +151,12 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | DOC-056 | M&E Founder Ratification | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md` | 0.1 | Supporting record (highest-authority M&E decision log) | Mastery & Evidence | FQ-1…FQ-8 founder decisions + clarification | Evidence policy narrative | DOC-051 | — | NONE |
 | DOC-057 | **M&E Independent Adversarial Review** | `docs/bibles/mastery-evidence/MASTERY_EVIDENCE_INDEPENDENT_REVIEW_v0.1.md` | 0.1 | Supporting review record — verdict `PASS WITH NON-BLOCKING FINDINGS` (2026-07-27, reviewed tip `db65db0`) | Mastery & Evidence | Independent-review evidence for the DOC-051 promotion | Any domain decision; promotion authority | DOC-051 | — | NONE |
 
-> **Supporting ≠ Canonical.** DOC-002/003, DOC-005…DOC-009, DOC-011…DOC-014, and DOC-052…DOC-057 support Canonical documents but are **not themselves product canon**. They are evidence and decision records.
+| DOC-058 | **Cairn Curriculum Charter v1.0** | `docs/bibles/curriculum/CURRICULUM_CHARTER_v1.0.md` | 1.0 | **`CANONICAL`** (founder-signed 2026-07-28, after sign-off review `READY WITH NON-BLOCKING NOTES`) | Curriculum | **Charter-stage Curriculum governance**: the current **L0–L17 tiered spine** (L0–L6 locked/shipped/frozen · L7–L15 approved working sequence, revisable · L16–L17 spec-only · **L18+ unratified**), curriculum thesis, Journey→Capability-Arc macro-map disposition (12-unit/180 map and "Core 150" demoted to historical/reference), integration rhythm contract, prerequisite/promotion boundary, repair-pair conceptual home (L1 redesign), stop conditions and open dependencies | The full Curriculum Bible's scope: post-L17 sequencing, Capability Arc composition, item counting (PRJ-015), tense architecture, skill progression, assessment/remediation; Content/Mastery/Social/Engineering substance; any implementation. **Canonical ≠ implemented. Not the Curriculum Bible — Curriculum remains incomplete beyond Charter scope. PRJ-001 remains `OPEN` (narrowed scope); PRJ-015/029/036 remain `OPEN`.** | DOC-001, DOC-004, DOC-051, DOC-010 (negative bounds), DOC-045 | DOC-059…DOC-061 | NONE |
+| DOC-059 | Curriculum Layer Discovery | `docs/bibles/curriculum/CURRICULUM_LAYER_DISCOVERY_v0.1.md` | 0.1 | Supporting record (discovery/provenance; CUR-001…CUR-042 inventory) | Curriculum | Curriculum authority reconstruction | Curriculum policy | DOC-058 | — | NONE |
+| DOC-060 | Curriculum Founder Ratification | `docs/bibles/curriculum/CURRICULUM_FOUNDER_RATIFICATION_v0.1.md` | 0.1 | Supporting record (highest-authority Curriculum decision log: FQ-C0/C1/C2/C4/C8 + sign-off) | Curriculum | Founder decisions binding the Charter | Curriculum policy narrative | DOC-058 | — | NONE |
+| DOC-061 | Curriculum Charter Sign-Off Review | `docs/bibles/curriculum/CURRICULUM_CHARTER_SIGNOFF_REVIEW_v0.1.md` | 0.1 | Supporting review record — verdict `READY WITH NON-BLOCKING NOTES` (N1–N3 open follow-ups) | Curriculum | Promotion review evidence | Any domain decision; promotion authority | DOC-058 | — | NONE |
+
+> **Supporting ≠ Canonical.** DOC-002/003, DOC-005…DOC-009, DOC-011…DOC-014, DOC-052…DOC-057, and DOC-059…DOC-061 support Canonical documents but are **not themselves product canon**. They are evidence and decision records.
 
 ## 4. Documentation layers
 
@@ -161,7 +166,7 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | **Content Bible** | ✅ Authored | DOC-004 | Canonical v1.0, signed off 2026-07-24 |
 | **Social Layer** | ✅ Authored | DOC-010 | Canonical v1.0, signed off 2026-07-25 |
 | **Mastery & Evidence Bible** | ✅ **Authored — Canonical v1.0** (signed off 2026-07-27) | DOC-051 | **Founder-created layer (Q2, 2026-07-26); authored and promoted 2026-07-27** after founder ratification (FQ-1…FQ-8), source reconciliation, and an independent adversarial review (`PASS WITH NON-BLOCKING FINDINGS`, DOC-057). Single authoritative owner of the semantic evidence and mastery model, across every evidence-bearing system (FQ-8). Supporting records DOC-052…DOC-057. **Canonical ≠ implemented: the shipped runtime remains non-conforming Axis-B reality (DOC-054), and no implementation is authorized.** **Must not be merged into Curriculum or Engineering.** |
-| **Curriculum Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | **Substantial fragments exist**: DOC-027 (26 vault notes: band map, syllabus design rules, grammar/vocabulary/phenomena progression, L0–L17), DOC-028 (30 lesson/compact specs). No single authoritative owner for *sequencing policy*. |
+| **Curriculum** | 🟡 **PARTIALLY AUTHORED — Canonical Charter v1.0** (founder-signed 2026-07-28) | DOC-058 | **Charter-stage authority exists**: DOC-058 governs the current L0–L17 tiered spine, curriculum thesis, macro-map hierarchy, integration cadence, prerequisite/promotion boundary, and stop conditions (supporting records DOC-059…DOC-061). **The full Curriculum Bible does not yet exist** — post-L17 sequencing, Capability Arc composition, counting methodology (PRJ-015), tense architecture, skill progression, and assessment/remediation remain open; **PRJ-001 remains `OPEN` with narrowed scope**. Fragments DOC-027/028 remain reference beneath the Charter. |
 | **Brand Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-029: `Cairn Brand Direction`, `Visual Language`, `Copy and Tone`, `Naming and Brand Registry`; plus `Visual_Design_Canon.md` (DOC-037). Le Mot → Cairn naming migration unresolved (PRJ-030). |
 | **UX / Experience Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-029: `Navigation Model`, `Lesson Player`, `Home and Journey`, `Design Inventory`, `Mon Lexique UI`, `Interaction Patterns`, `Accessibility`, `V4 Studies Disposition`. V4-B direction selected but deferred. |
 | **Engineering / System Bible** | `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | — | Fragments in DOC-030 (15 architecture notes), DOC-025, DOC-043, and ADRs. Several ADRs already act as binding engineering contracts. |
@@ -180,7 +185,7 @@ IDs are stable. A document may be renamed, moved, merged, or split; its `DOC-###
 | Who is the target learner? | Product Brain | — | Content, Curriculum | ✅ Owned |
 | Is a feature part of the product? | Product Brain | Owning domain layer | Any single spec or code file | ✅ Owned |
 | How is a lesson authored? | Content Bible (DOC-004) | Exercise Canon, Lesson Flow Canon | Curriculum, Engineering | ✅ Owned |
-| When is a concept introduced? | **Curriculum Bible** | Content Bible, PB | Content Bible alone | ⚠️ `NOT YET AUTHORED` — fragments DOC-027/028 |
+| When is a concept introduced? | **Curriculum Charter v1.0 (DOC-058)** within the ratified L0–L17 spine; **Curriculum Bible (unauthored)** beyond it | Content Bible, PB | Content Bible alone | 🟡 Charter-stage owned (2026-07-28) — post-L17 `NOT YET AUTHORED` |
 | What tone and visual language are used? | **Brand Bible** | PB (tone canon), ADR-0002 | Content Bible | ⚠️ `NOT YET AUTHORED` — fragments DOC-029 |
 | What screen or flow should exist? | **UX / Experience Bible** | Brand, Content, Engineering | Content Bible, ADRs alone | ⚠️ `NOT YET AUTHORED` — fragments DOC-029 |
 | How is data stored? | **Engineering / System Bible** | ADRs (binding), Privacy | Product Brain | ⚠️ `NOT YET AUTHORED` — ADRs partially bind |
@@ -202,9 +207,9 @@ Each route: **(1) first read · (2) supporting · (3) authority check · (4) imp
 
 **Product strategy** — (1) DOC-001. (2) DOC-002/003, `01_PRODUCT/*`, DOC-020. (3) PB owns; ADRs bind technical consequences. (4) None — strategy authorizes nothing. (5) Stop if a founder statement contradicts DOC-001.
 
-**Lesson authoring** — (1) DOC-004. (2) DOC-026, DOC-024, DOC-006/007, relevant `docs/syllabus/*` spec. (3) Content Bible owns authoring; **sequencing questions escape to Curriculum (unauthored)**. (4) Authoring policy ≠ runtime; check DOC-032 for divergence. (5) Stop if the task needs a sequencing decision, an unwritten French style rule (PRJ-010), or a Reading taxonomy (PRJ-012).
+**Lesson authoring** — (1) DOC-004. (2) DOC-026, DOC-024, DOC-006/007, relevant `docs/syllabus/*` spec. (3) Content Bible owns authoring; **sequencing questions escape to Curriculum (Charter v1.0 / DOC-058 for the ratified L0–L17 spine; unauthored beyond it)**. (4) Authoring policy ≠ runtime; check DOC-032 for divergence. (5) Stop if the task needs a sequencing decision, an unwritten French style rule (PRJ-010), or a Reading taxonomy (PRJ-012).
 
-**Curriculum sequencing** — (1) DOC-027 (`Syllabus Design Rules`, `Level and Band Map`). (2) DOC-028, DOC-004, `Lesson Status Matrix`. (3) ⚠️ **No Canonical owner.** Fragments may contradict. (4) Specs are contracts for authored lessons only. (5) **Stop and report** if the task requires a binding sequencing policy — it must be founder-decided or await the Curriculum Bible.
+**Curriculum sequencing** — (1) **DOC-058 Curriculum Charter v1.0 (Canonical, 2026-07-28)** — the L0–L17 tiered spine, thesis, cadence rule, and stop conditions. (2) DOC-060 (founder decisions), DOC-059 (discovery/inventory), DOC-027 (`Syllabus Design Rules`, `Level and Band Map`) and DOC-028 as reference fragments beneath the Charter, DOC-004. (3) The Charter owns Charter-stage sequencing governance; **post-L17 sequencing, Capability Arcs, and counting (PRJ-015) have no owner**. (4) Specs remain contracts for authored lessons only; Canonical ≠ implemented — L7+ visibility and all freezes unchanged. (5) **Stop and report** if the task requires a post-L17 placement, a Capability Arc composition, a numeric counting rule before PRJ-015, or any Charter §14 stop condition.
 
 **French QA** — (1) DOC-004 §French QA gate. (2) `10_OPERATIONS/French Linguistic QA`, DOC-007 (G2/G3). (3) Content Bible owns the standard; Operations owns execution. (4) The gate is **not executable** — no style guide, no named reviewer. (5) Stop before claiming a lesson passed QA.
 
@@ -319,6 +324,14 @@ Mapping note: vault `canon_status: canonical` ≈ decision status `CANONICAL`; `
       Bibles and do not reference them → stale routing, PRJ-033.
 ```
 
+> **Graph update note (2026-07-28):** the "Curriculum Bible — DEPENDENCY —
+> NOT YET AUTHORED" box above now reads with this amendment: Curriculum is
+> **PARTIALLY AUTHORED** — the **Canonical Curriculum Charter v1.0
+> (DOC-058)** governs the current L0–L17 tiered spine and Charter-stage
+> sequencing principles, consuming DOC-051's semantics as drawn. The
+> **Curriculum Bible box remains accurate for Bible-scope work** (post-L17
+> sequencing, Capability Arcs, PRJ-015 counting), which is still unauthored.
+
 ## 10. Conflict-resolution protocol
 
 Project-level summary; the full algorithm, conflict taxonomy, and stop conditions live in **DOC-046 (Authority & Routing Spec §8–§9, §14)**.
@@ -422,8 +435,9 @@ Record it; do not promote it. Required fields:
 
 Summary only — details in DOC-047 and DOC-048.
 
-- **Six unauthored layers**: Curriculum, Brand, Engineering/System, Privacy/Legal, UX/Experience, Operations & QA (plus Future Systems Register). *(Mastery & Evidence left this list on 2026-07-27 — see next item.)*
-- **Mastery & Evidence Bible authored and Canonical** (DOC-051, signed off 2026-07-27, after independent review DOC-057) — **PRJ-014 complete as a documentation-owner item**. Implementation reality remains partial/fragmented and non-conforming (DOC-054); no implementation opened. Next founder-fixed authoring step: **Step 2 — Curriculum Bible**.
+- **Five wholly unauthored layers**: Brand, Engineering/System, Privacy/Legal, UX/Experience, Operations & QA (plus Future Systems Register). *(Mastery & Evidence left this list on 2026-07-27; Curriculum moved to PARTIALLY AUTHORED on 2026-07-28 — see next items.)*
+- **Mastery & Evidence Bible authored and Canonical** (DOC-051, signed off 2026-07-27, after independent review DOC-057) — **PRJ-014 complete as a documentation-owner item**. Implementation reality remains partial/fragmented and non-conforming (DOC-054); no implementation opened.
+- **Curriculum PARTIALLY AUTHORED** — **Cairn Curriculum Charter v1.0 (DOC-058, Canonical, founder-signed 2026-07-28)** is the Charter-stage governance vehicle of Step 2 (FQ-C0): it governs the current L0–L17 tiered spine, thesis, macro-map hierarchy, cadence, and stop conditions. **The Curriculum Bible — Step 2's full end-state — remains unauthored and is not automatically opened**; post-L17 sequencing, Capability Arc composition, PRJ-015 counting, and tense architecture remain open. **PRJ-001 remains `OPEN` with narrowed scope.**
 - ~~**Promotion prerequisite:** DOC-022 and ADR-0024 need supersession/routing banners~~ — **✅ applied 2026-07-26; PRJ-033 operationally closed.**
 - **Content Bible executable blockers**: French style guide (PRJ-010), named reviewer (PRJ-011), Reading taxonomy/validator (PRJ-012), item-counting methodology (PRJ-015).
 - **Social prerequisites that do not exist**: evidence contract (PRJ-009), moderation capacity (PRJ-013).
@@ -447,10 +461,12 @@ Summary only — details in DOC-047 and DOC-048.
 
 | 2026-07-27 | 1.0 (Mastery & Evidence promotion integration) | **Registered DOC-051…DOC-057** — the **Cairn Mastery & Evidence Bible v1.0** promoted to **`CANONICAL`** (signed off 2026-07-27, founder-authorized) with six supporting records (Decision Matrix, Source Conflict & Gap Map, Current Reality & Enforcement Map, Founder Review Surface, Founder Ratification, **Independent Adversarial Review** — verdict `PASS WITH NON-BLOCKING FINDINGS`, 0 BLOCK / 0 MAJOR / 2 NOTE, recommendation `PROMOTE`). §4 layer table: Mastery & Evidence → ✅ Authored/Canonical (DOC-051). §5 ownership rows → ✅ Owned. §6 Mastery/evidence route now reads DOC-051 first. §2 worked example and §9 graph updated. §16: unauthored layers **7 → 6**; **PRJ-014 complete as a documentation-owner item**; next founder-fixed step is **Step 2 — Curriculum Bible**. Counts re-derived from the §12 layer list in Coverage & Gaps: **5 of 12** paper-complete layer criteria satisfied, **7 remaining**. **PRJ-009 remains `OPEN` — no Social evidence contract exists. Canonical ≠ implemented: the evidence runtime remains non-conforming Axis-B reality (DOC-054); normal code work remains frozen (Q4); no implementation was authorized; paper completeness is NOT reached.** | Cloud session (founder-authorized promotion) |
 
+| 2026-07-28 | 1.0 (Curriculum Charter promotion integration) | **Registered DOC-058…DOC-061** — the **Cairn Curriculum Charter v1.0** promoted to **`CANONICAL`** (founder-signed 2026-07-28, after founder decisions FQ-C0/C1/C2/C4/C8 and a sign-off review verdict `READY WITH NON-BLOCKING NOTES`, DOC-061; N1–N3 preserved as non-blocking follow-ups) with three supporting records (Discovery, Founder Ratification, Sign-Off Review). Scope: Charter-stage Curriculum governance — the current **L0–L17 tiered spine** (L0–L6 locked/shipped/frozen · L7–L15 approved working sequence, revisable · L16–L17 spec-only · **L18+ unratified**), curriculum thesis, Journey→Capability-Arc macro-map disposition (12-unit/180 and "Core 150" demoted to historical/reference), integration rhythm contract, prerequisite/promotion boundary, repair-pair conceptual home, stop conditions. §2 worked example, §4 layer table, §5 ownership row, §6 routes, §9 graph note, and §16 updated. **The Charter is not the Curriculum Bible; Curriculum remains incomplete beyond Charter scope; Canonical ≠ implemented; L18+ unratified; PRJ-001 remains `OPEN` with narrowed scope (explicit register clarification, not closure); PRJ-015/029/036 remain `OPEN`; paper completeness remains 5 of 12 (the §12 criterion names the Bible); no implementation authorized.** | Cloud session (founder-signed promotion) |
+
 **Ratification status:** `Canonical` — **signed off 2026-07-26**.
 
 **Canonical does not mean implemented.** This Map is the **primary Canonical document** of the Project Canon layer. Its supporting records — Authority & Routing Spec (DOC-046), Project Idea & Decision Register (DOC-047), Canon Coverage & Gaps (DOC-048), Founder Ratification (DOC-049), and Sign-Off Review (DOC-050) — remain **supporting records at v0.1**, not independent product canon, matching the Content Bible and Social Charter convention. The same convention holds in every domain: **DOC-052…DOC-057 remain supporting records** of the Canonical Mastery & Evidence Bible (DOC-051).
 
-**Still true after the 2026-07-27 Mastery & Evidence promotion:** paper completeness is **not** reached (**5 of 12** layer criteria satisfied — Project Canon, Product Brain, Content, Social, Mastery & Evidence — **7 remaining**, per the §12 list in Coverage & Gaps) · **normal code work remains frozen** (Q4) · Step 1 of the founder-fixed authoring sequence is **complete**; **Step 2 (Curriculum Bible) is not automatically opened** · `PLANNED` = 0 · `EXPERIMENT` = 0 · **no implementation was authorized**.
+**Still true after the 2026-07-28 Curriculum Charter promotion:** paper completeness is **not** reached (**5 of 12** layer criteria satisfied — Project Canon, Product Brain, Content, Social, Mastery & Evidence; the Curriculum criterion requires the **Bible** Canonical, which the Charter is not — **7 remaining**, per the §12 list in Coverage & Gaps) · **normal code work remains frozen** (Q4) · Step 1 is complete; **Step 2's Charter stage is complete (DOC-058), but the Curriculum Bible — Step 2's full end-state — remains unauthored and is not automatically opened** · `PLANNED` = 0 · `EXPERIMENT` = 0 · **no implementation was authorized** · **PRJ-001 remains `OPEN` with narrowed scope; PRJ-015/029/036 remain `OPEN`**.
 
 *End of Project Canon Map v1.0. Canonical; routes authority; authorizes no build.*

@@ -5,11 +5,12 @@ status: Founder sign-off review
 authority: Review record only. Does not independently create Curriculum canon or implementation authority.
 owner: Project Canon / Curriculum review
 date: 2026-07-28
-reviewed_document: CURRICULUM_CHARTER_v0.1.md (Draft — awaiting founder sign-off)
+reviewed_document: CURRICULUM_CHARTER_v0.1.md at review time (promoted 2026-07-28 to CURRICULUM_CHARTER_v1.0.md)
 reviewed_after: sign-off precision patch (branch docs/curriculum-layer-discovery-v0.1, post-88d7c8c fixes)
+final_disposition: founder sign-off granted 2026-07-28; promotion authorized and performed
 implementation_authority: none
 related:
-  - CURRICULUM_CHARTER_v0.1.md
+  - CURRICULUM_CHARTER_v1.0.md
   - CURRICULUM_FOUNDER_RATIFICATION_v0.1.md
   - CURRICULUM_LAYER_DISCOVERY_v0.1.md
 ---
@@ -191,5 +192,15 @@ the §4 layer table; decide the PRJ-001 register wording (narrowed scope)
 by explicit Project Register update; and consider the N1 source-banner
 pass. None of these steps is performed by this review.
 
-*End of sign-off review. Verdict: READY WITH NON-BLOCKING NOTES. The
-Charter remains Draft until explicit founder sign-off.*
+## Final disposition (2026-07-28)
+
+**Founder sign-off granted and promotion authorized** on 2026-07-28, on
+this review's `READY WITH NON-BLOCKING NOTES` verdict. The reviewed draft
+was promoted to `CURRICULUM_CHARTER_v1.0.md` (Canonical). **N1–N3 remain
+non-blocking follow-ups** exactly as recorded above — none was resolved by
+the promotion. This review record remains **supporting material, not
+Canonical authority**; the adversarial findings above are preserved
+unrewritten.
+
+*End of sign-off review. Verdict: READY WITH NON-BLOCKING NOTES —
+disposition: signed off and promoted 2026-07-28.*
