@@ -34,6 +34,24 @@ related:
 identity, acquisition, presentation/load — plus an optional fourth
 lexical-destination ledger; full rationale §12–§13, honest caveats §13.4).
 
+> **Founder review completed 2026-07-29.** FQ-P1…FQ-P6 were **APPROVED** —
+> FQ-P1/P2/P3/P5 as recommended; **FQ-P4 and FQ-P6 with revised founder
+> wording** (P4: not "one surface → one id" but *"each separately owned
+> pedagogical unit or sense has one primary acquisition identity; additional
+> representation or analysis granularities may exist as linked
+> sub-identities"*; P6: 30–45 becomes a historical non-binding heuristic
+> not carried into the Contract; breadth trajectory retired pending
+> redefinition). FQ-P1 was approved as a **minimal three-context
+> conceptual model** — an accounting distinction, not a technical
+> multi-store architecture; no databases, stores, schemas, registry
+> unification, or validators are authorized, and no lexical-destination
+> ledger is opened. **Lean Contract drafting is authorized**:
+> [`PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md`](PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md)
+> (Draft — awaiting founder sign-off). **PRJ-015 remains `OPEN`** through
+> draft and review. This discovery remains non-Canonical provenance; all
+> CNT rows, source analysis, and the L17 "3–5 / 5" facts stand unchanged,
+> and L17 is still **not** declared runtime-compliant.
+
 The audit's core findings:
 
 1. **"Item" is not one unit.** Forty distinct countable units are in live
@@ -637,7 +655,15 @@ append-only.
 Six cards (target 4–7). None asks for an implementation schema; all cite
 existing sources only.
 
-**FQ-P1 — Counting model.** `BLOCKING FOR CONTRACT`
+> **Founder decisions 2026-07-29:** all six cards **APPROVED** — P1/P2/P3/P5
+> as recommended below; **P4 and P6 with revised wording** recorded in the
+> §1 banner and folded verbatim into the Contract draft (IC-004, IC-006).
+> The original recommendations and alternatives below are preserved as the
+> decision trail.
+
+**FQ-P1 — Counting model.** `BLOCKING FOR CONTRACT` — **APPROVED
+2026-07-29** (minimal three-context conceptual model; no technical
+architecture; no fourth ledger).
 *Conflict:* one number (8–15-style) demonstrably served identity,
 acquisition, and exposure at once and produced the 1–4 clash; CC-008
 already splits layers. *Worked example:* L11's "8 active-new" vs its own
@@ -651,7 +677,11 @@ precision becomes possible per-ledger. *Owner:* Curriculum.
 *Why founder:* the model choice fixes how every existing founder-ratified
 number is read.
 
-**FQ-P2 — The exact unit of active-new 1–4.** `BLOCKING FOR CONTRACT`
+**FQ-P2 — The exact unit of active-new 1–4.** `BLOCKING FOR CONTRACT` —
+**APPROVED 2026-07-29** (unit = new learner-facing active production
+demands; operating rule: normal target 1–3, hard maximum 4 with a
+cognitive-load rationale for a fourth; graduations count; integrations 0
+with no in-lesson promotion).
 *Conflict:* Q4c ratified the number but left the unit open; specs count
 meta `phen:` entries and `sent:` anchors as "active"; L17 turns on this.
 *Worked example:* L17's 5 = 2 frozen chunks + 1 adjective + 2 meta — the
@@ -670,7 +700,10 @@ future specs get a checkable rule. *Owner:* Content (invariant) +
 Curriculum (rule). *Why founder:* it interprets a founder-ratified
 invariant.
 
-**FQ-P3 — Frames and fillers.** `BLOCKING FOR CONTRACT`
+**FQ-P3 — Frames and fillers.** `BLOCKING FOR CONTRACT` — **APPROVED
+2026-07-29** (linked concept counts once; extensions count only as
+genuinely new productive operations; fillers count only via their own
+acquisition role).
 *Conflict:* G4's founding question; today a concept ships as chunk +
 frame + phen (3 ids, "linked, never merged") and specs count 2–3 of them
 separately (L11: `chunk:je-peux` + 3 frames all active-new).
@@ -690,7 +723,14 @@ separately (arithmetic simplicity, pedagogic double-count).
 Bible explicitly reserved for ratification.
 
 **FQ-P4 — Chunks, packages, formulas, and the shipped splits.**
-`BLOCKING FOR CONTRACT`
+`BLOCKING FOR CONTRACT` — **APPROVED 2026-07-29 WITH REVISED WORDING**:
+the founder did **not** adopt "one surface → one id"; the approved policy
+is *"each separately owned pedagogical unit or sense has one primary
+acquisition identity; additional representation or analysis granularities
+may exist as linked sub-identities"* — one visible surface may still
+represent different identities when meaning, function, or sense genuinely
+differs. YASA-2-frozen ids: no rename, no delete, no historical merge;
+primary/link relationships are a separate future Engineering task.
 *Conflict:* noun packages are the canonical learner unit, but bare-noun +
 package ids coexist (`noun-cafe`/`chunk-un-cafe`), split mastery, and are
 YASA-2-frozen; survival formulas/protected chunks are sentence-shaped yet
@@ -708,7 +748,11 @@ task). *Owner:* Curriculum + Content (policy), Engineering
 identity policy every ledger depends on.
 
 **FQ-P5 — Sense, inflection, and gender.** `REQUIRED FOR CONTRACT
-COMPLETENESS (may trail P1–P4)`
+COMPLETENESS (may trail P1–P4)` — **APPROVED 2026-07-29** (inflections and
+gender variants never auto-create identities; `content/contente` one item;
+senses split when intentionally separately owned; faire/aller/pouvoir
+future sense separation; lesson scoping carries the debt meanwhile;
+Mastery & Evidence remains the authority for evidence consequences).
 *Conflict:* sense-suffixing exists only where spelling collides
 (`ou/la/y`); split-sense doorways (faire, aller, pouvoir — Canonical
 curriculum policy) share one identity, so narrow-sense mastery will merge
@@ -727,7 +771,16 @@ Curriculum + Content; Mastery consequences routed. *Why founder:*
 share-vs-split of learner evidence across senses is a product-level call.
 
 **FQ-P6 — Fate of the historical numbers.** `REQUIRED CORRECTION
-(documentation follow-through)`
+(documentation follow-through)` — **APPROVED 2026-07-29 WITH REVISED
+WORDING**: 8–15 `SUPERSEDED`, never a binding authoring rule (banners =
+future follow-through, sources not edited now); **30–45 = historical
+non-binding heuristic, NOT carried into the Contract as a target**,
+reconsidered only after a useful presentation/load unit is defined and
+evidenced; **breadth trajectory retired pending redefinition** (may not be
+cited until denominator and unit are explicit); registry numbers
+52/54/56/59 may not be compared or added without naming registry and
+snapshot; integration `0 active-new` binding, meta entries never labeled
+active-new to preserve historical totals.
 *Conflict:* 8–15 is superseded by the Bible yet `[CANONICAL]` in the
 vault rule and live in the template; 30–45's floor is unreachable early;
 the breadth trajectory has no denominator; the phantom 56 survives in
@@ -770,11 +823,15 @@ The eventual Item-Counting Contract (NOT drafted here) should be small:
 
 ## 20. Smallest next action
 
-Founder review of the six cards (§18) — FQ-P1…P4 are blocking for the
-contract; P5 may trail; P6 is follow-through. No contract drafting, no
-validator, no registry or spec edit, and no PRJ-015 status change until
-the founder answers at minimum **FQ-P1 and FQ-P2** (they determine what
-every other answer means). L17 stays gated exactly as the Charter states.
+*(Updated 2026-07-29.)* All six cards are answered, so **lean Contract
+drafting is authorized and done**:
+[`PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md`](PRJ_015_ITEM_COUNTING_CONTRACT_v0.1.md)
+— `Draft — awaiting founder sign-off`. The next action is an independent
+sign-off review of that draft, then (and only then) founder promotion may
+be considered. **PRJ-015 remains `OPEN` throughout draft and review.**
+No validator, no registry or spec edit, no migration, and no PRJ-015
+status change in the meantime. L17 stays gated exactly as the Charter
+states until the Contract is Canonical.
 
 ---
 
