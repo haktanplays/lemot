@@ -203,6 +203,18 @@ Cloud sessions run without access to the operator's `~/Desktop/Le Mot .md/`, the
 - Status: RESOLVED (repo side) — optional follow-up noted above
 - Operator notes:
 
+### 2026-07-28 — N1: source-banner pass for superseded cadence/macro-map markers (Curriculum Charter follow-up)
+
+- Date: 2026-07-28
+- Cloud branch: `docs/curriculum-layer-discovery-v0.1`
+- Decision/change: Curriculum Charter v1.0 (DOC-058, Canonical, founder-signed 2026-07-28) superseded the "2 new engines → 1 integration; never >2" cadence rule and demoted "every 4–5 lessons" to a historical heuristic (FQ-C4), and demoted the 12-unit/180 CEFR-topic map (Build Spec §38) and "Core 150" (Syllabus Production Workflow) to historical/reference planning inputs (FQ-C2). The source files were deliberately left unedited; sign-off review finding N1 recommends a source-banner pass adding scope-amendment notes to `obsidian-product-brain/ACTIVE_CODEX/04_SYLLABUS/Integration Lesson Logic.md`, `…/10_OPERATIONS/Syllabus Production Workflow.md`, and (optionally) a note near Build Spec §38 — matching the DOC-022/ADR-0024 precedent. Until then, the Charter (§6, Appendix B) and `CURRICULUM_FOUNDER_RATIFICATION_v0.1.md` §6 are the supersession's home.
+- Source PR or commit: Curriculum Charter promotion PR (branch `docs/curriculum-layer-discovery-v0.1`)
+- Obsidian target: the two vault notes above (repo-side copies; operator may mirror locally)
+- Mempalace action: optional `add_drawer` — "Curriculum Charter v1.0 Canonical 2026-07-28; cadence rule = Integration Rhythm Contract; old formulations superseded/historical."
+- Operator action: docs sync (source-banner pass; docs-only PR) — non-blocking, N1 of the Charter sign-off review
+- Status: PENDING
+- Operator notes:
+
 ## Archive
 
 (drained rows older than the current sprint can be moved here in a docs-only PR)

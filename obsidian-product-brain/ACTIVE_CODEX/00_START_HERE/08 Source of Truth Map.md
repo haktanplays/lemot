@@ -73,7 +73,7 @@ CLAUDE.md → docs/STATUS.md → docs/DEV_APK_MVP_CANON.md → Cairn v1.0 spec
 |---|---|
 | "Ürün ne yapmalı?" | **Product Brain v1.0** (Project Canon Map üzerinden) |
 | "Ders nasıl yazılmalı?" | **Content Bible v1.0** |
-| "Bir kavram ne zaman tanıtılmalı?" | **Curriculum Bible** — `DEPENDENCY — DOCUMENT NOT YET AUTHORED` → dur ve bildir |
+| "Bir kavram ne zaman tanıtılmalı?" | **Cairn Curriculum Charter v1.0** (`docs/bibles/curriculum/CURRICULUM_CHARTER_v1.0.md`, DOC-058 — **Canonical, 2026-07-28**) ratified L0–L17 spine içinde; **post-L17 için Curriculum Bible hâlâ `NOT YET AUTHORED` → dur ve bildir**. Canonical ≠ implemented: runtime görünürlüğü (L6 cap) ve freeze'ler değişmedi |
 | "Kanıt/mastery ne sayılır?" | **Mastery & Evidence Bible v1.0** (`docs/bibles/mastery-evidence/MASTERY_EVIDENCE_BIBLE_v1.0.md`, DOC-051 — **Canonical, 2026-07-27**). Canonical ≠ implemented: runtime gerçekleri Axis-B'de kalır (`MASTERY_EVIDENCE_CURRENT_REALITY_AND_ENFORCEMENT_MAP_v0.1.md`) ve hiçbir implementation açılmadı |
 | "Sosyal etkileşim?" | **Social Layer Charter v1.0** |
 | "Teknik/system kararı?" | **ilgili kabul edilmiş/aktif ADR** (kendi declared domain'i içinde). ⚠️ **Her ADR'nin kendi statüsünü kontrol et** (`status` / `canon_status`): `deferred` veya `proposed` ADR'ler **bağlayıcı otorite değil**, input ya da açık karardır (ör. **ADR-0025** paywall — `deferred`/`proposed`, nihai yerleşim açık). |

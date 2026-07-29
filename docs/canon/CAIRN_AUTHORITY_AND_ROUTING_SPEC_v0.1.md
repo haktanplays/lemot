@@ -33,7 +33,7 @@ It also does not create implementation permission. Nothing in this document — 
 |---|---|---|---|
 | **Product** | DOC-001 Product Brain v1.0 | ✅ Canonical | Purpose, promise, audience, non-goals, AI role, monetization stance, tone |
 | **Content** | DOC-004 Content Bible v1.0 | ✅ Canonical | Authoring policy, item roles, prerequisite safety, French QA standard |
-| **Curriculum** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Sequencing, band progression, item budgets. Fragments: DOC-027, DOC-028 |
+| **Curriculum** | **Curriculum Charter v1.0 (DOC-058)** | 🟡 **PARTIALLY AUTHORED** — Charter Canonical (founder-signed 2026-07-28); the **Curriculum Bible remains unauthored** | Charter governs the current L0–L17 tiered spine, thesis, cadence, and stop conditions. Post-L17 sequencing, Capability Arcs, item counting (PRJ-015) remain open. Fragments: DOC-027, DOC-028 (reference beneath the Charter) |
 | **Brand** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Voice, naming, visual identity. Fragments in DOC-029, DOC-037 |
 | **UX** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Screen states, flows, controls. Fragments in DOC-029 |
 | **Engineering** | — | ⚠️ `DEPENDENCY — DOCUMENT NOT YET AUTHORED` | Data model, runtime, sync, validators. **Several ADRs already bind** (DOC-015) |
@@ -276,7 +276,7 @@ All drawn from repository-supported material.
 
 **Axis A vs Axis B (Q1).** "Should Daily Review surface weak items first?" is Axis A → Product/Curriculum intent. "Does it surface them today?" is Axis B → code and tests. Answering the first with the second is the error the two-axis model exists to stop.
 
-**Lesson sequencing vs lesson authoring.** "How do I author L12?" → Content Bible + the L12 spec. "Should L12 come before L13?" → Curriculum, which is **not yet authored**. The Content Bible must not answer the second question merely because it is Canonical.
+**Lesson sequencing vs lesson authoring.** "How do I author L12?" → Content Bible + the L12 spec. "Should L12 come before L13?" → **Curriculum Charter v1.0 (DOC-058)** — inside the ratified L0–L17 spine the current order answers it; a **post-L17** sequencing question still has no owner → stop and report. The Content Bible must not answer sequencing merely because it is Canonical.
 
 **Human-audio direction vs current TTS reality.** Vault material treats audio/TTS/shadowing as a future layer (`Future Features`), while the shipped app uses TTS. Direction and reality coexist; neither cancels the other (PRJ-017, PRJ-018).
 
@@ -295,5 +295,7 @@ All drawn from repository-supported material.
 | 2026-07-26 | 0.1 (ADR status-collection correction) | **PR-review finding (Codex P2).** §3 class C no longer enumerates `ADR-0001…ADR-0025` as if uniformly accepted; it now reads *"individually accepted or active ADRs, according to each ADR's own metadata and decision status"* with concrete active examples. Added the explicit rule that **the `ADR-####` naming convention and directory membership confer no Canonical status**, and that deferred/proposed/superseded/rejected/historical ADRs are inputs or open decisions rather than class C authority — citing **ADR-0025** (`deferred`/`proposed`) as the live example, with PRJ-036 still `OPEN`. **No founder decision changed; no ADR status changed; no implementation authorized.** | Cloud session (PR-review correction) |
 
 | 2026-07-27 | 0.1 (Mastery & Evidence promotion) | **§2 / §2.1 updated:** the Mastery & Evidence domain row now routes to **DOC-051 Mastery & Evidence Bible v1.0 (`Canonical`, signed off 2026-07-27)**; the "document does not yet exist" dependency wording removed from live routing; the missing-owner conflict path no longer applies to this domain; §15 worked example updated. **PRJ-014 → `CANONICAL`; PRJ-009 remains `OPEN` (no Social evidence contract).** Founder-only implementation opening (§10), Axis A/B separation, conflict-stop rules and supporting-record boundaries all **unchanged**. **Canonical ≠ implemented: the evidence runtime remains non-conforming (DOC-054); no implementation authorized.** | Cloud session (founder-authorized promotion) |
+
+| 2026-07-28 | 0.1 (Curriculum Charter promotion) | **§2 updated:** the Curriculum domain row now routes to **DOC-058 Curriculum Charter v1.0 (`Canonical`, founder-signed 2026-07-28)** — 🟡 PARTIALLY AUTHORED: the Charter governs the current L0–L17 tiered spine, thesis, cadence, and stop conditions; **the Curriculum Bible remains unauthored**, so post-L17 sequencing, Capability Arc composition, and PRJ-015 counting keep the missing-owner path. §15 lesson-sequencing worked example updated (in-spine questions answered by the Charter; post-L17 → stop). **PRJ-001 remains `OPEN` with narrowed scope; PRJ-015/029/036 remain `OPEN`. Canonical ≠ implemented; no implementation authorized.** | Cloud session (founder-signed promotion) |
 
 *End of Authority and Routing Spec v0.1. Supporting specification; procedural only; authorizes no build.*
