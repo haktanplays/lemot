@@ -21,8 +21,12 @@ registry change, migration, or validator. Boundaries: **Content** owns
 the active-new **1–4** invariant itself; **Mastery & Evidence** owns all
 evidence and mastery consequences of linked or separated identities;
 **Engineering** owns runtime identity, ID syntax, and migration;
-**Product** owns long-range vocabulary promises (the ~3,000-word planning
-band is never a counter). Founder decisions FQ-P1…P6 (2026-07-29) are the
+**Product** owns long-range vocabulary promises: the approximately
+3,000-word Product planning band is **not an operational counter under
+this Contract** — this Contract does not operationalize it, no lexical
+ledger opens now, no current calculation is authorized, and any future
+lexical-destination counting unit requires a **separate Product +
+Curriculum decision**. Founder decisions FQ-P1…P6 (2026-07-29) are the
 source of every rule below; provenance in the source discovery.
 
 ## 2. Three counting contexts — IC-001
@@ -39,7 +43,10 @@ not an architecture):
    (beats ≠ screens stands).
 
 **Every numeric claim must name its context and its counted unit.**
-There is no fourth ledger; no lexical-destination context is opened.
+**This Contract opens no fourth counting context.** A future
+lexical-destination context remains **explicitly deferred** and would
+require a separate decision; it is not designed, opened, or permanently
+prohibited here.
 
 ## 3. Active-new rule — IC-002
 
@@ -175,13 +182,26 @@ The affected source documents are **not edited by this Contract**.
 The L17 compact spec lists **five** active-new entries; **two are meta
 `phen:` entries** (`phen:social-check-in`,
 `phen:human-context-feelings-light`). Under this draft's IC-002 rule the
-candidate acquisition count is **2–3** (the frozen `ça va` chunk pair +
-`word:content`), which **plausibly reconciles** the historical
-"3–5 / 5 vs 1–4" conflict without a payload change. This draft **does not
-alter L17**, does **not** claim runtime compliance, and the
-reconciliation becomes authoritative **only after founder sign-off and
-Canonical promotion** of this Contract. Until then the Charter's L17
-payload gate stands unchanged.
+candidate acquisition count is **2–3**, derived as follows:
+
+- the two `phen:` meta entries count **0**;
+- `word:content` counts **1**;
+- the frozen `ça va ? / ça va` pair produces **1** acquisition demand if
+  treated as one linked social-check-in concept cluster (IC-003), or
+  **2** if both chunks are independently required production targets;
+- therefore the candidate total is **2–3**.
+
+**This Contract does not decide L17's final lesson-level classification
+from this worked example.** The source spec, or a later reviewed
+classification, must state whether the pair is one linked cluster or two
+separate active demands — the range is not silently settled here. Either
+candidate remains within the hard maximum of 4. This plausibly reconciles
+the historical "3–5 / 5 vs 1–4" conflict without a payload change, but
+this draft **does not alter L17**, does **not** claim runtime compliance,
+and authorizes **no payload edit**; the reconciliation becomes
+authoritative **only after founder sign-off and Canonical promotion of
+this Contract plus the proper lesson classification**. Until then the
+Charter's L17 payload gate stands unchanged.
 
 ## 10. Explicit deferrals
 
@@ -204,8 +224,8 @@ Stop and report when a task involves:
 - linked identities double-counted toward acquisition;
 - a runtime migration inferred from this Contract;
 - mastery/evidence effects inferred from this Contract;
-- a lexical word-total calculation (the 3,000-word band is not a
-  counter).
+- a lexical word-total calculation (the 3,000-word band is not an
+  operational counter under this Contract).
 
 ## 12. Next step
 
