@@ -181,8 +181,8 @@ contributions per §4. Not every lesson has a secondary Arc.
 
 | Lesson | Primary contribution | Secondary contribution(s) | Role(s) | Status |
 |---|---|---|---|---|
-| L0 | α | — | preview | shipped bridge |
-| L1 | α | δ; β | α entry; δ entry; β preview | shipped |
+| L0 | — | — | ARC-α preview bridge — non-membership | shipped bridge |
+| L1 | α | δ | α entry; δ entry | shipped |
 | L2 | β | — | entry | shipped |
 | L3 | δ | β | δ extension; β extension | shipped |
 | L4 | β | α | β extension; α extension | shipped |
@@ -194,11 +194,19 @@ contributions per §4. Not every lesson has a secondary Arc.
 | L10 | α + β + γ + δ (co-primary) | — | integration | REG-hidden |
 | L11 | δ | α | δ extension; α extension | REG-hidden |
 | L12 | δ | — | extension | REG-hidden |
-| L13 | α + δ + γ (co-primary) | γ (`j'y vais` seed) | integration; γ preview | REG-hidden |
+| L13 | α + δ + γ (co-primary) | — | α/δ/γ integration | REG-hidden |
 | L14 | γ | — | extension | REG-hidden |
 | L15 | α | — | extension | REG-hidden |
 | L16 | ε + (δ, α, γ recombined) | — | ε entry; integration | spec-only |
 | L17 | β | δ | β extension; δ extension | spec-only |
+
+Preview annotations may be recorded for continuity, but they do not
+create or duplicate Arc membership. Continuity notes: L0 exposes the
+learner to α material without entering the formal Arc
+membership/accounting spine; L1 carries a **β preview seed** (not β
+membership); L13's `j'y vais` is a **γ preview of a later extension
+inside an already contributing Arc** — it does not create a second γ
+membership.
 
 ## 11. Current maturity summary
 
@@ -254,12 +262,19 @@ require:
 
 ## 14. Next step
 
-- **Independent adversarial review** of the five composed Arc records
-  is the next action.
-- **No post-L17 sequencing** occurs before that review.
-- **L1 repair reconciliation remains a separate track** (FQ-C8 home);
-  no lesson is edited by this document.
-- **PRJ-001 remains OPEN.**
+1. **The Arc composition remains Draft and is paused.**
+2. The next Curriculum action is a **global L1–L24 acquisition
+   skeleton**, followed by **detailed L1–L6 normalization**.
+3. That work will classify material as: **active · supported ·
+   recognition · ghost/preview · recycle · meta/trap/sound**.
+4. After the acquisition map: **re-check Arc lesson memberships**;
+   **re-check Arc maturity statements**; apply only **evidence-driven
+   Arc corrections**; then perform **one independent adversarial Arc
+   review**.
+5. **No Arc promotion or post-L17 sequencing** occurs before this
+   reconciliation.
+6. **L1 repair remains a separate priority debt** (FQ-C8 home); no
+   lesson is edited by this document. **PRJ-001 remains OPEN.**
 
 ---
 
