@@ -1,16 +1,18 @@
 ---
 title: Cairn Curriculum Capability Arcs Discovery
 version: 0.1
-status: Discovery — no Arc model ratified
-authority: None. Maps existing capability progression and prepares founder decisions; authors no post-L17 sequence and authorizes no implementation.
+status: Discovery — founder decisions FQ-A1…A5 folded 2026-07-30; Arc composition drafting authorized
+authority: None. Maps existing capability progression and records founder decisions; authors no post-L17 sequence and authorizes no implementation. Non-Canonical.
 owner: Curriculum
 date: 2026-07-29
+decisions_folded: 2026-07-30
 audited_head: f56e82e4d5d24a4ab055d04ab60fffe017535e04
 implementation_authority: none
 related:
   - CURRICULUM_CHARTER_v1.0.md
   - PRJ_015_ITEM_COUNTING_CONTRACT_v1.0.md
   - CURRICULUM_LAYER_DISCOVERY_v0.1.md
+  - CAPABILITY_ARCS_v0.1.md
 ---
 
 # Cairn Curriculum Capability Arcs Discovery v0.1
@@ -23,6 +25,25 @@ related:
 > and edits nothing Canonical. Arc labels below (ARC-α…ε) are
 > **provisional discovery labels only** — no stable Canonical Arc IDs are
 > allocated.
+
+> **Founder decisions folded — 2026-07-30.** The §18 cards are resolved:
+> **FQ-A1 APPROVED** (function-named arcs constrained by
+> capability-system durability tests) · **FQ-A2 APPROVED** (the five
+> provisional arcs of §12; no γ→α or ε→δ merge; unequal maturity) ·
+> **FQ-A3 APPROVED WITH GUARDRAIL** (multi-arc membership with a
+> primary-contribution rule) · **FQ-A4 APPROVED WITH LEANER STRUCTURE**
+> (seven core fields; document-level authority statement) ·
+> **FQ-A5 NOT APPROVED AS WRITTEN / REPLACED BY FOUNDER DECISION**
+> (repair is the first Capability prerequisite debt to reconcile; **no
+> first post-L17 expansion Arc is selected**). Per-card annotations are
+> in §18; the original recommendations, alternatives, evidence, and
+> consequences are preserved unchanged as discovery record.
+> **Arc composition drafting is authorized**: the composed records live
+> in `CAPABILITY_ARCS_v0.1.md` (**Draft — non-Canonical, awaiting
+> founder sign-off**). The ~9–10 implicit threads of §7 remain the
+> source finding; the five arcs are the *selected clustering*, not
+> source-given facts. PRJ-001 remains OPEN. This discovery remains
+> non-Canonical.
 
 ---
 
@@ -326,6 +347,12 @@ mastery thresholds, analytics, CEFR matrices, screen mappings, full
 lesson inventories. An author must be able to maintain an arc record in
 under a page.
 
+> **Founder reduction (FQ-A4, 2026-07-30):** the ratified record is
+> **seven core fields**, not the nine above — *Owner* and the
+> *evidence-boundary pointer* move to a single document-level authority
+> statement instead of repeating per record. The nine-field table stays
+> as discovery provenance.
+
 ## 12. Proposed first Arcs (5 — provisional labels)
 
 **ARC-α — Getting What You Need.**
@@ -479,6 +506,11 @@ words remain planning bands.
 
 ## 17. Genuinely open decisions
 
+> **Resolution status (2026-07-30):** items 1–5 are decided (see the
+> §18 annotations); item 6 is **replaced** by the FQ-A5 founder
+> correction — no first expansion arc is selected. Item 7's downstream
+> questions remain open.
+
 1. The Arc model (function / system / journey-phase / hybrid degree).
 2. The initial Arc count (5 proposed vs a 3-arc merge).
 3. Multi-arc lesson membership as a rule.
@@ -508,6 +540,17 @@ hostile). *Consequence:* fixes the vocabulary every later Curriculum
 document uses. *Founder because:* it interprets Canonical PB-013/016 for
 all future composition.
 
+> **Founder decision (2026-07-30): APPROVED.** Function-named Capability
+> Arcs constrained by capability-system durability tests. Each Arc must:
+> (1) describe something the learner can do; (2) span multiple lessons;
+> (3) own a meaningful dependency chain; (4) remain useful beyond one
+> setting or topic; (5) remain meaningful toward the destination band;
+> (6) not reduce to one grammar system, vocabulary theme, or exercise;
+> (7) remain distinct from mastery evidence; (8) permit legitimate
+> overlap with other Arcs. Journey-phase names remain Journey-layer
+> material and must not be used as Arc architecture. No separate system
+> taxonomy or three-layer hybrid.
+
 **FQ-A2 — Initial Arc count.** `BLOCKING FOR ARC COMPOSITION`
 *Conflict:* ~9–10 implicit threads vs the lean-structure requirement.
 *Example:* obligation (L15) as its own arc fails the multi-lesson test;
@@ -516,6 +559,15 @@ five arcs of §12**. *Alternative:* three (γ→α, ε→δ merges) — leaner b
 hides the two clearest post-L17 gaps. *Consequence:* determines how
 visible the repair and comprehension gaps stay. *Founder because:* Arc
 composition is expressly reserved (Charter §4).
+
+> **Founder decision (2026-07-30): APPROVED.** Compose the five
+> provisional arcs of §12 (ARC-α…ε). **Do not merge γ into α or ε into
+> δ.** Labels remain provisional, internal, learner-invisible,
+> non-Canonical, and replaceable before Curriculum Bible sign-off. The
+> five arcs do **not** have equal maturity — initial interpretation:
+> α established · β established · γ narrow/developing · δ established
+> thread with unresolved foundation debt · ε emerging/spec-led.
+> Maturity labels are qualitative only — never scores or percentages.
 
 **FQ-A3 — Multi-arc membership.** `BLOCKING FOR ARC COMPOSITION`
 *Conflict:* every integration lesson serves several threads; a
@@ -528,6 +580,19 @@ false structure). *Consequence:* shapes the arc-record format and every
 future trace. *Founder because:* it is a composition rule, not a
 derivable fact.
 
+> **Founder decision (2026-07-30): APPROVED WITH GUARDRAIL.** A lesson
+> may contribute to more than one Arc. **Ordinary non-integration
+> lessons:** identify one *primary* Arc contribution; list a secondary
+> Arc only when the lesson creates a real entry, extension, transfer, or
+> active recombination for that Arc — incidental vocabulary, context, or
+> presentation does not create Arc membership. **Integration lessons:**
+> more than one co-primary Arc is allowed; record the specific
+> recombination role; integration itself is a mechanism, not an Arc.
+> Allowed roles for every lesson-to-Arc relationship: **entry ·
+> extension · integration · transfer · preview**. Preview does not
+> establish owned capability. No weights, percentages, or ranking
+> scores.
+
 **FQ-A4 — Arc record structure and naming.** `REQUIRED BEFORE FIRST
 COMPOSITION`
 *Conflict:* nothing exists; the failure modes are bureaucracy (R7) and
@@ -539,6 +604,20 @@ the Curriculum Bible allocates stable ones; no learner-facing surface
 per-lesson inventories (rejected as unmaintainable). *Consequence:*
 bounds all future arc paperwork. *Founder because:* it sets the durable
 convention.
+
+> **Founder decision (2026-07-30): APPROVED WITH LEANER STRUCTURE.**
+> Seven core fields per record, not nine: (1) working name and
+> provisional label; (2) learner capability statement; (3) entry lesson;
+> (4) contributing lessons and roles; (5) current maturity;
+> (6) prerequisites; (7) next unresolved expansion. The authority
+> statement (owner = Curriculum; evidence/mastery semantics = Mastery &
+> Evidence Bible; implementation representation = Engineering; learner
+> visibility = none) applies **once at document level** and is not
+> repeated per record. Optional prose only for: scope boundary; known
+> contradiction or debt; why a tempting adjacent capability does not
+> belong. Each record ≤ ~one page. No mastery thresholds, percentages,
+> analytics, CEFR matrices, runtime fields, screen mappings, full item
+> inventories, or incidental-occurrence lists.
 
 **FQ-A5 — First post-L17 expansion arc.** `BLOCKING FOR ANY L18+
 PLANNING` — *decision, not sequencing*
@@ -554,6 +633,23 @@ displaced by this card. *Alternative:* keep Option C's L18 preview as
 the next step (plan continuity over maturity). *Consequence:* orients —
 without numbering — the first post-L17 authoring horizon. *Founder
 because:* it chooses between two legitimately sourced priorities.
+
+> **Founder decision (2026-07-30): NOT APPROVED AS WRITTEN / REPLACED
+> BY FOUNDER DECISION.** The recommendation "ARC-δ receives the first
+> post-L17 expansion" is **not ratified**. Ratified instead:
+> *communication repair is the first Capability prerequisite debt to
+> reconcile, but no first post-L17 expansion Arc is selected yet.*
+> Reasons: the repair pair is already founder-routed to the L1 Survival
+> Kit redesign (FQ-C8); L13 assumes capability the runtime did not ship;
+> expanding repair only after L17 would carry an unresolved foundation
+> defect forward; and Arc composition must not silently become exact
+> sequencing. Disposition: ARC-δ records the L1 repair debt as its
+> highest-priority unresolved foundation issue; no L18+ placement is
+> created; no repair payload is added to L18+; futur-proche remains
+> open; ε comprehension remains a post-L17 candidate; γ/α future-plan
+> expansion remains a post-L17 candidate; the first post-L17 expansion
+> decision occurs only after Arc composition and a separate review of
+> the repair prerequisite. The L1 redesign remains a separate track.
 
 ## 19. Recommended smallest next action
 
@@ -591,8 +687,10 @@ CUR-012, FQ-C2/C8) · `PRJ_015_ITEM_COUNTING_DISCOVERY_v0.1.md`.
 
 ---
 
-*End of Capability Arcs Discovery v0.1. No Arc model is ratified; no
-post-L17 sequence, tense placement, checkpoint definition, or
-implementation is authorized. PRJ-001 remains OPEN; PRJ-015 remains
-CANONICAL; Arc composition remains a Charter §14 stop condition until
-the §18 cards are answered.*
+*End of Capability Arcs Discovery v0.1. The §18 founder cards were
+answered 2026-07-30 (see the per-card annotations); Arc composition
+drafting is authorized and lives in `CAPABILITY_ARCS_v0.1.md` (Draft —
+non-Canonical, awaiting founder sign-off). No post-L17 sequence, tense
+placement, checkpoint definition, or implementation is authorized.
+PRJ-001 remains OPEN; PRJ-015 remains CANONICAL; this discovery remains
+non-Canonical.*
