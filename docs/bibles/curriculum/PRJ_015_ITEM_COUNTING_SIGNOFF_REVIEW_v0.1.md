@@ -127,8 +127,10 @@ vocabulary, provenance-only). None blocks sign-off.
 
 ## 10. Final confirmation
 
-The Contract remains `Draft — awaiting founder sign-off` (~236 lines,
-exactly six IC IDs); **PRJ-015 remains `OPEN`**; founder decisions
+The Contract remained `Draft — awaiting founder sign-off` at review time
+(~236 lines, exactly six IC IDs); **PRJ-015 remained `OPEN` at review
+time** (moved to `CANONICAL` at the 2026-07-29 promotion — see Final
+disposition below); founder decisions
 FQ-P1…P6 are represented faithfully, including the revised P4 and P6
 wording; no Canonical, lesson, registry, manifest, schema, validator,
 test, runtime, or PRJ-status file was changed by this review cycle; no

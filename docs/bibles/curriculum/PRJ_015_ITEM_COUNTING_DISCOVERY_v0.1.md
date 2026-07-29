@@ -16,7 +16,9 @@ related:
 
 # Cairn PRJ-015 Item-Counting Discovery v0.1
 
-> **Discovery only. PRJ-015 remains `OPEN`.** This document maps every
+> **Discovery only. PRJ-015 was `OPEN` throughout this discovery**
+> *(resolved `CANONICAL` at the 2026-07-29 promotion — see the §1 outcome
+> banner)*. This document maps every
 > materially different meaning of "item count" in Cairn, explains why
 > different files produce different numbers, and reduces PRJ-015 to a small
 > founder decision surface. It **does not** resolve the methodology, does

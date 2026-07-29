@@ -213,8 +213,13 @@ stands unchanged.
 Registry unification · runtime ID syntax · link representation ·
 migration · mastery evidence effects of linking/splitting ·
 lexical-destination counting · a 3,000-word operational counter ·
-passage identity · runtime `status_by_lesson` · validators ·
-source-banner cleanup (IC-006 follow-through) · PRJ-015 closure.
+passage identity · runtime `status_by_lesson` · validators · the L17
+lesson-level linked-cluster vs separate-demand classification (open and
+separate — it does not block, and never blocked, PRJ-015's closure).
+
+*(Completed by the 2026-07-29 promotion package, no longer deferred:
+the IC-006 source-banner synchronization pass, and PRJ-015's register
+decision `OPEN` → `CANONICAL`.)*
 
 ## 11. Authoring stop conditions
 
