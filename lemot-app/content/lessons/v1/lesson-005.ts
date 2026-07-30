@@ -59,6 +59,8 @@ const screens: LessonScreen[] = [
       examples: [
         { fr: "un café", en: "a coffee" },
         { fr: "une question", en: "a question" },
+        { fr: "un thé", en: "a tea" },
+        { fr: "une table", en: "a table" },
         { fr: "Je voudrais un café.", en: "I would like a coffee." },
         { fr: "J'ai une question.", en: "I have a question." },
       ],
@@ -163,6 +165,33 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s04c-fill-package-table",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-une-table"],
+    weakPointTags: ["articles"],
+    payload: {
+      prompt: "One more package. Which little word travels with table?",
+      sentenceAfter: "table, s'il vous plaît.",
+      blankCount: 1,
+      options: [
+        { id: "opt-une", text: "une", isCorrect: true },
+        {
+          id: "opt-un",
+          text: "un",
+          isCorrect: false,
+          trapReason:
+            "Table travels with une: une table. un goes with café and thé: un café, un thé.",
+        },
+      ],
+      answer: ["opt-une"],
+      reveal: {
+        short: "une",
+        explanation: "Table travels with une: une table.",
+        natural: "Une table, s'il vous plaît.",
+      },
+    },
+  },
+  {
     id: "s05-weave-je-voudrais-un-cafe",
     type: "weave",
     targetItemIds: ["chunk-je-voudrais", "chunk-un-cafe"],
@@ -174,15 +203,17 @@ const screens: LessonScreen[] = [
       suggestedPieces: [
         { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
         { text: "un café", itemId: "chunk-un-cafe", required: true, label: "noun package" },
+        { text: "un thé", itemId: "chunk-un-the", label: "another package" },
       ],
       expectedAnswers: ["Je voudrais un café."],
+      acceptedAlternatives: ["Je voudrais un thé."],
       reveal: {
         modelAnswer: "Je voudrais un café.",
         ifCorrect: "The package stayed together: un café.",
         ifCorrectButFlat: "Right. un café is one piece, the little word included.",
         ifUnderstandableButWrong:
           "Your meaning lands. Keep the package whole: un café.",
-        ifMissingTargetPiece: "Add the little word: un café, not just café.",
+        ifMissingTargetPiece: "Add the little word: un café, not just café. (un thé works here too.)",
       },
       validationMode: "exact-or-alternative",
     },
@@ -246,12 +277,14 @@ const screens: LessonScreen[] = [
       title: "Little words, small packages.",
       lines: [
         "Many French words come with a little word in front.",
-        "You learned un café and une question.",
+        "You learned four packages: un café, un thé, une question, une table.",
         "You used them in real requests: je voudrais un café, j'ai une question.",
       ],
       piecesUsed: [
         "un café",
+        "un thé",
         "une question",
+        "une table",
       ],
       nextLabel: "Continue",
     },
@@ -274,6 +307,10 @@ export const lesson005: Lesson = {
   learningItems: getItems([
     "chunk-un-cafe",
     "chunk-une-question",
+    "chunk-un-the",
+    "noun-the",
+    "chunk-une-table",
+    "noun-table",
     "grammar-un-une-package",
     "noun-cafe",
     "noun-question",
@@ -286,6 +323,7 @@ export const lesson005: Lesson = {
     "L5 Training Pack lesson under the Training Content Factory contract. L5 maps to the slice-spec PR I. Owned core: un and une as noun packages (un café, une question).",
     "Package framing, not a rule: un café and une question are taught as whole units. No masculine/feminine table, no gender rule, no article taxonomy. Registry uses package chunks (chunk-un-cafe, chunk-une-question), not abstract article items, per the L3-L6 plan Q1.",
     "Frames are recycled, not re-taught: je voudrais un café (L1) and j'ai une question (L4) carry the packages. c'est is not introduced here.",
+    "Kademe 2 enrichment: un thé (dual role: L1 service variation, here article reinforcement; the s05 weave accepts the thé slot-swap) and une table (s04c fill) join as supported packages. un restaurant / une maison were trimmed from the ghost example copy (Payload Economy review, 2026-07-04) to keep the recognizable metric inside the 30-35 band; four real packages already carry the pattern. They stay in the Practice Pool candidate quarry (docs/audits).",
     "L5 follows the enumerated 9-screen shape from the L3-L6 content plan (meet x2, insight x1, fill x2, weave x2, say-it x1, recap). The plan header's '10 screens' is treated as an off-by-one note, not a reason to add a filler screen.",
     "le / la (definite articles) are deferred. The plan lists them as a recognition-light touch, but they add a second article concept and would need a new noun; deferring keeps L5 the lightest system lesson.",
     "Deferred: plural articles, partitives (du / de la / des), pas de, definite-article production, agreement systems, and broad noun-gender teaching beyond un café and une question.",

@@ -46,7 +46,10 @@ const screens: LessonScreen[] = [
       examples: [
         { fr: "Je suis ici.", en: "I am here." },
         { fr: "J'ai faim.", en: "I am hungry." },
+        { fr: "J'ai soif.", en: "I am thirsty." },
         { fr: "J'ai une question.", en: "I have a question." },
+        { fr: "J'ai une idée.", en: "I have an idea." },
+        { fr: "J'ai froid. J'ai chaud.", en: "I am cold. I am hot. (more of the same family)" },
       ],
     },
   },
@@ -213,26 +216,56 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    id: "s06b-weave-j-ai-une-idee",
+    type: "weave",
+    targetItemIds: ["chunk-j-ai", "noun-idee"],
+    weakPointTags: ["j-ai-vs-je-suis"],
+    payload: {
+      weaveType: "mid",
+      prompt: "Write it in French: I have an idea.",
+      context:
+        "Halfway through the conversation, something clicks. Share that you have an idea.",
+      suggestedPieces: [
+        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+        { text: "une idée", itemId: "noun-idee", required: true, label: "noun package" },
+      ],
+      expectedAnswers: ["J'ai une idée."],
+      acceptedAlternatives: [
+        "J ai une idée.",
+        "J ai une idee.",
+        "J'ai une idee.",
+      ],
+      reveal: {
+        modelAnswer: "J'ai une idée.",
+        ifCorrect: "The same engine again: a feeling, a question, and now an idea.",
+        ifCorrectButFlat: "Right. une idée travels as one package, like une question.",
+        ifMissingTargetPiece: "Start with j'ai, then the package: une idée.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s07-sayit-how-you-feel",
     type: "say-it-your-way",
     targetItemIds: ["chunk-j-ai", "chunk-j-ai-faim"],
     weakPointTags: ["avoir-vs-etre", "natural-speech"],
     payload: {
       situation:
-        "You have not eaten all morning and you want to let someone know how you feel. " +
+        "You have not eaten or drunk anything all morning and you want to let someone know how you feel. " +
         "Say it the French way.",
       communicativeGoal: "Say what you feel, using have.",
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "j'ai", itemId: "chunk-j-ai" },
         { text: "faim", itemId: "noun-faim" },
+        { text: "soif", itemId: "noun-soif" },
       ],
       modelAnswer: "J'ai faim.",
       reveal: {
         modelAnswer: "J'ai faim.",
-        naturalAlternatives: ["Bonjour, j'ai faim."],
+        naturalAlternatives: ["J'ai soif.", "Bonjour, j'ai faim."],
         explanation:
-          "French puts hunger on have: j'ai faim. Add bonjour if you are greeting someone first.",
+          "French puts hunger and thirst on have: j'ai faim, j'ai soif. Add bonjour if you are greeting someone first.",
       },
       validationMode: "model-answer-only",
     },
@@ -244,13 +277,15 @@ const screens: LessonScreen[] = [
       title: "You have feelings in French now.",
       lines: [
         "French often uses have where English uses be.",
-        "You said j'ai faim for I am hungry.",
-        "You used j'ai for a thing too: j'ai une question.",
+        "You said j'ai faim for I am hungry; soif works the same way.",
+        "You used j'ai for things too: j'ai une question, j'ai une idée.",
       ],
       piecesUsed: [
         "j'ai",
         "faim",
+        "soif",
         "une question",
+        "une idée",
         "Bonjour",
       ],
       nextLabel: "Continue",
@@ -275,7 +310,9 @@ export const lesson004: Lesson = {
     "chunk-j-ai",
     "chunk-j-ai-faim",
     "noun-faim",
+    "noun-soif",
     "chunk-j-ai-une-question",
+    "noun-idee",
     "micro-je-suis-vs-j-ai",
     "sound-elision",
     "noun-question",
@@ -286,6 +323,8 @@ export const lesson004: Lesson = {
     "Second Training Pack lesson under the Training Content Factory contract. L4 maps to the slice-spec PR H. Owned core: j'ai as the second sentence engine.",
     "Contrast metaphor: micro-je-suis-vs-j-ai. French uses have where English uses be for some feelings (j'ai faim = I am hungry). Taught as a French-thinks-differently moment, not a paradigm table.",
     "Elision is taught lightly: je + ai becomes j'ai. Not a broad elision lecture.",
+    "Kademe 2 enrichment: soif joins as faim's supported twin (insight example + sayit piece/alternative); une idée joins as a second supported thing-package, reusing the previously dormant noun-idee. j'ai froid / j'ai chaud stay ghost-only in the insight example copy, never produced.",
+    "il y a remains a separate deferred doorway and appears nowhere in L4 (Payload Economy / L14 canon).",
     "chunk-j-ai is promoted from supported to active in this lesson.",
     "L4 follows the enumerated 9-screen shape from the L3-L6 content plan (meet x2, insight x2, fill x1, weave x2, say-it x1, recap). The plan header's '10 screens' is treated as an off-by-one note, not a reason to add a filler screen.",
     "je n'ai pas (negated avoir) is deferred so L4 does not compete with its core j'ai engine by re-opening negation-of-avoir.",

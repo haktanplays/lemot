@@ -87,10 +87,11 @@ export const ITEM_REGISTRY = {
     weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis", "elision"],
   },
   // R4 (L1-L15 audit, 2026-07): pronoun-je/tu/vous, verb-etre,
-  // chunk-tu-es(-pret), chunk-vous-etes(-pret), sound-liaison,
-  // grammar-etre-identity and noun-idee are registered but unused by any
-  // v1 lesson surface. Retained for future register/etre lessons; see
+  // chunk-tu-es(-pret), chunk-vous-etes(-pret), sound-liaison and
+  // grammar-etre-identity are registered but unused by any v1 lesson
+  // surface. Retained for future register/etre lessons; see
   // docs/audits/L1_L15_CHIP_INVENTORY_AUDIT_2026_07.md (risk R4).
+  // (noun-idee left this list with the Kademe 2 enrichment: used by L4.)
   "pronoun-je": {
     id: "pronoun-je",
     type: "pronoun",
@@ -326,7 +327,7 @@ export const ITEM_REGISTRY = {
     fr: "oui",
     en: "yes",
     meaning:
-      "Yes, as an ANSWER word. Scope note (audit R2, Payload Economy): never slotted inside questions or statements (wrong-slot trap in L8/L13/L14 fills); producible-answer rehabilitation lands with the L1-L5 enrichment canon.",
+      "Yes, as an ANSWER word: producible when answering or accepting (Oui, merci.). Never slotted inside questions or statements; the wrong-slot traps in L8/L13/L14 fills stay.",
     exampleFr: "Oui, merci.",
     exampleEn: "Yes, thank you.",
     relatedItemIds: ["chunk-non"],
@@ -697,6 +698,129 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je dois aller à la maison.",
     exampleEn: "I have to go home.",
     relatedItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+  },
+  // -- Kademe 2 enrichment (L1-L5 payloads, PAYLOAD_ECONOMY v0 section 6) ----
+  "chunk-excusez-moi": {
+    id: "chunk-excusez-moi",
+    type: "chunk",
+    text: "excusez-moi",
+    status: "supported",
+    fr: "excusez-moi",
+    en: "excuse me",
+    meaning:
+      "Attention opener: the polite way to reach a stranger before asking anything. Frozen whole; the -moi ending is not an object-pronoun lesson.",
+    exampleFr: "Excusez-moi, j'ai une question.",
+    exampleEn: "Excuse me, I have a question.",
+    relatedItemIds: ["chunk-bonjour", "chunk-sil-vous-plait"],
+    weakPointTags: ["politeness"],
+  },
+  "formula-je-ne-comprends-pas": {
+    id: "formula-je-ne-comprends-pas",
+    type: "chunk",
+    text: "je ne comprends pas",
+    status: "supported",
+    fr: "je ne comprends pas",
+    en: "I don't understand",
+    meaning:
+      "SURVIVAL FORMULA (closed class, PAYLOAD_ECONOMY 4.1): learned whole, needed under stress. Comprendre is not unpacked; the ne...pas shape is met, not analyzed.",
+    exampleFr: "Je ne comprends pas.",
+    exampleEn: "I don't understand.",
+    relatedItemIds: ["formula-vous-pouvez-repeter", "grammar-ne-pas-sandwich"],
+    weakPointTags: ["negation"],
+  },
+  "formula-vous-pouvez-repeter": {
+    id: "formula-vous-pouvez-repeter",
+    type: "chunk",
+    text: "vous pouvez répéter ?",
+    status: "supported",
+    fr: "vous pouvez répéter ?",
+    en: "can you repeat?",
+    meaning:
+      "SURVIVAL FORMULA (closed class, PAYLOAD_ECONOMY 4.1): the rescue ask, learned whole with its rising voice. Non-inverted by canon; pouvez-vous stays recognition-only.",
+    exampleFr: "Je ne comprends pas. Vous pouvez répéter ?",
+    exampleEn: "I don't understand. Can you repeat?",
+    relatedItemIds: ["formula-je-ne-comprends-pas", "chunk-vous-pouvez"],
+    weakPointTags: ["politeness"],
+  },
+  "noun-the": {
+    id: "noun-the",
+    type: "noun",
+    text: "thé",
+    status: "supported",
+    fr: "thé",
+    en: "tea",
+    meaning: "Tea. Service-slice twin of café; travels as un thé.",
+    exampleFr: "un thé",
+    exampleEn: "a tea",
+    relatedItemIds: ["chunk-un-the", "noun-cafe"],
+    weakPointTags: ["gender", "articles"],
+  },
+  "chunk-un-the": {
+    id: "chunk-un-the",
+    type: "chunk",
+    text: "un thé",
+    status: "supported",
+    fr: "un thé",
+    en: "a tea",
+    meaning:
+      "Noun package: un + thé, one piece. Dual role by design: L1 service variation, L5 article-package reinforcement.",
+    exampleFr: "Je voudrais un thé, s'il vous plaît.",
+    exampleEn: "I would like a tea, please.",
+    relatedItemIds: ["noun-the", "chunk-un-cafe"],
+    weakPointTags: ["articles"],
+  },
+  "adjective-fatigue": {
+    id: "adjective-fatigue",
+    type: "adjective",
+    text: "fatigué",
+    status: "supported",
+    fr: "fatigué",
+    en: "tired",
+    meaning:
+      "Tired: the first state riding je suis. One micro-note only (a woman writes fatiguée); the agreement system is NOT opened.",
+    exampleFr: "Je suis fatigué.",
+    exampleEn: "I am tired.",
+    relatedItemIds: ["chunk-je-suis", "micro-je-suis-vs-j-ai"],
+  },
+  "noun-soif": {
+    id: "noun-soif",
+    type: "noun",
+    text: "soif",
+    status: "supported",
+    fr: "soif",
+    en: "thirst",
+    meaning:
+      "Thirst, the thing you HAVE in French: j'ai soif. Twin of faim in the avoir-sensation family.",
+    exampleFr: "J'ai soif.",
+    exampleEn: "I am thirsty.",
+    relatedItemIds: ["noun-faim", "chunk-j-ai"],
+    weakPointTags: ["avoir-vs-etre"],
+  },
+  "noun-table": {
+    id: "noun-table",
+    type: "noun",
+    text: "table",
+    status: "supported",
+    fr: "table",
+    en: "table",
+    meaning: "Table. Feminine package partner for the un/une contrast.",
+    exampleFr: "une table",
+    exampleEn: "a table",
+    relatedItemIds: ["chunk-une-table", "noun-question"],
+    weakPointTags: ["gender", "articles"],
+  },
+  "chunk-une-table": {
+    id: "chunk-une-table",
+    type: "chunk",
+    text: "une table",
+    status: "supported",
+    fr: "une table",
+    en: "a table",
+    meaning: "Noun package: une + table, one piece.",
+    exampleFr: "une table",
+    exampleEn: "a table",
+    relatedItemIds: ["noun-table", "chunk-une-question"],
+    weakPointTags: ["articles"],
   },
 } as const satisfies Record<string, LearningItem>;
 
