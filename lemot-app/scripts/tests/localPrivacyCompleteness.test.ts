@@ -137,13 +137,18 @@ describe("PR-H — local export includes all local learner/privacy data (C6)", (
 });
 
 describe("PR-H — copy is device-scoped and never claims cloud deletion (C5)", () => {
-  test("8. PrivacyDataControls copy scopes to this device and does not claim cloud deletion", () => {
+  test("8. PrivacyDataControls LOCAL-reset copy scopes to this device and does not claim cloud deletion", () => {
     const src = readFileSync(
       join(process.cwd(), "components/learning-engine/PrivacyDataControls.tsx"),
       "utf8",
     );
-    assert(src.includes("only affects this device"), "reset copy must scope to this device");
-    assert(/not the cloud/.test(src), "reset copy must explicitly say it does not touch the cloud");
+    // Scope this PR-H (C5) guard to the DEVICE-ONLY reset/export copy — i.e. the
+    // portion BEFORE the PR-I1 "Delete synced learning data" block. PR-I1 adds a
+    // legitimate cloud-deletion action; its copy is guarded separately in
+    // deleteSyncedDataWiring.test.ts. The local reset must still never over-claim.
+    const localScope = src.split("Delete synced learning data (PR-I1)")[0];
+    assert(localScope.includes("only affects this device"), "reset copy must scope to this device");
+    assert(/not the cloud/.test(localScope), "reset copy must explicitly say it does not touch the cloud");
     const overclaims = [
       "delete your account",
       "deleted from the cloud",
@@ -152,9 +157,9 @@ describe("PR-H — copy is device-scoped and never claims cloud deletion (C5)", 
       "account deleted",
       "cloud copy",
     ];
-    const lower = src.toLowerCase();
+    const lower = localScope.toLowerCase();
     for (const phrase of overclaims) {
-      assert(!lower.includes(phrase), `copy must not claim cloud deletion: "${phrase}"`);
+      assert(!lower.includes(phrase), `local reset copy must not claim cloud deletion: "${phrase}"`);
     }
   });
 });

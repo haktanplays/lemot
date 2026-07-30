@@ -1,184 +1,27 @@
--- LE MOT — Sprint 10 Database Schema
--- Run this in Supabase SQL Editor
+-- PR-I1 (audit C1): durable authenticated deletion of synced learning data.
+--
+-- Durability rests on a per-user monotonic sync GENERATION plus an idempotency
+-- OPERATION LOG:
+--
+--   * every learner write carries the generation it was written under;
+--   * writes go through generation-aware SECURITY DEFINER RPCs that lock the
+--     user's generation row and require EXACT equality (current clients);
+--   * legacy direct-table writes are allowed by RLS ONLY while the caller's
+--     generation is exactly 0 (never-deleted accounts) — after a deletion every
+--     direct write is denied, including an upsert conflict-update against an
+--     existing current-generation row (the hole a default column + trigger alone
+--     can't close);
+--   * a BEFORE trigger remains as defense-in-depth;
+--   * the delete RPC BUMPS the generation FIRST under the row lock, deletes, and
+--     records the operation in a log keyed by (user_id, operation_id). A retry of
+--     ANY past operation id is recognised from the log → no re-bump, no re-delete,
+--     and it returns the CURRENT generation so a stale device can clean locally
+--     and adopt the current state. Anonymous identities may sync but may NOT
+--     delete.
+--
+-- Operator-only: apply in the Supabase SQL editor / migration pipeline.
 
--- 1. User profiles (extends auth.users)
-create table if not exists public.profiles (
-  id uuid references auth.users on delete cascade primary key,
-  display_name text,
-  created_at timestamptz default now() not null,
-  updated_at timestamptz default now() not null
-);
-
--- 2. User progress (synced from local)
-create table if not exists public.user_progress (
-  id uuid default gen_random_uuid() primary key,
-  user_id uuid references public.profiles on delete cascade not null,
-  progress jsonb default '{}'::jsonb not null,
-  daily_review jsonb default '{"date":"","count":0}'::jsonb not null,
-  updated_at timestamptz default now() not null,
-  unique (user_id)
-);
-
--- 3. Error tracking (for adaptive AI)
-create table if not exists public.user_errors (
-  id uuid default gen_random_uuid() primary key,
-  user_id uuid references public.profiles on delete cascade not null,
-  word text not null,
-  section text not null,
-  given_answer text not null,
-  correct_answer text not null,
-  lesson_id int not null,
-  created_at timestamptz default now() not null
-);
-
--- Index for weak spot queries
-create index if not exists idx_user_errors_user on public.user_errors (user_id);
-create index if not exists idx_user_errors_word on public.user_errors (user_id, word);
-
--- 4. RLS Policies (CRITICAL)
-alter table public.profiles enable row level security;
-alter table public.user_progress enable row level security;
-alter table public.user_errors enable row level security;
-
--- Profiles: users can only read/update their own
-drop policy if exists "Users can view own profile" on public.profiles;
-create policy "Users can view own profile"
-  on public.profiles for select
-  using (auth.uid() = id);
-
-drop policy if exists "Users can update own profile" on public.profiles;
-create policy "Users can update own profile"
-  on public.profiles for update
-  using (auth.uid() = id);
-
-drop policy if exists "Users can insert own profile" on public.profiles;
-create policy "Users can insert own profile"
-  on public.profiles for insert
-  with check (auth.uid() = id);
-
--- Progress: users can only access their own
-drop policy if exists "Users can view own progress" on public.user_progress;
-create policy "Users can view own progress"
-  on public.user_progress for select
-  using (auth.uid() = user_id);
-
-drop policy if exists "Users can upsert own progress" on public.user_progress;
-create policy "Users can upsert own progress"
-  on public.user_progress for insert
-  with check (auth.uid() = user_id);
-
-drop policy if exists "Users can update own progress" on public.user_progress;
-create policy "Users can update own progress"
-  on public.user_progress for update
-  using (auth.uid() = user_id);
-
--- Errors: users can only access their own
-drop policy if exists "Users can view own errors" on public.user_errors;
-create policy "Users can view own errors"
-  on public.user_errors for select
-  using (auth.uid() = user_id);
-
-drop policy if exists "Users can insert own errors" on public.user_errors;
-create policy "Users can insert own errors"
-  on public.user_errors for insert
-  with check (auth.uid() = user_id);
-
--- 5. Auto-create profile (+ sync-state row, PR-I1) on signup
-create or replace function public.handle_new_user()
-returns trigger as $$
-begin
-  insert into public.profiles (id, display_name)
-  values (new.id, new.raw_user_meta_data->>'display_name');
-  insert into public.user_sync_state (user_id) values (new.id)
-    on conflict (user_id) do nothing;
-  return new;
-end;
-$$ language plpgsql security definer set search_path = public;
-
-drop trigger if exists on_auth_user_created on auth.users;
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute function public.handle_new_user();
-
--- 6. Auto-update updated_at
-create or replace function public.update_updated_at()
-returns trigger as $$
-begin
-  new.updated_at = now();
-  return new;
-end;
-$$ language plpgsql;
-
-drop trigger if exists update_profiles_updated_at on public.profiles;
-create trigger update_profiles_updated_at
-  before update on public.profiles
-  for each row execute function public.update_updated_at();
-
-drop trigger if exists update_progress_updated_at on public.user_progress;
-create trigger update_progress_updated_at
-  before update on public.user_progress
-  for each row execute function public.update_updated_at();
-
--- 7. AI usage quota (PR-C, audit B4 — server-side per-user rate limiting)
--- DEPLOY REQUIRED: this table + RPC must be applied before AI is enabled;
--- without them, `bump_ai_usage` errors and the Edge Functions fail closed
--- (every AI request is denied), which is the safe default.
-create table if not exists public.ai_usage (
-  user_id uuid references auth.users on delete cascade not null,
-  fn text not null,
-  day date not null default current_date,
-  count int not null default 0,
-  primary key (user_id, fn, day)
-);
-
-alter table public.ai_usage enable row level security;
-
--- Users may read their own usage; writes only ever happen through the
--- SECURITY DEFINER RPC below (no direct client insert/update policy exists).
-drop policy if exists "Users can view own ai usage" on public.ai_usage;
-create policy "Users can view own ai usage"
-  on public.ai_usage for select
-  using (auth.uid() = user_id);
-
--- Atomic per-user daily increment + limit check. SECURITY DEFINER so it can
--- write the counter, but it is keyed STRICTLY by auth.uid(), so a caller can
--- only ever bump their own row (anonymous-auth users included — they are still
--- authenticated). Returns true iff the request is within the daily limit.
-create or replace function public.bump_ai_usage(p_fn text, p_limit int)
-returns boolean
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  v_uid uuid := auth.uid();
-  v_count int;
-begin
-  if v_uid is null then
-    return false; -- fail closed: no identity, no allowance
-  end if;
-  insert into public.ai_usage (user_id, fn, day, count)
-    values (v_uid, p_fn, current_date, 1)
-  on conflict (user_id, fn, day)
-    do update set count = public.ai_usage.count + 1
-  returning count into v_count;
-  return v_count <= p_limit;
-end;
-$$;
-
--- Only authenticated sessions may call it; never anon/unauthenticated.
-revoke all on function public.bump_ai_usage(text, int) from public;
-grant execute on function public.bump_ai_usage(text, int) to authenticated;
-
--- 8. Durable synced-data deletion (PR-I1, audit C1) — generation + op log.
--- See supabase/migrations/2026-07-11_pr_i1_delete_synced_learning_data.sql for
--- the full deploy narrative. A per-user monotonic generation + an idempotency
--- operation log make deletion durable across devices and a lost/duplicated RPC
--- response: writes carry their generation, current clients write via generation-
--- aware RPCs, legacy direct writes are RLS-limited to generation 0, and the
--- delete RPC bumps-before-delete under the row lock and logs the operation.
--- Anonymous identities may sync but may NOT delete.
-
+-- 1) Per-user monotonic sync generation.
 create table if not exists public.user_sync_state (
   user_id uuid references public.profiles on delete cascade primary key,
   generation bigint not null default 0
@@ -194,9 +37,9 @@ insert into public.user_sync_state (user_id)
   select id from public.profiles
   on conflict (user_id) do nothing;
 
--- Idempotency + audit log of completed delete operations (control metadata only,
--- never learner content). Kept until account deletion; no short TTL. No client
--- write policies.
+-- 2) Idempotency + audit log of completed delete operations (control metadata
+-- only — NEVER learner content). Kept until account deletion; no short TTL, so a
+-- delayed retry can never become destructive again. No client write policies.
 create table if not exists public.user_sync_delete_operations (
   user_id uuid not null references public.profiles on delete cascade,
   operation_id uuid not null,
@@ -213,12 +56,26 @@ create policy "Users can view own delete operations"
   on public.user_sync_delete_operations for select
   using (auth.uid() = user_id);
 
+-- 3) Generation stamped on each learner row (old clients → default 0).
 alter table public.user_progress add column if not exists generation bigint not null default 0;
 alter table public.user_errors  add column if not exists generation bigint not null default 0;
 
--- Caller's current generation (SECURITY DEFINER so RLS can consult it). Returns
--- NULL for a missing sync-state row so the RLS check (`= 0`) FAILS CLOSED —
--- legitimate rows come only from signup/backfill; never default to 0.
+-- 4) Extend the signup trigger to also create the sync-state row.
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (id, display_name)
+  values (new.id, new.raw_user_meta_data->>'display_name');
+  insert into public.user_sync_state (user_id) values (new.id)
+    on conflict (user_id) do nothing;
+  return new;
+end;
+$$ language plpgsql security definer set search_path = public;
+
+-- 5) Caller's current generation (SECURITY DEFINER so RLS policies can consult it
+-- without a recursive select dependency). Returns NULL when no sync-state row
+-- exists — legitimate rows come from signup/backfill only, so a missing row must
+-- FAIL CLOSED at the RLS check (`= 0` is not true for NULL), never default to 0.
 create or replace function public.caller_sync_generation()
 returns bigint
 language sql
@@ -232,8 +89,8 @@ alter function public.caller_sync_generation() owner to postgres;
 revoke all on function public.caller_sync_generation() from public;
 grant execute on function public.caller_sync_generation() to authenticated;
 
--- Generation gate trigger (defense-in-depth). `for update` serializes each write
--- against a concurrent delete's generation bump.
+-- 6) Generation gate trigger (defense-in-depth). The `for update` row lock
+-- serializes each write against a concurrent delete's generation bump.
 create or replace function public.enforce_sync_generation()
 returns trigger
 language plpgsql
@@ -272,9 +129,10 @@ create trigger trg_user_errors_generation
   before insert or update on public.user_errors
   for each row execute function public.enforce_sync_generation();
 
--- Tighten direct-table RLS: legacy direct writes allowed ONLY at generation 0.
--- After a deletion (generation > 0) every direct insert AND upsert conflict-update
--- is denied; current clients must use the generation-aware RPCs below.
+-- 7) Tighten direct-table RLS: legacy direct writes are allowed ONLY at
+-- generation 0 (never-deleted accounts). After a deletion (generation > 0) every
+-- direct insert AND upsert conflict-update is denied; current clients must use
+-- the generation-aware RPCs below. Reads are unchanged.
 drop policy if exists "Users can upsert own progress" on public.user_progress;
 create policy "Users can upsert own progress"
   on public.user_progress for insert
@@ -291,8 +149,11 @@ create policy "Users can insert own errors"
   on public.user_errors for insert
   with check (auth.uid() = user_id and public.caller_sync_generation() = 0);
 
--- Generation-aware write RPCs (current clients). auth.uid() ownership; exact
--- generation equality under the row lock; atomic. NOT anonymous-forbidden.
+-- 8) Generation-aware write RPCs (current clients). Ownership from auth.uid();
+-- no client-supplied user id; exact generation equality under the row lock;
+-- atomic. NOT anonymous-forbidden — anonymous users still sync (only DELETE is
+-- anonymous-forbidden). SECURITY DEFINER bypasses the generation-0 RLS above so a
+-- current client can write genuinely new post-deletion activity.
 create or replace function public.upsert_user_progress(
   p_generation bigint,
   p_progress jsonb,
@@ -373,10 +234,10 @@ alter function public.insert_user_error(bigint, text, text, text, text, int) own
 revoke all on function public.insert_user_error(bigint, text, text, text, text, int) from public;
 grant execute on function public.insert_user_error(bigint, text, text, text, text, int) to authenticated;
 
--- Delete RPC: authenticated + non-anonymous, idempotent by the operation log,
+-- 9) Delete RPC: authenticated + non-anonymous, idempotent by an operation log,
 -- bump-before-delete under the per-user row lock. A retry of ANY past operation
--- id (even after a newer deletion) is recognised → no re-bump/re-delete, returns
--- the CURRENT generation so a stale device can clean + adopt.
+-- id (even after a newer deletion) is recognised → no re-bump, no re-delete, and
+-- it returns the CURRENT generation so a stale device can clean + adopt.
 create or replace function public.delete_my_synced_learning_data(p_op_id uuid)
 returns jsonb
 language plpgsql
@@ -401,9 +262,12 @@ begin
     raise exception 'operation id required' using errcode = '22004';
   end if;
 
+  -- Lock the per-user generation row UP FRONT (bump-before-delete + serialization).
   select generation into v_gen
     from public.user_sync_state where user_id = v_uid for update;
 
+  -- Idempotent replay: this operation id already completed (even if OTHER
+  -- operations ran since). Do not bump or delete; return the CURRENT generation.
   select * into v_existing
     from public.user_sync_delete_operations
     where user_id = v_uid and operation_id = p_op_id;
@@ -416,6 +280,7 @@ begin
     );
   end if;
 
+  -- New operation: bump the generation FIRST, then delete, then log it.
   -- Bump-before-delete, atomically. Intentionally CREATES/REPAIRS the caller's
   -- own missing sync-state row (authenticated, non-anonymous, same transaction;
   -- the PK upsert serializes concurrent callers): a fresh/repaired row starts at

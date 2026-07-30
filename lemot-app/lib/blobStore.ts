@@ -37,10 +37,25 @@ export type BlobStore = {
 export function createBlobStore(
   initial: StorageData,
   persist: (next: StorageData) => void,
+  /**
+   * PR-I1 (Codex P1): learner-mutation admission predicate. Injected (like
+   * `persist`) so this generic store stays framework-free and never imports app
+   * policy directly. When it returns true, a learner `update*` is refused BEFORE
+   * `current` is touched — the persist-layer guard alone fired too late (after
+   * `current` was already contaminated), so a blocked mutation could survive
+   * in memory and be resurrected by the next allowed save. `hydrate` is NOT
+   * gated: internal load / reset / acknowledged replacement must still apply.
+   * Omitted → never blocked (existing callers behave exactly as before).
+   */
+  isMutationBlocked?: () => boolean,
 ): BlobStore {
   let current = initial;
 
   const update = (updater: (cur: StorageData) => StorageData): StorageData => {
+    // Refuse a blocked learner mutation before it can alter in-memory state,
+    // caller state, or storage; return the unchanged current (no updater run,
+    // no persist, no queued replay).
+    if (isMutationBlocked?.()) return current;
     current = updater(current);
     persist(current);
     return current;

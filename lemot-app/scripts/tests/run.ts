@@ -9,11 +9,26 @@
  * Node/tsx — every storage-touching module is exercised through an injected
  * in-memory adapter, so NO React Native / Expo / device layer is loaded.
  */
+import "./gateBootstrap.test";
 import "./privacy.test";
 import "./privacyLocal.test";
 import "./privacyData.test";
 import "./localPrivacyCompleteness.test";
 import "./privacyResetBarrier.test";
+import "./cloudEraseGuard.test";
+import "./deleteSyncedData.test";
+import "./syncGeneration.test";
+import "./remoteEraseRecovery.test";
+import "./localLearnerData.test";
+import "./learnerMutationGate.test";
+import "./remoteEraseConfirm.test";
+import "./generationMismatch.test";
+import "./operationId.test";
+import "./generationReconcile.test";
+import "./pinnedDelete.test";
+import "./pinnedWrite.test";
+import "./singleFlight.test";
+import "./deleteSyncedDataWiring.test";
 import "./mastery.test";
 import "./safeStorage.test";
 import "./blobStore.test";

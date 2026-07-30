@@ -6,6 +6,7 @@ import {
   isPersistSuppressed,
   subscribePrivacyReset,
 } from "@/lib/privacyResetEpoch";
+import { isLearnerMutationBlocked } from "@/lib/learnerMutationGate";
 
 /**
  * Simple Leitner-style SRS (Spaced Repetition System)
@@ -93,6 +94,8 @@ export function useSRS() {
     // PR-H: an unacknowledged reset happened → these cards are stale pre-reset
     // state; do not write them back over the cleared key.
     if (isPersistSuppressed(ackEpoch.current)) return;
+    // PR-I1: no NEW learner state while a deletion / recovery is pending.
+    if (isLearnerMutationBlocked()) return;
     const meaningful = Object.keys(newData).length > 0;
     // Do not let an empty save clobber a still-corrupt original key.
     if (corruptUnrecovered.current && !meaningful) return;

@@ -25,6 +25,7 @@ import type { LearningEvent } from "../events";
 import type { LearningRepository } from "./types";
 import { backupCorruptValue, corruptBackupKey } from "../../../lib/safeStorage";
 import { privacyResetEpoch, isPersistSuppressed } from "../../../lib/privacyResetEpoch";
+import { isLearnerMutationBlocked } from "../../../lib/learnerMutationGate";
 
 /** Minimal storage surface this repository needs. The app's `kvStorage` satisfies it. */
 export type KvLike = {
@@ -79,9 +80,14 @@ export class LocalRepository implements LearningRepository {
     this.injectedStore = store;
   }
 
-  /** True when an unacknowledged privacy reset makes this writer stale (PR-H). */
+  /**
+   * True when writes must be suppressed: an unacknowledged privacy reset makes
+   * this writer stale (PR-H), or a synced-data deletion / remote-erase recovery
+   * is pending (PR-I1 — new learner events must not be created while a required
+   * cleanup could erase them).
+   */
   private isStaleWriter(): boolean {
-    return isPersistSuppressed(this.ackEpoch);
+    return isPersistSuppressed(this.ackEpoch) || isLearnerMutationBlocked();
   }
 
   private async store(): Promise<KvLike> {

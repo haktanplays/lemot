@@ -109,6 +109,89 @@ describe("PR-B2 — shared-blob atomic store (B6)", () => {
     assert(cur.err.length === 1 && cur.dr.count === 4, "hydrated errors + daily review preserved");
   });
 
+  test("Codex P1: a BLOCKED learner mutation never touches current / persist / return", () => {
+    const writes: StorageData[] = [];
+    let blocked = false;
+    const store = createBlobStore(fresh(), (n) => writes.push(n), () => blocked);
+    store.updateProgress((p) => ({ ...p, "1-read": true })); // allowed baseline
+    const baseline = store.get();
+    assert(baseline.p["1-read"] === true && writes.length === 1, "baseline applied + persisted once");
+
+    blocked = true;
+    let updaterRan = false;
+    const ret = store.update((cur) => {
+      updaterRan = true;
+      return { ...cur, p: { ...cur.p, "2-blocked": true } };
+    });
+    assert(!updaterRan, "the updater is NOT invoked while blocked");
+    assert(ret === store.get(), "the returned value is the UNCHANGED current");
+    assert(store.get().p["2-blocked"] === undefined, "current is not contaminated by a blocked mutation");
+    assert(store.get().p["1-read"] === true, "the pre-block baseline is intact");
+    assert(writes.length === 1, "persist is NOT called for a blocked mutation");
+  });
+
+  test("Codex P1: reopening the gate does not resurrect a blocked mutation", () => {
+    const writes: StorageData[] = [];
+    let blocked = false;
+    const store = createBlobStore(fresh(), (n) => writes.push(n), () => blocked);
+
+    blocked = true;
+    store.updateProgress((p) => ({ ...p, "during-delete": true })); // dropped
+    store.updateErrors((e) => [...e, err("ghost")]); // dropped
+    assert(writes.length < 1 && Object.keys(store.get().p).length === 0 && store.get().err.length === 0, "nothing applied while blocked");
+
+    blocked = false;
+    store.updateProgress((p) => ({ ...p, "after-reopen": true })); // legit
+    const cur = store.get();
+    assert(cur.p["after-reopen"] === true, "the legitimate post-reopen update applies");
+    assert(cur.p["during-delete"] === undefined && cur.err.length === 0, "the blocked mutations are NOT resurrected");
+    assert(writes.length === 1 && writes[0].p["during-delete"] === undefined, "only the legitimate update is persisted");
+  });
+
+  test("Codex P1: ALL learner slice paths (progress/errors/dailyReview) are gated", () => {
+    let blocked = true;
+    const writes: StorageData[] = [];
+    const store = createBlobStore(fresh(), (n) => writes.push(n), () => blocked);
+    store.updateProgress((p) => ({ ...p, x: true }));
+    store.updateErrors((e) => [...e, err("z")]);
+    store.updateDailyReview(() => ({ date: "2026-07-14", count: 5 }));
+    const cur = store.get();
+    assert(Object.keys(cur.p).length === 0 && cur.err.length === 0 && cur.dr.date === "", "no slice mutated while blocked");
+    assert(writes.length === 0, "no persist from any blocked slice path");
+  });
+
+  test("Codex P1: internal hydrate/replacement is NOT gated (reset/load path stays functional)", () => {
+    let blocked = true;
+    const writes: StorageData[] = [];
+    const store = createBlobStore(fresh(), (n) => writes.push(n), () => blocked);
+    // A reset/load replaces current via hydrate even while learner mutations are blocked.
+    store.hydrate({ p: {}, err: [], dr: { date: "", count: 0 } });
+    assert(store.get().dr.date === "", "reset via hydrate applies while blocked");
+    store.hydrate({ p: { "cloud-ack": true }, err: [], dr: { date: "", count: 0 } });
+    assert(store.get().p["cloud-ack"] === true, "acknowledged replacement via hydrate applies while blocked");
+    assert(writes.length === 0, "hydrate still never persists (unchanged behavior)");
+  });
+
+  test("Codex P1: an ALLOWED mutation is unchanged — updater once, current once, persist once", () => {
+    const writes: StorageData[] = [];
+    const store = createBlobStore(fresh(), (n) => writes.push(n), () => false);
+    let runs = 0;
+    const ret = store.update((cur) => {
+      runs += 1;
+      return { ...cur, p: { ...cur.p, ok: true } };
+    });
+    assert(runs === 1, "updater runs exactly once");
+    assert(ret === store.get() && store.get().p.ok === true, "return is the new current");
+    assert(writes.length === 1 && writes[0].p.ok === true, "persist receives the new value exactly once");
+  });
+
+  test("Codex P1: no predicate (default) → never blocked (existing callsites unaffected)", () => {
+    const writes: StorageData[] = [];
+    const store = createBlobStore(fresh(), (n) => writes.push(n)); // 2-arg form
+    store.updateProgress((p) => ({ ...p, ok: true }));
+    assert(store.get().p.ok === true && writes.length === 1, "the 2-arg form behaves exactly as before");
+  });
+
   test("PR-A guard not regressed: empty write while corrupt is skipped, meaningful persists", () => {
     // Model useStorage's persist guard: skip empty/default writes while the
     // original key is still corrupt; a meaningful write clears the guard.

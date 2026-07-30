@@ -33,6 +33,8 @@ import { PracticePoolPracticePanel } from "./PracticePoolPracticePanel";
 import { selectPracticePoolBuckets, type PracticePoolItem } from "@/content/learning-engine/practice-pool";
 import { selectReusablePracticeExercise } from "@/content/learning-engine/practice-reuse";
 import { PrivacyDataControls } from "./PrivacyDataControls";
+import { LearningPausedPanel } from "./LearningPausedPanel";
+import { useApp } from "@/providers/AppProvider";
 import { useLearningEngineSession, type LearnerSession } from "./useLearningEngineSession";
 import { LessonCompletionView } from "./LessonCompletionView";
 
@@ -180,6 +182,7 @@ export function LearnerRendererShell({
   // P5.4B: founder-local privacy disclosure — shown once before practice in this
   // gated route until acknowledged. Soft local-first notice, not a remote gate.
   const disclosure = useLocalPrivacyDisclosure();
+  const { learningPaused } = useApp();
   const session = useLearningEngineSession({ lessonId, contentVersion });
   const [idx, setIdx] = useState(0);
   const [finished, setFinished] = useState(false);
@@ -264,6 +267,24 @@ export function LearnerRendererShell({
         error={disclosure.error}
         onAcknowledge={disclosure.acknowledge}
       />
+    );
+  }
+
+  // PR-I1 (Codex P2): the learner-mutation gate is closed — no interactive
+  // cards, reveals, graded attempts, Practice Pool attempts, or completion
+  // interaction may mount (their events would be silently dropped). The
+  // privacy retry/confirm controls stay visible and actionable, and exit
+  // stays available. Placed after all hooks (Rules of Hooks); the shell is
+  // never hidden behind `loaded=false` for this.
+  if (learningPaused) {
+    return (
+      <View style={screen}>
+        <ScrollView style={scroll} contentContainerStyle={bodyContent}>
+          <LearnerLessonHeader canDo={canDo} />
+          <LearningPausedPanel onGoHome={handleExit} />
+          <PrivacyDataControls />
+        </ScrollView>
+      </View>
     );
   }
 

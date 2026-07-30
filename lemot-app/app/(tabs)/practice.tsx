@@ -36,6 +36,7 @@ import { norm } from "@/lib/normalize";
 import { upperEn } from "@/lib/text";
 import type { FlashCard, ScenarioCard } from "@/lib/types";
 import LessonPractice from "@/components/LessonPractice";
+import { LearningPausedPanel } from "@/components/learning-engine/LearningPausedPanel";
 import { FEATURES } from "@/config/productStage";
 
 type Mode = "menu" | "scenario" | "translate" | "lesson";
@@ -57,7 +58,7 @@ const SCENARIO_IDS = SCENARIOS.map(
 
 export default function PracticeScreen() {
   const router = useRouter();
-  const { say, loaded, errors, weakSpots } = useApp();
+  const { say, loaded, errors, weakSpots, learningPaused } = useApp();
   const weakCount = weakSpots?.length ?? 0;
   const errorCount = errors?.length ?? 0;
   const { markKnown, markLearning, getDueCards, getStats, srsLoaded } =
@@ -126,6 +127,20 @@ export default function PracticeScreen() {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <ActivityIndicator size="small" color={P.red} />
+      </SafeAreaView>
+    );
+  }
+
+  // PR-I1 (Codex P2): while the learner-mutation gate is closed, SRS and error
+  // writes are intentionally rejected — do not start scenarios / translation /
+  // lesson practice whose apparent progress would be silently dropped. Placed
+  // after all hooks (Rules of Hooks) and after the FEATURES.practice redirect.
+  if (learningPaused) {
+    return (
+      <SafeAreaView className="flex-1 bg-lm-bg">
+        <View className="flex-1 px-6 justify-center">
+          <LearningPausedPanel onGoHome={() => router.replace("/" as never)} />
+        </View>
       </SafeAreaView>
     );
   }
