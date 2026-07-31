@@ -37,30 +37,79 @@ recommendation. All newly authored French below is *Illustrative — human Frenc
 
 ---
 
+## 1.1 Founder/Content Pre-QA Convergence — 2026-07-31
+
+An independent adversarial founder/content and French pre-QA convergence pass was applied to
+the v0.1 pool before the pilot matrix. **This pass is not human French QA and claims no
+native sign-off** — every surface below remains pending a native-French reviewer.
+
+- **Seeds reviewed:** all 33 original core seeds + 8 scenes + every projection section.
+- **Seeds revised in place:** L1-SE-021 (reframed as input/listening offer only — never a
+  scene turn requiring a learner response), L1-SE-023 (re-scoped from contour-twin to **order
+  confirmation/echo line**, contract corrected to Recognition-only input), L1-SE-025
+  (contract corrected to Recognition-only input — it carries no ghost), L1-SE-031
+  (punctuation converged: comma before `s'il vous plaît`; the comma-less sourced form becomes
+  an accepted alternative), L1-SE-011 (two-beat `Merci ! Au revoir.` recorded as accepted
+  alternative), L1-SE-026 (new scene role: the missed-handover repair trigger).
+- **Seeds moved to reserve (IDs retired from core, never reused):** **L1-SE-022** (`Un café ?`
+  — the bare-offer speech act naturally demands a `oui/non` move L1 does not own, and the
+  text-identical contour twin failed the identity rule below; survives as an audio-gated
+  discrimination candidate), **L1-SE-029** (`Excusez-moi, madame.` — address-quota variant
+  with one weak use), **L1-SE-032** (`Merci beaucoup.` — redundant with L1-SE-033's warm
+  close; reveal-rotation candidate).
+- **Seeds rejected in this pass:** none beyond the original 12 (no surviving seed was
+  quota-driven after the three reserve moves).
+- **Scenes revised:** SC-2 rebuilt as *order echo & handover* (removes the unnatural
+  answer-a-coffee-offer-with-a-coffee-request turn); SC-3 rebuilt around a **missed handover
+  line** (`Voilà, monsieur.` heard fast → rescue move → neutral slower repeat → thanks) so
+  repetition no longer leads into an unanswerable offer; SC-4 addressee fixed (neutral
+  `Voilà.` replaces the `monsieur` handover in a `madame` scene); SC-6 rebuilt as
+  listening-recognition only (offers are heard and understood, never answered); SC-7
+  addressee fixed (neutral handover; single `madame` close). Scene count stays 8 — retained
+  on merit, not inertia.
+- **Contour-pair identity rule adopted** (§4 rule 5): typography-only alternatives of the
+  same speech act share one seed; a question-vs-statement split may hold two seeds only when
+  it encodes materially different speech acts with distinct audio contracts. `Un café ?` vs
+  `Un café.` could not be defended as a natural L1 *scene* pair (the offer side is
+  unanswerable in-curriculum) — the statement/confirmation survives in core; the rising offer
+  moved to reserve. The audio-recognition contrast is now carried by non-identical texts
+  (021/024 rising offers vs 023 flat confirmation).
+- **Unresolved native-French questions** (concentrated in §20): 8 — 011 exit-line beat
+  structure; 016 interjection rhythm; 021 elliptical addressed offer; 023 echo-confirmation
+  naturalness; 024 add-on offer naturalness; 027/028 address-form register frequency; 030
+  thanks-before-handover placement; 031 casual-order comma preference.
+- **Result:** core 33 → **30** · reserve 4 → **7** · rejected 12 (unchanged). All counts and
+  downstream sections recomputed from the final rows.
+
+---
+
 ## 2. Executive summary
 
 - **Source candidates reviewed:** 42 (shipped L0/L1 payloads, L01 spec §4 family + item
   tables, Payload Economy §4/§6, registry examples, legacy `lesson1.ts`, legacy expressions).
-- **Pool:** **33 core seeds** (L1-SE-001…033) · **4 reserve** · **12 rejected** · 3 merged as
-  accepted alternatives. 15 kept/adapted direct sourced surfaces, 5 source-preserving
-  adaptations (incl. every inverted `Pouvez-vous répéter ?` occurrence converted to the
-  locked `Vous pouvez répéter ?`), 13 newly authored inside the frozen contract.
-- **Family distribution** (assignments 46 over 33 unique seeds): request-arc 7 · opening/
-  closing 4 · rescue 4 (+opener) · register contrast 3 · recognition/ghost scene color 5 core
-  (+3 reveal kin) · PH reuse 10 relations · reveal models 2 (+2 enrichment) · Dictée/audio 1
-  seed + 4 spans · flashcards 0 new (pure reuse) · carryover 2.
-- **Production-contract distribution:** unscaffolded-eligible **9** (all-Active) · supported-
-  only **7** · recognition-contrast **1** (`je veux`) · ghost-bearing input/reveal **11** ·
-  model-answer-only **4** · audio/Dictée-span **1**.
-- **Audio priority:** 10 item clips + ~14 high/medium sentence clips (the 022/023 contour
-  pair must be recorded together); **Dictée:** 1 Micro seed + 2 Micro spans + 2 Guided cloze
-  patterns; no Sentence/Context Dictée at L1.
-- **Seeds with >1 product projection:** 31 of 33 (≈3.1 average projections/seed; the two
-  single-role seeds are deliberate reveal enrichment).
-- **Major authoring risks:** the text-identical offer/confirmation contour pair (022/023)
-  works only with recorded audio (High-risk QA item); the exit line `Merci, au revoir.` and
-  the newly authored server offers need native confirmation; 031's source punctuation
-  inconsistency needs a QA verdict; address-form reveal frequency needs register calibration.
+- **Pool (post-convergence, §1.1):** **30 core seeds** (stable IDs within L1-SE-001…033;
+  022/029/032 retired to reserve) · **7 reserve** · **12 rejected** · 3 merged as accepted
+  alternatives. 14 kept/adapted direct sourced surfaces, 5 source-preserving adaptations
+  (incl. every inverted `Pouvez-vous répéter ?` occurrence converted to the locked
+  `Vous pouvez répéter ?`), 11 newly authored inside the frozen contract.
+- **Family distribution** (assignments 43 over 30 unique seeds): request-arc 7 · opening/
+  closing 4 · rescue 4 (+opener) · register contrast 3 · recognition/ghost scene color 7
+  input lines (+2 reveal kin) · PH reuse 10 relations · reveal models 2 (+1 enrichment) ·
+  Dictée/audio 1 seed + 4 spans · flashcards 0 new (pure reuse) · carryover 2.
+- **Production-contract distribution (30):** unscaffolded-eligible **9** (all-Active) ·
+  supported-only **7** · recognition-only **3** (`je veux` contrast; the confirmation line
+  `Un café.`; `Voilà.`) · ghost-bearing input/reveal **7** · model-answer-only **3** ·
+  audio/Dictée-span **1**.
+- **Audio priority:** 10 item clips + ~13 high/medium sentence clips (the contour contrast is
+  now carried by non-identical texts: rising offers 021/024 vs flat confirmation 023);
+  **Dictée:** 1 Micro seed + 2 Micro spans + 2 Guided cloze patterns; no Sentence/Context
+  Dictée at L1.
+- **Seeds with >1 product projection:** 29 of 30 (≈3.2 average projections/seed; L1-SE-027
+  is the single remaining enrichment-leaning seed, retained with stated rationale).
+- **Major authoring risks (post-convergence):** the former High-risk text-identical contour
+  pair is resolved (022 reserved); remaining risks are Medium — naturalness confirmation for
+  the echo-confirmation line (023), the addressed offer (021), the add-on offer (024), the
+  exit line (011), and address-form register frequency (027/028).
 - **Provisional readiness:** READY for founder review and human French QA · READY WITH
   BOUNDED GAPS for the pilot matrix · NOT READY for runtime registration, Content Factory
   implementation, or final audio recording (§22).
@@ -90,7 +139,7 @@ change) · **Merge** (accepted alternative of another seed) · **Reserve** · **
 | `Pouvez-vous répéter ?` | spec §4; legacy | spec (superseded surface) | **Adapt → locked surface** | L1-SE-014 (`Vous pouvez répéter ?`) | CB §15.3 locks the non-inverted form; inverted form never appears as learner material |
 | `Je ne comprends pas. Pouvez-vous répéter ?` | legacy combine; spec | legacy + spec | Adapt (locked surface) | L1-SE-015 | combined rescue move |
 | `Merci beaucoup, au revoir !` | legacy examples; spec §4 | legacy + spec supported | Keep (reveal enrichment only) | L1-SE-033 | warm close; `beaucoup` sourced but not an L1 identity → never required |
-| `Merci beaucoup` | legacy; spec supported list | legacy + spec | Keep (reveal enrichment only) | L1-SE-032 | same boundary |
+| `Merci beaucoup` | legacy; spec supported list | legacy + spec | **Reserve** (convergence 2026-07-31) | reserve R-7 (was L1-SE-032) | redundant with L1-SE-033's warm close; reveal-rotation candidate |
 | `Au revoir` | legacy vocab; spec active list | legacy + spec | Keep | L1-SE-010 | A-new demand surface |
 | `Excusez-moi` (attention opener) | spec item table; PE §6 | spec + PE | Keep | L1-SE-017 | Supported-new opener |
 | `Voilà` (service handover) | spec recognition list; legacy expression | spec recognition | Keep (input-only) | L1-SE-025 / L1-SE-026 | ghost/recognition scene color |
@@ -107,10 +156,10 @@ change) · **Merge** (accepted alternative of another seed) · **Reserve** · **
 | Legacy EN+FR weave samples (`Bonjour, je ne comprends pas. Où est the station?` etc.) | legacy weave | legacy | **Reject** | — | mixed-surface exercise artifacts, not seeds; contain deferred breadth |
 | `Voilà, monsieur.` (usage line) | legacy expression usage | legacy | Adapt | L1-SE-026 | handover with address color |
 | `un thé` service variation | PE §6 | PE locked | **Newly author** | L1-SE-007 / L1-SE-008 | supported slot variation |
-| `madame` / `monsieur` address color | PE §6 ghost list | PE locked | **Newly author** (input/reveal only) | L1-SE-019/020/021/026/027/028/029 | ghost scene color |
+| `madame` / `monsieur` address color | PE §6 ghost list | PE locked | **Newly author** (input/reveal only) | L1-SE-019/020/021/026/027/028 (029 → reserve R-6, convergence) | ghost scene color, calibrated — not a quota |
 | `un croissant` offer | PE §6 ghost list | PE locked | **Newly author** (input-only) | L1-SE-024 | ghost listening color |
 | Rescue + opener combination | contract §7 family C | contract | **Newly author** | L1-SE-016 | useful excusez-moi combination |
-| Offer/confirmation contour pair | S1 intonation pedagogy; EV-014 | canon direction | **Newly author** (input-only) | L1-SE-021/022/023 | question-vs-statement listening |
+| Offer/confirmation contour material | S1 intonation pedagogy; EV-014 | canon direction | **Newly author** (input-only) | L1-SE-021, L1-SE-023 core; bare rising offer `Un café ?` → reserve R-5 (convergence: offer act unanswerable in-curriculum; identity rule §4.5) | contrast carried by non-identical texts |
 | Close pair `Merci, au revoir.` | adapted from legacy warm close | legacy-adapted | **Adapt** (de-enriched to frozen scope) | L1-SE-011 | A-only close inside frozen identities |
 | `Excusez-moi, vous pouvez répéter ?` | contract family C option | contract | **Reserve** | reserve R-1 | valid; core keeps the je-ne-comprends-pas combination instead |
 | `Bonjour, je voudrais un thé.` | slot variant | derivable | **Reserve** | reserve R-2 | derivation of SE-003/007; not a distinct authored need |
@@ -122,11 +171,12 @@ change) · **Merge** (accepted alternative of another seed) · **Reserve** · **
 | `Voilà, un café.` / `Et voilà…` | authored candidates | new | **Reject** | — | unsourced glue (`et`); SE-023+SE-025 cover the beat |
 | `Je vous en prie.` (response to thanks) | authored candidate | new | **Reject** | — | unsourced vocabulary; post-slice politeness material |
 
-**Ledger totals**: 42 candidates reviewed → **33 core seeds** (15 kept/adapted from direct
-sources, 5 source-preserving adaptations, 13 newly authored within contract) · **4 reserve** ·
-**12 rejected** · 3 merged as accepted alternatives. Legacy breadth (bonsoir/salut/pardon/
-gare/baguette/booking) is uniformly rejected; the inverted repetition request is adapted to
-the locked surface everywhere; recognition-only retentions are marked input-only.
+**Ledger totals (post-convergence)**: 42 candidates reviewed → **30 core seeds** (14
+kept/adapted from direct sources, 5 source-preserving adaptations, 11 newly authored within
+contract) · **7 reserve** · **12 rejected** · 3 merged as accepted alternatives. Legacy
+breadth (bonsoir/salut/pardon/gare/baguette/booking) is uniformly rejected; the inverted
+repetition request is adapted to the locked surface everywhere; recognition-only retentions
+are marked input-only.
 
 ---
 
@@ -144,8 +194,14 @@ the locked surface everywhere; recognition-only retentions are marked input-only
 4. **Seed ≠ exercise instance**: one seed = one stable French surface utterance (one
    speaker turn); exercises derive from seeds later. Mini-scenes link seed IDs; they are not
    seeds.
-5. **One surface, one seed ID**: punctuation-only and accent-fallback variants are accepted
-   alternatives of one seed, never new IDs.
+5. **One surface, one seed ID — with the contour exception stated precisely**:
+   typography-only or stylistic punctuation alternatives of the **same speech act** are
+   accepted alternatives of one seed, never new IDs. A question-versus-statement contrast may
+   receive separate seeds **only** when punctuation and recorded contour encode a materially
+   different speech act, meaning, audio contract, and evidence interpretation — and such a
+   pair must never be used in text-only exercises where audio carries the distinction. (In
+   this pool the rule left the flat confirmation `Un café.` in core and moved the rising
+   bare offer `Un café ?` to reserve — see §1.1.)
 6. **Natural Reveal may exceed required output** (e.g. `Merci beaucoup`, address forms) but
    stays inside L1 comprehensibility; a model sentence never becomes a chip.
 7. **No automatic promotion**: nothing in this pool changes any item's treatment.
@@ -182,7 +238,7 @@ this pool, not per origin).
 |---|---|---|---|---|---|---|---|---|---|
 | L1-SE-009 | Merci. | Thank you | closing; acquisition | learner thanks | **merci [A-new]** | Unscaffolded production eligible | Direct sourced surface | closing | `Merci !` accepted alternative |
 | L1-SE-010 | Au revoir. | Goodbye | closing; acquisition | learner close | **au-revoir [A-new]** | Unscaffolded production eligible | Direct sourced surface | closing | — |
-| L1-SE-011 | Merci, au revoir. | Thanks, goodbye (leaving) | closing | full polite exit | **merci [A-new]** + **au-revoir [A-new]** | Unscaffolded production eligible | Source-preserving adaptation (de-enriched from `Merci beaucoup, au revoir !`) | closing; carryover | natural as one exit line? (common in shops) |
+| L1-SE-011 | Merci, au revoir. | Thanks, goodbye (leaving) | closing | full polite exit | **merci [A-new]** + **au-revoir [A-new]** | Unscaffolded production eligible | Source-preserving adaptation (de-enriched from `Merci beaucoup, au revoir !`) | closing; carryover | preferred surface; two-beat `Merci ! Au revoir.` = accepted alternative (QA to confirm which leads) |
 | L1-SE-012 | S'il vous plaît. | Please (standalone formula) | audio/Dictée span; display | formula display + audio | sil-vous-plait [A-rec] | **Audio/Dictée span only** (standalone production of bare "please" is not a scene demand) | Direct sourced surface | opening/landing | elision + circumflex focus for writing work |
 
 ### 5.C Rescue pair (all Supported)
@@ -207,35 +263,34 @@ this pool, not per origin).
 |---|---|---|---|---|---|---|---|---|---|
 | L1-SE-019 | Bonjour, monsieur. | Hello, sir (server greets) | recognition-showcase | server greeting | bonjour [A-rec] + **monsieur [G]** | **Ghost-bearing input/reveal only** | Newly authored within frozen contract | recognition-showcase; address-color | service-register address natural |
 | L1-SE-020 | Bonjour, madame. | Hello, ma'am (server greets) | recognition-showcase | server greeting | bonjour [A-rec] + **madame [G]** | Ghost-bearing input/reveal only | Newly authored within frozen contract | recognition-showcase; address-color | pairs with SE-019 for address listening |
-| L1-SE-021 | Un café, madame ? | A coffee (for you), ma'am? (offer) | recognition-showcase | server offer | un-cafe [A-rec] + **madame [G]**; question contour | Ghost-bearing input/reveal only | Newly authored within frozen contract | recognition-showcase; offer-contour | elliptical offer natural in service context? |
-| L1-SE-022 | Un café ? | A coffee? (bare offer — rising) | recognition-showcase | offer (contour pair) | un-cafe [A-rec]; question contour | Ghost-bearing input/reveal only *(recognition listening)* | Newly authored within frozen contract | offer-contour (pairs with SE-023) | works only with recorded rising contour |
-| L1-SE-023 | Un café. | One coffee (confirming/handover — flat) | recognition-showcase | confirmation (contour pair) | un-cafe [A-rec]; statement contour | Ghost-bearing input/reveal only *(recognition listening)* | Newly authored within frozen contract | offer-contour | text-identical to SE-022 minus `?` — audio-dependent pair |
+| L1-SE-021 | Un café, madame ? | A coffee, ma'am? (offer — **heard only**) | recognition-showcase | server offer, **input/listening only — never a scene turn requiring a learner answer** (the natural answer needs `oui/non`, not owned at L1) | un-cafe [A-rec] + **madame [G]**; rising contour | Ghost-bearing input/reveal only | Newly authored within frozen contract | recognition-showcase; offer-contour | elliptical addressed offer natural from a server? |
+| L1-SE-023 | Un café. | One coffee (server echoes/confirms the order while serving) | recognition-showcase | **order confirmation/echo** at preparation or handover | un-cafe [A-rec]; flat statement contour | **Recognition only** *(input/listening line — carries no ghost)* | Newly authored within frozen contract | offer-contour (flat pole; rising poles are 021/024) | is the bare echo `Un café.` natural at the counter, or would it need framing? |
 | L1-SE-024 | Un croissant ? | A croissant? (offer of the ghost item) | recognition-showcase | ghost offer | **un-croissant [G]**; question contour | Ghost-bearing input/reveal only | Newly authored within frozen contract | recognition-showcase | learner never produces croissant; response is merci / a coffee order |
-| L1-SE-025 | Voilà. | There you go (handover) | recognition-showcase | service handover | **voilà [R ambient]** | Ghost-bearing input/reveal only | Direct sourced surface (spec recognition; legacy) | recognition-showcase | one-word service beat |
+| L1-SE-025 | Voilà. | There you go (handover) | recognition-showcase | service handover; **preferred neutral handover wherever address color is not pedagogically needed** | **voilà [R ambient]** | **Recognition only** *(input line — carries no ghost)* | Direct sourced surface (spec recognition; legacy) | recognition-showcase | one-word service beat |
 | L1-SE-026 | Voilà, monsieur. | There you go, sir | recognition-showcase | handover + address | **voilà [R ambient]** + **monsieur [G]** | Ghost-bearing input/reveal only | Source-preserving adaptation (legacy usage line) | recognition-showcase; address-color | justified pair with SE-025 (bare vs addressed) |
 | L1-SE-027 | Merci, madame. | Thank you, ma'am (warmer thanks) | recognition-showcase; reveal | reveal enrichment of thanks | merci [A-new] + **madame [G]** | Ghost-bearing input/reveal only (the required core is merci alone) | Reveal-enrichment surface | address-color; reveal | shows native warmth without requiring address forms |
-| L1-SE-028 | Au revoir, madame. | Goodbye, ma'am | recognition-showcase; reveal | server/learner-heard close | au-revoir [A-new] + **madame [G]** | Ghost-bearing input/reveal only | Reveal-enrichment surface | address-color; closing | — |
-| L1-SE-029 | Excusez-moi, madame. | Excuse me, ma'am (polite attention) | recognition-showcase; reveal | enriched attention opener | **excusez-moi [S]** + **madame [G]** | Ghost-bearing input/reveal only | Reveal-enrichment surface | address-color; rescue | — |
+| L1-SE-028 | Au revoir, madame. | Goodbye, ma'am | recognition-showcase; reveal | server close (SC-7) | au-revoir [A-new] + **madame [G]** | Ghost-bearing input/reveal only | Reveal-enrichment surface | address-color; closing | address-form register frequency (with 027) |
 
 ### 5.F Open-production and Natural Reveal models
 
 | Seed ID | French surface | Meaning / intent | Family | Scene role | Composition | Production contract | Source status | Group | QA notes |
 |---|---|---|---|---|---|---|---|---|---|
 | L1-SE-030 | Bonjour, je voudrais un café, s'il vous plaît. Merci ! | Full polite order + thanks (one turn) | reveal | say-it model answer | all six Active surfaces | **Model answer only** | Direct sourced surface (shipped s08 model) | reveal; request-base | one turn, two sentences; `Merci !` warmth appropriate |
-| L1-SE-031 | Bonjour, un café s'il vous plaît. Merci ! | Casual full order + thanks | reveal; register | casual model alternative | bonjour + un-cafe + sil-vous-plait + merci [all A] | **Model answer only** | Direct sourced surface (shipped naturalAlternatives, extended per s08) | reveal; register | no comma before s'il vous plaît in source — confirm preferred typography |
-| L1-SE-032 | Merci beaucoup. | Thank you very much | reveal | warmth enrichment | merci [A-new] + **beaucoup [reveal-only, sourced]** | **Model answer only** (beaucoup never required) | Direct sourced surface (spec supported list; legacy) | reveal; closing | reveal-only boundary must be explicit in copy |
-| L1-SE-033 | Merci beaucoup, au revoir ! | Thanks so much — goodbye! | reveal | warm exit enrichment | merci + beaucoup [reveal-only] + au-revoir | **Model answer only** | Direct sourced surface (legacy examples; spec §4) | reveal; closing | exclamative warmth — calm tone check |
+| L1-SE-031 | Bonjour, un café, s'il vous plaît. Merci ! | Casual full order + thanks | reveal; register | casual model alternative | bonjour + un-cafe + sil-vous-plait + merci [all A] | **Model answer only** | Direct sourced surface (shipped naturalAlternatives, extended per s08) — **punctuation converged 2026-07-31**: comma added before `s'il vous plaît` for pool consistency; the comma-less sourced form is an accepted alternative | reveal; register | which comma treatment reads truer for the casual spoken order? |
+| L1-SE-033 | Merci beaucoup, au revoir ! | Thanks so much — goodbye! | reveal | warm exit enrichment (**the sole warm-close enrichment** — the standalone `Merci beaucoup.` moved to reserve R-7) | merci + beaucoup [reveal-only] + au-revoir | **Model answer only** | Direct sourced surface (legacy examples; spec §4) | reveal; closing | exclamative warmth — calm tone check |
 
-**Unique core seeds: 33.** Production-contract distribution: Unscaffolded 9 (001-006,
-009-011) · Supported 7 (007, 008, 013-017) · Recognition-contrast 1 (018) · Ghost-bearing
-input/reveal 11 (019-029) · Model-answer-only 4 (030-033) · Audio/Dictée-span 1 (012).
+**Unique core seeds: 30** (stable IDs; 022/029/032 retired to reserve — §1.1).
+Production-contract distribution: Unscaffolded 9 (001-006, 009-011) · Supported 7 (007, 008,
+013-017) · Recognition-only 3 (018 contrast; 023 confirmation line; 025 handover) ·
+Ghost-bearing input/reveal 7 (019, 020, 021, 024, 026, 027, 028) · Model-answer-only 3 (030,
+031, 033) · Audio/Dictée-span 1 (012).
 
 ---
 
 ## 6. Sentence-family coverage
 
-One seed may satisfy several families (overlap rule): **unique seeds = 33**, family
-**assignments = 46**.
+One seed may satisfy several families (overlap rule): **unique seeds = 30**, family
+**assignments = 43**.
 
 | Family | Target | Assigned seeds | Count | Coverage check |
 |---|---|---|---|---|
@@ -243,9 +298,9 @@ One seed may satisfy several families (overlap rule): **unique seeds = 33**, fam
 | B. Polite opening & closing | 3-4 | 001, 009, 010, 011 | 4 | meaningful production for bonjour/merci/au revoir ✔; no filler copies |
 | C. Rescue pair | 3-4 | 013, 014, 015, 016 (+017 opener) | 4 (+1) | exact locked surfaces ✔ (013, 014); excusez-moi combination ✔ (016); all Supported ✔ |
 | D. Register contrast | 2-3 | 018 + 002 (polite counterpart) + 031 (casual-register model) | 3 | veux/voudrais contrast ✔; `je veux` recognition/trap only ✔; feedback = "understandable but too direct here → smallest upgrade" ✔ |
-| E. Cognate-rich recognition + Ghost scene color | 4-5 | 019-026 (core input set; 027-029 are reveal-enrichment kin) | 5 core functions (greet ×2, offer ×3-way contour set, ghost offer, handover ×2) | only approved Ghost/Recognition material ✔; nothing learner-required ✔ |
+| E. Cognate-rich recognition + Ghost scene color | 4-5 | 019, 020, 021, 023, 024, 025, 026 (input lines; 027/028 reveal-enrichment kin) | 5 core functions (greet ×2, offers heard, order confirmation, ghost offer, handover) | only approved Ghost/Recognition material ✔; nothing learner-required ✔; offers are **heard, never answered** (no `oui/non` demand) ✔ |
 | F. Practice Hub reuse | 6-8 | 002, 003, 004, 005, 006, 009, 010, 011, 013, 014 (reuse relations, §14) | 10 relations | retrieval volume from existing seeds; no new curriculum ✔ |
-| G. Open-production / Natural Reveal models | 2-3 | 030, 031 (+032/033 enrichment) | 2 (+2) | richer-than-required but L1-comprehensible ✔; ghost/recognition only as non-required richness ✔ |
+| G. Open-production / Natural Reveal models | 2-3 | 030, 031 (+033 enrichment) | 2 (+1) | richer-than-required but L1-comprehensible ✔; ghost/recognition only as non-required richness ✔ |
 | H. Dictée / audio spans | 1-2 + spans | 012 (distinct) + spans of 002/004/007/009 (§15) | 1 + 4 spans | Micro + Guided only ✔; no full Sentence Dictée ✔; A-material spans only ✔ |
 | I. Flashcard contexts | reuse | projections of 004, 006, 009, 010, 011, 013, 014 + scenes (§13) | 0 new seeds | no card-only sentences ✔ |
 | J. Carryover | 1-2 | 011 (close → L6/L7 recycling), 017 (attention opener → L8 opener role) | 2 | natural, source-compatible; **no invented French for future grammar** — `je voudrais + infinitive` carryover is deliberately left to L2+ scene continuity rather than an L1 seed, per the family-J fallback rule |
@@ -258,13 +313,13 @@ server lines; learner-required production is named per scene.
 | Scene ID | Scene purpose | Ordered seed IDs | Learner role | Required production | Supported material | Input-only material | Product destinations |
 |---|---|---|---|---|---|---|---|
 | L1-SC-1 | Entering & ordering | [019] → 004 → [025] → 009 | customer | 004, 009 (unscaffolded) | — | 019, 025 | lesson path (meet→weave arc); PH; scenario flashcards |
-| L1-SC-2 | Offer → response | [021] → 006 → [023] → 009 | customer responding to offer | 006, 009 | — | 021, 023 | listening + response; PH; audio recognition |
-| L1-SC-3 | Not understanding → repair | [fast line: 021 replayed at pace] → 015 (or 013 → 014) → [021 slower] → 009 | stuck customer recovering | 013/014/015 **with formula support visible** | 013, 014, 015 | 021 | rescue beat; EV-063; scenario flashcards |
-| L1-SC-4 | Supported tea variation | [020] → 007 → [026] → 011 | customer ordering the variation | 007 **(un thé supplied)**, 011 | 007 | 020, 026 | supported-production showcase; Guided Dictée context |
+| L1-SC-2 | Order echo & handover (rebuilt 2026-07-31) | 006 → [023: server echoes "Un café."] → [025: "Voilà."] → 009 | customer ordering; server confirms and serves | 006, 009 (unscaffolded) | — | 023, 025 | natural confirmation beat; PH; audio recognition (flat echo) |
+| L1-SC-3 | Missed handover → repair (rebuilt 2026-07-31) | [026 spoken quickly] → 015 (or 013 → 014) → [025, slower via playback-rate] → 009 | customer who missed the handover line, recovering | 013/014/015 **with formula support visible** | 013, 014, 015 | 026, 025 | rescue beat; EV-063; scenario flashcards; repetition leads to thanks, never to an unanswerable offer |
+| L1-SC-4 | Supported tea variation (addressee fixed) | [020] → 007 → [025] → 011 | customer (addressed as madame throughout) ordering the variation | 007 **(un thé supplied)**, 011 | 007 | 020, 025 | supported-production showcase; Guided Dictée context |
 | L1-SC-5 | Direct vs polite contrast | display 018 vs 002 → learner chooses/upgrades → reveal | observer → reviser | choice only (EV-013); optional revision to 002 | — | 018 | register insight; EV-062 nudge |
-| L1-SC-6 | Ghost offer (recognition) | [024] → learner signals meaning (choice) → 006 or 009 | listener | 006 or 009 | — | 024 | audio recognition; ghost-boundary demo |
-| L1-SC-7 | Closing the exchange | [026] → 011 → [028] | leaving customer | 011 | — | 026, 028 | closing move; carryover to L6/L7 closes |
-| L1-SC-8 | Open production + reveal | situation prompt (English) → free attempt → reveal 030/031 (+032/033 enrichment) | free producer | open attempt (ungraded, W1) | optional idea pieces | 030-033 as models | EV-041/042 + IS-16; the say-it beat |
+| L1-SC-6 | Offers heard (listening only; rebuilt 2026-07-31) | [021] and/or [024] played → learner identifies what is offered (choice) | listener — **no speech turn** (a natural spoken answer needs `oui/non`, not owned at L1) | none (bounded recognition choice only) | — | 021, 024 | audio recognition; ghost-boundary demo |
+| L1-SC-7 | Closing the exchange (addressee fixed) | [025] → 011 → [028: "Au revoir, madame."] | leaving customer (addressed as madame — single consistent address use) | 011 | — | 025, 028 | closing move; carryover to L6/L7 closes |
+| L1-SC-8 | Open production + reveal | situation prompt (English) → free attempt → reveal 030/031 (+033 enrichment) | free producer | open attempt (ungraded, W1) | optional idea pieces | 030, 031, 033 as models | EV-041/042 + IS-16; the say-it beat |
 
 ## 8. Treatment-boundary audit
 
@@ -284,12 +339,14 @@ surfaces.
 | 017 | excusez-moi available in tray or cloze-given |
 
 **Recognition-only material**: 018 (register contrast display — teaches the veux/voudrais
-boundary; appearing in EV-013 options with trapReason); `voilà` (ambient service word inside
-025/026 — heard/read, explained via quick peek, never demanded).
+boundary; appearing in EV-013 options with trapReason); 023 (order-confirmation echo —
+listening input); 025 (`voilà` handover — ambient service word, heard/read, explained via
+quick peek, never demanded).
 
-**Ghost-bearing material**: 019-029 input/reveal lines carrying madame/monsieur/croissant —
-scene, listening, and reveal color only; **never scored as missing** anywhere; never in
-`piecesUsed`.
+**Ghost-bearing material**: 019, 020, 021, 024, 026, 027, 028 — input/reveal lines carrying
+madame/monsieur/croissant; scene, listening, and reveal color only; **never scored as
+missing** anywhere; never in `piecesUsed`; offer lines (021, 024) are **heard, never
+answered** in any scene.
 
 **Prohibited expected output** (hard list): `je veux` (any position as expected answer) ·
 madame/monsieur/croissant · `beaucoup` · `voilà` · bonsoir/salut/pardon · où est/la gare/
@@ -312,18 +369,20 @@ The ecosystem is a graph, not a flat list:
 - **Polite opener/landing**: 001 (opener) and 012/landing-in-004 form the "sandwich" —
   omission variants of 004 (drop opener → 005-shaped; drop landing → 003-shaped) are the
   EV-052 Missing-Move repair pair.
-- **Thank/close**: 009 → 011 (thanks+close) → 010; reveal enrichment 032/033 (warmth), 027/
-  028 (address). Carryover: closes recycle at L6/L7/L10.
+- **Thank/close**: 009 → 011 (thanks+close) → 010; reveal enrichment 033 (warmth), 027/028
+  (address). Carryover: closes recycle at L6/L7/L10.
 - **Rescue pair**: 013 + 014 → combined move 015; polite interruption 016; opener 017. The
   pair returns in every later lesson's rescue beat (Supported throughout, CA-8).
 - **veux ↔ voudrais contrast**: 018 ↔ 002 with 031 showing that *casual* ≠ *blunt* (ellipsis
   is the casual route, not `je veux`). Feeds EV-013 (choice), EV-062 (smallest upgrade), and
   the IS-05 register insight.
-- **Offer-contour set**: 022 (rising offer) ↔ 023 (flat confirmation) ↔ 021 (addressed
-  offer) ↔ 024 (ghost offer) — the audio-recognition micro-family; responses route to 006/
-  009.
-- **Address-color family**: 019/020 (greet) · 021 (offer) · 026 (handover) · 027-029
-  (thanks/close/opener enrichment) — ambient madame/monsieur exposure without production.
+- **Offer-contour set (converged)**: rising offers 021 (addressed) / 024 (ghost item) ↔ flat
+  confirmation 023 — the audio-recognition micro-family on **non-identical texts**; offers
+  are listening-only (SC-6), the confirmation lives in the natural order-echo beat (SC-2).
+  The bare rising `Un café ?` sits in reserve (R-5) pending recorded audio + QA.
+- **Address-color family**: 019/020 (greet) · 021 (offer) · 026 (handover) · 027/028
+  (thanks/close enrichment) — calibrated ambient madame/monsieur exposure without
+  production (the opener variant sits in reserve R-6).
 
 ---
 
@@ -355,13 +414,13 @@ contrast/trap mechanics; ghost-bearing seeds never in required production.
 | 017 | EV-033 (scaffolded) | EV-052 (opener slot) | — | carryover opener |
 | 018 | **EV-013 (trap option), EV-012** | EV-062 (upgrade revision), IS-05 support | **any mechanic where it is the correct answer**; EV-030/040 targets | contrast-only |
 | 019/020 | EV-014 (address heard) | EV-001 (scene meet) | any production | input-only |
-| 021 | EV-014, EV-011 (what's being asked?) | scene input in SC-2/3 | production; EV-034 | input-only |
-| 022/023 | **EV-014 (contour pair)** | EV-017 (what changed: melody) | any text-only rendering of the pair; production | audio-dependent by design |
-| 024 | EV-014, EV-011 | scene input | production of croissant anywhere | ghost boundary |
-| 025/026 | EV-014 light; scene input | IS-22 peek (voilà gloss) | production; flashcard recall | ambient service word |
-| 027-029 | reveal/scene input | EV-014 (address color) | production; required identification of madame/monsieur | enrichment only |
+| 021 | EV-014, EV-011 (what's being offered?) | scene input in SC-6 | production; EV-034; **any scene turn demanding a learner answer to the offer** | input-only; offer act unanswerable in-curriculum |
+| 023 | **EV-014 (flat confirmation vs rising 021/024)** | scene input in SC-2; EV-017 (what changed: melody, vs 021) | text-only contour exercises; production | contrast carried by audio + non-identical texts |
+| 024 | EV-014, EV-011 | scene input in SC-6 | production of croissant anywhere; answer-demanding turns | ghost boundary |
+| 025/026 | EV-014 light; scene input (025 = neutral handover; 026 = SC-3 repair trigger) | IS-22 peek (voilà gloss) | production; flashcard recall | ambient service word |
+| 027/028 | reveal/scene input (028 = SC-7 close) | EV-014 (address color) | production; required identification of madame/monsieur | enrichment only |
 | 030/031 | IS-16 targets (EV-041/042 reveals) | EV-004 shadow (whole-turn, advanced) | grading against them (W1); chip-izing | model answers |
-| 032/033 | IS-16 enrichment | EV-014 (heard warmth) | production; `beaucoup` demand | reveal-only boundary |
+| 033 | IS-16 enrichment | EV-014 (heard warmth) | production; `beaucoup` demand | reveal-only boundary |
 
 ## 11. Evidence eligibility tags
 
@@ -376,8 +435,8 @@ Strongest **safe** evidence per seed (Mastery Bible frame; assistance-scoped per
 | 012 | audio exposure; recognition (writing span in Micro Dictée) | sil-vous-plait orthography span | yes | broad orthography ability from one span (FQ-1) |
 | 013, 014, 015, 016, 017 | **supported production + recall (formula-whole)** | the survival formulas / excusez-moi as wholes | **always** | independent (unscaffolded) formula ownership; grammar knowledge of `ne…pas` (L3) or pouvoir (L11) from formula use |
 | 018 | recognition (register discrimination) | phen: register contrast | n/a | grammar error; broad politeness failure — the signal is contextual register only |
-| 019-029 | exposure / audio recognition | heard-meaning of the line; address forms **not** individually assessed | n/a | any ownership of ghost items; error from not producing them |
-| 030-033 | comparison only (reveal viewed) | — | n/a | **nothing** — reveal viewing is never mastery (I-27) |
+| 019, 020, 021, 023, 024, 025, 026, 027, 028 | exposure / audio recognition | heard-meaning of the line; address forms **not** individually assessed; 023's flat-vs-rising discrimination is recognition-class | n/a | any ownership of ghost items; error from not producing them; error from not answering a heard offer |
+| 030, 031, 033 | comparison only (reveal viewed) | — | n/a | **nothing** — reveal viewing is never mastery (I-27) |
 
 ## 12. Mon Lexique projection map
 
@@ -391,13 +450,13 @@ never enters from its trap role; supported formulas may become visible after qua
 | je voudrais | 002-007 | production in 002-005 | controlled production | — |
 | un café (single entry despite legacy dual ID — §16 note) | 002-006 | production | controlled production | — |
 | s'il vous plaît | 004, 005, 006, 012 | production in 004-006 | controlled production | — |
-| **merci** | 009, 011 (027/032 as reveal-richness examples) | production | controlled production | — |
+| **merci** | 009, 011 (027/033 as reveal-richness examples) | production | controlled production | — |
 | **au revoir** | 010, 011 (028/033 richness) | production | controlled production | — |
-| excusez-moi | 016, 017 (029 richness) | **supported** production | supported production (assist-scoped) | only exposed/recognized |
+| excusez-moi | 016, 017 | **supported** production | supported production (assist-scoped) | only exposed/recognized |
 | je ne comprends pas | 013, 015, 016 | supported production | supported production | only seen in rescue displays |
 | vous pouvez répéter ? | 014, 015 | supported production | supported production | only heard |
 | un thé | 007, 008 | supported production | supported production | only offered/seen |
-| *(never listed)* | je veux (018) · madame/monsieur/croissant (019-029) · voilà · beaucoup | — | — | always hidden at L1 |
+| *(never listed)* | je veux (018) · madame/monsieur/croissant (input lines 019-021, 024, 026-028) · voilà · beaucoup | — | — | always hidden at L1 |
 
 Containing-pieces potential (display-only, no L1 exercise): je voudrais → je · voudrais
 (lemma vouloir named); s'il vous plaît deliberately unexpanded; un café/un thé → package ↔
@@ -412,7 +471,7 @@ Decided directions only; cards are projections of seeds/scenes, never card-only 
 | Intent/meaning → FR recall | "Thank them" → 009 · "Say goodbye" → 010 · "Order a coffee politely" → 004/006 | merci; au-revoir; request arc | produce (self-grade; typed hosts EV-030) | self-report / controlled if typed | bare-translation framing — keep intent phrasing |
 | Sentence context → missing piece | 004 cloze (`Bonjour, je voudrais ___, s'il vous plaît.`) · 003 opener gap · 007 (**thé shown among given options only**) | slot fillers; opener | choose/recall the piece | recognition / recall | gap on supported thé must stay choice-given, never recall-demanded |
 | Scenario → response recall | SC-3 ("You didn't catch it — what do you say?" → 013/014) · SC-1 order · SC-7 close | formulas (supported note shown); closes | recall + reveal + self-grade | self-report | grading; formula anxiety — calm framing |
-| Audio → meaning/target recognition | 021/022/023 (offer vs confirmation) · 024 (what was offered?) · 013/014 heard | contour; heard meaning | listen + choose | audio recognition | TTS-contour dependence — recorded audio first (§15) |
+| Audio → meaning/target recognition | 021/023 (offer vs confirmation — non-identical texts) · 024 (what was offered?) · 013/014 heard | contour; heard meaning | listen + choose | audio recognition | TTS-contour dependence — recorded audio first (§15) |
 | Selective FR → meaning | none required at L1 (cognates trivial; no faux ami in pool) | — | — | — | adding them anyway = the rejected generic drill |
 
 ## 14. Practice Hub derivation map
@@ -424,8 +483,8 @@ Decided directions only; cards are projections of seeds/scenes, never card-only 
 | Authored-only | 018 + its feedback (register repair: 018 → 002 via EV-062); all trapReasons; 015/016 rescue scenes; 030-033 reveal copy | none generated |
 | Rescue-only | 013, 014, 015, 016, 017 | retrieval prompts (function recall: "say you don't understand" — formula supplied); **never** fragment or recombine formulas |
 | Contrast-only | 018 | appears only in EV-012/013 option sets |
-| Reveal-only | 027-033 | reveal/enrichment surfaces; no drill derivation |
-| Not PH eligible | 019-026 as production sources | input/listening use only |
+| Reveal-only | 027, 028, 030, 031, 033 | reveal/enrichment surfaces; no drill derivation |
+| Not PH eligible | 019, 020, 021, 023, 024, 025, 026 as production sources | input/listening use only |
 
 Function-recall set: 009 (thank), 010 (close), 013/014 (rescue), 017 (attention), 004
 (order). No derivation may introduce vocabulary, promote treatment, or fragment a formula —
@@ -446,15 +505,14 @@ elision clip class is the approved exception); **no pronunciation scoring**; def
 | 004 (anchor) | sentence | **High** | meet auto-play; model | ✔ (chunked) | — | Guided (cloze `Bonjour, je voudrais ___, s'il vous plaît.` — A frame written, filler given) | the flagship clip |
 | 001, 009, 010, 011 | sentence | High | moves + closes | ✔ (001, 011) | — | Micro: 009 (`merci`) | short clips |
 | 013, 014, 015 | sentence | **High** | rescue models | ✔ (contour of 014) | ✔ (heard-meaning) | — (formula orthography via Micro on `merci`-class A spans only; formulas stay recall-not-transcription at L1) | 014 rising contour is a recording priority (S1) |
-| 022 vs 023 | sentence pair | **High — pair must be recorded together** | contour discrimination | — | ✔ (the EV-014 contour payload) | — | text-identical pair; unusable on TTS contours |
-| 021, 024 | sentence | Medium | offers (listening) | — | ✔ | — | address/ghost color |
+| 021 / 024 (rising) vs 023 (flat) | contour set | **High — record the set with deliberate contours** | offer-vs-confirmation discrimination on non-identical texts | — | ✔ (the EV-014 contour payload) | — | replaces the former text-identical pair (022 reserved); unusable on TTS contours |
 | 019, 020, 025, 026 | sentence | Medium | scene beats | — | ✔ (address forms heard) | — | — |
 | 006, 007, 008 | sentence | Medium | casual/supported orders | 006 optional | — | Guided (007: thé span **given**, learner writes the A frame) | support boundary in Dictée mirrors production boundary |
 | 012 + spans `un café` (from 002), `je voudrais` (from 002) | span clips | Medium | writing-focus spans | 012 | — | **Micro** (012; `un café`) | elision/accent focus; FQ-1 semantics — orthographic misses stay precision-class |
-| 030-033 | sentence | Medium-Low | reveal models (heard) | 030 optional advanced | — | — | reveal audio enriches, never tests |
-| 027-029 | sentence | Low | reveal warmth | — | optional | — | — |
+| 030, 031, 033 | sentence | Medium-Low | reveal models (heard) | 030 optional advanced | — | — | reveal audio enriches, never tests |
+| 027, 028 | sentence | Low | reveal warmth; SC-7 close | — | optional | — | — |
 
-Totals: **10 item clips + ~14 high/medium-priority sentence clips (+7 lower)**; Dictée
+Totals: **10 item clips + ~13 high/medium-priority sentence clips (+5 lower)**; Dictée
 material = 2 Micro spans + 1 Micro seed (012) + 2 Guided cloze patterns (004-, 007-based).
 
 ## 16. Interstitial and popup links
@@ -463,12 +521,12 @@ Viewing any surface below produces engagement/exposure events only — never mas
 
 | Seed or group | Surface | Trigger identity | Placement | Required/optional | Event only | Mastery non-claim |
 |---|---|---|---|---|---|---|
-| 009 + 032 | IS-02 Cognate Bridge (merci ≈ mercy) | merci | inline card near first merci production | Required | ✔ | ✔ |
+| 009 + 033 | IS-02 Cognate Bridge (merci ≈ mercy) | merci | inline card near first merci production | Required | ✔ | ✔ |
 | 014 | IS-02 Cognate Bridge (répéter ≈ repeat) | vous-pouvez-repeter | rescue beat | Required | ✔ | ✔ |
 | 018 ↔ 002 (+031) | IS-05 Register/Politeness (why voudrais wins; casual = ellipsis, not veux) | phen: register | after the contrast moment (SC-5) | Required | ✔ | ✔ |
 | 004 | IS-06 Why This Works (the politeness sandwich: opener → request → landing) | request arc | after first full-arc production | Required | ✔ | ✔ |
 | 001-012 set | IS-07 Notice the Pieces (chunk-first display of the kit) | lesson pieces | lesson opening | Required | ✔ | ✔ |
-| 030-033 | IS-16 Natural Reveal (models + Another Way + register notes) | free production | after EV-041/042 | Required | ✔ | ✔ |
+| 030, 031, 033 | IS-16 Natural Reveal (models + Another Way + register notes) | free production | after EV-041/042 | Required | ✔ | ✔ |
 | all FR text | IS-22 Piece Quick Peek (incl. `voilà` gloss; madame/monsieur gloss) | any tapped piece | everywhere | Required | ✔ | ✔ |
 | kit items | IS-23 Piece Detail | items | Mon Lexique / long-press | Required | ✔ | ✔ |
 | 012 / 004 | IS-03 Sound Pattern (silent finals; `s'il` elision — one tiny note) | sound facts | near first written work | Optional | ✔ | ✔ |
@@ -498,24 +556,28 @@ The factory is not implemented by this document.
 
 ## 18. Duplication and economy audit
 
-- **Exact duplicates**: 0 (all 33 surfaces distinct; verified — the closest case, 022 vs
-  023, differs in punctuation *and* contour and exists precisely for that contrast).
+- **Exact duplicates**: 0 (all 30 surfaces distinct). The former closest case — the
+  text-identical contour twins `Un café ?` / `Un café.` — no longer coexists in core: under
+  the §4.5 identity rule the flat confirmation (023) stayed and the rising bare offer moved
+  to reserve (R-5). 023 is **not** a punctuation variant of anything in core.
 - **Near-duplicates, justified**: request ladder {002, 003, 004, 005, 006} (scaffolding
-  ladder + omission-repair targets, each a distinct communicative state); offer-contour set
-  {021, 022, 023}; voilà pair {025, 026} (bare vs addressed); merci pair {009, 032}
-  (required vs reveal-enrichment); address-enrichment family {027, 028, 029}; tea pair
-  {007, 008} (full vs elliptical, mirroring 004/006).
-- **Unjustified variants removed**: `Bonjour, je voudrais un thé.` (→ reserve; pure
-  derivation), `Un thé ?`, `Merci, monsieur.`, exclamative/punctuation variants (merged as
-  accepted alternatives), `Voilà, un café.` (rejected — unsourced glue).
-- **Average product projections per core seed**: ≈ 3.1 (lesson-path, PH, flashcard, audio,
-  Dictée, reveal, Lexique-example roles counted per §10-§16; the nine unscaffolded seeds
-  average > 4).
-- **Single-use seeds**: 029 (reveal-enrichment only) and 032 (reveal warmth) are the
-  thinnest — retained deliberately as Natural-Reveal richness (canon: reveal may exceed
-  required output); every other seed carries ≥ 2 roles.
-- **Quota check**: no seed exists only to fill the band; the pool stopped at 33 because the
-  frozen scope was exhausted, not because 33 was targeted.
+  ladder + omission-repair targets, each a distinct communicative state); offer-vs-
+  confirmation contour set {021, 024 rising / 023 flat — non-identical texts}; voilà pair
+  {025 neutral, 026 addressed — 026 additionally carries the SC-3 repair-trigger role}; tea
+  pair {007, 008} (full vs elliptical, mirroring 004/006); address-enrichment pair {027,
+  028} (thanks vs close, both female-addressed, balanced by male-addressed 019/026).
+- **Unjustified variants removed**: `Un café ?` (R-5), `Excusez-moi, madame.` (R-6),
+  `Merci beaucoup.` (R-7) — this convergence pass; plus the original reserves
+  (`Bonjour, je voudrais un thé.`, `Un thé ?`, `Merci, monsieur.`,
+  `Excusez-moi, vous pouvez répéter ?`) and merged punctuation variants.
+- **Average product projections per core seed**: ≈ 3.2 (lesson-path, PH, flashcard, audio,
+  Dictée, reveal, Lexique-example roles per §10-§16; the nine unscaffolded seeds average
+  > 4).
+- **Single-use seeds**: 027 is the only enrichment-leaning survivor (reveal warmth + address
+  listening + merci example richness — two-plus light roles); retained with that stated
+  rationale, not for quota.
+- **Quota check**: no seed exists only to fill the band; the pool settled at 30 after the
+  adversarial pass because that is what the frozen scope supports naturally.
 
 ## 19. Reserve and rejected candidates
 
@@ -525,6 +587,9 @@ The factory is not implemented by this document.
 | `Bonjour, je voudrais un thé.` | **Reserve** (R-2) | pure derivation of 003+007 | Content Factory slot swap |
 | `Un thé ?` | **Reserve** (R-3) | derivable offer variant | audio-recognition extension |
 | `Merci, monsieur.` | **Reserve** (R-4) | addressee variant of 027 | reveal-enrichment rotation |
+| `Un café ?` (bare rising offer; was L1-SE-022) | **Reserve** (R-5, convergence 2026-07-31) | the offer speech act naturally demands a `oui/non` move L1 does not own; as a contour twin of 023 it also failed the §4.5 identity rule for core coexistence | audio-gated contour-discrimination candidate once recorded audio + QA exist (likely L3+, when answer moves are owned) |
+| `Excusez-moi, madame.` (was L1-SE-029) | **Reserve** (R-6, convergence 2026-07-31) | address-quota variant with a single weak reveal use | address-color rotation |
+| `Merci beaucoup.` (was L1-SE-032) | **Reserve** (R-7, convergence 2026-07-31) | redundant with L1-SE-033's warm close | reveal-rotation candidate |
 | `Bonsoir.` / `Salut` / `Pardon !` | Rejected | FP-1 deferred greetings/apology | post-slice L1 breadth or Practice Pool packs |
 | `Excusez-moi, où est la gare ?` | Rejected | deferred `où est` + `la gare` | L8 band (adapted) |
 | `Je voudrais réserver une table.` | Rejected | table-booking scope | post-slice service band |
@@ -538,7 +603,7 @@ The factory is not implemented by this document.
 
 ## 20. French-QA review surface
 
-All 33 seeds await human sign-off; the table lists the concentrated review questions. Risk:
+All 30 core seeds await human sign-off; the table lists the concentrated review questions. Risk:
 Low = sourced/simple; Medium = authored or register-sensitive; High = pedagogy depends on the
 answer.
 
@@ -548,32 +613,33 @@ answer.
 | 006 | Un café, s'il vous plaît. | Low | Natural as a counter order from a customer (not curt)? | keep |
 | 007 | Je voudrais un thé, s'il vous plaît. | Low | Any register difference from the café line worth noting? | keep |
 | 008 | Un thé, s'il vous plaît. | Low | Same check as 006 | keep |
-| 011 | Merci, au revoir. | **Medium** | Is the single-turn `Merci, au revoir.` natural at a counter exit, or would `Merci ! Au revoir.` (two beats) be truer to speech? | keep; offer two-beat as accepted alternative |
+| 011 | Merci, au revoir. | **Medium** | Is the single-turn `Merci, au revoir.` natural at a counter exit, or is the two-beat `Merci ! Au revoir.` truer to speech? (Converged: single-turn preferred, two-beat recorded as accepted alternative — QA decides which leads) | converged; QA picks the lead form |
 | 014 | Vous pouvez répéter ? | Low | Confirm space-before-`?` typography and rising-contour note match house style | keep (locked surface) |
 | 015 | Je ne comprends pas. Vous pouvez répéter ? | Low | Natural pacing as one turn? | keep |
 | 016 | Excusez-moi, je ne comprends pas. | **Medium** | Newly authored: is the interjection+formula rhythm natural mid-exchange (vs `Pardon, …` which is out of scope)? | keep pending QA |
 | 017 | Excusez-moi. | **Medium** | As standalone attention-getter (not apology) — is the L1 framing unambiguous without `pardon` for contrast? | keep; framing note in copy |
 | 018 | Je veux un café. | Low | Confirm feedback framing ("understandable, blunt with a stranger") is fair — some contexts make je veux acceptable | keep with contextual feedback |
 | 021 | Un café, madame ? | **Medium** | Is the elliptical offer with address natural from a server (vs `Vous désirez ?`-class lines that are out of scope)? | keep pending QA |
-| 022/023 | Un café ? / Un café. | **High** | The contour pair is text-identical minus punctuation: is recorded-audio contrast alone sufficient for the discrimination pedagogy, and are both lines natural in the service scene? | keep only with recorded audio; drop EV-014 payload if QA doubts the pair |
+| 023 | Un café. | **Medium** | Is the bare order-echo (`Un café.`) natural from a server confirming/serving, or does spoken usage prefer a framed echo? (The former text-identical rising twin was moved to reserve in convergence) | keep as confirmation line; QA calibrates |
 | 024 | Un croissant ? | Medium | Natural as an add-on offer? | keep pending QA |
 | 025/026 | Voilà. / Voilà, monsieur. | Low | Handover usage natural (it is, per legacy usage line) — confirm gloss wording | keep |
-| 027-029 | Merci, madame. / Au revoir, madame. / Excusez-moi, madame. | Medium | Address-form usage: appropriate frequency/register for reveal richness? Any risk of over-formality for a modern café? | keep as reveal-only; QA calibrates frequency |
+| 027/028 | Merci, madame. / Au revoir, madame. | Medium | Address-form usage: appropriate frequency/register for reveal richness in a modern café? (`Excusez-moi, madame.` already moved to reserve) | keep as reveal-only; QA calibrates frequency |
 | 030 | Bonjour, je voudrais un café, s'il vous plaît. Merci ! | Low | Does closing with `Merci !` before receiving the coffee read naturally (thanks-in-advance)? | keep (shipped model); QA may prefer moving merci to handover |
-| 031 | Bonjour, un café s'il vous plaît. Merci ! | **Medium** | Source has no comma before `s'il vous plaît` — intended casual typography or inconsistency? | align punctuation per QA verdict |
-| 032/033 | Merci beaucoup. / Merci beaucoup, au revoir ! | Low | Reveal-enrichment warmth appropriate to calm tone? | keep, reveal-only |
+| 031 | Bonjour, un café, s'il vous plaît. Merci ! | **Medium** | Converged to comma-before-`s'il vous plaît` for pool consistency (comma-less sourced form = accepted alternative) — does the comma treatment read truer for the casual spoken order? | converged; QA confirms lead typography |
+| 033 | Merci beaucoup, au revoir ! | Low | Reveal-enrichment warmth appropriate to calm tone? (standalone `Merci beaucoup.` reserved) | keep, reveal-only |
 | 001-003, 005, 009, 010, 012, 013, 019, 020 | (simple sourced surfaces) | Low | Standard naturalness/typography pass | keep |
 
 ## 21. Acceptance audit
 
-1. Core unique-seed count = **33** (band 28-40; aim 32-36). ✔
+1. Core unique-seed count = **30** (band 28-40; the convergence pass deliberately traded
+   three weak seeds for quality — the band holds). ✔
 2. L1 Active-new remains exactly **2** (merci, au revoir — seeds 009/010/011 are their demand
    surfaces; no other new Active identity appears). ✔
 3. No hidden third Active demand (every required composition audited in §8). ✔
 4. All unscaffolded required output uses Active material only (nine seeds, §8). ✔
 5. Every Supported-production seed names its scaffold (§8 table). ✔
-6. Ghost is never required (019-029 input/reveal only; ghost absent from all required
-   compositions and from `piecesUsed`-bound roles). ✔
+6. Ghost is never required (the input/reveal set 019-021, 023-028 stays input-only; ghost
+   absent from all required compositions and from `piecesUsed`-bound roles). ✔
 7. `je veux` is never an expected answer (018 contrast-only; §10 ineligibility row). ✔
 8. Repetition request is always `Vous pouvez répéter ?` — the inverted form appears in this
    document only inside the harvest ledger's adaptation record, never as learner material. ✔
@@ -594,13 +660,31 @@ answer.
     surfaces also remain pending sign-off per this pool). ✔
 22. No runtime or Canonical file changed — this document is the only change. ✔
 
+Convergence-pass checks (2026-07-31):
+
+23. Every mini-scene has stable speaker roles and a single consistent addressee; neutral
+    `Voilà.` used where address color is not pedagogically needed. ✔
+24. No scene requires a missing `oui/non` move — offers (021, 024) are heard, never
+    answered; SC-2 responds to a learner-initiated order, not an offer. ✔
+25. Offer / confirmation / handover roles are distinct and natural (021/024 offer-input ·
+    023 confirmation-echo · 025/026 handover). ✔
+26. Contour-pair identity handling is explicit (§4.5) and internally consistent — no
+    text-identical pair remains in core; audio-dependent contrasts are barred from text-only
+    exercises. ✔
+27. Preferred punctuation is consistent (comma before `s'il vous plaît` throughout; space
+    before `?`/`!` per house convention; accepted alternatives subordinate to one preferred
+    surface per seed). ✔
+28. No reveal-only material leaks into PH or flashcard recall (§13/§14 classes re-checked
+    after the moves). ✔
+29. All counts in this document were recomputed from final rows after the convergence pass. ✔
+
 ## 22. Readiness verdict
 
 | Consumer | Verdict | Basis |
 |---|---|---|
 | Founder content review | **READY** | complete, bounded, decision-consistent pool with review surface (§20) |
-| Human French QA | **READY** | §20 gives a concrete per-seed review surface; 5 Medium + 1 High items concentrated |
-| L1 Sentence × Exercise × Evidence pilot matrix | **READY WITH BOUNDED GAPS** | §10/§11 pre-tag eligibility; gaps = QA outcomes (esp. 022/023) may remove/adjust rows |
+| Human French QA | **READY** | §20 gives a concrete per-seed review surface; 8 concentrated questions, all Medium-or-lower after convergence (the former High contour-pair item was resolved structurally) |
+| L1 Sentence × Exercise × Evidence pilot matrix | **READY WITH BOUNDED GAPS** | §10/§11 pre-tag eligibility over the converged 30-seed pool; gaps = QA outcomes may still adjust individual rows |
 | Runtime sentence registration | **NOT READY** | sentence-ID registry does not exist; the four G1 item identities remain unregistered; draft-local IDs must not leak |
 | Content Factory implementation | **NOT READY** | derivation contract defined (§17) but registration + schema prerequisites unmet |
 | Audio recording | **NOT READY** | recording follows French sign-off; priority list (§15) is ready to hand to that step |
