@@ -52,11 +52,19 @@ related:
   L5 Un, une → **L6 Un petit moment (integration)** → L7 Je vais → L8 C'est où ? → L9 Faire
   une pause → **L10 Une petite journée (integration)**. **8 acquisition lessons, 2 integration
   lessons.**
-- **Active-new acquisition demands** [REC, PRJ-015-counted]: L1 **2** · L2 **1** · L3 **3** ·
-  L4 **1** · L5 **1** · L6 **0** · L7 **1** · L8 **2** · L9 **2** · L10 **0** — **total 13
-  demands across the slice**, every lesson inside the 1-3 normal band, both integrations at
-  the binding 0. (The specs' historical "active-new 9/10/10/8/8/…" are identity-context counts
-  under the superseded 8-15 band and are recounted, not adopted.)
+- **Active-new acquisition demands** [DECIDED 2026-07-31 fold, §13; PRJ-015-counted]: L1 **2**
+  · L2 **1** · L3 **3** · L4 **1** · L5 **1** · L6 **0** · L7 **1** · L8 **2** · L9 **2** ·
+  L10 **0** — **total 13 demands across the slice**, every lesson inside the 1-3 normal band,
+  both integrations at the binding 0. (The specs' historical "active-new 9/10/10/8/8/…" are
+  identity-context counts under the superseded 8-15 band and are recounted, not adopted.)
+- **Decision fold (2026-07-31, §13):** FP-1 ratifies the L1 redesign payload (PE Kademe 2 +
+  CC-007; `merci` + `au revoir` as the two L1 demands — CA-1); FP-2 restores the spec-backed
+  compact de-scopes (L8 `où est ___ ?` frame, L9 `faire ça` set, answer-cluster dialogue reuse
+  — CA-6/CA-7 closed) at unchanged counts; CA-3 counts the answer cluster as one demand; CA-4
+  homes `j'ai besoin de` in L4 as **Supported-new**; CA-5 sets `le/la` as L5 **Supported-new**;
+  CA-8 keeps the survival formulas **Supported throughout L1-L10** — mastery may grow through
+  evidence, curriculum treatment does not silently promote. The compact L1 authoring contract
+  is frozen in `docs/workstreams/L1_AUTHORING_CONTRACT_v0.1.md`.
 - **Recognition-new clusters:** ~9 (être-family snapshot; si; tu/register; L3 previews;
   le/la; movement-question frames; faire previews; L6 aller hook; L10 pouvoir hook).
   **Ghost/exposure clusters:** 5 (L1 café-color; L2 là/prêt; L3 pas de problème; L4
@@ -70,11 +78,13 @@ related:
 - **Sentence-seed authoring budget** (§7): ≈ **231-305 unique approved seeds** across L1-L10,
   showcase-weighted to L1 (28-40), L5 (30-38), L10 (27-34); 100% human French QA before
   Stage-C exposure.
-- **Major curriculum conflicts** (§2, cards): the **L6 four-way conflict** (spec's 4
-  active-new vs Payload Economy's "no new items" vs binding integration-0 vs shipped +1);
-  Payload-Economy tier demotions vs L1-L5 spec tiers (PE wins); shipped compact de-scopes vs
-  spec scope at L1-L6/L8/L9 (restoration = FP-2); shipped L8's `oui`-as-trap-only vs the
-  locked oui rehabilitation; the unhomed `j'ai besoin de` cluster.
+- **Major curriculum conflicts** (§2, cards) — **all resolved by the 2026-07-31 fold**: the
+  L6 four-way conflict (closed by CA-1: `au revoir` is L1 Active-new, L6 integrates at 0);
+  Payload-Economy tier demotions vs L1-L5 spec tiers (FP-1: PE wins); shipped compact
+  de-scopes vs spec scope (FP-2: restored at unchanged counts); shipped L8's
+  `oui`-as-trap-only (FP-2 answer-cluster restoration); the `j'ai besoin de` cluster (CA-4:
+  L4 Supported-new). Shipped payloads remain non-conforming [CURRENT REALITY] until
+  re-authoring lands — recorded, not silently patched.
 - **Major identity/registry gaps** (§11): 4 Kademe-2 enrichment identities absent from every
   registry (**blocks L1 authoring**); fatigué/soif/table absent (blocks L2-L5 and the L10
   anchor); dual café/question identities; two-registry split (54 hyphen vs 59 colon IDs, zero
@@ -83,11 +93,14 @@ related:
   (breadth of formulas — held by supported treatment). **Highest underdevelopment risk:** L2
   (3 shipped payload surfaces until enrichment lands) and L7 (2-item doorway — deliberate,
   hub-compensated).
-- **Readiness for sentence-ecosystem authoring** (§12): **L1 READY WITH BOUNDED GAPS** (freeze
-  FP-1 + register G1 identities, then author); L2-L10 READY WITH BOUNDED GAPS behind their
-  named CA/FP decisions (L7 READY); Content Factory schema and event/mastery implementation
-  **NOT READY** (by design — later workstreams). No count in this summary is fabricated; where
-  sources cannot support a number, the body says `TBD` or gives a band.
+- **Readiness for sentence-ecosystem authoring** (§12): **L1 READY WITH BOUNDED REGISTRATION
+  GAPS** — the payload is decided (FP-1) and frozen in the L1 Authoring Contract; only the G1
+  identity registrations (+French QA) remain, and document-level authoring may proceed with
+  `PROPOSED RUNTIME ID — NOT REGISTERED` markers. L2-L10 READY WITH BOUNDED GAPS (decision
+  blockers cleared; identity gaps G2 remain); L7 READY; Content Factory schema and
+  event/mastery implementation **NOT READY** (by design — later workstreams). No count in
+  this summary is fabricated; where sources cannot support a number, the body says `TBD` or
+  gives a band.
 
 ---
 
@@ -112,14 +125,17 @@ related:
 | Implementation reality (registries, payloads, flags, tests) | `content/itemRegistry.ts` (54 frozen IDs), `content/learning-engine/items.ts` (59 fixture IDs), `content/lessons/v1/lesson-000…015`, Home cap ≤ L6, `shipped-item-ids.json` manifest | **[CURRENT REALITY]** — establishes what exists, never product authority |
 | Legacy/historical | `data/lessons/lesson1-24.ts` (superseded 24-lesson syllabus), full L07 aller spec (superseded as next PR), archived design notes | Historical only |
 
-**Unresolved-conflict register** (details in the lesson cards and §11): the Payload-Economy
-tier demotions vs the L1-L5 spec tiers (PE wins — founder-locked, later); the L6 spec's 4
-active-new vs PE's "L6 gets NO new items" + archetype-#10 binding 0 (**genuine conflict, §4.6**);
-spec identity-context counts (9/10/10/8/8/4/…) vs PRJ-015 acquisition counting (this map recounts
-— PRJ-015 wins); shipped compact de-scopes vs spec scope for L1-L6, L8, L9 (restoration is a
-per-lesson decision, §13); shipped L8's `oui`-as-trap-only vs PE §4.2 oui rehabilitation (PE
-wins; shipped is non-conforming current reality); legacy L7-L10 titles (Questions/Numbers/Food/
-Faire) superseded by the v1 spine.
+**Conflict register — resolution state after the 2026-07-31 fold (§13):** the Payload-Economy
+tier demotions vs the L1-L5 spec tiers (**resolved — FP-1: PE wins**, founder-ratified for the
+slice); the L6 spec's 4 active-new vs PE's "L6 gets NO new items" + archetype-#10 binding 0
+(**resolved — CA-1/CA-4**: `au revoir` moves to L1 Active-new, the aide/besoin set routes to
+L4 Supported-new, L6 integrates at 0); spec identity-context counts (9/10/10/8/8/4/…) vs
+PRJ-015 acquisition counting (**resolved — PRJ-015 recount adopted**); shipped compact
+de-scopes vs spec scope for L1-L6, L8, L9 (**resolved — FP-2: targeted restoration** at
+unchanged counts); shipped L8's `oui`-as-trap-only vs PE §4.2 oui rehabilitation (**resolved —
+FP-2 answer-cluster restoration**; shipped payload stays non-conforming [CURRENT REALITY]
+until re-authored); legacy L7-L10 titles (Questions/Numbers/Food/Faire) superseded by the v1
+spine (standing).
 
 ---
 
@@ -206,8 +222,10 @@ recover when I'm stuck, and leave politely."* Scene: café/bakery exchange (open
 slot → get stuck → recover → leave). Prerequisites: L0 bridge carry-in (`chunk-bonjour`,
 `chunk-je-voudrais`, `noun-cafe`, `chunk-sil-vous-plait`). Why here: the survival/politeness
 doorway is the product's first real moment; CC-007 additionally homes the repair pair in this
-lesson's redesign. **This card plans the L1 redesign target** (PE Kademe 2 + CC-007), not the
-shipped 5-item compact slice, which remains [CURRENT REALITY].
+lesson's redesign. **This card records the ratified L1 redesign payload** (PE Kademe 2 + CC-007, accepted as the
+slice's L1 authoring basis by **FP-1, decided 2026-07-31**), not the shipped 5-item compact
+slice, which remains [CURRENT REALITY]. The frozen operational form lives in
+`docs/workstreams/L1_AUTHORING_CONTRACT_v0.1.md`.
 
 **B. Acquisition ledger.** [REC] reconciled to Payload Economy §6 (founder-locked) over the
 older spec tiers; conflicts shown.
@@ -219,7 +237,7 @@ older spec tiers; conflicts shown.
 | un café | noun package | Active | Recycled (L0) | No | unscaffolded | controlled production | package stays whole | `noun-cafe` / `chunk-un-cafe` (**dual identity — §11**) | shipped; §55.2 debt |
 | s'il vous plaît | formula chunk (politeness landing) | Active | Recycled (L0) | No | unscaffolded | controlled production | **whole through slice** | `chunk-sil-vous-plait` | PE; chip-taxonomy §5 |
 | **merci** | formula chunk (thanks) | Active | **New** | **Yes (1)** | unscaffolded | controlled production | whole-first | `chunk-merci` | PE §6 (sole PE L1 active) |
-| **au revoir** | formula chunk (close) | Active | **New** [REC — move from shipped L6] | **Yes (1)** | unscaffolded | controlled production | whole-first (unpack `revoir` much later) | `chunk-au-revoir` | L01 spec (active); shipped at L6; [DECISION NEEDED → §13 CA-1] |
+| **au revoir** | formula chunk (close) | Active | **New — L1 (decided CA-1, 2026-07-31)** | **Yes (1)** | unscaffolded | controlled production | whole-first through L1-L10 (`revoir` not separately taught in-slice) | `chunk-au-revoir` | L01 spec (active); shipped-at-L6 fact stands as [CURRENT REALITY] until re-authoring |
 | excusez-moi | formula chunk (attention opener) | **Supported** (PE demotes spec's active) | New | No | scaffolded ≥2 uses | controlled production (supported) | whole-first | **IDENTITY GAP — ID assignment deferred** | PE §6 vs L01 spec |
 | je ne comprends pas | **survival formula** (closed class) | **Supported** | New | No | scaffolded whole-formula | recall (formula) | **yes — never split at acquisition** | **IDENTITY GAP — ID assignment deferred** | PE §4.1/§6; CC-007 |
 | vous pouvez répéter ? | **survival formula** (closed class; locked non-inverted surface, CB §15.3) | **Supported** | New | No | scaffolded whole-formula | recall (formula) | **yes** | **IDENTITY GAP — ID assignment deferred** | PE §4.1/§6; CB §15.3 supersedes spec's `Pouvez-vous répéter ?` |
@@ -228,15 +246,15 @@ older spec tiers; conflicts shown.
 | je veux | chunk (register trap) | Recognition (trap only; do-not-chip) | New | No | none; wrong-option only | recognition (trap) | — | none (trap string) | PE §6; L01 spec trap |
 | cognate/sound set (merci≈mercy, silent finals, CaReFuL, é-ay) | phen/sound/cog cluster | Meta | New | No | none | exposure | — | partial (`sound-elision` etc. exist for later lessons) | L01 spec §recognition |
 | register/politeness phenomenon (je veux vs je voudrais) | phen | Meta | New | No | none | exposure (insight) | — | none needed | L01 spec; EXERCISE_CANON §9 |
-| bonsoir, salut, pardon, où est ___, la gare, réserver une table, baguette | misc spec material | **Deferred out of slice L1** [REC] | — | No | none | — | — | — | L01 spec items not in PE lock; kept as backlog/Practice-Pool candidates, not L1 payload |
+| bonsoir, salut, pardon, où est ___, la gare, réserver une table, baguette | misc spec material | **Deferred out of slice L1 (decided — FP-1 deferred list)** | — | No | none | — | — | — | L01 spec items not in PE lock; backlog/Practice-Pool candidates, not L1 payload |
 
-**C. Active-new count audit.** [REC] Computed Active-new = **2** (merci; au revoir) — inside
-the 1-3 normal band. The spec's "active-new 9" is an identity-context count under the superseded
-8-15 band ([SOURCE] retrospective: "the L1 'active 13' overstates generativity… fixed social
-chunks counted as active"); PRJ-015 recounts it. No linked sub-identity is double-counted
-(`je voudrais` frame/phen are linked, recycled). Disputed: whether au revoir is L1 (spec) or L6
-(shipped) — this map recommends L1 (a survival kit that cannot close politely is incomplete);
-routed as CA-1. L10 = 0 confirmed (§4.10).
+**C. Active-new count audit.** **[DECIDED — FP-1/CA-1, 2026-07-31]** Computed Active-new =
+**2** (merci; au revoir) — inside the 1-3 normal band. A Survival Kit must support both polite
+entry and polite closure; `au revoir` is L1 Active-new, not L6-new. The spec's "active-new 9"
+is an identity-context count under the superseded 8-15 band ([SOURCE] retrospective: "the L1
+'active 13' overstates generativity… fixed social chunks counted as active"); PRJ-015 recounts
+it. No linked sub-identity is double-counted (`je voudrais` frame/phen are linked, recycled);
+no hidden third demand exists. L10 = 0 confirmed (§4.10).
 
 **D. Protected / unpack-later.** Protected wholes: `s'il vous plaît`, `merci`, `au revoir`,
 `excusez-moi`, both survival formulas (closed class), `bonjour`. Earliest anatomy: none in L1 —
@@ -416,7 +434,7 @@ negation is the first transformation layer — proof the engine is generative.
 |---|---|---|---|---|---|---|---|---|---|
 | **negation transform** `ne ___ pas` (realized as `je ne suis pas`) | productive pattern + protected chunk realization | Active | **New** | **Yes (1)** — one productive operation (PRJ-015 §3 worked example) | transform owned lines | controlled production (transformation) | **`je ne suis pas` = PROTECTED_CHUNK (frozen)**; `ne`/`pas` Caveat atoms, never standalone chips | `chunk-je-ne-suis-pas`, `grammar-ne-pas-sandwich` | IC-002; CB §4.6 |
 | **ce n'est pas** | protected chunk (c'est negation) | Active | New | **Yes (1)** — protected chunk = one demand (IC-004) | whole-chunk production | controlled production | **PROTECTED_CHUNK (frozen)** | `chunk-ce-n-est-pas` | PE; CB §4.6 |
-| **answer-word cluster**: oui (answer), non, non merci | answer words + formula | Active | New | **Yes (1)** — [REC] one linked answer-move concept (IC-003); alternative reading = separate demands would reach 4 and need rationale | produce as answers only; `oui` never slotted inside sentences (PE §4.2 scope) | controlled production (answer move) | `non merci` formula whole | `chunk-oui`, `chunk-non`, `chunk-non-merci` | PE §4.2; L03 spec; [DECISION NEEDED → CA-3 clustering] |
+| **answer-word cluster**: oui (answer), non, non merci | answer words + formula (separate identities, one linked demand) | Active | New | **Yes (1) — decided CA-3, 2026-07-31**: one linked answer-move concept (IC-003); L3 is not a four-demand lesson | produce as answers only; `oui` rehabilitated as a usable answer, never slotted inside sentences (PE §4.2) | controlled production (answer move) | `non merci` formula whole | `chunk-oui`, `chunk-non`, `chunk-non-merci` | PE §4.2; L03 spec; CA-3 decided |
 | si (contradicting yes) | word (answer) | **Recognition** [REC — PE "seed only: si (inline card, no production)"] | New | No | none | exposure/recognition | — | none needed now | PE §6 |
 | yes/no intonation question | phen | Meta (+ recognition practice) | New | No | intonation recognition only | recognition (audio, later) | — | none | L03 spec |
 | tu / tu-vous choice | pronoun + register phen | **Recognition** [REC] — tu/vous register work stays pre-doorway (Decision Probe gated out; shipped L3 defers it) | New | No | none | exposure | — | `pronoun-tu` (registered, unused) | EXERCISE_CANON v0.4 note 5; shipped designNote |
@@ -427,9 +445,9 @@ negation is the first transformation layer — proof the engine is generative.
 **C. Active-new audit.** Computed = **3** (negation transform; ce n'est pas; answer-word
 cluster) — top of the normal 1-3 band, no rationale-requiring 4. Linked-identity handling:
 `ne ___ pas` frame + `je ne suis pas` chunk + `grammar-ne-pas-sandwich` phen = one concept;
-oui/non/non-merci clustering is the disputed classification (CA-3: if the founder wants
-oui-rehabilitation counted separately, L3 = 4 and needs the cognitive-load rationale — the
-retrospective already flags L3 as the spike's second half). L10 = 0 stands.
+the oui/non/non-merci cluster counts as **one** linked demand (**decided CA-3, 2026-07-31** —
+L3 stays at 3, never 4; the identities remain separate where appropriate). Answer-move
+dialogue returns in L8, L9, and L10 per FP-2. L10 = 0 stands.
 
 **D. Protected/unpack.** Both PROTECTED_CHUNKS live here — frozen, whole, never split into
 standalone `ne`/`pas` chips. **Chip-decomposition pilot entry point**: `je ne comprends pas`
@@ -510,13 +528,13 @@ signature être/avoir contrast.
 | une idée | noun package | **Supported** (PE; reuses dormant id) | New | No | scaffolded | controlled production (supported) | — | `noun-idee` (registered, dormant) | PE §6 (R4 payoff) |
 | j'ai froid / j'ai chaud | chunk cluster | **Ghost** (PE: "example copy only, no production") | New | No | never required | exposure | — | none needed | PE §6 |
 | être↔avoir contrast (`je suis faim` trap) | phen (micro-contrast) | Meta (+ authored trap) | Elevated from L2 seed | No | none (trap discrimination is EV-013 work) | recognition (diagnostic-capable) | — | `micro-je-suis-vs-j-ai` | L02/L04 specs |
-| j'ai besoin de | chunk + frame | **[DECISION NEEDED → CA-4]** — spec: active-new; PE: not in Kademe 2; shipped: deferred; L9/L10 recombinations assume it owned | — | No (pending) | pending | — | elision `d'` QA | **IDENTITY GAP — ID assignment deferred** | L04 spec vs PE §6 vs L10 spec §2 |
+| j'ai besoin de | chunk + frame | **Supported-new (decided CA-4, 2026-07-31)** — scaffolded, authored use only; no uncontrolled `de + article` complexity; elision payloads authored + French-QA'd; never unscaffolded in-slice; promotion is post-slice curriculum work | New | No | scaffolded authored frames only | controlled production (supported) | `d'` elision QA | **IDENTITY GAP — ID assignment deferred** | CA-4 resolves L04 spec vs PE §6 vs L10 spec §2 |
 | avoir family forms; j'ai envie de; ne…plus preview; peur/chien/âge | paradigm + backlog cluster | Recognition / deferred out of slice | New | No | none | exposure | — | — | L04 spec; PE excludes |
 
 **C. Active-new audit.** Computed = **1** (`j'ai` engine cluster; faim/question/soif/idée are
 supported fillers evaluated through their own status, per the PRJ-015 `un café` example). No
-double-counting. Disputed: `j'ai besoin de` (CA-4) — if promoted here as a second demand, L4 = 2
-(still in band); this map recommends exactly that resolution but does not decide it. L10 = 0.
+double-counting. `j'ai besoin de` is **Supported-new here (decided CA-4, 2026-07-31)** — L4
+stays at 1; no second demand exists. L10 = 0.
 
 **D. Protected/unpack.** `j'ai` = elision unit — anatomy (je · ai, lemma avoir) is IS-08
 material **with explicit French QA** (elision display); never whitespace-split. `j'ai faim` is
@@ -591,15 +609,15 @@ ever add.
 | **article-noun package operation** (`un/une ___` as productive choice, realized over `un café` / `une question`) | productive pattern (phen + frame) over recycled packages | Active | **New (operation)** | **Yes (1)** — packages themselves are recycled and "evaluated through their own acquisition status" (IC-003) | choose/produce correct package | controlled production | packages stay whole (article never detached early) | `grammar-un-une-package`, `chunk-un-cafe`, `chunk-une-question` | PE §6; PRJ-015 §4 |
 | un thé | noun package (gender pair with une table) | **Supported** (second L5 role of the L1 item) | New-to-L5 | No | scaffolded | controlled production (supported) | whole | **IDENTITY GAP — ID assignment deferred** (planned `noun-the`+`chunk-un-the` pair) | PE §6 |
 | une table | noun package | **Supported** | New | No | scaffolded | controlled production (supported) | whole | **IDENTITY GAP — ID assignment deferred** | PE §6 (spec had it active) |
-| le / la | article cluster | **Recognition→Supported** [DECISION NEEDED → CA-5: spec supported vs shipped deferred] | New | No | at most scaffolded identification | recognition | homograph `la`/`là` QA | none | L05 spec vs shipped designNote |
+| le / la | article cluster | **Supported-new (decided CA-5, 2026-07-31)** — scaffolded contrasts and examples only; never a second unscaffolded article system; no masculine-first presentation; gender via real noun packages | New | No | scaffolded identification/contrast | controlled production (supported, light) | homograph `la`/`là` QA | none | CA-5 resolves L05 spec vs shipped designNote |
 | pas de (negated object) | frame bridge | **Supported** [REC keep, low weight] | New | No | scaffolded | controlled production (supported) | `de/d'` elision QA | none | L05 spec; chip-taxonomy §6 example |
 | un restaurant / une maison | noun packages | **Ghost** (PE) | New | No | never required | exposure | — | none needed (maison acquires at L7 as `à la maison` chunk) | PE §6 |
 | les/des/partitives; -tion feminine; agreement display | phen cluster | Recognition/Meta | New | No | none | exposure | — | — | L05 spec |
 | gender phenomenon | phen | Meta (accumulated recognition — "shown not drilled") | Elevated | No | none | exposure | — | `grammar-un-une-package` | retrospective §hidden-prereq |
 
-**C. Active-new audit.** Computed = **1** (the package operation). The two supported packages
-(thé/table) deliberately do not count (supported). Disputed: none internal; CA-5 affects
-presentation only. L10 = 0.
+**C. Active-new audit.** Computed = **1** (the `un/une` package operation — the sole L5
+demand, per CA-5 decided 2026-07-31). The supported packages (thé/table) and the Supported-new
+`le/la` cluster deliberately do not count. L10 = 0.
 
 **D. Protected/unpack.** Packages stay whole; **chip-decomposition pilot candidate 3** (per
 folded FD-2): article/package structure anatomy at L5 — IS-08 shows `un · café` boundary
@@ -672,25 +690,23 @@ customer. Scene: classroom/small-group help — deliberately non-café. Prerequi
 L0-L5 spine. Why here: settles the documented L2-L3 spike and breaks café-centricity before the
 L7-L9 engine run.
 
-**B. Acquisition ledger.** **[GAP — genuine curriculum conflict.]** Three sources disagree:
-the L6 spec introduces 4 active-new (`word:aide`, `chunk:j-ai-besoin-d-aide`, a negated-state
-frame, an identity-contrast sentence pattern); Payload Economy §6 (founder-locked, later) says
-*"L6 gets NO new items"*; archetype #10 is now **binding at Active-new 0** (PRJ-015 §7); the
-shipped payload added exactly one new item (`chunk-au-revoir`). This map plans L6 at **0
-Active-new** (Canonical counting wins) and routes the displaced material:
+**B. Acquisition ledger.** **[RESOLVED — CA-1 + CA-4, 2026-07-31.]** The former four-way
+conflict (spec's 4 active-new vs PE's "L6 gets NO new items" vs archetype-#10 binding 0 vs
+shipped +1 `chunk-au-revoir`) is closed: `au revoir` is **L1 Active-new** (CA-1), the
+aide/besoin material homes in **L4 as Supported-new** (CA-4), and L6 integrates at **0
+Active-new**. The superseded readings are preserved in the source column as history:
 
 | Candidate identity | Identity type | Treatment | New/recycled | Counts as Active-new? | Production expectation | Earliest evidence | Protected? | Existing canonical ID | Source/status |
 |---|---|---|---|---|---|---|---|---|---|
 | L0-L5 engine set (bonjour, je voudrais+frame, je suis, j'ai, ne…pas, ce n'est pas, answer cluster, packages, formulas, merci, s'il vous plaît) | recycled spine | Active/Supported | **Recycled** | No | recombination production | controlled production (recombination) | as before | existing IDs | L06 spec §recycled |
-| au revoir | formula chunk | Active | Recycled **if CA-1 moves it to L1**; else the shipped L6-new fact stands as a conflict with integration-0 | No under CA-1; **1 if left L6-new (violates binding 0)** | unscaffolded close | controlled production | whole | `chunk-au-revoir` | shipped designNote vs PRJ-015 §7; **CA-1** |
-| word:aide / j'ai besoin d'aide / comprendre / je voudrais comprendre / mais | spec's displaced set | **Routed out of L6** [REC]: aide+besoin cluster → CA-4 (acquisition home L4 or a later acquisition lesson); `comprendre` stays inside the survival formula until post-slice; `mais` recognition connective in context | — | No | — | — | — | **IDENTITY GAP** (aide/besoin/mais) | L06 spec vs PE §6; CA-4 |
+| au revoir | formula chunk | Active | **Recycled (CA-1 decided: L1-new, L6 recycles)** | **No** | unscaffolded close | controlled production | whole | `chunk-au-revoir` | CA-1 2026-07-31; shipped L6-new fact stands as [CURRENT REALITY] until re-authoring |
+| word:aide / j'ai besoin d'aide / comprendre / je voudrais comprendre / mais | spec's displaced set | **Routed out of L6 (decided)**: besoin-de cluster → L4 Supported-new (CA-4); `comprendre` stays inside the survival formula until post-slice; `mais` recognition connective in context | — | No | — | — | — | **IDENTITY GAP** (aide/besoin/mais) | CA-4 2026-07-31 resolves L06 spec vs PE §6 |
 | integration/recombination skill; human-context phen | phen | Meta | New | No (meta never counts) | none | — | — | none | IC-002 |
 | je voudrais aller (L7 hook) | chunk preview | Recognition | New | No | none — preview only | exposure | — | none | L06 spec §recognition |
 
-**C. Active-new audit.** Computed = **0** (binding for integrations) — conditional on CA-1
-(au revoir → L1). If CA-1 is rejected, L6 carries a 1-item violation inherited from shipped
-reality, which must then be explicitly reconciled by curriculum authority, not silently kept.
-Meta phenomena excluded per IC-002. L10 = 0 stands.
+**C. Active-new audit.** Computed = **0** (binding for integrations) — **unconditional after
+CA-1** (au revoir is L1 Active-new; L6 recycles it as a closing move and must not present it
+as new acquisition). Meta phenomena excluded per IC-002. L10 = 0 stands.
 
 **D. Protected/unpack.** No new structures. Recap `piecesUsed` must stay atomic — [CURRENT
 REALITY] the earlier L6 sentence-chip regression (`Je suis ici`, `J'ai une question` as recap
@@ -738,11 +754,11 @@ completion is attempt-coverage, never mastery [CURRENT REALITY `selectLessonProg
 **M. Content Factory.** May generate recombination scenes from owned inventory ONLY (C1-style
 generation constraint); zero new lexis is a hard generation rule; scene templates authored.
 
-**N. Risks.** The 4-way L6 conflict (spec vs PE vs archetype-0 vs shipped+1) is the slice's
-single biggest curriculum conflict — **blocks L6 re-authoring until CA-1/CA-4 resolve**;
-aide/besoin displacement leaves "ask for help" thin until L10's recognition hook (acceptable:
-`vous pouvez répéter ?` covers rescue); L6 currently carries the Home cap — visibility bump is
-a separate smoke-bearing product decision, out of scope here.
+**N. Risks.** The former 4-way conflict is **resolved (CA-1/CA-4)** — L6 re-authoring is
+unblocked once the L1-L5 ledgers land; "ask for help" arrives via L4's Supported-new besoin-de
+plus L10's recognition hook (`vous pouvez répéter ?` continues covering rescue); L6 currently
+carries the Home cap — visibility bump is a separate smoke-bearing product decision, out of
+scope here.
 
 ---
 
@@ -799,7 +815,7 @@ maison` deliberately unexpanded (whole-for-now display). Example links to the cl
 context→missing piece (`Je vais ___`). Risk: none notable — small clean surface.
 
 **K. PH & carryover.** Contributes close-the-moment family. Carry-out: `je vais` → L8
-(`Tu vas où ?` band — spec-level; shipped compact deferred it → CA-6), L10 (`je vais à la
+(`Tu vas où ?` stays recognition in-slice, per the decided FP-2 scope), L10 (`je vais à la
 maison` return); `à la maison` → L8 location answers, L10. The frozen chunk seeds the
 **post-slice** aller/futur-proche doorway (deferred, not cancelled).
 
@@ -824,23 +840,24 @@ questions with fixed frames. Scene: a new place after class. Prerequisites: L2 `
 movement, L1 `excusez-moi` (once enriched). Why here: where-control is the moment L7's movement
 becomes navigable.
 
-**B. Acquisition ledger.** [REC] Reconciles the spec's 7 identity-context actives with the
-shipped 1-chunk compact; recommends a middle scope:
+**B. Acquisition ledger.** **[DECIDED — FP-2, 2026-07-31]**: the slice restores the
+spec-backed `où est ___ ?` frame omitted by the compact shipped build (targeted restoration of
+communicative completeness, not legacy breadth; no new screen type; L8 stays at 2 demands):
 
 | Candidate identity | Identity type | Treatment | New/recycled | Counts as Active-new? | Production expectation | Earliest evidence | Protected? | Existing canonical ID | Source/status |
 |---|---|---|---|---|---|---|---|---|---|
 | **c'est où ?** | frozen question chunk | Active | **New** | **Yes (1)** | frozen-chunk question production (intonation only) | controlled production | whole; `où` homograph QA | `chunk-c-est-ou` | shipped; L08 spec |
-| **où est ___ ?** frame | question frame | Active [REC — restore from spec; shipped deferred it → CA-6] | New | **Yes (1)** | slot question production | controlled production | frame; never inversion | **IDENTITY GAP — ID assignment deferred** (spec: `frame:ou-est-plus-noun`) | L08 spec vs shipped de-scope |
+| **où est ___ ?** frame | question frame | Active (**restored — FP-2/CA-6 decided 2026-07-31**) | New | **Yes (1)** | slot question production | controlled production | frame; never inversion | **IDENTITY GAP — ID assignment deferred** (spec: `frame:ou-est-plus-noun`) | FP-2 resolves L08 spec vs shipped de-scope |
 | où (word) | question word | Supported (inside frames only) | New | No | in-frame only | recognition→controlled | homograph (`où` vs `ou`) — disambiguated ID pattern exists | `adverb-ou-where` | shipped |
 | c'est | pointer chunk | Supported | Recycled (L2) | No | scaffolded | controlled production | — | `chunk-c-est` | shipped |
 | ici / là answers (`___ est ici/là`) | deictic answer frame | **Supported** [REC — là enters supported here; was L2 ghost] | là New-to-supported | No | scaffolded answers | controlled production (supported) | `là` homograph QA | `word-ici`; **là: IDENTITY GAP — ID assignment deferred** | L08 spec; PE L2 ghost |
-| tu vas où ? / vous allez où ? | movement-question frames | **Recognition** [REC — spec had supported; shipped deferred; keep recognition in slice, promote post-slice] | New | No | none required | recognition | fixed frames only | none | L08 spec vs shipped; CA-6 |
+| tu vas où ? / vous allez où ? | movement-question frames | **Recognition** (decided: stays recognition in-slice; promotion is post-slice) | New | No | none required | recognition | fixed frames only | none | L08 spec vs shipped; FP-2 scope line |
 | où est-ce que…, inversion forms, là-bas | preview cluster | Recognition | New | No | none | exposure | — | none (est-ce que owns L12) | L08 spec |
-| oui/non answer moves in dialogues | answer cluster | Active | Recycled (L3) | No | answer production | controlled production | — | `chunk-oui`, `chunk-non` | PE §4.2 [REC restores; shipped trap-only use is non-conforming] |
+| oui/non answer moves in dialogues | answer cluster | Active | Recycled (L3) | No | answer production | controlled production | — | `chunk-oui`, `chunk-non` | **FP-2 restores** answer-cluster dialogue reuse; shipped trap-only use non-conforming [CURRENT REALITY] |
 
-**C. Active-new audit.** Computed = **2** (c'est où ? chunk; où est ___ ? frame) [REC].
-Fallback = 1 (shipped compact, chunk only) if CA-6 keeps the de-scope. Both readings are
-band-compliant. The two frames are deliberately **not** clustered into one demand: chunk-frozen
+**C. Active-new audit.** Computed = **2** (c'est où ? chunk; où est ___ ? frame) — **decided
+(FP-2/CA-6, 2026-07-31)**; the shipped 1-chunk compact remains [CURRENT REALITY] until
+re-authoring. The two frames are deliberately **not** clustered into one demand: chunk-frozen
 question vs slot-frame question are materially different production demands. L10 = 0 stands.
 
 **D. Protected/unpack.** `c'est où ?` whole; **request-frame anatomy pilot candidate 2**
@@ -894,10 +911,9 @@ stay precision-class unless meaning-changing (FQ-1); Stats: "you can ask".
 **M. Content Factory.** May generate where-questions **only over owned noun packages**; answer
 pairs from ici/là templates; never inversion, never est-ce que, never new place nouns.
 
-**N. Risks.** CA-6 scope decision (restore `où est ___ ?` or keep compact) blocks final L8
-authoring; là identity missing; contour-dependent pedagogy needs recorded audio early (FD-6
-timing); `oui` restoration conflicts with shipped L8 trap-only use — must be authored
-deliberately.
+**N. Risks.** Scope decided (FP-2) — authoring unblocked; remaining: là identity missing;
+contour-dependent pedagogy needs recorded audio early (FD-6 timing); the `oui` dialogue
+restoration must be authored deliberately against the shipped trap-only pattern.
 
 ---
 
@@ -914,18 +930,17 @@ integration beat (Integration Rhythm Rule satisfied by L10).
 | Candidate identity | Identity type | Treatment | New/recycled | Counts as Active-new? | Production expectation | Earliest evidence | Protected? | Existing canonical ID | Source/status |
 |---|---|---|---|---|---|---|---|---|---|
 | **faire une pause** (via `Je voudrais faire une pause.`) | action package chunk inside owned frame | Active | **New** | **Yes (1)** | produce the request with the action package | controlled production | package whole; `faire` sense-scoped (split-sense, IC-005) | `chunk-faire-une-pause`, `noun-pause` (supported) | shipped; L09 spec |
-| **faire ça / je ne fais pas ça** generalization | action slot + negation reuse | Active [REC — restore from spec; shipped deferred → CA-7] | New | **Yes (1)** — generalizing the action slot beyond the pause package is a distinct productive operation | produce/decline small actions | controlled production | `ça` Caveat atom (promoted word per spec) | **IDENTITY GAP — ID assignment deferred** (spec: `word:ca`, `chunk:faire-ca`, `chunk:je-ne-fais-pas-ca`) | L09 spec vs shipped de-scope |
+| **faire ça / je ne fais pas ça** generalization | action slot + negation reuse | Active (**restored — FP-2/CA-7 decided 2026-07-31**) | New | **Yes (1)** — generalizing the action slot beyond the pause package is a distinct productive operation | produce/decline small actions | controlled production | `ça` Caveat atom (promoted word per spec) | **IDENTITY GAP — ID assignment deferred** (spec: `word:ca`, `chunk:faire-ca`, `chunk:je-ne-fais-pas-ca`) | FP-2 resolves L09 spec vs shipped de-scope |
 | on fait une pause ? | suggestion frame | **Supported** [REC] | New | No | scaffolded suggestion | controlled production (supported) | frozen frame (no on-paradigm) | **IDENTITY GAP — ID assignment deferred** | L09 spec (demotable to recognition if strained — spec's own mitigation) |
 | je fais | verb form | Supported (spec) — **not produced in shipped**; keep supported-band, low salience | New | No | scaffolded at most | recognition→controlled | — | none | L09 spec vs shipped |
 | tu fais quoi ? / qu'est-ce que tu fais ? / weather faire / faire du sport / paradigm | preview cluster | Recognition | New | No | none | exposure | — | none | L09 spec |
 | je ne veux pas faire ça / vouloir present | boundary cluster | Recognition (**blocked production** — vouloir present unowned) | New | No | never | exposure | — | none | L09 spec form-status |
-| j'ai besoin d'une pause | need-frame reuse | Supported (**conditional on CA-4** besoin cluster) | Recycled-frame + new filler | No | scaffolded | controlled production (supported) | `d'` elision QA | pending CA-4 | L09 spec |
+| j'ai besoin d'une pause | need-frame reuse | Supported (**CA-4 decided** — besoin cluster homes at L4 Supported-new) | Recycled-frame + new filler | No | scaffolded authored frame | controlled production (supported) | `d'` elision QA | pending G1-class registration | L09 spec; CA-4 |
 
-**C. Active-new audit.** Computed = **2** (pause request; action-slot generalization) [REC].
-Fallback = 1 (shipped compact). Band-compliant either way. Disputed: whether `faire ça` is a
-separate demand or a linked extension of the pause chunk — this map argues **separate** (a
-genuinely new productive operation per IC-003's "later extension counts only when it creates a
-genuinely new productive operation" — it does: open action reference vs fixed package). L10 = 0.
+**C. Active-new audit.** Computed = **2** (pause request; action-slot generalization) —
+**decided (FP-2/CA-7, 2026-07-31)**; shipped 1-demand compact remains [CURRENT REALITY] until
+re-authoring. `faire ça` is a separate demand (a genuinely new productive operation per
+IC-003: open action reference vs fixed package). L10 = 0.
 
 **D. Protected/unpack.** `faire une pause` whole; split-sense discipline: `faire`'s other
 senses are recognition previews, and IC-005 records the future sense-separation debt (faire
@@ -953,8 +968,8 @@ none.
 **H. Audio/Dictée.** Record: request/suggestion/decline family (~8 clips). Shadowing: `Je
 voudrais faire une pause.` (longest shadow line yet — chunked). Audio Recognition: fais/fait
 silent-final (recognition-band; scored minimal pair stays P2). Micro: `une pause`. Guided:
-`Je voudrais faire ___`. Sentence Dictée: `Je ne fais pas ça.` eligible **only if CA-7 lands**
-(all-A then). Context: deferred.
+`Je voudrais faire ___`. Sentence Dictée: `Je ne fais pas ça.` eligible (all-A after the
+CA-7-decided restoration; integration-checkpoint timing). Context: deferred.
 
 **I. Mon Lexique.** Entries after production: faire une pause, (faire ça / je ne fais pas ça
 under CA-7), une pause. Hidden: paradigm/preview cluster, je ne veux pas faire ça.
@@ -978,8 +993,8 @@ transformation-type verb chain); Stats: "three engines + chains".
 une pause, ça — closed); suggestion/decline templates authored; never paradigm, weather, or
 vouloir-present generation.
 
-**N. Risks.** CA-7 scope decision blocks final L9 authoring; `ça`/faire-ça identities missing;
-L7-L9 is the documented three-new-engine run — L9 must stay at 2 demands max and lean on the
+**N. Risks.** Scope decided (FP-2) — authoring unblocked; remaining: `ça`/faire-ça identities
+missing; L7-L9 is the documented three-new-engine run — L9 stays at 2 demands and leans on the
 hub; recycled base (~14) is below the spec's own target (~16-22) — integration families must
 compensate.
 
@@ -1061,11 +1076,11 @@ inventory (C1-style); flow templates authored; hook sentence is a template const
 (recognition-rendered only); zero new lexis is a hard rule; every generated flow passes the
 full validator chain + French QA.
 
-**N. Risks.** Integration coverage depends on upstream CA decisions (fatigué, besoin-de,
-answer-cluster restoration, faire-ça) — §10 audits this; preview-hook salience must carry the
-"is novelty too low?" risk the spec itself flags (strengthen the hook, never add lexis);
-registry-status-vs-lesson-role gap (supported pieces used recognition-only by design) needs
-`status_by_lesson` modeling before implementation (§11).
+**N. Risks.** Integration coverage decisions are resolved (CA-3/4/7 decided); the one
+remaining coverage dependency is the **fatigué identity registration** (G2 — the anchor);
+preview-hook salience must carry the "is novelty too low?" risk the spec itself flags
+(strengthen the hook, never add lexis); registry-status-vs-lesson-role gap (supported pieces
+used recognition-only by design) needs `status_by_lesson` modeling before implementation (§11).
 
 ---
 
@@ -1084,9 +1099,9 @@ an integration flow) · `—` absent. Rows are acquisition identities or tightly
 | un café (package) | A | — | — | — | A | I | — | R | — | I | dual-ID resolve pending (§11) |
 | s'il vous plaît | A | — | A | A | A | I | — | — | A | I | politeness landing, whole throughout |
 | **merci** | **A+** | — | — | — | — | I | A | — | — | I | close/thanks; L1 demand 1 |
-| **au revoir** (CA-1) | **A+** [REC] | — | — | — | — | I *(shipped A+ here — conflict)* | A | — | — | I | close; move-to-L1 recommended |
+| **au revoir** | **A+** (CA-1 decided) | — | — | — | — | I *(shipped-new-here = non-conforming reality)* | A | — | — | I | close; L1-new, recycled thereafter |
 | excusez-moi | S+ | S | S | — | — | I | — | **S (opener reuse)** | — | I | attention opener; ID gap |
-| je ne comprends pas (survival formula) | S+ | S | S (anatomy pilot) | S | S | I | S | S | S | I | rescue; promotion checkpoint open (CA-8) |
+| je ne comprends pas (survival formula) | S+ | S | S (anatomy pilot) | S | S | I | S | S | S | I | rescue; **Supported throughout (CA-8 decided)** — mastery grows via evidence, no curriculum promotion |
 | vous pouvez répéter ? (survival formula) | S+ | S | S | S | S | I | S | S | S | I | rescue; locked non-inverted surface |
 | un thé (package) | S+ | — | — | — | **S (gender pair)** | I | — | — | — | I | two-role design (PE) |
 | croissant / madame / monsieur | G | — | — | — | — | — | — | — | — | — | ghost color; no later path needed |
@@ -1094,7 +1109,7 @@ an integration flow) · `—` absent. Rows are acquisition identities or tightly
 | ici | — | S+ | — | — | — | I | — | **S (answer frame)** | — | I | deictic; retro-fitted ID |
 | fatigué(e) | — | S+ | — | S (contrast) | — | I | — | — | S | **I (anchor)** | **ID gap blocks the L10 anchor** |
 | c'est | — | S+ | A/S | — | S | I | — | **S (in c'est où ?)** | — | I | pointer; composition base |
-| là / prêt(e) | — | G | — | — | — | — | — | **S+ (là promoted — CA-6)** | — | I | ghost→supported path (explicit promotion) |
+| là / prêt(e) | — | G | — | — | — | — | — | **S+ (là promoted at L8 — explicit, within FP-2 scope)** | — | I | ghost→supported path (explicit promotion, never silent) |
 | être family forms | — | R+ (snapshot) | R | — | — | — | — | — | — | — | exposure-only map; no production path (by design) |
 | **negation `ne…pas` + je ne suis pas** | — | R (reveal seed, W2) | **A+** | S (`je n'ai pas`) | S (`pas de`) | I | — | — | **A (je ne fais pas ça — CA-7)** | I | layer engine; L9 gives the productive return the retrospective demanded |
 | **ce n'est pas** | — | — | **A+** | — | — | I | — | — | — | I | protected chunk |
@@ -1105,20 +1120,20 @@ an integration flow) · `—` absent. Rows are acquisition identities or tightly
 | faim / une question | — | — | — | S+ | S (package pair) | I | — | — | — | I | states/fillers; question dual-ID (§11) |
 | soif / une idée | — | — | — | S+ | — | I | — | — | — | I | ID gaps (soif) |
 | j'ai froid / chaud | — | — | — | G | — | — | — | — | — | — | ghost; example copy only |
-| j'ai besoin de (CA-4) | — | — | — | **[home?]** | — | *(spec wanted here)* | — | — | S (une pause) | I (`d'aide`) | **unhomed cluster — decision needed** |
+| j'ai besoin de | — | — | — | **S+ (CA-4 decided — homed here)** | — | *(spec's L6 placement superseded)* | — | — | S (une pause) | I (`d'aide`, supported) | scaffolded need-frame; promotion post-slice |
 | **article-package operation** | — | — | — | — | **A+** | I | — | — | — | I | generalizes all packages |
 | une table | — | — | — | — | S+ | I | — | — | — | I | ID gap |
-| le / la (CA-5) | — | — | — | — | R+/S+ | — | — | S (answers) | — | I | tier decision needed |
+| le / la | — | — | — | — | **S+ (CA-5 decided)** | — | — | S (answers) | — | I | scaffolded contrasts only; never a second unscaffolded article system |
 | restaurant / maison (nouns) | — | — | — | — | G | — | *(maison enters inside chunk)* | — | — | — | ghost→chunk path via L7 |
 | **je vais** | — | — | — | — | — | — | **A+** | R (movement questions) | — | I | frozen doorway; post-slice aller seed |
 | à la maison | — | — | — | — | — | — | S+ | S (answers) | — | I | frozen destination |
 | **c'est où ?** | — | — | — | — | — | — | — | **A+** | — | I | frozen question |
-| **où est ___ ? frame** (CA-6) | — | — | — | — | — | — | — | **A+** [REC] | — | I | slot question |
+| **où est ___ ? frame** | — | — | — | — | — | — | — | **A+ (FP-2 restored)** | — | I | slot question |
 | où (word) | — | — | — | — | — | — | — | S+ | — | I | homograph-safe ID exists |
 | tu vas où ? / vous allez où ? | — | — | — | — | — | — | — | R+ | — | R/I | recognition; post-slice promotion |
 | est-ce que / inversion previews | — | — | R+ | — | — | — | — | R | R | R | W2-window previews; L12+ territory |
 | **faire une pause** | — | — | — | — | — | — | — | — | **A+** | **I (anchor)** | split-sense engine 3 |
-| **faire ça / je ne fais pas ça** (CA-7) | — | — | — | — | — | — | — | — | **A+** [REC] | I | action generalization; L11 base |
+| **faire ça / je ne fais pas ça** | — | — | — | — | — | — | — | — | **A+ (FP-2 restored)** | I | action generalization; L11 base |
 | on fait une pause ? | — | — | — | — | — | — | — | — | S+ | I | suggestion frame |
 | une pause | — | — | — | — | — | — | — | — | S+ | I | supported noun |
 | faire previews (weather/sport/paradigm) | — | — | — | — | — | — | — | — | R+ | — | sense-separation debt (IC-005) |
@@ -1130,15 +1145,16 @@ an integration flow) · `—` absent. Rows are acquisition identities or tightly
 - **Isolated/no-reuse items:** ghost sets (croissant/madame/monsieur; froid/chaud;
   restaurant) — acceptable by design (atmosphere); `si`, tu-register, être-family forms —
   deliberate dead-ends inside the slice (doorway-gated); **no Active item lacks a later path**
-  once CA-1/4/6/7 resolve.
+  (CA-1/4/6/7 resolved 2026-07-31).
 - **Required too early:** nothing after the PE reconciliation (the spec-era 9-13 "active"
   loads were the risk; recounting removes it).
 - **Ghost accidentally becoming production:** two watchpoints — là (must be explicitly
   promoted at L8, never silently) and maison (acquires only inside the frozen `à la maison`
   chunk, never as a bare package in-slice).
 - **Weak carryover paths:** fatigué (blocked by missing ID — threatens the L10 anchor);
-  besoin-de (unhomed); answer cluster between L3 and L8 (shipped reality starves it — restored
-  by [REC]); repair pair never grows (CA-8 promotion checkpoint).
+  answer cluster between L3 and L8 (shipped reality starves it — restored by FP-2); the
+  repair-pair "never grows" concern is resolved by CA-8's treatment/mastery separation
+  (curriculum stays Supported; learner mastery grows through evidence), not by promotion.
 - **Overused pieces:** un café / je voudrais (café-centricity, [SOURCE] retrospective) —
   budgeted down in L6-L10 scenes deliberately.
 - **L10 coverage:** every engine row reaches `I` at L10 except deliberate dead-ends — §10
@@ -1159,7 +1175,7 @@ reuse → L10 role). [REC] reconciled; no grammatical scope beyond current curri
 | **Identity/state** (je suis + states) | L2 | L2 | L4 (contrast with j'ai) | L6 human context | anchor first clause (`Je suis fatigué`) |
 | **Negation layer** (ne…pas · ce n'est pas · pas de) | L2 reveal seed (W2) | L3 | L4 (`je n'ai pas` band), L5 (`pas de`) | L9 (`je ne fais pas ça`) | polite decline inside flow |
 | **Answer moves** (oui · non · non merci · si-R) | L1 (heard) | L3 | L3 dialogues | L8/L9 dialogue restore | suggestion answers |
-| **State engine** (j'ai + states/possession) | L2 seed (micro-contrast) | L4 | L5 (possession packages) | L6; L9 (`j'ai besoin d'une pause`, CA-4) | need move (`j'ai une question` / `d'aide`) |
+| **State engine** (j'ai + states/possession) | L2 seed (micro-contrast) | L4 | L5 (possession packages) | L6; L9 (`j'ai besoin d'une pause` — CA-4 supported frame) | need move (`j'ai une question` / `d'aide` supported) |
 | **Article/noun packages** (un/une operation; le/la R→S) | L0 (un café whole) | L0-L1 (whole) → L5 (operation) | L5 (across engines) | L8 (place answers) | every object mention |
 | **Movement** (je vais · à la maison) | L6 hook (R) | L7 | L8 (question coupling) | L10 | departure move |
 | **Where-questions** (c'est où ? · où est ___ ?) | L8 | L8 | L8 (Q→A chains) | L10 | orientation move |
@@ -1248,16 +1264,17 @@ One connected loop, per lesson (baselines in §4.0; this table shows the lesson-
 ## 10. L10 integration coverage audit
 
 - **Active-new = 0** — verified (§4.10.C; PRJ-015 §7 binding; meta phenomena excluded).
-- **Engine return audit** (every major L1-L9 engine's opportunity, from §5/§6): greeting/close
-  ✔ (bonjour/merci/au revoir) · request ✔ (anchor clause 2) · identity/state ✔ **conditional
-  on the fatigué identity existing** — the anchor `Je suis fatigué, je voudrais faire une
-  pause.` is currently unbuildable against the shipped registry [GAP §11-G2] · negation ✔ via
-  `Je ne fais pas ça.` **conditional on CA-7** (shipped L10 has no negation return — a real
-  shipped-coverage hole this map closes) · answer moves ✔ via suggestion dialogue
-  **conditional on CA-3/answer restoration** · j'ai-state ✔ (`j'ai une question`; `j'ai besoin
-  d'aide` conditional on CA-4) · packages ✔ (requests) · movement ✔ (`Je vais à la maison.`)
-  · where-questions ✔ (`Où est la maison ?` / `C'est où ?`) · small-action ✔ (anchor +
-  decline) · survival formulas ✔ (recovery beat) · pouvoir hook ✔ (recognition-only).
+- **Engine return audit** (every major L1-L9 engine's opportunity, from §5/§6; CA
+  dependencies resolved by the 2026-07-31 fold): greeting/close ✔ (bonjour/merci/au revoir —
+  au revoir recycled from L1 per CA-1) · request ✔ (anchor clause 2) · identity/state ✔
+  **conditional only on the fatigué identity registration** — the anchor `Je suis fatigué, je
+  voudrais faire une pause.` is unbuildable against the shipped registry until G2 closes ·
+  negation ✔ via `Je ne fais pas ça.` (CA-7 decided; the shipped no-negation-return hole is
+  closed by re-authoring) · answer moves ✔ via suggestion dialogue (CA-3 + FP-2 decided) ·
+  j'ai-state ✔ (`j'ai une question`; `j'ai besoin d'aide` supported per CA-4) · packages ✔
+  (requests) · movement ✔ (`Je vais à la maison.`) · where-questions ✔ (`Où est la maison ?`
+  / `C'est où ?` — FP-2) · small-action ✔ (anchor + decline) · survival formulas ✔ (recovery
+  beat, supported per CA-8) · pouvoir hook ✔ (recognition-only).
 - **Not everything must return:** ghosts, si, tu-register, être-family forms, est-ce que
   previews deliberately absent — recorded as by-design, not gaps.
 - **Small communicative experience, not an exam:** the arc is one scene with 8 production
@@ -1269,10 +1286,10 @@ One connected loop, per lesson (baselines in §4.0; this table shows the lesson-
   events).
 - **Surface projections** ✔ (§9 row L10: PH pool, Lexique breadth + containing-pieces demo,
   scenario deck, Stats view, showcase audio set).
-- **L1-L9 acquisitions with no credible L10-or-earlier integration path:** none in the [REC]
-  plan once CA-1/3/4/6/7 resolve; in **shipped reality**, three holes exist (no negation
-  return, no answer-move return, no state-anchor `fatigué`) — these are exactly what the
-  re-authoring must fix.
+- **L1-L9 acquisitions with no credible L10-or-earlier integration path:** none in the
+  decided plan (CA-1/3/4/6/7 resolved 2026-07-31); in **shipped reality**, three holes remain
+  (no negation return, no answer-move return, no state-anchor `fatigué`) — exactly what the
+  re-authoring must fix, with G2 registration as the sole remaining dependency.
 
 ---
 
@@ -1290,13 +1307,13 @@ required.
 |---|---|---|---|
 | G1 | **PE Kademe-2 enrichment identities absent** | `excusez-moi`, `je ne comprends pas`, `vous pouvez répéter ?`, `un thé` have **no ID in any registry** — the L1 redesign cannot be authored against the registry without them | **[B-L1]** |
 | G2 | **fatigué(e), soif, une table absent** | block L2/L4/L5 enrichment and the L10 anchor (`Je suis fatigué…`) | blocks L2-L5/L10 authoring (same class as B-L1, staged later) |
-| G3 | **Dual identities** | `noun-cafe`/`chunk-un-cafe`; `noun-question`/`chunk-une-question` — same surface, two IDs; carryover selector already hard-excludes ambiguous candidates [CURRENT REALITY `carryover-selector.ts:198`] | **[DEC]** (IC-004 primary-identity + linked-sub-identity assignment) → then [B-IMPL] |
+| G3 | **Dual identities** | `noun-cafe`/`chunk-un-cafe`; `noun-question`/`chunk-une-question` — same surface, two IDs; carryover selector already hard-excludes ambiguous candidates [CURRENT REALITY `carryover-selector.ts:198`]. The L1 Authoring Contract §3 records the IC-004 direction (package = primary acquisition identity; bare noun = linked sub-identity) for the new `un thé` pair so the hazard is not reproduced | **[DEC]** narrowing to the legacy pairs (registration/engineering); then [B-IMPL] |
 | G4 | **Two-registry split** | hyphen vs colon namespaces, zero overlap, different lesson meanings — violates the single-registry direction if left | **[B-IMPL]** (event/mastery spine); not blocking authoring (author against runtime kebab per CFC §1.3) |
 | G5 | **Missing parent/child (anatomy) relationships** | no registry representation of authored decompositions (formula → je · comprends · ne…pas; package → article · noun); needed by IS-08/EV-035/036 pilots | **[B-IMPL]** (pilot runtime); authoring can specify in docs |
 | G6 | **Missing lemma/token relationships** | comprends→comprendre, voudrais→vouloir, vais→aller named-not-taught links; word/lemma → containing-pieces prototype (Charter §4.5) needs them | **[B-IMPL]** |
 | G7 | **Sentence identity gap** | spec-level `sent:l08-*`/`sent:l10-*` IDs exist on paper; **no runtime sentence registry**; Content Factory traceability and audio identity (`entityId → audioId`) require stable sentence IDs | **[B-IMPL]** for factory/audio; sentence *authoring* may proceed with doc-level IDs |
 | G8 | **`status_by_lesson` unrepresented** | registry status is static; L10 needs supported pieces rendered recognition-only by lesson design [CURRENT REALITY lesson-010 designNote] — the convention's `status_by_lesson` field is unimplemented | **[B-IMPL]** |
-| G9 | **Item-granularity disputes** | oui/non/non-merci cluster counting (CA-3); besoin-de home (CA-4); faire-ça as second demand (CA-7); le/la tier (CA-5) | **[DEC]** (curriculum-author, §13) |
+| G9 | **Item-granularity disputes — RESOLVED (2026-07-31 fold)** | oui/non/non-merci cluster = one demand (CA-3); besoin-de = L4 Supported-new (CA-4); faire-ça = second L9 demand (CA-7/FP-2); le/la = L5 Supported-new (CA-5) | closed — remaining work is registration (G1/G2 class), not decision |
 | G10 | **Unsafe whitespace-derived boundaries** | none shipped (recap atomization done); risk lives in future anatomy payloads — French QA gate required for every decomposition (elision `j'`/`n'`/`d'`, discontinuous `ne…pas`, `à la` contraction) | **[CLEAN]** (guard, not defect) |
 | G11 | **Identities needing human French QA before registration** | all G1/G2 additions; feminine display forms (fatigué/fatiguée); là/où homograph labels; `qu'est-ce que ça veut dire`-class future formula candidates | **[B-L1]**-adjacent (QA is part of registration) |
 | G12 | **Registered-but-unused v1 items** | `pronoun-je/tu/vous`, `verb-etre`, `chunk-tu-es`, `chunk-vous-etes`, `chunk-tu-es-pret`, `chunk-vous-etes-pret`, `sound-liaison`, `grammar-etre-identity`, `noun-idee` (dormant by design) | **[CLEAN]** |
@@ -1309,18 +1326,18 @@ required.
 
 | Stage | Verdict | Why |
 |---|---|---|
-| **L1 sentence ecosystem authoring** | **READY WITH BOUNDED GAPS** | Sequence, promise, ledger, families, and folded exercise decisions are in place; bounded gaps = G1 identity registration (+QA) and CA-1 (au revoir). Both are small, enumerated, and resolvable inside the L1 freeze step. |
-| **L2-L4 authoring** | **READY WITH BOUNDED GAPS** | Ledgers stable at 1/3/1 demands; gaps = G2 (fatigué, soif), CA-3 (answer clustering), CA-4 (besoin-de home). |
-| **L5 checkpoint authoring** | **READY WITH BOUNDED GAPS** | Package operation clear; gaps = G2 (table/thé IDs), CA-5 (le/la tier), G3 (dual identities should resolve before the package families are frozen, since they define the package entries). |
-| **L6-L9 authoring** | **L7 READY; L6/L8/L9 READY WITH BOUNDED GAPS** | L7's compact spec is honored end-to-end (its operator smoke gate is an implementation matter, not an authoring blocker). L6 carries the CA-1/CA-4 conflict (its re-authoring waits on them). L8/L9 wait on the scope decisions CA-6/CA-7 (+ là/ça identities). |
-| **L10 integration authoring** | **READY WITH BOUNDED GAPS** | Structure, 0-demand ledger, and coverage plan are firm; blocked only by upstream CA outcomes (anchor needs fatigué; negation/answer returns need CA-3/7) — author last, as §14 sequences anyway. |
+| **L1 sentence ecosystem authoring** | **READY WITH BOUNDED REGISTRATION GAPS** | Payload decided (FP-1/CA-1) and frozen in the L1 Authoring Contract; only G1 identity registration (+French QA) remains — document-level authoring proceeds with `PROPOSED RUNTIME ID — NOT REGISTERED` markers. |
+| **L2-L4 authoring** | **READY WITH BOUNDED GAPS** | Ledgers decided at 1/3/1 demands (CA-3/CA-4 closed); remaining gaps are registrations only: G2 (fatigué, soif) + besoin-de/aide IDs. |
+| **L5 checkpoint authoring** | **READY WITH BOUNDED GAPS** | Package operation + le/la tier decided (CA-5); remaining: G2 (thé/table IDs incl. the primary/linked pair direction) and G3 legacy dual-identity resolution before package families freeze. |
+| **L6-L9 authoring** | **L7 READY; L6/L8/L9 READY WITH BOUNDED GAPS** | All scope decisions closed (CA-1/CA-4 for L6; FP-2/CA-6/CA-7 for L8/L9). L7's compact spec is honored end-to-end (its operator smoke gate is an implementation matter). Remaining gaps: là/ça/faire-ça/où-est identity registrations; L6 re-authoring follows the L1-L5 ledgers. |
+| **L10 integration authoring** | **READY WITH BOUNDED GAPS** | Structure, 0-demand ledger, and coverage plan firm; decision dependencies resolved; sole remaining dependency is G2 (`fatigué` for the anchor) — author last, as §14 sequences anyway. |
 | **Content Factory schema work** | **NOT READY** | G7 (sentence identity), G4 (registry unification direction), G8 (status_by_lesson), G3 (primary identities) precede any factory schema; the factory contract itself is stable. |
 | **Audio manifest work** | **READY WITH BOUNDED GAPS** | The Audio Asset Contract (Charter deliverable 3) can be drafted now against this map's clip estimates; binding `entityId → audioId` waits on G7 for sentences (item-level mapping can start on the 54 IDs + G1/G2 additions). |
 | **Event/mastery implementation** | **NOT READY** | By design: Mastery Bible implementation gates unopened; two-store split (G4) unresolved; admissibility/attribution unimplemented; this map only requires that authoring stay compatible with the shared-spine target. |
 
 ---
 
-## 13. Genuine open decisions
+## 13. Decision record (2026-07-31 fold) and remaining matters
 
 Not reopened (settled): the seven folded exercise decisions (FD-1…FD-7); PRJ-015 counting;
 integration Active-new = 0; single-registry and single-mastery-spine direction; no legacy
@@ -1328,38 +1345,47 @@ flashcard/Practice/Stats architecture; no Survival-Mode timer; no pronunciation 
 bounded chip pilots; selective Dictée; W1/W2; survival-formula non-inverted surface (CB §15.3);
 hub-never-gates.
 
-**Founder/product decisions:**
+### 13.1 Founder/product decisions — DECIDED 2026-07-31
 
-| ID | Decision | Stake |
+> These are founder/product decisions recorded in this Draft workstream artifact. They do not
+> amend Canonical files and authorize no implementation; higher authority still wins.
+
+| ID | Decision (2026-07-31) | Effect |
 |---|---|---|
-| FP-1 | **Ratify the L1-redesign payload** (PE Kademe 2 + CC-007 repair-pair placement + CA-1 au revoir move) as the slice's L1 | The whole map's L1-L6 ledgers key off it; CC-007 names the home but no payload has been founder-ratified since PE (2026-07-04) |
-| FP-2 | **Slice scope for the shipped-vs-spec de-scopes** (bundle: restore L8 `où est ___ ?` frame, L9 `faire ça` set, answer-cluster dialogue restoration) — the "real-deal vs compact" line | Determines L8/L9 demand counts (1 vs 2) and L10 coverage completeness |
+| **FP-1 — decided** | The **L1 redesign payload is ratified** for the slice: PE Kademe-2 enrichment + CC-007 repair-pair placement; Active-new = exactly `merci` + `au revoir`; L0 four recycled; Supported-new = excusez-moi, both survival formulas (locked surfaces), un thé; `je veux` = register contrast/trap only (contextual interpretation, never automatic broad failure); ghost = croissant/madame/monsieur; deferred = bonsoir, salut, pardon, où est ___, la gare, réserver une table, baguette, other legacy breadth | §4.1; L1 Authoring Contract |
+| **CA-1 — decided** | `au revoir` is **L1 Active-new**; L6 never presents it as new; recycled as the closing move thereafter; whole-first through L1-L10; `revoir` not separately taught in-slice | §4.1, §4.6, §5 |
+| **FP-2 — decided** (closes CA-6, CA-7) | **Targeted restoration** of spec-backed functions omitted by the compact builds: L8 `où est ___ ?` frame, L9 `faire ça` set, answer-cluster dialogue reuse across L3/L8/L9/L10 — inside the current sequence, no new screen types, no legacy breadth; counts unchanged (L8 = 2, L9 = 2, L10 = 0) | §4.8, §4.9, §4.10, §5 |
+| **CA-3 — decided** | oui/non/non merci = **one linked answer-move demand** at L3 (identities stay separate where appropriate; `non merci` whole; `oui` rehabilitated as usable answer); L3 = 3, never 4 | §4.3, §5 |
+| **CA-4 — decided** | `j'ai besoin de` homes in **L4 as Supported-new**: scaffolded authored use only; no uncontrolled `de + article` complexity; elision payloads authored + French-QA'd; L10 reuse supported-only; promotion post-slice; no runtime ID assigned here | §4.4, §4.6, §4.9, §4.10 |
+| **CA-5 — decided** | `le / la` = **L5 Supported-new**: scaffolded contrasts/examples; never a second unscaffolded article system; no masculine-first presentation; gender through real noun packages | §4.5 |
+| **CA-8 — decided** | Survival formulas stay **Supported throughout L1-L10** — no in-slice curriculum promotion and no extra Active-new count. **Curriculum treatment ≠ learner mastery**: mastery may still grow through successful supported production, repeated recall, lower hint dependence, cross-scene reuse, repair success, and Hub retrieval; Mon Lexique visibility follows qualifying production evidence or weakness (Active status not required). This resolves the retrospective's "never grows" concern without hidden promotion | §4.1, §5, L1 Authoring Contract §5 |
 
-**Curriculum-author decisions:** CA-1 au revoir L1-vs-L6 · CA-3 answer-cluster counting (3 vs
-4 at L3) · CA-4 `j'ai besoin de` acquisition home (L4 second demand [REC] vs post-slice) ·
-CA-5 le/la tier at L5 (recognition vs supported) · CA-6 L8 scope (fold into FP-2) · CA-7 L9
-scope (fold into FP-2) · CA-8 survival-formula promotion checkpoint (do the formulas ever
-graduate to Active inside the slice, or stay supported throughout — the retrospective's
-"never grows" flag).
+### 13.2 Remaining matters (not reasons to reopen the accepted payload)
 
-**French QA decisions:** feminine display defaults per scene/speaker (fatigué/fatiguée
-rendering, CB §15.4); anatomy display of elision/discontinuous units (j' · n' · ne…pas · à la);
-homograph learner-facing labels (où/ou, là/la); naturalness pass on every new seed
-(all newly proposed French in this map is *Illustrative — human French QA required*).
-
-**Implementation calibration (not decisions):** exact seed counts inside the §7 bands; audio
-coverage %; decomposition pilot instance counts; Dictée per-lesson counts; flashcard selector
-weights — all downstream, per the Exercise Inventory §16.2.
+- **French QA:** feminine display per scene/speaker (fatigué/fatiguée, CB §15.4); anatomy
+  display of elision/discontinuous units (j' · n' · ne…pas · à la); homograph learner-facing
+  labels (où/ou, là/la); naturalness pass on every new seed (all newly proposed French remains
+  *Illustrative — human French QA required*).
+- **Identity registration:** G1 (four L1 identities — proposed candidates in the L1 Authoring
+  Contract §3, `PROPOSED RUNTIME ID — NOT REGISTERED`); G2 (fatigué, soif, table, là, ça,
+  faire-ça set, où-est frame, besoin/aide cluster); the `un thé` primary/linked pair
+  relationship; sentence IDs (G7); audio IDs (later).
+- **Implementation calibration:** exact seed counts inside §7 bands; audio coverage %;
+  decomposition pilot instances; Dictée per-lesson counts; flashcard selector weights (per
+  Exercise Inventory §16.2).
+- **Later curriculum:** survival-formula promotion (post-slice); movement-question promotion
+  (`tu vas où ?`); partitives/plurals; the deferred FP-1 list; L11+ material.
 
 ---
 
 ## 14. Recommended next authoring sequence
 
-1. **Resolve blocking conflicts only**: FP-1 + FP-2 (with CA-1…CA-7 folded into them), then
+1. ~~Resolve blocking conflicts~~ — **done (2026-07-31 fold, §13.1)**. Remaining step 1 work:
    register the G1/G2 identities (with French QA) — nothing else from §11.
-2. **Freeze the L1 acquisition ledger** (this map's §4.1.B updated by FP-1) as the authoring
-   contract.
-3. **Author the full L1 sentence ecosystem** (28-40 seeds per §7; 100% French QA).
+2. ~~Freeze the L1 acquisition ledger~~ — **done**: frozen as
+   `docs/workstreams/L1_AUTHORING_CONTRACT_v0.1.md`.
+3. **Author the full L1 sentence ecosystem** against the frozen contract (28-40 seeds per §7;
+   100% French QA; proposed-but-unregistered identities marked explicitly).
 4. **Build the L1 Sentence × Exercise × Evidence pilot matrix** (Charter workstream 6 pilot;
    Exercise Inventory IDs × L1 seeds × §4.0 evidence classes).
 5. **Validate L1 against every projection**: Mon Lexique entries, flashcard directions, PH
@@ -1404,6 +1430,26 @@ weights — all downstream, per the Exercise Inventory §16.2.
 19. No Canonical authority is claimed (banner). ✔
 20. `git status` shows only this file before commit. ✔
 
+Decision-fold checks (2026-07-31 pass):
+
+21. L1 Active-new = 2 (`merci`, `au revoir`); `au revoir` is L1-new, not L6-new (CA-1). ✔
+22. Total slice Active-new recomputed from cards = 2+1+3+1+1+0+1+2+2+0 = **13**; L6 and L10
+    remain 0. ✔
+23. L3 answer cluster counts as one demand (CA-3); L3 = 3, never 4. ✔
+24. `j'ai besoin de` = L4 Supported-new (CA-4); `le/la` = L5 Supported-new (CA-5) — neither
+    counts as Active-new. ✔
+25. FP-2 restorations (L8 frame, L9 action set, answer dialogues) change no accepted counts. ✔
+26. Survival formulas remain Supported throughout the slice (CA-8); mastery growth is kept
+    distinct from curriculum promotion; Recognition alone still grants no Mon Lexique
+    visibility. ✔
+27. All FP-1/FP-2/CA-1/CA-3/CA-4/CA-5/CA-6/CA-7/CA-8 references in this map read as decided;
+    none remains open; §13.2 holds only French-QA / registration / calibration / later-
+    curriculum matters. ✔
+28. This fold changed only this map and created only the L1 Authoring Contract; no runtime,
+    registry, schema, validator, lesson, test, feature-flag, audio, or Canonical file was
+    touched. ✔
+
 *End of L1-L10 Content & Acquisition Map v0.1 — Draft vertical-slice content planning
-artifact. Next: resolve FP-1/FP-2, freeze the L1 ledger, author the L1 sentence ecosystem
-(Charter workstream 5), then the L1 Sentence × Exercise × Evidence pilot matrix (workstream 6).*
+artifact, decision-folded 2026-07-31 (§13). Next: register G1/G2 identities (French QA), then
+author the L1 sentence ecosystem against `L1_AUTHORING_CONTRACT_v0.1.md` (Charter workstream
+5), then the L1 Sentence × Exercise × Evidence pilot matrix (workstream 6).*
