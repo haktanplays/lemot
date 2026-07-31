@@ -72,9 +72,19 @@ related:
   archive/historical ~19%; brief-supplied (not in repo) ~12%. Only **5 variations** have
   learner-visible runtime today (EV-001, EV-010, EV-040, EV-041, EV-042) — the shipped surface
   currently produces **no conforming learning evidence** (Mastery Bible §37).
-- **Priority distribution (§15):** **P0 = 12** variations · **P1 = 24** (two flagged
-  "evaluate": chip rebuild/decomposition) · **P2 = 11** · **Reject/merge = 6**. Interstitials:
-  17 of 31 are P0.
+- **Priority distribution (§15, post-fold):** **P0 = 12** variations · **P1 = 25** (including
+  Dictée as selective showcase and the two bounded chip pilots) · **P2 = 10** ·
+  **Reject/merge = 6**. Interstitials: 17 of 31 are P0. Totals recomputed from the §5 rows
+  after the 2026-07-31 decision fold.
+- **Decision fold (2026-07-31, §16):** Dictée is **in** as selective P1 (Micro + Guided +
+  selected Sentence; Context mode deferred). Chip Decomposition (EV-036) and Chip Rebuild
+  (EV-035) are **P1 bounded pilots** on authored high-reuse structures; Chip Anatomy Reveal
+  stays a P0 surface capability. Flashcards ship **four primary directions** (intent/meaning →
+  FR recall · sentence context → missing piece · scenario → response recall · audio →
+  meaning/target recognition) with FR → meaning as selective support only. Shadowing (EV-004)
+  and Audio Recognition (EV-014) are definitive P1; Minimal-Pair (EV-015) and Hear the Shape
+  (EV-016) stay P2. Survival Mode (EV-063) is P1 with **no timer/pressure framing**. Le Carnet
+  (EV-075) is **out of the slice** (P2/deferred, architecture-compatible).
 - **Major evidence and runtime gaps:** (1) no shipped surface emits `LearningEvent`s — the
   entire evidence spine is sandbox-only; (2) no runtime exists for boards, stateful/fading
   cards, repair input, self-check projections, or any audio-recorded mechanic; (3) hint level
@@ -84,9 +94,10 @@ related:
   under-specified; (6) flashcards/Daily Review/Practice exist only as quarantined legacy that
   must be rebuilt as projections; (7) Dictée, chip decomposition/rebuild, semantic ranking, and
   minimal-pair audio work have no source runtime at all.
-- **Genuine founder decisions surfaced:** 7 (§16) — Le Carnet scope, chip-decomposition P1 set,
-  Dictée inclusion, flashcard direction set, semantic-ranking priority, audio-gated listening
-  variations, Survival-Mode pressure payload.
+- **Founder/product decisions:** all seven surfaced decisions (FD-1…FD-7) were **decided in
+  the 2026-07-31 fold** (§16.1); none remains open. What remains is implementation/pilot
+  calibration only (§16.2): decomposition-pilot instance placement, per-lesson Dictée counts,
+  final human-audio coverage percentage, flashcard selector weights.
 
 ---
 
@@ -126,8 +137,8 @@ related:
 |---|---|
 | The full EXERCISE_CANON **v0.3 family tables (§11.1-11.14) are not in the repo**; v0.4 references them as the family canon | Families are inventoried from v0.4's §15 fit-matrix, §12 named concepts, and §5.2 hub composition. Rows relying on the missing v0.3 detail are marked `v0.3-gap`. Reconstructing v0.3 §11 (and the truncated §16 scale-validator list) with the founder remains an open dependency, **not resolved here**. |
 | Legacy 11-section flow vs 7 frozen v1 screen types | Content Bible §20.4 supersedes the 11-section flow. Legacy sections appear in the ledger as historical names; normalization maps their pedagogy onto slice variations, not their runtime. |
-| Le Carnet: task brief notes historical journey material "around L10"; repo classifies it ARCHIVE/deferred | No repo source places Le Carnet at L10 (closest adjacency: C2 chip-less easy Say It "from ~L10", `CAIRN_PRODUCT_ANSWERS` §6). Conflict surfaced as founder decision FD-1 (§16); **not resolved here**. |
-| Dictée: task brief mandates evaluation; repo contains only "Guided Dictation v2 stays Later/limited" (EXERCISE_CANON §11 edit 6) | Dictée normalized as one explicit variation (EV-034) with a full contract (§12); slice disposition routed to founder decision FD-3. |
+| Le Carnet: task brief notes historical journey material "around L10"; repo classifies it ARCHIVE/deferred | No repo source places Le Carnet at L10 (closest adjacency: C2 chip-less easy Say It "from ~L10", `CAIRN_PRODUCT_ANSWERS` §6). Conflict surfaced as FD-1 and **decided 2026-07-31 (§16.1): out of the slice**; the historical L10 note stays history. |
+| Dictée: task brief mandates evaluation; repo contains only "Guided Dictation v2 stays Later/limited" (EXERCISE_CANON §11 edit 6) | Dictée normalized as one explicit variation (EV-034) with a full contract (§12); slice disposition **decided 2026-07-31 (FD-3, §16.1): in, selective P1** — Micro/Guided/selected Sentence; Context deferred. |
 | "Type set frozen at 7" (LESSON_FLOW §12, Content Bible §6.3) vs "~10 (D-32)" (Lesson Mechanics Ideas) | Treated as a naming/count tension in sources; this inventory assumes the Content Bible's **7 frozen lesson screen types** and follows EXERCISE_CANON §4's rule that new patterns land **Practice-Hub-first**, so no recommendation here adds a lesson screen type. |
 | Charter expects "~35-40 genuine exercise variations"; task brief expects "~40-50" | Count derived from sources, not forced (result: see §1). No mechanic was invented to reach a number; none was collapsed to shrink one. |
 | Legacy runtime variants that exist in types but not in renderers (`truefalse`, `order`, `match`, `scramble`, weave known/sample) | Recorded as Axis-B facts. Existence in code is **not** treated as product approval (per task rule and Mastery Bible §2.2). |
@@ -387,7 +398,7 @@ founder-gated) · `canon-planned` (design canon, no runtime) · `archive` (histo
 | Try It inline trap cards (1-2 per lesson, optional) | Tasarim §19.E | archive [NEW] | recognition | placement rule for EV-010/EV-013 | SEL/placement |
 | Insight cards ×7: Expression / Grammar Nugget / Faux Ami / Culture Bite / Sound Pattern / Tiny Throwback / Take Another Look | Tasarim §19.F | archive [KEEP] | insight | interstitials | IS-01..06, IS-14, IS-15 |
 | Use What You Have | Tasarim §19.G | archive [RE-SPEC] | constrained production | alias | →EV-043 alias |
-| Survival Mode (timed/pressure optional) | Tasarim §19.G | archive [RE-SPEC]; pressure conflicts with calm canon | recovery production | exercise (pressure flagged) | →EV-063 (+FD-7 flag) |
+| Survival Mode (timed/pressure optional) | Tasarim §19.G | archive [RE-SPEC] — historical timer option **rejected for the slice** (FD-7, 2026-07-31) | recovery production | exercise (no-pressure form only) | →EV-063 (pressure payload rejected) |
 | Scene Repair | Tasarim §19.G | archive [RE-SPEC] | social repair | exercise | EV-061 |
 | More Stay with It | Tasarim §19.G | archive | container | container label | — |
 | Daily Review ritual 01 Fragments (poetic intro) | Tasarim §11 | archive [VALID design] | frame | interstitial | →IS-21 |
@@ -395,7 +406,7 @@ founder-gated) · `canon-planned` (design canon, no runtime) · `archive` (histo
 | Daily Review ritual 03 Recognition (soft cloze, 3 options) | Tasarim §11 | archive [VALID design] | recognition | payload (calm cloze) | →EV-010 payload |
 | Daily Review ritual 04 Outro | Tasarim §11 | archive [REDESIGN] | frame | interstitial/system | →IS-21/SYS |
 | Bon retour (soft return) | Tasarim §11 | archive [VALID design] | comeback frame | interstitial + selector | IS-21 / SEL |
-| Le Carnet writing mode ("user writes their own sentence") | Tasarim §11 [ARCHIVE — Sprint 12+]; DEV_APK canon "No Le Carnet" | archive/deferred | personal writing | exercise (deferred; founder decision) | EV-075 |
+| Le Carnet writing mode ("user writes their own sentence") | Tasarim §11 [ARCHIVE — Sprint 12+]; DEV_APK canon "No Le Carnet" | archive/deferred | personal writing | exercise (out of slice per FD-1, decided 2026-07-31) | EV-075 |
 | MonLexiqueSuggestion ("Add to Mon Lexique?") | Tasarim §12 | archive | lifecycle prompt | feature/detail behavior | FEAT / →IS-27 |
 | Instruction Weave thermostat (english-guided → french-led) | LESSON_FLOW §4; Lesson Mechanics Ideas D-26 | canon-planned, **DEFERRED Phase D** (CB §13.3) | system voice | system behavior (not an exercise) | SYS (deferred) |
 | Readiness Gate + warm-up set | LESSON_FLOW §7; D-27 | canon-planned (Faz C) | gate | selector/gate composed of EVs | SEL |
@@ -433,7 +444,7 @@ Evaluated on merit; presence in this ledger records the *name*, not approval.
 | Adaptive Review / Generated but Validated Variant / Review Resurfacing | brief (+ codex #11/#7) | brief/codex | lifecycle/scheduling | lifecycle + selector | LIFE / SEL |
 | Listen and Repeat / Read Aloud / Sound Imitation / Replay and Compare / Minimal Sound Contrast | brief (+ S1 shadowing) | brief/canon | speaking/listening | shadowing payloads + minimal-pair exercise | →EV-004 payload / EV-015 |
 | Speech Recognition / Pronunciation Scoring | brief (repo: banned in MVP; "graded pronunciation much later", CB §12.2) | brief | speech assessment | reject for slice (no validated contract) | EV-093 (REJ-slice) |
-| Le Carnet / Personal Sentence Writing / Own Sentence / Personal Example / Rewrite in Your Own Way | brief (+ Tasarim §11 ARCHIVE row) | brief/archive | personal writing | exercise (deferred; founder decision FD-1) | EV-075 |
+| Le Carnet / Personal Sentence Writing / Own Sentence / Personal Example / Rewrite in Your Own Way | brief (+ Tasarim §11 ARCHIVE row) | brief/archive | personal writing | exercise (deferred; out of slice per FD-1, decided 2026-07-31) | EV-075 |
 | Recognition Reading | brief | brief | reading | alias | →EV-002 alias |
 | Flashcard directions ×8 (FR→meaning, meaning→FR, audio→meaning, audio→FR, context→piece, scenario→response, chip→example, example→chip) | brief (+ Charter §4.4) | brief/charter | projections | flashcard projection map | §11 |
 
@@ -457,7 +468,7 @@ play (**A**ctive / **R**ecognition / **G**host) — G is *never* required for co
 | EV-001 | **Meet & Listen** (whole-first sentence encounter, tap-to-decompose chips) | Meet It, meet-card, Read & Listen, Meet Card | Read/hear whole canon sentence; tap chips (highlight + audio); continue | First contact inside a moment; whole-first before anatomy | Canon sentence + atomic highlights + audio id | Chip taps; no answer | Exposure only (`item_seen`; low weight) | None (discovery: no wrong) | A/R/G all may appear; G held in context, never explained-as-owned | High — cognates lower first-contact load | Anchor, variation, scene sentences | Any grading; sentence-level highlight spans (CB §6.2) | R6 audio + tap layer on meet card | Shipped v1 (static Continue; tap = Faz B planned) | **P0** | CB §6.2; LESSON_FLOW §1.2; Meet.md |
 | EV-002 | **Micro-Reading with bounded action** | Reading ritual (Review 02), tiny-reading hook, Recognition Reading, micro-paragraphs L6-L10 | Read a 2-4 line scene; end in one bounded action (select continuation, spot piece, match function) | Reading skill without translation testing | Scene text (prerequisite-safe) + one bounded action payload | One selection/tap | Recognition (bounded action); exposure for G | Learner error only on the bounded action; trap signal if authored | A/R read; G may appear in context; production only when CB §11.3 conditions hold | High — cognate-rich scenes are the natural early reading material | Scene sentences, mini-dialogues | Sentence-by-sentence translation testing; "What does this sentence mean?" default; forced production (CB §11.4) | R1 choice on reading card | Planned (ritual design VALID; no current runtime) | **P1** | CB §11 (FL Q7); Tasarim §11; CC §11 |
 | EV-003 | **Light Piece Hunt** | piece identification, Notice-interactive | Find/tap the piece doing a named job in a visible sentence ("which piece asks softly?") | Chunk-boundary awareness inside real lines | Sentence + target piece id + job description | Tap on span | Recognition (chunk-boundary) | Learner error (wrong span); UI-friction if spans ambiguous | A/R targets; G never the required find | Medium — works regardless; cognates ease meaning load | Anchor/variation sentences | Whitespace-token "grammar parsing"; testing G pieces | R1 choice (tappable spans) | Archive design [KEEP]; no runtime | **P1** | Tasarim §19.B; Charter §3.1 |
-| EV-004 | **Shadowing (ungraded)** | Listen and Repeat, Shadow the Chunk, Shadow the Moment, Speak Once, Speak Own Moment, Read Aloud, Sound Imitation, Replay and Compare | Hear recorded line; repeat aloud; optionally re-listen/self-compare (later: self-playback) | Sound shape, rhythm, articulation confidence | Recorded audio (human preferred) + line text | Spoken attempt (uncaptured or self-played) | Audio exposure + speech-attempt completion; **no pronunciation evidence** | None (ungraded by canon); audio error possible (asset defect) | A/S lines; G audible in context, never a repeat-target requirement | High — audio exposes FR sound of cognates (anti-eye-pronunciation) | Short anchor/scene lines, chunks | Any grading/praise without target detection (§16 ERROR); pronunciation claims | R6 audio card (+ future capture) | Canon-planned (S1; activates with audio pass — slice includes recorded audio) | **P1** | CB §12.2; CAIRN_PRODUCT_ANSWERS §4; EXERCISE_CANON §11.5 |
+| EV-004 | **Shadowing (ungraded)** | Listen and Repeat, Shadow the Chunk, Shadow the Moment, Speak Once, Speak Own Moment, Read Aloud, Sound Imitation, Replay and Compare | Hear recorded line; repeat aloud; optionally re-listen/self-compare (later: self-playback) | Sound shape, rhythm, articulation confidence | Recorded audio (human preferred) + line text | Spoken attempt (uncaptured or self-played) | Audio exposure + speech-attempt completion; **no pronunciation evidence** | None (ungraded by canon); audio error possible (asset defect) | A/S lines; G audible in context, never a repeat-target requirement | High — audio exposes FR sound of cognates (anti-eye-pronunciation) | Short anchor/scene lines, chunks | Any grading/praise without target detection (§16 ERROR); pronunciation claims | R6 audio card (+ future capture) | Canon-planned (S1; slice includes recorded audio) | **P1** (decided FD-6) | CB §12.2; CAIRN_PRODUCT_ANSWERS §4; EXERCISE_CANON §11.5 |
 
 ### 5.B Recognition and discrimination family
 
@@ -467,14 +478,14 @@ play (**A**ctive / **R**ecognition / **G**host) — G is *never* required for co
 | EV-011 | **Meaning-in-Context Choice** | Multiple Choice, Quiz (context items), Context Choice, Meaning Choice, Scenario Recognition, Recovery Choice, True/False (binary payload), `context` review item | Read a situation/intent; choose the fitting response/meaning (binary = accept/reject) | Map form ↔ communicative function | Situation text + options (or one proposition for T/F) | One selection/judgment | Recognition | Learner error + trap signal + weak-point candidate | A/R options; G never correct answer | High for meaning mapping; beware trivially-guessable cognate MCQs | Scene/social sentences | Isolated vocabulary MCQ; testing G; T/F on trivia | R1 choice | Legacy hidden (Quiz/context); v1 covers via fill-with-traps payloads | **P0** | Multiple Choice.md; Selection Matrix; CB §3.1 |
 | EV-012 | **Spot the Mistake** | Quiz `negative`, Wrong Line in Moment | Identify the wrong/unnatural line or element | Error detection as recognition skill | Line set with one authored flaw + reason | Selection of flawed element | Recognition (error-detection) | Learner error + trap signal; content error if "flaw" debatable | A/R material only; G never the flawed target | Medium — faux amis make good authored flaws | Scene lines, known-frame sentences | Flaws requiring untaught grammar to see | R1 choice | Legacy hidden (`negative` badge) | **P1** | Quiz.tsx; Tasarim §19.E kin |
 | EV-013 | **Micro-Contrast / Good Piece, Wrong Moment** | Wrong Scene Trap, Negation Trap, Tu/Vous Trap (gated), Recovery vs Exit, Engine Sort (choice stage), micro-contrast hook, Contrast choice | Choose which of 2-3 **owned** pieces fits this scene/structure/register | Boundary-sharpening between confusable owned pieces (je suis vs j'ai; oui vs non merci) | Scene + minimal contrasting option pair + trapReason | One selection | Recognition (discrimination); diagnostic when targeted | Learner error + trap + weak-point candidate; prime diagnostic source | A vs A (or A vs R support); G excluded | Medium — contrasts are usually native-FR pairs, not cognate-driven | Contrast sentences (§6.1 family) | Register payloads before tu/vous doorway (gated); semantic-cluster interference sets | R1 choice | Canon-planned; legacy `odd`/quiz approximations | **P0** | EXERCISE_CANON §12/§15; DailyReviewHook `micro-contrast`; chip-taxonomy §6 Contrast |
-| EV-014 | **Audio Recognition** | `listen` review item, Catch the Moment, Listen for Useful Piece, Which Pieces Did You Hear, audio→meaning direction | Hear FR line; select meaning/heard piece/function | Sound→meaning mapping before production | Audio (TTS now, recorded later) + options | One selection | Recognition (audio) | Learner error + trap; **audio error must be distinguishable** (asset/TTS defect ≠ learner) | A/R targets; G may appear in audio context, never the required identification | Medium-high — trains ear against cognate eye-pronunciation | Short scene lines, chunks | Punishing before audio quality assured; testing G | R1 choice + R6 audio stem | Legacy hidden (`listen`); hooks declared | **P1** | Review.tsx; Tasarim §19.E; CB §12.1 |
-| EV-015 | **Minimal-Pair Discrimination** | Minimal Sound Contrast, sound-trap hook, un/on · le/la · et/est | Hear/see minimal pair; pick which occurred / which fits | Phoneme- and form-level precision where meaning changes | Authored minimal pair + context + audio | One selection | Recognition (sound-form precision) | Learner error + weak-point (sound/writing tag); audio error distinguishable | A/R pairs; G excluded | Low — minimal pairs are FR-internal, cognates irrelevant | Slot sentences isolating the pair | Untaught-pair testing; low-quality TTS pairs | R1 choice + R6 | Planned (DailyReviewHook `sound-trap`); needs quality audio | **P2** | lessonTypes hooks; Mastery Bible §15 (B7 pairs) |
-| EV-016 | **Hear the Shape** (prosody recognition) | rhythm/landing, question-vs-statement melody | Hear line; judge shape (question? finished? polite?) | Intonation contour recognition (rising question pedagogy) | Recorded audio with reliable contour + binary/ternary options | One judgment | Recognition (prosodic) | Learner error only with verified audio; otherwise audio error | A/R lines; G excluded as target | Low | Intonation-bearing scene lines | TTS-contour dependence (S1: needs real recordings) | R1 + R6 | Archive [RE-HOMED]; audio-gated | **P2** | Tasarim §19.E; ANSWERS §4 |
+| EV-014 | **Audio Recognition** | `listen` review item, Catch the Moment, Listen for Useful Piece, Which Pieces Did You Hear, audio→meaning direction | Hear FR line; select meaning/heard piece/function | Sound→meaning mapping before production | Audio (TTS now, recorded later) + options | One selection | Recognition (audio) | Learner error + trap; **audio error must be distinguishable** (asset/TTS defect ≠ learner) | A/R targets; G may appear in audio context, never the required identification | Medium-high — trains ear against cognate eye-pronunciation | Short scene lines, chunks | Punishing before audio quality assured; testing G | R1 choice + R6 audio stem | Legacy hidden (`listen`); hooks declared | **P1** (decided FD-6) | Review.tsx; Tasarim §19.E; CB §12.1 |
+| EV-015 | **Minimal-Pair Discrimination** | Minimal Sound Contrast, sound-trap hook, un/on · le/la · et/est | Hear/see minimal pair; pick which occurred / which fits | Phoneme- and form-level precision where meaning changes | Authored minimal pair + context + audio | One selection | Recognition (sound-form precision) | Learner error + weak-point (sound/writing tag); audio error distinguishable | A/R pairs; G excluded | Low — minimal pairs are FR-internal, cognates irrelevant | Slot sentences isolating the pair | Untaught-pair testing; low-quality TTS pairs | R1 choice + R6 | Planned (DailyReviewHook `sound-trap`); needs quality audio | **P2** (decided FD-6 — Sound Pattern interstitial IS-03 may demo sound contrasts unscored) | lessonTypes hooks; Mastery Bible §15 (B7 pairs) |
+| EV-016 | **Hear the Shape** (prosody recognition) | rhythm/landing, question-vs-statement melody | Hear line; judge shape (question? finished? polite?) | Intonation contour recognition (rising question pedagogy) | Recorded audio with reliable contour + binary/ternary options | One judgment | Recognition (prosodic) | Learner error only with verified audio; otherwise audio error | A/R lines; G excluded as target | Low | Intonation-bearing scene lines | TTS-contour dependence (S1: needs real recordings) | R1 + R6 | Archive [RE-HOMED]; audio-gated | **P2** (decided FD-6) | Tasarim §19.E; ANSWERS §4 |
 | EV-017 | **What Changed** (A/B contrast spotting) | What Changed?, before/after compare | See/hear two versions; identify the difference and (optionally) what it does | Noticing form deltas (negation inserted, article swapped) | Two authored versions differing by exactly one taught delta | Selection of the delta | Recognition (comparison) | Learner error + trap; content error if delta ambiguous | A deltas; R context; G never the delta | Medium | Variation/contrast pairs | Multi-delta pairs; untaught deltas | R1 choice | Archive [RE-HOMED] | **P1** | Tasarim §19.E; learning-engine §9 transformations |
 | EV-018 | **Match Pairs** | `match` review item, pair matching | Map FR↔EN or piece↔function pairs | Bulk association refresh | 3-5 authored pairs | Completed mapping | Recognition | Learner error (weak signal — elimination effects); no single-pair weak-point claim | A/R pairs; G excluded | High but risks trivial cognate matching | Chunks, formulas | Long lists; vocabulary-dump matching; mastery claims per pair | R1 (match layout) | Legacy-dead (typed, unrendered, unreachable data) | **P2** | lib/types.ts:192; pool1.ts |
 | EV-019 | **Odd One Out** | `odd` review item | Pick the item that doesn't belong + see reason | Category/function boundary awareness | 3-4 items + authored reason | One selection | Recognition | Learner error (weak); trap signal | A/R items; G excluded | Medium | Function groups (greetings vs requests) | **Semantic-cluster sets of similar words (interference risk — CLAUDE.md ban)**; untaught categories | R1 choice | Legacy hidden | **P2** | lib/types.ts:187; Review.tsx:159 |
 | EV-020 | **Mayonnaise Game / Five Spellings** | Five Spellings, spelling hypothesis ladder | Choose the real spelling among plausible misspellings | Playful orthography (preferred route over dictation drills) | One target word/chunk + 3-5 authored misspellings | One selection | Recognition (orthographic) | Learner error → sound/writing tag only; **never** broad grammar weakness | A/S items with production history; G excluded | Interference-aware: FR/EN cognate spelling deltas (réservation/reservation) are the *point* — authored deliberately | Single words/chunks | Accent-only gotchas without pedagogy; untaught words | R1 choice | Canon-planned (§11 edit 6 names it the preferred orthography route) | **P2** | EXERCISE_CANON §11.6, §12 |
-| EV-021 | **Semantic Ranking** | Ranking, Semantic Order | Order 3-4 owned items along a meaning/register scale (bluntness, politeness, intensity) | Gradience awareness (je veux < je voudrais) | Authored scale + items with defensible order | An ordering | Recognition (comparison only) | Learner error weak; trap none; content error if scale contestable | A items only; G/R excluded | Low | Register/intensity families | Confusing with sentence ordering (EV-031); scales without one defensible order | R1 (rank layout) or R3 | **Not found in repo** (brief-supplied; legacy `order` variant is *not* this) | **P2** (see FD-5) | brief; register pedagogy (CB §15) |
+| EV-021 | **Semantic Ranking** | Ranking, Semantic Order | Order 3-4 owned items along a meaning/register scale (bluntness, politeness, intensity) | Gradience awareness (je veux < je voudrais) | Authored scale + items with defensible order | An ordering | Recognition (comparison only) | Learner error weak; trap none; content error if scale contestable | A items only; G/R excluded | Low | Register/intensity families | Confusing with sentence ordering (EV-031); scales without one defensible order | R1 (rank layout) or R3 | **Not found in repo** (brief-supplied; legacy `order` variant is *not* this) | **P2** (decided FD-5 — deferred, kept distinct from ordering) | brief; register pedagogy (CB §15) |
 
 ### 5.C Recall, fill, and assembly family
 
@@ -484,9 +495,9 @@ play (**A**ctive / **R**ecognition / **G**host) — G is *never* required for co
 | EV-031 | **Build / Arrange Pieces** | BuildSentence, BuildCard, Arrange Tiles, Sentence Ordering, Guided Build, Listen-then-Build (audio payload), Guided French-shape Build, Role Build, legacy `order` (degenerate MCQ shape) | Tap authored tiles (incl. distractor traps) into the target order | Syntax assembly from known pieces; word-order evidence | Tiles by itemId + answer indexes + distractors + EN intent | Ordered tile sequence | Controlled production (assembly); `wrong_order`/`missing_word`/`extra_word` classes | Learner error + trap (distractor pick) + weak-point candidate | A tiles as answer; R distractors allowed; G never in required sequence | Medium — cognate tiles ease meaning, order stays FR work | Anchor/variation sentences | Whitespace-split tiles violating chip canon; sentence-chips as single tiles; **not** for parent-chunk rebuild (EV-035) or ranking (EV-021) | R3 tiles | Legacy hidden + sandbox (BuildCard, itemId-graded) | **P0** | Build.md; buildSequence.ts; chip-taxonomy §4 |
 | EV-032 | **Starter Fade** | fade rounds, prompt-fade staging (PF0-PF3 kin) | Same target across 2-3 rounds with scaffold progressively removed | Independence ramp; assistance-scoped evidence (FQ-3) | Target + per-round scaffold definitions | Per-round answers | Recall → controlled production (per-round assistance recorded) | Learner error; hint level must reach evidence layer (gap today) | A targets; R scaffold; G never | Medium | One frame family per card | Treating aided round success as independent production (I-26/I-28) | R4 stateful over R2 | Canon-planned (ES1 stateful) | **P1** | EXERCISE_CANON §15.1, §4 |
 | EV-033 | **Function Recall → Use** | Retrieve → Apply, Quick Recall (function direction), Bon Retour payload | Prompted by intent ("ask softly"), retrieve the piece, then immediately use it in a line | Function→form retrieval, the hub's volume-retrieval core | Intent prompt + expected piece + follow-up frame | Piece + short use | Recall + controlled production | Learner error + weak-point candidate | A pieces; R support; G never | Medium-high (intent prompts language-neutral) | Function-bearing chunks (survival formulas, requests) | Bare translation prompts ("translate: I would like") | R2 typed (2-step) or R4 | Canon-planned (hub-primary) | **P0** | EXERCISE_CANON §5.2, §15.2 |
-| EV-034 | **Dictée** (audio → written French) | Dictation, Audio Transcription, Guided Dictation v2, Micro/Guided/Sentence/Context Dictée (payload modes — §12) | Hear FR audio; write what was said (span, cloze, or sentence per mode) | Segmentation + sound-to-orthography mapping + controlled written production | Verified-quality audio + transcript + normalization + accepted variants | Written FR | Audio recognition + segmentation + recall + controlled written production; orthographic observations (precision-class per FQ-1) | Learner error only after audio-quality attribution; spelling/accent/punctuation misses are precision signals, never solo weakness (§12.6) | **A spans only as required writing**; R may appear in audio, cloze-given; **G audible but never required in written output** (§12.8) | **Interference-critical** — cognate spelling deltas (réservation) are the main trap class; authored, not accidental | Short verified-audio sentences with majority-A spans | Collapsing into listening MCQ; full-sentence dictée over R/G-heavy lines; TTS-based grading of orthography | R6 audio + R2 typed | **No runtime; no repo mechanic** ("Guided Dictation v2 stays Later/limited") | **P2** (audio-gated; FD-3) | EXERCISE_CANON §11.6; §12 below |
-| EV-035 | **Chip Rebuild / Parent-Chunk Reconstruction** | Parts-to-Whole, parent-chunk rebuild | Rebuild one **known parent chip** from its authored child pieces (`je` + `ne…pas` + `comprends` → `je ne comprends pas`) | Guided recall of internal structure; parent-chunk production evidence | Parent chip (already owned whole) + authored children + decoys optional | Ordered child assembly | Controlled production (parent-chunk reconstruction) — **distinct from full-sentence ordering** | Learner error (order/omission) scoped to the chip; no sentence-level claims | Parent must be A (owned); children may be authored sub-pieces (not auto-promoted); G children never required | Low-medium | Survival formulas, unpackable chunks **after** whole-first ownership | Before whole-first contact; on formula chunks that degrade when split early (chip-taxonomy §5); whitespace splits | R3 tiles (chip-scoped) | No runtime; no repo name (brief-supplied; canon-compatible with §5 unpack lifecycle) | **P1 — evaluate** (FD-2) | chip-taxonomy §5-§6; brief |
-| EV-036 | **Chip Decomposition** (identify internal structure) | Chunk Boundary Recognition, Component Piece Selection, Internal Pattern Recognition, Whole-to-Parts | Select/identify the correct authored internal split of a known parent chip (which pieces live inside `je voudrais`?) | Chunk-boundary + internal-pattern recognition; reusable-piece awareness | Parent chip + authored decomposition + wrong-split distractors | One selection | Recognition (chunk-boundary / internal-pattern) — **not grammar mastery, not production** | Learner error weak; trap signal; content error if split linguistically wrong (French QA gate) | Parent A/R; children as displayed anatomy; G children shown, never tested | Medium — cognate stems (comprends/comprehend) make anatomy sticky | Unpackable chunks post-contact | Generic Build collapse; testing anatomy before whole-first use; splitting protected lexical units (`quelqu'un`) | R1 choice (anatomy layout) | No runtime (brief-supplied; canon-compatible with §6 unpack cards) | **P1 — evaluate** (FD-2) | chip-taxonomy §5-§6; brief; §13 below |
+| EV-034 | **Dictée** (audio → written French) | Dictation, Audio Transcription, Guided Dictation v2, Micro/Guided/Sentence/Context Dictée (payload modes — §12) | Hear FR audio; write what was said (span, cloze, or sentence per mode) | Segmentation + sound-to-orthography mapping + controlled written production | Verified-quality audio + transcript + normalization + accepted variants | Written FR | Audio recognition + segmentation + recall + controlled written production; orthographic observations (precision-class per FQ-1) | Learner error only after audio-quality attribution; spelling/accent/punctuation misses are precision signals, never solo weakness (§12.6) | **A spans only as required writing**; R may appear in audio, cloze-given; **G audible but never required in written output** (§12.8) | **Interference-critical** — cognate spelling deltas (réservation) are the main trap class; authored, not accidental | Short verified-audio sentences with majority-A spans | Collapsing into listening MCQ; full-sentence dictée over R/G-heavy lines; TTS-based grading of orthography | R6 audio + R2 typed | **No runtime; no repo mechanic** ("Guided Dictation v2 stays Later/limited") | **P1 — selective (decided FD-3; Context mode deferred)** | EXERCISE_CANON §11.6; §12 below |
+| EV-035 | **Chip Rebuild / Parent-Chunk Reconstruction** | Parts-to-Whole, parent-chunk rebuild | Rebuild one **known parent chip** from its authored child pieces (`je` + `ne…pas` + `comprends` → `je ne comprends pas`) | Guided recall of internal structure; parent-chunk production evidence | Parent chip (already owned whole) + authored children + decoys optional | Ordered child assembly | Controlled production (parent-chunk reconstruction) — **distinct from full-sentence ordering** | Learner error (order/omission) scoped to the chip; no sentence-level claims | Parent must be A (owned); children may be authored sub-pieces (not auto-promoted); G children never required | Low-medium | Survival formulas, unpackable chunks **after** whole-first ownership | Before whole-first contact; on formula chunks that degrade when split early (chip-taxonomy §5); whitespace splits | R3 tiles (chip-scoped) | No runtime; no repo name (brief-supplied; canon-compatible with §5 unpack lifecycle) | **P1 — bounded pilot (decided FD-2)** | chip-taxonomy §5-§6; brief |
+| EV-036 | **Chip Decomposition** (identify internal structure) | Chunk Boundary Recognition, Component Piece Selection, Internal Pattern Recognition, Whole-to-Parts | Select/identify the correct authored internal split of a known parent chip (which pieces live inside `je voudrais`?) | Chunk-boundary + internal-pattern recognition; reusable-piece awareness | Parent chip + authored decomposition + wrong-split distractors | One selection | Recognition (chunk-boundary / internal-pattern) — **not grammar mastery, not production** | Learner error weak; trap signal; content error if split linguistically wrong (French QA gate) | Parent A/R; children as displayed anatomy; G children shown, never tested | Medium — cognate stems (comprends/comprehend) make anatomy sticky | Unpackable chunks post-contact | Generic Build collapse; testing anatomy before whole-first use; splitting protected lexical units (`quelqu'un`) | R1 choice (anatomy layout) | No runtime (brief-supplied; canon-compatible with §6 unpack cards) | **P1 — bounded pilot (decided FD-2)** | chip-taxonomy §5-§6; brief; §13 below |
 
 ### 5.D Weave and production family
 
@@ -513,7 +524,7 @@ play (**A**ctive / **R**ecognition / **G**host) — G is *never* required for co
 | EV-060 | **Grammatical Repair / Smallest Repair** | Error Correction, Wrong Architecture Repair, Smallest Repair Wins, Repair Card, Targeted Repair, Mechanics Card (surface payload), Reformulation (grammatical), Micro-remediation instance | See a wrong owned form (je suis faim); make the **smallest** change that fixes it | Repair as first-class skill; weak-point shrinking | Authored wrong form + smallest fix + why-line | Corrected FR | **Repair evidence** (reduces urgency; never instant mastery — I-13/I-33) | Learner error on the repair itself; repair events feed spaced confirmation | A material only (the error must be on owned forms); G never repaired by learner | Low | Known-frame errors (expected-error list per lesson) | Fixing errors the learner never plausibly makes; multi-issue fixes; social fit (that's EV-061) | R2 typed (repair input) | Canon-planned (Repair Card = new runtime; nearest-today fill-on-error-form) | **P0** | EXERCISE_CANON §4/§15.5; Mastery Bible §16 |
 | EV-061 | **Scene Repair / Social Landing Repair** | Scene Repair (Tasarim §19.G), Social Landing Repair | Fix a line that is grammatical but socially wrong for the scene (too blunt, missing landing) | Pragmatic/social fit — **distinct from grammatical repair** | Scene + socially-off line + natural fix + register note | Adjusted FR line | Repair evidence (social/register class) | Learner error (register/naturalness tag class); never graded as grammar failure | A social pieces (s'il vous plaît, merci); G never | Low | Social scenes | Merging with EV-060; tu/vous payloads pre-doorway | R2 typed | Canon-planned (ES1) | **P1** | Tasarim §19.G; EXERCISE_CANON §15.2 |
 | EV-062 | **Nudge Revision / Upgrade the Sentence** | Upgrade the Sentence, Nudge Revision Card, post-output revision, smallest useful upgrade | After own output + exactly one nudge, revise the sentence (Is it possible? → C'est possible ?) | Convert reveal exposure into a produced upgrade; Tier-D deterministic | Learner's own output + one nudge candidate (registry/cognate-bridge) | Revised line | Self-correction + controlled production of the upgraded piece | No error for declining; revision required after nudge (policy); upgrade piece must be active/supported preferred | Upgrade targets prefer A/S; reveal-only candidates preview-only, never graded | **High — cognate bridge is the flagship Tier-D nudge class** | Learner output | >1 nudge; full native rewrite as expected answer; treating reveal-only as mastery | R2 typed (revision mode) | Canon-planned (Tier D pre-AI shippable) | **P1** | EXERCISE_CANON §1.5, §8 |
-| EV-063 | **Survival Mode / Recovery Sequence** | Recovery Reconstruction, Recover Without Switching, Repair to Continue, Recovery Choice → Recall (staged payload) | Run the recovery sequence inside a mini-scene (Je ne comprends pas. Vous pouvez répéter ?) staying in French | Stress-proof survival formulas; recovery as a rehearsed move | Breakdown scene + survival formulas (A) + staged support | Recovery line(s) | Recall + controlled production (survival formulas) | Learner error; formula-level tags; **timed-pressure payload flagged** (FD-7) | Survival formulas are A (closed class); G never; R support lines allowed | Low | Breakdown scenes | Pressure/timer framing conflicting with calm canon (unless founder approves); unseen recovery pieces | R4 chain or R2 | Canon-planned; formulas shipped in L1 enrichment | **P1** | PAYLOAD_ECONOMY §4.1; EXERCISE_CANON §12; CC-007 |
+| EV-063 | **Survival Mode / Recovery Sequence** | Recovery Reconstruction, Recover Without Switching, Repair to Continue, Recovery Choice → Recall (staged payload) | Run the recovery sequence inside a mini-scene (Je ne comprends pas. Vous pouvez répéter ?) staying in French | Stress-proof survival formulas; recovery as a rehearsed move | Breakdown scene + survival formulas (A) + staged support | Recovery line(s) | Recall + controlled production (survival formulas) | Learner error; formula-level tags; timer/pressure payloads **rejected for the slice** (FD-7) | Survival formulas are A (closed class); G never; R support lines allowed | Low | Breakdown scenes | Any timer, countdown, lives, competitive-speed, or urgency framing (rejected — FD-7); unseen recovery pieces | R4 chain or R2 | Canon-planned; formulas shipped in L1 enrichment | **P1** (decided FD-7 — no pressure; partial-but-functional communication accepted; hint ladder available) | PAYLOAD_ECONOMY §4.1; EXERCISE_CANON §12; CC-007 |
 | EV-064 | **Two Ways to Say It / Make It Natural** | Say the Same Thing Differently, naturalness variation | Produce (or select, easier payload) a second natural way to say an intent; compare register/feel | Break the one-correct-answer mindset; naturalness as dimension — **not** error correction | Intent + 2+ authored natural renderings + register notes | Alternative rendering | Controlled production (alternative) or recognition (choice payload); comparison evidence | No "wrong" between valid alternatives; content error if alternatives unnatural (French QA) | A/S renderings; W2-window forms may appear **in reveal only** | Medium-high | Intents with ≥2 owned renderings | Grading one alternative as the answer; unseen alternatives as required | R2 typed / R1 choice | Canon-planned | **P1** | EXERCISE_CANON §12; Tasarim §19.G; CB §10.3 |
 
 ### 5.F Review, diagnostic, dialogue, and personal family
@@ -525,7 +536,7 @@ play (**A**ctive / **R**ecognition / **G**host) — G is *never* required for co
 | EV-072 | **Scenario Response / A Small Moment** | A Small Moment (v1 §18), Scenario Response, situation-response | Read a 2-4 line human situation; respond in FR; model-answer-only compare | Reading-into-production bridge; retention ritual ("not a grammar engine, NOT a chatbot") | Situation (prerequisite-safe) + response class + model + alternatives | Short FR response | Open production attempt + comparison; bounded reading evidence | No grading (model-answer-only); scoped target moves may add evidence later | A/S response material; G in scene text only | Medium-high | Small human moments | Chatbot framing; grading; **canonical seed is L16 (outside L1-L10)** — slice use limited to hub payloads if approved | R2 typed + IS-16 | Canon-planned (L16 seed; L19 recur) | **P2** (canon home outside slice) | Lesson Mechanics Ideas; Tasarim §19.D; L16 spec |
 | EV-073 | **Keep One, Use It Again** | keep-one reflection | Choose one piece to "keep" at lesson end; it returns in a near-term reuse prompt | Agency + intentional reuse; reflection with a teeth | Owned-piece set + return scheduling | One selection now; one reuse later | Engagement/self-report now; the *return* produces normal production evidence via other EVs | None at selection; reuse graded by its host EV | A pieces only | Any | Lesson-end sets | Treating the selection itself as mastery | R1 choice + SEL return | Canon-planned | **P2** | EXERCISE_CANON §12, §5.2 |
 | EV-074 | **Mini Conversation (bounded dialogue)** | Mini Chat, `mini_conv`, `free_conversation` op, AI chat scenario | 3-4 turn topic-locked dialogue; negotiation of meaning | Dialogue confidence (future; AI-gated) | Topic + starter + turn cap + fallback | Multi-turn text | Open production attempt; completion only; **no grading** | None; AI-generator errors must never become learner weakness (§7) | A/S expected; G tolerated in AI lines within exposure rules | High | Scene dialogues | Unrestricted AI chat (out of slice, Charter §3.2); AI as hidden judge | R2 chat shell (future) | Legacy unreachable + blocked op | **P2** (out of slice default) | MiniConversation.tsx; types.ts:103 |
-| EV-075 | **Le Carnet / Personal Sentence** | Personal Sentence Writing, Own Sentence, Personal Example, Rewrite in Your Own Way, "Le Carnet yazı modu" | Write your own sentence with a chosen owned piece; kept as personal memory (Mon Lexique "your own sentences") | Personal transfer — highest-value ownership signal in canon's evidence bands ("very high: personal transfer") | Chosen piece + free input + storage/privacy rule (raw text policy!) | Personal FR/mixed sentence | Open production attempt; personal-transfer signal (contract needed before any mastery use) | No error; privacy: raw free text persistence needs explicit decision (Charter §9) | A pieces as seed; G never required | High | Learner's life | Grading; auto-adding to mastery; **scope conflict unresolved** (FD-1) | R2 typed + Mon Lexique surface | Archive [ARCHIVE — Sprint 12+]; flags off all stages except sandbox | **P2** + **FD-1** | Tasarim §11; Mon Lexique UI.md; DEV_APK canon |
+| EV-075 | **Le Carnet / Personal Sentence** | Personal Sentence Writing, Own Sentence, Personal Example, Rewrite in Your Own Way, "Le Carnet yazı modu" | Write your own sentence with a chosen owned piece; kept as personal memory (Mon Lexique "your own sentences") | Personal transfer — highest-value ownership signal in canon's evidence bands ("very high: personal transfer") | Chosen piece + free input + future event/privacy/storage contract (not defined here) | Personal FR/mixed sentence | Open production attempt; personal-transfer signal (contract needed before any mastery use) | No error; raw free-text persistence governed by the future privacy/storage contract | A pieces as seed; G never required | High | Learner's life | Grading; auto-adding to mastery; any slice-scope personal-writing surface, raw free-text cloud persistence, or moderation scope (out per FD-1) | R2 typed + Mon Lexique surface (Mon Lexique stays schema-compatible with future learner-authored examples; no editing UI in slice) | Archive [ARCHIVE — Sprint 12+]; flags off all stages except sandbox | **P2 — out of slice (decided FD-1)** | Tasarim §11; Mon Lexique UI.md; DEV_APK canon |
 
 ### 5.G Registered but rejected / merged (not counted as slice variations)
 
@@ -626,7 +637,7 @@ Rules (Content Bible §4.7/§4.10, Payload Economy §2-3, Lesson Flow Canon §2,
    reveal surfaces may show French; beyond-window reveal is a validator ERROR.
 
 Per-variation compatibility is recorded in the §5 tables' A/R/G column. The load-bearing cases:
-EV-034 Dictée (G audible, never required written — §12.8), EV-041 Open Weave (G only in reveal,
+EV-034 Dictée (G audible, never required written — §12.7), EV-041 Open Weave (G only in reveal,
 W2), EV-010/EV-013 (G only as wrong trap), EV-035/036 chip work (ghost children never tested),
 EV-070 flashcards (direction eligibility — §11).
 
@@ -736,19 +747,26 @@ must carry context (sentence, scene, or function). Scheduling belongs to the sel
 outcomes contribute only the evidence their §6 class allows (self-report unless a typed variant
 is used).
 
-| Projection mode | Source entity | Learner action | Evidence | A/R/G eligibility | Suitable item types | Anti-pattern risks | Slice priority |
-|---|---|---|---|---|---|---|---|
-| FR (in sentence context) → meaning | canonical sentence + contained item + mastery state | Read FR in context; self-check or choose meaning | Self-report / recognition | A, R; G only as untested context | chunks, noun packages, formulas | Isolated-word meaning quiz (EV-091); cognate-only trivial decks | **P0** |
-| Meaning / intent → FR recall | item + function tag + example sentence | Produce FR (mental + self-grade; typed = EV-030/033 host) | Self-report; recall/controlled production if typed | **A only** (production demand) | spine chips, formulas, packages | Demanding R/G production; bare-translation framing | **P0** |
-| Audio → meaning | audio identity (`entityId → audioId`) + item | Listen; self-check or choose meaning | Self-report / audio recognition | A, R; G audible in context | short chunks, formulas | TTS-quality punishing; audio for En text | **P1** |
-| Audio → FR recall (write/say what you heard is EV-034 territory) | audio identity + item | Listen; recall FR form; self-grade | Self-report; (typed form = Dictée EV-034, separate contract) | A only for recall demand | short chunks | Silently becoming ungoverned Dictée | **P1** (self-check form) |
-| Sentence context → missing piece | canonical sentence + span | See sentence with gap; recall/choose the piece | Self-report / recognition; typed = EV-030 | A gap; R support; G never the gap | frames with owned fillers | Gap on ghost/recognition span | **P1** |
-| Scenario → response recall | scenario entity + response (EV-070's home direction) | Read situation; recall response; reveal; self-grade | Self-report | A responses | survival formulas, requests | Grading; chatbot drift | **P0** |
-| Chip → example selection | item + where-used examples | Pick the example that uses the chip correctly/naturally | Recognition | A/R | chunks with ≥2 examples | Unnatural authored foils | **P2** |
-| Example → target chip identification | sentence + contained pieces | Identify which piece does the named job (EV-003 kin) | Recognition | A/R | anchor sentences | Whitespace-parsing feel | **P2** |
+**Decided direction set (FD-4, 2026-07-31)** — four primary slice directions, one selective
+support, the rest deferred or merged:
 
-Directions are card *payloads* over EV-070 (self-check) or, where typed, over EV-030/EV-033/EV-034
-— they are not eight new variations. Exact slice direction set = founder decision **FD-4**.
+| Projection mode | Source entity | Learner action | Evidence | A/R/G eligibility | Suitable item types | Anti-pattern risks | Slice status (FD-4) |
+|---|---|---|---|---|---|---|---|
+| **Intent / meaning → FR recall** | item + function tag + example sentence | Produce FR (mental + self-grade; typed = EV-030/033 host) | Self-report; recall/controlled production if typed | **A only** (production demand) | spine chips, formulas, packages | Demanding R/G production; bare-translation framing | **Primary** |
+| **Sentence context → missing piece** | canonical sentence + span | See sentence with gap; recall/choose the piece | Self-report / recognition; typed = EV-030 | A gap; R support; G never the gap | frames with owned fillers | Gap on ghost/recognition span | **Primary** |
+| **Scenario → response recall** | scenario entity + response (EV-070's home direction) | Read situation; recall response; reveal; self-grade | Self-report (stays self-check unless a structured scoring contract exists) | A responses | survival formulas, requests | Grading; chatbot drift | **Primary** |
+| **Audio → meaning / target-piece recognition** | audio identity (`entityId → audioId`) + item | Listen; self-check or choose meaning/heard piece | Self-report / audio recognition | A, R; G audible in context | short chunks, formulas | TTS-quality punishing; audio for En text | **Primary** |
+| FR (in sentence context) → meaning | canonical sentence + contained item + mastery state | Read FR in context; self-check or choose meaning | Self-report / recognition | A, R; G only as untested context | early-recognition items; ambiguous/faux-ami review | Becoming the default generic drill; isolated-word meaning quiz (EV-091); cognate-only trivial decks | **Selective support only** |
+| Audio → typed FR recall | audio identity + item | Type what you heard | — | — | — | Ungoverned Dictée duplication | **Deferred — merges into Dictée (EV-034 owns this contract)** |
+| Chip → example selection | item + where-used examples | Pick the example that uses the chip correctly/naturally | Recognition | A/R | chunks with ≥2 examples | Unnatural authored foils | **Deferred** |
+| Example → target chip identification | sentence + contained pieces | Identify which piece does the named job (EV-003 kin) | Recognition | A/R | anchor sentences | Whitespace-parsing feel | **Deferred** |
+
+Rules (unchanged by the fold): all cards derive from canonical item/sentence/audio/mastery
+identities; no separate legacy flashcard vocabulary database; direction is selected by item
+eligibility and learner state; not every item supports every direction. Directions are card
+*payloads* over EV-070 (self-check) or, where typed, over EV-030/EV-033 — they are not new
+variations. Isolated generic "What does X mean?" repetition stays rejected (EV-091).
+Selector weights = downstream calibration (§16.2).
 
 ---
 
@@ -756,29 +774,35 @@ Directions are card *payloads* over EV-070 (self-check) or, where typed, over EV
 
 **[SOURCE]** The only repo trace is EXERCISE_CANON §11 edit 6: "Guided Dictation v2 stays
 Later/limited; the Mayonnaise Game / spelling hypothesis ladder is the preferred playful
-orthography route." Everything else here is **[REC]** evaluation mandated by the brief. Dictée
-is normalized as **one exercise contract** (`audio → written French controlled production`),
-explicitly **not** collapsed into listening recognition (EV-014 selects; EV-034 writes).
+orthography route." Dictée is normalized as **one exercise contract**
+(`audio → written French controlled production`), explicitly **not** collapsed into listening
+recognition (EV-014 selects; EV-034 writes).
 
-### 12.1 Payload / difficulty modes (one contract unless evidence proves otherwise)
+**Decided status (FD-3, 2026-07-31):** Dictée is **in the L1-L10 slice as selective P1
+showcase depth.** Included modes: **Micro Dictée, Guided Dictée, and selected Sentence
+Dictée**. Deferred: **Context Dictée**, paragraph/multi-line Dictée, broad orthography grading,
+and high-pressure replay limits.
 
-| Mode | Learner writes | Stays one contract because |
-|---|---|---|
-| **Micro Dictée** | one chip/short chunk (2-4 syllables) | same action, smaller span |
-| **Guided Dictée** | the missing span inside a visible cloze | same action + visible scaffold (assistance-scoped, FQ-3) |
-| **Sentence Dictée** | one full short sentence | same action, full span |
-| **Context Dictée** | a span/sentence heard inside a 2-3 line scene | same action + discourse context |
+### 12.1 Payload / difficulty modes (one contract; inclusion per FD-3)
 
-Source inspection found no evidence that any mode needs a different renderer (all are R6 audio +
-R2 typed) or a materially different evidence interpretation; they remain payload modes. If a
-future pilot shows Context Dictée producing distinct discourse-segmentation evidence, split it
-then — not now.
+| Mode | Learner writes | Stays one contract because | Slice status |
+|---|---|---|---|
+| **Micro Dictée** | one chip/short chunk (2-4 syllables) | same action, smaller span | **Included** — begins with short survival chunks |
+| **Guided Dictée** | the missing span inside a visible cloze | same action + visible scaffold (assistance-scoped, FQ-3) | **Included** — after sufficient active ownership |
+| **Sentence Dictée** | one full short sentence | same action, full span | **Included selectively** — later L1-L10 lessons and integration checkpoints, only when the full written material is production-eligible |
+| **Context Dictée** | a span/sentence heard inside a 2-3 line scene | same action + discourse context | **Deferred** |
+
+No mode needs a different renderer (all are R6 audio + R2 typed) or a materially different
+evidence interpretation; they remain payload modes. If a future pilot shows Context Dictée
+producing distinct discourse-segmentation evidence, split it then — not now. Per-lesson Dictée
+counts are downstream calibration (§16.2), not prescribed here.
 
 ### 12.2 Playback and hints
 
-- Replay: bounded free replays (count recorded as assistance context, never punished).
-- Slow playback: **playback-rate on the single source recording** — no separate slow recordings
-  (Charter §4.8/§10.2).
+- Replay: free replays (count recorded as assistance context, never punished);
+  high-pressure replay limits are **deferred** (FD-3).
+- Slow playback: **playback-rate on the single source recording first** — no duplicate slow
+  recording except for explicitly approved sound-teaching clips (Charter §4.8/§10.2; FD-3).
 - Hint behavior: the standard ladder (IS-29) adapted — rung 1 = word-count/shape skeleton,
   rung 2 = cloze with function words given, reactive rung 3 = show transcript + "write it once"
   (low-weight). Hints scope the claim (FQ-3), never invalidate the attempt.
@@ -829,10 +853,12 @@ Dictée and must fall back to Guided/Micro on the A spans.
 | `Vous pouvez confirmer la réservation ?` | `vous pouvez` = A survival-pattern stem; `confirmer` / `la réservation` = cognate-heavy candidate payload (recognition-band at L1 in any plausible redesign); cognate spelling interference (réservation ≠ reservation) is exactly the miss class that must stay precision-scoped | **No full-sentence Dictée.** At most **Micro Dictée on `vous pouvez`** or **Guided cloze** with the cognate spans given. Sentence Dictée becomes plausible only when the cognate payload reaches supported+written status |
 | `Allons-y, mais je voudrais d'abord un café.` | `Allons-y` = frozen formula with elision+liaison, chunk-only at L1 (y-analysis is L14 territory); `mais`, `d'abord` = connective/ghost-band; `je voudrais un café` = fully owned A span | **No full-sentence Dictée at L1.** **Selected active span** (`je voudrais un café`) as Micro/Guided Dictée is the ceiling; `Allons-y` written production would silently require ghost/chunk-internal orthography |
 
-**Overall recommendation [REC]**: Dictée enters the slice, if at all, as a **P2 hub-side
-pilot** on Micro/Guided modes over verified recorded audio, L2+ material — never L1
-full sentences, and never as a lesson-path screen. In/out (and Context Dictée specifically) =
-founder decision **FD-3**.
+**Decided disposition (FD-3, 2026-07-31)**: Dictée is included as **selective P1 showcase
+depth** — Micro Dictée first on short survival chunks; Guided Dictée after sufficient active
+ownership; selected Sentence Dictée only in later L1-L10 lessons and integration checkpoints,
+and never where Recognition or Ghost material would become required written production (the two
+L1 analyses above therefore stand: no full-sentence Dictée on either sentence). Context Dictée
+is deferred. Per-lesson counts are downstream calibration (§16.2).
 
 ---
 
@@ -843,12 +869,12 @@ Four behaviors, kept distinct (per the brief; grounded in chip-taxonomy §4-§6 
 1. **Chip Anatomy Reveal → IS-08 (detail surface, P0).** Tap a canonical parent chip; see its
    authored internal anatomy (`je ne comprends pas` → `je` · `comprends` · `ne…pas` · lemma
    `comprendre`). Opening produces **no mastery evidence** (chunk_unpack_seen only).
-2. **Chip Decomposition → EV-036 (recognition exercise, evaluate for P1).** Identify/select the
+2. **Chip Decomposition → EV-036 (recognition exercise, P1 bounded pilot per FD-2).** Identify/select the
    correct authored internal structure. Produces chunk-boundary recognition,
    internal-pattern recognition, reusable-piece awareness — **not** grammar mastery, **not**
    open production.
-3. **Chip Rebuild / Parent-Chunk Reconstruction → EV-035 (controlled production, evaluate for
-   P1).** Rebuild a known parent chip from authored child pieces. Produces guided recall,
+3. **Chip Rebuild / Parent-Chunk Reconstruction → EV-035 (controlled production, P1 bounded
+   pilot per FD-2).** Rebuild a known parent chip from authored child pieces. Produces guided recall,
    controlled reconstruction, parent-chunk production evidence. **Distinct from full-sentence
    ordering** (EV-031) — the unit is the chip's interior, not sentence syntax.
 4. **Progressive Recomposition → content-lifecycle + Content Factory capability + selector
@@ -882,11 +908,22 @@ none is a placement decision. "Evidence" = safest producible class.
 | `qu'est-ce que ça veut dire` | ✔ survival-formula-shaped candidate (would require Haktan approval — closed class) | early: none required; later: `ça` · `veut dire` (lemma `vouloir dire`) | **never** decompose `qu'est-ce que` into wh-machinery pre-doorway (L12 `est-ce que` is the wrapper doorway); elision `qu'` protected | Whole use: L1-band as frozen rescue formula (if approved); anatomy: L12+ (wrapper owned) | EV-063 (usage); IS-08 late; EV-036 only post-L12 | formula recall; usage evidence — anatomy long-deferred |
 | `avec quelqu'un` | partial — `avec` (Caveat) + `quelqu'un` (indivisible lexical unit) | `quelqu'un` as one piece; `avec ___` as pattern later | **`quelqu'un` must never be split** (quel/qu'/un is morphology trivia, not pedagogy) | Whole use: mid-band social scenes (beyond current L1-L10 registry); anatomy: only `avec` + `quelqu'un` boundary | EV-010 (slot); IS-08 (boundary display only) | recognition; package awareness |
 
-**Expected priorities (confirming the brief's expectation):** Chip Anatomy Reveal = **P0
-required surface capability** (IS-08). Chip Decomposition (EV-036) and Chip Rebuild (EV-035) =
-**evaluate for P1** — recommendation: pilot both on the two survival formulas + `je voudrais`
-family in the slice's showcase lessons, promote to firm P1 only if the pilot shows reuse value
-(FD-2). Progressive Recomposition = **architecture/Content Factory requirement**, not a renderer.
+**Decided priorities (FD-2, 2026-07-31):** Chip Anatomy Reveal = **P0 required surface
+capability** (IS-08). Chip Decomposition (EV-036) and Chip Rebuild (EV-035) = **P1 — bounded
+showcase pilots**, applied only to authored, high-reuse structures where anatomy has clear
+downstream value — never to every decomposable chip. Progressive Recomposition =
+**architecture/Content Factory + lifecycle + selector requirement**, not a new renderer or
+exercise count.
+
+- **Initial showcase candidates:** `je ne comprends pas`; selected `vous pouvez …` /
+  request-frame anatomy where French QA approves it; article/package structures around L5;
+  one cumulative recomposition example around L10.
+- **Protected negative cases:** `quelqu'un`; `Allons-y` at L1; apostrophe/elision units whose
+  decomposition would confuse; frozen/protected chunks without immediate reuse value.
+- **Pilot success criteria:** learners understand the whole better; child pieces visibly
+  reappear later; decomposition does not increase cognitive noise; parent-chip ownership
+  remains intact; no whitespace-tokenization leakage occurs.
+- Exact number and placement of pilot instances = downstream calibration (§16.2).
 
 ---
 
@@ -1000,18 +1037,19 @@ of the Charter sequence.
 
 ## 15. Vertical-slice priority recommendation
 
-**[REC]** Classification of all 47 normalized variations (+6 rejected rows). Principle: P0 =
+Classification of all 47 normalized variations (+6 rejected rows), **updated by the 2026-07-31
+decision fold (§16.1)** — recommendation and decided status are marked per row above. Principle: P0 =
 the connected product loop cannot demonstrate "real deal" without it; P1 = showcase depth at the
-L1/L5/L10 checkpoints and hub volume; P2 = architecture-compatible, deferred (mostly gated on
-audio, doorways, or founder decisions). Broad final-product coverage is achieved without forcing
+L1/L5/L10 checkpoints and hub volume; P2 = architecture-compatible, deferred (audio-deferred,
+doorway-gated, or deferred by the §16.1 fold). Broad final-product coverage is achieved without forcing
 every sentence into every variation (Charter §8: eligibility-aware derivation, not
 "every sentence × every mechanic").
 
 | Priority | Variations | Count |
 |---|---|---|
 | **P0 — required for the L1-L10 real-deal slice** | EV-001 Meet & Listen · EV-010 Fill with Traps · EV-011 Meaning-in-Context Choice · EV-013 Micro-Contrast · EV-030 Typed Recall Fill · EV-031 Build · EV-033 Function Recall → Use · EV-040 Supported Weave · EV-041 Open Mixed Weave · EV-042 Say It Your Way · EV-060 Grammatical Repair · EV-070 Tap-to-Reveal Self-Check | **12** |
-| **P1 — showcase depth** | EV-002 Micro-Reading · EV-003 Light Piece Hunt · EV-004 Shadowing · EV-012 Spot the Mistake · EV-014 Audio Recognition · EV-017 What Changed · EV-032 Starter Fade · EV-035 Chip Rebuild (evaluate) · EV-036 Chip Decomposition (evaluate) · EV-043 Choose Your Pieces · EV-044 Continue the Moment · EV-045 Combine/Engine Sandwich · EV-046 Same Slot New Job · EV-047 Same Engine New Layer · EV-048 Register Switch · EV-049 Context Chain · EV-050 Moment Builder Board · EV-051 Line Bank with Traps · EV-052 Missing Move · EV-061 Scene Repair · EV-062 Nudge Revision · EV-063 Survival Mode · EV-064 Two Ways to Say It · EV-071 Diagnostic Probe | **24** |
-| **P2 — architecture-compatible, deferred** | EV-015 Minimal-Pair · EV-016 Hear the Shape · EV-018 Match Pairs · EV-019 Odd One Out · EV-020 Mayonnaise Game · EV-021 Semantic Ranking · EV-034 Dictée · EV-072 Scenario Response/A Small Moment · EV-073 Keep One Use It Again · EV-074 Mini Conversation · EV-075 Le Carnet | **11** |
+| **P1 — showcase depth** | EV-002 Micro-Reading · EV-003 Light Piece Hunt · EV-004 Shadowing (FD-6) · EV-012 Spot the Mistake · EV-014 Audio Recognition (FD-6) · EV-017 What Changed · EV-032 Starter Fade · EV-034 Dictée — selective, Context deferred (FD-3) · EV-035 Chip Rebuild (bounded pilot, FD-2) · EV-036 Chip Decomposition (bounded pilot, FD-2) · EV-043 Choose Your Pieces · EV-044 Continue the Moment · EV-045 Combine/Engine Sandwich · EV-046 Same Slot New Job · EV-047 Same Engine New Layer · EV-048 Register Switch · EV-049 Context Chain · EV-050 Moment Builder Board · EV-051 Line Bank with Traps · EV-052 Missing Move · EV-061 Scene Repair · EV-062 Nudge Revision · EV-063 Survival Mode (no pressure, FD-7) · EV-064 Two Ways to Say It · EV-071 Diagnostic Probe | **25** |
+| **P2 — architecture-compatible, deferred** | EV-015 Minimal-Pair (FD-6) · EV-016 Hear the Shape (FD-6) · EV-018 Match Pairs · EV-019 Odd One Out · EV-020 Mayonnaise Game · EV-021 Semantic Ranking (FD-5) · EV-072 Scenario Response/A Small Moment · EV-073 Keep One Use It Again · EV-074 Mini Conversation · EV-075 Le Carnet (out of slice, FD-1) | **10** |
 | **Reject / merge** | EV-090 Scramble · EV-091 Isolated meaning MCQ · EV-092 Broken Weave Reconstruction · EV-093 Pronunciation Scoring · EV-094 Decision Probe (gated) · EV-095 Standalone Translation Drill | **6** |
 
 Interstitial/detail priorities are in §9 (P0: IS-01/02/03/05/06/07/08/15/16/18/20/22/23/24 and
@@ -1023,21 +1061,36 @@ extensions. P0 requires **no new lesson screen type**.
 
 ---
 
-## 16. Genuine open founder decisions
+## 16. Founder/Product Decision Fold (2026-07-31) and remaining calibration
 
-Only decisions unresolvable from current sources. Settled canon is *not* reopened here (e.g.
-W1/W2, hub-never-gates, no pronunciation scoring in MVP, 7 frozen screen types, PROTECTED_CHUNKS,
-integration active-new = 0).
+### 16.1 Decision fold — FD-1…FD-7 all decided
 
-| ID | Decision | Why sources cannot resolve it |
-|---|---|---|
-| FD-1 | **Le Carnet in or out of L1-L10** (personal-sentence writing, EV-075) | Repo classifies it ARCHIVE/deferred with flags off at every non-sandbox stage, while the slice charter makes "your own sentences" part of Mon Lexique's learner memory (learning-engine §14) and the brief reports historical journey material near L10. Also carries a raw-free-text privacy decision (Charter §9). |
-| FD-2 | **Which chip-decomposition exercises are P1** (EV-035 Rebuild, EV-036 Decomposition — pilot vs full P1 vs P2) | No source defines these mechanics; canon only defines the unpack lifecycle and guardrails. Value vs cognitive-noise is exactly Charter feedback question 7. |
-| FD-3 | **Dictée in the slice** (in/out; if in, whether Context Dictée mode is included) | Only source says "Later/limited" pre-dating the slice charter; recorded-audio availability inside the slice changes the calculus. §12 gives the contract either way. |
-| FD-4 | **Exact flashcard direction set for the slice** (which of §11's 8 directions ship) | Charter mandates eligibility-aware directions but names no set; anti-pattern history (EV-091) argues for a conservative set, product breadth for a wider one. |
-| FD-5 | **Semantic Ranking priority** (EV-021: P1 vs P2 vs reject) | Mechanic absent from all sources; register-gradience pedagogy supports it, but no canon demand exists. |
-| FD-6 | **Recorded-audio-dependent listening variations in slice scope** (EV-015 Minimal-Pair, EV-016 Hear the Shape — and EV-034 by extension) | Depends on the Audio Asset Contract (Charter deliverable 3) landing early enough; sources fix the direction (S1) but not the slice timing. |
-| FD-7 | **Survival Mode pressure payload** (timed/pressure option from Tasarım §19.G vs calm/no-pressure identity) | Archive design offers an optional timer; calm-canon (no pressure framing) points the other way; no active source arbitrates the optional-pressure case. |
+> These are **founder/product decisions folded into this Draft workstream artifact on
+> 2026-07-31.** Recording them here does not make this document Canonical, does not amend any
+> Canonical file, and **authorizes no implementation** — each disposition is planning direction
+> for the slice workstreams. Settled canon was not reopened (W1/W2, hub-never-gates, no
+> pronunciation scoring in MVP, 7 frozen screen types, PROTECTED_CHUNKS, integration
+> active-new = 0).
+
+| ID | Decision (2026-07-31) | Disposition | Affected rows | Remains deferred | Non-claim |
+|---|---|---|---|---|---|
+| **FD-1 — decided** | **Le Carnet is out of the L1-L10 slice** | EV-075 stays architecture-compatible, P2/deferred; no separate personal-writing feature surface in the slice; no raw free-text cloud persistence, moderation, or privacy scope created; Mon Lexique stays schema-compatible with future learner-authored examples, with no "Your own sentences" editing UI required; retention of learner-produced responses follows the **future** event/privacy/storage contract, which is **not invented here** | EV-075; §11 note; IS-23/24 unaffected | The personal-writing feature itself; its privacy/storage contract | No implementation; no contract authored |
+| **FD-2 — decided** | **Chip decomposition = bounded P1 showcase pilot** | IS-08 Anatomy Reveal stays P0 surface capability; EV-036 Decomposition and EV-035 Rebuild become **P1 bounded pilots** on authored, high-reuse structures only (candidates, negative cases, and success criteria in §13); Progressive Recomposition stays a Content Factory + lifecycle + selector requirement, not a renderer or exercise count | EV-035, EV-036, IS-08, §13 | Applying decomposition beyond the pilot set; exact instance count/placement (§16.2) | Pilot authorization is a later implementation gate, not this doc |
+| **FD-3 — decided** | **Dictée is in the slice as selective P1** | EV-034 P2 → **P1 selective**; modes in: Micro + Guided + selected Sentence; deferred: Context Dictée, paragraph/multi-line, broad orthography grading, high-pressure replay limits; no full-sentence Dictée where R/G would become required production; playback-rate slow mode first; FQ-1 orthography semantics binding (§12) | EV-034, §12, §14 S1/S2/S4 analyses | Context Dictée; per-lesson counts (§16.2) | No audio files, no runtime |
+| **FD-4 — decided** | **Four primary flashcard directions** | Primary: intent/meaning → FR recall · sentence context → missing piece · scenario → response recall · audio → meaning/target recognition. Selective support: FR → meaning (early recognition / faux-ami review only, never the default drill). Deferred/merged: audio → typed FR recall (merges into EV-034), chip → example, example → chip; isolated generic meaning MCQ stays rejected (EV-091) | §11 map; EV-070 | Deferred directions; selector weights (§16.2) | Projection architecture, not implementation |
+| **FD-5 — decided** | **Semantic Ranking stays P2** | EV-021 kept distinct from sentence ordering, architecture-compatible, deferred — neither rejected nor implemented; not needed to prove the connected loop; needs unusually careful distractor/ambiguity authoring | EV-021 | The mechanic itself | None |
+| **FD-6 — decided** | **Audio-dependent mechanics split** | Included P1: Shadowing (EV-004), Audio Recognition (EV-014), selective Dictée (per FD-3). Deferred P2: Minimal-Pair (EV-015), Hear the Shape as a separately assessed exercise (EV-016); pronunciation scoring / speech-recognition grading / replay-and-compare **scoring** stay rejected-for-slice (EV-093). Sound Pattern interstitials (IS-03) + audio controls (IS-30) may demonstrate sound differences unscored. Architecture/payloads audio-ready before final recordings; recorded human audio expected for approved canonical content in the feedback build; TTS remains fallback | EV-004, EV-014, EV-015, EV-016, EV-034, EV-093, IS-03, IS-30 | EV-015/016; scored speech of any kind; final audio coverage % (§16.2) | No audio files created in this pass |
+| **FD-7 — decided** | **Survival Mode has no timer/pressure** | EV-063 stays P1 as: produce/recover meaning with limited owned pieces, stay in the interaction without switching wholly to English, use available language strategically, accept partial-but-functional communication, optionally use the hint ladder. Rejected for the slice: timers, countdowns, lives, competitive speed, urgency copy. The historical Tasarım §19.G "timed/pressure optional" note is preserved in the ledger **as history, marked rejected** | EV-063; ledger 4.F row | Nothing (the pressure payload is rejected, not deferred) | None |
+
+### 16.2 Remaining downstream calibration (implementation/pilot matters, not founder decisions)
+
+- exact number and placement of chip-decomposition pilot instances (FD-2);
+- exact per-lesson Dictée counts and span choices (FD-3);
+- final human-audio coverage percentage for the feedback build (FD-6);
+- flashcard selector weights and per-direction mix (FD-4).
+
+These are settled by pilot evidence and implementation review, within the decided boundaries
+above.
 
 ---
 
@@ -1064,6 +1117,30 @@ integration active-new = 0).
 - No Canonical status claimed; banner states non-canonical, non-overriding, non-authorizing. ✔
 - No runtime, schema, validator, lesson, feature-flag, or Canonical file changed — this document
   is the only change in the commit. ✔
+
+Decision-fold checks (2026-07-31 pass):
+
+- Dictée is P1 **selective** (Micro + Guided + selected Sentence); Context Dictée deferred
+  (EV-034 row, §12.1, §12.8, §16.1). ✔
+- Chip Decomposition (EV-036) and Chip Rebuild (EV-035) are **P1 bounded pilots** with authored
+  candidates, protected negative cases, and success criteria (§13, §16.1); Anatomy Reveal stays
+  P0 capability with zero mastery evidence. ✔
+- Flashcard Projection Map carries exactly **four primary** slice directions + one selective
+  support; audio → typed FR recall merged into Dictée; remaining directions deferred; generic
+  isolated meaning MCQ still rejected (§11). ✔
+- Survival Mode (EV-063) recommendation contains **no timer/countdown/pressure/speed framing**;
+  the historical Tasarım §19.G timer option survives only as a ledger history row marked
+  rejected (4.F, §16.1 FD-7). ✔
+- Le Carnet (EV-075) remains **outside the L1-L10 slice** — P2/deferred,
+  architecture-compatible, no privacy/storage contract invented (§16.1 FD-1). ✔
+- Audio inclusion/deferral is internally consistent: EV-004/EV-014/EV-034 P1 vs EV-015/EV-016
+  P2 vs EV-093 rejected; IS-03/IS-30 remain unscored demonstration surfaces (§16.1 FD-6). ✔
+- Every FD-1…FD-7 reference in the document is marked **decided**; none remains open; §16.2
+  holds only implementation/pilot calibration items. ✔
+- P0/P1/P2/reject totals recomputed from the §5 rows after the fold: **12 / 25 / 10 / 6**
+  (47 variations + 6 reject rows unchanged in membership except the decided priority moves). ✔
+- This fold pass changed only this document; no runtime, schema, validator, lesson, registry,
+  feature-flag, test, audio, or Canonical file was touched. ✔
 
 *End of Exercise Variation Inventory v0.1 — Draft vertical-slice planning artifact. Next
 charter deliverables: `INTERSTITIAL_AND_DETAIL_SURFACE_INVENTORY_v0.1.md` (may promote §9),
