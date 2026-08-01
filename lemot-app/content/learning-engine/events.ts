@@ -182,10 +182,168 @@ export type LearningEventSequence = {
   stepCount: number | null;
 };
 
+// ── Runtime vocabulary mirrors ──────────────────────────────────────────────
+//
+// Persisted JSON carries no type information, so the validator needs RUNTIME
+// membership sets, not just TypeScript unions. Each array below is locked to its
+// union in BOTH directions with the same idiom `ERROR_TAG_CODES` uses: removing
+// a value from the type breaks the array's element check, and removing it from
+// the array breaks the exhaustiveness check. This is the single home for these
+// strings — tests import from here rather than re-declaring them.
+//
+// `OPERATION_IDS` / `PROMPT_FADE_LEVELS` mirror unions that live in ./types.ts;
+// they are declared here (not there) so the event vocabulary has one home and
+// ./types.ts stays untouched.
+//
+// PR-03 widens ASSISTANCE / ATTRIBUTION / ADMISSIBILITY: adding a value to the
+// union and to its array is the whole change — the validator needs no edit.
+
+export const LEARNING_EVENT_PRIMITIVES = [
+  "exposure",
+  "selection",
+  "production",
+  "self_report",
+  "reveal",
+  "issue_report",
+] as const;
+
+export const LEARNING_PLACEMENTS = [
+  "lesson_path",
+  "practice_hub",
+  "return_review",
+  "audio_layer",
+  "flashcard_projection",
+  "cross_surface_validation",
+  "engine_fixture_sandbox",
+  "legacy_unknown",
+] as const;
+
+export const CURRICULUM_TREATMENTS = [
+  "active",
+  "supported",
+  "recognition",
+  "ghost",
+  "model_reveal",
+  "meta",
+  "legacy_unknown",
+] as const;
+
+export const EVIDENCE_CLASSES = [
+  "exposure",
+  "audio_exposure",
+  "recognition",
+  "recall",
+  "controlled_production",
+  "supported_production",
+  "open_production_attempt",
+  "comparison_only",
+  "self_correction",
+  "self_report",
+  "no_mastery_evidence",
+] as const;
+
+export const LEARNING_OUTCOMES = [
+  "correct",
+  "incorrect",
+  "acceptable_variant",
+  "near_miss",
+  "completed_unassessed",
+  "skipped",
+  "abandoned",
+  "system_failure",
+  "indeterminate",
+] as const;
+
+/** PR-03 widens this. */
+export const ASSISTANCE_CAPTURE_STATES = ["not_captured"] as const;
+/** PR-03 widens this. */
+export const ATTRIBUTION_STATES = ["unresolved"] as const;
+/** PR-03 widens this. */
+export const ADMISSIBILITY_STATES = ["unresolved", "legacy_admitted"] as const;
+
+export const LEARNING_EVENT_SYNC_STATUSES = ["pending", "synced"] as const;
+export const LEARNING_EVENT_SYNC_ORIGINS = ["local"] as const;
+
+export const OPERATION_IDS = [
+  "recognition",
+  "fill",
+  "build",
+  "register_switch",
+  "context_chain",
+  "free_conversation",
+  "open_production",
+] as const;
+
+export const PROMPT_FADE_LEVELS = ["PF0", "PF1", "PF2", "PF3"] as const;
+
+// Bidirectional compile-time locks: every array member is a valid union member…
+const _primitivesValid: readonly LearningEventPrimitive[] = LEARNING_EVENT_PRIMITIVES;
+const _placementsValid: readonly LearningPlacement[] = LEARNING_PLACEMENTS;
+const _treatmentsValid: readonly CurriculumTreatment[] = CURRICULUM_TREATMENTS;
+const _evidenceValid: readonly EvidenceClass[] = EVIDENCE_CLASSES;
+const _outcomesValid: readonly LearningOutcome[] = LEARNING_OUTCOMES;
+const _assistanceValid: readonly AssistanceCaptureState[] = ASSISTANCE_CAPTURE_STATES;
+const _attributionValid: readonly AttributionState[] = ATTRIBUTION_STATES;
+const _admissibilityValid: readonly AdmissibilityState[] = ADMISSIBILITY_STATES;
+const _syncStatusValid: readonly LearningEventSyncStatus[] = LEARNING_EVENT_SYNC_STATUSES;
+const _operationsValid: readonly OperationId[] = OPERATION_IDS;
+const _promptLevelsValid: readonly PromptFadeLevel[] = PROMPT_FADE_LEVELS;
+void _primitivesValid;
+void _placementsValid;
+void _treatmentsValid;
+void _evidenceValid;
+void _outcomesValid;
+void _assistanceValid;
+void _attributionValid;
+void _admissibilityValid;
+void _syncStatusValid;
+void _operationsValid;
+void _promptLevelsValid;
+
+// …and every union member is in its array (exhaustive).
+type MissingPrimitives = Exclude<
+  LearningEventPrimitive,
+  (typeof LEARNING_EVENT_PRIMITIVES)[number]
+>;
+type MissingPlacements = Exclude<LearningPlacement, (typeof LEARNING_PLACEMENTS)[number]>;
+type MissingTreatments = Exclude<CurriculumTreatment, (typeof CURRICULUM_TREATMENTS)[number]>;
+type MissingEvidence = Exclude<EvidenceClass, (typeof EVIDENCE_CLASSES)[number]>;
+type MissingOutcomes = Exclude<LearningOutcome, (typeof LEARNING_OUTCOMES)[number]>;
+type MissingAssistance = Exclude<
+  AssistanceCaptureState,
+  (typeof ASSISTANCE_CAPTURE_STATES)[number]
+>;
+type MissingAttribution = Exclude<AttributionState, (typeof ATTRIBUTION_STATES)[number]>;
+type MissingAdmissibility = Exclude<
+  AdmissibilityState,
+  (typeof ADMISSIBILITY_STATES)[number]
+>;
+type MissingSyncStatus = Exclude<
+  LearningEventSyncStatus,
+  (typeof LEARNING_EVENT_SYNC_STATUSES)[number]
+>;
+type MissingOperations = Exclude<OperationId, (typeof OPERATION_IDS)[number]>;
+type MissingPromptLevels = Exclude<PromptFadeLevel, (typeof PROMPT_FADE_LEVELS)[number]>;
+
+const _allListed: [
+  MissingPrimitives extends never ? true : never,
+  MissingPlacements extends never ? true : never,
+  MissingTreatments extends never ? true : never,
+  MissingEvidence extends never ? true : never,
+  MissingOutcomes extends never ? true : never,
+  MissingAssistance extends never ? true : never,
+  MissingAttribution extends never ? true : never,
+  MissingAdmissibility extends never ? true : never,
+  MissingSyncStatus extends never ? true : never,
+  MissingOperations extends never ? true : never,
+  MissingPromptLevels extends never ? true : never,
+] = [true, true, true, true, true, true, true, true, true, true, true];
+void _allListed;
+
 /** Grading facets a v1 reveal carried before the PR-02 correction, kept for recovery. */
 export type LegacyGrading = {
   result: ErrorTagCode;
-  errorTags: ErrorTagCode[];
+  errorTags: readonly ErrorTagCode[];
 };
 
 /** Local sync state of an event. Remote phase (P6/P7) drains "pending". */
@@ -224,7 +382,7 @@ export type LearningEventBase = {
   lessonId: string;
   exerciseId: string;
   operation: OperationId;
-  itemIds: ItemId[];
+  itemIds: readonly ItemId[];
   promptLevel: PromptFadeLevel;
   attemptNumber: number;
   userAnswer: string | null;
@@ -249,7 +407,7 @@ export type LearningEventBase = {
    * length-validated. An explicit per-item array rather than one treatment for
    * the whole event, so a mixed-treatment payload can never be flattened.
    */
-  targetTreatments: CurriculumTreatment[];
+  targetTreatments: readonly CurriculumTreatment[];
   /** The payload's authored strongest allowed claim (immutable at runtime). */
   evidenceCeiling: EvidenceClass;
   /** What THIS interaction may support. PR-03/PR-04 narrow it further. */
@@ -271,7 +429,7 @@ export type AssessedLearningEvent = LearningEventBase & {
   assessed: true;
   normalizedAnswer: string | null;
   result: ErrorTagCode;
-  errorTags: ErrorTagCode[];
+  errorTags: readonly ErrorTagCode[];
   legacyGrading?: undefined;
 };
 

@@ -24,6 +24,7 @@
 import type { LearningEvent } from "../events";
 import type { LearningRepository } from "./types";
 import { migrateEventLogToCurrent } from "../event-migration";
+import { InvalidLearningEventError, validateLearningEvent } from "../event-envelope";
 import { backupCorruptValue, corruptBackupKey } from "../../../lib/safeStorage";
 import { privacyResetEpoch, isPersistSuppressed } from "../../../lib/privacyResetEpoch";
 
@@ -202,6 +203,15 @@ export class LocalRepository implements LearningRepository {
     // PR-H: a privacy reset happened after this repository was created — the
     // write is suppressed so a stale writer can't re-create `lm_le_events`.
     if (this.isStaleWriter()) return;
+
+    // The repository is the DURABLE boundary, so it cannot rely on TypeScript
+    // alone: a cast, a hand-built object, or a future caller could hand it an
+    // invalid event. Validate BEFORE touching storage, so a rejected append
+    // leaves the log exactly as it was — including an un-normalized v1 log,
+    // which must not be rewritten on behalf of an event we are refusing.
+    const issues = validateLearningEvent(event);
+    if (issues.length > 0) throw new InvalidLearningEventError(issues);
+
     const res = await this.readEventLog();
     if (res.kind === "corrupt") {
       await this.quarantineCorruptLog(res.raw);

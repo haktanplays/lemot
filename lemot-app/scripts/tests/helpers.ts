@@ -48,7 +48,7 @@ export function makeEvent(
 ): AssessedLearningEvent {
   seq += 1;
   const operation: OperationId = over.operation ?? "fill";
-  const itemIds: ItemId[] = over.itemIds ?? ["item-a"];
+  const itemIds: readonly ItemId[] = over.itemIds ?? ["item-a"];
   const promptLevel: PromptFadeLevel = over.promptLevel ?? "PF0";
   const primitive =
     over.primitive ??
@@ -70,7 +70,11 @@ export function makeEvent(
     expectedAnswer: over.expectedAnswer ?? "bonjour",
     normalizedAnswer: over.normalizedAnswer ?? "bonjour",
     result: over.result,
-    errorTags: over.errorTags ?? [],
+    // Defaults to `[result]`, mirroring what the session controller actually
+    // emits. The previous `[]` default produced an assessed event with zero
+    // error tags — a shape the envelope contract has never allowed and which
+    // the strengthened append-boundary validator correctly rejects.
+    errorTags: over.errorTags ?? [over.result],
     timestamp: over.timestamp ?? 1_000,
     contentVersion: over.contentVersion ?? "content-v1",
     appBuild: over.appBuild ?? "test",
@@ -100,7 +104,7 @@ export function makeNonAssessedEvent(
   over: Partial<NonAssessedLearningEvent> & { primitive: NonAssessedLearningEvent["primitive"] },
 ): NonAssessedLearningEvent {
   seq += 1;
-  const itemIds: ItemId[] = over.itemIds ?? ["item-a"];
+  const itemIds: readonly ItemId[] = over.itemIds ?? ["item-a"];
   const evidenceClass =
     over.evidenceClass ??
     (over.primitive === "reveal"

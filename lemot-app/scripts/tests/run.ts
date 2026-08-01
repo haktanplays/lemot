@@ -57,6 +57,7 @@ import "./sentenceIdentity.test";
 import "./eventEnvelope.test";
 import "./eventMigration.test";
 import "./eventLogMigration.test";
+import "./persistedEventValidation.test";
 import "./nonAssessedEvents.test";
 import { runAll } from "./harness";
 

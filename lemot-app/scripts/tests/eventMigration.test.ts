@@ -142,6 +142,31 @@ describe("v1 -> v2 event migration", () => {
     );
   });
 
+  test("a migration-created event follows the same immutability contract", () => {
+    const v1 = makeV1Event({ result: "correct", itemIds: ["a", "b"] });
+    const e = migrated(v1);
+    assert(Object.isFrozen(e), "migrated event is frozen");
+    assert(Object.isFrozen(e.itemIds), "itemIds frozen");
+    assert(Object.isFrozen(e.targetTreatments), "targetTreatments frozen");
+    assert(Object.isFrozen(e.deviceInfo), "deviceInfo frozen");
+    assert(Object.isFrozen(e.sync), "sync frozen");
+    if (isAssessedEvent(e)) assert(Object.isFrozen(e.errorTags), "errorTags frozen");
+
+    // The migrated event owns its own copies — mutating the v1 source cannot
+    // reach into it.
+    (v1.itemIds as string[]).push("c");
+    assertEqual(e.itemIds.length, 2, "migrated event kept its own itemIds copy");
+    (v1.deviceInfo as { platform: string }).platform = "mutated";
+    assertEqual(e.deviceInfo.platform, "test", "migrated event kept its own deviceInfo copy");
+  });
+
+  test("a migrated reveal freezes its preserved legacy grading", () => {
+    const e = migrated(legacyReveal());
+    const lg = (e as unknown as { legacyGrading?: { errorTags: readonly string[] } }).legacyGrading;
+    assert(lg !== undefined && Object.isFrozen(lg), "legacyGrading frozen");
+    assert(Object.isFrozen(lg?.errorTags), "legacyGrading.errorTags frozen");
+  });
+
   test("migration is deterministic and does not mutate its input", () => {
     const v1 = makeV1Event({ result: "correct" });
     const snapshot = JSON.stringify(v1);

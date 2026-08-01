@@ -29,7 +29,11 @@ import type {
   LearningEventPrimitive,
 } from "./events";
 import { LEARNING_EVENT_SCHEMA_VERSION } from "./events";
-import { createLearningEvent, outcomeForResult } from "./event-envelope";
+import {
+  createLearningEvent,
+  outcomeForResult,
+  validateLearningEvent,
+} from "./event-envelope";
 import { createMigrationRegistry, readSchemaVersion } from "./migrations";
 import type { OperationId } from "./types";
 
@@ -226,7 +230,23 @@ export function migrateEventToCurrent(data: unknown): EventMigrationResult {
   }
 
   if (version === LEARNING_EVENT_SCHEMA_VERSION) {
-    // Already current: validate but do not rewrite.
+    // Already current — but "current version" is a claim the data makes about
+    // itself, not a guarantee. Persisted JSON has no types, so a blind
+    // `as LearningEvent` cast would let a malformed v2 event (unknown enum,
+    // smuggled grading fields on a non-assessed event, misaligned treatments,
+    // broken sequence) enter the log and be treated as supported. Validate it
+    // with the SAME runtime boundary newly constructed events pass through.
+    //
+    // A failing event is reported `unsupported` and left byte-for-byte alone:
+    // never silently repaired, and never migrated into some other v2 shape.
+    const issues = validateLearningEvent(data);
+    if (issues.length > 0) {
+      return {
+        status: "unsupported",
+        reason: `malformed v2 event: ${issues.join("; ")}`,
+        schemaVersion: version,
+      };
+    }
     return { status: "ok", event: data as LearningEvent, migrated: false };
   }
 

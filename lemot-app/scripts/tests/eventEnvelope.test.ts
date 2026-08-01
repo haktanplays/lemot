@@ -9,6 +9,7 @@
 import { describe, test, assert, assertEqual } from "./harness";
 import type {
   AssessedLearningEvent,
+  ErrorTagCode,
   LearningEvent,
   NonAssessedLearningEvent,
 } from "../../content/learning-engine/events";
@@ -148,25 +149,132 @@ describe("event envelope v2 — valid construction", () => {
     assertEqual(e.sentenceId, "sent:l01-je-voudrais-un-cafe", "sentence id kept");
   });
 
-  test("input is not mutated and output is frozen", () => {
+  test("input is not mutated by construction", () => {
     const items = ["chunk-bonjour"];
     const treatments = ["active" as const];
-    const input = {
+    const e = createLearningEvent({
       ...baseInput,
       itemIds: items,
       targetTreatments: treatments,
-      assessed: true as const,
-      primitive: "production" as const,
-      evidenceCeiling: "controlled_production" as const,
-      evidenceClass: "controlled_production" as const,
-      result: "correct" as const,
-      errorTags: ["correct" as const],
-    };
-    const e = createLearningEvent(input);
-    e.itemIds.push("chunk-merci"); // frozen shallowly: array is a copy, not the input
+      assessed: true,
+      primitive: "production",
+      evidenceCeiling: "controlled_production",
+      evidenceClass: "controlled_production",
+      result: "correct",
+      errorTags: ["correct"],
+    });
     assertEqual(items.length, 1, "caller's itemIds array must not be mutated");
     assertEqual(treatments.length, 1, "caller's treatments array must not be mutated");
     assert(Object.isFrozen(e), "event should be frozen");
+  });
+});
+
+describe("event envelope v2 — deep immutability", () => {
+  /** Mutating a frozen structure must either throw or be a silent no-op. */
+  function mutationHasNoEffect(mutate: () => void, describeWhat: string): void {
+    try {
+      mutate();
+    } catch {
+      return; // strict-mode TypeError is an acceptable outcome
+    }
+    // Sloppy mode: the write is silently ignored — the caller asserts the value.
+    void describeWhat;
+  }
+
+  const build = (over: Record<string, unknown> = {}) =>
+    createLearningEvent({
+      ...baseInput,
+      assessed: true,
+      primitive: "production",
+      evidenceCeiling: "controlled_production",
+      evidenceClass: "controlled_production",
+      result: "correct",
+      errorTags: ["correct"],
+      ...over,
+    } as never);
+
+  test("mutating the caller's itemIds after construction cannot change the event", () => {
+    const items = ["chunk-bonjour"];
+    const e = build({ itemIds: items, targetTreatments: ["active"] });
+    items.push("chunk-merci");
+    assertEqual(e.itemIds.length, 1, "event kept its own copy");
+  });
+
+  test("mutating the caller's targetTreatments cannot change the event", () => {
+    const treatments = ["active"];
+    const e = build({ itemIds: ["chunk-bonjour"], targetTreatments: treatments });
+    treatments.push("ghost");
+    assertEqual(e.targetTreatments.length, 1, "event kept its own copy");
+  });
+
+  test("mutating the caller's errorTags cannot change the event", () => {
+    const tags = ["correct"];
+    const e = build({ errorTags: tags });
+    tags.push("wrong_item");
+    assertEqual((e as AssessedLearningEvent).errorTags.length, 1, "event kept its own copy");
+  });
+
+  test("mutating the caller's deviceInfo cannot change the event", () => {
+    const deviceInfo = { platform: "test" };
+    const e = build({ deviceInfo });
+    deviceInfo.platform = "mutated";
+    assertEqual(e.deviceInfo.platform, "test", "event kept its own copy");
+    assert(Object.isFrozen(e.deviceInfo), "deviceInfo is frozen");
+    // …and the caller's own object was NOT frozen on their behalf.
+    assert(!Object.isFrozen(deviceInfo), "external application objects must not be frozen");
+  });
+
+  test("mutating the caller's sync cannot change the event", () => {
+    const sync = { status: "pending" as const, origin: "local" as const, queuedAt: 1_000 };
+    const e = build({ sync });
+    sync.queuedAt = 9_999;
+    assertEqual(e.sync.queuedAt, 1_000, "event kept its own copy");
+    assert(Object.isFrozen(e.sync), "sync is frozen");
+    assert(!Object.isFrozen(sync), "external application objects must not be frozen");
+  });
+
+  test("mutating the caller's sequence cannot change the event", () => {
+    const sequence = { sequenceId: "seq", parentEventId: null, stepIndex: 0, stepCount: 2 };
+    const e = build({ sequence });
+    sequence.stepIndex = 1;
+    assertEqual(e.sequence?.stepIndex, 0, "event kept its own copy");
+    assert(Object.isFrozen(e.sequence), "sequence is frozen");
+  });
+
+  test("nested arrays and objects on the returned event are non-mutable", () => {
+    const e = build({ itemIds: ["chunk-bonjour"], targetTreatments: ["active"] });
+    assert(Object.isFrozen(e.itemIds), "itemIds frozen");
+    assert(Object.isFrozen(e.targetTreatments), "targetTreatments frozen");
+    assert(Object.isFrozen((e as AssessedLearningEvent).errorTags), "errorTags frozen");
+
+    mutationHasNoEffect(
+      () => (e.itemIds as string[]).push("chunk-merci"),
+      "push onto frozen itemIds",
+    );
+    assertEqual(e.itemIds.length, 1, "frozen array must not grow");
+
+    mutationHasNoEffect(
+      () => ((e.deviceInfo as { platform: string }).platform = "hacked"),
+      "write to frozen deviceInfo",
+    );
+    assertEqual(e.deviceInfo.platform, "test", "frozen object must not change");
+  });
+
+  test("a legacy-grading reveal freezes its nested grading too", () => {
+    const tags: ErrorTagCode[] = ["correct"];
+    const e = createLearningEvent({
+      ...baseInput,
+      assessed: false,
+      operation: "recognition",
+      primitive: "reveal",
+      evidenceCeiling: "comparison_only",
+      evidenceClass: "comparison_only",
+      legacyGrading: { result: "correct", errorTags: tags },
+    }) as NonAssessedLearningEvent;
+    tags.push("wrong_item");
+    assertEqual(e.legacyGrading?.errorTags.length, 1, "event kept its own copy");
+    assert(Object.isFrozen(e.legacyGrading), "legacyGrading frozen");
+    assert(Object.isFrozen(e.legacyGrading?.errorTags), "legacyGrading.errorTags frozen");
   });
 });
 
