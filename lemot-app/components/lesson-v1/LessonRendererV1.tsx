@@ -318,6 +318,20 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
             Open Mon Lexique
           </Text>
         </Pressable>
+        <Pressable
+          onPress={() =>
+            openProjection(() => router.push("/learning-stats" as never))
+          }
+          style={{ marginTop: 4, alignSelf: "center", padding: 6 }}
+          accessibilityRole="button"
+        >
+          <Text
+            className="text-sm"
+            style={{ color: P.ink2, textDecorationLine: "underline" }}
+          >
+            See learning summary
+          </Text>
+        </Pressable>
       </View>
     </View>
   );

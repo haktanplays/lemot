@@ -29,6 +29,10 @@ import type { DeviceInfo } from "./events";
 import type { LearningRepository } from "./repository/types";
 import { scoreEvents, type MasterySnapshot } from "./mastery";
 import {
+  selectLearningStats,
+  type LearningStatsProjection,
+} from "./learning-stats";
+import {
   LearningSessionController,
   type EventSurfaceResolver,
   type SessionControllerOptions,
@@ -56,8 +60,8 @@ export type RuntimeSessionOptions = {
 /**
  * The app-level learning runtime.
  *
- * Two members, by design: a controller factory (the only write path) and one
- * read-side projection. There is no `repository`, no `appendEvent`, no
+ * Three members, by design: a controller factory (the only write path) and two
+ * read-side projections. There is no `repository`, no `appendEvent`, no
  * `readAllEvents`, no storage key and no KV handle on this type, so a React
  * component holding a runtime cannot reach persistence even by accident — a
  * surface can ask "what does the learner's history add up to?" and nothing else.
@@ -78,6 +82,16 @@ export type LearningEngineRuntime = {
    * projection, not the history — exporting history is the privacy layer's job.
    */
   readMasterySnapshot(): Promise<MasterySnapshot>;
+  /**
+   * Derive the learner-safe Stats summary from the full event log (PR-10).
+   *
+   * Same discipline as `readMasterySnapshot`: READ-ONLY, explicit, through the
+   * validated/migrated read path, deterministic for the same history, and it
+   * returns ONLY the aggregate `LearningStatsProjection` — no raw events, no
+   * item ids, no learner text, no repository, and never anything from the
+   * telemetry store (D-3: telemetry is not a learning history).
+   */
+  readLearningStats(): Promise<LearningStatsProjection>;
 };
 
 export type LearningRuntimeMetadata = {
@@ -142,6 +156,10 @@ export function createLearningEngineRuntime(
       // `readAllEvents` is the validated/migrated read boundary (v1 → v2 → v3,
       // fail-closed on anything unreadable). The events never leave this closure.
       return scoreEvents(await repository.readAllEvents());
+    },
+    async readLearningStats(): Promise<LearningStatsProjection> {
+      // Same validated read boundary; only the aggregate summary leaves.
+      return selectLearningStats(await repository.readAllEvents());
     },
   };
 }

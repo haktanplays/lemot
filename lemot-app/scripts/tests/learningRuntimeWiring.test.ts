@@ -281,15 +281,16 @@ describe("learning runtime factory", () => {
   });
 
   // PR-05 pinned the surface to exactly one factory method. PR-08 deliberately
-  // added ONE read-side projection (`readMasterySnapshot`), so the enumeration
+  // added ONE read-side projection (`readMasterySnapshot`), and PR-10 added the
+  // second and last planned one (`readLearningStats`), so the enumeration
   // grew — but the intent is unchanged and still enforced: no raw repository,
   // no write method, no raw event access is reachable from a runtime.
-  test("the runtime exposes the factory + read projection and nothing else", () => {
+  test("the runtime exposes the factory + read projections and nothing else", () => {
     const runtime: LearningEngineRuntime = runtimeWith(makeCountingRepository());
     assertEqual(
       Object.keys(runtime).sort().join(","),
-      "createSessionController,readMasterySnapshot",
-      "exactly the controller factory and the explicit mastery read",
+      "createSessionController,readLearningStats,readMasterySnapshot",
+      "exactly the controller factory and the two explicit reads",
     );
     for (const forbidden of [
       "repository",

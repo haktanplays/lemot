@@ -836,9 +836,11 @@ describe("completion and provider wiring (source-level)", () => {
       completion.includes('openProjection(() => router.push("/mon-lexique" as never))'),
       "the Mon Lexique link waits for settlement",
     );
+    // PR-10 added the third projection link (learning stats) through the SAME
+    // gate — the count grew, the invariant (every push settled) is unchanged.
     assertEqual(
       (completion.match(/router\.push\(/g) ?? []).length,
-      2,
+      (completion.match(/openProjection\(\(\) => router\.push\(/g) ?? []).length,
       "no direct projection push remains outside the settled handler",
     );
     assert(completion.includes("createSettledNavigationGate"), "one gate, created once");

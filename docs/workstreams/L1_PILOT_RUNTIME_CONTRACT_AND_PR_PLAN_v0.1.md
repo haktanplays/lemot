@@ -99,7 +99,7 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 
 **2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
 ~~PR-04 mastery~~ ✅ → ~~PR-05 provider wiring~~ ✅ → ~~PR-06 renderer emission~~ ✅ → **the runtime-connected renderer
-proof now exists** → ~~PR-08 Practice return~~ ✅ → ~~PR-09 Mon Lexique UI~~ ✅ → **PR-10 Stats projection (next)** →
+proof now exists** → ~~PR-08 Practice return~~ ✅ → ~~PR-09 Mon Lexique UI~~ ✅ → ~~PR-10 Stats projection~~ ✅ → **PR-07 exact learner content (next, under the recorded founder waiver)** →
 PR-07 exact learner content (French QA deferred by founder waiver — see §22). PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
@@ -833,12 +833,33 @@ independent progression keeps history with no duplicate entry. *Tests:* 52 new (
 including the connected Supported-path proof on the shipped registry. *Rollback:* projection
 revert. *French QA:* no — adds no French. *Learner-visible:* yes (calm English only).
 
-**PR-10 — Stats projection + telemetry routing decision (D-3).**
+**PR-10 — Stats projection + telemetry routing decision (D-3). ✅ IMPLEMENTED
+(`feat/l1-pilot-stats-projection`).**
 *Objective:* learner-safe Stats derived from admissible events; fix the two-event-system boundary.
-*Files:* `telemetry.ts` boundary, new stats projection. *Depends:* PR-04. *Excludes:* Stats UI
-polish; a generic analytics layer; any numeric mastery weight. *Acceptance:* Stats reads the
-learning spine, not the telemetry store; the §17-excluded inferences are absent. *Tests:* **T-19**
-non-inference tests. *Rollback:* projection revert. *French QA:* no. *Learner-visible:* yes.
+*Shipped:* one pure `selectLearningStats(events)` (`learning-stats-v0.1`, frozen aggregate-only
+output — no raw events, ids, timestamps, learner text, tags or per-item counters), consumed by a
+narrow runtime read `readLearningStats()` (same explicit-read discipline; raw repository/events
+still unreachable) and a REAL route `app/learning-stats.tsx` OUTSIDE the legacy tabs, with a dumb
+summary component and a pure copy module. **Learner Stats derive from `LearningEvent` only —
+never telemetry**: telemetry remains content-debugging/funnel data (schema, types, storage and
+behavior untouched; still a separate privacy-inventory category), proven by a behavioral
+independence test over one KV holding both stores. Semantics: practice moments count only
+admitted/legacy-admitted assessed events by FINAL evidence class; independent vs Supported vs
+recognition vs self-correction stay separate; open attempts are communicative reach, never
+success; hub moments require `placement: "practice_hub"`; pieces are distinct canonical items
+(only the count leaves); cross-surface requires ≥2 distinct placements; "Ready for another pass"
+surfaces reducer weakness with no error counts; hints/replays/slow playback are NEUTRAL facts
+from `capture: "known"` assistance on trusted events only, with no mechanism exposed. Explicit
+non-inference: no accuracy, success rate, percentage, streak, XP, level, time-spent, badge,
+pronunciation or per-item mastery-score field exists. The completion view gained a third
+projection link ("See learning summary") through the SAME settled-navigation gate; legacy
+`app/(tabs)/stats.tsx` stays byte-identical and quarantined; no new storage key; `telemetry.ts`
+was not modified (its D-3 documentation was already accurate).
+*Depends:* PR-04. *Excludes (honored):* Stats UI polish; a generic analytics layer; any numeric
+mastery weight. *Acceptance (proven):* Stats reads the learning spine, not the telemetry store;
+the §17-excluded inferences are absent. *Tests:* 48 new (1317 total), incl. T-19-style
+non-inference and the telemetry-independence proof. *Rollback:* projection revert.
+*French QA:* no — adds no French. *Learner-visible:* yes (calm English only).
 
 **PR-11 — Wave B: audio identity, replay/slow capture, Micro + Guided Dictée. 🔒 AUDIO-GATED.**
 *Objective:* `entityId → audioId` manifest, R6 Audio Stem, audio-error attribution, Dictée
@@ -946,6 +967,7 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Exact L1 pilot learner content | **NOT READY** | requires PR-07 payload registration. The pre-PR-07 human French-QA gate was DEFERRED by explicit founder risk acceptance (§22): AI review is provisional, not human attestation, and one comprehensive human QA pass remains required before public/content-complete release |
 | Practice Hub return leg (PR-08) | **DONE** | runtime read projection + pure Hub selector over existing Practice Pool / today's-set rules; authored Wave A screens reused by reference; `practice_hub` placement on the same item/payload identities; legacy Practice tab untouched; 1217 tests green |
 | Mon Lexique real surface (PR-09) | **DONE** | real route on the shared runtime snapshot; Supported/independent claim copy without mechanism claims; weak precedence preserved; no second vocabulary store; completion projection-navigation settlement (Practice Hub link included); 1269 tests green |
+| Learner Stats projection (PR-10) | **DONE** | pure `learning-stats-v0.1` over the spine only (telemetry independence proven); real route outside the quarantined legacy tab; neutral assistance facts; explicit non-inference; completion Stats link on the existing settlement gate; no new storage key; 1317 tests green |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
 | French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
@@ -986,13 +1008,14 @@ pre-PR-07 human French-QA requirement, accepting the risk. Recorded honestly:
   founder risk**; no implementation may claim named-human approval before it exists;
 - PR-08 adds no new French, so it did not depend on this waiver operationally.
 
-**The recommended next engineering action is PR-10 — Stats projection** (§17): learner-safe Stats
-derived from the same admissible-event spine, consuming the D-3 boundary decided in PR-02.
-PR-09 shipped the real Mon Lexique route on the shared snapshot with Supported/independent claim
-context, weak precedence, and the completion projection-navigation settlement barrier (which the
-Practice Hub link now also uses). PR-07 payload registration remains unblocked (at founder risk,
-per the waiver above); PR-12 connected smoke follows. The connected-architecture proof now covers
-lesson → mastery → Mon Lexique/Hub, and Hub → same mastery row.
+**The recommended next engineering action is PR-07 — exact L1 pilot payload registration**,
+proceeding under the recorded founder waiver above (at founder risk; AI review stays provisional;
+one comprehensive human QA pass remains required before public / content-complete release).
+PR-10 shipped the last planned projection: learner-safe Stats derived from `LearningEvent` only
+(never telemetry — D-3 consumed as decided in PR-02), on a real route outside the quarantined
+legacy tab, with the completion Stats link on the existing settlement gate. PR-11 remains
+audio-gated; PR-12 connected smoke follows the completed projection chain (mastery → Mon Lexique
+→ Practice Hub → Stats) plus content registration.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence
