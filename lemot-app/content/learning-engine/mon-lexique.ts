@@ -18,9 +18,28 @@
  *    (precision is never a production success and never weakness), so they do not
  *    appear here. No precision→added / precision→weak path is created.
  */
-import type { ItemId, RawItem } from "./types";
+import type { ItemId } from "./types";
 import type { MasterySnapshot, PracticeEligibility, ProductionClaim } from "./mastery";
 import { deriveProductionClaim } from "./mastery";
+
+/**
+ * The minimal learner-surface shape the selector reads from a registry entry
+ * (PR-09). Two authored registry forms exist and BOTH must project cleanly:
+ *
+ *  - engine fixture form (`RawItem`): nested `text.fr` / `text.en`;
+ *  - shipped lesson form (`LearningItem`): flat `fr` / `en`, with `text` being
+ *    the French surface string.
+ *
+ * This is a structural shape, not a conversion: the canonical `itemId` stays
+ * the only join key, no surface is looked up by event text, and nothing fuzzy
+ * happens — an entry that resolves no non-empty French AND English surface is
+ * excluded. Both existing registries satisfy this type as-is.
+ */
+export type MonLexiqueRegistryItem = {
+  text?: string | { fr?: unknown; en?: unknown };
+  fr?: unknown;
+  en?: unknown;
+};
 
 /** A single learner-safe Mon Lexique row. */
 export type MonLexiqueEntry = {
@@ -36,17 +55,21 @@ export type MonLexiqueEntry = {
   lastProducedAt: number | null;
   practiceEligibility: PracticeEligibility;
   /**
-   * @internal Scoped production claim — the strongest production this entry's
-   * evidence actually supports (`none` · `supported` · `independent`).
+   * Scoped production claim — the strongest production this entry's evidence
+   * actually supports (`none` · `supported` · `independent`).
    *
    * Derived from the scoped channel counters, NOT from aggregate
    * `productionSuccess` (which also contains self-correction successes and so
    * cannot distinguish ownership). It exposes no counters, no assistance
    * history, no weak tags — only the coarse claim.
    *
-   * NOT learner-facing in this PR: no copy is attached and no component reads
-   * it. PR-09 may later choose calm wording from it. An entry present only
-   * because it is weak, with no qualifying production success, reports `none`.
+   * Learner-facing since PR-09 THROUGH the calm claim copy in
+   * `components/learning-engine/monLexiqueCopy.ts` — the raw value itself is
+   * still never rendered, and `supported` deliberately claims only the LEVEL
+   * (current evidence supports a Supported claim, including migrated history
+   * whose assistance is unknown and conservatively capped), never a specific
+   * assistance mechanism. An entry present only because it is weak, with no
+   * qualifying production success, reports `none` and gets no claim line.
    */
   productionClaim: ProductionClaim;
   /** @internal scheduling only — never render the raw number. */
@@ -56,18 +79,35 @@ export type MonLexiqueEntry = {
 };
 
 export type SelectMonLexiqueInput = {
-  items: Record<ItemId, RawItem>;
+  items: Readonly<Record<string, MonLexiqueRegistryItem | undefined>>;
   snapshot: MasterySnapshot;
 };
 
-/** A registry entry is usable only if it resolves to non-empty fr + en strings. */
+/**
+ * A registry entry is usable only if it resolves to non-empty fr + en strings.
+ * Nested form (`text.fr` / `text.en`) is read first; otherwise the shipped flat
+ * form (`fr`, falling back to a string `text` for French, plus `en`). Anything
+ * else — missing entry, missing English, empty strings — excludes the item.
+ */
 function resolvableSurface(
-  raw: RawItem | undefined,
+  raw: MonLexiqueRegistryItem | undefined,
 ): { fr: string; en: string } | null {
-  if (!raw || !raw.text) return null;
-  const { fr, en } = raw.text;
-  if (typeof fr !== "string" || typeof en !== "string") return null;
-  if (fr.length === 0 || en.length === 0) return null;
+  if (!raw) return null;
+  const t = raw.text;
+  if (typeof t === "object" && t !== null) {
+    const { fr, en } = t;
+    if (typeof fr !== "string" || typeof en !== "string") return null;
+    if (fr.length === 0 || en.length === 0) return null;
+    return { fr, en };
+  }
+  const fr =
+    typeof raw.fr === "string" && raw.fr.length > 0
+      ? raw.fr
+      : typeof t === "string" && t.length > 0
+        ? t
+        : null;
+  const en = typeof raw.en === "string" && raw.en.length > 0 ? raw.en : null;
+  if (fr === null || en === null) return null;
   return { fr, en };
 }
 

@@ -5,7 +5,8 @@
  * shape and wires the Wave A screens to it.
  *
  * The controller is now PRIVATE. Descendants receive four semantic record
- * functions and the session state — nothing else. That is the whole point: a
+ * functions, one read-side settlement lifecycle (`whenSettled`, PR-09) and the
+ * session state — nothing else. That is the whole point: a
  * screen can say "the learner picked option B", but it cannot say what evidence
  * class that is, who the result is attributable to, whether it is admissible, or
  * what it should do to mastery. Those answers belong to the pure orchestration
@@ -83,6 +84,18 @@ export type LessonV1LearningSession = {
   recordChoiceAttempt(screen: FillWithTrapsScreen, facts: ChoiceFacts): void;
   recordTypedAttempt(screen: WeaveScreen, facts: TypedAttemptFacts): void;
   recordOpenAttemptAndReveal(screen: SayItYourWayScreen, facts: OpenAttemptFacts): void;
+  /**
+   * Resolve after the current controller's queued append/read/score work has
+   * settled — successes AND caught failures alike (PR-09 lifecycle method).
+   *
+   * The final lesson screen can enqueue its event and advance to completion
+   * before that event has landed, so navigation into a projection surface
+   * (Practice Hub, Mon Lexique) must wait on this or it may read the log one
+   * event short. It writes nothing itself, exposes no controller, repository or
+   * event array, and is deliberately not named `flush`: consumers get a
+   * settlement promise, not a controller verb.
+   */
+  whenSettled(): Promise<void>;
 };
 
 const LessonV1LearningSessionContext = createContext<LessonV1LearningSession | null>(
@@ -150,6 +163,7 @@ export function LessonV1LearningSessionProvider({
         controller.recordOpenProductionAttempt(attempt);
         controller.recordComparisonReveal(reveal);
       },
+      whenSettled: () => controller.flush(),
     }),
     [controller, lesson, state],
   );

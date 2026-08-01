@@ -66,6 +66,7 @@ import "./masteryScopes.test";
 import "./learningRuntimeWiring.test";
 import "./waveAEmission.test";
 import "./practiceHubReturn.test";
+import "./monLexiqueProjection.test";
 import { runAll } from "./harness";
 
 void runAll();

@@ -99,7 +99,7 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 
 **2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
 ~~PR-04 mastery~~ ✅ → ~~PR-05 provider wiring~~ ✅ → ~~PR-06 renderer emission~~ ✅ → **the runtime-connected renderer
-proof now exists** → ~~PR-08 Practice return~~ ✅ → **PR-09 Mon Lexique UI (next)** → PR-10 Stats projection →
+proof now exists** → ~~PR-08 Practice return~~ ✅ → ~~PR-09 Mon Lexique UI~~ ✅ → **PR-10 Stats projection (next)** →
 PR-07 exact learner content (French QA deferred by founder waiver — see §22). PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
@@ -809,12 +809,29 @@ in-memory repository, with no second identity and no second store.
 still depends on PR-07 payload registration and is **not** claimed here.
 *French QA:* none needed — PR-08 adds no French. *Learner-visible:* yes (calm English only).
 
-**PR-09 — Mon Lexique projection (supported path).**
+**PR-09 — Mon Lexique projection (supported path). ✅ IMPLEMENTED (`feat/l1-pilot-mon-lexique`).**
 *Objective:* surface supported-path visibility (CA-8) with calm status copy and assistance context.
-*Files:* `mon-lexique.ts`, Mon Lexique components. *Depends:* PR-04. *Excludes:* Word Graph,
-Le Carnet, learner-authored examples UI. *Acceptance:* recognition alone never adds; ghost never
-adds; `je veux` never appears; supported entries show their support context. *Tests:* **T-16**,
-Mon Lexique eligibility matrix. *Rollback:* projection revert. *French QA:* no. *Learner-visible:* yes.
+*Shipped:* a REAL route (`app/mon-lexique.tsx`) reading the SHARED runtime snapshot
+(`readMasterySnapshot()`) and deriving entries through the existing pure `selectMonLexiqueEntries`
+— no second vocabulary store, no Mon Lexique repository/key/flag, no write, no event on open. The
+selector now accepts BOTH registry surface forms (fixture `text.fr/en`, shipped flat `fr`/`en`)
+with canonical `itemId` as the only join key. The card shows two SEPARATE concepts: membership
+(`Collected` / `Needs another look`) and production-claim context from a pure copy module
+(`Used independently` / `Growing with support`; `none` renders no line). Weak-status precedence
+preserved — a weak entry keeps its earned claim. **The exact assistance mechanism is deliberately
+NOT shown**: `supported` claims the LEVEL only, because migrated/unknown-assistance history is
+conservatively capped to Supported, so mechanism copy ("you used a hint") would over-claim.
+*Settlement:* lesson completion gained a projection-navigation barrier — the session bridge's
+narrow `whenSettled()` (controller settlement, no controller/flush exposed) plus one
+settled-navigation gate; **BOTH completion links (Mon Lexique AND the pre-existing Practice Hub
+link) now wait for the lesson queue to settle before navigating**, so the destination always reads
+the settled log. Back to Home and active-lesson Continue are untouched.
+*Depends:* PR-04. *Excludes:* Word Graph, Le Carnet, learner-authored examples UI (all honored).
+*Acceptance (all proven):* recognition alone never adds; ghost never adds; `je veux` never
+appears (structurally, no blacklist); supported entries show their support context; supported →
+independent progression keeps history with no duplicate entry. *Tests:* 52 new (1269 total),
+including the connected Supported-path proof on the shipped registry. *Rollback:* projection
+revert. *French QA:* no — adds no French. *Learner-visible:* yes (calm English only).
 
 **PR-10 — Stats projection + telemetry routing decision (D-3).**
 *Objective:* learner-safe Stats derived from admissible events; fix the two-event-system boundary.
@@ -928,6 +945,7 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Runtime-connected renderer proof | **EXISTS (PR-06)** | shipped screen → event → mastery → Mon Lexique is proven end-to-end on already-shipped French. It is an ARCHITECTURE proof: the exact PM-009/PM-011 learner payloads are not registered |
 | Exact L1 pilot learner content | **NOT READY** | requires PR-07 payload registration. The pre-PR-07 human French-QA gate was DEFERRED by explicit founder risk acceptance (§22): AI review is provisional, not human attestation, and one comprehensive human QA pass remains required before public/content-complete release |
 | Practice Hub return leg (PR-08) | **DONE** | runtime read projection + pure Hub selector over existing Practice Pool / today's-set rules; authored Wave A screens reused by reference; `practice_hub` placement on the same item/payload identities; legacy Practice tab untouched; 1217 tests green |
+| Mon Lexique real surface (PR-09) | **DONE** | real route on the shared runtime snapshot; Supported/independent claim copy without mechanism claims; weak precedence preserved; no second vocabulary store; completion projection-navigation settlement (Practice Hub link included); 1269 tests green |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
 | French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
@@ -968,11 +986,13 @@ pre-PR-07 human French-QA requirement, accepting the risk. Recorded honestly:
   founder risk**; no implementation may claim named-human approval before it exists;
 - PR-08 adds no new French, so it did not depend on this waiver operationally.
 
-**The recommended next engineering action is PR-09 — Mon Lexique projection** (§17): surface the
-supported-path visibility with calm status copy, reading the same shared snapshot the Hub now
-reads. PR-07 payload registration is also unblocked (at founder risk, per the waiver above);
-PR-10 Stats and PR-12 connected smoke follow. The connected-architecture proof now covers both
-directions: lesson → mastery → Mon Lexique/Hub, and Hub → same mastery row.
+**The recommended next engineering action is PR-10 — Stats projection** (§17): learner-safe Stats
+derived from the same admissible-event spine, consuming the D-3 boundary decided in PR-02.
+PR-09 shipped the real Mon Lexique route on the shared snapshot with Supported/independent claim
+context, weak precedence, and the completion projection-navigation settlement barrier (which the
+Practice Hub link now also uses). PR-07 payload registration remains unblocked (at founder risk,
+per the waiver above); PR-12 connected smoke follows. The connected-architecture proof now covers
+lesson → mastery → Mon Lexique/Hub, and Hub → same mastery row.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence

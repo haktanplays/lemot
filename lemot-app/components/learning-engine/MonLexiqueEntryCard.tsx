@@ -1,25 +1,34 @@
 import { View, Text, type ViewStyle, type TextStyle } from "react-native";
 import { P } from "@/constants/theme";
 import type { MonLexiqueEntry } from "@/content/learning-engine/mon-lexique";
+import {
+  MON_LEXIQUE_STATUS_COPY,
+  PRODUCTION_CLAIM_COPY,
+} from "./monLexiqueCopy";
 
 /**
- * Mon Lexique entry card (P4.3) — pure, learner-facing presentation.
+ * Mon Lexique entry card (P4.3, claim context added in PR-09) — pure,
+ * learner-facing presentation.
  *
  * Renders ONE selector-produced `MonLexiqueEntry` as a calm row: the French
- * surface, its meaning, and a gentle status chip. It does NOT select, derive, or
- * write anything — no `LocalRepository`, no `scoreEvents`, no mastery import; the
- * shell hands it a ready entry.
+ * surface, its meaning, a gentle membership chip, and — when the evidence
+ * supports one — a small production-claim line. It does NOT select, derive, or
+ * write anything — no `LocalRepository`, no `scoreEvents`, no mastery import;
+ * the caller hands it a ready entry. No press action, no navigation, no
+ * interaction at all.
  *
- * Learner-safe: it shows ONLY `fr` / `en` / a calm status label. It NEVER renders
- * `itemId`, raw `dueAt`, `needsPractice` as a number/flag, weakTags, precisionTags,
- * counters, JSON, operation labels, bucket names, or validator language. Weak
- * entries read as a soft "needs another look", never a punishment.
+ * Two SEPARATE concepts, never collapsed into one mutable label:
+ *  - membership: `added` → "Collected", `weak` → "Needs another look";
+ *  - claim context: independent / Supported copy from the pure copy module;
+ *    `none` renders no line. A weak entry keeps its earned claim line — the
+ *    reducer's weak status does not erase scoped production history.
+ *
+ * Learner-safe: it shows ONLY `fr` / `en` / the two calm copy lines. It NEVER
+ * renders `itemId`, raw `dueAt` / `lastSeenAt` / `lastProducedAt`,
+ * `practiceEligibility`, `needsPractice` as a flag, weakTags, precisionTags,
+ * counters, assistance detail, JSON, operation labels, bucket names, or
+ * validator language.
  */
-const STATUS_COPY: Record<MonLexiqueEntry["status"], string> = {
-  added: "Collected",
-  weak: "Needs another look",
-};
-
 export function MonLexiqueEntryCard({ entry }: { entry: MonLexiqueEntry }) {
   const isWeak = entry.status === "weak";
   return (
@@ -27,9 +36,14 @@ export function MonLexiqueEntryCard({ entry }: { entry: MonLexiqueEntry }) {
       <View style={textCol}>
         <Text style={fr}>{entry.fr}</Text>
         <Text style={en}>{entry.en}</Text>
+        {entry.productionClaim !== "none" ? (
+          <Text style={claim}>
+            {PRODUCTION_CLAIM_COPY[entry.productionClaim]}
+          </Text>
+        ) : null}
       </View>
       <Text style={[chip, isWeak ? chipWeak : chipAdded]}>
-        {STATUS_COPY[entry.status]}
+        {MON_LEXIQUE_STATUS_COPY[entry.status]}
       </Text>
     </View>
   );
@@ -57,6 +71,12 @@ const en: TextStyle = {
   color: P.ink2,
   fontSize: 13,
   lineHeight: 18,
+  fontFamily: "Outfit",
+};
+const claim: TextStyle = {
+  color: P.ink3,
+  fontSize: 11,
+  lineHeight: 15,
   fontFamily: "Outfit",
 };
 const chip: TextStyle = {

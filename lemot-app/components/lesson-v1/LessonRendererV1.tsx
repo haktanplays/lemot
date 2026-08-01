@@ -19,6 +19,10 @@ import {
   useLessonV1LearningSession,
   type LessonV1LearningSession,
 } from "./LessonV1LearningSessionProvider";
+import {
+  createSettledNavigationGate,
+  type SettledNavigationGate,
+} from "./settledNavigation";
 
 // Minimal completion marker. The v1 engine has its own screen taxonomy, so
 // we reuse one existing legacy section key (completion-only, no scoring) to
@@ -227,8 +231,37 @@ function pickScreen(
 }
 
 // Completion view: standalone card with no lesson header. Only the completion
-// message and the return action.
+// message and the return actions.
+//
+// PR-09 settlement barrier: the final lesson screen may queue its learning
+// event and land here before that event has settled, so BOTH projection links
+// (Practice Hub, Mon Lexique) route through one settled-navigation gate —
+// tap → session settles → navigate → destination reads a settled log. Opening
+// either surface is navigation only: not learning evidence, no event. Back to
+// Home stays direct and unchanged — it reads no projection.
 function CompletionView({ lesson }: { lesson: Lesson }) {
+  const session = useLessonV1LearningSession();
+  // Latest-session ref: the gate is created once per completion view, but must
+  // always settle the CURRENT session (a privacy reset swaps the controller).
+  const sessionRef = useRef(session);
+  sessionRef.current = session;
+  // Alive flag: a settlement that lands after unmount must not navigate late.
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+  const gate = useRef<SettledNavigationGate | null>(null);
+  if (gate.current === null) {
+    gate.current = createSettledNavigationGate({
+      whenSettled: () => sessionRef.current.whenSettled(),
+      isActive: () => mounted.current,
+    });
+  }
+  const openProjection = gate.current.requestSettledNavigation;
+
   return (
     <View
       style={{
@@ -255,11 +288,12 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
         <Btn onPress={exitToPrevious}>
           <Text style={{ color: P.paper, fontSize: 15 }}>Back to Home</Text>
         </Btn>
-        {/* Navigation only — opening the Hub is not learning evidence and emits
-            no event. (Typed-route cast is the narrow bridge the house rules
-            allow for a freshly added route.) */}
+        {/* Typed-route casts are the narrow bridge the house rules allow for
+            freshly added routes. */}
         <Pressable
-          onPress={() => router.push("/practice-hub" as never)}
+          onPress={() =>
+            openProjection(() => router.push("/practice-hub" as never))
+          }
           style={{ marginTop: 12, alignSelf: "center", padding: 6 }}
           accessibilityRole="button"
         >
@@ -268,6 +302,20 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
             style={{ color: P.ink2, textDecorationLine: "underline" }}
           >
             Practice what came back
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() =>
+            openProjection(() => router.push("/mon-lexique" as never))
+          }
+          style={{ marginTop: 4, alignSelf: "center", padding: 6 }}
+          accessibilityRole="button"
+        >
+          <Text
+            className="text-sm"
+            style={{ color: P.ink2, textDecorationLine: "underline" }}
+          >
+            Open Mon Lexique
           </Text>
         </Pressable>
       </View>
