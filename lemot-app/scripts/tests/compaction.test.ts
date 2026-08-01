@@ -4,7 +4,9 @@
  * replay equivalence: snapshot + remaining events === full replay.
  */
 import { describe, test, assert } from "./harness";
-import type { LearningEvent } from "../../content/learning-engine/events";
+import type { ErrorTagCode, LearningEvent } from "../../content/learning-engine/events";
+import { LEARNING_EVENT_SCHEMA_VERSION } from "../../content/learning-engine/events";
+import { outcomeForResult } from "../../content/learning-engine/event-envelope";
 import { scoreEvents } from "../../content/learning-engine/mastery";
 import {
   COMPACTION_SNAPSHOT_VERSION,
@@ -17,14 +19,21 @@ import {
 
 const NOW = 1_800_000_000_000;
 
-function mkEvent(n: number, result: LearningEvent["result"] = "correct"): LearningEvent {
+function mkEvent(n: number, result: ErrorTagCode = "correct"): LearningEvent {
+  const operation = n % 3 === 0 ? ("recognition" as const) : ("fill" as const);
+  const itemIds = [n % 2 === 0 ? "chunk-je-suis" : "chunk-bonjour"];
+  const primitive = operation === "recognition" ? ("selection" as const) : ("production" as const);
+  const evidenceClass =
+    primitive === "selection" ? ("recognition" as const) : ("controlled_production" as const);
   return {
+    schemaVersion: LEARNING_EVENT_SCHEMA_VERSION,
+    assessed: true,
     clientEventId: `evt-${n}`,
     sessionId: "s1",
     lessonId: "v1-lesson-002",
     exerciseId: `ex-${n % 5}`,
-    operation: n % 3 === 0 ? "recognition" : "fill",
-    itemIds: [n % 2 === 0 ? "chunk-je-suis" : "chunk-bonjour"],
+    operation,
+    itemIds,
     promptLevel: "PF0",
     attemptNumber: 1,
     userAnswer: null,
@@ -37,6 +46,19 @@ function mkEvent(n: number, result: LearningEvent["result"] = "correct"): Learni
     appBuild: "test",
     deviceInfo: { platform: "test" },
     sync: { status: "pending", origin: "local", queuedAt: NOW + n * 1000 },
+    primitive,
+    placement: "engine_fixture_sandbox",
+    evId: null,
+    payloadId: null,
+    sentenceId: null,
+    targetTreatments: itemIds.map(() => "legacy_unknown" as const),
+    evidenceCeiling: evidenceClass,
+    evidenceClass,
+    outcome: outcomeForResult(result),
+    assistance: "not_captured",
+    attribution: "unresolved",
+    admissibility: "unresolved",
+    sequence: null,
   };
 }
 

@@ -28,8 +28,16 @@
  *    can be unit-tested deterministically with a fake repository.
  */
 import type { ExerciseBlueprint, ItemId } from "./types";
-import type { DeviceInfo, ErrorTagCode, LearningEvent } from "./events";
+import type {
+  CurriculumTreatment,
+  DeviceInfo,
+  ErrorTagCode,
+  EvidenceClass,
+  LearningEvent,
+  LearningEventPrimitive,
+} from "./events";
 import type { LearningRepository } from "./repository/types";
+import { createLearningEvent } from "./event-envelope";
 import { scoreEvents, type MasterySnapshot } from "./mastery";
 
 /** Minimal grade-result shape the controller needs (a `GradeResult` satisfies it). */
@@ -171,7 +179,15 @@ export class LearningSessionController {
     );
   }
 
-  /** Record a recognition reveal (ungraded; no `grade()` call). */
+  /**
+   * Record a recognition reveal (ungraded; no `grade()` call).
+   *
+   * PR-02 correction: this previously stored `result: "correct"` — a fabricated
+   * grade for something the learner was never asked to answer, which the v1
+   * reducer then counted as a recognition SUCCESS. It now emits a genuine
+   * non-assessed `reveal` event: comparison-only evidence, completed-unassessed
+   * outcome, and no grading facets at all (the union leaves nowhere to put one).
+   */
   recordRecognitionReveal(input: RecordRecognitionRevealInput): void {
     const timestamp = this.now();
     const ex = input.exercise;
@@ -181,14 +197,12 @@ export class LearningSessionController {
         : ex.targetText) ?? null;
     this.emitSaving();
     this.enqueue(
-      this.buildEvent({
+      this.buildNonAssessedEvent({
         exercise: ex,
         timestamp,
-        userAnswer: null,
+        primitive: "reveal",
+        evidenceClass: "comparison_only",
         expectedAnswer,
-        normalizedAnswer: null,
-        result: "correct",
-        errorTags: ["correct"],
       }),
       timestamp,
     );
@@ -237,6 +251,30 @@ export class LearningSessionController {
     return allTargets; // first success → one bounded credit
   }
 
+  /**
+   * v2 fields this controller can honestly supply.
+   *
+   * This is the flag-gated learning-engine FIXTURE path, not the shipped lesson
+   * renderer, so `placement` says exactly that. Everything this path genuinely
+   * does not know — the exercise variation, the authored payload identity beyond
+   * the fixture's own exercise id, the sentence identity, and the authored
+   * treatment of each target — stays explicitly unknown rather than invented.
+   *
+   * `assistance` / `attribution` / `admissibility` keep their neutral PR-02
+   * defaults; PR-03 replaces them with really captured values.
+   */
+  private v2Context(itemIds: ItemId[], exercise: ExerciseBlueprint) {
+    const targetTreatments: CurriculumTreatment[] = itemIds.map(() => "legacy_unknown");
+    return {
+      placement: "engine_fixture_sandbox" as const,
+      evId: null,
+      payloadId: exercise.id,
+      sentenceId: null,
+      targetTreatments,
+      sequence: null,
+    };
+  }
+
   private buildEvent(args: {
     exercise: ExerciseBlueprint;
     timestamp: number;
@@ -251,7 +289,14 @@ export class LearningSessionController {
       ? [...args.exercise.targetItemIds]
       : [];
     const itemIds = this.boundChainItemIds(args.exercise, args.result, allTargets);
-    return {
+    const primitive: LearningEventPrimitive =
+      args.exercise.operation === "build" || args.exercise.operation === "recognition"
+        ? "selection"
+        : "production";
+    const evidenceClass: EvidenceClass =
+      primitive === "selection" ? "recognition" : "controlled_production";
+    return createLearningEvent({
+      assessed: true,
       clientEventId: this.makeClientEventId(args.timestamp),
       sessionId: this.sessionId,
       lessonId: this.lessonId,
@@ -270,7 +315,48 @@ export class LearningSessionController {
       appBuild: this.appBuild,
       deviceInfo: this.deviceInfo,
       sync: { status: "pending", origin: "local", queuedAt: args.timestamp },
-    };
+      primitive,
+      evidenceCeiling: evidenceClass,
+      evidenceClass,
+      ...this.v2Context(itemIds, args.exercise),
+    });
+  }
+
+  /** Build a genuinely non-assessed event (no grading facets exist on this arm). */
+  private buildNonAssessedEvent(args: {
+    exercise: ExerciseBlueprint;
+    timestamp: number;
+    primitive: Exclude<LearningEventPrimitive, "selection">;
+    evidenceClass: EvidenceClass;
+    expectedAnswer?: string | null;
+  }): LearningEvent {
+    const attemptNumber = this.nextAttempt(args.exercise.id);
+    const itemIds: ItemId[] = Array.isArray(args.exercise.targetItemIds)
+      ? [...args.exercise.targetItemIds]
+      : [];
+    return createLearningEvent({
+      assessed: false,
+      clientEventId: this.makeClientEventId(args.timestamp),
+      sessionId: this.sessionId,
+      lessonId: this.lessonId,
+      exerciseId: args.exercise.id,
+      operation: args.exercise.operation,
+      itemIds,
+      promptLevel: "PF0",
+      attemptNumber,
+      userAnswer: null,
+      expectedAnswer: args.expectedAnswer ?? null,
+      timestamp: args.timestamp,
+      contentVersion: this.contentVersion,
+      appBuild: this.appBuild,
+      deviceInfo: this.deviceInfo,
+      sync: { status: "pending", origin: "local", queuedAt: args.timestamp },
+      primitive: args.primitive,
+      evidenceCeiling: args.evidenceClass,
+      evidenceClass: args.evidenceClass,
+      outcome: "completed_unassessed",
+      ...this.v2Context(itemIds, args.exercise),
+    });
   }
 
   private enqueue(event: LearningEvent, savedAt: number): void {

@@ -87,7 +87,7 @@ Both already exist in shipped v1 form (`FillWithTraps`, `Weave`). R3/R4/R5/R6 ar
 | Attribution | none; every appended event scores | **Extend** — admissibility gate must precede `scoreEvent` |
 | Supported production | `mastery.ts` `PRODUCTION_OPS` treats `fill/build/register_switch/context_chain` as production; supported and independent production are **indistinguishable** | **Extend** — assistance-scoped counters required |
 | Item registry | **two** registries: `content/itemRegistry.ts` (**54** ids, hyphen `chunk-bonjour`) vs `content/learning-engine/items.ts` (**59** ids, colon `chunk:je-vais`), **zero shared ids** | **Extend — decided (D-2, PR-01).** `content/itemRegistry.ts` is canonical; its shipped ids are **immutable** (ADR-0012 / YASA 2). `learning-engine/items.ts` is **fixture input**, not a second canonical registry. Exact overlaps resolve through an explicit read-only compatibility boundary — **no rename, no colon migration** |
-| Telemetry | a **second** event system: `TelemetryEvent` (15 types incl. `screen_seen`, `answer_compared`, `lexique_opened`) with its own store `lm_le_telemetry` | **Bounded reconcile** — routing decision required so exposure does not get two homes (D-3) |
+| Telemetry | a **second** event system: `TelemetryEvent` (15 types incl. `screen_seen`, `answer_compared`, `lexique_opened`) with its own store `lm_le_telemetry` | **Reconciled — decided (D-3, PR-02).** The learning spine owns every learning-relevant interaction; telemetry stays product-funnel/operational and never feeds mastery. Both systems remain, with one documented, test-pinned boundary and no double-write |
 | Sentence identity | none in runtime; convention exists in docs only | **Add** |
 | Audio identity | none; TTS-only via `useSpeech()` | **Add (Wave B)** |
 | Legacy practice/SRS | `lm7_srs`, `data/flashcards.ts`, legacy practice tab | **Quarantine — never a target** |
@@ -121,7 +121,7 @@ projection → derived product surfaces.** No surface may skip a link.
 | Lesson placement | Lesson Flow Canon; Acquisition Map | `content/lessons/v1/*.ts` | unchanged (v1 lesson files) | the pilot matrix document; Practice Hub |
 | Pairing/payload identity | this doc §4.3 | none (`screen.id` only) | authored payload id, referencing a pairing | `L1-PM-###` used as a runtime id |
 | Exercise variation | Exercise Variation Inventory | `OperationId` (7 ops) | EV id carried as a payload field | a per-EV event type |
-| Attempt/event | Mastery & Evidence Bible | `LearningEvent` + `LocalRepository` | **same, extended** | `TelemetryEvent` for assessed attempts (D-3) |
+| Attempt/event | Mastery & Evidence Bible | `LearningEvent` v2 + `LocalRepository` (PR-02) | **same, extended in place** | `TelemetryEvent` for any learning-relevant interaction (D-3, closed) |
 | Assistance | Mastery Bible FQ-3 | `promptLevel` (hardcoded PF0) | assistance block on the event | renderer-local state that never reaches the event |
 | Error attribution | Mastery Bible §7; Content Bible §14.6 | none | attribution block, resolved **before** scoring | grader output alone (`ErrorTagCode` ≠ error source) |
 | Mastery projection | Mastery Bible | `mastery.ts` `scoreEvent` | **same, extended** | any surface computing its own mastery |
@@ -259,10 +259,15 @@ Six semantic primitives, shared across the 19 selected EVs. Avoid one bespoke ty
 Facets, not new categories: **audio playback** (replay/slow on any primitive), **sequence step**
 (parent id + index, EV-063), **skip** (an outcome on `production`/`selection`, not a type).
 
-**[DECISION NEEDED D-3]** `exposure` and `reveal` overlap the existing `TelemetryEvent` types
-(`screen_seen`, `exposure_seen`, `answer_compared`, `lexique_opened`). [REC] one spine owns
-**learning-relevant** exposure (it is evidence-adjacent and must be rebuildable); telemetry keeps
-**product-funnel** counting only, and Stats must read the learning spine, never the telemetry store.
+**D-3 — DECIDED and implemented in PR-02.** `exposure` and `reveal` overlap the existing
+`TelemetryEvent` types (`screen_seen`, `exposure_seen`, `answer_compared`, `lexique_opened`). The
+**learning spine owns every learning-relevant interaction** — assessed selection and production,
+open-production attempts, exposure that may affect review/projection logic, reveal, self-report,
+and issue reports tied to an attempt. **Telemetry stays product-funnel and operational data**
+(coarse screen/lesson flow, content-factory summaries, non-mastery diagnostics); the name overlap
+is product counting, never learning evidence. Mastery, Practice Hub, Mon Lexique, Flashcards and
+Stats read the learning spine only, and no surface double-writes an interaction to both. Recorded
+in `telemetry.ts`'s header and pinned by tests.
 
 ---
 
@@ -568,14 +573,43 @@ validated by test-local fixtures. *Tests:* canonical invariants, fixture compati
 identity. *Rollback:* pure — additive files, no data written, no shipped id touched.
 *French QA:* **no**. *Learner-visible:* **no**.
 
-**PR-02 — Shared attempt/event envelope extension.**
-*Objective:* extend `LearningEvent` to §5 (placement, EV, payload id, treatment, action type,
-evidence class/ceiling, optional `result`, sequence link) + schema version bump and migration.
-*Files:* `learning-engine/events.ts`, `migrations.ts`, repository types. *Depends:* PR-01.
-*Excludes:* emitting the new fields from any screen; assistance/attribution logic (PR-03).
-*Acceptance:* old events still read after migration; non-assessed events representable without a
-fake grade; frozen `ERROR_TAG_CODES` untouched. *Tests:* migration round-trip, envelope
-construction. *Rollback:* migration is additive and reversible. *French QA:* no. *Learner-visible:* no.
+**PR-02 — Shared learning-event envelope v2 + safe migration.** ✅ *implemented*
+*Objective:* extend `LearningEvent` in place (D-1) so the log can honestly represent assessed
+selection/production, ungraded open production, exposure, reveal, self-report and issue reports.
+*Design:* ONE spine, two arms — a discriminated union on `assessed`. The assessed arm carries
+`result` / `errorTags` / `normalizedAnswer`; the non-assessed arm has **nowhere to put a fabricated
+grade**. Six semantic primitives (`exposure` · `selection` · `production` · `self_report` ·
+`reveal` · `issue_report`) — never one type per EV; audio playback and sequence membership are
+facets, skip is an outcome. New dimensions: `schemaVersion`, `placement`, `evId`, `payloadId`,
+`sentenceId`, per-target `targetTreatments` (index-aligned with `itemIds`, length-validated so a
+mixed-treatment payload can never be flattened), `evidenceCeiling` + `evidenceClass`, a
+`LearningOutcome` vocabulary distinct from the frozen `ErrorTagCode`, optional `sequence`, and
+neutral `assistance` / `attribution` / `admissibility` seams that PR-03 widens rather than
+redesigns. `createLearningEvent` is the one construction boundary (no clock, no id generation,
+frozen output); it rejects a missing grade, a smuggled grade, and any outcome that contradicts its
+grading result.
+*Migration:* first real event-log migration (YASA 1), on a **dedicated** registry so the shipped
+`defaultMigrationRegistry` stays empty for telemetry/compaction. Absent `schemaVersion` ⇒ v1
+(ADR-0014). Every v1 fact is preserved byte-for-byte; every unknowable fact becomes
+`legacy_unknown` / `unresolved` — an EV id, sentence identity, placement, treatment, or Supported
+claim is **never** fabricated. Reads migrate in memory and never rewrite storage; the first
+legitimate append normalizes the log to all-v2. A future version or malformed event makes the log
+`unsupported` and fail-closed via a distinct `UnsupportedEventLogError`, with the bytes preserved
+and JSON-corruption quarantine unchanged.
+*Reveal correction:* `recordRecognitionReveal` no longer stores `result: "correct"` for an
+interaction that was never graded; it emits a genuine non-assessed reveal. Migrated legacy reveals
+are reclassified the same way, with their original grading preserved verbatim under `legacyGrading`
+for recovery. **This intentionally changes historical mastery for those events** — that is the
+point of the correction, and it is recorded rather than hidden.
+*Mastery:* the ONLY change is a narrow non-assessed no-op — no item row, no counter, no weak tag,
+no Leitner/prompt-fade step, neither success nor failure. Decided idempotency policy: the event IS
+recorded in `processedClientEventIds` and may advance `updatedAt`, so replay is stable and the
+append-only log stays authoritative.
+*Files:* `events.ts`, new `event-envelope.ts` + `event-migration.ts`, `repository/local.ts`,
+`session-controller.ts`, narrow guard in `mastery.ts`, telemetry header note, tests.
+*Excludes:* renderer emission, assistance capture, attribution resolution, Supported counters,
+projections. *Tests:* 60 new (envelope, migration, repository, non-assessed safety, D-3 boundary).
+*French QA:* no. *Learner-visible:* no.
 
 **PR-03 — Assistance capture + attribution/admissibility.**
 *Objective:* replace the hardcoded `promptLevel: "PF0"`; add the §8 assistance block and the §9
@@ -721,9 +755,9 @@ PR-01 identity ─► PR-02 envelope ─► PR-03 assistance+attribution ─► 
 
 | ID | Class | Decision needed | Blocks |
 |---|---|---|---|
-| **D-1** | architecture | Extend `LearningEvent` in place (recommended) vs a parallel envelope. Extending forces one migration; a parallel envelope would create the second spine this contract forbids | PR-02 |
+| **D-1** | architecture | ~~Extend `LearningEvent` in place vs a parallel envelope~~ — **DECIDED and implemented in PR-02**: extended in place as a discriminated union on `assessed`. One spine, one repository, one mastery projection; no `AttemptEvent` / `PilotEvent` / second log exists | ~~PR-02~~ closed |
 | **D-2** | identity registration | ~~Which item registry becomes canonical, and the rename map~~ — **DECIDED and implemented in PR-01**: `content/itemRegistry.ts` is canonical, shipped hyphen ids are immutable (ADR-0012), `learning-engine/items.ts` is fixture input resolved through an explicit compatibility boundary. **No rename, no colon migration.** The earlier colon-migration recommendation is withdrawn as conflicting with Canonical authority | ~~PR-01~~ closed |
-| **D-3** | architecture | `TelemetryEvent` vs `LearningEvent` ownership of exposure/reveal. [REC] learning spine owns learning-relevant exposure; telemetry keeps product-funnel counting; Stats reads the spine | PR-02, PR-10 |
+| **D-3** | architecture | ~~`TelemetryEvent` vs `LearningEvent` ownership of exposure/reveal~~ — **DECIDED in PR-02** (§6): the learning spine owns every learning-relevant interaction; telemetry stays product-funnel/operational; no double-write. PR-10 still has to make Stats read the spine | closed; PR-10 consumes it |
 | **D-4** | identity registration | Sentence-id prefixing (`sent:l01-…` recommended) and whether accepted alternatives live on the sentence or the payload | PR-01, PR-07 |
 | **D-5** | French QA | Sign-off on the ecosystem §20 review surface (8 concentrated questions) | PR-07 |
 | **D-6** | implementation calibration | Whether PM-009's typed recall reuses the Weave screen in a typed config or gets a minimal typed screen | PR-06 |
@@ -740,7 +774,7 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Dimension | Verdict | Basis |
 |---|---|---|
 | Starting the identity PR (PR-01) | **READY WITH BOUNDED GAPS** | D-2/D-4 must be decided in the PR itself; everything else is mechanical |
-| Starting the event-spine PR (PR-02) | **READY WITH BOUNDED GAPS** | requires D-1 and D-3; the existing envelope and migration machinery are sound foundations |
+| Starting the event-spine PR (PR-02) | **DONE** | implemented; D-1 and D-3 closed; envelope v2 + v1→v2 migration shipped with 60 new tests |
 | Starting the mastery PR (PR-04) | **READY WITH BOUNDED GAPS** | requires D-8; reducer is pure, tested, and rebuildable — a good extension target |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
@@ -754,22 +788,24 @@ Completing this contract does not make any of the above implemented.
 
 ## 22. Recommended immediate next action — one runtime PR
 
-**PR-01 — Canonical item boundary + sentence identity foundation — is now implemented** on
-`feat/l1-pilot-identity-layer`. It established: `content/itemRegistry.ts` as the canonical runtime
-registry with **all 54 shipped ids unchanged** (ADR-0012); a read-only canonical access/assertion
-boundary; an explicit fixture→canonical compatibility resolver covering the five exact L1 overlaps,
-with ambiguous granularity deliberately unmapped; a canonical-persistence guard that refuses any
-unresolvable id; and the `sent:` sentence identity types, validation, and deterministic registry
-builder, shipping **empty** pending French QA.
+**PR-01 (identity layer) and PR-02 (event envelope v2) are implemented**, on
+`feat/l1-pilot-identity-layer` and `feat/l1-pilot-event-envelope`. PR-01 fixed
+`content/itemRegistry.ts` as canonical with all 54 shipped ids unchanged, an explicit
+fixture→canonical resolver, a canonical-persistence guard, and the `sent:` identity foundation.
+PR-02 extended `LearningEvent` in place to v2 (one spine, assessed/non-assessed arms), shipped the
+first v1→v2 migration, corrected the fabricated recognition-reveal grade, and made non-assessed
+events a strict mastery no-op. **D-1, D-2 and D-3 are closed.**
 
-**The recommended next action is therefore PR-02 — shared attempt/event envelope extension**
-(§17), which must resolve **D-1** (extend `LearningEvent` in place — no parallel envelope) and
-**D-3** (telemetry vs learning-spine ownership of exposure/reveal) and carries a schema version
-bump plus migration. It depends only on PR-01 and changes no learner-visible behavior.
+**The recommended next action is PR-03 — assistance capture + attribution/admissibility** (§17).
+It replaces the hardcoded `promptLevel: "PF0"`, fills the neutral `assistance` / `attribution` /
+`admissibility` seams PR-02 reserved (widening those unions rather than reshaping the schema), and
+resolves error source **before** the reducer runs — the two remaining blockers under PR-04's
+Supported-evidence work. It depends only on PR-02 and changes no learner-visible behavior.
 
-Standing constraints for that PR: extend the existing spine rather than forking it · do not touch
-shipped item ids · register no French · no renderer, mastery, selector, or persistence-path change ·
-new fields that persist learner text must be added to the privacy inventory in the same PR.
+Standing constraints for that PR: keep one spine, one repository, one mastery projection · do not
+touch shipped item ids · register no French · no renderer, selector, or projection change ·
+assistance must scope evidence without becoming a score · attribution must precede weakness ·
+any new field that can persist learner text goes into the privacy inventory in the same PR.
 
 **Do not produce another planning document.** The next artifact in this workstream is code.
 

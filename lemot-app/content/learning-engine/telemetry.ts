@@ -12,6 +12,19 @@
  *    depth against a caller smuggling `userAnswer` etc.).
  *  - Telemetry NEVER updates mastery. The LearningEvent spine (events.ts /
  *    mastery.ts) is a separate, untouched system.
+ *
+ * D-3 ownership boundary (decided in PR-02, binding):
+ *  - The LEARNING SPINE (`LearningEvent`) owns every learning-relevant
+ *    interaction: assessed selection and production, open-production attempts,
+ *    exposure that may affect review/projection logic, answer/model reveal,
+ *    self-report, and an issue report tied to a learning attempt. Mastery,
+ *    Practice Hub, Mon Lexique, Flashcards, and Stats read THAT spine.
+ *  - TELEMETRY stays product-funnel and operational data: coarse screen/lesson
+ *    flow, content-factory summaries, non-mastery product diagnostics. Some type
+ *    names overlap by intent (`exposure_seen`, `answer_compared`) — that overlap
+ *    is product counting, NOT learning evidence, and must never be read as such.
+ *  - No surface double-writes the same interaction to both systems. No renderer
+ *    is wired to either in PR-02.
  *  - Deterministic: `eventId` and `timestamp` are EXPLICIT caller inputs —
  *    no Date.now(), no randomness (house rule).
  *  - Storage seam mirrors LocalRepository: injected KvLike for tests, lazy

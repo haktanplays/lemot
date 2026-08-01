@@ -23,6 +23,7 @@
  */
 import type { LearningEvent } from "../events";
 import type { LearningRepository } from "./types";
+import { migrateEventLogToCurrent } from "../event-migration";
 import { backupCorruptValue, corruptBackupKey } from "../../../lib/safeStorage";
 import { privacyResetEpoch, isPersistSuppressed } from "../../../lib/privacyResetEpoch";
 
@@ -52,11 +53,38 @@ export class CorruptEventLogError extends Error {
   }
 }
 
+/**
+ * Thrown when the event log is well-formed JSON but carries a schema this build
+ * cannot read (e.g. a newer version written by a later app build, or an event
+ * that fails v1 structural validation). DISTINCT from
+ * {@link CorruptEventLogError}: the bytes are fine, our support for them is not.
+ * Fail-closed per YASA 1 — the original key is never overwritten or cleared.
+ */
+export class UnsupportedEventLogError extends Error {
+  constructor(
+    public readonly key: string,
+    public readonly reason: string,
+    public readonly index: number,
+  ) {
+    super(
+      `event log at "${key}" is unsupported (event #${index}: ${reason}); ` +
+        `refusing to read or overwrite it`,
+    );
+    this.name = "UnsupportedEventLogError";
+  }
+}
+
 /** Discriminated read of the raw event log. */
 type EventLogRead =
   | { kind: "empty" }
-  | { kind: "events"; events: LearningEvent[] }
-  | { kind: "corrupt"; raw: string };
+  | {
+      kind: "events";
+      events: LearningEvent[];
+      /** True when at least one event was upgraded from v1 in memory. */
+      migratedAny: boolean;
+    }
+  | { kind: "corrupt"; raw: string }
+  | { kind: "unsupported"; reason: string; index: number };
 
 export class LocalRepository implements LearningRepository {
   private readonly injectedStore?: KvLike;
@@ -96,21 +124,34 @@ export class LocalRepository implements LearningRepository {
 
   /**
    * Classify the raw event log without mutating storage:
-   *  - `empty`   → key absent/blank (first-run).
-   *  - `events`  → a valid JSON array (possibly the empty array `[]`).
-   *  - `corrupt` → unparseable OR parsed-but-not-an-array; carries the raw blob.
+   *  - `empty`       → key absent/blank (first-run).
+   *  - `events`      → a valid JSON array, migrated IN MEMORY to the current
+   *                    envelope version (mixed v1/v2 logs are handled per event).
+   *  - `corrupt`     → unparseable OR parsed-but-not-an-array; carries the raw blob.
+   *  - `unsupported` → valid JSON array, unreadable schema (future version or a
+   *                    malformed event). Fail-closed; storage untouched.
+   *
+   * Reading NEVER rewrites the key: a v1 log stays v1 on disk until the next
+   * legitimate append persists the normalized array (K1 — "absent reads as v1,
+   * stored data never rewritten just to stamp the field").
    */
   private async readEventLog(): Promise<EventLogRead> {
     const store = await this.store();
     const raw = await store.getItem(LM_LE_EVENTS_KEY);
     if (raw == null || raw === "") return { kind: "empty" };
+    let parsed: unknown;
     try {
-      const parsed: unknown = JSON.parse(raw);
-      if (Array.isArray(parsed)) return { kind: "events", events: parsed as LearningEvent[] };
-      return { kind: "corrupt", raw };
+      parsed = JSON.parse(raw);
     } catch {
       return { kind: "corrupt", raw };
     }
+    if (!Array.isArray(parsed)) return { kind: "corrupt", raw };
+
+    const migrated = migrateEventLogToCurrent(parsed);
+    if (migrated.status === "unsupported") {
+      return { kind: "unsupported", reason: migrated.reason, index: migrated.index };
+    }
+    return { kind: "events", events: migrated.events, migratedAny: migrated.migratedAny };
   }
 
   /**
@@ -130,8 +171,11 @@ export class LocalRepository implements LearningRepository {
 
   /**
    * Read the event list for consumers. A valid (possibly empty) log reads as its
-   * array. A corrupt log is quarantined (raw preserved) and surfaced as `[]` so
-   * downstream derivation stays crash-free — the original blob is NOT erased.
+   * migrated array. A corrupt log is quarantined (raw preserved) and surfaced as
+   * `[]` so downstream derivation stays crash-free — the original blob is NOT
+   * erased. An UNSUPPORTED log also reads as `[]` (never a crash, never a silent
+   * partial history) and is likewise left completely untouched on disk; appends
+   * against it are refused below so nothing overwrites recoverable data.
    */
   private async readEvents(): Promise<LearningEvent[]> {
     const res = await this.readEventLog();
@@ -139,6 +183,7 @@ export class LocalRepository implements LearningRepository {
       await this.quarantineCorruptLog(res.raw);
       return [];
     }
+    if (res.kind === "unsupported") return [];
     return res.kind === "events" ? res.events : [];
   }
 
@@ -162,9 +207,15 @@ export class LocalRepository implements LearningRepository {
       await this.quarantineCorruptLog(res.raw);
       throw new CorruptEventLogError(LM_LE_EVENTS_KEY);
     }
+    if (res.kind === "unsupported") {
+      // Fail-closed: writing here would overwrite a log this build cannot read.
+      throw new UnsupportedEventLogError(LM_LE_EVENTS_KEY, res.reason, res.index);
+    }
     const events = res.kind === "events" ? res.events : [];
     if (events.some((e) => e.clientEventId === event.clientEventId)) return;
     events.push(event);
+    // The array written back is the MIGRATED one, so the first legitimate append
+    // after a v1 read is what normalizes storage to an all-v2 log.
     await this.writeEvents(events);
   }
 

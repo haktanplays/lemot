@@ -17,7 +17,8 @@
  *    from ./types and `LearningEvent` / `ErrorTagCode` from ./events.
  */
 import type { ItemId, OperationId, PromptFadeLevel } from "./types";
-import type { ErrorTagCode, LearningEvent } from "./events";
+import type { AssessedLearningEvent, ErrorTagCode, LearningEvent } from "./events";
+import { isAssessedEvent } from "./events";
 
 /** Snapshot schema version (bump when the shape changes). */
 export const MASTERY_SNAPSHOT_VERSION = "mastery-v0.2";
@@ -145,7 +146,10 @@ const PRECISION_TAGS: ReadonlySet<ErrorTagCode> = new Set<ErrorTagCode>([
 const isPrecision = (r: ErrorTagCode): boolean => PRECISION_TAGS.has(r);
 
 /** Increment weakTags for the failing result + its errorTags, de-duplicated per event. */
-function addWeakTags(weakTags: Partial<Record<ErrorTagCode, number>>, event: LearningEvent): void {
+function addWeakTags(
+  weakTags: Partial<Record<ErrorTagCode, number>>,
+  event: AssessedLearningEvent,
+): void {
   const tags = new Set<ErrorTagCode>([event.result, ...event.errorTags]);
   for (const t of tags) weakTags[t] = (weakTags[t] ?? 0) + 1;
 }
@@ -153,7 +157,7 @@ function addWeakTags(weakTags: Partial<Record<ErrorTagCode, number>>, event: Lea
 /** Record the near-miss subtype(s) carried by a precision event, de-duplicated. */
 function addPrecisionTags(
   precisionTags: Partial<Record<ErrorTagCode, number>>,
-  event: LearningEvent,
+  event: AssessedLearningEvent,
 ): void {
   const tags = new Set<ErrorTagCode>([event.result, ...event.errorTags]);
   for (const t of tags) {
@@ -193,6 +197,33 @@ export function scoreEvent(
   // Idempotency — already processed → unchanged.
   if (snapshot.processedClientEventIds.includes(event.clientEventId)) {
     return snapshot;
+  }
+
+  // PR-02 non-assessed guard (the ONLY mastery change in that PR).
+  //
+  // A v2 exposure / reveal / self-report / issue-report / ungraded open-production
+  // event was never graded, so it must move NOTHING: no item row is created, no
+  // counter moves, no weak tag, no Leitner box, no prompt-fade step, no Mon
+  // Lexique or Practice eligibility change. It is neither a success nor a failure.
+  //
+  // Idempotency policy (decided, tested): the event IS recorded in
+  // `processedClientEventIds` and MAY advance `updatedAt`, so replaying the
+  // append-only log is stable and a non-assessed event is never reprocessed.
+  // The log stays authoritative; the projection simply learns nothing from it.
+  //
+  // NOT here: admissibility filtering, learner/system attribution, supported vs
+  // independent production, assistance-scoped counters, thresholds, or weights —
+  // those are PR-03 / PR-04.
+  if (!isAssessedEvent(event)) {
+    return {
+      version: snapshot.version,
+      items: snapshot.items,
+      processedClientEventIds: [
+        ...snapshot.processedClientEventIds,
+        event.clientEventId,
+      ],
+      updatedAt: event.timestamp,
+    };
   }
 
   const items: Record<ItemId, ItemMastery> = { ...snapshot.items };

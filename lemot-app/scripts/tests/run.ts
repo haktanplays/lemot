@@ -54,6 +54,10 @@ import "./nearMissMasteryTiming.test";
 import "./canonicalItems.test";
 import "./fixtureCompat.test";
 import "./sentenceIdentity.test";
+import "./eventEnvelope.test";
+import "./eventMigration.test";
+import "./eventLogMigration.test";
+import "./nonAssessedEvents.test";
 import { runAll } from "./harness";
 
 void runAll();
