@@ -141,10 +141,14 @@ describe("v1 -> v3 event migration (through the v2 rung)", () => {
       "history was already scored as the learner's",
     );
     assertEqual(e.admissibility.status, "legacy_admitted", "v1 events were already scored");
+    // The event PASSES THROUGH the v2 rung but was PERSISTED as v1, and
+    // `sourceVersion` records the latter. The earlier expectation of `2` here
+    // was the defect: every migrated event claimed v2 origin, so v1 and v2
+    // history became indistinguishable the moment they were read.
     assertEqual(
       e.admissibility.status === "legacy_admitted" ? e.admissibility.sourceVersion : 0,
-      2,
-      "reached v3 through the v2 rung",
+      1,
+      "original v1 provenance is preserved, not overwritten by the rung it travelled",
     );
     assertEqual(e.sequence, null, "no sequence membership in v1");
     // v2 kept `controlled_production` here because it had no way to express the

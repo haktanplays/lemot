@@ -22,9 +22,11 @@ import { NO_ASSISTANCE } from "./helpers";
 import {
   InvalidLearningEventError,
   createLearningEvent,
+  createMigratedLearningEvent,
   outcomeForResult,
   validateLearningEvent,
 } from "../../content/learning-engine/event-envelope";
+import { LEGACY_UNKNOWN_ASSISTANCE } from "../../content/learning-engine/evidence-context";
 
 const SYNC = { status: "pending" as const, origin: "local" as const, queuedAt: 1_000 };
 
@@ -278,12 +280,18 @@ describe("event envelope v2 — deep immutability", () => {
     assertEqual(e.deviceInfo.platform, "test", "frozen object must not change");
   });
 
+  // Built through the MIGRATION constructor: `legacyGrading` is migration-only
+  // state, and the live input type no longer has the field at all. The previous
+  // version of this fixture created it through `createLearningEvent` with known
+  // assistance — a combination that could never have come from history, and
+  // exactly the bypass this correction seals.
   test("a legacy-grading reveal freezes its nested grading too", () => {
     const tags: ErrorTagCode[] = ["correct"];
-    const e = createLearningEvent({
+    const e = createMigratedLearningEvent({
       ...baseInput,
       assessed: false,
       ...NON_ASSESSED_CONTEXT,
+      assistance: LEGACY_UNKNOWN_ASSISTANCE,
       operation: "recognition",
       primitive: "reveal",
       evidenceCeiling: "comparison_only",

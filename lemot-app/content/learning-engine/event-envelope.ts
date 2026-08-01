@@ -1,7 +1,7 @@
 /**
- * Learning-event v2 construction + validation (PR-02) — pure, no I/O, no clock.
+ * Learning-event v3 construction + validation — pure, no I/O, no clock.
  *
- * The single deterministic boundary for building a v2 `LearningEvent`, so screens
+ * The single deterministic boundary for building a `LearningEvent`, so screens
  * never assemble raw event objects field by field. It enforces the invariants
  * that make the log honest:
  *
@@ -13,13 +13,24 @@
  *  - treatments are index-aligned with `itemIds`;
  *  - identifiers stay machine identifiers, never display strings.
  *
+ * There are TWO construction modes, and the difference is deliberate:
+ *
+ *  - {@link createLearningEvent} — the ordinary, application-facing boundary.
+ *    Everything the running app creates goes through it, and it REFUSES the two
+ *    states that exist only to rehydrate pre-v3 history.
+ *  - {@link createMigratedLearningEvent} — migration-only rehydration, imported
+ *    by ./event-migration.ts and nowhere else.
+ *
+ * Both share one builder, one validator and one freeze implementation, so the
+ * historical path can never drift from the live one.
+ *
  * Hard boundaries: no `Date.now()`, no id generation, no storage, no network, no
  * React. Timestamps and ids stay caller-supplied (the session controller owns the
  * one allowed clock impurity). Inputs are never mutated; outputs are frozen.
  *
  * NOT here: assistance capture, attribution resolution, admissibility decisions,
  * Supported-vs-independent production, or any pedagogical/content validation.
- * Those are PR-03 / PR-04 and content authoring respectively.
+ * Those live in ./evidence-admission.ts, PR-04, and content authoring.
  */
 import type {
   AdmissibilityState,
@@ -103,6 +114,22 @@ export class InvalidLearningEventError extends Error {
 }
 
 /**
+ * Thrown when a LIVE caller tries to author a state that only historical
+ * rehydration may produce.
+ *
+ * Extends {@link InvalidLearningEventError} so existing `instanceof` handling
+ * still catches it, while the distinct type keeps the two questions separable:
+ * "is this a well-formed v3 event?" (structural validity — persisted history
+ * must keep passing) versus "may this be created live?" (authoring eligibility).
+ */
+export class MigrationOnlyEventStateError extends InvalidLearningEventError {
+  constructor(issues: readonly string[]) {
+    super(issues);
+    this.name = "MigrationOnlyEventStateError";
+  }
+}
+
+/**
  * Primitives that may be assessed at all. Exposure, self-report, reveal, and
  * issue reports are never graded; production may be EITHER (a graded weave vs an
  * ungraded open attempt under W1).
@@ -166,7 +193,7 @@ export function outcomeForResult(result: ErrorTagCode): LearningOutcome {
   }
 }
 
-/** Fields shared by both construction inputs. */
+/** Fields shared by every construction input. */
 type BaseInput = {
   clientEventId: string;
   sessionId: string;
@@ -192,13 +219,23 @@ type BaseInput = {
   userAnswer?: string | null;
   expectedAnswer?: string | null;
   sequence?: LearningEventSequence | null;
-  /** Attempt-level evidence context — supplied explicitly, never defaulted. */
+  /**
+   * Attempt-level evidence context — supplied explicitly, never defaulted.
+   *
+   * `admissibility` is typed WIDE here on purpose. `resolveEvidenceAdmission`
+   * declares `AdmissibilityState` as its return type, so narrowing this field to
+   * exclude `legacy_admitted` would reject the session controller's own (always
+   * legitimate) value. The migration-only seal on it is therefore enforced at
+   * RUNTIME, in `migrationOnlyStateIssues` — which is the boundary that matters,
+   * since an untyped cast defeats a type-level seal anyway.
+   */
   assistance: AssistanceSnapshot;
   attribution: AttributionState;
   admissibility: AdmissibilityState;
 };
 
-export type AssessedEventInput = BaseInput & {
+/** The grading arm, identical for live and migrated construction. */
+type AssessedFields = {
   assessed: true;
   result: ErrorTagCode;
   errorTags: readonly ErrorTagCode[];
@@ -207,14 +244,43 @@ export type AssessedEventInput = BaseInput & {
   outcome?: LearningOutcome;
 };
 
-export type NonAssessedEventInput = BaseInput & {
+/** The ungraded arm. Note the ABSENCE of `legacyGrading` — see below. */
+type NonAssessedFields = {
   assessed: false;
   /** Defaults to `completed_unassessed`; may never be a graded outcome. */
   outcome?: LearningOutcome;
-  legacyGrading?: { result: ErrorTagCode; errorTags: readonly ErrorTagCode[] };
 };
 
+// ── Live construction input ─────────────────────────────────────────────────
+
+export type AssessedEventInput = BaseInput & AssessedFields;
+
+/**
+ * A live non-assessed event. `legacyGrading` is deliberately not a field here:
+ * a reveal created today has no historical grading to preserve, so the property
+ * does not exist for ordinary callers to reach for. This one IS sealed at
+ * compile time as well as at runtime.
+ */
+export type NonAssessedEventInput = BaseInput & NonAssessedFields;
+
 export type LearningEventInput = AssessedEventInput | NonAssessedEventInput;
+
+// ── Migration-only construction input ───────────────────────────────────────
+
+export type MigratedAssessedEventInput = BaseInput & AssessedFields;
+
+export type MigratedNonAssessedEventInput = BaseInput &
+  NonAssessedFields & {
+    /**
+     * The v1 reveal's fabricated grading, preserved verbatim for recovery. Only
+     * the migration has one of these; the mastery reducer never reads it.
+     */
+    legacyGrading?: { result: ErrorTagCode; errorTags: readonly ErrorTagCode[] };
+  };
+
+export type MigratedLearningEventInput =
+  | MigratedAssessedEventInput
+  | MigratedNonAssessedEventInput;
 
 const isNonEmptyString = (v: unknown): v is string =>
   typeof v === "string" && v.length > 0;
@@ -687,11 +753,35 @@ export function validateLearningEvent(candidate: unknown): string[] {
       );
     }
     if (event.legacyGrading !== undefined) {
-      // The migrated legacy reveal is the ONLY case that may carry it today.
+      // The migrated legacy reveal is the ONLY case that may carry it today, and
+      // the whole surrounding state has to agree that this is migrated history —
+      // otherwise `legacyGrading` becomes a place to smuggle a grading verdict
+      // onto an event nobody graded.
       if (event.primitive !== "reveal") {
         issues.push(
           "legacyGrading is only accepted on a migrated reveal — a newly created " +
             "non-assessed event must never acquire it",
+        );
+      }
+      if (attributionStatus !== "not_applicable") {
+        issues.push(
+          "a legacyGrading reveal must carry not_applicable attribution — nothing was graded",
+        );
+      }
+      if (admissionStatus !== "no_evidence") {
+        issues.push("a legacyGrading reveal must carry no_evidence admissibility");
+      } else {
+        const reasons = (admissibility as Record<string, unknown>).reasons;
+        if (!Array.isArray(reasons) || !reasons.includes("non_assessed_interaction")) {
+          issues.push(
+            "a legacyGrading reveal must name non_assessed_interaction as a no-evidence reason",
+          );
+        }
+      }
+      if (!isPlainObject(assistance) || assistance.capture !== "legacy_unknown") {
+        issues.push(
+          "a legacyGrading reveal must carry legacy_unknown assistance — it comes from " +
+            "history that recorded none",
         );
       }
       const lg = event.legacyGrading;
@@ -724,9 +814,41 @@ const frozenCopy = <T>(values: readonly T[]): readonly T[] =>
   Object.freeze([...values]) as readonly T[];
 
 /**
- * Build a validated, IMMUTABLE v2 event. Newly created events always carry the
- * current schema version. Throws {@link InvalidLearningEventError} on any issue —
- * a malformed event must never reach the append-only log.
+ * Live-authoring eligibility — a DIFFERENT question from structural validity.
+ *
+ * `validateLearningEvent` answers "is this a well-formed v3 event?", and it must
+ * keep saying yes to migrated history the repository reads back. This answers
+ * "may a live caller author this state right now?". Two states fail that
+ * question because they exist only to rehydrate pre-v3 history:
+ *
+ *  - `legacy_admitted` — mastery-bearing, so authoring it live would score an
+ *    attempt that never passed through `resolveEvidenceAdmission`;
+ *  - `legacyGrading`   — a preserved v1 reveal grading; nothing created today has
+ *    a historical grading to preserve.
+ *
+ * Checked at RUNTIME, not only in the type system: an untyped cast is exactly how
+ * this boundary would otherwise be crossed.
+ */
+function migrationOnlyStateIssues(event: Record<string, unknown>): string[] {
+  const issues: string[] = [];
+  const admissibility = event.admissibility;
+  if (isPlainObject(admissibility) && admissibility.status === "legacy_admitted") {
+    issues.push(
+      'admissibility "legacy_admitted" is migration-only — a live event must be admitted ' +
+        "through resolveEvidenceAdmission (rehydration uses createMigratedLearningEvent)",
+    );
+  }
+  if (event.legacyGrading !== undefined) {
+    issues.push(
+      "legacyGrading is migration-only — a newly created event has no historical grading " +
+        "to preserve",
+    );
+  }
+  return issues;
+}
+
+/**
+ * The one builder behind both construction modes.
  *
  * Immutability is deep for everything the event OWNS: `itemIds`,
  * `targetTreatments`, `errorTags`, `deviceInfo`, `sync`, `sequence`,
@@ -735,8 +857,15 @@ const frozenCopy = <T>(values: readonly T[]): readonly T[] =>
  * shared `deviceInfo` into every event, so freezing the caller's object in place
  * would freeze application state that does not belong to the event. Nothing
  * outside the event is ever frozen.
+ *
+ * `mode` changes exactly one thing: whether migration-only state is eligible.
+ * Structural validation, cloning and freezing are identical, so the historical
+ * path can never drift into a weaker contract than the live one.
  */
-export function createLearningEvent(input: LearningEventInput): LearningEvent {
+function buildLearningEvent(
+  input: MigratedLearningEventInput,
+  mode: "live" | "migration",
+): LearningEvent {
   const base = {
     schemaVersion: LEARNING_EVENT_SCHEMA_VERSION,
     clientEventId: input.clientEventId,
@@ -791,8 +920,46 @@ export function createLearningEvent(input: LearningEventInput): LearningEvent {
           : {}),
       } satisfies NonAssessedLearningEvent);
 
+  // Eligibility first, so a live caller reaching for migration-only state is told
+  // exactly that rather than receiving a downstream structural complaint.
+  if (mode === "live") {
+    const blocked = migrationOnlyStateIssues(event as unknown as Record<string, unknown>);
+    if (blocked.length > 0) throw new MigrationOnlyEventStateError(blocked);
+  }
+
   const issues = validateLearningEvent(event);
   if (issues.length > 0) throw new InvalidLearningEventError(issues);
 
   return Object.freeze(event);
+}
+
+/**
+ * Build a validated, IMMUTABLE v3 event — the ordinary application boundary.
+ *
+ * Everything the running app records goes through here: the session controller,
+ * the sandbox hook, and any future renderer. Throws
+ * {@link MigrationOnlyEventStateError} for historical-only state and
+ * {@link InvalidLearningEventError} for anything malformed; either way nothing
+ * reaches the append-only log.
+ */
+export function createLearningEvent(input: LearningEventInput): LearningEvent {
+  return buildLearningEvent(input, "live");
+}
+
+/**
+ * MIGRATION ONLY — build a v3 event while rehydrating pre-v3 persisted history.
+ *
+ * Imported by ./event-migration.ts and nothing else; `importBoundary.test.ts`
+ * pins that. It is the only path allowed to produce `legacy_admitted`
+ * admissibility and a preserved `legacyGrading`, and it is NOT re-exported from
+ * the learning-engine barrel, so ordinary code cannot reach it by autocomplete.
+ *
+ * It is not a weaker constructor: the same structural validator, the same
+ * defensive cloning and the same deep freeze apply. The only difference is that
+ * historical state is eligible here.
+ */
+export function createMigratedLearningEvent(
+  input: MigratedLearningEventInput,
+): LearningEvent {
+  return buildLearningEvent(input, "migration");
 }

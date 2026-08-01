@@ -587,9 +587,11 @@ mixed-treatment payload can never be flattened), `evidenceCeiling` + `evidenceCl
 neutral `assistance` / `attribution` / `admissibility` seams. **Corrected by PR-03:** those scalar
 seams reserved the right locations but could not represent attempt-level reality (assistance is
 multidimensional), so PR-03 replaced them with structured state and bumped the envelope to v3.
-The seam idea saved a location, not a migration. `createLearningEvent` is the one construction boundary (no clock, no id generation,
+The seam idea saved a location, not a migration. `createLearningEvent` is the one **live** construction boundary (no clock, no id generation,
 frozen output); it rejects a missing grade, a smuggled grade, and any outcome that contradicts its
-grading result.
+grading result — and, since the PR-03 correction, also refuses the migration-only states
+(`legacy_admitted`, `legacyGrading`) that historical rehydration alone may produce through
+`createMigratedLearningEvent`.
 *Migration:* first real event-log migration (YASA 1), on a **dedicated** registry so the shipped
 `defaultMigrationRegistry` stays empty for telemetry/compaction. Absent `schemaVersion` ⇒ v1
 (ADR-0014). Every v1 fact is preserved byte-for-byte; every unknowable fact becomes
@@ -633,8 +635,10 @@ never reclassified; accessibility never downgrades anything. A non-admitted even
 `no_mastery_evidence` **however correct it looked** (Bible §6 — correctness is not
 admissibility). A non-numeric ceiling map bounds every observation.
 *Migration:* the chain is now **v1 → v2 → v3** on the dedicated registry, with a version-specific
-v2 validator so old JSON is never cast straight to v3. v2 history keeps `legacy_admitted`
-(`sourceVersion: 2`) and gets `legacy_unknown` assistance; its production observations are capped
+v2 validator so old JSON is never cast straight to v3. Legacy history keeps `legacy_admitted`
+carrying the version it was **persisted** as — `sourceVersion: 1` for pre-v2 rows, `2` for native
+v2 rows, taken from the version detected at the migration entry boundary rather than from the rung
+the record happens to be on — and gets `legacy_unknown` assistance; its production observations are capped
 to supported, recognition stays recognition, and non-assessed events become
 `not_applicable` / `no_evidence`. Nothing is fabricated or discarded.
 *Controller:* `promptLevel: "PF0"` and the blanket `legacy_unknown` treatment stamp are **gone**

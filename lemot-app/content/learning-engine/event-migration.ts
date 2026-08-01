@@ -30,7 +30,7 @@ import type {
 } from "./events";
 import { LEARNING_EVENT_SCHEMA_VERSION } from "./events";
 import {
-  createLearningEvent,
+  createMigratedLearningEvent,
   outcomeForResult,
   validateLearningEvent,
 } from "./event-envelope";
@@ -259,6 +259,19 @@ const V2_EVIDENCE: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * How this record entered the migration — the version it was actually PERSISTED
+ * as, not the rung it happens to be on right now.
+ *
+ * Passed explicitly rather than read off the record, because after the v1 → v2
+ * step a converted record declares `schemaVersion: 2` and is indistinguishable
+ * from history that was genuinely written as v2. Inferring origin from content
+ * (`placement: "legacy_unknown"`, `contentVersion: "legacy-unknown"`, …) would be
+ * a guess, and adding a provenance field to the intermediate v2 shape would
+ * invent a persisted field that never existed.
+ */
+export type EventSourceVersion = 1 | 2;
+
+/**
  * v2 → v3: replace the scalar seams with structured attempt-level state.
  *
  * Conservative by construction. v2 recorded NO assistance, so:
@@ -266,14 +279,18 @@ const V2_EVIDENCE: ReadonlySet<string> = new Set([
  *  - a production observation is capped to `supported_production`, because
  *    unknown assistance can never establish independent production (FQ-3);
  *  - recognition stays recognition — assistance rules must not reclassify it;
- *  - prior historical admission is preserved as `legacy_admitted` with
- *    `sourceVersion: 2`, so history keeps counting exactly as it did rather than
- *    being re-opened or silently discarded;
+ *  - prior historical admission is preserved as `legacy_admitted`, carrying the
+ *    ORIGINAL `sourceVersion` so v1 history stays distinguishable from v2
+ *    history; either way it keeps counting exactly as it did rather than being
+ *    re-opened or silently discarded;
  *  - non-assessed events become `not_applicable` / `no_evidence`.
  *
  * Nothing is fabricated: no EV id, no sentence identity, no item treatment.
  */
-export function migrateV2EventToV3(v2: Record<string, unknown>): LearningEvent {
+export function migrateV2EventToV3(
+  v2: Record<string, unknown>,
+  sourceVersion: EventSourceVersion,
+): LearningEvent {
   const assessed = v2.assessed === true;
   const ceiling = v2.evidenceCeiling as EvidenceClass;
   const observed = v2.evidenceClass as EvidenceClass;
@@ -315,7 +332,7 @@ export function migrateV2EventToV3(v2: Record<string, unknown>): LearningEvent {
     const legacyGrading = v2.legacyGrading as
       | { result: ErrorTagCode; errorTags: ErrorTagCode[] }
       | undefined;
-    return createLearningEvent({
+    return createMigratedLearningEvent({
       ...shared,
       assessed: false,
       evidenceClass: scoped,
@@ -333,7 +350,7 @@ export function migrateV2EventToV3(v2: Record<string, unknown>): LearningEvent {
     });
   }
 
-  return createLearningEvent({
+  return createMigratedLearningEvent({
     ...shared,
     assessed: true,
     evidenceClass: scoped,
@@ -344,7 +361,7 @@ export function migrateV2EventToV3(v2: Record<string, unknown>): LearningEvent {
     // History was already scored under the v1/v2 reducer; preserve that fact
     // instead of re-opening admissibility for events we cannot re-examine.
     attribution: { status: "resolved", source: "learner" },
-    admissibility: { status: "legacy_admitted", sourceVersion: 2 },
+    admissibility: { status: "legacy_admitted", sourceVersion },
   });
 }
 
@@ -364,11 +381,19 @@ eventMigrationRegistry.registerMigration(1, 2, (data) => {
   return migrateV1EventToV2(data);
 });
 
+// The rails carry a version number, not a migration ORIGIN, and the v2 shape must
+// not gain a provenance field just to smuggle one through. So this step can only
+// speak for input that genuinely declares `schemaVersion: 2` — which is exactly
+// what `isValidV2Event` requires of it. Chaining v1 → v2 → v3 through
+// `runMigrations` would reach here with a converted record that also declares
+// version 2 and would be stamped `sourceVersion: 2` incorrectly. That is why
+// `migrateEventToCurrent` below owns the real chain and passes the origin
+// explicitly; it is the only entry point the repository uses.
 eventMigrationRegistry.registerMigration(2, 3, (data) => {
   if (!isValidV2Event(data)) {
     throw new Error("event migration v2 -> v3: input is not a valid v2 learning event");
   }
-  return migrateV2EventToV3(data) as unknown as Record<string, unknown>;
+  return migrateV2EventToV3(data, 2) as unknown as Record<string, unknown>;
 });
 
 export type EventMigrationResult =
@@ -378,11 +403,15 @@ export type EventMigrationResult =
 /**
  * Bring one persisted event object to the current version.
  *
- * - absent `schemaVersion` ⇒ v1 ⇒ migrated through v2 to v3;
- * - `schemaVersion: 2` ⇒ validated as v2, then migrated to v3;
+ * - absent `schemaVersion` ⇒ v1 ⇒ migrated through v2 to v3, `sourceVersion: 1`;
+ * - `schemaVersion: 2` ⇒ validated as v2, then migrated to v3, `sourceVersion: 2`;
  * - `schemaVersion: 3` ⇒ validated and returned as-is (never re-migrated);
  * - a newer version ⇒ `unsupported`, original untouched (fail-closed, YASA 1);
  * - malformed at any rung ⇒ `unsupported`; never partially accepted.
+ *
+ * The origin is taken from the version detected HERE, at the entry boundary, and
+ * handed to the v2 → v3 step. Every rung after the first sees a record claiming
+ * version 2, so this is the last place the truth is still available.
  */
 export function migrateEventToCurrent(data: unknown): EventMigrationResult {
   const version = readSchemaVersion(data);
@@ -437,6 +466,10 @@ export function migrateEventToCurrent(data: unknown): EventMigrationResult {
     };
   }
 
+  // The version this event was PERSISTED as — captured before the v1 → v2 step
+  // makes it indistinguishable from native v2 history.
+  const sourceVersion: EventSourceVersion = version === 1 ? 1 : 2;
+
   try {
     const v2 = version === 1 ? migrateV1EventToV2(data as Record<string, unknown>) : data;
     if (!isValidV2Event(v2)) {
@@ -446,7 +479,7 @@ export function migrateEventToCurrent(data: unknown): EventMigrationResult {
         schemaVersion: version,
       };
     }
-    const v3 = migrateV2EventToV3(v2);
+    const v3 = migrateV2EventToV3(v2, sourceVersion);
     const issues = validateLearningEvent(v3);
     if (issues.length > 0) {
       return {

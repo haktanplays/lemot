@@ -61,6 +61,7 @@ import "./persistedEventValidation.test";
 import "./nonAssessedEvents.test";
 import "./evidenceAdmission.test";
 import "./assistanceIntegration.test";
+import "./migrationOnlyStateSeal.test";
 import { runAll } from "./harness";
 
 void runAll();
