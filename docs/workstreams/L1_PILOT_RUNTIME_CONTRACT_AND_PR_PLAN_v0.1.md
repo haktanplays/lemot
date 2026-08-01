@@ -98,7 +98,7 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 **2.7 Total proposed PRs: 12** (§17).
 
 **2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
-**PR-04 mastery (next)** → PR-05 persistence wiring → PR-06 renderer emission → **connected proof testable
+~~PR-04 mastery~~ ✅ → **PR-05 persistence wiring (next)** → PR-06 renderer emission → **connected proof testable
 here** → PR-08/09/10 projections. PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
@@ -654,16 +654,36 @@ item-level no-op (processed for idempotency, may advance `updatedAt`, moves noth
 *Excludes:* Supported-vs-independent mastery counters, snapshot changes, projections, renderers.
 *Tests:* 59 new (944 total). *French QA:* no. *Learner-visible:* **no**.
 
-**PR-04 — Mastery projection extension (supported evidence + admissibility gate).**
-*Objective:* teach `scoreEvent` the difference between supported and independent production.
-**The admissibility no-op gate already landed in PR-03**, so PR-04 now owns only the Supported-vs-
-independent mastery REPRESENTATION: counters, snapshot schema + version bump, strength, and the
-Mon Lexique supported-path projection. *Files:* `learning-engine/mastery.ts`, `mon-lexique.ts` (read
-side). *Depends:* PR-03. *Excludes:* changing `WEAK_THRESHOLD`, Leitner intervals, or any numeric
-weight; new UI. *Acceptance:* supported success advances a supported claim and **not** independent
-production; snapshot version bumped; replay reproduces snapshots; inadmissible events are no-ops.
-*Tests:* **T-03, T-04, T-18**, idempotency, rebuild. *Rollback:* snapshot rebuildable from the log.
-*French QA:* no. *Learner-visible:* no (until PR-09 surfaces it).
+**PR-04 — Scoped production evidence in the mastery projection. IMPLEMENTED** on
+`feat/l1-pilot-mastery-scopes`.
+*Delivered:* **D-8 closed as separate scoped counters** — `production.{independent, supported,
+selfCorrection}`, each an `{attempts, success, failure}` tally, all always present and starting at
+zero. The pre-existing `productionAttempts/Success/Failure` are retained as compatibility totals and
+are now **re-derived** from the channels on every write (`aggregateProduction`), so they can never
+drift and are no longer the semantic answer to independence, ownership or scope.
+*Routing:* the event's assistance-scoped `evidenceClass` is the sole authority —
+`recall`/`controlled_production` → independent, `supported_production` → supported,
+`self_correction` → self-correction, `recognition` → recognition, everything else a complete
+item-level no-op (defense in depth over the PR-03 admission gate). **The operation-based
+`PRODUCTION_OPS` classification is retired**: a `build` whose event says `recognition` is now counted
+as recognition evidence.
+*Claim:* `deriveProductionClaim` is a pure selector (never a stored label) —
+independent > supported > none. **Self-correction alone establishes no ownership and no
+independence.** Mon Lexique adds on an independent **or** Supported success; Practice Stretch on the
+same, with self-correction-only landing in Build. `MonLexiqueEntry.productionClaim` exposes the
+coarse claim only — no counters, no assistance history, no learner copy (PR-09 owns wording).
+*Versions:* `mastery-v0.2 → v0.3` and `compaction-v0.1 → v0.2`; both fail closed on an older or
+unknown version (`UnsupportedMasterySnapshotVersionError`), including a v0.2 mastery projection
+inside a correctly-versioned compaction wrapper. **No scoped counter is ever fabricated from a v0.2
+aggregate** — recovery is replay from the retained event log, which v0 compaction still never deletes.
+*Not delivered, deliberately:* **no differential numeric scheduling.** An admitted Supported success
+still advances the Leitner box and prompt-fade exactly like an independent one, because no founder
+rule states a half-step, multiplier, smaller interval or separate threshold (FQ-2 rule 7, FQ-7 /
+I-37). That is retained **current Axis-B mechanical behaviour, not evidence that the two are
+semantically equivalent** — the scoped counters exist precisely so a later ratified rule has real
+data to act on. `WEAK_THRESHOLD`, `LEITNER_INTERVAL_DAYS` and the PF range are untouched.
+*Files:* `learning-engine/mastery.ts`, `mon-lexique.ts`, `compaction.ts` + tests.
+*Tests:* 91 new (1065 total). *French QA:* no. *Learner-visible:* **no** (until PR-09 surfaces it).
 
 **PR-05 — Event persistence and provider wiring into the shipped lesson path.**
 *Objective:* make the shipped `LessonRendererV1` path able to reach the session controller and
@@ -798,7 +818,7 @@ PR-01 identity ─► PR-02 envelope ─► PR-03 assistance+attribution ─► 
 | **D-5** | French QA | Sign-off on the ecosystem §20 review surface (8 concentrated questions) | PR-07 |
 | **D-6** | implementation calibration | Whether PM-009's typed recall reuses the Weave screen in a typed config or gets a minimal typed screen | PR-06 |
 | **D-7** | external/audio | Recording schedule for the §18 priority clips; deliberate-contour session for PM-018 | PR-11 |
-| **D-8** | implementation calibration | **OPEN — the next real mastery decision.** Whether supported production gets separate counters or a scope field on the existing counters (both satisfy §8). PR-03 now supplies the assistance-scoped `evidenceClass` the decision operates on; pick one before PR-04 | PR-04 |
+| **D-8** | implementation calibration | **CLOSED (PR-04) — separate scoped counters.** `production.{independent, supported, selfCorrection}`, each `{attempts, success, failure}`. A single mutable scope field was rejected: one item legitimately accumulates a mixed history (two supported attempts, one supported success, a later independent success, a self-correction) that any single label must overwrite. The aggregates are retained as derived totals, never as semantic authority, and the event's `evidenceClass` owns routing | PR-04 ✅ |
 
 Settled pedagogy is **not** reopened: A/S/R/G treatments, W1/W2, no pronunciation scoring, 7 frozen
 screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
@@ -812,7 +832,8 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Starting the identity PR (PR-01) | **READY WITH BOUNDED GAPS** | D-2/D-4 must be decided in the PR itself; everything else is mechanical |
 | Starting the assistance/attribution PR (PR-03) | **DONE** | schema v3 shipped: structured assistance, Canonical-eight attribution, admissibility + admission no-op gate, v1→v2→v3 migration, 944 tests green |
 | Starting the event-spine PR (PR-02) | **DONE** | implemented; D-1 and D-3 closed; envelope v2 + v1→v2 migration shipped with 60 new tests |
-| Starting the mastery PR (PR-04) | **READY WITH BOUNDED GAPS** | requires D-8 (the next real mastery decision); the reducer is pure, tested and rebuildable, and PR-03 already supplies assistance-scoped evidence classes + the admission gate |
+| Starting the mastery PR (PR-04) | **DONE** | D-8 closed as separate scoped counters; mastery-v0.3 + compaction-v0.2 ship with evidence-class routing, the Supported Mon Lexique path, and no differential scheduling; 1065 tests green |
+| Starting persistence wiring (PR-05) | **READY** | the reducer, snapshot versions and projections are settled; PR-05 is wiring only — no emission, no cloud |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
 | French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
@@ -825,23 +846,26 @@ Completing this contract does not make any of the above implemented.
 
 ## 22. Recommended immediate next action — one runtime PR
 
-**PR-01, PR-02 and PR-03 are implemented** on `feat/l1-pilot-identity-layer`,
-`feat/l1-pilot-event-envelope` and `feat/l1-pilot-assistance-attribution`. The spine now records
-what assistance was present, what that assistance permits the attempt to prove, who the result is
-attributable to among the Canonical eight sources, and whether the event is admissible at all —
-with a v1 → v2 → v3 migration that neither discards nor falsely upgrades history.
-**D-1, D-2 and D-3 are closed.**
+**PR-01 through PR-04 are implemented** on `feat/l1-pilot-identity-layer`,
+`feat/l1-pilot-event-envelope`, `feat/l1-pilot-assistance-attribution` and
+`feat/l1-pilot-mastery-scopes`. The spine records what assistance was present, what that assistance
+permits the attempt to prove, who the result is attributable to among the Canonical eight sources,
+and whether the event is admissible at all — with a v1 → v2 → v3 migration that neither discards nor
+falsely upgrades history. The mastery projection now keeps independent, Supported and
+self-correction evidence in separate channels that never merge, routed by the event's evidence class.
+**D-1, D-2, D-3 and D-8 are closed.**
 
-**The recommended next action is PR-04 — mastery projection extension** (§17). PR-03 already
-landed the admissibility no-op gate, so PR-04 owns exactly one question: how an *admitted*
-supported-production observation changes the mastery snapshot differently from an independent one.
-That means resolving **D-8** (separate counters vs a scope field), the snapshot schema + version
-bump, strength representation, and the Mon Lexique supported-path projection.
+**The recommended next action is PR-05 — event persistence and provider wiring** (§17): make the
+shipped `LessonRendererV1` path able to reach the session controller and `LocalRepository`, wiring
+only, with nothing emitted yet (per-screen emission is PR-06). The privacy inventory must be updated
+for any newly persisted field.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence
 weights or thresholds may be invented** — none is founder-ratified · assisted success must never
-be stored as independent production · attribution still precedes weakness.
+be stored as independent production · attribution still precedes weakness · **no differential
+numeric scheduling for Supported evidence exists or may be invented** — PR-04 deliberately left the
+Leitner/prompt-fade mechanics identical and recorded that as current behaviour, not as equivalence.
 
 **Do not produce another planning document.** The next artifact in this workstream is code.
 

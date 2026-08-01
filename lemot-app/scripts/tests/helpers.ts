@@ -14,6 +14,10 @@ import { LEARNING_EVENT_SCHEMA_VERSION } from "../../content/learning-engine/eve
 import { outcomeForResult } from "../../content/learning-engine/event-envelope";
 import type { ItemId, OperationId, PromptFadeLevel } from "../../content/learning-engine/types";
 import type {
+  ItemMastery,
+  ProductionEvidenceCounts,
+} from "../../content/learning-engine/mastery";
+import type {
   AdmissibilityState,
   AssistanceSnapshot,
   AttributionState,
@@ -36,6 +40,37 @@ const NO_EVIDENCE: AdmissibilityState = {
   status: "no_evidence",
   reasons: ["non_assessed_interaction"],
 };
+
+/**
+ * Scoped production channels for a hand-authored `ItemMastery` fixture that
+ * declares only AGGREGATE production counters.
+ *
+ * Such a fixture states production history with no assistance provenance. PR-03
+ * already decided what that means: production of unknown assistance is
+ * **Supported**, never independent (FQ-3 / I-19 — the evidence stays valid, it
+ * simply cannot establish independent production). Inferring `independent` from
+ * an aggregate `productionSuccess` would be exactly the overclaim PR-04 exists
+ * to prevent.
+ *
+ * Deriving the channels from the aggregates also keeps the
+ * `aggregate === sum(channels)` invariant true for free as fixtures change.
+ * A fixture that genuinely means independent or self-corrected history passes
+ * `production` explicitly instead.
+ */
+export function supportedProductionHistory(
+  m: Partial<ItemMastery>,
+): ProductionEvidenceCounts {
+  const zero = () => ({ attempts: 0, success: 0, failure: 0 });
+  return {
+    independent: zero(),
+    supported: {
+      attempts: m.productionAttempts ?? 0,
+      success: m.productionSuccess ?? 0,
+      failure: m.productionFailure ?? 0,
+    },
+    selfCorrection: zero(),
+  };
+}
 
 /** Backing map is exposed so tests can assert exactly which keys were touched. */
 export type FakeKv = {

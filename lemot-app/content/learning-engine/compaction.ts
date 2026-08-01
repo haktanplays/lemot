@@ -21,10 +21,18 @@
  */
 import type { LearningEvent } from "./events";
 import type { MasterySnapshot } from "./mastery";
-import { scoreEvents } from "./mastery";
+import { MASTERY_SNAPSHOT_VERSION, scoreEvents } from "./mastery";
 
-/** Bump when the snapshot shape changes. Unknown versions are rejected. */
-export const COMPACTION_SNAPSHOT_VERSION = "compaction-v0.1";
+/**
+ * Bump when the snapshot shape changes. Unknown versions are rejected.
+ *
+ * v0.2 (PR-04) follows the nested `MasterySnapshot` from mastery-v0.2 to
+ * mastery-v0.3. A compaction-v0.1 snapshot embeds a v0.2 mastery projection with
+ * no scoped production channels, and those channels cannot be reconstructed from
+ * it without inventing history — so it fails closed. Recovery is replay from the
+ * retained source events, which v0 compaction never deletes.
+ */
+export const COMPACTION_SNAPSHOT_VERSION = "compaction-v0.2";
 
 /** Compaction is RECOMMENDED at this many local events (tunable). */
 export const COMPACTION_EVENT_THRESHOLD = 1000;
@@ -126,6 +134,17 @@ export function restoreFromSnapshot(
   if (snapshot.version !== COMPACTION_SNAPSHOT_VERSION) {
     throw new Error(
       `compaction: unknown snapshot version "${snapshot.version}" — refusing to restore`,
+    );
+  }
+  // The envelope version alone is not proof: a hand-built or partially-updated
+  // snapshot can carry the right outer version around a stale mastery
+  // projection. Check the nested version explicitly rather than letting a v0.2
+  // projection through on the strength of its wrapper.
+  const nested = snapshot.masterySnapshot?.version;
+  if (nested !== MASTERY_SNAPSHOT_VERSION) {
+    throw new Error(
+      `compaction: snapshot embeds mastery version "${String(nested)}", expected ` +
+        `${MASTERY_SNAPSHOT_VERSION} — refusing to restore; replay the retained events instead`,
     );
   }
   return scoreEvents(eventsAfterCursor, snapshot.masterySnapshot);

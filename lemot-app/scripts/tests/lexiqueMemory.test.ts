@@ -30,11 +30,22 @@ import {
   deriveLexiqueMemory,
   projectMonLexiqueFriendlyStatus,
 } from "../../content/learning-engine/lexique-memory";
+import { supportedProductionHistory } from "./helpers";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 /** Fixed clock — the pure layer takes `now` explicitly; no Date.now anywhere. */
 const NOW = 1_800_000_000_000;
 
+/**
+ * Build an `ItemMastery`, deriving the scoped production channels from whatever
+ * aggregate production counters the fixture declares.
+ *
+ * `producedItem` below means "P clean productions" with no recorded assistance —
+ * which PR-03 already classifies as **Supported**, not independent (FQ-3 / I-19).
+ * Lexique Memory reads only the aggregates, so this changes none of its results;
+ * it keeps the fixtures internally coherent and states the Supported reading
+ * once, rather than letting an aggregate quietly imply independence.
+ */
 function mkMastery(overrides: Partial<ItemMastery> = {}): ItemMastery {
   return {
     itemId: "chunk:test",
@@ -58,6 +69,7 @@ function mkMastery(overrides: Partial<ItemMastery> = {}): ItemMastery {
     dueAt: null,
     monLexiqueStatus: "hidden",
     practiceEligibility: "none",
+    production: supportedProductionHistory(overrides),
     ...overrides,
   };
 }

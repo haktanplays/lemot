@@ -19,7 +19,8 @@
  *    appear here. No precision→added / precision→weak path is created.
  */
 import type { ItemId, RawItem } from "./types";
-import type { MasterySnapshot, PracticeEligibility } from "./mastery";
+import type { MasterySnapshot, PracticeEligibility, ProductionClaim } from "./mastery";
+import { deriveProductionClaim } from "./mastery";
 
 /** A single learner-safe Mon Lexique row. */
 export type MonLexiqueEntry = {
@@ -34,6 +35,20 @@ export type MonLexiqueEntry = {
   lastSeenAt: number | null;
   lastProducedAt: number | null;
   practiceEligibility: PracticeEligibility;
+  /**
+   * @internal Scoped production claim — the strongest production this entry's
+   * evidence actually supports (`none` · `supported` · `independent`).
+   *
+   * Derived from the scoped channel counters, NOT from aggregate
+   * `productionSuccess` (which also contains self-correction successes and so
+   * cannot distinguish ownership). It exposes no counters, no assistance
+   * history, no weak tags — only the coarse claim.
+   *
+   * NOT learner-facing in this PR: no copy is attached and no component reads
+   * it. PR-09 may later choose calm wording from it. An entry present only
+   * because it is weak, with no qualifying production success, reports `none`.
+   */
+  productionClaim: ProductionClaim;
   /** @internal scheduling only — never render the raw number. */
   dueAt: number | null;
   /** Convenience flag: a calm "needs another look", derived from `status`. */
@@ -91,6 +106,7 @@ export function selectMonLexiqueEntries(
       lastSeenAt: m.lastSeenAt,
       lastProducedAt: m.lastProducedAt,
       practiceEligibility: m.practiceEligibility,
+      productionClaim: deriveProductionClaim(m.production),
       dueAt: m.dueAt,
       needsPractice: status === "weak",
     });

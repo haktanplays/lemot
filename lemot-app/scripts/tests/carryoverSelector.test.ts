@@ -9,6 +9,7 @@
  * lesson tags, zero targets), determinism, and no-mutation.
  */
 import { describe, test, assert } from "./harness";
+import { supportedProductionHistory } from "./helpers";
 import type { ItemMastery } from "../../content/learning-engine/mastery";
 import { deriveLexiqueMemory } from "../../content/learning-engine/lexique-memory";
 import type { LexiqueMemoryState } from "../../content/learning-engine/lexique-memory";
@@ -27,6 +28,18 @@ import type {
 const DAY_MS = 24 * 60 * 60 * 1000;
 const NOW = 1_800_000_000_000;
 
+/**
+ * Build an `ItemMastery`, deriving the scoped production channels from whatever
+ * aggregate production counters the fixture declares.
+ *
+ * These fixtures state production history WITHOUT assistance provenance, which
+ * is exactly the situation PR-03's migration policy already rules on: production
+ * of unknown assistance is **Supported**, never independent (FQ-3 / I-19 — such
+ * evidence stays valid but cannot establish independent production). Deriving
+ * the channel here also means the aggregate/channel invariant cannot drift as
+ * these fixtures change. Pass `production` explicitly to model a genuinely
+ * independent history.
+ */
 function mkMastery(overrides: Partial<ItemMastery> = {}): ItemMastery {
   return {
     itemId: "chunk:test",
@@ -50,6 +63,7 @@ function mkMastery(overrides: Partial<ItemMastery> = {}): ItemMastery {
     dueAt: null,
     monLexiqueStatus: "hidden",
     practiceEligibility: "none",
+    production: supportedProductionHistory(overrides),
     ...overrides,
   };
 }

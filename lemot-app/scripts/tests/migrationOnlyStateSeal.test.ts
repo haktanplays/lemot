@@ -662,7 +662,10 @@ describe("frozen authority is untouched by this correction", () => {
     assertEqual(ERROR_TAG_CODES[15], "empty_or_skip", "last member unchanged");
   });
 
-  test("the mastery snapshot version is unchanged and no weight was added", () => {
-    assertEqual(MASTERY_SNAPSHOT_VERSION, "mastery-v0.2", "PR-04 owns the snapshot shape");
+  // PR-03 pinned this at v0.2 to prove it had not reached into PR-04's territory.
+  // PR-04 has since bumped it deliberately (scoped production channels); the
+  // event schema — what THIS file actually guards — is still 3.
+  test("the mastery snapshot version moved only when PR-04 changed its shape", () => {
+    assertEqual(MASTERY_SNAPSHOT_VERSION, "mastery-v0.3", "PR-04 owns this bump");
   });
 });

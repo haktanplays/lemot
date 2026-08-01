@@ -365,13 +365,22 @@ describe("mastery admission gate", () => {
     assertEqual(JSON.stringify(twice), JSON.stringify(once), "stable replay");
   });
 
-  test("no Supported counters and no snapshot version bump were added", () => {
+  // This test previously asserted that PR-03 had NOT added Supported counters or
+  // bumped the snapshot ("PR-04 owns that"). PR-04 has now deliberately done
+  // both, so the old expectation is expired rather than violated. What still
+  // needs guarding is that PR-04 left PR-03's admission gate alone — the gate is
+  // what this describe block is about.
+  test("PR-04's scoped counters did not disturb the admission gate", () => {
     const s = scoreEvent(createEmptyMasterySnapshot(), makeEvent({ result: "correct" }));
-    assertEqual(s.version, "mastery-v0.2", "snapshot schema unchanged — PR-04 owns that");
-    const keys = Object.keys(s.items["item-a"]);
-    for (const forbidden of ["supportedProductionSuccess", "independentProductionSuccess"]) {
-      assert(!keys.includes(forbidden), `${forbidden} belongs to PR-04`);
-    }
+    assertEqual(s.version, "mastery-v0.3", "PR-04 bumped the snapshot shape");
+    assert("production" in s.items["item-a"], "scoped channels are present");
+
+    const blocked = scoreEvent(createEmptyMasterySnapshot(), quarantined());
+    assertEqual(
+      Object.keys(blocked.items).length,
+      0,
+      "a quarantined success is still a strict no-op after the routing change",
+    );
   });
 });
 

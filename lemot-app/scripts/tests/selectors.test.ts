@@ -18,11 +18,22 @@ import { describe, test, assert, assertEqual } from "./harness";
 import { selectMonLexiqueEntries } from "../../content/learning-engine/mon-lexique";
 import { selectPracticePoolBuckets } from "../../content/learning-engine/practice-pool";
 import type { ItemMastery, MasterySnapshot } from "../../content/learning-engine/mastery";
+import { emptyProductionEvidence } from "../../content/learning-engine/mastery";
 import type { ItemId, RawItem } from "../../content/learning-engine/types";
 
 // ── Local fixture helpers (intentionally NOT exported / NOT shared) ──────────
 
-/** Full `ItemMastery` with the engine's `emptyItem` defaults, then overrides. */
+/**
+ * Full `ItemMastery` with the engine's `emptyItem` defaults, then overrides.
+ *
+ * These are SYNTHETIC selector fixtures: they set `monLexiqueStatus` /
+ * `practiceEligibility` directly to exercise inclusion and ordering, rather than
+ * replaying events. They therefore carry genuinely empty scoped production
+ * channels, and an "added" fixture here truthfully projects
+ * `productionClaim: "none"`. Claim semantics are asserted against
+ * reducer-produced snapshots in `masteryScopes.test.ts`, where the history is
+ * real.
+ */
 function makeItemMastery(
   itemId: string,
   overrides: Partial<ItemMastery> = {},
@@ -36,6 +47,7 @@ function makeItemMastery(
     productionAttempts: 0,
     productionSuccess: 0,
     productionFailure: 0,
+    production: emptyProductionEvidence(),
     wrongCount: 0,
     skipCount: 0,
     precisionCount: 0,
@@ -185,13 +197,33 @@ describe("selectMonLexiqueEntries", () => {
         "lastSeenAt",
         "needsPractice",
         "practiceEligibility",
+        // PR-04: the coarse scoped CLAIM (none/supported/independent) — not the
+        // counters behind it, and not assistance history.
+        "productionClaim",
         "status",
       ],
       "entry exposes exactly the learner-safe key set",
     );
-    for (const banned of ["weakTags", "precisionCount", "wrongCount", "isWeak"]) {
+    for (const banned of [
+      "weakTags",
+      "precisionCount",
+      "wrongCount",
+      "isWeak",
+      // The scoped block itself is internal: the projection may say "supported",
+      // never "2 supported attempts, 1 failure".
+      "production",
+      "productionAttempts",
+      "productionSuccess",
+      "productionFailure",
+    ]) {
       assert(!(banned in entry), `internal field "${banned}" must not be emitted`);
     }
+    assertEqual(
+      entry.productionClaim,
+      "none",
+      "a synthetic fixture with empty scoped channels claims nothing — the status " +
+        "override alone must not manufacture a production claim",
+    );
   });
 });
 
