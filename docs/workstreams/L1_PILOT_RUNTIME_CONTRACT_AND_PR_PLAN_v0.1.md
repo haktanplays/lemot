@@ -99,8 +99,8 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 
 **2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
 ~~PR-04 mastery~~ ✅ → ~~PR-05 provider wiring~~ ✅ → ~~PR-06 renderer emission~~ ✅ → **the runtime-connected renderer
-proof now exists** → **PR-07 (French-QA gated) for exact learner content** → PR-08 Practice return →
-PR-09 Mon Lexique UI → PR-10 Stats projection. PR-07 (payload registration) is the French-QA-gated branch that
+proof now exists** → ~~PR-08 Practice return~~ ✅ → **PR-09 Mon Lexique UI (next)** → PR-10 Stats projection →
+PR-07 exact learner content (French QA deferred by founder waiver — see §22). PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
 **2.9 May proceed before French QA:** PR-01 through PR-06, PR-08, PR-09, PR-10, PR-12 —
@@ -775,13 +775,39 @@ carries `frenchQa: approved`; validators pass; no unapproved French reachable by
 *Tests:* provenance/QA-status invariants; treatment-eligibility validator. *Rollback:* content-only
 revert. *French QA:* **YES — blocking**. *Learner-visible:* **yes**.
 
-**PR-08 — Practice Hub selector integration (the return leg).**
-*Objective:* PM-023 returns the same identity from the snapshot, with why-it-returned copy.
-*Files:* `practice-selector.ts`, `carryover-selector.ts`, hub surface. *Depends:* PR-04.
-*Excludes:* new hub vocabulary/curriculum; new derivations beyond the ecosystem §14 classes.
-*Acceptance:* hub writes no state of its own; selection derives from the snapshot; **no new
-curriculum**. *Tests:* **T-17**, no-second-curriculum guard. *Rollback:* selector revert.
-*French QA:* no (reuses registered surfaces). *Learner-visible:* yes.
+**PR-08 — Practice Hub selector integration (the return leg). IMPLEMENTED** on
+`feat/l1-pilot-practice-hub-return`.
+*Delivered:* the runtime gained ONE read-side projection — `readMasterySnapshot()` reads the full
+log through the validated repository path and folds with `scoreEvents`; no write, no cached
+snapshot, no raw repository or event array exposed, and runtime/controller construction still reads
+nothing. A new pure Hub layer (`content/lesson-v1-evidence/practiceHub.ts`) projects the snapshot
+through the existing Practice Pool semantics, then the EXISTING `selectTodaysSet`
+priority/diversity/5–8 budget rules — no parallel scheduler. Return reasons derive only from the
+reducer-owned path (build → `keep_building` · stretch → `ready_to_stretch` · challenge →
+`needs_another_look`); `isDue` is a separate fact; weak tags and counters are consumed internally
+and never appear on the output type. Each entry resolves to an already-authored Wave A screen
+(fill-with-traps / weave) BY REFERENCE via evidence-target matching — nothing synthesized, and the
+resolver refuses every unsafe upgrade: undeclared/ghost targets, recognition-treated items on
+production screens, Supported items on weaves that do not supply the piece. Items with no safe
+source are excluded, never displayed broken. A new route (`app/practice-hub.tsx`, outside the
+legacy tabs) plus one reuse surface render the original screen with UI-fact callbacks; attempts go
+through a controller with `placement: "practice_hub"` while the qualified payload id, lesson
+id/version and canonical item identity remain the ORIGINAL authored ones — so the same mastery row
+accumulates. The Hub owns no state: every view derives from the latest read, and completing a card
+recomputes the set from the shared log. Entry point: one navigation-only link on the lesson
+completion view; opening/closing/navigating emits nothing.
+*Boundary corrections to this file's earlier wording:* the old card listed `carryover-selector.ts`
+in the files — that was wrong. Carryover is a LESSON projection (old material inside a lesson under
+target-load budgets); the Hub is a snapshot projection. **The carryover selector was not touched**
+and is not part of the Hub.
+*Legacy quarantine:* `app/(tabs)/practice.tsx` (useSRS / legacy scenarios / flashcards) is
+unmodified, gains no new-engine import, and `FEATURES.practice` is unchanged.
+*Tests:* 36 new (1217 total); the PM-023 return-leg proof runs lesson-event → snapshot → hub set →
+reused authored screen → `practice_hub` event → same item row accumulating, on one shared
+in-memory repository, with no second identity and no second store.
+*PM-023 content status:* this is the CONNECTED CAPABILITY. The exact final PM-023 learner payload
+still depends on PR-07 payload registration and is **not** claimed here.
+*French QA:* none needed — PR-08 adds no French. *Learner-visible:* yes (calm English only).
 
 **PR-09 — Mon Lexique projection (supported path).**
 *Objective:* surface supported-path visibility (CA-8) with calm status copy and assistance context.
@@ -900,7 +926,8 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Starting persistence wiring (PR-05) | **DONE** | app-level runtime provider owns one repository per privacy-reset epoch; reset-safe runtime/controller replacement; explicit sandbox vs `lesson_path` surface resolvers; the shipped lesson path can reach the spine and emits nothing; 1114 tests green |
 | Starting renderer emission (PR-06) | **DONE** | D-6 closed as a Weave configuration; the four Wave A primitives emit through a narrow session API; qualified screen identity, scoped evidence targets, real hint/constitutive capture, one shared grader; 1181 tests green |
 | Runtime-connected renderer proof | **EXISTS (PR-06)** | shipped screen → event → mastery → Mon Lexique is proven end-to-end on already-shipped French. It is an ARCHITECTURE proof: the exact PM-009/PM-011 learner payloads are not registered |
-| Exact L1 pilot learner content | **NOT READY** | requires PR-07 payload registration, which is hard-gated on human French QA |
+| Exact L1 pilot learner content | **NOT READY** | requires PR-07 payload registration. The pre-PR-07 human French-QA gate was DEFERRED by explicit founder risk acceptance (§22): AI review is provisional, not human attestation, and one comprehensive human QA pass remains required before public/content-complete release |
+| Practice Hub return leg (PR-08) | **DONE** | runtime read projection + pure Hub selector over existing Practice Pool / today's-set rules; authored Wave A screens reused by reference; `practice_hub` placement on the same item/payload identities; legacy Practice tab untouched; 1217 tests green |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
 | French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
@@ -925,19 +952,27 @@ an app-level runtime provider that owns one repository per privacy-reset epoch �
 nothing**: no screen has a learning callback, and the legacy completion marker stays separate.
 **D-1, D-2, D-3 and D-8 are closed.**
 
-**The recommended next action is the human FRENCH-QA GATE that PR-07 requires** — not another code
-PR. Every remaining runtime capability the pilot needs is now built and tested; what is missing is
-approval of learner-visible French.
+**Founder QA decision (2026-08-01, recorded with PR-08).** The founder has explicitly DEFERRED the
+pre-PR-07 human French-QA requirement, accepting the risk. Recorded honestly:
 
-PR-06 closed the engineering question. The shipped lesson path emits honest evidence for all seven
-Wave A pairings, and shipped-screen → event → mastery → Mon Lexique is proven end-to-end. That proof
-runs on **already-shipped** L0/L1 French with synthetic capability fixtures; the exact PM-009 and
-PM-011 learner payloads, the four missing item identities (including `un thé`), the sentence records
-and the EV ids are all still unregistered. Registering them is PR-07, and PR-07 cannot start until a
-human signs off on the pool surfaces — no code change can substitute for that gate.
+- the existing AI-reviewed pass over the review pack is **provisional linguistic review only** — it
+  is NOT human attestation, no surface is labelled human-approved, and nothing may set a
+  `frenchQa: approved`-style status on the strength of it;
+- the L1 Human French-QA Review Pack v0.1 remains at
+  `FRENCH QA NOT COMPLETED — PR-07 BLOCKED`-as-attested — its gate state was **not** edited to
+  claim a pass;
+- final human QA will be performed as **one comprehensive product-surface review after the
+  learner-facing content set is assembled**, and remains required before public /
+  content-complete release;
+- under this waiver, implementation work (including PR-07 payload registration) may continue **at
+  founder risk**; no implementation may claim named-human approval before it exists;
+- PR-08 adds no new French, so it did not depend on this waiver operationally.
 
-After PR-07: PR-08 owns the Practice Hub return leg (PM-023), PR-09 the Mon Lexique UI, PR-10 the
-Stats projection. None of those is required for the connected-architecture proof that now exists.
+**The recommended next engineering action is PR-09 — Mon Lexique projection** (§17): surface the
+supported-path visibility with calm status copy, reading the same shared snapshot the Hub now
+reads. PR-07 payload registration is also unblocked (at founder risk, per the waiver above);
+PR-10 Stats and PR-12 connected smoke follow. The connected-architecture proof now covers both
+directions: lesson → mastery → Mon Lexique/Hub, and Hub → same mastery row.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence

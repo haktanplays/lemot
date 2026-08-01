@@ -1,0 +1,166 @@
+/**
+ * Practice Hub attempt surface (PR-08) — one reused authored screen.
+ *
+ * Renders the ORIGINAL shipped screen component (`FillWithTraps` or `Weave`) for
+ * the resolved source, and records the attempt through a controller whose
+ * surface resolver stamps `placement: "practice_hub"`. Everything else about the
+ * event is identical to the lesson path: same canonical item identity, same
+ * qualified payload id (the original lesson/screen), same lesson id and version,
+ * same PR-06 orchestration (choice/typed interactions, treatment resolution,
+ * assistance capture, deterministic grading), same admission pipeline, same
+ * mastery reducer. Only WHERE it happened differs.
+ *
+ * The screen receives UI-fact callbacks only — no controller, repository,
+ * evidence class, attribution, admissibility or mastery mutation. Opening,
+ * closing and navigating emit nothing; the screen's existing answer action
+ * (choice on selection, Weave on Check) is the single emission point, exactly
+ * as in the lesson.
+ */
+import { useEffect, useRef, useState } from "react";
+import { View, Text, Pressable } from "react-native";
+import { P } from "@/constants/theme";
+import type {
+  EventSurfaceResolver,
+  LearningSessionController,
+  SessionState,
+} from "@/content/learning-engine/session-controller";
+import {
+  choiceInteraction,
+  typedAttemptInteraction,
+} from "@/content/lesson-v1-evidence/interactions";
+import type { ReusablePracticeSource } from "@/content/lesson-v1-evidence/practiceHub";
+import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
+import { FillWithTraps } from "@/components/lesson-v1/screens/FillWithTraps";
+import { Weave } from "@/components/lesson-v1/screens/Weave";
+
+/**
+ * Where a Hub attempt happens. Identity is REUSED, placement is not: the
+ * qualified payload id and lesson id stay those of the original authored
+ * screen, so mastery accumulates on the same item through the same payload —
+ * while the event honestly records that it came back through the Hub.
+ */
+const PRACTICE_HUB_SURFACE: EventSurfaceResolver = (exercise) => ({
+  placement: "practice_hub",
+  evId: null,
+  payloadId: exercise.id,
+  sentenceId: null,
+  sequence: null,
+});
+
+/**
+ * Render the original authored screen with UI-fact callbacks. A local `screen`
+ * binding lets the union narrow properly into each branch's closure.
+ */
+function renderReusedScreen(
+  source: ReusablePracticeSource,
+  controller: LearningSessionController,
+  onClose: () => void,
+) {
+  const { lesson, screen } = source;
+  if (screen.type === "fill-with-traps") {
+    return (
+      <FillWithTraps
+        screen={screen}
+        onContinue={onClose}
+        onChoice={(facts) =>
+          controller.recordGradedAttempt(choiceInteraction(lesson, screen, facts))
+        }
+      />
+    );
+  }
+  return (
+    <Weave
+      screen={screen}
+      onContinue={onClose}
+      onTypedAttempt={(facts) =>
+        controller.recordGradedAttempt(
+          typedAttemptInteraction(lesson, screen, {
+            text: facts.text,
+            hintRung: facts.hintRung,
+            constitutiveSupportRendered: facts.constitutiveSupportRendered,
+          }),
+        )
+      }
+    />
+  );
+}
+
+export function PracticeHubPractice({
+  source,
+  onClose,
+}: {
+  source: ReusablePracticeSource;
+  /** Called when the learner finishes or leaves. Emits nothing by itself. */
+  onClose: () => void;
+}) {
+  const { runtime, generation } = useLearningEngineRuntime();
+  const [, setState] = useState<SessionState | null>(null);
+
+  // One controller per source lesson + runtime generation, same stale-token
+  // pattern as the lesson provider: a pre-reset controller's late callback must
+  // not touch the fresh session, and its writes are already suppressed.
+  const identity = `${generation}::${source.lesson.id}::${source.screen.id}`;
+  const held = useRef<{ identity: string; controller: LearningSessionController } | null>(
+    null,
+  );
+  if (held.current === null || held.current.identity !== identity) {
+    const token = identity;
+    held.current = {
+      identity,
+      controller: runtime.createSessionController({
+        lessonId: source.lesson.id,
+        contentVersion: source.lesson.version,
+        resolveEventSurface: PRACTICE_HUB_SURFACE,
+        onUpdate: (next) => {
+          if (held.current?.identity === token) setState(next);
+        },
+      }),
+    };
+  }
+  const controller = held.current.controller;
+
+  useEffect(() => {
+    setState(null);
+  }, [identity]);
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 16,
+          paddingVertical: 10,
+          borderBottomWidth: 1,
+          borderBottomColor: P.border,
+        }}
+      >
+        <Text
+          style={{
+            color: P.ink3,
+            fontSize: 12,
+            letterSpacing: 1,
+            textTransform: "uppercase",
+          }}
+        >
+          Practice this piece
+        </Text>
+        <Pressable
+          onPress={onClose}
+          hitSlop={8}
+          style={{
+            borderRadius: 999,
+            borderWidth: 1,
+            borderColor: P.border,
+            paddingHorizontal: 14,
+            paddingVertical: 6,
+          }}
+        >
+          <Text style={{ color: P.ink2, fontSize: 13 }}>Close</Text>
+        </Pressable>
+      </View>
+      {renderReusedScreen(source, controller, onClose)}
+    </View>
+  );
+}

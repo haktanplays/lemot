@@ -255,6 +255,21 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
         <Btn onPress={exitToPrevious}>
           <Text style={{ color: P.paper, fontSize: 15 }}>Back to Home</Text>
         </Btn>
+        {/* Navigation only — opening the Hub is not learning evidence and emits
+            no event. (Typed-route cast is the narrow bridge the house rules
+            allow for a freshly added route.) */}
+        <Pressable
+          onPress={() => router.push("/practice-hub" as never)}
+          style={{ marginTop: 12, alignSelf: "center", padding: 6 }}
+          accessibilityRole="button"
+        >
+          <Text
+            className="text-sm"
+            style={{ color: P.ink2, textDecorationLine: "underline" }}
+          >
+            Practice what came back
+          </Text>
+        </Pressable>
       </View>
     </View>
   );

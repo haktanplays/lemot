@@ -280,12 +280,16 @@ describe("learning runtime factory", () => {
     assertEqual(e.deviceInfo.expoRuntime, "rt-9", "expoRuntime propagated");
   });
 
-  test("the runtime exposes no repository and no persistence method", () => {
+  // PR-05 pinned the surface to exactly one factory method. PR-08 deliberately
+  // added ONE read-side projection (`readMasterySnapshot`), so the enumeration
+  // grew — but the intent is unchanged and still enforced: no raw repository,
+  // no write method, no raw event access is reachable from a runtime.
+  test("the runtime exposes the factory + read projection and nothing else", () => {
     const runtime: LearningEngineRuntime = runtimeWith(makeCountingRepository());
     assertEqual(
       Object.keys(runtime).sort().join(","),
-      "createSessionController",
-      "the runtime's whole surface is one factory method",
+      "createSessionController,readMasterySnapshot",
+      "exactly the controller factory and the explicit mastery read",
     );
     for (const forbidden of [
       "repository",

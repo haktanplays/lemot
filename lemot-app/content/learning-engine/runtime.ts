@@ -27,6 +27,7 @@
  */
 import type { DeviceInfo } from "./events";
 import type { LearningRepository } from "./repository/types";
+import { scoreEvents, type MasterySnapshot } from "./mastery";
 import {
   LearningSessionController,
   type EventSurfaceResolver,
@@ -55,12 +56,28 @@ export type RuntimeSessionOptions = {
 /**
  * The app-level learning runtime.
  *
- * One method, by design. There is no `repository`, no `appendEvent`, no
+ * Two members, by design: a controller factory (the only write path) and one
+ * read-side projection. There is no `repository`, no `appendEvent`, no
  * `readAllEvents`, no storage key and no KV handle on this type, so a React
- * component holding a runtime cannot reach persistence even by accident.
+ * component holding a runtime cannot reach persistence even by accident — a
+ * surface can ask "what does the learner's history add up to?" and nothing else.
  */
 export type LearningEngineRuntime = {
   createSessionController(options: RuntimeSessionOptions): LearningSessionController;
+  /**
+   * Rebuild the current `MasterySnapshot` from the full event log.
+   *
+   * READ-ONLY and explicit: constructing the runtime, the provider or a
+   * controller still reads nothing — only this call does. It goes through the
+   * repository's existing validation/migration read path (never the cached
+   * snapshot key, which nothing writes), folds with the pure `scoreEvents`
+   * reducer, and returns a current `mastery-v0.3` projection. The event log
+   * remains authoritative; the returned snapshot is a derived value, not state.
+   *
+   * Deliberately NOT returned: the raw event array. A read-side surface gets the
+   * projection, not the history — exporting history is the privacy layer's job.
+   */
+  readMasterySnapshot(): Promise<MasterySnapshot>;
 };
 
 export type LearningRuntimeMetadata = {
@@ -120,6 +137,11 @@ export function createLearningEngineRuntime(
         now: options.now,
         makeClientEventId: options.makeClientEventId,
       });
+    },
+    async readMasterySnapshot(): Promise<MasterySnapshot> {
+      // `readAllEvents` is the validated/migrated read boundary (v1 → v2 → v3,
+      // fail-closed on anything unreadable). The events never leave this closure.
+      return scoreEvents(await repository.readAllEvents());
     },
   };
 }
