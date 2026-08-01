@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { View, Text, ScrollView, TextInput } from "react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
@@ -16,12 +16,32 @@ type AiState =
 export function SayItYourWayV1({
   screen,
   onContinue,
+  onOpenAttempt,
 }: {
   screen: SayItYourWayScreen;
   onContinue: () => void;
+  /**
+   * UI FACTS only (PR-06), reported once on "Keep and compare" — the moment the
+   * learner commits. Check (which only opens the confirm step), Try again, text
+   * edits and Continue all report nothing: none of them is a commitment, and an
+   * event for each would turn ordinary revision into a stream of attempts.
+   *
+   * AI feedback is deliberately absent from these facts. It may explain
+   * afterwards; it never becomes evidence.
+   */
+  onOpenAttempt?: (facts: {
+    text: string;
+    ideaPiecesShown: boolean;
+    revisionCount: number;
+    modelAnswer: string | null;
+  }) => void;
 }) {
   const { payload } = screen;
   const [text, setText] = useState("");
+  // How many times the learner went back to edit before committing. Counted, not
+  // judged: revising before comparing is ordinary writing, not a retry penalty.
+  const revisions = useRef(0);
+  const reported = useRef(false);
   // Flow: input -> confirm ("You wrote: …") -> revealed (Natural Reveal). The
   // confirm step lets the learner revise or commit before comparing. It never
   // grades, never blocks (beyond empty input), and never shows the answer early.
@@ -46,13 +66,24 @@ export function SayItYourWayV1({
   };
 
   // Try again returns to editing; the typed text is preserved (state untouched).
+  // Emits nothing: the learner has not committed to anything yet.
   const handleTryAgain = () => {
+    revisions.current += 1;
     setPhase("input");
   };
 
   // Keep and compare opens Natural Reveal, running the AI note only if eligible
   // (off in dev-apk). This is the original handleCheck body, deferred to here.
   const handleKeepAndCompare = () => {
+    if (!reported.current) {
+      reported.current = true;
+      onOpenAttempt?.({
+        text: text.trim(),
+        ideaPiecesShown: showPieces,
+        revisionCount: revisions.current,
+        modelAnswer: payload.modelAnswer ?? payload.reveal.modelAnswer ?? null,
+      });
+    }
     setPhase("revealed");
 
     if (!aiEligible) {

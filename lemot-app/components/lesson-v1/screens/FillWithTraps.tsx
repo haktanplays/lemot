@@ -8,12 +8,25 @@ import { AnswerReveal } from "./AnswerReveal";
 export function FillWithTraps({
   screen,
   onContinue,
+  onChoice,
 }: {
   screen: FillWithTrapsScreen;
   onContinue: () => void;
+  /**
+   * UI FACTS only (PR-06): which option the learner tapped. Reported once, at
+   * SELECTION — the existing disabled-after-selection flow already makes a
+   * second choice impossible, and Continue reports nothing further.
+   */
+  onChoice?: (facts: { optionId: string }) => void;
 }) {
   const { payload } = screen;
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const handleSelect = (optionId: string) => {
+    if (selectedId !== null) return; // already answered; never a second event
+    setSelectedId(optionId);
+    onChoice?.({ optionId });
+  };
 
   const selected =
     selectedId !== null
@@ -88,7 +101,7 @@ export function FillWithTraps({
             <Pressable
               key={option.id}
               disabled={selected !== undefined}
-              onPress={() => setSelectedId(option.id)}
+              onPress={() => handleSelect(option.id)}
               className="rounded-xl border mt-2"
               style={{
                 backgroundColor: bg,

@@ -287,6 +287,84 @@ export class LearningSessionController {
     );
   }
 
+  /**
+   * Record that the learner MET a form. Nothing was asked; nothing was graded.
+   *
+   * Exposure is the weakest honest record there is: it says the item was on
+   * screen, not that anything was understood. The mastery reducer routes
+   * `exposure` to no channel at all, so this can never become a counter.
+   */
+  recordExposure(input: RecordRecognitionRevealInput): void {
+    const timestamp = this.now();
+    this.emitSaving();
+    this.enqueue(
+      this.buildNonAssessedEvent({
+        exercise: input.exercise,
+        context: input.context,
+        timestamp,
+        primitive: "exposure",
+        evidenceClass: "exposure",
+        expectedAnswer:
+          (input.exercise.operation === "recognition"
+            ? input.exercise.displayAnswer
+            : input.exercise.targetText) ?? null,
+      }),
+      timestamp,
+    );
+  }
+
+  /**
+   * Record an UNGRADED open-production attempt (W1).
+   *
+   * The learner wrote something toward a communicative goal and there is no
+   * deterministic answer to compare it against — so the raw text is preserved
+   * and NO grading facet exists: no `result`, no `errorTags`, no
+   * `normalizedAnswer`. The union makes that structural, not a convention.
+   */
+  recordOpenProductionAttempt(
+    input: RecordRecognitionRevealInput & { userAnswer: string },
+  ): void {
+    const timestamp = this.now();
+    this.emitSaving();
+    this.enqueue(
+      this.buildNonAssessedEvent({
+        exercise: input.exercise,
+        context: input.context,
+        timestamp,
+        primitive: "production",
+        evidenceClass: "open_production_attempt",
+        userAnswer: input.userAnswer,
+        expectedAnswer: null,
+      }),
+      timestamp,
+    );
+  }
+
+  /**
+   * Record that the learner then SAW a model answer.
+   *
+   * Comparison, not correction: the model is stored as `expectedAnswer` for
+   * later reading, and the difference between it and what the learner wrote is
+   * never a verdict. A reveal makes no claim about the learner at all.
+   */
+  recordComparisonReveal(
+    input: RecordRecognitionRevealInput & { modelAnswer?: string | null },
+  ): void {
+    const timestamp = this.now();
+    this.emitSaving();
+    this.enqueue(
+      this.buildNonAssessedEvent({
+        exercise: input.exercise,
+        context: input.context,
+        timestamp,
+        primitive: "reveal",
+        evidenceClass: "comparison_only",
+        expectedAnswer: input.modelAnswer ?? null,
+      }),
+      timestamp,
+    );
+  }
+
   /** Resolves once all queued appends have settled. For tests / teardown. */
   flush(): Promise<void> {
     return this.tail;
@@ -403,6 +481,8 @@ export class LearningSessionController {
     primitive: Exclude<LearningEventPrimitive, "selection">;
     evidenceClass: EvidenceClass;
     expectedAnswer?: string | null;
+    /** Only an open-production attempt has learner text to preserve. */
+    userAnswer?: string | null;
   }): LearningEvent {
     const attemptNumber = this.nextAttempt(args.exercise.id);
     const itemIds: ItemId[] = Array.isArray(args.exercise.targetItemIds)
@@ -428,7 +508,7 @@ export class LearningSessionController {
       itemIds,
       promptLevel: args.context.promptLevel,
       attemptNumber,
-      userAnswer: null,
+      userAnswer: args.userAnswer ?? null,
       expectedAnswer: args.expectedAnswer ?? null,
       timestamp: args.timestamp,
       contentVersion: this.contentVersion,

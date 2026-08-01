@@ -792,11 +792,22 @@ describe("PR-05 is wiring only — nothing emits", () => {
     }
   });
 
-  test("the lesson bridge emits nothing on construction", () => {
-    const code = codeOf(read("components/lesson-v1/LessonV1LearningSessionProvider.tsx"));
-    for (const banned of ["recordGradedAttempt(", "recordRecognitionReveal(", "appendEvent("]) {
-      assert(!code.includes(banned), `the bridge must not call ${banned}`);
+  // PR-05 asserted the bridge contained NO record call at all. PR-06 legitimately
+  // adds them — inside the callbacks it hands to screens. The guarantee still
+  // worth holding is the original INTENT: mounting the bridge emits nothing.
+  // Structurally, that means no record call may run during provider setup.
+  test("the lesson bridge still emits nothing on construction", () => {
+    const src = read("components/lesson-v1/LessonV1LearningSessionProvider.tsx");
+    const apiStart = src.indexOf("useMemo<LessonV1LearningSession>");
+    assert(apiStart > 0, "the narrow API is built in a useMemo");
+    const setup = codeOf(src.slice(0, apiStart));
+    for (const banned of ["controller.record", "appendEvent("]) {
+      assert(
+        !setup.includes(banned),
+        `"${banned}" must appear only inside the callbacks, never in provider setup`,
+      );
     }
+    assert(!codeOf(src).includes("useEffect(() => {\n    controller."), "no emit-on-mount effect");
   });
 
   test("no lesson-v1 screen emits or imports persistence", () => {
@@ -835,18 +846,34 @@ describe("PR-05 is wiring only — nothing emits", () => {
     }
   });
 
-  test("screen callbacks are unchanged — only screen + onContinue", () => {
-    const src = read("components/lesson-v1/LessonRendererV1.tsx");
-    const calls = src.match(/<\w+Card?\s+screen=\{screen\}\s+onContinue=\{onContinue\}\s*\/>/g) ?? [];
-    const dispatchCalls = src.match(/screen=\{screen\} onContinue=\{onContinue\}/g) ?? [];
-    assert(
-      calls.length + dispatchCalls.length >= 7,
-      "every screen still receives exactly screen + onContinue",
-    );
-    assert(
-      !/onGraded|onAttempt|onReveal|session=\{/.test(src),
-      "no learning callback is passed to any screen in PR-05",
-    );
+  // PR-05 required screens to receive ONLY `screen` + `onContinue`. PR-06
+  // deliberately adds one UI-facts callback to each of the four Wave A
+  // primitives, so that expectation is expired. The rule that still holds — and
+  // is the one that actually matters — is WHAT may be passed: surface facts, and
+  // never the controller, the repository, or any evidence decision.
+  test("screens receive only surface facts, never learning machinery", () => {
+    // Comment-stripped: the dispatcher's own doc block NAMES what may not be
+    // passed, and prose must not read as code.
+    const src = codeOf(read("components/lesson-v1/LessonRendererV1.tsx"));
+    for (const banned of [
+      "controller={",
+      "repository={",
+      "evidenceClass",
+      "attribution",
+      "admissibility",
+      "snapshot={",
+      "mastery",
+      "monLexique",
+    ]) {
+      assert(!src.includes(banned), `no screen may receive "${banned}"`);
+    }
+    // The three non-Wave-A screens keep exactly the original two props.
+    for (const quiet of ["InsightCard", "NaturalReveal", "RecapCard"]) {
+      assert(
+        new RegExp(`<${quiet} screen=\\{screen\\} onContinue=\\{onContinue\\} />`).test(src),
+        `${quiet} still receives exactly screen + onContinue`,
+      );
+    }
   });
 
   test("the legacy completion marker remains, exactly once and unchanged", () => {

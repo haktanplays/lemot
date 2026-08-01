@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { Volume2 } from "lucide-react-native";
 import { Btn } from "@/components/Btn";
@@ -8,13 +9,32 @@ import type { MeetCardScreen } from "@/content/lessonTypes";
 export function MeetCard({
   screen,
   onContinue,
+  onExposure,
 }: {
   screen: MeetCardScreen;
   onContinue: () => void;
+  /**
+   * UI FACTS only (PR-06). Reported once, when the learner CONTINUES — not on
+   * mount: a learner who opens the screen and immediately leaves has not
+   * completed an exposure, and recording one would overstate what happened.
+   */
+  onExposure?: (facts: { ttsPlayCount: number }) => void;
 }) {
   const { say } = useSpeech();
   const { payload } = screen;
   const highlights = payload.highlights ?? [];
+  const playCount = useRef(0);
+  const reported = useRef(false);
+
+  const handleContinue = () => {
+    // Double-tap guard: Continue can fire twice before the screen unmounts, and
+    // two exposure events for one reading would be a lie about the session.
+    if (!reported.current) {
+      reported.current = true;
+      onExposure?.({ ttsPlayCount: playCount.current });
+    }
+    onContinue();
+  };
 
   return (
     <ScrollView
@@ -60,6 +80,7 @@ export function MeetCard({
           {payload.tts && (
             <Pressable
               onPress={() => {
+                playCount.current += 1;
                 void say(payload.fr);
               }}
               hitSlop={8}
@@ -107,7 +128,7 @@ export function MeetCard({
         )}
       </View>
 
-      <Btn onPress={onContinue}>
+      <Btn onPress={handleContinue}>
         <Text style={{ color: P.paper, fontSize: 15 }}>Continue</Text>
       </Btn>
     </ScrollView>

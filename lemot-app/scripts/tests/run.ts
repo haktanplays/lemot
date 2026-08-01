@@ -64,6 +64,7 @@ import "./assistanceIntegration.test";
 import "./migrationOnlyStateSeal.test";
 import "./masteryScopes.test";
 import "./learningRuntimeWiring.test";
+import "./waveAEmission.test";
 import { runAll } from "./harness";
 
 void runAll();

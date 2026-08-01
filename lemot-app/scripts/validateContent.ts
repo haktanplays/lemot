@@ -28,6 +28,7 @@ import { V1_LESSONS } from "../content/lessons/v1";
 import { loadShippedManifest, checkShippedItemIds } from "./shippedItemIds";
 import { loadShippedTagManifest, collectUsedTags, checkShippedErrorTags } from "./shippedErrorTags";
 import { checkCanonRules } from "./canonRules";
+import { checkLessonEvidenceRules } from "./lessonEvidenceRules";
 
 const findings = validateContent(LEARNING_ENGINE_FIXTURE);
 console.log(formatReport(findings));
@@ -65,12 +66,22 @@ for (const finding of canonFindings) {
   console.log(`  ${finding.severity.toUpperCase()} ${finding.message}`);
 }
 
+const evidenceFindings = checkLessonEvidenceRules(V1_LESSONS);
+console.log(
+  `Lesson evidence metadata (PR-06: targets, trap tags, constitutive support, ` +
+    `qualified screen ids) over ${V1_LESSONS.length} lessons: ${evidenceFindings.length} error(s)`,
+);
+for (const finding of evidenceFindings) {
+  console.log(`  ERROR ${finding.message}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
   shipped.errors.length > 0 ||
   shippedTags.errors.length > 0 ||
-  canonErrors.length > 0
+  canonErrors.length > 0 ||
+  evidenceFindings.length > 0
 ) {
   process.exit(1);
 }

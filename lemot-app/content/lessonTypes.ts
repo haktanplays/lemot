@@ -1,4 +1,5 @@
 import type { WeakPointTag } from "./weakPointTags";
+import type { ErrorTagCode } from "./learning-engine/events";
 
 export type LearningItemStatus =
   | "active"
@@ -111,7 +112,22 @@ export type FillWithTrapsPayload = {
     id: string;
     text: string;
     isCorrect: boolean;
+    /** Learner-facing explanatory copy. NEVER a machine grading signal. */
     trapReason?: string;
+    /**
+     * MACHINE-ONLY grading tag for this authored trap (never learner-facing).
+     *
+     * `trapReason` is prose written for a human; deriving a taxonomy code from it
+     * — or from the option text — would be a guess. This states the code
+     * directly. Only valid on an INCORRECT option, and never `correct` /
+     * `accepted_variant`. When absent the conservative default is `wrong_item`.
+     *
+     * A register trap (`je veux` for `je voudrais`) is `wrong_register`: the
+     * learner produced real, comprehensible French in the wrong register. It is
+     * still learner-attributed and admitted — it is not a content defect, not a
+     * blocked form, and not a system error.
+     */
+    learningErrorTag?: ErrorTagCode;
   }[];
   answer: string[];
   reveal: AnswerRevealPayload;
@@ -134,6 +150,23 @@ export type WeavePayload = {
     // Short learner-facing role for the piece (e.g. "polite request",
     // "noun package"). Shown only inside the Weave hint ladder, never by default.
     label?: string;
+    /**
+     * MACHINE-ONLY support classification (never learner-facing).
+     *
+     * Defaults to `optional_hint`: a piece the learner must ASK for, which maps
+     * to hint rung 1 and scopes the attempt to Supported only when actually used.
+     * `weaveType: "supported"`, `required: true` and the mere existence of a hint
+     * button do NOT prove support was visible at attempt time, so none of them is
+     * read as constitutive.
+     *
+     * `constitutive` means the support is part of the task: visible from first
+     * render, never hidden behind "Need a hint?", and therefore permanently
+     * scoping the attempt to Supported. A constitutive piece MUST carry an
+     * `itemId`, and its presence is declared to the admission resolver — if the
+     * screen reports it was not actually rendered, the attempt is quarantined as
+     * a UI-flow defect rather than credited.
+     */
+    supportRole?: "constitutive" | "optional_hint";
   }[];
   expectedAnswers: string[];
   acceptedAlternatives?: string[];
@@ -174,6 +207,22 @@ export type MeetCardScreen = {
   id: string;
   type: "meet-card";
   targetItemIds?: string[];
+  /**
+   * MACHINE-ONLY narrowing of which targets receive evidence from this screen
+   * (never learner-facing, never rendered).
+   *
+   * `targetItemIds` answers "what does this screen involve?"; a frame word can
+   * legitimately appear there because it surrounds the blank. This answers the
+   * narrower question "what did the learner's action actually demonstrate?".
+   * Crediting the whole frame for a one-slot choice would inflate recognition
+   * evidence for items the learner never chose.
+   *
+   * When absent, evidence targets fall back to `targetItemIds`. When present it
+   * must be a non-empty, duplicate-free SUBSET of `targetItemIds`, and every
+   * member must resolve through the canonical runtime item boundary — no fixture
+   * alias, no surface-text lookup, no fuzzy match.
+   */
+  evidenceTargetItemIds?: string[];
   weakPointTags?: WeakPointTag[];
   payload: MeetCardPayload;
 };
@@ -182,6 +231,22 @@ export type InsightCardScreen = {
   id: string;
   type: "insight-card";
   targetItemIds?: string[];
+  /**
+   * MACHINE-ONLY narrowing of which targets receive evidence from this screen
+   * (never learner-facing, never rendered).
+   *
+   * `targetItemIds` answers "what does this screen involve?"; a frame word can
+   * legitimately appear there because it surrounds the blank. This answers the
+   * narrower question "what did the learner's action actually demonstrate?".
+   * Crediting the whole frame for a one-slot choice would inflate recognition
+   * evidence for items the learner never chose.
+   *
+   * When absent, evidence targets fall back to `targetItemIds`. When present it
+   * must be a non-empty, duplicate-free SUBSET of `targetItemIds`, and every
+   * member must resolve through the canonical runtime item boundary — no fixture
+   * alias, no surface-text lookup, no fuzzy match.
+   */
+  evidenceTargetItemIds?: string[];
   weakPointTags?: WeakPointTag[];
   payload: InsightCardPayload;
 };
@@ -190,6 +255,22 @@ export type FillWithTrapsScreen = {
   id: string;
   type: "fill-with-traps";
   targetItemIds?: string[];
+  /**
+   * MACHINE-ONLY narrowing of which targets receive evidence from this screen
+   * (never learner-facing, never rendered).
+   *
+   * `targetItemIds` answers "what does this screen involve?"; a frame word can
+   * legitimately appear there because it surrounds the blank. This answers the
+   * narrower question "what did the learner's action actually demonstrate?".
+   * Crediting the whole frame for a one-slot choice would inflate recognition
+   * evidence for items the learner never chose.
+   *
+   * When absent, evidence targets fall back to `targetItemIds`. When present it
+   * must be a non-empty, duplicate-free SUBSET of `targetItemIds`, and every
+   * member must resolve through the canonical runtime item boundary — no fixture
+   * alias, no surface-text lookup, no fuzzy match.
+   */
+  evidenceTargetItemIds?: string[];
   weakPointTags?: WeakPointTag[];
   payload: FillWithTrapsPayload;
 };
@@ -198,6 +279,22 @@ export type WeaveScreen = {
   id: string;
   type: "weave";
   targetItemIds?: string[];
+  /**
+   * MACHINE-ONLY narrowing of which targets receive evidence from this screen
+   * (never learner-facing, never rendered).
+   *
+   * `targetItemIds` answers "what does this screen involve?"; a frame word can
+   * legitimately appear there because it surrounds the blank. This answers the
+   * narrower question "what did the learner's action actually demonstrate?".
+   * Crediting the whole frame for a one-slot choice would inflate recognition
+   * evidence for items the learner never chose.
+   *
+   * When absent, evidence targets fall back to `targetItemIds`. When present it
+   * must be a non-empty, duplicate-free SUBSET of `targetItemIds`, and every
+   * member must resolve through the canonical runtime item boundary — no fixture
+   * alias, no surface-text lookup, no fuzzy match.
+   */
+  evidenceTargetItemIds?: string[];
   weakPointTags?: WeakPointTag[];
   payload: WeavePayload;
 };
@@ -206,6 +303,22 @@ export type SayItYourWayScreen = {
   id: string;
   type: "say-it-your-way";
   targetItemIds?: string[];
+  /**
+   * MACHINE-ONLY narrowing of which targets receive evidence from this screen
+   * (never learner-facing, never rendered).
+   *
+   * `targetItemIds` answers "what does this screen involve?"; a frame word can
+   * legitimately appear there because it surrounds the blank. This answers the
+   * narrower question "what did the learner's action actually demonstrate?".
+   * Crediting the whole frame for a one-slot choice would inflate recognition
+   * evidence for items the learner never chose.
+   *
+   * When absent, evidence targets fall back to `targetItemIds`. When present it
+   * must be a non-empty, duplicate-free SUBSET of `targetItemIds`, and every
+   * member must resolve through the canonical runtime item boundary — no fixture
+   * alias, no surface-text lookup, no fuzzy match.
+   */
+  evidenceTargetItemIds?: string[];
   weakPointTags?: WeakPointTag[];
   payload: SayItYourWayPayload;
 };
@@ -214,6 +327,22 @@ export type NaturalRevealScreen = {
   id: string;
   type: "natural-reveal";
   targetItemIds?: string[];
+  /**
+   * MACHINE-ONLY narrowing of which targets receive evidence from this screen
+   * (never learner-facing, never rendered).
+   *
+   * `targetItemIds` answers "what does this screen involve?"; a frame word can
+   * legitimately appear there because it surrounds the blank. This answers the
+   * narrower question "what did the learner's action actually demonstrate?".
+   * Crediting the whole frame for a one-slot choice would inflate recognition
+   * evidence for items the learner never chose.
+   *
+   * When absent, evidence targets fall back to `targetItemIds`. When present it
+   * must be a non-empty, duplicate-free SUBSET of `targetItemIds`, and every
+   * member must resolve through the canonical runtime item boundary — no fixture
+   * alias, no surface-text lookup, no fuzzy match.
+   */
+  evidenceTargetItemIds?: string[];
   weakPointTags?: WeakPointTag[];
   payload: NaturalRevealPayload;
 };
@@ -222,6 +351,22 @@ export type RecapScreen = {
   id: string;
   type: "recap";
   targetItemIds?: string[];
+  /**
+   * MACHINE-ONLY narrowing of which targets receive evidence from this screen
+   * (never learner-facing, never rendered).
+   *
+   * `targetItemIds` answers "what does this screen involve?"; a frame word can
+   * legitimately appear there because it surrounds the blank. This answers the
+   * narrower question "what did the learner's action actually demonstrate?".
+   * Crediting the whole frame for a one-slot choice would inflate recognition
+   * evidence for items the learner never chose.
+   *
+   * When absent, evidence targets fall back to `targetItemIds`. When present it
+   * must be a non-empty, duplicate-free SUBSET of `targetItemIds`, and every
+   * member must resolve through the canonical runtime item boundary — no fixture
+   * alias, no surface-text lookup, no fuzzy match.
+   */
+  evidenceTargetItemIds?: string[];
   weakPointTags?: WeakPointTag[];
   payload: RecapPayload;
 };

@@ -218,12 +218,30 @@ export type ContextChainExercise = ExerciseBase & {
   steps: ContextChainStep[];
 };
 
+/**
+ * Learner writes freely toward a communicative goal — UNGRADED (W1).
+ *
+ * There is deliberately no deterministic answer to compare against: no
+ * `acceptedAnswers`, no blocked/recognition-only form checking, and no
+ * mastery-bearing ceiling. `targetText` carries the MODEL answer used for the
+ * later comparison reveal, never a correctness standard. An open attempt is
+ * evidence that the learner reached for the language, not evidence that they
+ * got it right.
+ */
+export type OpenProductionExercise = ExerciseBase & {
+  operation: "open_production";
+  /** Shown only after the learner commits, for comparison. Never graded against. */
+  modelAnswer?: string;
+  validationMode?: Extract<ValidationMode, "model-answer-only">;
+};
+
 export type ExerciseBlueprint =
   | RecognitionExercise
   | FillExercise
   | BuildExercise
   | RegisterSwitchExercise
-  | ContextChainExercise;
+  | ContextChainExercise
+  | OpenProductionExercise;
 
 // ── Validation findings ──────────────────────────────────────────────────────
 

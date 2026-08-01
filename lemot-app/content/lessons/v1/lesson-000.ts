@@ -51,6 +51,10 @@ const screens: LessonScreen[] = [
     id: "s03-fill-je-voudrais-blank",
     type: "fill-with-traps",
     targetItemIds: ["chunk-je-voudrais", "noun-cafe"],
+    // The assessed slot is the NOUN. `chunk-je-voudrais` is the frame printed
+    // around the blank — the learner reads it, never chooses it — so crediting it
+    // with recognition evidence would count a word they were simply shown.
+    evidenceTargetItemIds: ["noun-cafe"],
     weakPointTags: ["articles"],
     payload: {
       prompt: "What fits the soft request?",

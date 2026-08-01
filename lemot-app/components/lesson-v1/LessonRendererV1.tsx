@@ -14,7 +14,11 @@ import { Weave } from "./screens/Weave";
 import { NaturalReveal } from "./screens/NaturalReveal";
 import { SayItYourWayV1 } from "./screens/SayItYourWayV1";
 import { RecapCard } from "./screens/RecapCard";
-import { LessonV1LearningSessionProvider } from "./LessonV1LearningSessionProvider";
+import {
+  LessonV1LearningSessionProvider,
+  useLessonV1LearningSession,
+  type LessonV1LearningSession,
+} from "./LessonV1LearningSessionProvider";
 
 // Minimal completion marker. The v1 engine has its own screen taxonomy, so
 // we reuse one existing legacy section key (completion-only, no scoring) to
@@ -24,11 +28,13 @@ import { LessonV1LearningSessionProvider } from "./LessonV1LearningSessionProvid
 const V1_COMPLETION_SECTION_KEY = "read_listen";
 
 /**
- * PR-05 wiring only: the lesson subtree is wrapped in a learning session so the
- * shipped path can reach the runtime spine. NOTHING below emits a learning event
- * — no screen receives a learning callback, and the legacy `mk()` completion
- * marker keeps its existing, separate meaning (it records that the flow was
- * finished; it is not learning evidence). PR-06 owns per-screen emission.
+ * The lesson subtree runs inside a learning session (PR-05) and, since PR-06,
+ * the four Wave A screen primitives report their interactions through it.
+ *
+ * The legacy `mk()` completion marker below keeps its existing, SEPARATE
+ * meaning: it records that the learner reached the end of the flow. Finishing a
+ * lesson is not evidence that anything was learned, so it emits no learning
+ * event and is never reinterpreted as one.
  */
 export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
   return (
@@ -43,6 +49,7 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
 
 function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
   const { mk } = useApp();
+  const session = useLessonV1LearningSession();
   const [screenIndex, setScreenIndex] = useState(0);
   const screen = lesson.screens[screenIndex];
   const goNext = () => setScreenIndex((n) => n + 1);
@@ -77,7 +84,7 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
               The key only changes on step advance, so typing within a screen
               (screenIndex unchanged) preserves state. */}
           <View key={screenIndex} style={{ flex: 1 }}>
-            {pickScreen(screen, goNext)}
+            {pickScreen(screen, goNext, session)}
           </View>
         </View>
       ) : (
@@ -154,18 +161,60 @@ function LessonHeader({
   );
 }
 
-function pickScreen(screen: LessonScreen, onContinue: () => void) {
+/**
+ * Dispatch one screen, handing the four Wave A primitives a UI-facts callback.
+ *
+ * The callbacks carry surface facts only — an option id, a typed string, a play
+ * count. No screen receives the controller, the repository, an evidence class,
+ * an attribution, an admissibility state, Mon Lexique state or any mastery
+ * mutation. Insight, standalone Natural Reveal and Recap emit nothing at all.
+ */
+function pickScreen(
+  screen: LessonScreen,
+  onContinue: () => void,
+  session: LessonV1LearningSession,
+) {
   switch (screen.type) {
     case "meet-card":
-      return <MeetCard screen={screen} onContinue={onContinue} />;
+      return (
+        <MeetCard
+          screen={screen}
+          onContinue={onContinue}
+          onExposure={(facts) => session.recordMeetExposure(screen, facts)}
+        />
+      );
     case "insight-card":
       return <InsightCard screen={screen} onContinue={onContinue} />;
     case "fill-with-traps":
-      return <FillWithTraps screen={screen} onContinue={onContinue} />;
+      return (
+        <FillWithTraps
+          screen={screen}
+          onContinue={onContinue}
+          onChoice={(facts) => session.recordChoiceAttempt(screen, facts)}
+        />
+      );
     case "weave":
-      return <Weave screen={screen} onContinue={onContinue} />;
+      return (
+        <Weave
+          screen={screen}
+          onContinue={onContinue}
+          onTypedAttempt={(facts) =>
+            session.recordTypedAttempt(screen, {
+              text: facts.text,
+              hintRung: facts.hintRung,
+              constitutiveSupportRendered: facts.constitutiveSupportRendered,
+            })
+          }
+        />
+      );
     case "say-it-your-way":
-      return <SayItYourWayV1 screen={screen} onContinue={onContinue} />;
+      return (
+        <SayItYourWayV1
+          screen={screen}
+          onContinue={onContinue}
+          onOpenAttempt={(facts) => session.recordOpenAttemptAndReveal(screen, facts)}
+        />
+      );
     case "natural-reveal":
       return <NaturalReveal screen={screen} onContinue={onContinue} />;
     case "recap":

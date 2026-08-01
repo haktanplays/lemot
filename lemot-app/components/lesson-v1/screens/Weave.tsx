@@ -3,7 +3,11 @@ import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
 import { Btn } from "@/components/Btn";
 import { P } from "@/constants/theme";
 import type { WeavePayload, WeaveScreen } from "@/content/lessonTypes";
-import { matchExpected, type MatchResult } from "./normalizeAnswer";
+import { type MatchResult } from "./normalizeAnswer";
+import {
+  evaluateWeaveAnswer,
+  type TypedEvaluation,
+} from "@/content/lesson-v1-evidence/interactions";
 import { NaturalRevealView } from "./NaturalReveal";
 import {
   WEAVE_BADGE,
@@ -32,9 +36,22 @@ const RESULT_NOTES: Record<MatchResult, { text: string; tone: "ok" | "warm" | "s
 export function Weave({
   screen,
   onContinue,
+  onTypedAttempt,
 }: {
   screen: WeaveScreen;
   onContinue: () => void;
+  /**
+   * UI FACTS only (PR-06), reported once on Check. The hint rung is the rung the
+   * learner ACTUALLY reached, not the rung the payload makes available, and the
+   * constitutive flag reports whether the declared package was really rendered.
+   * Continue reports nothing further.
+   */
+  onTypedAttempt?: (facts: {
+    text: string;
+    evaluation: TypedEvaluation;
+    hintRung: 0 | 1 | 2;
+    constitutiveSupportRendered: boolean;
+  }) => void;
 }) {
   const { payload } = screen;
   const [text, setText] = useState("");
@@ -45,9 +62,16 @@ export function Weave({
   // 2 = cloze shown.
   const [hintLevel, setHintLevel] = useState(0);
 
-  const pieces = payload.suggestedPieces ?? [];
+  const allPieces = payload.suggestedPieces ?? [];
+  // Constitutive pieces are part of the TASK: visible from first render, never
+  // behind "Need a hint?". They are therefore excluded from the hint ladder —
+  // showing them costs no rung, and their presence permanently scopes the
+  // attempt to Supported rather than counting as help the learner asked for.
+  const constitutivePieces = allPieces.filter((p) => p.supportRole === "constitutive");
+  const pieces = allPieces.filter((p) => p.supportRole !== "constitutive");
   const hintPieces = orderHintPieces(pieces);
   const hasPieces = pieces.length > 0;
+  const hasConstitutive = constitutivePieces.length > 0;
   const hasCloze =
     typeof payload.hintCloze === "string" && payload.hintCloze.length > 0;
 
@@ -55,13 +79,21 @@ export function Weave({
   const isRevealed = phase === "revealed";
 
   const handleCheck = () => {
-    const result = matchExpected(
-      text,
-      payload.expectedAnswers,
-      payload.acceptedAlternatives
-    );
-    setMatch(result);
+    // ONE evaluation drives both the note below and the persisted event. Running
+    // the UI matcher and the event grader separately would let the learner read
+    // "Correct." while the append-only log recorded a miss.
+    const evaluation = evaluateWeaveAnswer(screen, text);
+    setMatch(evaluation.match);
     setPhase("revealed");
+    onTypedAttempt?.({
+      text,
+      evaluation,
+      hintRung: hintLevel as 0 | 1 | 2,
+      // Declared constitutive pieces ARE rendered by this screen (below), from
+      // first paint. Reporting the real render state is what lets the admission
+      // resolver quarantine a payload whose required support never appeared.
+      constitutiveSupportRendered: hasConstitutive,
+    });
   };
 
   const note = match !== null ? RESULT_NOTES[match] : null;
@@ -149,6 +181,43 @@ export function Weave({
       <Text className="text-xs mt-2" style={{ color: P.ink3, lineHeight: 18 }}>
         {WEAVE_HELPER}
       </Text>
+
+      {/* Constitutive support: part of the task, so it is visible from the first
+          render and stays visible through the attempt. It is NOT behind the hint
+          ladder and costs no rung — but it does permanently scope the attempt to
+          Supported. Reuses the existing pieces copy; no new learner-facing text.
+          No shipped payload declares one today (PR-07 authors those). */}
+      {hasConstitutive && (
+        <View className="mt-3">
+          <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+            Pieces you already own:
+          </Text>
+          <View className="flex-row flex-wrap gap-2">
+            {constitutivePieces.map((p, i) => (
+              <View
+                key={`${p.text}-${i}`}
+                className="rounded-xl"
+                style={{
+                  backgroundColor: P.rl,
+                  borderWidth: 1,
+                  borderColor: P.rb,
+                  paddingHorizontal: 10,
+                  paddingVertical: 6,
+                }}
+              >
+                <Text className="text-xs" style={{ color: P.ink2 }}>
+                  {p.text}
+                </Text>
+                {p.label && (
+                  <Text className="text-[10px] mt-0.5" style={{ color: P.ink3 }}>
+                    {p.label}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
 
       {!isRevealed && (hasPieces || hasCloze) && (
         <View className="mt-3">

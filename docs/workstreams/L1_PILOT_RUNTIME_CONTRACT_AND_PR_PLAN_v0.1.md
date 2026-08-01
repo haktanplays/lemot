@@ -98,8 +98,9 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 **2.7 Total proposed PRs: 12** (§17).
 
 **2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
-~~PR-04 mastery~~ ✅ → ~~PR-05 provider wiring~~ ✅ → **PR-06 renderer emission (next)** → **connected proof testable
-here** → PR-08/09/10 projections. PR-07 (payload registration) is the French-QA-gated branch that
+~~PR-04 mastery~~ ✅ → ~~PR-05 provider wiring~~ ✅ → ~~PR-06 renderer emission~~ ✅ → **the runtime-connected renderer
+proof now exists** → **PR-07 (French-QA gated) for exact learner content** → PR-08 Practice return →
+PR-09 Mon Lexique UI → PR-10 Stats projection. PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
 **2.9 May proceed before French QA:** PR-01 through PR-06, PR-08, PR-09, PR-10, PR-12 —
@@ -721,14 +722,49 @@ tested behaviourally against a call-counting fake repository; the React provider
 **source level only** — this repo ships no component test renderer and PR-05 did not add one.
 *French QA:* no. *Learner-visible:* **no**.
 
-**PR-06 — Wave A renderer/event integration (R1 + R2).**
-*Objective:* emit correct events from the shipped meet / fill-with-traps / weave screens for
-PM-001, PM-002, PM-004, PM-007, PM-009, PM-011, PM-014. *Files:* `components/lesson-v1/screens/*`.
-*Depends:* PR-05. *Excludes:* R3/R4/R5/R6; new screen types; Dictée. *Acceptance:* each Wave A
-pairing emits one event of the right primitive with the right ceiling; **renderers write no derived
-surface directly**; open production emits attempt-only. *Tests:* renderer contract, **T-06, T-08**,
-import-boundary guard. *Rollback:* emission is additive. *French QA:* no (uses **already-shipped**
-L0/L1 French). *Learner-visible:* **yes, minimally** — hint/assistance affordances become real.
+**PR-06 — Wave A renderer/event integration (R1 + R2). IMPLEMENTED** on
+`feat/l1-pilot-wave-a-emission`.
+*Delivered:* the four Wave A screen primitives now report learner interactions through the
+lesson-local session. **D-6 closed: typed recall is a Weave CONFIGURATION** (no tray, no cloze, no
+constitutive support, intent prompt, expected + accepted variants, controlled-production ceiling) —
+no `TypedRecallScreen` or equivalent was created.
+*Narrow session API:* the provider no longer exposes the controller. Descendants get
+`recordMeetExposure` · `recordChoiceAttempt` · `recordTypedAttempt` · `recordOpenAttemptAndReveal`
+plus `state`. Screens report SURFACE FACTS only (option id, typed text, hint rung, play count) and
+can name no evidence class, attribution or admissibility. All translation lives in the pure
+`content/lesson-v1-evidence/` layer.
+*Identity:* `qualifyLessonScreenId(lessonId, screenId)` → `lessonId/screenId` is the exercise id and
+therefore `payloadId`. Bare screen ids genuinely repeat across v1 lessons; the qualified form is
+validated unique across the whole registry. `evId` / `sentenceId` / `sequence` stay null.
+*Targeting:* new machine-only `evidenceTargetItemIds` narrows which targets receive evidence, checked
+canonical + subset + duplicate-free. Applied to the two demonstrated cases: L0
+`s03-fill-je-voudrais-blank` scopes to `noun-cafe` (the frame is printed, not chosen), and L1
+`s03-fill-polite-verb`'s `je veux` option carries `learningErrorTag: "wrong_register"` — a
+learner-attributed, admitted register miss, **not** a ninth "authored trap" attribution source.
+*Emission timing:* Meet on **Continue** (not mount, double-tap guarded) · choice on **selection**
+(once; Continue adds nothing) · Weave on **Check** (one event; Continue adds nothing) · open
+production on **Keep and compare** only, emitting attempt **then** reveal in that order. Check→confirm,
+Try again, text edits and Continue emit nothing.
+*Assistance:* real capture — hint rung 0/1/2 as actually reached, and `supportRole: "constitutive"`
+pieces (visible from first render, never behind "Need a hint?") producing `supplied_package`. A
+`weaveType: "supported"` label, `required: true`, or an unused tray do **not** create Supported
+evidence. A declared-but-unrendered package quarantines as a `ui_flow` defect.
+*Grading:* ONE shared deterministic evaluation drives both the Weave note and the event, so the
+learner and the log can never disagree; AI may explain afterwards and never becomes a grade.
+*Controller:* three narrow non-assessed methods added — `recordExposure`,
+`recordOpenProductionAttempt`, `recordComparisonReveal`. `open_production` joined the blueprint union.
+*Not delivered, deliberately:* **the exact PM-009 (`Merci`) and PM-011 (`un thé`) learner payloads are
+NOT registered.** Both are proven as renderer CAPABILITIES with synthetic fixtures built from
+already-shipped French and existing canonical ids. No item identity, sentence record or EV id was
+registered — that is PR-07, gated on human French QA.
+*Files:* `content/lesson-v1-evidence/*` (new), `session-controller.ts`, `types.ts`, `lessonTypes.ts`,
+the four Wave A screens, `LessonRendererV1.tsx`, `LessonV1LearningSessionProvider.tsx`,
+`scripts/lessonEvidenceRules.ts` (new) + validator wiring, two lesson-data corrections, tests.
+*Tests:* 67 new (1181 total). Adapters, evaluation, controller, repository, mastery and Mon Lexique
+are tested **behaviourally**; the React callback wiring is verified at the **source level only** —
+this repo ships no component test renderer and PR-06 did not add one.
+*French QA:* no (uses **already-shipped** L0/L1 French). *Learner-visible:* **no new copy**; the
+constitutive-support render path exists but no shipped payload activates it.
 
 **PR-07 — L1 pilot payload registration. 🔒 FRENCH-QA GATED.**
 *Objective:* register the four missing item identities (with the `un thé` primary↔linked link) and
@@ -844,7 +880,7 @@ PR-01 identity ─► PR-02 envelope ─► PR-03 assistance+attribution ─► 
 | **D-3** | architecture | ~~`TelemetryEvent` vs `LearningEvent` ownership of exposure/reveal~~ — **DECIDED in PR-02** (§6): the learning spine owns every learning-relevant interaction; telemetry stays product-funnel/operational; no double-write. PR-10 still has to make Stats read the spine | closed; PR-10 consumes it |
 | **D-4** | identity registration | Sentence-id prefixing (`sent:l01-…` recommended) and whether accepted alternatives live on the sentence or the payload | PR-01, PR-07 |
 | **D-5** | French QA | Sign-off on the ecosystem §20 review surface (8 concentrated questions) | PR-07 |
-| **D-6** | implementation calibration | Whether PM-009's typed recall reuses the Weave screen in a typed config or gets a minimal typed screen | PR-06 |
+| **D-6** | implementation calibration | **CLOSED (PR-06) — Weave configuration.** Typed recall is a Weave with no tray, no cloze, no constitutive support, an intent prompt, one expected answer plus explicit accepted variants, and a controlled-production ceiling. No new screen type was created; the same configuration serves later cross-surface typed hosts | PR-06 ✅ |
 | **D-7** | external/audio | Recording schedule for the §18 priority clips; deliberate-contour session for PM-018 | PR-11 |
 | **D-8** | implementation calibration | **CLOSED (PR-04) — separate scoped counters.** `production.{independent, supported, selfCorrection}`, each `{attempts, success, failure}`. A single mutable scope field was rejected: one item legitimately accumulates a mixed history (two supported attempts, one supported success, a later independent success, a self-correction) that any single label must overwrite. The aggregates are retained as derived totals, never as semantic authority, and the event's `evidenceClass` owns routing | PR-04 ✅ |
 
@@ -862,7 +898,9 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Starting the event-spine PR (PR-02) | **DONE** | implemented; D-1 and D-3 closed; envelope v2 + v1→v2 migration shipped with 60 new tests |
 | Starting the mastery PR (PR-04) | **DONE** | D-8 closed as separate scoped counters; mastery-v0.3 + compaction-v0.2 ship with evidence-class routing, the Supported Mon Lexique path, and no differential scheduling; 1065 tests green |
 | Starting persistence wiring (PR-05) | **DONE** | app-level runtime provider owns one repository per privacy-reset epoch; reset-safe runtime/controller replacement; explicit sandbox vs `lesson_path` surface resolvers; the shipped lesson path can reach the spine and emits nothing; 1114 tests green |
-| Starting renderer emission (PR-06) | **READY** | the lesson-local session bridge exists and is unconsumed; Wave A uses shipped R1/R2 components and shipped L0/L1 French |
+| Starting renderer emission (PR-06) | **DONE** | D-6 closed as a Weave configuration; the four Wave A primitives emit through a narrow session API; qualified screen identity, scoped evidence targets, real hint/constitutive capture, one shared grader; 1181 tests green |
+| Runtime-connected renderer proof | **EXISTS (PR-06)** | shipped screen → event → mastery → Mon Lexique is proven end-to-end on already-shipped French. It is an ARCHITECTURE proof: the exact PM-009/PM-011 learner payloads are not registered |
+| Exact L1 pilot learner content | **NOT READY** | requires PR-07 payload registration, which is hard-gated on human French QA |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
 | French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
@@ -887,12 +925,19 @@ an app-level runtime provider that owns one repository per privacy-reset epoch �
 nothing**: no screen has a learning callback, and the legacy completion marker stays separate.
 **D-1, D-2, D-3 and D-8 are closed.**
 
-**The recommended next action is PR-06 — Wave A renderer/event integration** (§17): emit correct
-events from the shipped meet / fill-with-traps / weave screens for PM-001, PM-002, PM-004, PM-007,
-PM-009, PM-011 and PM-014, consuming the lesson-local session bridge PR-05 left unconsumed. Each
-screen must build its OWN real attempt context (actual hint rung, retry index, prior exposure,
-replay/slow counts) — the fixture block must not be copied, and renderers write no derived surface
-directly.
+**The recommended next action is the human FRENCH-QA GATE that PR-07 requires** — not another code
+PR. Every remaining runtime capability the pilot needs is now built and tested; what is missing is
+approval of learner-visible French.
+
+PR-06 closed the engineering question. The shipped lesson path emits honest evidence for all seven
+Wave A pairings, and shipped-screen → event → mastery → Mon Lexique is proven end-to-end. That proof
+runs on **already-shipped** L0/L1 French with synthetic capability fixtures; the exact PM-009 and
+PM-011 learner payloads, the four missing item identities (including `un thé`), the sentence records
+and the EV ids are all still unregistered. Registering them is PR-07, and PR-07 cannot start until a
+human signs off on the pool surfaces — no code change can substitute for that gate.
+
+After PR-07: PR-08 owns the Practice Hub return leg (PM-023), PR-09 the Mon Lexique UI, PR-10 the
+Stats projection. None of those is required for the connected-architecture proof that now exists.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence

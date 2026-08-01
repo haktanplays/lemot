@@ -76,6 +76,11 @@ const screens: LessonScreen[] = [
           isCorrect: false,
           trapReason:
             "It works, but it sounds blunt with someone you don't know. Je voudrais stays polite.",
+          // Machine tag (never learner-facing): `je veux` is real, comprehensible
+          // French in the wrong register — not a grammar failure, not a blocked
+          // form, not a content defect. The miss stays learner-attributed and
+          // admitted, and one of them is well below the weakness threshold.
+          learningErrorTag: "wrong_register",
         },
         {
           id: "opt-suis",

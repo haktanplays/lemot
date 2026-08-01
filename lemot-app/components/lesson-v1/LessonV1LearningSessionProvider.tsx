@@ -1,20 +1,21 @@
 /**
- * Lesson-local learning session for the shipped `LessonRendererV1` path (PR-05).
+ * Lesson-local learning session for the shipped `LessonRendererV1` path.
  *
- * Gives one v1 lesson exactly one `LearningSessionController`, obtained from the
- * app-level runtime, and mirrors its `SessionState` into React state. This is the
- * seam PR-06 will emit through; PR-05 wires it and emits nothing.
+ * PR-05 created this bridge and left it unconsumed. PR-06 narrows its public
+ * shape and wires the Wave A screens to it.
  *
- * What it deliberately does NOT expose: the repository, `appendEvent`, any
- * storage key, the KV layer, raw event arrays separate from `SessionState`, or
- * any mutation path into Mon Lexique, Practice or legacy progress. A screen that
- * consumes this can record an attempt and read session state — nothing else.
+ * The controller is now PRIVATE. Descendants receive four semantic record
+ * functions and the session state — nothing else. That is the whole point: a
+ * screen can say "the learner picked option B", but it cannot say what evidence
+ * class that is, who the result is attributable to, whether it is admissible, or
+ * what it should do to mastery. Those answers belong to the pure orchestration
+ * layer (`content/lesson-v1-evidence`) and the controller, and a screen must not
+ * be able to reach around either.
  *
- * Mounting it performs no repository read and no write. The state starts at the
- * real idle values rather than a pretend "loading": the event log has genuinely
- * not been read, and claiming otherwise would be a lie in the UI's own state.
- * PR-06's first settled append makes the controller read the full log and rebuild
- * mastery, which is when hydration first becomes meaningful.
+ * Not exposed, by construction: the controller, the repository, `appendEvent`,
+ * storage keys, raw event construction, arbitrary evidence classes, arbitrary
+ * attribution or admissibility, and any mutation path into Mon Lexique, Practice,
+ * Stats or legacy progress.
  */
 import {
   createContext,
@@ -25,12 +26,28 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Lesson } from "@/content/lessonTypes";
+import type {
+  FillWithTrapsScreen,
+  Lesson,
+  MeetCardScreen,
+  SayItYourWayScreen,
+  WeaveScreen,
+} from "@/content/lessonTypes";
 import {
   type EventSurfaceResolver,
   type LearningSessionController,
   type SessionState,
 } from "@/content/learning-engine/session-controller";
+import {
+  choiceInteraction,
+  meetExposureInteraction,
+  openAttemptInteraction,
+  typedAttemptInteraction,
+  type ChoiceFacts,
+  type MeetExposureFacts,
+  type OpenAttemptFacts,
+  type TypedAttemptFacts,
+} from "@/content/lesson-v1-evidence/interactions";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 
 const IDLE_STATE: SessionState = {
@@ -44,12 +61,12 @@ const IDLE_STATE: SessionState = {
 /**
  * Where shipped v1 lesson events happen.
  *
- * `lesson_path` is the honest placement, and the authored screen id is the only
- * payload identity that exists today. `evId` and `sentenceId` stay null because
- * no pilot EV identity and no sentence identity are registered yet — PR-07 owns
- * that, gated on French QA. Guessing either here would mint runtime identities
- * from draft-local planning ids, which is exactly what the identity layer
- * forbids. `sequence` is null because no multi-step orchestration exists yet.
+ * `lesson_path` is the honest placement, and the qualified screen id is the
+ * payload identity that genuinely exists today. `evId` and `sentenceId` stay
+ * null because no pilot EV identity and no sentence identity are registered yet
+ * — PR-07 owns that, gated on French QA. Guessing either would mint runtime
+ * identities from draft-local planning ids. `sequence` is null because no
+ * multi-step orchestration exists.
  */
 const LESSON_PATH_SURFACE: EventSurfaceResolver = (exercise) => ({
   placement: "lesson_path",
@@ -59,9 +76,13 @@ const LESSON_PATH_SURFACE: EventSurfaceResolver = (exercise) => ({
   sequence: null,
 });
 
+/** The narrow interaction API a lesson screen may use. */
 export type LessonV1LearningSession = {
-  controller: LearningSessionController;
   state: SessionState;
+  recordMeetExposure(screen: MeetCardScreen, facts: MeetExposureFacts): void;
+  recordChoiceAttempt(screen: FillWithTrapsScreen, facts: ChoiceFacts): void;
+  recordTypedAttempt(screen: WeaveScreen, facts: TypedAttemptFacts): void;
+  recordOpenAttemptAndReveal(screen: SayItYourWayScreen, facts: OpenAttemptFacts): void;
 };
 
 const LessonV1LearningSessionContext = createContext<LessonV1LearningSession | null>(
@@ -110,8 +131,27 @@ export function LessonV1LearningSessionProvider({
   }, [identity]);
 
   const value = useMemo<LessonV1LearningSession>(
-    () => ({ controller, state }),
-    [controller, state],
+    () => ({
+      state,
+      recordMeetExposure(screen, facts) {
+        controller.recordExposure(meetExposureInteraction(lesson, screen, facts));
+      },
+      recordChoiceAttempt(screen, facts) {
+        controller.recordGradedAttempt(choiceInteraction(lesson, screen, facts));
+      },
+      recordTypedAttempt(screen, facts) {
+        controller.recordGradedAttempt(typedAttemptInteraction(lesson, screen, facts));
+      },
+      recordOpenAttemptAndReveal(screen, facts) {
+        const { attempt, reveal } = openAttemptInteraction(lesson, screen, facts);
+        // Order matters and is guaranteed by the controller's serialized queue:
+        // the attempt is what the learner produced; the reveal is what they then
+        // saw. Recording them the other way round would read as copying a model.
+        controller.recordOpenProductionAttempt(attempt);
+        controller.recordComparisonReveal(reveal);
+      },
+    }),
+    [controller, lesson, state],
   );
 
   return (
@@ -126,7 +166,6 @@ export function LessonV1LearningSessionProvider({
  *
  * Throws outside the provider rather than degrading silently: a screen that
  * believes it is recording, while writing nowhere, is worse than a loud failure.
- * No screen consumes this in PR-05.
  */
 export function useLessonV1LearningSession(): LessonV1LearningSession {
   const value = useContext(LessonV1LearningSessionContext);
