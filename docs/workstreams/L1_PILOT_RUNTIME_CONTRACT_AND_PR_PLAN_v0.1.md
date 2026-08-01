@@ -86,7 +86,7 @@ Both already exist in shipped v1 form (`FillWithTraps`, `Weave`). R3/R4/R5/R6 ar
 | Assistance | `session-controller.ts` writes `promptLevel: "PF0"` **hardcoded**; no hint/replay/tray fields | **Extend** — this is the single most load-bearing gap |
 | Attribution | none; every appended event scores | **Extend** — admissibility gate must precede `scoreEvent` |
 | Supported production | `mastery.ts` `PRODUCTION_OPS` treats `fill/build/register_switch/context_chain` as production; supported and independent production are **indistinguishable** | **Extend** — assistance-scoped counters required |
-| Item registry | **two** registries: `content/itemRegistry.ts` (56 ids, hyphen `chunk-bonjour`) vs `content/learning-engine/items.ts` (39 ids, colon `chunk:je-vais`), **zero shared ids** | **Bounded replace** — one must become canonical; this is a real decision (D-2) |
+| Item registry | **two** registries: `content/itemRegistry.ts` (**54** ids, hyphen `chunk-bonjour`) vs `content/learning-engine/items.ts` (**59** ids, colon `chunk:je-vais`), **zero shared ids** | **Extend — decided (D-2, PR-01).** `content/itemRegistry.ts` is canonical; its shipped ids are **immutable** (ADR-0012 / YASA 2). `learning-engine/items.ts` is **fixture input**, not a second canonical registry. Exact overlaps resolve through an explicit read-only compatibility boundary — **no rename, no colon migration** |
 | Telemetry | a **second** event system: `TelemetryEvent` (15 types incl. `screen_seen`, `answer_compared`, `lexique_opened`) with its own store `lm_le_telemetry` | **Bounded reconcile** — routing decision required so exposure does not get two homes (D-3) |
 | Sentence identity | none in runtime; convention exists in docs only | **Add** |
 | Audio identity | none; TTS-only via `useSpeech()` | **Add (Wave B)** |
@@ -137,11 +137,20 @@ projection → derived product surfaces.** No surface may skip a link.
 
 ### 4.1 Canonical item identity
 
-- **One registry.** [DECISION NEEDED D-2] The two registries share **zero** ids and cannot both
-  survive. [REC] Adopt the colon `prefix:slug` convention (Item ID Convention §3) as canonical and
-  migrate the hyphen registry to it with a mechanical rename map (Convention §7), keeping a
-  build-time alias map only for the migration PR's lifetime. The convention's §11 lists the
-  separator and migration as open — this pilot forces the decision.
+- **One canonical registry — decided (D-2, implemented in PR-01).** `content/itemRegistry.ts` is
+  the canonical runtime item registry; its `ITEM_REGISTRY` / `ItemId` are authoritative.
+  **Every shipped hyphen-style id is immutable forever** — no rename, no delete-and-recreate, no
+  colon migration (**ADR-0012 / YASA 2**, canonical + LOCKED, enforced bidirectionally against
+  `scripts/shipped-item-ids.json`). An earlier draft of this section recommended migrating the
+  shipped registry to colon ids; that recommendation **conflicted with active Canonical authority
+  and is withdrawn**.
+- **`learning-engine/items.ts` is fixture input**, not the target registry and not a second
+  canonical source. Exact semantic overlaps resolve through an **explicit, read-only compatibility
+  boundary** (no separator conversion, no surface-text lookup, no chains); ambiguous granularity
+  stays unmapped, and an unmapped fixture id **fails canonical persistence validation** rather than
+  leaking into learner history.
+- **The colon convention still applies to genuinely new identity layers** — notably `sent:`
+  (§4.2) — because adding a new layer is not mutating a shipped id.
 - **Parent/linked identities.** `chunk:` is the acquisition identity; `frame:`/`phen:`/`word:`
   are **linked**, counted once (PRJ-015 IC-003), never independent "learned" rows.
 - **No duplicate registry.** `mergeItemMapsStrict` already hard-fails on duplicate ids
@@ -542,16 +551,22 @@ Existing harness [CURRENT REALITY]: `lemot-app/scripts/tests/*.test.ts` with `ru
 Twelve PRs. Every PR is independently reviewable, independently revertable, and leaves the app in a
 shippable state. **None of PR-01…PR-06 changes learner-visible behavior.**
 
-**PR-01 — Identity layer: registry reconciliation + sentence identity contract.**
-*Objective:* one canonical item registry; introduce the `sent:` identity layer as types + a
-registration path. *Scope:* resolve D-2 (colon convention + mechanical rename map), merge the two
-registries under `mergeItemMapsStrict`, add sentence identity types and an empty/fixture registry.
-*Files:* `content/itemRegistry.ts`, `content/learning-engine/items.ts`, `registry.ts`, new sentence
-identity module. *Depends:* none. *Excludes:* registering the four L1 identities' French surfaces;
-any payload authoring; audio. *Acceptance:* one registry resolves every existing id; duplicate ids
-hard-fail; sentence layer compiles with fixtures; typecheck + existing tests green.
-*Tests:* registry merge, alias-map coverage, no-duplicate-sentence-id. *Rollback:* pure —
-revertable, no data written. *French QA:* **no**. *Learner-visible:* **no**.
+**PR-01 — Canonical item boundary + sentence identity foundation.** ✅ *implemented*
+*Objective:* establish one authoritative runtime item-identity boundary, safe handling of the
+non-canonical fixture ids, and the `sent:` identity layer as types + a registration path.
+*Scope:* affirm `content/itemRegistry.ts` as canonical **without touching a single shipped id**
+(ADR-0012); add read-only canonical accessors; add an explicit fixture→canonical compatibility
+resolver for the exact L1 overlaps only; add a canonical-persistence guard; add sentence identity
+types, validation, and a deterministic registry builder that ships **empty**.
+*Files:* new `content/identity/*`, focused tests, test-runner registration. **`itemRegistry.ts`,
+`learning-engine/items.ts`, and `shipped-item-ids.json` are read but NOT modified.**
+*Depends:* none. *Excludes:* any shipped-id rename or colon migration; registering the four L1
+identities' French surfaces; any sentence record or payload authoring; audio; event wiring.
+*Acceptance:* every shipped id present and unchanged; manifest↔registry bidirectional check green;
+fixture ids unpersistable unless explicitly aliased; ambiguous granularity unmapped; sentence layer
+validated by test-local fixtures. *Tests:* canonical invariants, fixture compatibility, sentence
+identity. *Rollback:* pure — additive files, no data written, no shipped id touched.
+*French QA:* **no**. *Learner-visible:* **no**.
 
 **PR-02 — Shared attempt/event envelope extension.**
 *Objective:* extend `LearningEvent` to §5 (placement, EV, payload id, treatment, action type,
@@ -707,7 +722,7 @@ PR-01 identity ─► PR-02 envelope ─► PR-03 assistance+attribution ─► 
 | ID | Class | Decision needed | Blocks |
 |---|---|---|---|
 | **D-1** | architecture | Extend `LearningEvent` in place (recommended) vs a parallel envelope. Extending forces one migration; a parallel envelope would create the second spine this contract forbids | PR-02 |
-| **D-2** | identity registration | Which item registry becomes canonical, and the rename map. [REC] colon convention per Item ID Convention §3, migrating the hyphen registry | PR-01 |
+| **D-2** | identity registration | ~~Which item registry becomes canonical, and the rename map~~ — **DECIDED and implemented in PR-01**: `content/itemRegistry.ts` is canonical, shipped hyphen ids are immutable (ADR-0012), `learning-engine/items.ts` is fixture input resolved through an explicit compatibility boundary. **No rename, no colon migration.** The earlier colon-migration recommendation is withdrawn as conflicting with Canonical authority | ~~PR-01~~ closed |
 | **D-3** | architecture | `TelemetryEvent` vs `LearningEvent` ownership of exposure/reveal. [REC] learning spine owns learning-relevant exposure; telemetry keeps product-funnel counting; Stats reads the spine | PR-02, PR-10 |
 | **D-4** | identity registration | Sentence-id prefixing (`sent:l01-…` recommended) and whether accepted alternatives live on the sentence or the payload | PR-01, PR-07 |
 | **D-5** | French QA | Sign-off on the ecosystem §20 review surface (8 concentrated questions) | PR-07 |
@@ -739,31 +754,22 @@ Completing this contract does not make any of the above implemented.
 
 ## 22. Recommended immediate next action — one runtime PR
 
-**Task: PR-01 — Identity layer: registry reconciliation + sentence identity contract.**
+**PR-01 — Canonical item boundary + sentence identity foundation — is now implemented** on
+`feat/l1-pilot-identity-layer`. It established: `content/itemRegistry.ts` as the canonical runtime
+registry with **all 54 shipped ids unchanged** (ADR-0012); a read-only canonical access/assertion
+boundary; an explicit fixture→canonical compatibility resolver covering the five exact L1 overlaps,
+with ambiguous granularity deliberately unmapped; a canonical-persistence guard that refuses any
+unresolvable id; and the `sent:` sentence identity types, validation, and deterministic registry
+builder, shipping **empty** pending French QA.
 
-- **Branch strategy:** a new implementation branch off the current docs branch head (or off the
-  default branch if these docs have merged) — e.g. `feat/l1-pilot-identity-layer`. Do **not**
-  continue implementation on the docs branch.
-- **Expected base commit:** the commit that adds this document.
-- **Exact objective:** make one canonical item registry exist, and introduce the `sent:` sentence
-  identity layer as types + a registration path with fixtures. No French surfaces are registered.
-- **Files to inspect first:** `lemot-app/content/itemRegistry.ts` ·
-  `lemot-app/content/learning-engine/items.ts` · `registry.ts` · `types.ts` · `graph.ts` ·
-  `validate.ts` · `index.ts` · `docs/syllabus/canonical-item-id-convention-v0.1.md` ·
-  `lemot-app/scripts/tests/localRepository.test.ts` and the validator tests.
-- **Allowed changes:** item-registry merge/rename with an alias map; new sentence-identity types and
-  fixture registry; validator rules for identity resolution and duplicate sentence ids; tests;
-  a short ADR-style note recording D-2 and D-4 as decided.
-- **Forbidden changes:** event/mastery/selector/renderer changes · registering the four missing L1
-  identities' French surfaces · any new French · audio · feature flags · lesson payload edits ·
-  cloud/privacy scope expansion · numeric weights · touching legacy `lm7_srs`/flashcard stores.
-- **Tests:** `npm run typecheck`; the existing engine test suite green; new tests for registry merge,
-  alias-map coverage, duplicate-id hard-fail, and no-duplicate-sentence-identity.
-- **Commit/PR behavior:** small, atomic, conventional-commit; open a PR **only if the operator asks**;
-  do not bundle any other PR-0x scope.
-- **Completion report:** decisions taken for D-2/D-4 · id counts before/after the merge · alias-map
-  size · sentence-layer surface (types + fixture count) · tests added and results · confirmation
-  that no event, mastery, selector, renderer, lesson payload, audio, or French surface changed.
+**The recommended next action is therefore PR-02 — shared attempt/event envelope extension**
+(§17), which must resolve **D-1** (extend `LearningEvent` in place — no parallel envelope) and
+**D-3** (telemetry vs learning-spine ownership of exposure/reveal) and carries a schema version
+bump plus migration. It depends only on PR-01 and changes no learner-visible behavior.
+
+Standing constraints for that PR: extend the existing spine rather than forking it · do not touch
+shipped item ids · register no French · no renderer, mastery, selector, or persistence-path change ·
+new fields that persist learner text must be added to the privacy inventory in the same PR.
 
 **Do not produce another planning document.** The next artifact in this workstream is code.
 

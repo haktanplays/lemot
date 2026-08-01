@@ -51,6 +51,9 @@ import "./deriveFillBoundary.test";
 import "./contextChainMasteryWeight.test";
 import "./practiceSelector.test";
 import "./nearMissMasteryTiming.test";
+import "./canonicalItems.test";
+import "./fixtureCompat.test";
+import "./sentenceIdentity.test";
 import { runAll } from "./harness";
 
 void runAll();
