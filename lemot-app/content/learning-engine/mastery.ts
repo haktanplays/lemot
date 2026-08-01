@@ -19,6 +19,7 @@
 import type { ItemId, OperationId, PromptFadeLevel } from "./types";
 import type { AssessedLearningEvent, ErrorTagCode, LearningEvent } from "./events";
 import { isAssessedEvent } from "./events";
+import { MASTERY_BEARING_ADMISSION_STATUSES } from "./evidence-context";
 
 /** Snapshot schema version (bump when the shape changes). */
 export const MASTERY_SNAPSHOT_VERSION = "mastery-v0.2";
@@ -127,6 +128,23 @@ function emptyItem(itemId: ItemId): ItemMastery {
   };
 }
 
+/**
+ * Record the event as processed WITHOUT touching item mastery.
+ *
+ * The decided idempotency policy (PR-02, extended by PR-03): a no-op event IS
+ * added to `processedClientEventIds` and MAY advance `updatedAt`, so replaying
+ * the append-only log stays stable and the event is never reprocessed. The log
+ * remains authoritative; the projection simply learns nothing from it.
+ */
+function noOp(snapshot: MasterySnapshot, event: LearningEvent): MasterySnapshot {
+  return {
+    version: snapshot.version,
+    items: snapshot.items,
+    processedClientEventIds: [...snapshot.processedClientEventIds, event.clientEventId],
+    updatedAt: event.timestamp,
+  };
+}
+
 const isSuccess = (r: ErrorTagCode): boolean =>
   r === "correct" || r === "accepted_variant";
 
@@ -215,15 +233,23 @@ export function scoreEvent(
   // independent production, assistance-scoped counters, thresholds, or weights —
   // those are PR-03 / PR-04.
   if (!isAssessedEvent(event)) {
-    return {
-      version: snapshot.version,
-      items: snapshot.items,
-      processedClientEventIds: [
-        ...snapshot.processedClientEventIds,
-        event.clientEventId,
-      ],
-      updatedAt: event.timestamp,
-    };
+    return noOp(snapshot, event);
+  }
+
+  // PR-03 admission gate (the ONLY mastery change in that PR).
+  //
+  // Correctness is not admissibility (Mastery Bible §6): an assessed event that
+  // was quarantined (a content / validator / UI-flow / tone / AI-generator /
+  // system / mastery-mapping defect), left unresolved, or marked non-evidentiary
+  // must move NOTHING — however correct the answer looked. Persisting
+  // `admissibility: quarantined` and then letting the reducer score it as
+  // learner success or failure would defeat the entire attribution layer.
+  //
+  // `admitted` and `legacy_admitted` continue through the existing logic
+  // unchanged. Supported-vs-independent representation stays PR-04's question:
+  // no new counter, no new snapshot field, no threshold, no weight is added here.
+  if (!MASTERY_BEARING_ADMISSION_STATUSES.has(event.admissibility.status)) {
+    return noOp(snapshot, event);
   }
 
   const items: Record<ItemId, ItemMastery> = { ...snapshot.items };

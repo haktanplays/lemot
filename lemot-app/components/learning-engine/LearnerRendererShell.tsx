@@ -180,7 +180,7 @@ export function LearnerRendererShell({
   // P5.4B: founder-local privacy disclosure — shown once before practice in this
   // gated route until acknowledged. Soft local-first notice, not a remote gate.
   const disclosure = useLocalPrivacyDisclosure();
-  const session = useLearningEngineSession({ lessonId, contentVersion });
+  const session = useLearningEngineSession({ lessonId, contentVersion, contract });
   const [idx, setIdx] = useState(0);
   const [finished, setFinished] = useState(false);
   const total = exercises.length;

@@ -1,5 +1,5 @@
 /**
- * v1 → v2 learning-event migration tests (PR-02, YASA 1).
+ * Learning-event migration-chain tests (v1 → v2 → v3; PR-02 + PR-03, YASA 1).
  *
  * The migration's contract is "lose nothing, invent nothing". These tests pin
  * both halves: every v1 fact survives byte-for-byte, and every fact v1 could not
@@ -44,21 +44,23 @@ function migrated(v1: Record<string, unknown>): LearningEvent {
   return res.event;
 }
 
-describe("v1 -> v2 event migration", () => {
-  test("a v1 fill event becomes a valid assessed v2 production event", () => {
+describe("v1 -> v3 event migration (through the v2 rung)", () => {
+  test("a v1 fill event becomes a valid assessed v3 production event", () => {
     const v1 = makeV1Event({ result: "correct", operation: "fill" });
     const e = migrated(v1);
     assertEqual(validateLearningEvent(e).join(" | "), "", "migrated event must be valid");
-    assertEqual(e.schemaVersion, LEARNING_EVENT_SCHEMA_VERSION, "stamped v2");
+    assertEqual(e.schemaVersion, LEARNING_EVENT_SCHEMA_VERSION, "stamped v3");
     assert(isAssessedEvent(e), "a graded fill stays assessed");
     assertEqual(e.primitive, "production", "fill is a production primitive");
-    assertEqual(e.evidenceClass, "controlled_production", "conservative evidence class");
+    // v3: v1/v2 recorded no assistance, and unknown assistance can never
+    // establish independent production (FQ-3), so the observation is capped.
+    assertEqual(e.evidenceClass, "supported_production", "capped by unknown assistance");
   });
 
   test("a v1 build event becomes a selection primitive", () => {
     const e = migrated(makeV1Event({ result: "wrong_order", operation: "build" }));
     assertEqual(e.primitive, "selection", "build is selection");
-    assertEqual(e.evidenceClass, "recognition", "conservative evidence class");
+    assertEqual(e.evidenceClass, "recognition", "recognition stays recognition");
     assertEqual(e.outcome, "incorrect", "wrong_order maps to incorrect");
   });
 
@@ -132,13 +134,25 @@ describe("v1 -> v2 event migration", () => {
       "legacy_unknown,legacy_unknown",
       "treatment is unknown per target, one entry per item",
     );
-    assertEqual(e.assistance, "not_captured", "v1 captured no assistance");
-    assertEqual(e.attribution, "unresolved", "v1 resolved no attribution");
-    assertEqual(e.admissibility, "legacy_admitted", "v1 events were already scored");
+    assertEqual(e.assistance.capture, "legacy_unknown", "v1 captured no assistance");
+    assertEqual(
+      e.attribution.status === "resolved" ? e.attribution.source : e.attribution.status,
+      "learner",
+      "history was already scored as the learner's",
+    );
+    assertEqual(e.admissibility.status, "legacy_admitted", "v1 events were already scored");
+    assertEqual(
+      e.admissibility.status === "legacy_admitted" ? e.admissibility.sourceVersion : 0,
+      2,
+      "reached v3 through the v2 rung",
+    );
     assertEqual(e.sequence, null, "no sequence membership in v1");
+    // v2 kept `controlled_production` here because it had no way to express the
+    // distinction. v3 inverts the safeguard: unknown assistance can never
+    // establish INDEPENDENT production, so the observation is capped down.
     assert(
-      e.evidenceClass !== "supported_production",
-      "v1 cannot distinguish supported from independent production — never claim it",
+      e.evidenceClass !== "recall" && e.evidenceClass !== "controlled_production",
+      "unknown assistance must never claim independent production (FQ-3)",
     );
   });
 

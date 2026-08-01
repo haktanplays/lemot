@@ -1,9 +1,9 @@
 /**
- * Persisted-v2 validation regression tests (PR-02 correction).
+ * Persisted current-version validation regression tests (PR-02 correction, carried to v3).
  *
  * THE DEFECT: `migrateEventToCurrent` short-circuited the current-version branch
  * with `data as LearningEvent` and never validated. A TypeScript cast proves
- * nothing about JSON read back from disk, so a malformed v2 event — unknown
+ * nothing about JSON read back from disk, so a malformed current-version event — unknown
  * enum, smuggled grading fields on a non-assessed event, misaligned treatments,
  * broken sequence — entered the log and the whole log was reported "supported".
  *
@@ -61,17 +61,17 @@ async function expectRejects(p: Promise<unknown>, what: string): Promise<unknown
   return caught;
 }
 
-describe("persisted v2 events are validated on read", () => {
-  test("a valid v2 event is accepted unchanged and not re-migrated", () => {
+describe("persisted current-version events are validated on read", () => {
+  test("a valid current-version event is accepted unchanged and not re-migrated", () => {
     const event = validV2();
     const res = migrateEventToCurrent(event);
-    assert(res.status === "ok", "valid v2 must be accepted");
+    assert(res.status === "ok", "valid current-version event must be accepted");
     if (res.status !== "ok") return;
     assertEqual(res.migrated, false, "already current — not migrated");
     assertEqual(
       JSON.stringify(res.event),
       JSON.stringify(event),
-      "a valid v2 event must come back byte-for-byte identical",
+      "a valid current-version event must come back byte-for-byte identical",
     );
   });
 
@@ -149,6 +149,9 @@ describe("persisted v2 events are validated on read", () => {
       evidenceCeiling: "comparison_only",
       evidenceClass: "comparison_only",
       outcome: "completed_unassessed",
+      // A non-assessed event is never admitted and never learner-attributed.
+      attribution: { status: "not_applicable" },
+      admissibility: { status: "no_evidence", reasons: ["non_assessed_interaction"] },
     });
     delete reveal.result;
     delete reveal.errorTags;
@@ -168,6 +171,8 @@ describe("persisted v2 events are validated on read", () => {
       evidenceCeiling: "comparison_only",
       evidenceClass: "comparison_only",
       outcome: "correct",
+      attribution: { status: "not_applicable" },
+      admissibility: { status: "no_evidence", reasons: ["non_assessed_interaction"] },
     });
     delete reveal.result;
     delete reveal.errorTags;
@@ -218,14 +223,14 @@ describe("persisted v2 events are validated on read", () => {
 });
 
 describe("repository defends the durable boundary", () => {
-  test("a malformed v2 log reads as unsupported with no partial history", async () => {
+  test("a malformed current-version log reads as unsupported with no partial history", async () => {
     const raw = JSON.stringify([validV2({ clientEventId: "good" }), validV2({ primitive: "nope" })]);
     const kv = makeFakeKv({ [LM_LE_EVENTS_KEY]: raw });
     const repo = new LocalRepository(kv);
     assertEqual(
       (await repo.readAllEvents()).length,
       0,
-      "a log with one malformed v2 event must not yield partial history",
+      "a log with one malformed current-version event must not yield partial history",
     );
     assertEqual(kv.map.get(LM_LE_EVENTS_KEY), raw, "bytes preserved");
     assertEqual(
@@ -235,13 +240,13 @@ describe("repository defends the durable boundary", () => {
     );
   });
 
-  test("append against a malformed v2 log throws and preserves the bytes", async () => {
+  test("append against a malformed current-version log throws and preserves the bytes", async () => {
     const raw = JSON.stringify([validV2({ outcome: "sort_of_right" })]);
     const kv = makeFakeKv({ [LM_LE_EVENTS_KEY]: raw });
     const repo = new LocalRepository(kv);
     const err = await expectRejects(
       repo.appendEvent(makeEvent({ result: "correct" })),
-      "append against a malformed v2 log",
+      "append against a malformed current-version log",
     );
     assert(err instanceof UnsupportedEventLogError, "distinct unsupported error");
     assertEqual(kv.map.get(LM_LE_EVENTS_KEY), raw, "nothing overwritten");
@@ -328,8 +333,10 @@ describe("frozen authority is untouched by this correction", () => {
     assertEqual(ERROR_TAG_CODES[15], "empty_or_skip", "order preserved");
   });
 
-  test("no schema-version bump", () => {
-    assertEqual(LEARNING_EVENT_SCHEMA_VERSION, 2, "still v2 — this was validation tightening");
+  test("schema version is the PR-03 v3 envelope", () => {
+    // PR-02's correction was validation tightening at v2; PR-03 deliberately
+    // bumps to v3 because the scalar seams became structured state (Decision A).
+    assertEqual(LEARNING_EVENT_SCHEMA_VERSION, 3, "v3 attempt-level evidence envelope");
   });
 
   test("no new primitive and no new outcome", () => {
@@ -337,16 +344,15 @@ describe("frozen authority is untouched by this correction", () => {
     assertEqual(LEARNING_OUTCOMES.length, 9, "still nine outcomes");
   });
 
-  test("no PR-03 assistance or attribution vocabulary was introduced", async () => {
-    const { ASSISTANCE_CAPTURE_STATES, ATTRIBUTION_STATES, ADMISSIBILITY_STATES } = await import(
-      "../../content/learning-engine/events"
+  test("the Canonical attribution-source set has exactly eight members", async () => {
+    const { ATTRIBUTION_SOURCES } = await import(
+      "../../content/learning-engine/evidence-context"
     );
-    assertEqual(ASSISTANCE_CAPTURE_STATES.join(","), "not_captured", "still the neutral seam");
-    assertEqual(ATTRIBUTION_STATES.join(","), "unresolved", "still the neutral seam");
+    assertEqual(ATTRIBUTION_SOURCES.length, 8, "Bible §7: exactly eight error sources");
     assertEqual(
-      ADMISSIBILITY_STATES.join(","),
-      "unresolved,legacy_admitted",
-      "still the PR-02 seam",
+      ATTRIBUTION_SOURCES.join(","),
+      "learner,content,validator,ui_flow,tone,ai_generator,system,mastery_mapping",
+      "the eight sources, unchanged and in Canonical order",
     );
   });
 });

@@ -27,7 +27,7 @@
  *  - `now` and `makeClientEventId` are injectable so the serialization + derivation
  *    can be unit-tested deterministically with a fake repository.
  */
-import type { ExerciseBlueprint, ItemId } from "./types";
+import type { ExerciseBlueprint, ItemId, PromptFadeLevel } from "./types";
 import type {
   CurriculumTreatment,
   DeviceInfo,
@@ -37,7 +37,12 @@ import type {
   LearningEventPrimitive,
 } from "./events";
 import type { LearningRepository } from "./repository/types";
+import type {
+  AssistanceSnapshot,
+  EvidenceOpportunityContext,
+} from "./evidence-context";
 import { createLearningEvent } from "./event-envelope";
+import { resolveEvidenceAdmission } from "./evidence-admission";
 import { scoreEvents, type MasterySnapshot } from "./mastery";
 
 /** Minimal grade-result shape the controller needs (a `GradeResult` satisfies it). */
@@ -56,11 +61,37 @@ export type GradedAttemptPayload = {
 /** Handler a graded card receives from the shell (shell adds the exercise). */
 export type GradedAttemptHandler = (payload: GradedAttemptPayload) => void;
 
+/**
+ * The authored context an attempt needs before it can become evidence.
+ *
+ * PR-03: the controller no longer invents ANY of this. It used to hardcode
+ * `promptLevel: "PF0"` and stamp `legacy_unknown` on every target — hidden
+ * defaults that quietly decided what an attempt could prove. The integration
+ * layer now states the facts explicitly, and the controller resolves and
+ * persists them.
+ *
+ * `treatmentFor` is a resolver rather than an array so the controller can apply
+ * it AFTER the context-chain bounding rule has decided the final target list,
+ * keeping treatments index-aligned with `itemIds` by construction.
+ */
+export type AttemptEvidenceContext = {
+  /** The prompt-fade level actually in effect — never assumed. */
+  promptLevel: PromptFadeLevel;
+  /** What assistance was present at the exact moment of the attempt. */
+  assistance: AssistanceSnapshot;
+  /** The authored opportunity + evaluation path behind this attempt. */
+  opportunity: EvidenceOpportunityContext;
+  /** Authored treatment of one target, read from the lesson contract. */
+  treatmentFor: (itemId: ItemId) => CurriculumTreatment;
+};
+
 export type RecordGradedAttemptInput = GradedAttemptPayload & {
   exercise: ExerciseBlueprint;
+  context: AttemptEvidenceContext;
 };
 export type RecordRecognitionRevealInput = {
   exercise: ExerciseBlueprint;
+  context: AttemptEvidenceContext;
 };
 
 /** Where the local save/derive loop currently is, for a calm learner hint. */
@@ -168,6 +199,7 @@ export class LearningSessionController {
     this.enqueue(
       this.buildEvent({
         exercise: input.exercise,
+        context: input.context,
         timestamp,
         userAnswer: input.userAnswer,
         expectedAnswer: input.expectedAnswer,
@@ -199,6 +231,7 @@ export class LearningSessionController {
     this.enqueue(
       this.buildNonAssessedEvent({
         exercise: ex,
+        context: input.context,
         timestamp,
         primitive: "reveal",
         evidenceClass: "comparison_only",
@@ -252,31 +285,30 @@ export class LearningSessionController {
   }
 
   /**
-   * v2 fields this controller can honestly supply.
+   * Fields this controller can honestly supply on its own.
    *
    * This is the flag-gated learning-engine FIXTURE path, not the shipped lesson
-   * renderer, so `placement` says exactly that. Everything this path genuinely
-   * does not know — the exercise variation, the authored payload identity beyond
-   * the fixture's own exercise id, the sentence identity, and the authored
-   * treatment of each target — stays explicitly unknown rather than invented.
+   * renderer, so `placement` says exactly that. The exercise variation and the
+   * sentence identity genuinely do not exist for a fixture, so they stay null —
+   * everything else now arrives from the caller's `AttemptEvidenceContext`.
    *
-   * `assistance` / `attribution` / `admissibility` keep their neutral PR-02
-   * defaults; PR-03 replaces them with really captured values.
+   * PR-05 / PR-06 shipped-lesson integration MUST provide its own real attempt
+   * context (real hint rung, real retry index, real prior exposure, real
+   * accessibility counts). Nothing here may be reused as a silent default.
    */
-  private v2Context(itemIds: ItemId[], exercise: ExerciseBlueprint) {
-    const targetTreatments: CurriculumTreatment[] = itemIds.map(() => "legacy_unknown");
+  private surfaceContext(exercise: ExerciseBlueprint) {
     return {
       placement: "engine_fixture_sandbox" as const,
       evId: null,
       payloadId: exercise.id,
       sentenceId: null,
-      targetTreatments,
       sequence: null,
     };
   }
 
   private buildEvent(args: {
     exercise: ExerciseBlueprint;
+    context: AttemptEvidenceContext;
     timestamp: number;
     userAnswer: string | null;
     expectedAnswer: string | null;
@@ -289,12 +321,25 @@ export class LearningSessionController {
       ? [...args.exercise.targetItemIds]
       : [];
     const itemIds = this.boundChainItemIds(args.exercise, args.result, allTargets);
+    const targetTreatments = itemIds.map((id) => args.context.treatmentFor(id));
     const primitive: LearningEventPrimitive =
       args.exercise.operation === "build" || args.exercise.operation === "recognition"
         ? "selection"
         : "production";
-    const evidenceClass: EvidenceClass =
+    const evidenceCeiling: EvidenceClass =
       primitive === "selection" ? "recognition" : "controlled_production";
+
+    // Attribution, admissibility and the final evidence class are RESOLVED from
+    // the authored context — never assumed by this controller.
+    const admission = resolveEvidenceAdmission({
+      assessed: true,
+      primitive,
+      evidenceCeiling,
+      targetTreatments,
+      assistance: args.context.assistance,
+      opportunity: args.context.opportunity,
+    });
+
     return createLearningEvent({
       assessed: true,
       clientEventId: this.makeClientEventId(args.timestamp),
@@ -303,7 +348,7 @@ export class LearningSessionController {
       exerciseId: args.exercise.id,
       operation: args.exercise.operation,
       itemIds,
-      promptLevel: "PF0",
+      promptLevel: args.context.promptLevel,
       attemptNumber,
       userAnswer: args.userAnswer,
       expectedAnswer: args.expectedAnswer,
@@ -316,15 +361,20 @@ export class LearningSessionController {
       deviceInfo: this.deviceInfo,
       sync: { status: "pending", origin: "local", queuedAt: args.timestamp },
       primitive,
-      evidenceCeiling: evidenceClass,
-      evidenceClass,
-      ...this.v2Context(itemIds, args.exercise),
+      evidenceCeiling,
+      evidenceClass: admission.evidenceClass,
+      targetTreatments,
+      assistance: args.context.assistance,
+      attribution: admission.attribution,
+      admissibility: admission.admissibility,
+      ...this.surfaceContext(args.exercise),
     });
   }
 
   /** Build a genuinely non-assessed event (no grading facets exist on this arm). */
   private buildNonAssessedEvent(args: {
     exercise: ExerciseBlueprint;
+    context: AttemptEvidenceContext;
     timestamp: number;
     primitive: Exclude<LearningEventPrimitive, "selection">;
     evidenceClass: EvidenceClass;
@@ -334,6 +384,16 @@ export class LearningSessionController {
     const itemIds: ItemId[] = Array.isArray(args.exercise.targetItemIds)
       ? [...args.exercise.targetItemIds]
       : [];
+    const targetTreatments = itemIds.map((id) => args.context.treatmentFor(id));
+    const admission = resolveEvidenceAdmission({
+      assessed: false,
+      primitive: args.primitive,
+      evidenceCeiling: args.evidenceClass,
+      targetTreatments,
+      assistance: args.context.assistance,
+      opportunity: args.context.opportunity,
+    });
+
     return createLearningEvent({
       assessed: false,
       clientEventId: this.makeClientEventId(args.timestamp),
@@ -342,7 +402,7 @@ export class LearningSessionController {
       exerciseId: args.exercise.id,
       operation: args.exercise.operation,
       itemIds,
-      promptLevel: "PF0",
+      promptLevel: args.context.promptLevel,
       attemptNumber,
       userAnswer: null,
       expectedAnswer: args.expectedAnswer ?? null,
@@ -353,9 +413,13 @@ export class LearningSessionController {
       sync: { status: "pending", origin: "local", queuedAt: args.timestamp },
       primitive: args.primitive,
       evidenceCeiling: args.evidenceClass,
-      evidenceClass: args.evidenceClass,
+      evidenceClass: admission.evidenceClass,
       outcome: "completed_unassessed",
-      ...this.v2Context(itemIds, args.exercise),
+      targetTreatments,
+      assistance: args.context.assistance,
+      attribution: admission.attribution,
+      admissibility: admission.admissibility,
+      ...this.surfaceContext(args.exercise),
     });
   }
 

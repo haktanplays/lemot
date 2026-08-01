@@ -15,6 +15,23 @@
  * `LocalRepository` (in-memory KV) + the pure `scoreEvents` reducer.
  */
 import { describe, test, assert, assertEqual } from "./harness";
+import { NO_ASSISTANCE } from "./helpers";
+import type { AttemptEvidenceContext } from "../../content/learning-engine/session-controller";
+
+/** Explicit attempt context, mirroring what the fixture hook supplies. */
+const FIXTURE_CONTEXT: AttemptEvidenceContext = {
+  promptLevel: "PF0",
+  assistance: NO_ASSISTANCE,
+  opportunity: {
+    authored: true,
+    prerequisitesSafe: true,
+    evaluator: "approved_deterministic",
+    learnerAuthorship: "verified",
+    requiredConstitutiveSupport: [],
+    qualityIncident: null,
+  },
+  treatmentFor: () => "active",
+};
 import { makeFakeKv } from "./helpers";
 import { LocalRepository } from "../../content/learning-engine/repository/local";
 import { LearningSessionController } from "../../content/learning-engine/session-controller";
@@ -58,7 +75,10 @@ const fill = (id: string, targetItemIds: string[]): ExerciseBlueprint => ({
 const graded = (result: ErrorTagCode) => ({
   userAnswer: "x",
   expectedAnswer: "x",
-  gradeResult: { result, errorTags: [] as ErrorTagCode[], normalizedAnswer: "x" },
+  // `[result]` mirrors what the controller emits; the old `[]` produced an
+  // assessed event with zero error tags, which the envelope never allowed.
+  gradeResult: { result, errorTags: [result] as ErrorTagCode[], normalizedAnswer: "x" },
+  context: FIXTURE_CONTEXT,
 });
 
 describe("PR-E2 B23 — context_chain credit bounded, later failures preserved", () => {

@@ -24,7 +24,7 @@
 import type {
   AdmissibilityState,
   AssessedLearningEvent,
-  AssistanceCaptureState,
+  AssistanceSnapshot,
   AttributionState,
   CurriculumTreatment,
   ErrorTagCode,
@@ -37,9 +37,6 @@ import type {
   NonAssessedLearningEvent,
 } from "./events";
 import {
-  ADMISSIBILITY_STATES,
-  ASSISTANCE_CAPTURE_STATES,
-  ATTRIBUTION_STATES,
   CURRICULUM_TREATMENTS,
   ERROR_TAG_CODES,
   EVIDENCE_CLASSES,
@@ -52,6 +49,22 @@ import {
   OPERATION_IDS,
   PROMPT_FADE_LEVELS,
 } from "./events";
+import {
+  freezeAdmissibility,
+  freezeAssistance,
+  freezeAttribution,
+} from "./evidence-context";
+import {
+  ADMISSIBILITY_STATUSES,
+  ADMISSION_BLOCK_REASONS,
+  ASSISTANCE_CAPTURES,
+  ATTRIBUTION_SOURCES,
+  ATTRIBUTION_STATUSES,
+  CONSTITUTIVE_SUPPORTS,
+  NO_EVIDENCE_REASONS,
+  PRIOR_ANSWER_EXPOSURES,
+} from "./evidence-context";
+import { MASTERY_BEARING_EVIDENCE, clampToCeiling } from "./evidence-admission";
 import { isSentenceId } from "../identity/sentenceIdentity";
 
 /** Membership sets built once from the single-home vocabulary arrays in ./events. */
@@ -61,9 +74,14 @@ const SET = {
   treatment: new Set<string>(CURRICULUM_TREATMENTS),
   evidence: new Set<string>(EVIDENCE_CLASSES),
   outcome: new Set<string>(LEARNING_OUTCOMES),
-  assistance: new Set<string>(ASSISTANCE_CAPTURE_STATES),
-  attribution: new Set<string>(ATTRIBUTION_STATES),
-  admissibility: new Set<string>(ADMISSIBILITY_STATES),
+  assistanceCapture: new Set<string>(ASSISTANCE_CAPTURES),
+  constitutive: new Set<string>(CONSTITUTIVE_SUPPORTS),
+  priorExposure: new Set<string>(PRIOR_ANSWER_EXPOSURES),
+  attributionStatus: new Set<string>(ATTRIBUTION_STATUSES),
+  attributionSource: new Set<string>(ATTRIBUTION_SOURCES),
+  admissibilityStatus: new Set<string>(ADMISSIBILITY_STATUSES),
+  admissionBlock: new Set<string>(ADMISSION_BLOCK_REASONS),
+  noEvidence: new Set<string>(NO_EVIDENCE_REASONS),
   syncStatus: new Set<string>(LEARNING_EVENT_SYNC_STATUSES),
   syncOrigin: new Set<string>(LEARNING_EVENT_SYNC_ORIGINS),
   operation: new Set<string>(OPERATION_IDS),
@@ -174,9 +192,10 @@ type BaseInput = {
   userAnswer?: string | null;
   expectedAnswer?: string | null;
   sequence?: LearningEventSequence | null;
-  assistance?: AssistanceCaptureState;
-  attribution?: AttributionState;
-  admissibility?: AdmissibilityState;
+  /** Attempt-level evidence context — supplied explicitly, never defaulted. */
+  assistance: AssistanceSnapshot;
+  attribution: AttributionState;
+  admissibility: AdmissibilityState;
 };
 
 export type AssessedEventInput = BaseInput & {
@@ -234,9 +253,6 @@ export function validateLearningEvent(candidate: unknown): string[] {
     ["outcome", event.outcome, SET.outcome],
     ["evidenceCeiling", event.evidenceCeiling, SET.evidence],
     ["evidenceClass", event.evidenceClass, SET.evidence],
-    ["assistance", event.assistance, SET.assistance],
-    ["attribution", event.attribution, SET.attribution],
-    ["admissibility", event.admissibility, SET.admissibility],
   ];
   for (const [field, value, allowed] of enumChecks) {
     if (typeof value !== "string" || !allowed.has(value)) {
@@ -365,6 +381,245 @@ export function validateLearningEvent(candidate: unknown): string[] {
       if (sequence.parentEventId !== null && !isNonEmptyString(sequence.parentEventId)) {
         issues.push("sequence.parentEventId must be a non-empty string or null");
       }
+    }
+  }
+
+  // ── assistance (structured, PR-03) ───────────────────────────────────────
+  const assistance = event.assistance;
+  if (!isPlainObject(assistance)) {
+    issues.push("assistance must be a non-array object");
+  } else if (
+    typeof assistance.capture !== "string" ||
+    !SET.assistanceCapture.has(assistance.capture)
+  ) {
+    issues.push(`assistance.capture "${String(assistance.capture)}" is not a recognised value`);
+  } else if (assistance.capture === "known") {
+    const constitutive = assistance.constitutive;
+    if (!Array.isArray(constitutive)) {
+      issues.push("assistance.constitutive must be an array");
+    } else {
+      if (!constitutive.every((c) => typeof c === "string" && SET.constitutive.has(c))) {
+        issues.push("assistance.constitutive contains an unrecognised support");
+      }
+      if (new Set(constitutive).size !== constitutive.length) {
+        issues.push("assistance.constitutive must not contain duplicates");
+      }
+    }
+    if (assistance.hintRung !== 0 && assistance.hintRung !== 1 && assistance.hintRung !== 2) {
+      issues.push("assistance.hintRung must be 0, 1 or 2 (there is no copy-ready rung)");
+    }
+    if (!Number.isInteger(assistance.retryIndex) || (assistance.retryIndex as number) < 0) {
+      issues.push("assistance.retryIndex must be a non-negative integer (first attempt = 0)");
+    }
+    if (typeof assistance.selfCorrection !== "boolean") {
+      issues.push("assistance.selfCorrection must be a boolean");
+    }
+    if (
+      typeof assistance.priorAnswerExposure !== "string" ||
+      !SET.priorExposure.has(assistance.priorAnswerExposure)
+    ) {
+      issues.push("assistance.priorAnswerExposure must be none, answer or model");
+    }
+    const access = assistance.accessibility;
+    if (!isPlainObject(access)) {
+      issues.push("assistance.accessibility must be a non-array object");
+    } else {
+      if (!Number.isInteger(access.replayCount) || (access.replayCount as number) < 0) {
+        issues.push("assistance.accessibility.replayCount must be a non-negative integer");
+      }
+      if (typeof access.slowPlayback !== "boolean") {
+        issues.push("assistance.accessibility.slowPlayback must be a boolean");
+      }
+    }
+  } else {
+    // unknown / legacy_unknown must not carry invented detail
+    for (const field of [
+      "constitutive",
+      "hintRung",
+      "retryIndex",
+      "selfCorrection",
+      "priorAnswerExposure",
+      "accessibility",
+    ]) {
+      if (assistance[field] !== undefined) {
+        issues.push(
+          `assistance.capture "${assistance.capture}" must not carry "${field}" — unknown assistance may not be dressed up as known`,
+        );
+      }
+    }
+  }
+
+  // ── attribution (structured, PR-03) ──────────────────────────────────────
+  const attribution = event.attribution;
+  if (!isPlainObject(attribution)) {
+    issues.push("attribution must be a non-array object");
+  } else if (
+    typeof attribution.status !== "string" ||
+    !SET.attributionStatus.has(attribution.status)
+  ) {
+    issues.push(`attribution.status "${String(attribution.status)}" is not a recognised value`);
+  } else if (attribution.status === "resolved") {
+    if (
+      typeof attribution.source !== "string" ||
+      !SET.attributionSource.has(attribution.source)
+    ) {
+      issues.push(
+        `attribution.source "${String(attribution.source)}" is not one of the Canonical eight error sources`,
+      );
+    }
+  } else if (attribution.source !== undefined) {
+    issues.push(`attribution.status "${attribution.status}" must not carry a resolved source`);
+  }
+
+  // ── admissibility (structured, PR-03) ────────────────────────────────────
+  const admissibility = event.admissibility;
+  if (!isPlainObject(admissibility)) {
+    issues.push("admissibility must be a non-array object");
+  } else if (
+    typeof admissibility.status !== "string" ||
+    !SET.admissibilityStatus.has(admissibility.status)
+  ) {
+    issues.push(
+      `admissibility.status "${String(admissibility.status)}" is not a recognised value`,
+    );
+  } else {
+    const status = admissibility.status;
+    const checkReasons = (allowed: ReadonlySet<string>, label: string): void => {
+      const reasons = admissibility.reasons;
+      if (!Array.isArray(reasons)) {
+        issues.push(`admissibility.reasons must be an array for status "${status}"`);
+        return;
+      }
+      if (!reasons.every((r) => typeof r === "string" && allowed.has(r))) {
+        issues.push(`admissibility.reasons contains an unrecognised ${label} reason`);
+      }
+      if (new Set(reasons).size !== reasons.length) {
+        issues.push("admissibility.reasons must not contain duplicates");
+      }
+    };
+    if (status === "admitted") {
+      if (admissibility.reasons !== undefined) {
+        issues.push("an admitted event must not carry admission-block reasons");
+      }
+    } else if (status === "legacy_admitted") {
+      if (admissibility.sourceVersion !== 1 && admissibility.sourceVersion !== 2) {
+        issues.push("legacy_admitted must carry sourceVersion 1 or 2");
+      }
+    } else if (status === "no_evidence") {
+      checkReasons(SET.noEvidence, "no-evidence");
+    } else {
+      checkReasons(SET.admissionBlock, "admission-block");
+      const reasons = Array.isArray(admissibility.reasons) ? admissibility.reasons : [];
+      if (reasons.length === 0) {
+        issues.push(`status "${status}" must name at least one machine reason`);
+      }
+    }
+  }
+
+  // ── cross-field coherence (PR-03) ────────────────────────────────────────
+  const admissionStatus = isPlainObject(admissibility)
+    ? (admissibility.status as string | undefined)
+    : undefined;
+  const attributionStatus = isPlainObject(attribution)
+    ? (attribution.status as string | undefined)
+    : undefined;
+  const attributionSource = isPlainObject(attribution)
+    ? (attribution.source as string | undefined)
+    : undefined;
+  const evidenceIsMasteryBearing =
+    typeof event.evidenceClass === "string" &&
+    MASTERY_BEARING_EVIDENCE.has(event.evidenceClass as EvidenceClass);
+
+  if (event.assessed === true) {
+    if (admissionStatus === "admitted" && attributionSource !== "learner") {
+      issues.push(
+        "an admitted assessed event must be attributed to the learner — admission means the result is theirs",
+      );
+    }
+    if (
+      admissionStatus === "quarantined" &&
+      attributionSource === "learner" &&
+      // a learner-attributed quarantine is only coherent if some non-learner
+      // block reason explains it
+      Array.isArray((admissibility as Record<string, unknown>).reasons) &&
+      !((admissibility as { reasons: string[] }).reasons.some(
+        (r) => r !== "learner_authorship_unresolved",
+      ))
+    ) {
+      issues.push("a quarantined event attributed to the learner needs a non-learner reason");
+    }
+    if (
+      (admissionStatus === "quarantined" ||
+        admissionStatus === "unresolved" ||
+        admissionStatus === "no_evidence") &&
+      evidenceIsMasteryBearing
+    ) {
+      issues.push(
+        `a ${admissionStatus} event must carry no_mastery_evidence — correctness is not admissibility`,
+      );
+    }
+    // Assistance must be able to support the claim being made.
+    const independent =
+      event.evidenceClass === "recall" || event.evidenceClass === "controlled_production";
+    if (independent && isPlainObject(assistance)) {
+      if (assistance.capture !== "known") {
+        issues.push(
+          "independent production cannot be claimed with unknown assistance (FQ-3)",
+        );
+      } else {
+        if ((assistance.hintRung as number) > 0) {
+          issues.push("independent production cannot be claimed after a hint");
+        }
+        if ((assistance.retryIndex as number) > 0) {
+          issues.push("independent production cannot be claimed on a retry");
+        }
+        if (assistance.priorAnswerExposure !== "none") {
+          issues.push(
+            "independent production cannot be claimed after answer/model exposure",
+          );
+        }
+        if (assistance.selfCorrection === true) {
+          issues.push("a self-correction is not independent first-pass production");
+        }
+        if (Array.isArray(assistance.constitutive) && assistance.constitutive.length > 0) {
+          issues.push(
+            "independent production cannot be claimed with constitutive support present",
+          );
+        }
+      }
+    }
+    if (independent && Array.isArray(event.targetTreatments)) {
+      if (event.targetTreatments.some((t) => t === "supported" || t === "legacy_unknown")) {
+        issues.push(
+          "independent production cannot be claimed for a Supported or unknown-treatment target",
+        );
+      }
+    }
+  } else if (event.assessed === false) {
+    if (admissionStatus === "admitted" || admissionStatus === "legacy_admitted") {
+      issues.push("a non-assessed event must never be admitted as learning evidence");
+    }
+    if (attributionSource === "learner") {
+      issues.push("a non-assessed event must not be attributed to the learner");
+    }
+    void attributionStatus;
+  }
+
+  // Ceiling containment: the observation may never exceed what was authored.
+  if (
+    typeof event.evidenceClass === "string" &&
+    typeof event.evidenceCeiling === "string" &&
+    SET.evidence.has(event.evidenceClass) &&
+    SET.evidence.has(event.evidenceCeiling)
+  ) {
+    const clamped = clampToCeiling(
+      event.evidenceClass as EvidenceClass,
+      event.evidenceCeiling as EvidenceClass,
+    );
+    if (clamped !== event.evidenceClass) {
+      issues.push(
+        `evidenceClass "${event.evidenceClass}" exceeds authored evidenceCeiling "${event.evidenceCeiling}"`,
+      );
     }
   }
 
@@ -507,9 +762,9 @@ export function createLearningEvent(input: LearningEventInput): LearningEvent {
     targetTreatments: frozenCopy(input.targetTreatments),
     evidenceCeiling: input.evidenceCeiling,
     evidenceClass: input.evidenceClass,
-    assistance: input.assistance ?? "not_captured",
-    attribution: input.attribution ?? "unresolved",
-    admissibility: input.admissibility ?? "unresolved",
+    assistance: freezeAssistance(input.assistance),
+    attribution: freezeAttribution(input.attribution),
+    admissibility: freezeAdmissibility(input.admissibility),
     sequence: input.sequence ? Object.freeze({ ...input.sequence }) : null,
   };
 

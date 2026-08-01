@@ -13,6 +13,29 @@ import type {
 import { LEARNING_EVENT_SCHEMA_VERSION } from "../../content/learning-engine/events";
 import { outcomeForResult } from "../../content/learning-engine/event-envelope";
 import type { ItemId, OperationId, PromptFadeLevel } from "../../content/learning-engine/types";
+import type {
+  AdmissibilityState,
+  AssistanceSnapshot,
+  AttributionState,
+} from "../../content/learning-engine/evidence-context";
+
+/** Known assistance with nothing applied — the "clean first attempt" baseline. */
+export const NO_ASSISTANCE: AssistanceSnapshot = {
+  capture: "known",
+  constitutive: [],
+  hintRung: 0,
+  retryIndex: 0,
+  selfCorrection: false,
+  priorAnswerExposure: "none",
+  accessibility: { replayCount: 0, slowPlayback: false },
+};
+const ADMITTED: AdmissibilityState = { status: "admitted" };
+const LEARNER: AttributionState = { status: "resolved", source: "learner" };
+const NOT_APPLICABLE: AttributionState = { status: "not_applicable" };
+const NO_EVIDENCE: AdmissibilityState = {
+  status: "no_evidence",
+  reasons: ["non_assessed_interaction"],
+};
 
 /** Backing map is exposed so tests can assert exactly which keys were touched. */
 export type FakeKv = {
@@ -85,13 +108,13 @@ export function makeEvent(
     evId: over.evId ?? null,
     payloadId: over.payloadId ?? null,
     sentenceId: over.sentenceId ?? null,
-    targetTreatments: over.targetTreatments ?? itemIds.map(() => "legacy_unknown"),
+    targetTreatments: over.targetTreatments ?? itemIds.map(() => "active"),
     evidenceCeiling: over.evidenceCeiling ?? evidenceClass,
     evidenceClass,
     outcome: over.outcome ?? outcomeForResult(over.result),
-    assistance: over.assistance ?? "not_captured",
-    attribution: over.attribution ?? "unresolved",
-    admissibility: over.admissibility ?? "unresolved",
+    assistance: over.assistance ?? NO_ASSISTANCE,
+    attribution: over.attribution ?? LEARNER,
+    admissibility: over.admissibility ?? ADMITTED,
     sequence: over.sequence ?? null,
   };
 }
@@ -137,13 +160,13 @@ export function makeNonAssessedEvent(
     evId: over.evId ?? null,
     payloadId: over.payloadId ?? null,
     sentenceId: over.sentenceId ?? null,
-    targetTreatments: over.targetTreatments ?? itemIds.map(() => "legacy_unknown"),
+    targetTreatments: over.targetTreatments ?? itemIds.map(() => "active"),
     evidenceCeiling: over.evidenceCeiling ?? evidenceClass,
     evidenceClass,
     outcome: over.outcome ?? "completed_unassessed",
-    assistance: over.assistance ?? "not_captured",
-    attribution: over.attribution ?? "unresolved",
-    admissibility: over.admissibility ?? "unresolved",
+    assistance: over.assistance ?? NO_ASSISTANCE,
+    attribution: over.attribution ?? NOT_APPLICABLE,
+    admissibility: over.admissibility ?? NO_EVIDENCE,
     sequence: over.sequence ?? null,
   };
 }
@@ -176,4 +199,53 @@ export function makeV1Event(
     sync: { status: "pending", origin: "local", queuedAt: 1_000 },
     ...over,
   };
+}
+
+/**
+ * Build a v2-shaped (post-PR-02, pre-PR-03) event object for migration tests:
+ * `schemaVersion: 2` with the scalar assistance/attribution/admissibility seams.
+ */
+export function makeV2Event(
+  over: Partial<Record<string, unknown>> = {},
+): Record<string, unknown> {
+  seq += 1;
+  const assessed = over.assessed !== false;
+  const base: Record<string, unknown> = {
+    schemaVersion: 2,
+    assessed,
+    clientEventId: `v2-evt-${seq}`,
+    sessionId: "sess-1",
+    lessonId: "l1",
+    exerciseId: "ex-1",
+    operation: "fill",
+    itemIds: ["item-a"],
+    promptLevel: "PF0",
+    attemptNumber: 1,
+    userAnswer: assessed ? "bonjour" : null,
+    expectedAnswer: "bonjour",
+    timestamp: 1_000,
+    contentVersion: "content-v1",
+    appBuild: "test",
+    deviceInfo: { platform: "test" },
+    sync: { status: "pending", origin: "local", queuedAt: 1_000 },
+    primitive: assessed ? "production" : "reveal",
+    placement: "engine_fixture_sandbox",
+    evId: null,
+    payloadId: "ex-1",
+    sentenceId: null,
+    targetTreatments: ["legacy_unknown"],
+    evidenceCeiling: assessed ? "controlled_production" : "comparison_only",
+    evidenceClass: assessed ? "controlled_production" : "comparison_only",
+    outcome: assessed ? "correct" : "completed_unassessed",
+    assistance: "not_captured",
+    attribution: "unresolved",
+    admissibility: "legacy_admitted",
+    sequence: null,
+  };
+  if (assessed) {
+    base.normalizedAnswer = "bonjour";
+    base.result = "correct";
+    base.errorTags = ["correct"];
+  }
+  return { ...base, ...over };
 }

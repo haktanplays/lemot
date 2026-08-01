@@ -7,6 +7,23 @@
  *  3. the D-3 boundary holds — telemetry is not a learning-evidence home.
  */
 import { describe, test, assert, assertEqual } from "./harness";
+import { NO_ASSISTANCE } from "./helpers";
+import type { AttemptEvidenceContext } from "../../content/learning-engine/session-controller";
+
+/** Explicit attempt context, mirroring what the fixture hook supplies. */
+const FIXTURE_CONTEXT: AttemptEvidenceContext = {
+  promptLevel: "PF0",
+  assistance: NO_ASSISTANCE,
+  opportunity: {
+    authored: true,
+    prerequisitesSafe: true,
+    evaluator: "approved_deterministic",
+    learnerAuthorship: "verified",
+    requiredConstitutiveSupport: [],
+    qualityIncident: null,
+  },
+  treatmentFor: () => "active",
+};
 import { makeFakeKv, makeEvent, makeNonAssessedEvent } from "./helpers";
 import { LocalRepository } from "../../content/learning-engine/repository/local";
 import { LearningSessionController } from "../../content/learning-engine/session-controller";
@@ -58,7 +75,7 @@ describe("session controller — recognition reveal correction", () => {
     const repo = new LocalRepository(kv);
     const controller = makeController(repo);
 
-    controller.recordRecognitionReveal({ exercise: recognitionExercise });
+    controller.recordRecognitionReveal({ exercise: recognitionExercise, context: FIXTURE_CONTEXT });
     await controller.flush();
 
     const events = await repo.readAllEvents();
@@ -77,7 +94,7 @@ describe("session controller — recognition reveal correction", () => {
   test("a revealed exercise gains no recognition success in mastery", async () => {
     const repo = new LocalRepository(makeFakeKv());
     const controller = makeController(repo);
-    controller.recordRecognitionReveal({ exercise: recognitionExercise });
+    controller.recordRecognitionReveal({ exercise: recognitionExercise, context: FIXTURE_CONTEXT });
     await controller.flush();
 
     const snapshot = scoreEvents(await repo.readAllEvents());
@@ -88,10 +105,11 @@ describe("session controller — recognition reveal correction", () => {
     );
   });
 
-  test("assessed attempts still emit v2 and score exactly as before", async () => {
+  test("assessed attempts still emit v3 and score exactly as before", async () => {
     const repo = new LocalRepository(makeFakeKv());
     const controller = makeController(repo);
     controller.recordGradedAttempt({
+      context: FIXTURE_CONTEXT,
       exercise: fillExercise,
       userAnswer: "bonjour",
       expectedAnswer: "bonjour",
@@ -102,7 +120,7 @@ describe("session controller — recognition reveal correction", () => {
     const events = await repo.readAllEvents();
     const e = events[0];
     assert(isAssessedEvent(e), "a graded attempt stays assessed");
-    assertEqual(e.schemaVersion, 2, "stamped v2");
+    assertEqual(e.schemaVersion, 3, "stamped v3");
     assertEqual(e.result, "correct", "grading result unchanged");
     assertEqual(e.primitive, "production", "fill is production");
 
@@ -117,6 +135,7 @@ describe("session controller — recognition reveal correction", () => {
     const controller = makeController(repo);
     for (let i = 0; i < 3; i += 1) {
       controller.recordGradedAttempt({
+      context: FIXTURE_CONTEXT,
         exercise: fillExercise,
         userAnswer: "bonjour",
         expectedAnswer: "bonjour",

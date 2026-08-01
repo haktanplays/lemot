@@ -1,5 +1,5 @@
 /**
- * Learning-event v1 → v2 migration (PR-02) — pure, deterministic, YASA 1.
+ * Learning-event schema migration chain v1 → v2 → v3 — pure, deterministic, YASA 1.
  *
  * The FIRST real learning-event schema migration. It rides the migration rails
  * in ./migrations.ts through a DEDICATED registry rather than the shipped
@@ -34,6 +34,8 @@ import {
   outcomeForResult,
   validateLearningEvent,
 } from "./event-envelope";
+import { clampToCeiling } from "./evidence-admission";
+import { LEGACY_UNKNOWN_ASSISTANCE } from "./evidence-context";
 import { createMigrationRegistry, readSchemaVersion } from "./migrations";
 import type { OperationId } from "./types";
 
@@ -109,9 +111,13 @@ export function isPlausibleV1Event(data: unknown): data is Record<string, unknow
     typeof e.sync === "object"
   );
 }
-
 /**
- * Convert one validated v1 event object to a v2 `LearningEvent`.
+ * Convert one validated v1 event object into a plain **v2-shaped** record.
+ *
+ * Deliberately NOT built through `createLearningEvent`: that constructor now
+ * produces v3, and a v1 → v3 shortcut would skip the v2 rung of the chain. The
+ * rails are sequential (v1 → v2 → v3) so each step stays independently
+ * inspectable and testable.
  *
  * Preserved byte-for-byte: `clientEventId`, `timestamp`, session/lesson/exercise,
  * operation, item ids, all three answer fields, sync metadata, and — for assessed
@@ -123,71 +129,229 @@ export function isPlausibleV1Event(data: unknown): data is Record<string, unknow
  * reads it. This deliberately changes historical mastery for those events — that
  * is the point of the correction, and it is recorded rather than hidden.
  */
-export function migrateV1EventToV2(v1: Record<string, unknown>): LearningEvent {
+export function migrateV1EventToV2(v1: Record<string, unknown>): Record<string, unknown> {
   const primitive = primitiveForV1(v1);
-  const itemIds = [...(v1.itemIds as LearningEvent["itemIds"])];
+  const itemIds = [...(v1.itemIds as string[])];
   const targetTreatments: CurriculumTreatment[] = itemIds.map(() => "legacy_unknown");
   const evidenceClass = evidenceForV1(primitive);
 
-  const shared = {
-    clientEventId: v1.clientEventId as string,
-    sessionId: v1.sessionId as string,
-    lessonId: v1.lessonId as string,
-    exerciseId: v1.exerciseId as string,
-    operation: v1.operation as OperationId,
+  const shared: Record<string, unknown> = {
+    schemaVersion: 2,
+    clientEventId: v1.clientEventId,
+    sessionId: v1.sessionId,
+    lessonId: v1.lessonId,
+    exerciseId: v1.exerciseId,
+    operation: v1.operation,
     itemIds,
-    promptLevel: v1.promptLevel as LearningEvent["promptLevel"],
-    attemptNumber: v1.attemptNumber as number,
-    timestamp: v1.timestamp as number,
+    promptLevel: v1.promptLevel,
+    attemptNumber: v1.attemptNumber,
+    timestamp: v1.timestamp,
     contentVersion: (v1.contentVersion as string) ?? "legacy-unknown",
     appBuild: (v1.appBuild as string) ?? "legacy-unknown",
-    deviceInfo: v1.deviceInfo as LearningEvent["deviceInfo"],
-    sync: v1.sync as LearningEvent["sync"],
+    deviceInfo: v1.deviceInfo,
+    sync: v1.sync,
     primitive,
     // v1 never recorded these facts. They must stay unknown, not be invented.
-    placement: "legacy_unknown" as const,
+    placement: "legacy_unknown",
     evId: null,
     payloadId: (v1.exerciseId as string) ?? null,
     sentenceId: null,
     targetTreatments,
     evidenceCeiling: evidenceClass,
     evidenceClass,
-    userAnswer: v1.userAnswer as string | null,
-    expectedAnswer: v1.expectedAnswer as string | null,
+    userAnswer: v1.userAnswer,
+    expectedAnswer: v1.expectedAnswer,
     sequence: null,
-    assistance: "not_captured" as const,
-    attribution: "unresolved" as const,
-    // The v1 reducer already scored assessed events; preserve that fact rather
-    // than silently re-opening admissibility for history.
-    admissibility: "legacy_admitted" as const,
+    // The v2 scalar seams. v3 replaces them with structured state below.
+    assistance: "not_captured",
+    attribution: "unresolved",
+    admissibility: "legacy_admitted",
   };
 
   if (primitive === "reveal") {
-    return createLearningEvent({
+    return {
       ...shared,
       assessed: false,
       outcome: "completed_unassessed",
       legacyGrading: {
-        result: v1.result as ErrorTagCode,
+        result: v1.result,
         errorTags: [...(v1.errorTags as ErrorTagCode[])],
       },
+    };
+  }
+
+  return {
+    ...shared,
+    assessed: true,
+    normalizedAnswer: v1.normalizedAnswer,
+    result: v1.result,
+    errorTags: [...(v1.errorTags as ErrorTagCode[])],
+    outcome: outcomeForResult(v1.result as ErrorTagCode),
+  };
+}
+
+/**
+ * Version-specific v2 structural validation.
+ *
+ * The v3 validator must NOT be used to check v2 data: the two shapes disagree on
+ * exactly the fields this PR restructured, so running the v3 rules over a v2
+ * record would either reject valid history or (worse) accept it by accident.
+ * This check proves a record is genuinely valid v2 before the v2 → v3 step runs.
+ */
+export function isValidV2Event(data: unknown): data is Record<string, unknown> {
+  if (!data || typeof data !== "object" || Array.isArray(data)) return false;
+  const e = data as Record<string, unknown>;
+  if (e.schemaVersion !== 2) return false;
+  if (typeof e.clientEventId !== "string" || e.clientEventId.length === 0) return false;
+  for (const field of ["sessionId", "lessonId", "exerciseId", "operation", "promptLevel"]) {
+    if (typeof e[field] !== "string") return false;
+  }
+  if (typeof e.primitive !== "string" || !V2_PRIMITIVES.has(e.primitive)) return false;
+  if (typeof e.placement !== "string") return false;
+  if (typeof e.evidenceClass !== "string" || !V2_EVIDENCE.has(e.evidenceClass)) return false;
+  if (typeof e.evidenceCeiling !== "string" || !V2_EVIDENCE.has(e.evidenceCeiling)) return false;
+  if (typeof e.outcome !== "string") return false;
+  if (!Array.isArray(e.itemIds) || !e.itemIds.every((i) => typeof i === "string")) return false;
+  if (!Array.isArray(e.targetTreatments)) return false;
+  if (e.targetTreatments.length !== e.itemIds.length) return false;
+  if (!Number.isInteger(e.attemptNumber) || (e.attemptNumber as number) < 1) return false;
+  if (!Number.isFinite(e.timestamp)) return false;
+  if (!e.deviceInfo || typeof e.deviceInfo !== "object") return false;
+  if (!e.sync || typeof e.sync !== "object") return false;
+  // v2's scalar seams — their exact values are the signature of the v2 shape.
+  if (e.assistance !== "not_captured") return false;
+  if (e.attribution !== "unresolved") return false;
+  if (e.admissibility !== "unresolved" && e.admissibility !== "legacy_admitted") return false;
+  if (e.assessed === true) {
+    return (
+      typeof e.result === "string" &&
+      Array.isArray(e.errorTags) &&
+      e.errorTags.length > 0 &&
+      e.legacyGrading === undefined
+    );
+  }
+  if (e.assessed === false) {
+    return e.result === undefined && e.errorTags === undefined;
+  }
+  return false;
+}
+
+const V2_PRIMITIVES: ReadonlySet<string> = new Set([
+  "exposure",
+  "selection",
+  "production",
+  "self_report",
+  "reveal",
+  "issue_report",
+]);
+const V2_EVIDENCE: ReadonlySet<string> = new Set([
+  "exposure",
+  "audio_exposure",
+  "recognition",
+  "recall",
+  "controlled_production",
+  "supported_production",
+  "open_production_attempt",
+  "comparison_only",
+  "self_correction",
+  "self_report",
+  "no_mastery_evidence",
+]);
+
+/**
+ * v2 → v3: replace the scalar seams with structured attempt-level state.
+ *
+ * Conservative by construction. v2 recorded NO assistance, so:
+ *  - assistance becomes `legacy_unknown` — never a fabricated "known" snapshot;
+ *  - a production observation is capped to `supported_production`, because
+ *    unknown assistance can never establish independent production (FQ-3);
+ *  - recognition stays recognition — assistance rules must not reclassify it;
+ *  - prior historical admission is preserved as `legacy_admitted` with
+ *    `sourceVersion: 2`, so history keeps counting exactly as it did rather than
+ *    being re-opened or silently discarded;
+ *  - non-assessed events become `not_applicable` / `no_evidence`.
+ *
+ * Nothing is fabricated: no EV id, no sentence identity, no item treatment.
+ */
+export function migrateV2EventToV3(v2: Record<string, unknown>): LearningEvent {
+  const assessed = v2.assessed === true;
+  const ceiling = v2.evidenceCeiling as EvidenceClass;
+  const observed = v2.evidenceClass as EvidenceClass;
+
+  // Unknown assistance can never support an independent production claim.
+  const scoped: EvidenceClass =
+    observed === "recall" || observed === "controlled_production"
+      ? clampToCeiling("supported_production", ceiling)
+      : observed;
+
+  const shared = {
+    clientEventId: v2.clientEventId as string,
+    sessionId: v2.sessionId as string,
+    lessonId: v2.lessonId as string,
+    exerciseId: v2.exerciseId as string,
+    operation: v2.operation as OperationId,
+    itemIds: [...(v2.itemIds as string[])],
+    promptLevel: v2.promptLevel as LearningEvent["promptLevel"],
+    attemptNumber: v2.attemptNumber as number,
+    timestamp: v2.timestamp as number,
+    contentVersion: v2.contentVersion as string,
+    appBuild: v2.appBuild as string,
+    deviceInfo: v2.deviceInfo as LearningEvent["deviceInfo"],
+    sync: v2.sync as LearningEvent["sync"],
+    primitive: v2.primitive as LearningEvent["primitive"],
+    placement: v2.placement as LearningEvent["placement"],
+    evId: (v2.evId as string | null) ?? null,
+    payloadId: (v2.payloadId as string | null) ?? null,
+    sentenceId: (v2.sentenceId as string | null) ?? null,
+    targetTreatments: [...(v2.targetTreatments as CurriculumTreatment[])],
+    evidenceCeiling: ceiling,
+    userAnswer: (v2.userAnswer as string | null) ?? null,
+    expectedAnswer: (v2.expectedAnswer as string | null) ?? null,
+    sequence: (v2.sequence as LearningEvent["sequence"]) ?? null,
+    assistance: LEGACY_UNKNOWN_ASSISTANCE,
+  };
+
+  if (!assessed) {
+    const legacyGrading = v2.legacyGrading as
+      | { result: ErrorTagCode; errorTags: ErrorTagCode[] }
+      | undefined;
+    return createLearningEvent({
+      ...shared,
+      assessed: false,
+      evidenceClass: scoped,
+      outcome: v2.outcome as LearningEvent["outcome"],
+      attribution: { status: "not_applicable" },
+      admissibility: { status: "no_evidence", reasons: ["non_assessed_interaction"] },
+      ...(legacyGrading
+        ? {
+            legacyGrading: {
+              result: legacyGrading.result,
+              errorTags: [...legacyGrading.errorTags],
+            },
+          }
+        : {}),
     });
   }
 
-  const result = v1.result as ErrorTagCode;
   return createLearningEvent({
     ...shared,
     assessed: true,
-    normalizedAnswer: v1.normalizedAnswer as string | null,
-    result,
-    errorTags: [...(v1.errorTags as ErrorTagCode[])],
-    outcome: outcomeForResult(result),
+    evidenceClass: scoped,
+    normalizedAnswer: (v2.normalizedAnswer as string | null) ?? null,
+    result: v2.result as ErrorTagCode,
+    errorTags: [...(v2.errorTags as ErrorTagCode[])],
+    outcome: v2.outcome as LearningEvent["outcome"],
+    // History was already scored under the v1/v2 reducer; preserve that fact
+    // instead of re-opening admissibility for events we cannot re-examine.
+    attribution: { status: "resolved", source: "learner" },
+    admissibility: { status: "legacy_admitted", sourceVersion: 2 },
   });
 }
 
 /**
- * Event-log migration registry — one v1 → v2 step, scoped to learning events so
- * the shipped `defaultMigrationRegistry` stays empty for other structures.
+ * Event-log migration registry — the v1 → v2 → v3 chain, scoped to learning
+ * events so the shipped `defaultMigrationRegistry` stays empty for other
+ * persisted structures (compaction snapshot, telemetry log).
  */
 export const eventMigrationRegistry = createMigrationRegistry();
 
@@ -197,7 +361,14 @@ eventMigrationRegistry.registerMigration(1, 2, (data) => {
       "event migration v1 -> v2: input is not a plausible v1 learning event",
     );
   }
-  return migrateV1EventToV2(data) as unknown as Record<string, unknown>;
+  return migrateV1EventToV2(data);
+});
+
+eventMigrationRegistry.registerMigration(2, 3, (data) => {
+  if (!isValidV2Event(data)) {
+    throw new Error("event migration v2 -> v3: input is not a valid v2 learning event");
+  }
+  return migrateV2EventToV3(data) as unknown as Record<string, unknown>;
 });
 
 export type EventMigrationResult =
@@ -205,12 +376,13 @@ export type EventMigrationResult =
   | { status: "unsupported"; reason: string; schemaVersion: number | null };
 
 /**
- * Bring one persisted event object to v2.
+ * Bring one persisted event object to the current version.
  *
- * - absent `schemaVersion` ⇒ v1 ⇒ migrated;
- * - `schemaVersion: 2` ⇒ returned as-is after validation (never re-migrated);
+ * - absent `schemaVersion` ⇒ v1 ⇒ migrated through v2 to v3;
+ * - `schemaVersion: 2` ⇒ validated as v2, then migrated to v3;
+ * - `schemaVersion: 3` ⇒ validated and returned as-is (never re-migrated);
  * - a newer version ⇒ `unsupported`, original untouched (fail-closed, YASA 1);
- * - malformed ⇒ `unsupported`; never partially accepted.
+ * - malformed at any rung ⇒ `unsupported`; never partially accepted.
  */
 export function migrateEventToCurrent(data: unknown): EventMigrationResult {
   const version = readSchemaVersion(data);
@@ -232,34 +404,58 @@ export function migrateEventToCurrent(data: unknown): EventMigrationResult {
   if (version === LEARNING_EVENT_SCHEMA_VERSION) {
     // Already current — but "current version" is a claim the data makes about
     // itself, not a guarantee. Persisted JSON has no types, so a blind
-    // `as LearningEvent` cast would let a malformed v2 event (unknown enum,
-    // smuggled grading fields on a non-assessed event, misaligned treatments,
-    // broken sequence) enter the log and be treated as supported. Validate it
-    // with the SAME runtime boundary newly constructed events pass through.
+    // `as LearningEvent` cast would let a malformed v3 event (unknown enum,
+    // smuggled grading fields, misaligned treatments, an admitted event with no
+    // learner attribution) enter the log and be treated as supported. Validate
+    // it with the SAME runtime boundary newly constructed events pass through.
     //
     // A failing event is reported `unsupported` and left byte-for-byte alone:
-    // never silently repaired, and never migrated into some other v2 shape.
+    // never silently repaired, and never migrated into some other v3 shape.
     const issues = validateLearningEvent(data);
     if (issues.length > 0) {
       return {
         status: "unsupported",
-        reason: `malformed v2 event: ${issues.join("; ")}`,
+        reason: `malformed v3 event: ${issues.join("; ")}`,
         schemaVersion: version,
       };
     }
     return { status: "ok", event: data as LearningEvent, migrated: false };
   }
 
-  if (!isPlausibleV1Event(data)) {
+  if (version === 1 && !isPlausibleV1Event(data)) {
     return {
       status: "unsupported",
       reason: "malformed v1 event (missing or wrongly typed required fields)",
       schemaVersion: version,
     };
   }
+  if (version === 2 && !isValidV2Event(data)) {
+    return {
+      status: "unsupported",
+      reason: "malformed v2 event (missing or wrongly typed required fields)",
+      schemaVersion: version,
+    };
+  }
 
   try {
-    return { status: "ok", event: migrateV1EventToV2(data), migrated: true };
+    const v2 = version === 1 ? migrateV1EventToV2(data as Record<string, unknown>) : data;
+    if (!isValidV2Event(v2)) {
+      return {
+        status: "unsupported",
+        reason: "v1 -> v2 migration produced an invalid v2 event",
+        schemaVersion: version,
+      };
+    }
+    const v3 = migrateV2EventToV3(v2);
+    const issues = validateLearningEvent(v3);
+    if (issues.length > 0) {
+      return {
+        status: "unsupported",
+        reason: `migration produced an invalid v3 event: ${issues.join("; ")}`,
+        schemaVersion: version,
+      };
+    }
+    return { status: "ok", event: v3, migrated: true };
   } catch (e) {
     return {
       status: "unsupported",
@@ -274,9 +470,9 @@ export type EventLogMigrationResult =
   | { status: "unsupported"; reason: string; index: number };
 
 /**
- * Bring a whole persisted event array to v2, deterministically.
+ * Bring a whole persisted event array to the current version, deterministically.
  *
- * Mixed v1/v2 logs are handled event by event, in append order. A single
+ * Mixed v1/v2/v3 logs are handled event by event, in append order. A single
  * unsupported or malformed event makes the WHOLE log unsupported (fail-closed):
  * silently dropping one event would corrupt an append-only history that mastery
  * is derived from, and the corruption policy for this log is preserve-and-refuse,

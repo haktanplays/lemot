@@ -18,6 +18,7 @@ import {
   LEARNING_EVENT_SCHEMA_VERSION,
   isAssessedEvent,
 } from "../../content/learning-engine/events";
+import { NO_ASSISTANCE } from "./helpers";
 import {
   InvalidLearningEventError,
   createLearningEvent,
@@ -43,6 +44,19 @@ const baseInput = {
   sync: SYNC,
   placement: "lesson_path" as const,
   targetTreatments: ["active" as const],
+  // v3 requires explicit attempt-level evidence context — no defaults exist.
+  assistance: NO_ASSISTANCE,
+  attribution: { status: "resolved", source: "learner" } as const,
+  admissibility: { status: "admitted" } as const,
+};
+
+/** Context for a non-assessed event: nothing was graded, nothing is admitted. */
+const NON_ASSESSED_CONTEXT = {
+  attribution: { status: "not_applicable" } as const,
+  admissibility: {
+    status: "no_evidence" as const,
+    reasons: ["non_assessed_interaction" as const],
+  },
 };
 
 function expectThrows(fn: () => unknown, what: string): InvalidLearningEventError {
@@ -102,6 +116,7 @@ describe("event envelope v2 — valid construction", () => {
       const e = createLearningEvent({
         ...baseInput,
         assessed: false,
+        ...NON_ASSESSED_CONTEXT,
         primitive: c.primitive,
         evidenceCeiling: c.evidenceClass,
         evidenceClass: c.evidenceClass,
@@ -118,6 +133,7 @@ describe("event envelope v2 — valid construction", () => {
     const e = createLearningEvent({
       ...baseInput,
       assessed: false,
+      ...NON_ASSESSED_CONTEXT,
       primitive: "production",
       evidenceCeiling: "open_production_attempt",
       evidenceClass: "open_production_attempt",
@@ -129,6 +145,7 @@ describe("event envelope v2 — valid construction", () => {
     const e = createLearningEvent({
       ...baseInput,
       assessed: false,
+      ...NON_ASSESSED_CONTEXT,
       primitive: "exposure",
       evidenceCeiling: "exposure",
       evidenceClass: "exposure",
@@ -141,6 +158,7 @@ describe("event envelope v2 — valid construction", () => {
     const e = createLearningEvent({
       ...baseInput,
       assessed: false,
+      ...NON_ASSESSED_CONTEXT,
       primitive: "exposure",
       evidenceCeiling: "exposure",
       evidenceClass: "exposure",
@@ -265,6 +283,7 @@ describe("event envelope v2 — deep immutability", () => {
     const e = createLearningEvent({
       ...baseInput,
       assessed: false,
+      ...NON_ASSESSED_CONTEXT,
       operation: "recognition",
       primitive: "reveal",
       evidenceCeiling: "comparison_only",
@@ -323,6 +342,7 @@ describe("event envelope v2 — rejected construction", () => {
         createLearningEvent({
           ...baseInput,
           assessed: false,
+          ...NON_ASSESSED_CONTEXT,
           primitive: "reveal",
           evidenceCeiling: "comparison_only",
           evidenceClass: "comparison_only",
@@ -338,6 +358,7 @@ describe("event envelope v2 — rejected construction", () => {
       ...baseInput,
       schemaVersion: 2,
       assessed: false,
+      ...NON_ASSESSED_CONTEXT,
       primitive: "reveal",
       evidenceCeiling: "comparison_only",
       evidenceClass: "comparison_only",
@@ -397,6 +418,7 @@ describe("event envelope v2 — rejected construction", () => {
         createLearningEvent({
           ...baseInput,
           assessed: false,
+          ...NON_ASSESSED_CONTEXT,
           primitive: "exposure",
           evidenceCeiling: "exposure",
           evidenceClass: "exposure",
@@ -407,6 +429,7 @@ describe("event envelope v2 — rejected construction", () => {
     const ok = createLearningEvent({
       ...baseInput,
       assessed: false,
+      ...NON_ASSESSED_CONTEXT,
       primitive: "exposure",
       evidenceCeiling: "exposure",
       evidenceClass: "exposure",
@@ -420,6 +443,7 @@ describe("event envelope v2 — rejected construction", () => {
         createLearningEvent({
           ...baseInput,
           assessed: false,
+          ...NON_ASSESSED_CONTEXT,
           primitive: "exposure",
           evidenceCeiling: "exposure",
           evidenceClass: "exposure",
@@ -454,6 +478,7 @@ describe("event envelope v2 — rejected construction", () => {
         createLearningEvent({
           ...baseInput,
           assessed: false,
+          ...NON_ASSESSED_CONTEXT,
           primitive: "exposure",
           evidenceCeiling: "controlled_production",
           evidenceClass: "controlled_production",
@@ -468,6 +493,7 @@ describe("event envelope v2 — rejected construction", () => {
         createLearningEvent({
           ...baseInput,
           assessed: false,
+          ...NON_ASSESSED_CONTEXT,
           primitive: "exposure",
           evidenceCeiling: "exposure",
           evidenceClass: "exposure",
@@ -545,6 +571,7 @@ describe("envelope type arms", () => {
     const nonAssessed: NonAssessedLearningEvent = createLearningEvent({
       ...baseInput,
       assessed: false,
+      ...NON_ASSESSED_CONTEXT,
       primitive: "reveal",
       evidenceCeiling: "comparison_only",
       evidenceClass: "comparison_only",

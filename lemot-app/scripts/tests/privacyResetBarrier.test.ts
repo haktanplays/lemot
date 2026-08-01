@@ -26,7 +26,7 @@ import {
   subscribePrivacyReset,
   __resetPrivacyResetEpochForTest,
 } from "../../lib/privacyResetEpoch";
-import { makeFakeKv, makeEvent } from "./helpers";
+import { makeFakeKv, makeEvent, NO_ASSISTANCE } from "./helpers";
 import {
   LocalRepository,
   LM_LE_EVENTS_KEY,
@@ -180,7 +180,20 @@ describe("PR-H — stale writers cannot re-create lm_le_events (real repository/
   const graded = (result: ErrorTagCode) => ({
     userAnswer: "nouvelle réponse",
     expectedAnswer: "x",
-    gradeResult: { result, errorTags: [] as ErrorTagCode[], normalizedAnswer: "x" },
+    gradeResult: { result, errorTags: [result] as ErrorTagCode[], normalizedAnswer: "x" },
+    context: {
+      promptLevel: "PF0" as const,
+      assistance: NO_ASSISTANCE,
+      opportunity: {
+        authored: true,
+        prerequisitesSafe: true,
+        evaluator: "approved_deterministic" as const,
+        learnerAuthorship: "verified" as const,
+        requiredConstitutiveSupport: [],
+        qualityIncident: null,
+      },
+      treatmentFor: () => "active" as const,
+    },
   });
 
   test("reset removes lm_le_events; a stale pre-reset controller cannot re-create it", async () => {

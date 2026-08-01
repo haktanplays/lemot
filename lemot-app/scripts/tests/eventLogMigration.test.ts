@@ -89,7 +89,10 @@ describe("event log v1 -> v2 read migration", () => {
     });
     const events = await new LocalRepository(kv).readAllEvents();
     assertEqual(events.map((e) => e.clientEventId).join(","), "v1evt,v2evt", "order preserved");
-    assert(events.every((e) => e.schemaVersion === 2), "all v2 after read");
+    assert(
+      events.every((e) => e.schemaVersion === LEARNING_EVENT_SCHEMA_VERSION),
+      "all current-version after read",
+    );
   });
 
   test("duplicate clientEventId remains idempotent across the migration boundary", async () => {

@@ -20,6 +20,11 @@
  * different things (a learner's answer vs. a content defect).
  */
 import type { ItemId, OperationId, PromptFadeLevel } from "./types";
+import type {
+  AdmissibilityState,
+  AssistanceSnapshot,
+  AttributionState,
+} from "./evidence-context";
 
 /**
  * Deterministic grading outcome for a single learner answer. One code is the
@@ -89,8 +94,15 @@ void _allCodesListed;
 // FROZEN (YASA 3) and is deliberately NOT where the new outcome vocabulary
 // lives — grading facets and interaction outcomes are different questions.
 
-/** Current envelope version. Absent on persisted data ⇒ v1 (ADR-0014 / K1). */
-export const LEARNING_EVENT_SCHEMA_VERSION = 2;
+/**
+ * Current envelope version. Absent on persisted data ⇒ v1 (ADR-0014 / K1).
+ *
+ * v3 (PR-03): the v2 scalar assistance/attribution/admissibility placeholders
+ * became structured attempt-level state. That is a real persisted-shape change,
+ * so YASA 1 requires an explicit v2 → v3 migration rather than two incompatible
+ * shapes sharing version 2.
+ */
+export const LEARNING_EVENT_SCHEMA_VERSION = 3;
 
 /**
  * The six shared semantic primitives. Deliberately NOT one type per exercise
@@ -161,18 +173,30 @@ export type LearningOutcome =
   | "indeterminate";
 
 /**
- * Neutral seams reserved for PR-03. They exist so capturing assistance and
- * resolving attribution does NOT force a second persisted-schema redesign:
- * PR-03 widens these unions and replaces the construction defaults with real
- * captured values. They carry no logic and no scoring behaviour here.
+ * Attempt-level evidence context (PR-03). The v2 scalar seams proved
+ * insufficient: assistance is multidimensional (constitutive support AND a hint
+ * rung AND a retry AND prior exposure can all hold at once), and flattening that
+ * into one string destroys the distinctions the Mastery Bible reasons about.
+ * The structured replacements live in ./evidence-context.ts and are re-exported
+ * here so the envelope keeps one import surface.
  */
-export type AssistanceCaptureState = "not_captured";
-export type AttributionState = "unresolved";
-export type AdmissibilityState =
-  /** Not yet resolved — PR-03 decides. */
-  | "unresolved"
-  /** Migrated v1 data that the v1 reducer already scored; preserved as-is. */
-  | "legacy_admitted";
+export type {
+  AccessibilitySignals,
+  AdmissibilityState,
+  AdmissionBlockReason,
+  AssistanceCapture,
+  AssistanceSnapshot,
+  AttributionSource,
+  AttributionState,
+  ConstitutiveSupport,
+  EvidenceOpportunityContext,
+  HintRung,
+  LearnerAuthorship,
+  NoEvidenceReason,
+  PriorAnswerExposure,
+  QualityIncident,
+  QualityIncidentReason,
+} from "./evidence-context";
 
 /** Optional sequence membership. Orchestration itself is NOT implemented here. */
 export type LearningEventSequence = {
@@ -254,13 +278,6 @@ export const LEARNING_OUTCOMES = [
   "indeterminate",
 ] as const;
 
-/** PR-03 widens this. */
-export const ASSISTANCE_CAPTURE_STATES = ["not_captured"] as const;
-/** PR-03 widens this. */
-export const ATTRIBUTION_STATES = ["unresolved"] as const;
-/** PR-03 widens this. */
-export const ADMISSIBILITY_STATES = ["unresolved", "legacy_admitted"] as const;
-
 export const LEARNING_EVENT_SYNC_STATUSES = ["pending", "synced"] as const;
 export const LEARNING_EVENT_SYNC_ORIGINS = ["local"] as const;
 
@@ -282,9 +299,6 @@ const _placementsValid: readonly LearningPlacement[] = LEARNING_PLACEMENTS;
 const _treatmentsValid: readonly CurriculumTreatment[] = CURRICULUM_TREATMENTS;
 const _evidenceValid: readonly EvidenceClass[] = EVIDENCE_CLASSES;
 const _outcomesValid: readonly LearningOutcome[] = LEARNING_OUTCOMES;
-const _assistanceValid: readonly AssistanceCaptureState[] = ASSISTANCE_CAPTURE_STATES;
-const _attributionValid: readonly AttributionState[] = ATTRIBUTION_STATES;
-const _admissibilityValid: readonly AdmissibilityState[] = ADMISSIBILITY_STATES;
 const _syncStatusValid: readonly LearningEventSyncStatus[] = LEARNING_EVENT_SYNC_STATUSES;
 const _operationsValid: readonly OperationId[] = OPERATION_IDS;
 const _promptLevelsValid: readonly PromptFadeLevel[] = PROMPT_FADE_LEVELS;
@@ -293,9 +307,6 @@ void _placementsValid;
 void _treatmentsValid;
 void _evidenceValid;
 void _outcomesValid;
-void _assistanceValid;
-void _attributionValid;
-void _admissibilityValid;
 void _syncStatusValid;
 void _operationsValid;
 void _promptLevelsValid;
@@ -309,15 +320,6 @@ type MissingPlacements = Exclude<LearningPlacement, (typeof LEARNING_PLACEMENTS)
 type MissingTreatments = Exclude<CurriculumTreatment, (typeof CURRICULUM_TREATMENTS)[number]>;
 type MissingEvidence = Exclude<EvidenceClass, (typeof EVIDENCE_CLASSES)[number]>;
 type MissingOutcomes = Exclude<LearningOutcome, (typeof LEARNING_OUTCOMES)[number]>;
-type MissingAssistance = Exclude<
-  AssistanceCaptureState,
-  (typeof ASSISTANCE_CAPTURE_STATES)[number]
->;
-type MissingAttribution = Exclude<AttributionState, (typeof ATTRIBUTION_STATES)[number]>;
-type MissingAdmissibility = Exclude<
-  AdmissibilityState,
-  (typeof ADMISSIBILITY_STATES)[number]
->;
 type MissingSyncStatus = Exclude<
   LearningEventSyncStatus,
   (typeof LEARNING_EVENT_SYNC_STATUSES)[number]
@@ -331,13 +333,10 @@ const _allListed: [
   MissingTreatments extends never ? true : never,
   MissingEvidence extends never ? true : never,
   MissingOutcomes extends never ? true : never,
-  MissingAssistance extends never ? true : never,
-  MissingAttribution extends never ? true : never,
-  MissingAdmissibility extends never ? true : never,
   MissingSyncStatus extends never ? true : never,
   MissingOperations extends never ? true : never,
   MissingPromptLevels extends never ? true : never,
-] = [true, true, true, true, true, true, true, true, true, true, true];
+] = [true, true, true, true, true, true, true, true];
 void _allListed;
 
 /** Grading facets a v1 reveal carried before the PR-02 correction, kept for recovery. */
@@ -413,9 +412,11 @@ export type LearningEventBase = {
   /** What THIS interaction may support. PR-03/PR-04 narrow it further. */
   evidenceClass: EvidenceClass;
   outcome: LearningOutcome;
-  /** PR-03 seams — neutral here (see the type docs). */
-  assistance: AssistanceCaptureState;
+  /** What assistance was present at the exact moment of the attempt (PR-03). */
+  assistance: AssistanceSnapshot;
+  /** Who or what the result is attributable to — the Canonical eight sources. */
   attribution: AttributionState;
+  /** Whether the event may inform mastery, and why not when it may not. */
   admissibility: AdmissibilityState;
   sequence: LearningEventSequence | null;
 };

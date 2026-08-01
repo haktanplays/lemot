@@ -97,8 +97,8 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 
 **2.7 Total proposed PRs: 12** (§17).
 
-**2.8 Critical path:** PR-01 identity → PR-02 envelope → PR-03 assistance+attribution →
-PR-04 mastery → PR-05 persistence wiring → PR-06 renderer emission → **connected proof testable
+**2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
+**PR-04 mastery (next)** → PR-05 persistence wiring → PR-06 renderer emission → **connected proof testable
 here** → PR-08/09/10 projections. PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
@@ -584,8 +584,10 @@ facets, skip is an outcome. New dimensions: `schemaVersion`, `placement`, `evId`
 `sentenceId`, per-target `targetTreatments` (index-aligned with `itemIds`, length-validated so a
 mixed-treatment payload can never be flattened), `evidenceCeiling` + `evidenceClass`, a
 `LearningOutcome` vocabulary distinct from the frozen `ErrorTagCode`, optional `sequence`, and
-neutral `assistance` / `attribution` / `admissibility` seams that PR-03 widens rather than
-redesigns. `createLearningEvent` is the one construction boundary (no clock, no id generation,
+neutral `assistance` / `attribution` / `admissibility` seams. **Corrected by PR-03:** those scalar
+seams reserved the right locations but could not represent attempt-level reality (assistance is
+multidimensional), so PR-03 replaced them with structured state and bumped the envelope to v3.
+The seam idea saved a location, not a migration. `createLearningEvent` is the one construction boundary (no clock, no id generation,
 frozen output); it rejects a missing grade, a smuggled grade, and any outcome that contradicts its
 grading result.
 *Migration:* first real event-log migration (YASA 1), on a **dedicated** registry so the shipped
@@ -611,18 +613,48 @@ append-only log stays authoritative.
 projections. *Tests:* 60 new (envelope, migration, repository, non-assessed safety, D-3 boundary).
 *French QA:* no. *Learner-visible:* no.
 
-**PR-03 — Assistance capture + attribution/admissibility.**
-*Objective:* replace the hardcoded `promptLevel: "PF0"`; add the §8 assistance block and the §9
-attribution/admissibility resolution ahead of scoring. *Files:* `session-controller.ts`, new
-assistance/attribution modules, `useLearningEngineSession.ts`. *Depends:* PR-02. *Excludes:*
-mastery consumption (PR-04); audio replay/slow (PR-11). *Acceptance:* every attempt carries an
-explicit assistance state; a simulated missing-support/validator-rejection case is quarantined and
-never learner-attributed. *Tests:* attribution table coverage; **T-05, T-14**. *Rollback:* pure
-logic. *French QA:* no. *Learner-visible:* no.
+**PR-03 — Attempt-level assistance, attribution and admissibility (schema v3).** ✅ *implemented*
+*Objective:* replace the neutral v2 seams with real attempt-level evidence context.
+*Design:* **structured, not scalar.** `AssistanceSnapshot` is a discriminated union —
+`known` carries constitutive support (visible tray · supplied package · formula card ·
+immediately-prior model), hint rung 0/1/2, zero-based retry index, self-correction, prior
+answer/model exposure and accessibility (replay count, slow playback); `unknown` /
+`legacy_unknown` carry no fabricated detail. `AttributionState` resolves to exactly the
+**Canonical eight** sources (learner · content · validator · ui_flow · tone · ai_generator ·
+system · mastery_mapping) — audio/network/storage are `system` FACETS, never new top-level
+sources. `AdmissibilityState` is `admitted` · `quarantined` · `unresolved` · `no_evidence` ·
+`legacy_admitted`, each with machine reason codes and no free-form text.
+*Scoping (FQ-3):* a pure `resolveEvidenceAdmission()` turns ceiling + treatments + assistance +
+opportunity into the final evidence class. Independent production survives only on a clean,
+known, first-pass, unassisted, non-Supported, admitted attempt; Supported treatment,
+constitutive support, any hint, any retry, prior exposure, or unknown capture all cap to
+`supported_production`; self-correction is its own class; recognition and open attempts are
+never reclassified; accessibility never downgrades anything. A non-admitted event carries
+`no_mastery_evidence` **however correct it looked** (Bible §6 — correctness is not
+admissibility). A non-numeric ceiling map bounds every observation.
+*Migration:* the chain is now **v1 → v2 → v3** on the dedicated registry, with a version-specific
+v2 validator so old JSON is never cast straight to v3. v2 history keeps `legacy_admitted`
+(`sourceVersion: 2`) and gets `legacy_unknown` assistance; its production observations are capped
+to supported, recognition stays recognition, and non-assessed events become
+`not_applicable` / `no_evidence`. Nothing is fabricated or discarded.
+*Controller:* `promptLevel: "PF0"` and the blanket `legacy_unknown` treatment stamp are **gone**
+from the framework-agnostic controller (pinned by a source-level test). It now requires an
+explicit `AttemptEvidenceContext`; the fixture hook supplies PF0 + known-no-assistance because
+that is what the sandbox actually is, and reads target treatments from the validated
+`LessonContract`. PR-05/PR-06 must supply their own real context.
+*Mastery:* one narrow gate — a quarantined / unresolved / no-evidence assessed event is an
+item-level no-op (processed for idempotency, may advance `updatedAt`, moves nothing else).
+*Files:* new `evidence-context.ts`, `evidence-admission.ts`, `treatment-resolver.ts`; `events.ts`,
+`event-envelope.ts`, `event-migration.ts`, `session-controller.ts`, narrow gate in `mastery.ts`,
+`useLearningEngineSession.ts`, one-line contract pass-through in `LearnerRendererShell.tsx`, tests.
+*Excludes:* Supported-vs-independent mastery counters, snapshot changes, projections, renderers.
+*Tests:* 59 new (944 total). *French QA:* no. *Learner-visible:* **no**.
 
 **PR-04 — Mastery projection extension (supported evidence + admissibility gate).**
-*Objective:* teach `scoreEvent` the difference between supported and independent production, and
-make it skip inadmissible events. *Files:* `learning-engine/mastery.ts`, `mon-lexique.ts` (read
+*Objective:* teach `scoreEvent` the difference between supported and independent production.
+**The admissibility no-op gate already landed in PR-03**, so PR-04 now owns only the Supported-vs-
+independent mastery REPRESENTATION: counters, snapshot schema + version bump, strength, and the
+Mon Lexique supported-path projection. *Files:* `learning-engine/mastery.ts`, `mon-lexique.ts` (read
 side). *Depends:* PR-03. *Excludes:* changing `WEAK_THRESHOLD`, Leitner intervals, or any numeric
 weight; new UI. *Acceptance:* supported success advances a supported claim and **not** independent
 production; snapshot version bumped; replay reproduces snapshots; inadmissible events are no-ops.
@@ -762,7 +794,7 @@ PR-01 identity ─► PR-02 envelope ─► PR-03 assistance+attribution ─► 
 | **D-5** | French QA | Sign-off on the ecosystem §20 review surface (8 concentrated questions) | PR-07 |
 | **D-6** | implementation calibration | Whether PM-009's typed recall reuses the Weave screen in a typed config or gets a minimal typed screen | PR-06 |
 | **D-7** | external/audio | Recording schedule for the §18 priority clips; deliberate-contour session for PM-018 | PR-11 |
-| **D-8** | implementation calibration | Whether supported production gets separate counters or a scope field on the existing counters (both satisfy §8; pick one before PR-04) | PR-04 |
+| **D-8** | implementation calibration | **OPEN — the next real mastery decision.** Whether supported production gets separate counters or a scope field on the existing counters (both satisfy §8). PR-03 now supplies the assistance-scoped `evidenceClass` the decision operates on; pick one before PR-04 | PR-04 |
 
 Settled pedagogy is **not** reopened: A/S/R/G treatments, W1/W2, no pronunciation scoring, 7 frozen
 screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
@@ -774,8 +806,9 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Dimension | Verdict | Basis |
 |---|---|---|
 | Starting the identity PR (PR-01) | **READY WITH BOUNDED GAPS** | D-2/D-4 must be decided in the PR itself; everything else is mechanical |
+| Starting the assistance/attribution PR (PR-03) | **DONE** | schema v3 shipped: structured assistance, Canonical-eight attribution, admissibility + admission no-op gate, v1→v2→v3 migration, 944 tests green |
 | Starting the event-spine PR (PR-02) | **DONE** | implemented; D-1 and D-3 closed; envelope v2 + v1→v2 migration shipped with 60 new tests |
-| Starting the mastery PR (PR-04) | **READY WITH BOUNDED GAPS** | requires D-8; reducer is pure, tested, and rebuildable — a good extension target |
+| Starting the mastery PR (PR-04) | **READY WITH BOUNDED GAPS** | requires D-8 (the next real mastery decision); the reducer is pure, tested and rebuildable, and PR-03 already supplies assistance-scoped evidence classes + the admission gate |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
 | French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
@@ -788,24 +821,23 @@ Completing this contract does not make any of the above implemented.
 
 ## 22. Recommended immediate next action — one runtime PR
 
-**PR-01 (identity layer) and PR-02 (event envelope v2) are implemented**, on
-`feat/l1-pilot-identity-layer` and `feat/l1-pilot-event-envelope`. PR-01 fixed
-`content/itemRegistry.ts` as canonical with all 54 shipped ids unchanged, an explicit
-fixture→canonical resolver, a canonical-persistence guard, and the `sent:` identity foundation.
-PR-02 extended `LearningEvent` in place to v2 (one spine, assessed/non-assessed arms), shipped the
-first v1→v2 migration, corrected the fabricated recognition-reveal grade, and made non-assessed
-events a strict mastery no-op. **D-1, D-2 and D-3 are closed.**
+**PR-01, PR-02 and PR-03 are implemented** on `feat/l1-pilot-identity-layer`,
+`feat/l1-pilot-event-envelope` and `feat/l1-pilot-assistance-attribution`. The spine now records
+what assistance was present, what that assistance permits the attempt to prove, who the result is
+attributable to among the Canonical eight sources, and whether the event is admissible at all —
+with a v1 → v2 → v3 migration that neither discards nor falsely upgrades history.
+**D-1, D-2 and D-3 are closed.**
 
-**The recommended next action is PR-03 — assistance capture + attribution/admissibility** (§17).
-It replaces the hardcoded `promptLevel: "PF0"`, fills the neutral `assistance` / `attribution` /
-`admissibility` seams PR-02 reserved (widening those unions rather than reshaping the schema), and
-resolves error source **before** the reducer runs — the two remaining blockers under PR-04's
-Supported-evidence work. It depends only on PR-02 and changes no learner-visible behavior.
+**The recommended next action is PR-04 — mastery projection extension** (§17). PR-03 already
+landed the admissibility no-op gate, so PR-04 owns exactly one question: how an *admitted*
+supported-production observation changes the mastery snapshot differently from an independent one.
+That means resolving **D-8** (separate counters vs a scope field), the snapshot schema + version
+bump, strength representation, and the Mon Lexique supported-path projection.
 
-Standing constraints for that PR: keep one spine, one repository, one mastery projection · do not
-touch shipped item ids · register no French · no renderer, selector, or projection change ·
-assistance must scope evidence without becoming a score · attribution must precede weakness ·
-any new field that can persist learner text goes into the privacy inventory in the same PR.
+Standing constraints: keep one spine, one repository, one mastery projection · do not touch
+shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence
+weights or thresholds may be invented** — none is founder-ratified · assisted success must never
+be stored as independent production · attribution still precedes weakness.
 
 **Do not produce another planning document.** The next artifact in this workstream is code.
 

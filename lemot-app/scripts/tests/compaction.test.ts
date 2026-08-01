@@ -7,6 +7,7 @@ import { describe, test, assert } from "./harness";
 import type { ErrorTagCode, LearningEvent } from "../../content/learning-engine/events";
 import { LEARNING_EVENT_SCHEMA_VERSION } from "../../content/learning-engine/events";
 import { outcomeForResult } from "../../content/learning-engine/event-envelope";
+import { NO_ASSISTANCE } from "./helpers";
 import { scoreEvents } from "../../content/learning-engine/mastery";
 import {
   COMPACTION_SNAPSHOT_VERSION,
@@ -51,13 +52,13 @@ function mkEvent(n: number, result: ErrorTagCode = "correct"): LearningEvent {
     evId: null,
     payloadId: null,
     sentenceId: null,
-    targetTreatments: itemIds.map(() => "legacy_unknown" as const),
+    targetTreatments: itemIds.map(() => "active" as const),
     evidenceCeiling: evidenceClass,
     evidenceClass,
     outcome: outcomeForResult(result),
-    assistance: "not_captured",
-    attribution: "unresolved",
-    admissibility: "unresolved",
+    assistance: NO_ASSISTANCE,
+    attribution: { status: "resolved", source: "learner" },
+    admissibility: { status: "admitted" },
     sequence: null,
   };
 }

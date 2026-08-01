@@ -59,6 +59,8 @@ import "./eventMigration.test";
 import "./eventLogMigration.test";
 import "./persistedEventValidation.test";
 import "./nonAssessedEvents.test";
+import "./evidenceAdmission.test";
+import "./assistanceIntegration.test";
 import { runAll } from "./harness";
 
 void runAll();
