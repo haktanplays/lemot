@@ -1012,9 +1012,19 @@ describe("final pilot payloads remain PR-07 work", () => {
     }
   });
 
-  test("the un thé identity was NOT registered", () => {
+  // PR-06 pinned the tea identity ABSENT (nothing registered ahead of the QA
+  // gate). PR-07 registered it under the recorded founder waiver, so the pin
+  // moves with the truth: the identity now exists, explicitly PROVISIONAL —
+  // never human-approved — and the exact-registration proofs live in
+  // pilotPayloadRegistration.test.ts.
+  test("the un thé identity is now registered as founder-waived provisional (PR-07)", () => {
     const registry = read("content/itemRegistry.ts");
-    assert(!/un th[eé]/i.test(registry), "PM-011's exact payload item remains unregistered");
+    assert(/un thé/.test(registry), "the tea package identity exists");
+    const teaRow = registry.slice(registry.indexOf('"chunk-un-the"'));
+    assert(
+      teaRow.slice(0, teaRow.indexOf("},")).includes("founder_waived_provisional"),
+      "and it is provisional, not approved",
+    );
   });
 
   test("no L1-PM planning id became a runtime identity", () => {

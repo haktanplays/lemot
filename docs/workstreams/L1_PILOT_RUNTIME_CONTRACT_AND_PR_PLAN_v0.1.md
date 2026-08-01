@@ -99,7 +99,7 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 
 **2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
 ~~PR-04 mastery~~ ✅ → ~~PR-05 provider wiring~~ ✅ → ~~PR-06 renderer emission~~ ✅ → **the runtime-connected renderer
-proof now exists** → ~~PR-08 Practice return~~ ✅ → ~~PR-09 Mon Lexique UI~~ ✅ → ~~PR-10 Stats projection~~ ✅ → **PR-07 exact learner content (next, under the recorded founder waiver)** →
+proof now exists** → ~~PR-08 Practice return~~ ✅ → ~~PR-09 Mon Lexique UI~~ ✅ → ~~PR-10 Stats projection~~ ✅ → ~~PR-07 exact learner content~~ ✅ (under the recorded founder waiver) → **PR-12 connected accumulation and failure smoke (next)** →
 PR-07 exact learner content (French QA deferred by founder waiver — see §22). PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
@@ -766,14 +766,35 @@ this repo ships no component test renderer and PR-06 did not add one.
 *French QA:* no (uses **already-shipped** L0/L1 French). *Learner-visible:* **no new copy**; the
 constitutive-support render path exists but no shipped payload activates it.
 
-**PR-07 — L1 pilot payload registration. 🔒 FRENCH-QA GATED.**
-*Objective:* register the four missing item identities (with the `un thé` primary↔linked link) and
-the approved pilot sentences/payloads. *Files:* registries, sentence registry, L1 content.
-*Depends:* PR-01, PR-06; **human French QA sign-off on the ecosystem §20 surface**. *Excludes:*
-the full L1 pool; Wave D payloads; unapproved surfaces. *Acceptance:* every registered surface
-carries `frenchQa: approved`; validators pass; no unapproved French reachable by a learner.
-*Tests:* provenance/QA-status invariants; treatment-eligibility validator. *Rollback:* content-only
-revert. *French QA:* **YES — blocking**. *Learner-visible:* **yes**.
+**PR-07 — L1 pilot payload registration. ✅ IMPLEMENTED UNDER EXPLICIT FOUNDER WAIVER
+(`feat/l1-pilot-payload-registration`).** The original card required human French-QA sign-off
+before registration; the founder explicitly deferred that gate (§22) and accepted the risk, so
+this PR shipped with `frenchQa: founder_waived_provisional` on every new record — **NO human
+French approval exists**, `approved` remains reserved for a named human review, and the original
+acceptance line "every registered surface carries `frenchQa: approved`" is explicitly NOT what
+shipped.
+*Shipped:* a shared `FrenchQaStatus` vocabulary (`pending · founder_waived_provisional ·
+approved · rejected`) with `isHumanFrenchApproved` / `isInternalPilotFrenchReachable` helpers;
+FIVE item ids for FOUR acquisition concepts (`chunk-excusez-moi`, `chunk-je-ne-comprends-pas`,
+`chunk-vous-pouvez-repeter` in the locked non-inverted form, and the tea pair `chunk-un-the`
+primary ↔ `noun-the` linked — a structural, reciprocity-validated relation; manifest now freezes
+59 ids); TWO production sentence records in the one authoritative registry (`sent:l01-merci`,
+`sent:l01-je-voudrais-un-the-sil-vous-plait` — no reserve surface, no seed pool); TWO registered
+payloads (PM-009 → EV-030 on the new unscaffolded `s10-weave-merci-thanks`, PM-011 → EV-040 on
+the new Supported `s11-weave-the-order` with the whole `un thé` constitutive package visible from
+first render). One shared registered-payload resolver now populates `evId`/`sentenceId` on events
+for exactly the registered payloads in BOTH the lesson path and the Practice Hub — same payload,
+same identity, honest placement — while every unregistered screen keeps null identity unchanged.
+*Proven end-to-end on the real screens (no synthetic fixture):* PM-009 → independent channel →
+Mon Lexique independent claim → Stats independent piece → Hub return with EV-030 preserved;
+PM-011 → `supplied_package` Supported evidence → ONE tea entry through the primary id (the linked
+noun receives no event) → Stats Supported piece → Hub return with the package intact — never
+unscaffolded tea recall; a declared-but-unrendered package still quarantines. **The exact PM-023
+payload remains unregistered.** A pure `listProvisionalRegisteredSurfaces()` inventories the
+5 items + 2 sentences + 2 payloads for the eventual comprehensive human QA pack. No new storage
+key. *Tests:* 34 new (1352 total). *Rollback:* content-only revert.
+*French QA:* **DEFERRED BY FOUNDER WAIVER — still required before public/content-complete
+release.** *Learner-visible:* **yes (internally, at founder risk)**.
 
 **PR-08 — Practice Hub selector integration (the return leg). IMPLEMENTED** on
 `feat/l1-pilot-practice-hub-return`.
@@ -964,13 +985,13 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Starting persistence wiring (PR-05) | **DONE** | app-level runtime provider owns one repository per privacy-reset epoch; reset-safe runtime/controller replacement; explicit sandbox vs `lesson_path` surface resolvers; the shipped lesson path can reach the spine and emits nothing; 1114 tests green |
 | Starting renderer emission (PR-06) | **DONE** | D-6 closed as a Weave configuration; the four Wave A primitives emit through a narrow session API; qualified screen identity, scoped evidence targets, real hint/constitutive capture, one shared grader; 1181 tests green |
 | Runtime-connected renderer proof | **EXISTS (PR-06)** | shipped screen → event → mastery → Mon Lexique is proven end-to-end on already-shipped French. It is an ARCHITECTURE proof: the exact PM-009/PM-011 learner payloads are not registered |
-| Exact L1 pilot learner content | **NOT READY** | requires PR-07 payload registration. The pre-PR-07 human French-QA gate was DEFERRED by explicit founder risk acceptance (§22): AI review is provisional, not human attestation, and one comprehensive human QA pass remains required before public/content-complete release |
+| Exact L1 pilot learner content | **PROVISIONALLY REGISTERED UNDER FOUNDER WAIVER (PR-07)** — NOT human-approved | PM-009/PM-011 payloads, both sentences and the five item ids are registered `founder_waived_provisional` (§22): AI review is provisional, not human attestation, and one comprehensive human QA pass remains required before public/content-complete release |
 | Practice Hub return leg (PR-08) | **DONE** | runtime read projection + pure Hub selector over existing Practice Pool / today's-set rules; authored Wave A screens reused by reference; `practice_hub` placement on the same item/payload identities; legacy Practice tab untouched; 1217 tests green |
 | Mon Lexique real surface (PR-09) | **DONE** | real route on the shared runtime snapshot; Supported/independent claim copy without mechanism claims; weak precedence preserved; no second vocabulary store; completion projection-navigation settlement (Practice Hub link included); 1269 tests green |
 | Learner Stats projection (PR-10) | **DONE** | pure `learning-stats-v0.1` over the spine only (telemetry independence proven); real route outside the quarantined legacy tab; neutral assistance facts; explicit non-inference; completion Stats link on the existing settlement gate; no new storage key; 1317 tests green |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
-| Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
-| French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
+| Authoring learner-visible payloads (PR-07) | **DONE — provisional under founder waiver** | five item ids + two sentences + two exact payloads registered; identities flow on lesson and Hub events; PM-023 exact payload deliberately unregistered; 1352 tests green |
+| French QA | **NOT COMPLETED** (external gate) | no human sign-off exists on any pool surface; public/content-complete release remains blocked |
 | Audio implementation (PR-11) | **NOT READY** | no audio identity, no recordings; PM-018 hard-gated |
 | Connected L1 smoke (PR-12) | **READY WITH BOUNDED GAPS** | the proof is well-defined and testable on shipped French once PR-06 lands |
 
@@ -1008,14 +1029,13 @@ pre-PR-07 human French-QA requirement, accepting the risk. Recorded honestly:
   founder risk**; no implementation may claim named-human approval before it exists;
 - PR-08 adds no new French, so it did not depend on this waiver operationally.
 
-**The recommended next engineering action is PR-07 — exact L1 pilot payload registration**,
-proceeding under the recorded founder waiver above (at founder risk; AI review stays provisional;
-one comprehensive human QA pass remains required before public / content-complete release).
-PR-10 shipped the last planned projection: learner-safe Stats derived from `LearningEvent` only
-(never telemetry — D-3 consumed as decided in PR-02), on a real route outside the quarantined
-legacy tab, with the completion Stats link on the existing settlement gate. PR-11 remains
-audio-gated; PR-12 connected smoke follows the completed projection chain (mastery → Mon Lexique
-→ Practice Hub → Stats) plus content registration.
+**The recommended next engineering action is PR-12 — connected accumulation and failure smoke**,
+now that the projection chain (mastery → Mon Lexique → Practice Hub → Stats) AND the exact
+PM-009/PM-011 content registration both exist. PR-07 shipped under the recorded founder waiver:
+five provisional item ids, two provisional sentences, the two exact payloads, and real
+EV/sentence/payload identity on lesson AND Hub events — with no human approval claimed anywhere,
+the provisional-surface inventory ready for the eventual comprehensive QA pack, and the exact
+PM-023 payload still unregistered. PR-11 remains audio-gated.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence

@@ -11,12 +11,12 @@ import type {
   SentenceRecord,
 } from "../../content/identity/sentenceIdentity";
 import {
-  SENTENCE_REGISTRY,
   assertSentenceId,
   buildSentenceRegistry,
   isSentenceId,
   validateSentenceRecord,
 } from "../../content/identity/sentenceIdentity";
+import { SENTENCE_REGISTRY } from "../../content/identity/sentenceRegistry";
 
 /** Minimal synthetic record; every field overridable per test. */
 function makeRecord(over: Partial<SentenceRecord> = {}): SentenceRecord {
@@ -133,10 +133,30 @@ describe("sentence record validation", () => {
   });
 
   test("a span without an item id is allowed", () => {
+    // PR-07 added bidirectional span/item coverage, so the fixture keeps the
+    // item-bearing span alongside the unattached meta span — the INTENT under
+    // test (unattached spans are valid) is unchanged.
     const errors = validateSentenceRecord(
-      makeRecord({ spans: [{ text: ", ", treatment: "meta" }] }),
+      makeRecord({
+        spans: [
+          { text: "Test", treatment: "active", itemId: "chunk-bonjour" },
+          { text: ", ", treatment: "meta" },
+        ],
+      }),
     );
     assertEqual(errors.join(" | "), "", "unattached spans are valid");
+  });
+
+  test("span/item coverage is bidirectional (PR-07)", () => {
+    const noSpan = validateSentenceRecord(makeRecord({ spans: [] }));
+    assert(hasError(noSpan, "has no span realising it"), "unrealised itemId reported");
+    const notClaimed = validateSentenceRecord(
+      makeRecord({
+        itemIds: [],
+        spans: [{ text: "Test", treatment: "active", itemId: "chunk-bonjour" }],
+      }),
+    );
+    assert(hasError(notClaimed, "is not listed in itemIds"), "unclaimed span reported");
   });
 });
 
@@ -190,11 +210,14 @@ describe("sentence registry construction", () => {
     );
   });
 
-  test("the production sentence registry is empty in this PR", () => {
+  // PR-01 pinned the production registry EMPTY. PR-07 registered exactly the
+  // two founder-waived pilot sentences — the pin moves with the truth, and the
+  // exact-content assertions live in pilotPayloadRegistration.test.ts.
+  test("the production sentence registry holds exactly the two PR-07 pilot records", () => {
     assertEqual(
-      Object.keys(SENTENCE_REGISTRY).length,
-      0,
-      "no production sentence record may ship in PR-01",
+      Object.keys(SENTENCE_REGISTRY).sort().join(","),
+      "sent:l01-je-voudrais-un-the-sil-vous-plait,sent:l01-merci",
+      "the two pilot sentences and nothing else",
     );
   });
 });

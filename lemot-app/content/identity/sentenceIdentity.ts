@@ -19,6 +19,7 @@
  */
 import type { ItemId } from "../itemRegistry";
 import { isCanonicalItemId } from "./canonicalItems";
+import type { FrenchQaStatus } from "./frenchQaStatus";
 
 /**
  * A validated sentence identity. Branded so a bare string cannot be passed
@@ -40,10 +41,14 @@ export type SentenceProvenance =
   | "newly-authored";
 
 /**
- * Human French-QA state. `approved` is the ONLY value that may reach a learner;
- * this PR registers nothing, so nothing is approved by it.
+ * French-QA state — the SHARED vocabulary from ./frenchQaStatus (PR-07).
+ *
+ * `approved` still means named-human approval only. PR-07 added
+ * `founder_waived_provisional`: internally reachable under the founder's
+ * explicit risk acceptance, NEVER equivalent to approval, and never
+ * public/content-complete ready. `pending` / `rejected` remain unreachable.
  */
-export type SentenceFrenchQaStatus = "pending" | "approved" | "rejected";
+export type SentenceFrenchQaStatus = FrenchQaStatus;
 
 /** Lifecycle. A deprecated id is retired forever — never reused (ADR-0012 spirit). */
 export type SentenceStatus = "active" | "deprecated";
@@ -152,10 +157,32 @@ export function validateSentenceRecord(record: SentenceRecord): string[] {
     }
   }
 
+  const spanItemIds = new Set<string>();
   for (const span of record.spans) {
-    if (span.itemId !== undefined && !isCanonicalItemId(span.itemId)) {
+    if (span.itemId === undefined) continue;
+    if (!isCanonicalItemId(span.itemId)) {
       errors.push(
         `sentence "${id}": span item reference "${span.itemId}" is not a canonical ITEM_REGISTRY id`,
+      );
+    }
+    spanItemIds.add(span.itemId);
+  }
+
+  // PR-07: span/item coverage is BIDIRECTIONAL. An item the sentence claims
+  // must be realised by a span, and a span's item must be in the claim list —
+  // otherwise the treatment composition cannot be trusted by validators.
+  const claimed = new Set<string>(record.itemIds);
+  for (const itemId of record.itemIds) {
+    if (!spanItemIds.has(itemId)) {
+      errors.push(
+        `sentence "${id}": itemId "${itemId}" has no span realising it in the preferred surface`,
+      );
+    }
+  }
+  for (const spanItemId of spanItemIds) {
+    if (!claimed.has(spanItemId)) {
+      errors.push(
+        `sentence "${id}": span item "${spanItemId}" is not listed in itemIds`,
       );
     }
   }
@@ -218,9 +245,7 @@ export function buildSentenceRegistry(
   };
 }
 
-/**
- * The production sentence registry is intentionally EMPTY in this PR. Records
- * arrive in the French-QA-gated payload PR; the registration and validation
- * path above is fully exercised by test-local fixtures.
- */
-export const SENTENCE_REGISTRY: SentenceRegistry = buildSentenceRegistry([]).registry;
+// The ONE authoritative production registry (`SENTENCE_REGISTRY`) lives in
+// ./sentenceRegistry.ts since PR-07 — data separated from these utilities, and
+// deliberately not duplicated here: an empty registry beside a populated one
+// would be two answers to one question.

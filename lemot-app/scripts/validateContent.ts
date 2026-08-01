@@ -29,6 +29,9 @@ import { loadShippedManifest, checkShippedItemIds } from "./shippedItemIds";
 import { loadShippedTagManifest, collectUsedTags, checkShippedErrorTags } from "./shippedErrorTags";
 import { checkCanonRules } from "./canonRules";
 import { checkLessonEvidenceRules } from "./lessonEvidenceRules";
+import { validateAcquisitionLinks } from "../content/identity/acquisitionLinks";
+import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
+import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
 const findings = validateContent(LEARNING_ENGINE_FIXTURE);
 console.log(formatReport(findings));
@@ -75,13 +78,28 @@ for (const finding of evidenceFindings) {
   console.log(`  ERROR ${finding.message}`);
 }
 
+// PR-07: acquisition primary↔linked reciprocity + sentence/payload registries.
+// SENTENCE_REGISTRY fails closed at import, so reaching here means the
+// sentence build validated; its size is reported for the record.
+const linkErrors = validateAcquisitionLinks();
+const payloadErrors = validateRegisteredPayloads(V1_LESSONS);
+console.log(
+  `L1 pilot registries (PR-07): ${Object.keys(SENTENCE_REGISTRY).length} sentence(s), ` +
+    `${linkErrors.length + payloadErrors.length} hard error(s)`,
+);
+for (const error of [...linkErrors, ...payloadErrors]) {
+  console.log(`  ERROR ${error}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
   shipped.errors.length > 0 ||
   shippedTags.errors.length > 0 ||
   canonErrors.length > 0 ||
-  evidenceFindings.length > 0
+  evidenceFindings.length > 0 ||
+  linkErrors.length > 0 ||
+  payloadErrors.length > 0
 ) {
   process.exit(1);
 }

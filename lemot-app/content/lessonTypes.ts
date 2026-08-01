@@ -24,6 +24,20 @@ export type LearningItemType =
   | "faux-ami"
   | "cognate";
 
+/**
+ * Explicit primary ↔ linked acquisition relationship between two canonical item
+ * identities (PR-07). Structural on purpose — a prose comment cannot be
+ * validated. `chunk-un-the` (primary) ↔ `noun-the` (linked) is the first pair:
+ * one acquisition concept, two runtime ids, with all L1 evidence flowing to the
+ * PRIMARY id only. Reciprocity, existence, no-self-link and one-primary-per-
+ * linked are enforced by `content/identity/acquisitionLinks.ts`. This mechanism
+ * performs NO id remapping anywhere — persisted history is never rewritten, and
+ * it deliberately does not touch the pre-existing café dual-id debt.
+ */
+export type AcquisitionIdentityLink =
+  | { role: "primary"; linkedItemIds: readonly string[] }
+  | { role: "linked"; primaryItemId: string };
+
 export type LearningItem = {
   id: string;
   type: LearningItemType;
@@ -36,6 +50,16 @@ export type LearningItem = {
   exampleEn?: string;
   relatedItemIds?: string[];
   weakPointTags?: WeakPointTag[];
+  /**
+   * French-QA state of this registered surface (PR-07). Optional: legacy
+   * shipped rows predate the vocabulary and are not retroactively stamped.
+   * New PR-07 rows carry `founder_waived_provisional` — see
+   * `content/identity/frenchQaStatus.ts` for the exact semantics; no item may
+   * claim `approved` without a named human review.
+   */
+  frenchQa?: import("./identity/frenchQaStatus").FrenchQaStatus;
+  /** Primary ↔ linked acquisition relation, when this item participates in one. */
+  acquisitionLink?: AcquisitionIdentityLink;
 };
 
 export type ScreenType =

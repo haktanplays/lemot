@@ -186,7 +186,7 @@ export function Weave({
           render and stays visible through the attempt. It is NOT behind the hint
           ladder and costs no rung — but it does permanently scope the attempt to
           Supported. Reuses the existing pieces copy; no new learner-facing text.
-          No shipped payload declares one today (PR-07 authors those). */}
+          The first shipped constitutive payload is PR-07's tea order. */}
       {hasConstitutive && (
         <View className="mt-3">
           <Text className="text-xs mb-2" style={{ color: P.ink3 }}>

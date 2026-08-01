@@ -187,6 +187,69 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+  // ── PR-07 registered pilot payloads (screen ids are NEW and stable; the
+  // existing s00–s09 ids keep their meaning and were not renumbered) ────────
+  {
+    // PM-009 · EV-030 · sent:l01-merci — A-new typed recall, unscaffolded.
+    id: "s10-weave-merci-thanks",
+    type: "weave",
+    targetItemIds: ["chunk-merci"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "supported",
+      prompt: "The coffee arrives. Thank them.",
+      // No pieces, no cloze, no prior model: a clean unscaffolded first
+      // production of the form the learner just met. The hint ladder simply
+      // does not render.
+      expectedAnswers: ["Merci."],
+      acceptedAlternatives: ["Merci", "Merci !"],
+      reveal: {
+        modelAnswer: "Merci.",
+        ifCorrect: "That closes the exchange.",
+        ifUnderstandableButWrong: "One word does it here: merci.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // PM-011 · EV-040 · sent:l01-je-voudrais-un-the-sil-vous-plait —
+    // Supported tea order. `un thé` is a CONSTITUTIVE package: visible from
+    // first render, never split into un + thé, never behind the hint ladder.
+    // Evidence flows to the primary tea identity only; the recycled frame
+    // stays recallable with optional hint support.
+    id: "s11-weave-the-order",
+    type: "weave",
+    targetItemIds: ["chunk-je-voudrais", "chunk-un-the", "chunk-sil-vous-plait"],
+    evidenceTargetItemIds: ["chunk-un-the"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "supported",
+      prompt: "Order a tea politely.",
+      context: "The server looks over. This time it's a tea.",
+      suggestedPieces: [
+        {
+          text: "un thé",
+          itemId: "chunk-un-the",
+          required: true,
+          label: "your drink",
+          supportRole: "constitutive",
+        },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
+        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "polite close" },
+      ],
+      hintCloze: "Je voudrais ___, s'il vous plaît.",
+      expectedAnswers: ["Je voudrais un thé, s'il vous plaît."],
+      reveal: {
+        modelAnswer: "Je voudrais un thé, s'il vous plaît.",
+        ifCorrect: "Same calm frame, new drink.",
+        ifCorrectButFlat: "Right pieces. The comma marks a small natural pause.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. A native joins the pieces this way.",
+        ifMissingTargetPiece: "The drink piece is right there: un thé.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
   {
     id: "s08-sayit-cafe-order",
     type: "say-it-your-way",
@@ -260,6 +323,11 @@ export const lesson001: Lesson = {
     "chunk-sil-vous-plait",
     "chunk-je-voudrais",
     "noun-cafe",
+    // PR-07: the Supported tea package (primary identity only — `noun-the` is
+    // its linked sub-identity and is never a lesson learning target; the three
+    // rescue chunks are registered for the frozen L1 ledger but not activated
+    // by these payloads).
+    "chunk-un-the",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },

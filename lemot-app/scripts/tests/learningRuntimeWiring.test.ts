@@ -697,13 +697,26 @@ describe("sandbox hook migration", () => {
 describe("shipped lesson bridge", () => {
   const providerSrc = () => read("components/lesson-v1/LessonV1LearningSessionProvider.tsx");
 
-  test("the lesson provider declares the lesson_path placement explicitly", () => {
+  // PR-05..PR-06 pinned the provider's inline resolver to all-null identities.
+  // PR-07 moved the resolver into the shared registered-payload factory so the
+  // lesson path and the Hub resolve identity identically; the intent is
+  // unchanged and now enforced on the FACTORY: the payload id stays the
+  // authored screen id, unregistered screens keep null EV/sentence identity,
+  // and nothing invents a sequence.
+  test("the lesson provider declares the lesson_path placement through the shared factory", () => {
     const code = codeOf(providerSrc());
-    assert(code.includes('placement: "lesson_path"'), "shipped lesson placement");
-    assert(code.includes("payloadId: exercise.id"), "payload id from the authored screen id");
-    assert(code.includes("evId: null"), "no EV identity invented");
-    assert(code.includes("sentenceId: null"), "no sentence identity invented");
-    assert(code.includes("sequence: null"), "no sequence invented");
+    assert(
+      code.includes('makeRegisteredEventSurface("lesson_path")'),
+      "shipped lesson placement, stated by the provider",
+    );
+    const factory = codeOf(read("content/identity/payloadRegistry.ts"));
+    assert(factory.includes("payloadId: exercise.id"), "payload id from the authored screen id");
+    assert(factory.includes("evId: identity?.evId ?? null"), "null EV unless registered");
+    assert(
+      factory.includes("sentenceId: identity?.sentenceId ?? null"),
+      "null sentence unless registered",
+    );
+    assert(factory.includes("sequence: null"), "no sequence invented");
   });
 
   test("the lesson provider exposes no repository or persistence surface", () => {

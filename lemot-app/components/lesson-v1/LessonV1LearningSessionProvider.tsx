@@ -50,6 +50,7 @@ import {
   type TypedAttemptFacts,
 } from "@/content/lesson-v1-evidence/interactions";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
+import { makeRegisteredEventSurface } from "@/content/identity/payloadRegistry";
 
 const IDLE_STATE: SessionState = {
   status: "idle",
@@ -63,19 +64,15 @@ const IDLE_STATE: SessionState = {
  * Where shipped v1 lesson events happen.
  *
  * `lesson_path` is the honest placement, and the qualified screen id is the
- * payload identity that genuinely exists today. `evId` and `sentenceId` stay
- * null because no pilot EV identity and no sentence identity are registered yet
- * — PR-07 owns that, gated on French QA. Guessing either would mint runtime
- * identities from draft-local planning ids. `sequence` is null because no
- * multi-step orchestration exists.
+ * payload identity. Since PR-07, the shared registered-payload resolver
+ * populates `evId` and `sentenceId` for exactly the REGISTERED payloads
+ * (PM-009 / PM-011); every other screen keeps `evId: null` and
+ * `sentenceId: null` exactly as before — identity is resolved by registered
+ * key only, never guessed from text, type or planning ids. `sequence` stays
+ * null because no multi-step orchestration exists.
  */
-const LESSON_PATH_SURFACE: EventSurfaceResolver = (exercise) => ({
-  placement: "lesson_path",
-  evId: null,
-  payloadId: exercise.id,
-  sentenceId: null,
-  sequence: null,
-});
+const LESSON_PATH_SURFACE: EventSurfaceResolver =
+  makeRegisteredEventSurface("lesson_path");
 
 /** The narrow interaction API a lesson screen may use. */
 export type LessonV1LearningSession = {

@@ -30,6 +30,7 @@ import {
 } from "@/content/lesson-v1-evidence/interactions";
 import type { ReusablePracticeSource } from "@/content/lesson-v1-evidence/practiceHub";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
+import { makeRegisteredEventSurface } from "@/content/identity/payloadRegistry";
 import {
   createSettledCloseGate,
   type SettledCloseGate,
@@ -41,15 +42,12 @@ import { Weave } from "@/components/lesson-v1/screens/Weave";
  * Where a Hub attempt happens. Identity is REUSED, placement is not: the
  * qualified payload id and lesson id stay those of the original authored
  * screen, so mastery accumulates on the same item through the same payload —
- * while the event honestly records that it came back through the Hub.
+ * while the event honestly records that it came back through the Hub. Since
+ * PR-07 the SAME shared resolver also carries a registered payload's EV and
+ * sentence identity into the Hub unchanged; unregistered screens keep nulls.
  */
-const PRACTICE_HUB_SURFACE: EventSurfaceResolver = (exercise) => ({
-  placement: "practice_hub",
-  evId: null,
-  payloadId: exercise.id,
-  sentenceId: null,
-  sequence: null,
-});
+const PRACTICE_HUB_SURFACE: EventSurfaceResolver =
+  makeRegisteredEventSurface("practice_hub");
 
 /**
  * Render the original authored screen with UI-fact callbacks. A local `screen`

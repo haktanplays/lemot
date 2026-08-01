@@ -698,6 +698,80 @@ export const ITEM_REGISTRY = {
     exampleEn: "I have to go home.",
     relatedItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
   },
+
+  // ── PR-07: L1 pilot registrations (founder-waived provisional French QA) ──
+  // Four acquisition concepts, five runtime ids ("un thé" carries a primary +
+  // linked pair). No named-human French approval exists for these surfaces;
+  // they are internally reachable ONLY under the founder's explicit risk
+  // acceptance, and the final comprehensive human QA pass remains mandatory
+  // before any public / content-complete release.
+  "chunk-excusez-moi": {
+    id: "chunk-excusez-moi",
+    type: "chunk",
+    text: "excusez-moi",
+    status: "supported",
+    fr: "excusez-moi",
+    en: "excuse me",
+    meaning:
+      "Attention-getting excuse me. One whole polite formula for opening contact with a stranger; never decomposed at L1.",
+    exampleFr: "Excusez-moi, je voudrais un café.",
+    exampleEn: "Excuse me, I would like a coffee.",
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-je-ne-comprends-pas": {
+    id: "chunk-je-ne-comprends-pas",
+    type: "chunk",
+    text: "je ne comprends pas",
+    status: "supported",
+    fr: "je ne comprends pas",
+    en: "I don't understand",
+    meaning:
+      "Closed survival formula: I don't understand. Owned as one whole; the ne…pas negation system is never split out of it at L1.",
+    exampleFr: "Je ne comprends pas.",
+    exampleEn: "I don't understand.",
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-vous-pouvez-repeter": {
+    id: "chunk-vous-pouvez-repeter",
+    type: "chunk",
+    text: "vous pouvez répéter ?",
+    status: "supported",
+    fr: "vous pouvez répéter ?",
+    en: "can you say that again?",
+    meaning:
+      "Rescue request in the locked non-inverted shape. Only this statement-shaped question form is learned at L1; the formal inverted variant stays out of learner content.",
+    exampleFr: "Vous pouvez répéter ?",
+    exampleEn: "Can you say that again?",
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-un-the": {
+    id: "chunk-un-the",
+    type: "chunk",
+    text: "un thé",
+    status: "supported",
+    fr: "un thé",
+    en: "a tea",
+    meaning:
+      "A tea, owned as one article+noun package. Primary acquisition identity of the tea concept; all L1 evidence flows here.",
+    exampleFr: "Je voudrais un thé, s'il vous plaît.",
+    exampleEn: "I would like a tea, please.",
+    frenchQa: "founder_waived_provisional",
+    acquisitionLink: { role: "primary", linkedItemIds: ["noun-the"] },
+  },
+  "noun-the": {
+    id: "noun-the",
+    type: "noun",
+    text: "thé",
+    status: "supported",
+    fr: "thé",
+    en: "tea",
+    meaning:
+      "Tea, the bare noun. Linked sub-identity of chunk-un-the; not an L1 evidence target — no L1 event may name it.",
+    exampleFr: "un thé",
+    exampleEn: "a tea",
+    frenchQa: "founder_waived_provisional",
+    acquisitionLink: { role: "linked", primaryItemId: "chunk-un-the" },
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;
