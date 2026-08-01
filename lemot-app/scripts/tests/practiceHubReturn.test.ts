@@ -820,8 +820,280 @@ describe("PR-08 changed no frozen contract", () => {
   });
 
   test("no new screen type entered the hub", () => {
+    // The settlement correction added exactly one PURE close-gate helper.
+    // The renderer surface is still the single reuse component — anything
+    // beyond these two files means a new hub screen crept in.
     const dir = join(APP_ROOT, "components/practice-hub");
-    const files = readdirSync(dir);
-    assertEqual(files.join(","), "PracticeHubPractice.tsx", "one reuse surface, no new renderer");
+    const files = readdirSync(dir).sort();
+    assertEqual(
+      files.join(","),
+      "PracticeHubPractice.tsx,settledClose.ts",
+      "one reuse surface plus the settled-close gate, no new renderer",
+    );
+    assertEqual(
+      files.filter((f) => f.endsWith(".tsx")).join(","),
+      "PracticeHubPractice.tsx",
+      "the only renderer is the reuse component",
+    );
+  });
+});
+
+// ── settlement correction: close waits for the queue ────────────────────────
+
+import { createSettledCloseGate } from "../../components/practice-hub/settledClose";
+
+/** A repository whose appendEvent blocks until manually released. */
+function makeBlockedRepository(kv = makeFakeKv()) {
+  const inner = new LocalRepository(kv);
+  let release: (() => void) | null = null;
+  const blocked = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const repo: LearningRepository = {
+    appendEvent: async (e) => {
+      await blocked;
+      return inner.appendEvent(e);
+    },
+    getPending: () => inner.getPending(),
+    markSynced: (ids) => inner.markSynced(ids),
+    readAllEvents: () => inner.readAllEvents(),
+  };
+  return { repo, kv, release: () => release?.() };
+}
+
+const microtasks = async (n = 20) => {
+  for (let i = 0; i < n; i += 1) await Promise.resolve();
+};
+
+describe("settled-close gate — ordering", () => {
+  const attemptOf = (kind: "choice" | "typed") => (c: LearningSessionController) => {
+    if (kind === "choice") {
+      const fill = lesson001.screens.find(
+        (s) => s.id === "s03-fill-polite-verb",
+      ) as FillWithTrapsScreen;
+      c.recordGradedAttempt(choiceInteraction(lesson001, fill, { optionId: "opt-voudrais" }));
+    } else {
+      const weave = lesson001.screens.find(
+        (s) => s.id === "s04-weave-cafe-order",
+      ) as WeaveScreen;
+      c.recordGradedAttempt(
+        typedAttemptInteraction(lesson001, weave, {
+          text: weave.payload.expectedAnswers[0],
+          hintRung: 0,
+          constitutiveSupportRendered: false,
+        }),
+      );
+    }
+  };
+
+  for (const kind of ["choice", "typed"] as const) {
+    test(`a ${kind} attempt settles BEFORE the parent close and rebuild`, async () => {
+      const { repo, kv, release } = makeBlockedRepository();
+      const runtime = runtimeWith(repo);
+      const controller = controllerOn(runtime, lesson001, HUB_SURFACE);
+      let closed = 0;
+      const gate = createSettledCloseGate({
+        flush: () => controller.flush(),
+        identity: "gen0::l1::screen",
+        currentIdentity: () => "gen0::l1::screen",
+        isActive: () => true,
+        onClose: () => {
+          closed += 1;
+        },
+      });
+
+      attemptOf(kind)(controller);
+      gate.requestSettledClose(); // the fast Continue
+      await microtasks();
+      assertEqual(closed, 0, "close must NOT run while the append is still queued");
+      assert(!kv.map.has(LM_LE_EVENTS_KEY), "nothing persisted yet either");
+
+      release();
+      await controller.flush();
+      await microtasks();
+      assertEqual(closed, 1, "close runs exactly once, after settlement");
+
+      // The parent rebuild — the step the race used to corrupt — now sees it.
+      const snap = await runtime.readMasterySnapshot();
+      assert(
+        snap.items["chunk-je-voudrais"] !== undefined,
+        "the rebuild after close includes the attempt",
+      );
+      const events = await repo.readAllEvents();
+      assertEqual(events.length, 1, "the event is present");
+      assertEqual(events[0].placement, "practice_hub", "with its hub placement");
+    });
+  }
+
+  test("closing with no attempt completes promptly and emits nothing", async () => {
+    const { repo, kv } = makeBlockedRepository(); // append stays blocked — and is never needed
+    const controller = controllerOn(runtimeWith(repo), lesson001, HUB_SURFACE);
+    let closed = 0;
+    const gate = createSettledCloseGate({
+      flush: () => controller.flush(),
+      identity: "id",
+      currentIdentity: () => "id",
+      isActive: () => true,
+      onClose: () => {
+        closed += 1;
+      },
+    });
+    gate.requestSettledClose();
+    await microtasks();
+    assertEqual(closed, 1, "an idle queue is already settled — close runs immediately");
+    assertEqual(kv.map.size, 0, "no event, no write");
+  });
+
+  test("duplicate Continue/Close taps collapse into one parent close", async () => {
+    const { repo, release } = makeBlockedRepository();
+    const controller = controllerOn(runtimeWith(repo), lesson001, HUB_SURFACE);
+    let closed = 0;
+    const gate = createSettledCloseGate({
+      flush: () => controller.flush(),
+      identity: "id",
+      currentIdentity: () => "id",
+      isActive: () => true,
+      onClose: () => {
+        closed += 1;
+      },
+    });
+    const fill = lesson001.screens.find(
+      (s) => s.id === "s03-fill-polite-verb",
+    ) as FillWithTrapsScreen;
+    controller.recordGradedAttempt(
+      choiceInteraction(lesson001, fill, { optionId: "opt-voudrais" }),
+    );
+    gate.requestSettledClose();
+    gate.requestSettledClose(); // double tap while the append is blocked
+    gate.requestSettledClose();
+    release();
+    await controller.flush();
+    await microtasks();
+    assertEqual(closed, 1, "one request, one close — taps deduplicated");
+  });
+
+  test("a stale identity's completion cannot close the current card", async () => {
+    const { repo, release } = makeBlockedRepository();
+    const controller = controllerOn(runtimeWith(repo), lesson001, HUB_SURFACE);
+    let closed = 0;
+    let current = "gen0::l1::screenA";
+    const gate = createSettledCloseGate({
+      flush: () => controller.flush(),
+      identity: "gen0::l1::screenA",
+      currentIdentity: () => current,
+      isActive: () => true,
+      onClose: () => {
+        closed += 1;
+      },
+    });
+    const fill = lesson001.screens.find(
+      (s) => s.id === "s03-fill-polite-verb",
+    ) as FillWithTrapsScreen;
+    controller.recordGradedAttempt(
+      choiceInteraction(lesson001, fill, { optionId: "opt-voudrais" }),
+    );
+    gate.requestSettledClose();
+    // The learner picked a different source (or a privacy reset advanced the
+    // generation) before A settled. A's completion must go nowhere.
+    current = "gen1::l1::screenB";
+    release();
+    await controller.flush();
+    await microtasks();
+    assertEqual(closed, 0, "an obsolete settlement never closes the new card");
+  });
+
+  test("an unmounted owner's completion never invokes the parent", async () => {
+    const { repo, release } = makeBlockedRepository();
+    const controller = controllerOn(runtimeWith(repo), lesson001, HUB_SURFACE);
+    let closed = 0;
+    let active = true;
+    const gate = createSettledCloseGate({
+      flush: () => controller.flush(),
+      identity: "id",
+      currentIdentity: () => "id",
+      isActive: () => active,
+      onClose: () => {
+        closed += 1;
+      },
+    });
+    const fill = lesson001.screens.find(
+      (s) => s.id === "s03-fill-polite-verb",
+    ) as FillWithTrapsScreen;
+    controller.recordGradedAttempt(
+      choiceInteraction(lesson001, fill, { optionId: "opt-voudrais" }),
+    );
+    gate.requestSettledClose();
+    active = false; // unmounted before settlement
+    release();
+    await controller.flush();
+    await microtasks();
+    assertEqual(closed, 0, "a late completion after unmount does nothing");
+  });
+
+  test("append failure still settles and still closes — from the unchanged log", async () => {
+    const failing: LearningRepository = {
+      appendEvent: async () => {
+        throw new Error("storage refused");
+      },
+      getPending: async () => [],
+      markSynced: async () => {},
+      readAllEvents: async () => [],
+    };
+    const controller = controllerOn(runtimeWith(failing), lesson001, HUB_SURFACE);
+    let closed = 0;
+    const gate = createSettledCloseGate({
+      flush: () => controller.flush(),
+      identity: "id",
+      currentIdentity: () => "id",
+      isActive: () => true,
+      onClose: () => {
+        closed += 1;
+      },
+    });
+    const fill = lesson001.screens.find(
+      (s) => s.id === "s03-fill-polite-verb",
+    ) as FillWithTrapsScreen;
+    controller.recordGradedAttempt(
+      choiceInteraction(lesson001, fill, { optionId: "opt-voudrais" }),
+    );
+    gate.requestSettledClose();
+    await controller.flush();
+    await microtasks();
+    assertEqual(closed, 1, "flush settles caught errors too — close still runs");
+    // No fabricated success: the authoritative log is simply unchanged.
+    assertEqual((await failing.readAllEvents()).length, 0, "nothing was invented");
+  });
+});
+
+describe("settled-close gate — component wiring (source-level)", () => {
+  test("Continue and Close both route through the gate, never raw onClose", () => {
+    const src = codeOf(read("components/practice-hub/PracticeHubPractice.tsx"));
+    assert(src.includes("createSettledCloseGate"), "the gate is created");
+    assert(src.includes("controller.flush()"), "and it flushes the captured controller");
+    assert(
+      src.includes("onPress={requestSettledClose}"),
+      "the header Close uses the gate",
+    );
+    assert(
+      src.includes("renderReusedScreen(source, controller, requestSettledClose)"),
+      "the reused screen's Continue uses the gate",
+    );
+    assert(
+      !src.includes("onPress={onClose}") &&
+        !src.includes("renderReusedScreen(source, controller, onClose)"),
+      "no direct UI path to the parent onClose remains",
+    );
+  });
+
+  test("the gate helper is pure and adds no repository or storage import", () => {
+    const src = codeOf(read("components/practice-hub/settledClose.ts"));
+    // Stronger than a name blocklist: the gate is fully dependency-free, so
+    // ANY import or require (react, expo, repository, storage — anything) is
+    // a purity regression.
+    assert(!src.includes("import "), "settledClose.ts imports nothing");
+    assert(!src.includes("require("), "settledClose.ts requires nothing");
+    for (const banned of ["LocalRepository", "appendEvent", "readAllEvents", "LM_LE_"]) {
+      assert(!src.includes(banned), `settledClose.ts must not reference ${banned}`);
+    }
   });
 });

@@ -30,6 +30,10 @@ import {
 } from "@/content/lesson-v1-evidence/interactions";
 import type { ReusablePracticeSource } from "@/content/lesson-v1-evidence/practiceHub";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
+import {
+  createSettledCloseGate,
+  type SettledCloseGate,
+} from "./settledClose";
 import { FillWithTraps } from "@/components/lesson-v1/screens/FillWithTraps";
 import { Weave } from "@/components/lesson-v1/screens/Weave";
 
@@ -54,14 +58,14 @@ const PRACTICE_HUB_SURFACE: EventSurfaceResolver = (exercise) => ({
 function renderReusedScreen(
   source: ReusablePracticeSource,
   controller: LearningSessionController,
-  onClose: () => void,
+  onSettledClose: () => void,
 ) {
   const { lesson, screen } = source;
   if (screen.type === "fill-with-traps") {
     return (
       <FillWithTraps
         screen={screen}
-        onContinue={onClose}
+        onContinue={onSettledClose}
         onChoice={(facts) =>
           controller.recordGradedAttempt(choiceInteraction(lesson, screen, facts))
         }
@@ -71,7 +75,7 @@ function renderReusedScreen(
   return (
     <Weave
       screen={screen}
-      onContinue={onClose}
+      onContinue={onSettledClose}
       onTypedAttempt={(facts) =>
         controller.recordGradedAttempt(
           typedAttemptInteraction(lesson, screen, {
@@ -90,34 +94,65 @@ export function PracticeHubPractice({
   onClose,
 }: {
   source: ReusablePracticeSource;
-  /** Called when the learner finishes or leaves. Emits nothing by itself. */
+  /**
+   * Called when the learner finishes or leaves. Emits nothing by itself, and —
+   * since the settlement correction — is reached ONLY through the settled-close
+   * gate: the parent's snapshot rebuild always sees the settled event log.
+   */
   onClose: () => void;
 }) {
   const { runtime, generation } = useLearningEngineRuntime();
   const [, setState] = useState<SessionState | null>(null);
 
+  // Latest-callback ref, so the gate (created once per identity) never invokes
+  // a stale parent closure.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  // Alive flag: a flush that settles after unmount must not call the parent.
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   // One controller per source lesson + runtime generation, same stale-token
   // pattern as the lesson provider: a pre-reset controller's late callback must
-  // not touch the fresh session, and its writes are already suppressed.
+  // not touch the fresh session, and its writes are already suppressed. The
+  // settled-close gate is created ALONGSIDE the controller, so a new identity
+  // starts with no inherited pending-close state.
   const identity = `${generation}::${source.lesson.id}::${source.screen.id}`;
-  const held = useRef<{ identity: string; controller: LearningSessionController } | null>(
-    null,
-  );
+  const held = useRef<{
+    identity: string;
+    controller: LearningSessionController;
+    close: SettledCloseGate;
+  } | null>(null);
   if (held.current === null || held.current.identity !== identity) {
     const token = identity;
+    const controller = runtime.createSessionController({
+      lessonId: source.lesson.id,
+      contentVersion: source.lesson.version,
+      resolveEventSurface: PRACTICE_HUB_SURFACE,
+      onUpdate: (next) => {
+        if (held.current?.identity === token) setState(next);
+      },
+    });
     held.current = {
       identity,
-      controller: runtime.createSessionController({
-        lessonId: source.lesson.id,
-        contentVersion: source.lesson.version,
-        resolveEventSurface: PRACTICE_HUB_SURFACE,
-        onUpdate: (next) => {
-          if (held.current?.identity === token) setState(next);
-        },
+      controller,
+      close: createSettledCloseGate({
+        flush: () => controller.flush(),
+        identity: token,
+        currentIdentity: () => held.current?.identity ?? "",
+        isActive: () => mounted.current,
+        onClose: () => onCloseRef.current(),
       }),
     };
   }
   const controller = held.current.controller;
+  const requestSettledClose = held.current.close.requestSettledClose;
 
   useEffect(() => {
     setState(null);
@@ -147,7 +182,7 @@ export function PracticeHubPractice({
           Practice this piece
         </Text>
         <Pressable
-          onPress={onClose}
+          onPress={requestSettledClose}
           hitSlop={8}
           style={{
             borderRadius: 999,
@@ -160,7 +195,7 @@ export function PracticeHubPractice({
           <Text style={{ color: P.ink2, fontSize: 13 }}>Close</Text>
         </Pressable>
       </View>
-      {renderReusedScreen(source, controller, onClose)}
+      {renderReusedScreen(source, controller, requestSettledClose)}
     </View>
   );
 }
