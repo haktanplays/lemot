@@ -1,27 +1,32 @@
-import { useMemo, useRef, useState } from "react";
-import { LocalRepository } from "@/content/learning-engine/repository/local";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   LearningSessionController,
   type AttemptEvidenceContext,
+  type EventSurfaceResolver,
   type GradedAttemptPayload,
   type SessionState,
 } from "@/content/learning-engine/session-controller";
 import type { ExerciseBlueprint, LessonContract } from "@/content/learning-engine/types";
 import { resolveTreatmentForItem } from "@/content/learning-engine/treatment-resolver";
 import type { EvidenceOpportunityContext } from "@/content/learning-engine/evidence-context";
+import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 
 /**
- * Learner-session hook (P3.6 + P3.7).
+ * Learner-session hook (P3.6 + P3.7; runtime-owned since PR-05).
  *
- * Owns ONE `LocalRepository` and ONE `LearningSessionController` for the life of
- * the renderer, exposes the two record callbacks the shell hands to cards, and
- * mirrors the controller's derived `SessionState` (status + latest
- * `MasterySnapshot`) into React state. All appends go through the controller's
- * serialized queue — no component ever touches `LocalRepository.appendEvent`
- * directly, and the snapshot is a pure projection of stored events (P3.7).
+ * Owns ONE `LearningSessionController` for the life of the renderer, exposes the
+ * two record callbacks the shell hands to cards, and mirrors the controller's
+ * derived `SessionState` (status + latest `MasterySnapshot`) into React state.
+ * All appends go through the controller's serialized queue — no component ever
+ * touches `LocalRepository.appendEvent` directly, and the snapshot is a pure
+ * projection of stored events (P3.7).
  *
- * `lessonId` / `contentVersion` are captured at mount (a fresh fixture deep-link
- * remounts the route → a new session). No remote/Supabase/network/AI.
+ * PR-05 removed the `new LocalRepository()` that used to live here. The
+ * repository is now owned by `LearningEngineProvider` and reached only through
+ * the runtime, so the sandbox and the shipped lesson path share one repository
+ * and one privacy-reset acknowledgement epoch instead of two.
+ *
+ * No remote/Supabase/network/AI.
  */
 const IDLE_STATE: SessionState = {
   status: "idle",
@@ -31,12 +36,22 @@ const IDLE_STATE: SessionState = {
   lastSavedAt: null,
 };
 
-// Founder-local session id (no `Date.now`; the controller owns the only clock).
-let sessionSeq = 0;
-function newLocalSessionId(): string {
-  sessionSeq += 1;
-  return `lm-sess-${sessionSeq.toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
+/**
+ * Where the fixture sandbox's events happen.
+ *
+ * This used to be a hardcoded default inside the framework-agnostic controller.
+ * It is stated here instead, by the surface it actually describes: the flag-gated
+ * fixture path. The exercise variation and the sentence identity genuinely do not
+ * exist for a fixture, so they stay null rather than being invented, and a
+ * fixture runs no multi-step orchestration.
+ */
+const SANDBOX_SURFACE: EventSurfaceResolver = (exercise) => ({
+  placement: "engine_fixture_sandbox",
+  evId: null,
+  payloadId: exercise.id,
+  sentenceId: null,
+  sequence: null,
+});
 
 /**
  * What a card reports. The evidence CONTEXT is added by this hook, so cards stay
@@ -83,19 +98,45 @@ export function useLearningEngineSession(opts: {
   /** The validated fixture contract — the authored source of target treatments. */
   contract: LessonContract;
 }): LearnerSession {
+  const { runtime, generation } = useLearningEngineRuntime();
   const [state, setState] = useState<SessionState>(IDLE_STATE);
-  const controllerRef = useRef<LearningSessionController | null>(null);
-  if (controllerRef.current === null) {
-    controllerRef.current = new LearningSessionController({
-      repository: new LocalRepository(),
-      sessionId: newLocalSessionId(),
-      lessonId: opts.lessonId,
-      contentVersion: opts.contentVersion,
-      onUpdate: setState,
-    });
-  }
-  const controller = controllerRef.current;
   const contract = opts.contract;
+
+  /**
+   * A token that changes exactly when the controller must be replaced: a privacy
+   * reset (new `generation`), a different lesson, or a different content version.
+   * The pre-PR-05 hook captured its controller in a ref FOREVER, which would now
+   * survive a reset and keep writing through a permanently-suppressed repository.
+   */
+  const identity = `${generation}::${opts.lessonId}::${opts.contentVersion}`;
+  const held = useRef<{ identity: string; controller: LearningSessionController } | null>(
+    null,
+  );
+
+  if (held.current === null || held.current.identity !== identity) {
+    const token = identity;
+    held.current = {
+      identity,
+      controller: runtime.createSessionController({
+        lessonId: opts.lessonId,
+        contentVersion: opts.contentVersion,
+        resolveEventSurface: SANDBOX_SURFACE,
+        // A pre-reset controller's queued work can still settle and call back.
+        // Its update must not overwrite the fresh session's state; the
+        // stale-writer barrier already prevents it from reaching storage.
+        onUpdate: (next) => {
+          if (held.current?.identity === token) setState(next);
+        },
+      }),
+    };
+  }
+  const controller = held.current.controller;
+
+  // A replaced controller means a new session: drop the previous session's
+  // mirrored state rather than showing it under a runtime that no longer owns it.
+  useEffect(() => {
+    setState(IDLE_STATE);
+  }, [identity]);
 
   return useMemo<LearnerSession>(() => {
     const context = (): AttemptEvidenceContext => ({

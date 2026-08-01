@@ -98,7 +98,7 @@ projections, Stats UI, the other 21 pairings, all of Wave D (§12, §19).
 **2.7 Total proposed PRs: 12** (§17).
 
 **2.8 Critical path:** ~~PR-01 identity~~ ✅ → ~~PR-02 envelope~~ ✅ → ~~PR-03 assistance+attribution~~ ✅ →
-~~PR-04 mastery~~ ✅ → **PR-05 persistence wiring (next)** → PR-06 renderer emission → **connected proof testable
+~~PR-04 mastery~~ ✅ → ~~PR-05 provider wiring~~ ✅ → **PR-06 renderer emission (next)** → **connected proof testable
 here** → PR-08/09/10 projections. PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
@@ -685,13 +685,41 @@ data to act on. `WEAK_THRESHOLD`, `LEITNER_INTERVAL_DAYS` and the PF range are u
 *Files:* `learning-engine/mastery.ts`, `mon-lexique.ts`, `compaction.ts` + tests.
 *Tests:* 91 new (1065 total). *French QA:* no. *Learner-visible:* **no** (until PR-09 surfaces it).
 
-**PR-05 — Event persistence and provider wiring into the shipped lesson path.**
-*Objective:* make the shipped `LessonRendererV1` path able to reach the session controller and
-`LocalRepository` — wiring only, no emission yet. *Files:* provider/hook wiring,
-`components/lesson-v1/`. *Depends:* PR-04. *Excludes:* per-screen emission (PR-06); cloud sync.
-*Acceptance:* controller reachable from the lesson path; nothing emitted; privacy inventory updated
-for any new persisted field. *Tests:* persistence/reset, privacy-inventory completeness.
-*Rollback:* wiring-only revert. *French QA:* no. *Learner-visible:* no.
+**PR-05 — Learning runtime provider and shipped lesson-path wiring. IMPLEMENTED** on
+`feat/l1-pilot-provider-wiring`.
+*Delivered:* a two-level runtime. `providers/LearningEngineProvider` is the app-level owner —
+**one `LocalRepository` per privacy-reset epoch** — and exposes only a runtime whose single method
+returns a controller; the repository, `appendEvent`, `writeSnapshot`, the KV layer and every storage
+key are unreachable from UI. `content/learning-engine/runtime.ts` is the framework-free factory
+(no React/RN/Expo/cloud/AI); constructing a runtime or a controller performs **zero repository
+calls** and reads no clock. Metadata (`appBuild` from the Expo app version, `deviceInfo` =
+platform / OS version / Expo runtime) flows from the provider to every event; session ids come from
+an injectable factory, are distinct per controller and are never the lesson id.
+*Reset safety:* the owner subscribes to `subscribePrivacyReset` and rebuilds repository + runtime on
+each reset, advancing a `generation`. The pre-reset repository stays permanently write-suppressed by
+the existing stale-writer barrier (never re-acknowledged, never paired with a new controller), and
+genuinely new post-reset activity writes **without an app restart** — the gap a single long-lived
+repository would have left. Consumers re-key their controller on `generation`, and a late callback
+from an obsolete controller cannot overwrite the new session's state.
+*Surface resolvers:* the controller's hardcoded `placement: "engine_fixture_sandbox"` is **removed**;
+`resolveEventSurface` is now a REQUIRED option with no default, used by both the assessed and the
+non-assessed build path. The sandbox hook declares `engine_fixture_sandbox`; the new
+`LessonV1LearningSessionProvider` declares `lesson_path`. Both use `payloadId = exercise.id` and keep
+`evId` / `sentenceId` / `sequence` **null** — no EV or sentence identity is registered yet (PR-07,
+French-QA-gated), and no planning id was minted into a runtime id.
+*Emission:* **none.** No screen received a learning callback, no screen file changed, the seven-screen
+dispatch is untouched, and the legacy `mk()` completion marker remains exactly once with its existing
+separate meaning — it records that the flow finished and is **not** learning evidence.
+*Privacy:* no new storage key; the existing inventory already owns `lm_le_events` / `lm_le_snapshot` /
+`lm_le_telemetry` and their corrupt backups, so it needed no edit.
+*Files:* `content/learning-engine/runtime.ts` (new), `session-controller.ts`,
+`providers/LearningEngineProvider.tsx` (new), `app/_layout.tsx`,
+`components/learning-engine/useLearningEngineSession.ts`,
+`components/lesson-v1/LessonV1LearningSessionProvider.tsx` (new), `LessonRendererV1.tsx` + tests.
+*Tests:* 49 new (1114 total). The runtime factory, reset-generation owner and resolver contract are
+tested behaviourally against a call-counting fake repository; the React providers are verified at the
+**source level only** — this repo ships no component test renderer and PR-05 did not add one.
+*French QA:* no. *Learner-visible:* **no**.
 
 **PR-06 — Wave A renderer/event integration (R1 + R2).**
 *Objective:* emit correct events from the shipped meet / fill-with-traps / weave screens for
@@ -833,7 +861,8 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Starting the assistance/attribution PR (PR-03) | **DONE** | schema v3 shipped: structured assistance, Canonical-eight attribution, admissibility + admission no-op gate, v1→v2→v3 migration, 944 tests green |
 | Starting the event-spine PR (PR-02) | **DONE** | implemented; D-1 and D-3 closed; envelope v2 + v1→v2 migration shipped with 60 new tests |
 | Starting the mastery PR (PR-04) | **DONE** | D-8 closed as separate scoped counters; mastery-v0.3 + compaction-v0.2 ship with evidence-class routing, the Supported Mon Lexique path, and no differential scheduling; 1065 tests green |
-| Starting persistence wiring (PR-05) | **READY** | the reducer, snapshot versions and projections are settled; PR-05 is wiring only — no emission, no cloud |
+| Starting persistence wiring (PR-05) | **DONE** | app-level runtime provider owns one repository per privacy-reset epoch; reset-safe runtime/controller replacement; explicit sandbox vs `lesson_path` surface resolvers; the shipped lesson path can reach the spine and emits nothing; 1114 tests green |
+| Starting renderer emission (PR-06) | **READY** | the lesson-local session bridge exists and is unconsumed; Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Starting renderer integration (PR-06) | **READY** | Wave A uses shipped R1/R2 components and shipped L0/L1 French |
 | Authoring learner-visible payloads (PR-07) | **NOT READY** | French QA pending; four identities unregistered |
 | French QA | **NOT READY** (external gate) | no human sign-off exists on any pool surface |
@@ -846,19 +875,24 @@ Completing this contract does not make any of the above implemented.
 
 ## 22. Recommended immediate next action — one runtime PR
 
-**PR-01 through PR-04 are implemented** on `feat/l1-pilot-identity-layer`,
-`feat/l1-pilot-event-envelope`, `feat/l1-pilot-assistance-attribution` and
-`feat/l1-pilot-mastery-scopes`. The spine records what assistance was present, what that assistance
-permits the attempt to prove, who the result is attributable to among the Canonical eight sources,
-and whether the event is admissible at all — with a v1 → v2 → v3 migration that neither discards nor
-falsely upgrades history. The mastery projection now keeps independent, Supported and
-self-correction evidence in separate channels that never merge, routed by the event's evidence class.
+**PR-01 through PR-05 are implemented** on `feat/l1-pilot-identity-layer`,
+`feat/l1-pilot-event-envelope`, `feat/l1-pilot-assistance-attribution`,
+`feat/l1-pilot-mastery-scopes` and `feat/l1-pilot-provider-wiring`. The spine records what assistance
+was present, what that assistance permits the attempt to prove, who the result is attributable to
+among the Canonical eight sources, and whether the event is admissible at all — with a v1 → v2 → v3
+migration that neither discards nor falsely upgrades history. The mastery projection keeps
+independent, Supported and self-correction evidence in separate channels that never merge, routed by
+the event's evidence class. The shipped `LessonRendererV1` path can now **reach** that spine through
+an app-level runtime provider that owns one repository per privacy-reset epoch — and **emits
+nothing**: no screen has a learning callback, and the legacy completion marker stays separate.
 **D-1, D-2, D-3 and D-8 are closed.**
 
-**The recommended next action is PR-05 — event persistence and provider wiring** (§17): make the
-shipped `LessonRendererV1` path able to reach the session controller and `LocalRepository`, wiring
-only, with nothing emitted yet (per-screen emission is PR-06). The privacy inventory must be updated
-for any newly persisted field.
+**The recommended next action is PR-06 — Wave A renderer/event integration** (§17): emit correct
+events from the shipped meet / fill-with-traps / weave screens for PM-001, PM-002, PM-004, PM-007,
+PM-009, PM-011 and PM-014, consuming the lesson-local session bridge PR-05 left unconsumed. Each
+screen must build its OWN real attempt context (actual hint rung, retry index, prior exposure,
+replay/slow counts) — the fixture block must not be copied, and renderers write no derived surface
+directly.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence

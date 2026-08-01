@@ -3,7 +3,7 @@
  * controller context, and the narrow mastery admission gate.
  */
 import { describe, test, assert, assertEqual } from "./harness";
-import { makeFakeKv, makeEvent, makeV1Event, makeV2Event, NO_ASSISTANCE } from "./helpers";
+import { makeFakeKv, makeEvent, makeV1Event, makeV2Event, NO_ASSISTANCE, TEST_SANDBOX_SURFACE } from "./helpers";
 import {
   LEARNING_EVENT_SCHEMA_VERSION,
   isAssessedEvent,
@@ -97,6 +97,7 @@ function makeController(repo: LocalRepository): LearningSessionController {
     contentVersion: "c",
     now: () => (t += 1_000),
     makeClientEventId: () => `evt-${(n += 1)}`,
+    resolveEventSurface: TEST_SANDBOX_SURFACE,
   });
 }
 

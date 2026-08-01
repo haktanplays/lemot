@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { AppProvider } from "@/providers/AppProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { LearningEngineProvider } from "@/providers/LearningEngineProvider";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -38,18 +39,24 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <AppProvider>
-        <StatusBar style="dark" />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="auth" />
-          <Stack.Screen
-            name="lesson/[id]"
-            options={{
-              headerShown: false,
-              animation: "slide_from_right",
-            }}
-          />
-        </Stack>
+        {/* Innermost of the three: the learning runtime needs neither auth nor
+            legacy progress, but `AppProvider` owns the privacy reset that the
+            runtime reacts to, so it must not sit above it. Mounted exactly once
+            — no route re-provides it. */}
+        <LearningEngineProvider>
+          <StatusBar style="dark" />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="auth" />
+            <Stack.Screen
+              name="lesson/[id]"
+              options={{
+                headerShown: false,
+                animation: "slide_from_right",
+              }}
+            />
+          </Stack>
+        </LearningEngineProvider>
       </AppProvider>
     </AuthProvider>
   );

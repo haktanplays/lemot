@@ -35,7 +35,10 @@ import type {
   EvidenceClass,
   LearningEvent,
   LearningEventPrimitive,
+  LearningEventSequence,
+  LearningPlacement,
 } from "./events";
+import type { SentenceId } from "../identity/sentenceIdentity";
 import type { LearningRepository } from "./repository/types";
 import type {
   AssistanceSnapshot,
@@ -85,6 +88,42 @@ export type AttemptEvidenceContext = {
   treatmentFor: (itemId: ItemId) => CurriculumTreatment;
 };
 
+/**
+ * WHERE an event happened, and which authored artefacts it points at.
+ *
+ * Until PR-05 the controller answered this itself, hardcoding
+ * `placement: "engine_fixture_sandbox"`. That was defensible while the fixture
+ * sandbox was the only caller; the moment the SAME controller became reachable
+ * from the shipped lesson path it became a lie waiting to be recorded — every
+ * shipped-lesson event would have claimed to come from the sandbox.
+ *
+ * The integration layer states it explicitly instead. The controller never
+ * infers placement from `operation`, sentence identity from target text, or EV
+ * identity from screen type.
+ */
+export type EventSurfaceContext = {
+  placement: LearningPlacement;
+  /** Exercise Variation Inventory id (`EV-###`), or null when none is registered. */
+  evId: string | null;
+  /** The authored payload this attempt rendered, or null. */
+  payloadId: string | null;
+  /** Canonical sentence identity, or null when none is registered. */
+  sentenceId: SentenceId | null;
+  /** Multi-step orchestration membership, or null for a standalone attempt. */
+  sequence: LearningEventSequence | null;
+};
+
+/**
+ * Resolve the surface context for one exercise.
+ *
+ * Required on every controller — there is deliberately NO default. A default
+ * would silently reintroduce the sandbox placement for whichever caller forgot
+ * to supply one, which is exactly the bug this contract removes.
+ */
+export type EventSurfaceResolver = (
+  exercise: ExerciseBlueprint,
+) => EventSurfaceContext;
+
 export type RecordGradedAttemptInput = GradedAttemptPayload & {
   exercise: ExerciseBlueprint;
   context: AttemptEvidenceContext;
@@ -125,6 +164,11 @@ export type SessionControllerOptions = {
   contentVersion: string;
   appBuild?: string;
   deviceInfo?: DeviceInfo;
+  /**
+   * REQUIRED. Where this controller's events happen. No default exists — see
+   * {@link EventSurfaceResolver}.
+   */
+  resolveEventSurface: EventSurfaceResolver;
   /** Injectable clock — the ONE allowed impurity (event timestamps). Default `Date.now`. */
   now?: () => number;
   /** Injectable id factory. Default is a founder-local id (NOT a remote-grade UUID). */
@@ -151,6 +195,7 @@ export class LearningSessionController {
   private readonly contentVersion: string;
   private readonly appBuild: string;
   private readonly deviceInfo: DeviceInfo;
+  private readonly resolveEventSurface: EventSurfaceResolver;
   private readonly now: () => number;
   private readonly makeClientEventId: (timestamp: number) => string;
   private readonly onUpdate?: (state: SessionState) => void;
@@ -183,6 +228,7 @@ export class LearningSessionController {
     this.contentVersion = opts.contentVersion;
     this.appBuild = opts.appBuild ?? "founder-local";
     this.deviceInfo = opts.deviceInfo ?? { platform: "founder-local" };
+    this.resolveEventSurface = opts.resolveEventSurface;
     this.now = opts.now ?? (() => Date.now());
     this.makeClientEventId = opts.makeClientEventId ?? makeLocalClientEventId;
     this.onUpdate = opts.onUpdate;
@@ -284,28 +330,6 @@ export class LearningSessionController {
     return allTargets; // first success → one bounded credit
   }
 
-  /**
-   * Fields this controller can honestly supply on its own.
-   *
-   * This is the flag-gated learning-engine FIXTURE path, not the shipped lesson
-   * renderer, so `placement` says exactly that. The exercise variation and the
-   * sentence identity genuinely do not exist for a fixture, so they stay null —
-   * everything else now arrives from the caller's `AttemptEvidenceContext`.
-   *
-   * PR-05 / PR-06 shipped-lesson integration MUST provide its own real attempt
-   * context (real hint rung, real retry index, real prior exposure, real
-   * accessibility counts). Nothing here may be reused as a silent default.
-   */
-  private surfaceContext(exercise: ExerciseBlueprint) {
-    return {
-      placement: "engine_fixture_sandbox" as const,
-      evId: null,
-      payloadId: exercise.id,
-      sentenceId: null,
-      sequence: null,
-    };
-  }
-
   private buildEvent(args: {
     exercise: ExerciseBlueprint;
     context: AttemptEvidenceContext;
@@ -367,7 +391,7 @@ export class LearningSessionController {
       assistance: args.context.assistance,
       attribution: admission.attribution,
       admissibility: admission.admissibility,
-      ...this.surfaceContext(args.exercise),
+      ...this.resolveEventSurface(args.exercise),
     });
   }
 
@@ -419,7 +443,7 @@ export class LearningSessionController {
       assistance: args.context.assistance,
       attribution: admission.attribution,
       admissibility: admission.admissibility,
-      ...this.surfaceContext(args.exercise),
+      ...this.resolveEventSurface(args.exercise),
     });
   }
 

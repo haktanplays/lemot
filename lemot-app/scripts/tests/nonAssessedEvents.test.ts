@@ -7,7 +7,7 @@
  *  3. the D-3 boundary holds — telemetry is not a learning-evidence home.
  */
 import { describe, test, assert, assertEqual } from "./harness";
-import { NO_ASSISTANCE } from "./helpers";
+import { NO_ASSISTANCE, TEST_SANDBOX_SURFACE } from "./helpers";
 import type { AttemptEvidenceContext } from "../../content/learning-engine/session-controller";
 
 /** Explicit attempt context, mirroring what the fixture hook supplies. */
@@ -49,6 +49,7 @@ function makeController(repo: LocalRepository): LearningSessionController {
     contentVersion: "content-v1",
     now: () => (t += 1_000),
     makeClientEventId: () => `evt-${(n += 1)}`,
+    resolveEventSurface: TEST_SANDBOX_SURFACE,
   });
 }
 

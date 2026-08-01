@@ -15,7 +15,7 @@
  * `LocalRepository` (in-memory KV) + the pure `scoreEvents` reducer.
  */
 import { describe, test, assert, assertEqual } from "./harness";
-import { NO_ASSISTANCE } from "./helpers";
+import { NO_ASSISTANCE, TEST_SANDBOX_SURFACE } from "./helpers";
 import type { AttemptEvidenceContext } from "../../content/learning-engine/session-controller";
 
 /** Explicit attempt context, mirroring what the fixture hook supplies. */
@@ -49,6 +49,7 @@ function makeController(repo: LocalRepository): LearningSessionController {
     contentVersion: "content-v1",
     now: () => (t += 1_000), // deterministic clock
     makeClientEventId: () => `evt-${(n += 1)}`, // deterministic id (no Math.random)
+    resolveEventSurface: TEST_SANDBOX_SURFACE,
   });
 }
 

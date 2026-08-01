@@ -14,6 +14,7 @@ import { Weave } from "./screens/Weave";
 import { NaturalReveal } from "./screens/NaturalReveal";
 import { SayItYourWayV1 } from "./screens/SayItYourWayV1";
 import { RecapCard } from "./screens/RecapCard";
+import { LessonV1LearningSessionProvider } from "./LessonV1LearningSessionProvider";
 
 // Minimal completion marker. The v1 engine has its own screen taxonomy, so
 // we reuse one existing legacy section key (completion-only, no scoring) to
@@ -22,7 +23,25 @@ import { RecapCard } from "./screens/RecapCard";
 // dev-apk smoke path. Full v1 progress mapping is a later workstream.
 const V1_COMPLETION_SECTION_KEY = "read_listen";
 
+/**
+ * PR-05 wiring only: the lesson subtree is wrapped in a learning session so the
+ * shipped path can reach the runtime spine. NOTHING below emits a learning event
+ * — no screen receives a learning callback, and the legacy `mk()` completion
+ * marker keeps its existing, separate meaning (it records that the flow was
+ * finished; it is not learning evidence). PR-06 owns per-screen emission.
+ */
 export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
+  return (
+    <LessonV1LearningSessionProvider
+      key={`${lesson.id}:${lesson.version}`}
+      lesson={lesson}
+    >
+      <LessonRendererV1Inner lesson={lesson} />
+    </LessonV1LearningSessionProvider>
+  );
+}
+
+function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
   const { mk } = useApp();
   const [screenIndex, setScreenIndex] = useState(0);
   const screen = lesson.screens[screenIndex];

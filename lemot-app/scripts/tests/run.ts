@@ -63,6 +63,7 @@ import "./evidenceAdmission.test";
 import "./assistanceIntegration.test";
 import "./migrationOnlyStateSeal.test";
 import "./masteryScopes.test";
+import "./learningRuntimeWiring.test";
 import { runAll } from "./harness";
 
 void runAll();

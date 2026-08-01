@@ -20,7 +20,7 @@
  * live constructor additionally asks "may this be authored right now?".
  */
 import { describe, test, assert, assertEqual } from "./harness";
-import { makeFakeKv, makeEvent, makeV1Event, makeV2Event, NO_ASSISTANCE } from "./helpers";
+import { makeFakeKv, makeEvent, makeV1Event, makeV2Event, NO_ASSISTANCE, TEST_SANDBOX_SURFACE } from "./helpers";
 import type { LearningEvent } from "../../content/learning-engine/events";
 import {
   ERROR_TAG_CODES,
@@ -525,6 +525,7 @@ describe("live emitters never produce migration-only state", () => {
       contentVersion: "c",
       now: () => (t += 1_000),
       makeClientEventId: () => `evt-${(n += 1)}`,
+      resolveEventSurface: TEST_SANDBOX_SURFACE,
     });
     c.recordGradedAttempt({
       exercise: fill(),

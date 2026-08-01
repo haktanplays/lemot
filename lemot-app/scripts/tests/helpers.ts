@@ -17,6 +17,7 @@ import type {
   ItemMastery,
   ProductionEvidenceCounts,
 } from "../../content/learning-engine/mastery";
+import type { EventSurfaceResolver } from "../../content/learning-engine/session-controller";
 import type {
   AdmissibilityState,
   AssistanceSnapshot,
@@ -71,6 +72,22 @@ export function supportedProductionHistory(
     selfCorrection: zero(),
   };
 }
+
+/**
+ * Event-surface resolver for controller unit tests.
+ *
+ * PR-05 removed the controller's hardcoded `engine_fixture_sandbox` default, so
+ * every caller — including a test — must now say where its events happen. These
+ * tests exercise the framework-agnostic controller directly, i.e. the fixture
+ * path, so they state that explicitly rather than inheriting it invisibly.
+ */
+export const TEST_SANDBOX_SURFACE: EventSurfaceResolver = (exercise) => ({
+  placement: "engine_fixture_sandbox",
+  evId: null,
+  payloadId: exercise.id,
+  sentenceId: null,
+  sequence: null,
+});
 
 /** Backing map is exposed so tests can assert exactly which keys were touched. */
 export type FakeKv = {

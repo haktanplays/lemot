@@ -26,7 +26,7 @@ import {
   subscribePrivacyReset,
   __resetPrivacyResetEpochForTest,
 } from "../../lib/privacyResetEpoch";
-import { makeFakeKv, makeEvent, NO_ASSISTANCE } from "./helpers";
+import { makeFakeKv, makeEvent, NO_ASSISTANCE, TEST_SANDBOX_SURFACE } from "./helpers";
 import {
   LocalRepository,
   LM_LE_EVENTS_KEY,
@@ -208,6 +208,7 @@ describe("PR-H — stale writers cannot re-create lm_le_events (real repository/
       contentVersion: "v1",
       now: () => 1_000,
       makeClientEventId: () => "stale-evt",
+      resolveEventSurface: TEST_SANDBOX_SURFACE,
     });
 
     // The user resets: barrier on, full inventory cleared.
