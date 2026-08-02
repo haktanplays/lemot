@@ -103,10 +103,14 @@ proof now exists** → ~~PR-08 Practice return~~ ✅ → ~~PR-09 Mon Lexique UI~
 PR-07 exact learner content (French QA deferred by founder waiver — see §22). PR-07 (payload registration) is the French-QA-gated branch that
 must land before any learner sees the pilot.
 
-**2.9 May proceed before French QA:** PR-01 through PR-06, PR-08, PR-09, PR-10, PR-12 —
-all operate on types, logic, projections, and **fixture** French already shipped in L0/L1.
-**Blocked by French QA:** PR-07 (registering the L1 pilot's authored seeds/payloads as
-learner-visible content) and any Wave B audio recording.
+**2.9 French-QA gating (corrected after the founder waiver):** PR-01 through PR-06, PR-08,
+PR-09, PR-10 and PR-12 never needed French QA — they operate on types, logic, projections, and
+**fixture** French already shipped in L0/L1. PR-07's original human-QA gate was **explicitly
+waived by the founder for internal pilot registration** (§22), and PR-07 has since shipped with
+every new surface marked `founder_waived_provisional` — so PR-07 is no longer "blocked by French
+QA"; it is DONE under recorded founder risk. What French QA still gates: the comprehensive human
+review itself remains **incomplete**, public/content-complete release remains **blocked** until
+it passes, and any Wave B audio recording remains gated as before.
 
 ---
 
@@ -893,12 +897,41 @@ playback-rate on one clip; shadowing produces no pronunciation evidence. *Tests:
 T-11, T-12, T-13**. *Rollback:* wave revert. *French QA:* yes for any new recorded surface.
 *Learner-visible:* yes.
 
-**PR-12 — L1 connected accumulation and failure smoke.**
+**PR-12 — L1 connected accumulation and failure smoke.
+✅ CODE-SIDE AUTOMATED SMOKE: PASS (`test/l1-pilot-connected-smoke`) ·
+⏳ ANDROID OPERATOR SMOKE: PENDING — PR-12 is NOT fully complete until the operator run.**
 *Objective:* run the §13 proof end to end, plus failure injection, plus Android smoke.
-*Files:* tests + smoke script only. *Depends:* PR-06 (proof), PR-08/09/10 (full chain).
-*Excludes:* any production-code change — if the smoke finds a defect, it is fixed in its own PR.
-*Acceptance:* the six proof pairings pass; controls (PM-014/PM-001/PM-002) move no mastery; replay
-reproduces the snapshot; offline works. *Tests:* the whole §16 matrix. *Rollback:* tests only.
+*Shipped (code side):* one cumulative real-history suite
+(`scripts/tests/l1ConnectedSmoke.test.ts`, 28 tests, zero production changes) running all six
+proof paths against ONE shared log with the real registered PM-009/PM-011 payloads and real
+screens: PM-001 exposure and PM-002 recognition move no ownership (je veux stays narrow
+`wrong_register`); PM-009 carries EV-030/`sent:l01-merci` into independent mastery, Mon Lexique
+and Stats; PM-011 carries EV-040/the tea sentence as `supplied_package` Supported evidence with
+independent tea zero and no `noun-the` row; PM-014 records attempt-then-reveal without grading;
+**PM-023 return capability proven; exact PM-023 learner payload remains unregistered.**
+Cumulative assertions pin 8 v3 events in order on one `lm_le_events` key; replay through
+`scoreEvents` and a fresh-runtime restart reproduce every projection with no cached snapshot;
+duplicated history inflates nothing. Failure injection: unrendered tea package quarantines;
+append failure settles to the existing error status with no fabricated success or retry;
+read-after-append failure surfaces error while the persisted event is recovered by a healthy
+read; content/validator/UI-flow/unresolved attribution never becomes weakness or ownership;
+future-schema and corrupt logs fail closed per existing policy; the privacy-reset race suppresses
+the stale writer and post-reset learning repopulates without restart; both REAL settlement gates
+hold; the whole text sequence ran with a throwing `fetch` seam — zero network calls (text spine
+only; no TTS/recorded-audio/cloud-sync claim). One documented finding: with an all-chunk 3-item
+pool, the pre-existing ≤2-consecutive-family today's-set rule defers the third item — existing
+policy, pinned, not a defect.
+*Operator half:* `scripts/dev/l1-connected-smoke.sh` (preflight + honest device detection over
+the existing `android-smoke.sh`) and
+`docs/workstreams/L1_CONNECTED_ANDROID_SMOKE_RUNBOOK_v0.1.md` (13 checkpoints, screenshot set,
+P0–P3 rubric). This cloud session had no adb/device: recorded as **ANDROID OPERATOR SMOKE
+PENDING** — never PASS, never FAIL. Checkpoint 12 is expected `BLOCKED — no operator-accessible
+reset surface` unless the sandbox privacy route is reachable in the build under test.
+*Next action (conditional):* if the operator smoke passes with zero P0/P1/P2 → first 2–3-person
+observed L0–L1 product test; otherwise → smallest defect correction before user testing. Do not
+advance to L2 content on automated green alone.
+*Depends:* PR-06 (proof), PR-07 (exact payloads), PR-08/09/10 (full chain). *Excludes:* any
+production-code change — honored; zero production files touched. *Rollback:* tests/docs only.
 *French QA:* no. *Learner-visible:* no.
 
 ---
@@ -993,7 +1026,7 @@ screen types, FD-1…FD-7, CA-8, the 29-pairing selection.
 | Authoring learner-visible payloads (PR-07) | **DONE — provisional under founder waiver** | five item ids + two sentences + two exact payloads registered; identities flow on lesson and Hub events; PM-023 exact payload deliberately unregistered; 1352 tests green |
 | French QA | **NOT COMPLETED** (external gate) | no human sign-off exists on any pool surface; public/content-complete release remains blocked |
 | Audio implementation (PR-11) | **NOT READY** | no audio identity, no recordings; PM-018 hard-gated |
-| Connected L1 smoke (PR-12) | **READY WITH BOUNDED GAPS** | the proof is well-defined and testable on shipped French once PR-06 lands |
+| Connected L1 smoke (PR-12) | **CODE-SIDE PASS · ANDROID OPERATOR SMOKE PENDING** | cumulative six-path + failure-injection suite green (1380 tests); no adb target in the cloud session, so the device half stays PENDING until the operator executes the runbook; PR-12 not fully complete until then |
 
 Completing this contract does not make any of the above implemented.
 
@@ -1029,13 +1062,20 @@ pre-PR-07 human French-QA requirement, accepting the risk. Recorded honestly:
   founder risk**; no implementation may claim named-human approval before it exists;
 - PR-08 adds no new French, so it did not depend on this waiver operationally.
 
-**The recommended next engineering action is PR-12 — connected accumulation and failure smoke**,
-now that the projection chain (mastery → Mon Lexique → Practice Hub → Stats) AND the exact
-PM-009/PM-011 content registration both exist. PR-07 shipped under the recorded founder waiver:
-five provisional item ids, two provisional sentences, the two exact payloads, and real
-EV/sentence/payload identity on lesson AND Hub events — with no human approval claimed anywhere,
-the provisional-surface inventory ready for the eventual comprehensive QA pack, and the exact
-PM-023 payload still unregistered. PR-11 remains audio-gated.
+**The next action is CONDITIONAL on the pending Android operator smoke.** PR-12's automated
+code-side smoke is PASS (cumulative six-path history, failure injection, replay/restart, offline
+text-path — 1380 tests green, zero production changes); the Android operator half is **PENDING**
+(no device in the cloud session; runbook at
+`docs/workstreams/L1_CONNECTED_ANDROID_SMOKE_RUNBOOK_v0.1.md`).
+
+- If the operator Android smoke passes with **zero P0/P1/P2** → the next action is the **first
+  2–3-person observed L0–L1 product test**.
+- Otherwise → the next action is the **smallest defect correction** before any user testing.
+
+Do NOT advance to L2 content authoring merely because the automated tests pass. PR-07 shipped
+under the recorded founder waiver (five provisional item ids, two provisional sentences, the two
+exact payloads, real EV/sentence/payload identity on lesson AND Hub events, no human approval
+claimed anywhere, the exact PM-023 payload still unregistered). PR-11 remains audio-gated.
 
 Standing constraints: keep one spine, one repository, one mastery projection · do not touch
 shipped item ids · register no French · no renderer or Practice Hub change · **no numeric evidence

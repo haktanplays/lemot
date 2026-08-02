@@ -69,6 +69,7 @@ import "./practiceHubReturn.test";
 import "./monLexiqueProjection.test";
 import "./learningStats.test";
 import "./pilotPayloadRegistration.test";
+import "./l1ConnectedSmoke.test";
 import { runAll } from "./harness";
 
 void runAll();
