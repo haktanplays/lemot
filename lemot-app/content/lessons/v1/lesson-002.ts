@@ -61,7 +61,7 @@ const screens: LessonScreen[] = [
     type: "fill-with-traps",
     targetItemIds: ["chunk-je-suis"],
     payload: {
-      prompt: "What fits the empty space?",
+      prompt: "You want to tell them you have arrived. Which word fits?",
       sentenceBefore: "Je ",
       sentenceAfter: " ici.",
       blankCount: 1,
@@ -108,13 +108,29 @@ const screens: LessonScreen[] = [
         modelAnswer: "Je suis ici.",
         ifCorrect: "Two words. One French engine, running.",
         ifCorrectButFlat:
-          "The pieces fit. The period gives the sentence a small landing.",
+          "Right. The period gives the sentence a small landing.",
         ifUnderstandableButWrong:
-          "Your meaning lands. A native joins the pieces this way.",
+          "Your meaning lands. Two words carry it: je suis ici.",
         ifMissingTargetPiece:
           "Start with je suis. That is the shape that does the work.",
       },
       validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // Placed BETWEEN the two equivalent productions (F-12): it gives the
+    // second one an explained purpose instead of leaving them consecutive.
+    id: "s06-insight-shape-noticed",
+    type: "insight-card",
+    targetItemIds: ["chunk-je-suis"],
+    payload: {
+      insightType: "grammar-nugget",
+      title: "Notice the shape.",
+      body: "You just wrote Je suis ici. The moment is about to change; the shape will not. That is what an engine does, and the same shape can say how you are, not just where.",
+      examples: [
+        { fr: "Je suis ici.", en: "I am here." },
+        { fr: "Je suis prêt.", en: "I am ready." },
+      ],
     },
   },
   {
@@ -136,23 +152,11 @@ const screens: LessonScreen[] = [
         ifCorrect: "Same shape. Different moment. That is how the engine works.",
         ifCorrectButFlat:
           "Right. The shape does not change between situations.",
-        ifMissingTargetPiece: "Same two words as before: je suis + ici.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The same two words answer from anywhere: je suis ici.",
+        ifMissingTargetPiece: "The same two words as before: je suis, then ici.",
       },
       validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    id: "s06-insight-shape-noticed",
-    type: "insight-card",
-    targetItemIds: ["chunk-je-suis"],
-    payload: {
-      insightType: "grammar-nugget",
-      title: "Notice the shape.",
-      body: "You just wrote Je suis ici twice. The shape stayed the same. Only the moment around it changed. That is what an engine does, and the same shape can say how you are, not just where.",
-      examples: [
-        { fr: "Je suis ici.", en: "I am here." },
-        { fr: "Je suis prêt.", en: "I am ready." },
-      ],
     },
   },
   {
@@ -183,7 +187,7 @@ const screens: LessonScreen[] = [
     id: "s08-recap-first-engine",
     type: "recap",
     payload: {
-      title: "Your first French engine.",
+      title: "You put yourself in the room.",
       lines: [
         "You said where you are.",
         "You added a greeting and built a full small French interaction.",
@@ -208,7 +212,7 @@ export const lesson002: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
   estimatedMinutes: 5,
-  canDo: "Say I am here, in French.",
+  canDo: "Say where you are, in French.",
   whyItExists:
     "L1 gave the survival kit of polite chunks. L2 gives one reusable architecture shape: je suis. The shape stays the same across every future lesson. L2's only job is to make that shape feel solid in one calm location. This is the Être seed; c'est and the wider identity work arrive in a later pass.",
   prerequisites: ["v1-lesson-001"],

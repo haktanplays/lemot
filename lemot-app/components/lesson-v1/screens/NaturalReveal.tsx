@@ -96,7 +96,7 @@ export function NaturalRevealView({
           }}
         >
           <Text className="text-sm" style={{ color: P.ink2 }}>
-            Compare your answer with the model answer.
+            Compare your answer with the model.
           </Text>
         </View>
       )}

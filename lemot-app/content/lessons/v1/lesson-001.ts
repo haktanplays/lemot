@@ -74,9 +74,9 @@ const screens: LessonScreen[] = [
         modelAnswer: "Bonjour, je voudrais un café.",
         ifCorrect: "That is exactly how a calm order begins.",
         ifCorrectButFlat:
-          "Right pieces. The comma marks a small natural pause.",
+          "Right. The comma marks a small natural pause.",
         ifUnderstandableButWrong:
-          "Your meaning lands. A native joins the pieces this way.",
+          "Your meaning lands. The greeting and the order run as one line.",
         ifMissingTargetPiece:
           "Start with bonjour, then the request.",
       },
@@ -143,7 +143,9 @@ const screens: LessonScreen[] = [
         modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
         ifCorrect: "That is a full, polite café order.",
         ifCorrectButFlat:
-          "Right pieces. The commas mark small natural pauses.",
+          "Right. The commas mark small natural pauses.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The please sits at the end, after the order.",
         ifMissingTargetPiece:
           "Add s'il vous plaît to soften the close. It costs nothing and changes the tone.",
       },
@@ -187,6 +189,7 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Merci.",
         ifCorrect: "That closes the exchange.",
+        ifCorrectButFlat: "Right. One word is the whole reply here.",
         ifUnderstandableButWrong: "One word does it here: merci.",
       },
       validationMode: "exact-or-alternative",
@@ -243,9 +246,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Je voudrais un thé, s'il vous plaît.",
         ifCorrect: "Same calm frame, new drink.",
-        ifCorrectButFlat: "Right pieces. The comma marks a small natural pause.",
+        ifCorrectButFlat: "Right. The comma settles the order before the please.",
         ifUnderstandableButWrong:
-          "Your meaning lands. A native joins the pieces this way.",
+          "Your meaning lands. The drink keeps its little word: un thé.",
         ifMissingTargetPiece: "The drink piece is right there: un thé.",
       },
       validationMode: "exact-or-alternative",
@@ -263,9 +266,9 @@ const screens: LessonScreen[] = [
     ],
     weakPointTags: ["politeness", "natural-speech"],
     payload: {
-      situation: "This is your order: un café.",
-      communicativeGoal:
-        "Make it sound natural: add a soft opening, ask for it politely, close the request politely, and thank them if you like.",
+      situation:
+        "The counter is quiet. You have been waiting a moment, and the person behind it turns to you.",
+      communicativeGoal: "Order politely, then close the exchange.",
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
         { text: "je voudrais", itemId: "chunk-je-voudrais" },
@@ -287,7 +290,7 @@ const screens: LessonScreen[] = [
     id: "s09-recap-survival-kit",
     type: "recap",
     payload: {
-      title: "Your survival kit.",
+      title: "You can hold a first exchange.",
       // Recycled first, then extended: line 1 names what the learner already
       // carried, lines 2 and 3 name what this lesson actually added. The tea
       // line stays honest about support and never claims the piece is owned.

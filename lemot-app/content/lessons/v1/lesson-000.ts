@@ -129,7 +129,7 @@ const screens: LessonScreen[] = [
         modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
         ifCorrect: "That is exactly how a calm café order sounds.",
         ifCorrectButFlat:
-          "Right pieces. The commas mark small natural pauses.",
+          "Right. The commas give the order its natural pauses.",
         ifUnderstandableButWrong:
           "Your meaning lands. A native would join the pieces this way.",
         ifMissingTargetPiece:

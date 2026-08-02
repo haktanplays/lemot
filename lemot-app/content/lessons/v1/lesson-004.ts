@@ -206,7 +206,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Bonjour, j'ai une question.",
         ifCorrect: "Greeting plus a clear request to ask. That is a real opening.",
-        ifCorrectButFlat: "Right pieces. The comma marks a small natural pause.",
+        ifCorrectButFlat: "Right. The comma lets the greeting settle first.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. French hands the question to have: j'ai une question.",
         ifMissingTargetPiece: "Greet with bonjour, then j'ai une question.",
       },
       validationMode: "exact-or-alternative",
@@ -267,7 +269,7 @@ export const lesson004: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
   estimatedMinutes: 6,
-  canDo: "Say how I feel and what I have, using j'ai.",
+  canDo: "Say how you feel and what you have.",
   whyItExists:
     "L2 gave je suis, the first engine. L4 gives the second: j'ai. French often puts feelings and simple possession on have, not on be, so I am hungry becomes j'ai faim. L4 stays bounded to j'ai chunks and the je suis vs j'ai contrast; the full avoir paradigm, age, numbers, and the need system are deferred.",
   prerequisites: ["v1-lesson-003"],

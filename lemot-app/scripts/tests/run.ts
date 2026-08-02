@@ -72,6 +72,7 @@ import "./pilotPayloadRegistration.test";
 import "./l1ConnectedSmoke.test";
 import "./l0l1TruthfulProgression.test";
 import "./l7l10Progression.test";
+import "./globalLessonConsistency.test";
 import { runAll } from "./harness";
 
 void runAll();

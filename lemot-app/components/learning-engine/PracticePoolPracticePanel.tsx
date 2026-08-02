@@ -54,9 +54,8 @@ const headerRow: ViewStyle = {
 const header: TextStyle = {
   color: P.ink3,
   fontSize: 12,
-  letterSpacing: 1,
+  letterSpacing: 0.3,
   fontFamily: "Outfit",
-  textTransform: "uppercase",
 };
 const closeBtn: ViewStyle = {
   borderRadius: 999,

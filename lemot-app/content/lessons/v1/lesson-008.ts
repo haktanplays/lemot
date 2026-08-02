@@ -83,7 +83,7 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "C'est où ?",
         ifCorrect: "Two words you already had, one new question.",
-        ifCorrectButFlat: "Right shape. The rising tone does the asking.",
+        ifCorrectButFlat: "Right. The rising tone does the asking.",
         ifUnderstandableButWrong:
           "Your meaning lands. Spoken French keeps it this short: C'est où ?",
         ifMissingTargetPiece: "Où is the word that asks. Put it after c'est.",
@@ -178,7 +178,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "C'est ici.",
         ifCorrect: "Question and answer. Both sides are yours now.",
-        ifCorrectButFlat: "The same pieces that asked now answer.",
+        ifCorrectButFlat: "Right. The same pieces that asked now answer.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Spoken French answers just as short: C'est ici.",
         ifMissingTargetPiece: "C'est carries the answer. Ici lands it.",
       },
       validationMode: "exact-or-alternative",

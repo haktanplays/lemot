@@ -48,7 +48,7 @@ export function SayItYourWayV1({
   const [phase, setPhase] = useState<"input" | "confirm" | "revealed">("input");
   const [ai, setAi] = useState<AiState>({ status: "idle" });
   // Support, not assembly: suggested pieces stay hidden until the learner opts in
-  // via "Need an idea?", so the initial screen does not read as guided assembly.
+  // via "Need a hint?", so the initial screen does not read as guided assembly.
   const [showPieces, setShowPieces] = useState(false);
 
   const canCheck = text.trim().length > 0;
@@ -152,7 +152,7 @@ export function SayItYourWayV1({
             className="text-xs mt-3"
             style={{ color: P.ink3, textDecorationLine: "underline" }}
           >
-            Need an idea?
+            Need a hint?
           </Text>
         )}
 

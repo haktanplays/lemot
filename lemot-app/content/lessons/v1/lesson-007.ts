@@ -102,9 +102,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Je vais à la maison.",
         ifCorrect: "One engine, one destination. That's the whole sentence.",
-        ifCorrectButFlat: "The pieces fit. The period closes the moment.",
+        ifCorrectButFlat: "Right. The period closes the moment.",
         ifUnderstandableButWrong:
-          "Your meaning lands. A native joins the two pieces this way.",
+          "Your meaning lands. The destination stays one piece: à la maison.",
         ifMissingTargetPiece: "Start with je vais. That is the moving shape.",
       },
       validationMode: "exact-or-alternative",
@@ -176,7 +176,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Je vais à la maison. Au revoir.",
         ifCorrect: "You opened moments before. Now you can close them and leave.",
-        ifCorrectButFlat: "Two short sentences. Calm and complete.",
+        ifCorrectButFlat: "Right. Two short sentences, calm and complete.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The direction comes first, then the goodbye.",
         ifMissingTargetPiece:
           "Lead with je vais à la maison, then let au revoir close the door.",
       },

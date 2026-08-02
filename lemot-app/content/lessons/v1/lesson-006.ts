@@ -15,23 +15,6 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    id: "s00-insight-bonjour-to-au-revoir",
-    type: "insight-card",
-    targetItemIds: ["chunk-bonjour", "chunk-au-revoir"],
-    payload: {
-      insightType: "culture-bite",
-      title: "From bonjour to au revoir.",
-      body:
-        "In France, a small moment opens with bonjour and closes with au " +
-        "revoir. Today you carry the whole arc, using only the pieces you " +
-        "already built. No new rule.",
-      examples: [
-        { fr: "Bonjour.", en: "Hello." },
-        { fr: "Au revoir.", en: "Goodbye." },
-      ],
-    },
-  },
-  {
     id: "s01-meet-bonjour-at-the-door",
     type: "meet-card",
     targetItemIds: ["chunk-bonjour"],
@@ -95,9 +78,31 @@ const screens: LessonScreen[] = [
         modelAnswer: "Bonjour, je suis ici.",
         ifCorrect: "You opened the moment and said where you are.",
         ifCorrectButFlat: "Right. The greeting and the arrival, in one line.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. A native opens first, then lands: Bonjour. Je suis ici.",
         ifMissingTargetPiece: "Start with bonjour, then je suis ici.",
       },
       validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // Moved out of the opening (F-10): it now reflects on the arc AFTER the
+    // learner has greeted and arrived in French, so the lesson never opens
+    // with two explanation screens.
+    id: "s00-insight-bonjour-to-au-revoir",
+    type: "insight-card",
+    targetItemIds: ["chunk-bonjour", "chunk-au-revoir"],
+    payload: {
+      insightType: "culture-bite",
+      title: "From bonjour to au revoir.",
+      body:
+        "In France, a small moment opens with bonjour and closes with au " +
+        "revoir. Today you carry the whole arc, using only the pieces you " +
+        "already built. No new rule.",
+      examples: [
+        { fr: "Bonjour.", en: "Hello." },
+        { fr: "Au revoir.", en: "Goodbye." },
+      ],
     },
   },
   {
@@ -154,6 +159,8 @@ const screens: LessonScreen[] = [
         modelAnswer: "J'ai une question.",
         ifCorrect: "You opened your reason for being there.",
         ifCorrectButFlat: "Right. j'ai carries the question, as one package.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The question rides on have: j'ai une question.",
         ifMissingTargetPiece: "Use j'ai, then une question.",
       },
       validationMode: "exact-or-alternative",
@@ -224,6 +231,8 @@ const screens: LessonScreen[] = [
         modelAnswer: "Merci, au revoir.",
         ifCorrect: "That is how a moment closes: thanks, then goodbye.",
         ifCorrectButFlat: "Right. merci then au revoir, and you are out the door.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Thanks comes first, then the goodbye: Merci. Au revoir.",
         ifMissingTargetPiece: "Thank first with merci, then close with au revoir.",
       },
       validationMode: "exact-or-alternative",
@@ -271,7 +280,7 @@ const screens: LessonScreen[] = [
     id: "s10-recap-a-small-moment",
     type: "recap",
     payload: {
-      title: "A small moment.",
+      title: "You carried a whole moment.",
       lines: [
         "This was not a quiz. It was a small moment.",
         "You carried it in French, from bonjour to au revoir.",
@@ -300,8 +309,7 @@ export const lesson006: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "review-integration",
   estimatedMinutes: 7,
-  canDo:
-    "Carry a whole small French moment: greet, say where you are, ask one thing, thank, and close.",
+  canDo: "Carry a whole small moment, from greeting to goodbye.",
   whyItExists:
     "L1-L5 each gave a few pieces. L6 adds no new grammar and only one new chunk, au revoir. Its job is to let the learner carry a whole small human moment in French by recombining what they already own, from bonjour at the door to au revoir at the close. This is the Round 1 payoff: a moment, not a quiz.",
   prerequisites: ["v1-lesson-005"],

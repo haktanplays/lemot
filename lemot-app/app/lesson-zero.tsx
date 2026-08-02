@@ -372,7 +372,7 @@ export default function LessonZeroScreen() {
             two), capped so it nudges without ever laying out the full answer. */}
         {hintPieces.length > 0 && (
           <View style={supportCard}>
-            <Text style={revealCaption}>Need a nudge?</Text>
+            <Text style={revealCaption}>Need a hint?</Text>
             <View style={supportChipsRow}>
               {hintPieces.map((piece) => (
                 <View key={piece} style={hintChip}>

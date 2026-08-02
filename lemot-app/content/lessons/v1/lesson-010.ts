@@ -53,7 +53,7 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Bonjour. C'est où ?",
         ifCorrect: "The opener and the question, working as one move.",
-        ifCorrectButFlat: "Right pieces. Bonjour first buys you the answer.",
+        ifCorrectButFlat: "Right. Bonjour first buys you the answer.",
         ifUnderstandableButWrong:
           "Your meaning lands. A native opens the moment first: Bonjour. C'est où ?",
         ifMissingTargetPiece: "Start with bonjour, then let c'est où do the asking.",
@@ -143,9 +143,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Je voudrais faire une pause.",
         ifCorrect: "Yesterday's sentence, back when you actually need it.",
-        ifCorrectButFlat: "The pieces still fit. Rest, asked for calmly.",
+        ifCorrectButFlat: "Right. The same ask, in a new moment.",
         ifUnderstandableButWrong:
-          "Your meaning lands. A native joins the pieces this way.",
+          "Your meaning lands. The ask you already know still fits here.",
         ifMissingTargetPiece:
           "Start with je voudrais. Then hand it the action: faire une pause.",
       },
@@ -213,7 +213,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Je vais à la maison. Au revoir.",
         ifCorrect: "You opened the day with bonjour. Now you can close it.",
-        ifCorrectButFlat: "Two short sentences. Calm and complete.",
+        ifCorrectButFlat: "Right. The day closes the way it opened.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Where you are going comes first, then the goodbye.",
         ifMissingTargetPiece:
           "Lead with je vais à la maison, then let au revoir close the door.",
       },

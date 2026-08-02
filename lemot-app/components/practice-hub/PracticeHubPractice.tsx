@@ -173,8 +173,7 @@ export function PracticeHubPractice({
           style={{
             color: P.ink3,
             fontSize: 12,
-            letterSpacing: 1,
-            textTransform: "uppercase",
+            letterSpacing: 0.3,
           }}
         >
           Practice this piece

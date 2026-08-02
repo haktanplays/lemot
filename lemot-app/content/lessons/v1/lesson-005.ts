@@ -41,30 +41,6 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    id: "s02-insight-little-packages",
-    type: "insight-card",
-    targetItemIds: [
-      "grammar-un-une-package",
-      "chunk-un-cafe",
-      "chunk-une-question",
-    ],
-    weakPointTags: ["articles"],
-    payload: {
-      insightType: "grammar-nugget",
-      title: "Words come in small packages.",
-      body:
-        "Many French words travel with a little word in front. Café comes as " +
-        "un café. Question comes as une question. Learn the package, not a " +
-        "rule: un café, une question.",
-      examples: [
-        { fr: "un café", en: "a coffee" },
-        { fr: "une question", en: "a question" },
-        { fr: "Je voudrais un café.", en: "I would like a coffee." },
-        { fr: "J'ai une question.", en: "I have a question." },
-      ],
-    },
-  },
-  {
     id: "s03-fill-package-cafe",
     type: "fill-with-traps",
     targetItemIds: ["chunk-un-cafe"],
@@ -97,7 +73,7 @@ const screens: LessonScreen[] = [
     targetItemIds: ["chunk-une-question"],
     weakPointTags: ["articles"],
     payload: {
-      prompt: "And which one travels with question?",
+      prompt: "You have something to ask. Which little word travels with question?",
       sentenceAfter: "question.",
       blankCount: 1,
       options: [
@@ -116,6 +92,32 @@ const screens: LessonScreen[] = [
         explanation: "Question travels with une: une question.",
         natural: "une question",
       },
+    },
+  },
+  {
+    // Moved between the second and third Fill (F-12): it breaks the run of
+    // three and names the pattern the last Fill then applies.
+    id: "s02-insight-little-packages",
+    type: "insight-card",
+    targetItemIds: [
+      "grammar-un-une-package",
+      "chunk-un-cafe",
+      "chunk-une-question",
+    ],
+    weakPointTags: ["articles"],
+    payload: {
+      insightType: "grammar-nugget",
+      title: "Words come in small packages.",
+      body:
+        "Many French words travel with a little word in front. Café comes as " +
+        "un café. Question comes as une question. Learn the package, not a " +
+        "rule: un café, une question.",
+      examples: [
+        { fr: "un café", en: "a coffee" },
+        { fr: "une question", en: "a question" },
+        { fr: "Je voudrais un café.", en: "I would like a coffee." },
+        { fr: "J'ai une question.", en: "I have a question." },
+      ],
     },
   },
   {
@@ -210,6 +212,8 @@ const screens: LessonScreen[] = [
         modelAnswer: "J'ai une question.",
         ifCorrect: "The other package: une question.",
         ifCorrectButFlat: "Right. une question is one piece too.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The little word travels with it: une question.",
         ifMissingTargetPiece: "Keep une with question: une question.",
       },
       validationMode: "exact-or-alternative",
@@ -243,7 +247,7 @@ const screens: LessonScreen[] = [
     id: "s08-recap-packages",
     type: "recap",
     payload: {
-      title: "Little words, small packages.",
+      title: "The little words are yours now.",
       lines: [
         "Many French words come with a little word in front.",
         "You learned un café and une question.",
@@ -267,7 +271,7 @@ export const lesson005: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   estimatedMinutes: 5,
-  canDo: "Ask for and name objects with the right little word in front.",
+  canDo: "Ask for things with the right little word.",
   whyItExists:
     "Every request so far carried a little word: un café, s'il vous plaît; j'ai une question. L5 names what the learner has been using. un and une are taught as small packages that come with the word, not as a gender rule. Plurals, partitives, definite articles, and the gender system are deferred.",
   prerequisites: ["v1-lesson-004"],

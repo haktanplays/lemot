@@ -36,7 +36,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["negation", "ne-pas"],
     payload: {
       insightType: "grammar-nugget",
-      title: "The ne ... pas sandwich.",
+      title: "Two pieces, one on each side.",
       body:
         "To make a sentence negative, French wraps the action. ne goes in " +
         "front, pas goes after, and the verb sits between them. Je suis " +
@@ -55,7 +55,7 @@ const screens: LessonScreen[] = [
     targetItemIds: ["chunk-je-ne-suis-pas"],
     weakPointTags: ["negation", "ne-pas"],
     payload: {
-      prompt: "Which word sits inside the sandwich?",
+      prompt: "You want to say you are not there. Which word sits between the two pieces?",
       sentenceBefore: "Je ne",
       sentenceAfter: "pas ici.",
       blankCount: 1,
@@ -72,7 +72,7 @@ const screens: LessonScreen[] = [
           id: "opt-bonjour",
           text: "bonjour",
           isCorrect: false,
-          trapReason: "Bonjour is a greeting. It cannot sit inside the sandwich.",
+          trapReason: "Bonjour is a greeting. It cannot sit between ne and pas.",
         },
       ],
       answer: ["opt-suis"],
@@ -81,21 +81,6 @@ const screens: LessonScreen[] = [
         explanation: "The verb goes between the two pieces: je ne suis pas.",
         natural: "Je ne suis pas ici.",
       },
-    },
-  },
-  {
-    id: "s03-meet-ce-n-est-pas-ici",
-    type: "meet-card",
-    targetItemIds: ["chunk-ce-n-est-pas", "chunk-c-est"],
-    weakPointTags: ["negation", "elision"],
-    payload: {
-      fr: "Ce n'est pas ici.",
-      en: "It is not here.",
-      title: "The sandwich works on c'est too.",
-      highlights: [
-        { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas" },
-      ],
-      tts: true,
     },
   },
   {
@@ -163,13 +148,30 @@ const screens: LessonScreen[] = [
       expectedAnswers: ["Je ne suis pas ici."],
       reveal: {
         modelAnswer: "Je ne suis pas ici.",
-        ifCorrect: "You turned a sentence negative. The sandwich holds.",
-        ifCorrectButFlat: "The pieces fit. ne and pas wrap the verb.",
+        ifCorrect: "You turned a sentence negative. The two pieces hold.",
+        ifCorrectButFlat: "Right. ne and pas wrap the verb.",
         ifUnderstandableButWrong:
           "Your meaning lands. A native wraps the verb this way: ne suis pas.",
         ifMissingTargetPiece: "Keep ne and pas together around suis.",
       },
       validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // Moved next to the weave that produces it (F-12): this breaks the run of
+    // three consecutive weaves and puts first contact right before production.
+    id: "s03-meet-ce-n-est-pas-ici",
+    type: "meet-card",
+    targetItemIds: ["chunk-ce-n-est-pas", "chunk-c-est"],
+    weakPointTags: ["negation", "elision"],
+    payload: {
+      fr: "Ce n'est pas ici.",
+      en: "It is not here.",
+      title: "The same two pieces work on c'est.",
+      highlights: [
+        { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas" },
+      ],
+      tts: true,
     },
   },
   {
@@ -192,8 +194,10 @@ const screens: LessonScreen[] = [
       ],
       reveal: {
         modelAnswer: "Ce n'est pas ici.",
-        ifCorrect: "Same sandwich, new sentence. ce n'est pas.",
+        ifCorrect: "Same two pieces, new sentence: ce n'est pas.",
         ifCorrectButFlat: "Right. ne becomes n' before est, and pas closes it.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The negative wraps c'est the same way: ce n'est pas.",
         ifMissingTargetPiece: "Use the whole piece: ce n'est pas.",
       },
       validationMode: "exact-or-alternative",
@@ -218,7 +222,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Non, je ne suis pas ici.",
         ifCorrect: "Answer plus sentence. That is how a real no sounds.",
-        ifCorrectButFlat: "Right. Non answers; the sandwich carries the rest.",
+        ifCorrectButFlat: "Right. Non answers; ne and pas carry the rest.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The answer comes first, then the sentence: Non, je ne suis pas ici.",
         ifMissingTargetPiece: "Start with Non, then je ne suis pas ici.",
       },
       validationMode: "exact-or-alternative",
@@ -279,7 +285,7 @@ export const lesson003: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "pronoun-particle",
   estimatedMinutes: 6,
-  canDo: "Say no, and say what is not true, using ne ... pas.",
+  canDo: "Say no, and say what is not true.",
   whyItExists:
     "L1 and L2 gave the learner sentences they could say. L3 gives the opposite move: how to say no and how to make a sentence negative. ne and pas wrap the verb, the first reusable transform in the slice. L3 stays bounded to the ne ... pas sandwich plus oui, non, and a polite refusal; wider negation and question forms are deferred.",
   prerequisites: ["v1-lesson-002"],

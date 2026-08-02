@@ -30,7 +30,7 @@ function orderHintPieces(input: WeavePiece[]): WeavePiece[] {
 const RESULT_NOTES: Record<MatchResult, { text: string; tone: "ok" | "warm" | "soft" }> = {
   exact: { text: "Correct.", tone: "ok" },
   alternative: { text: "Accepted.", tone: "warm" },
-  none: { text: "Compare with the model answer.", tone: "soft" },
+  none: { text: "Compare with the model.", tone: "soft" },
 };
 
 export function Weave({

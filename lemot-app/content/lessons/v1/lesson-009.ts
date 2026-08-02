@@ -107,9 +107,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Je voudrais faire une pause.",
         ifCorrect: "The same engine, carrying its first action.",
-        ifCorrectButFlat: "The pieces fit. Rest, asked for calmly.",
+        ifCorrectButFlat: "Right. Rest, asked for calmly.",
         ifUnderstandableButWrong:
-          "Your meaning lands. A native joins the pieces this way.",
+          "Your meaning lands. The action stays whole: faire une pause.",
         ifMissingTargetPiece:
           "Start with je voudrais. Then hand it the action: faire une pause.",
       },
@@ -199,7 +199,9 @@ const screens: LessonScreen[] = [
       reveal: {
         modelAnswer: "Je voudrais faire une pause, s'il vous plaît.",
         ifCorrect: "Old politeness, new rest. The pieces keep working.",
-        ifCorrectButFlat: "Right shape. The comma gives it breathing room.",
+        ifCorrectButFlat: "Right. The comma gives it breathing room.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The please comes last, after the ask.",
         ifMissingTargetPiece:
           "Keep the sentence you had and let s'il vous plaît soften it.",
       },
