@@ -816,24 +816,29 @@ describe("PR-07 changed no frozen contract", () => {
       "Bonjour, je voudrais un café.",
       "the café order is exactly as before",
     );
+    // Truthful-progression re-cut: the two meet cards that restated L0's first
+    // contact (s00-meet-bonjour, s02-meet-je-voudrais-cafe) are gone, the
+    // survival-kit insight moved after the first weave, and s12-meet-un-the
+    // introduces the tea package before PM-011 asks for it. Every SURVIVING id
+    // keeps its original name, and PM-009/PM-011 still sit between meet-merci
+    // and Say It.
     assertEqual(
       lesson001.screens.map((s) => s.id).join(","),
       [
         "s00-goal-survival-kit",
-        "s00-meet-bonjour",
-        "s01-insight-survival-kit",
-        "s02-meet-je-voudrais-cafe",
         "s03-fill-polite-verb",
         "s04-weave-cafe-order",
+        "s01-insight-survival-kit",
         "s05-meet-sil-vous-plait",
         "s06-weave-cafe-order-please",
         "s07-meet-merci",
         "s10-weave-merci-thanks",
+        "s12-meet-un-the",
         "s11-weave-the-order",
         "s08-sayit-cafe-order",
         "s09-recap-survival-kit",
       ].join(","),
-      "existing ids unchanged; the two new screens sit between meet-merci and Say It",
+      "L0 duplicates removed; registered pilot ids unchanged and still before Say It",
     );
     assertEqual(
       qualifyLessonScreenId(lesson001.id, pm011Screen.id),

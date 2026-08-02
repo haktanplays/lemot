@@ -184,10 +184,22 @@ describe("qualified screen identity", () => {
     assert(!/[À-ÿ]/.test(id), "no French surface text");
   });
 
-  test("bare screen ids DO repeat across lessons — which is why qualification exists", () => {
-    const bare = V1_LESSONS.flatMap((l) => l.screens.map((s) => s.id));
-    const repeated = bare.filter((id, i) => bare.indexOf(id) !== i);
-    assert(repeated.length > 0, "the collision this rule guards against is real, not theoretical");
+  test("bare screen ids are not guaranteed unique — which is why qualification exists", () => {
+    // Until the L0/L1 truthful-progression re-cut this was demonstrated by the
+    // live registry: `s00-meet-bonjour` existed in BOTH v1-lesson-000 and
+    // v1-lesson-001. Removing L1's duplicate Meet card removed the last
+    // collision, so asserting on live content made this guard drift with
+    // authoring. The invariant is structural, not incidental: bare ids are
+    // lesson-local by convention only, so two lessons MAY reuse one, and
+    // qualification is what keeps identity distinct when they do.
+    const shared = "s00-meet-bonjour";
+    const a = qualifyLessonScreenId("v1-lesson-000", shared);
+    const b = qualifyLessonScreenId("v1-lesson-001", shared);
+    assert(a !== b, "the same bare id in two lessons must not collide once qualified");
+    assert(
+      a.startsWith("v1-lesson-000/") && b.startsWith("v1-lesson-001/"),
+      "qualification carries the owning lesson",
+    );
   });
 
   test("qualified ids are unique across every current V1 lesson", () => {

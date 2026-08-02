@@ -70,6 +70,7 @@ import "./monLexiqueProjection.test";
 import "./learningStats.test";
 import "./pilotPayloadRegistration.test";
 import "./l1ConnectedSmoke.test";
+import "./l0l1TruthfulProgression.test";
 import { runAll } from "./harness";
 
 void runAll();

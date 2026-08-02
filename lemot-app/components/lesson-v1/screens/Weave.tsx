@@ -190,7 +190,7 @@ export function Weave({
       {hasConstitutive && (
         <View className="mt-3">
           <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-            Pieces you already own:
+            Pieces you can use here:
           </Text>
           <View className="flex-row flex-wrap gap-2">
             {constitutivePieces.map((p, i) => (
@@ -238,7 +238,7 @@ export function Weave({
           {hintLevel >= 1 && hasPieces && !(hasCloze && hintLevel >= 2) && (
             <View>
               <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-                Pieces you already own:
+                Pieces you can use here:
               </Text>
               <View className="flex-row flex-wrap gap-2">
                 {hintPieces.map((p, i) => (

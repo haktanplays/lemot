@@ -9,53 +9,9 @@ const screens: LessonScreen[] = [
       insightType: "lesson-goal",
       title: "Your survival kit",
       body:
-        "Today: greet someone, ask politely, and thank.\n" +
-        "By the end: you can carry a first small exchange in French.\n" +
-        "Main pieces: bonjour, je voudrais, merci.",
-    },
-  },
-  {
-    id: "s00-meet-bonjour",
-    type: "meet-card",
-    targetItemIds: ["chunk-bonjour"],
-    payload: {
-      fr: "Bonjour.",
-      en: "Hello.",
-      title: "Your first French door.",
-      highlights: [{ text: "Bonjour", itemId: "chunk-bonjour" }],
-      tts: true,
-    },
-  },
-  {
-    id: "s01-insight-survival-kit",
-    type: "insight-card",
-    targetItemIds: ["chunk-bonjour", "chunk-merci"],
-    payload: {
-      insightType: "culture-bite",
-      title: "A small kit goes a long way.",
-      body:
-        "A handful of polite words carries a whole exchange in French. " +
-        "Greet, ask softly, and thank. That kit is enough to handle a real first moment.",
-      examples: [
-        { fr: "Bonjour.", en: "Hello." },
-        { fr: "Merci.", en: "Thank you." },
-      ],
-    },
-  },
-  {
-    id: "s02-meet-je-voudrais-cafe",
-    type: "meet-card",
-    targetItemIds: ["chunk-je-voudrais", "noun-cafe"],
-    weakPointTags: ["politeness", "conditional-softness"],
-    payload: {
-      fr: "Je voudrais un café.",
-      en: "I would like a coffee.",
-      title: "A soft, polite request.",
-      highlights: [
-        { text: "je voudrais", itemId: "chunk-je-voudrais" },
-        { text: "un café", itemId: "noun-cafe" },
-      ],
-      tts: true,
+        "Today: add the polite close, thank, and swap the drink.\n" +
+        "By the end: you can carry a whole small exchange in French.\n" +
+        "Main pieces: s'il vous plaît, merci.",
     },
   },
   {
@@ -125,6 +81,25 @@ const screens: LessonScreen[] = [
           "Start with bonjour, then the request.",
       },
       validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // Reflection, not preamble: it lands AFTER the learner has re-produced the
+    // café order, so it names what they just did instead of front-loading a
+    // second explanation screen behind the goal card.
+    id: "s01-insight-survival-kit",
+    type: "insight-card",
+    targetItemIds: ["chunk-bonjour", "chunk-merci"],
+    payload: {
+      insightType: "culture-bite",
+      title: "A small kit goes a long way.",
+      body:
+        "A handful of polite words carries a whole exchange in French. " +
+        "Greet, ask softly, and thank. That kit is enough to handle a real first moment.",
+      examples: [
+        { fr: "Bonjour.", en: "Hello." },
+        { fr: "Merci.", en: "Thank you." },
+      ],
     },
   },
   {
@@ -198,6 +173,12 @@ const screens: LessonScreen[] = [
     payload: {
       weaveType: "supported",
       prompt: "The coffee arrives. Thank them.",
+      // Scene only: it gives the moment a person to react to, so the screen
+      // reads as a reaction rather than a translation task. It adds no pieces,
+      // no model and no instruction, so the attempt stays unscaffolded and the
+      // registered identity (payload id, EV-030, sentence id, evidence target)
+      // is untouched.
+      context: "The server sets it down and waits a moment.",
       // No pieces, no cloze, no prior model: a clean unscaffolded first
       // production of the form the learner just met. The hint ladder simply
       // does not render.
@@ -209,6 +190,26 @@ const screens: LessonScreen[] = [
         ifUnderstandableButWrong: "One word does it here: merci.",
       },
       validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // Truthful first contact with the tea package, placed immediately before
+    // PM-011 asks for it. `un thé` arrives as ONE package inside the request
+    // shape the learner already carried for coffee (un café -> same frame ->
+    // un thé), so the Supported weave no longer asks for a piece the lesson
+    // never showed. Exposure only: nothing is produced here, so the Supported
+    // production evidence for `chunk-un-the` still comes from PM-011 alone, and
+    // no independent claim is created. `noun-the` stays the linked
+    // sub-identity and is never named by this screen.
+    id: "s12-meet-un-the",
+    type: "meet-card",
+    targetItemIds: ["chunk-un-the"],
+    payload: {
+      fr: "Je voudrais un thé.",
+      en: "I would like a tea.",
+      title: "Same request, a different drink.",
+      highlights: [{ text: "un thé", itemId: "chunk-un-the" }],
+      tts: true,
     },
   },
   {
@@ -287,10 +288,13 @@ const screens: LessonScreen[] = [
     type: "recap",
     payload: {
       title: "Your survival kit.",
+      // Recycled first, then extended: line 1 names what the learner already
+      // carried, lines 2 and 3 name what this lesson actually added. The tea
+      // line stays honest about support and never claims the piece is owned.
       lines: [
-        "You greeted someone.",
-        "You asked for a coffee politely.",
-        "You softened the request and closed with thanks.",
+        "You carried the café order you already had.",
+        "You softened it with s'il vous plaît, and closed with merci.",
+        "You ordered un thé too, with the piece in front of you.",
       ],
       piecesUsed: [
         "Bonjour",
@@ -298,6 +302,7 @@ const screens: LessonScreen[] = [
         "un café",
         "s'il vous plaît",
         "merci",
+        "un thé",
       ],
       nextLabel: "Continue",
     },
@@ -315,7 +320,7 @@ export const lesson001: Lesson = {
   estimatedMinutes: 6,
   canDo: "Greet, ask for something politely, and thank.",
   whyItExists:
-    "L0 gave one polite café line as a first taste. L1 grows it into a small survival kit: greet, make a soft request, and thank. These polite chunks carry a whole first exchange before any verb system arrives in L2.",
+    "L0 gave one polite café line as a first taste. L1 does not teach that line again: bonjour, je voudrais and un café are recycled straight into production, and the genuinely new ground is the polite close, merci, and the Supported tea variation. These polite chunks carry a whole first exchange before any verb system arrives in L2.",
   prerequisites: [],
   learningItems: getItems([
     "chunk-bonjour",
@@ -332,6 +337,10 @@ export const lesson001: Lesson = {
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
+    "L0 owns first contact with bonjour, je voudrais and un café. L1 recycles them through production only: the duplicate meet cards that restated them were removed, so the learner extends one café moment instead of meeting it twice.",
+    "L1's new ground is s'il vous plaît, merci, and the Supported un thé variation.",
+    "s12-meet-un-the introduces the tea package before PM-011 asks for it. It is exposure only, so the Supported production evidence still comes from PM-011 alone and no independent tea claim exists.",
+    "The survival-kit insight sits after the first weave as a reflection, so the lesson never opens with two explanation screens.",
     "Compact survival kit: bonjour, je voudrais, un café, s'il vous plaît, merci. No phrasebook list of greetings.",
     "Politeness lives in the verb: je voudrais vs je veux is taught as register, never as an error.",
     "Vous register throughout. Informal tu is L3 territory.",

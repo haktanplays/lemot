@@ -33,8 +33,9 @@ const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 // The natural target sentence, spoken on the learner-controlled listen taps.
 const NATURAL_SENTENCE = "Bonjour, je voudrais un café.";
 
-// The two French pieces the learner meets, then carries into the weave. Order
-// is fixed: greet first, then the polite request.
+// The two French pieces the learner meets, then carries into the weave. Either
+// piece may be placed first: the composed line always assembles in canonical
+// order (greeting, then the polite request), so no chip is ever inert.
 const PIECES = [
   { fr: "Bonjour", en: "Hello" },
   { fr: "je voudrais", en: "I would like" },
@@ -70,12 +71,12 @@ export default function LessonZeroScreen() {
   const { say } = useSpeech();
   const [step, setStep] = useState<Step>("scene_meet");
 
-  // Weave: the two pieces are inserted in order; once both are placed the
-  // learner types the English remainder. `nudge` shows the calm prompt only
-  // after a Continue with a missing remainder.
+  // Weave: the two pieces may be placed in either order; once both are placed
+  // the learner types the English remainder. The requirement line is derived
+  // from the live state, so it is shown BEFORE any tap rather than after a
+  // failed one.
   const [inserted, setInserted] = useState<number[]>([]);
   const [remainder, setRemainder] = useState("");
-  const [nudge, setNudge] = useState(false);
   const remainderInputRef = useRef<TextInput>(null);
 
   // Rebuild: the learner types the whole sentence. After two misses a partial
@@ -138,19 +139,25 @@ export default function LessonZeroScreen() {
   );
 
   const renderWeave = () => {
-    const nextIndex = inserted.length;
     const bothInserted = inserted.length === PIECES.length;
-    const composed = inserted.map((i) => PIECES[i].fr).join(", ");
+    // Canonical order regardless of tap order: the learner may place either
+    // piece first and the line still reads "Bonjour, je voudrais".
+    const composed = [...inserted]
+      .sort((a, b) => a - b)
+      .map((i) => PIECES[i].fr)
+      .join(", ");
     // Only the piece(s) NOT yet placed, in order, for the subtle support cue.
     const remaining = PIECES.map((p, i) => ({ fr: p.fr, i })).filter(
       (p) => !inserted.includes(p.i)
     );
 
+    // Continue is gated on exactly what the step needs to advance, so it can
+    // never render as available, absorb a tap, and only then explain.
+    const remainderOk = acceptsCoffeeRemainder(remainder);
+    const canContinue = bothInserted && remainderOk;
+    const showRequirement = bothInserted && !remainderOk;
+
     const onContinue = () => {
-      if (!acceptsCoffeeRemainder(remainder)) {
-        setNudge(true);
-        return;
-      }
       Keyboard.dismiss();
       setStep("reveal");
     };
@@ -186,10 +193,7 @@ export default function LessonZeroScreen() {
               <TextInput
                 ref={remainderInputRef}
                 value={remainder}
-                onChangeText={(t) => {
-                  setRemainder(t);
-                  if (nudge) setNudge(false);
-                }}
+                onChangeText={(t) => setRemainder(t)}
                 autoCapitalize="none"
                 autoCorrect={false}
                 style={[
@@ -209,24 +213,21 @@ export default function LessonZeroScreen() {
         )}
 
         {/* Subtle support cue below the composer: only the French piece(s) NOT
-            yet placed, in order. Before any tap, both show (Bonjour active).
-            After Bonjour, only je voudrais remains as the quiet hint. After
-            both, nothing. Tap to place. Never the full or natural sentence. */}
+            yet placed. Every chip shown is live — either may be tapped first,
+            and the composed line orders them canonically — so the learner never
+            meets a chip that looks tappable and does nothing. After both are
+            placed, nothing shows. Never the full or natural sentence. */}
         {remaining.length > 0 && (
           <View style={hintRow}>
-            {remaining.map((p) => {
-              const tappable = p.i === nextIndex;
-              return (
-                <Pressable
-                  key={p.fr}
-                  disabled={!tappable}
-                  onPress={() => setInserted([...inserted, p.i])}
-                  style={[hintChip, !tappable && insertChipMuted]}
-                >
-                  <FrenchPieceText text={p.fr} style={hintChipText} />
-                </Pressable>
-              );
-            })}
+            {remaining.map((p) => (
+              <Pressable
+                key={p.fr}
+                onPress={() => setInserted([...inserted, p.i])}
+                style={hintChip}
+              >
+                <FrenchPieceText text={p.fr} style={hintChipText} />
+              </Pressable>
+            ))}
           </View>
         )}
 
@@ -235,7 +236,6 @@ export default function LessonZeroScreen() {
             onPress={() => {
               setInserted([]);
               setRemainder("");
-              setNudge(false);
             }}
             hitSlop={6}
             style={resetButton}
@@ -244,13 +244,13 @@ export default function LessonZeroScreen() {
           </Pressable>
         )}
 
-        {nudge && (
+        {showRequirement && (
           <Text style={nudgeStyle}>
             Add the English word for what you want, then continue.
           </Text>
         )}
 
-        <Btn onPress={onContinue} disabled={!bothInserted}>
+        <Btn onPress={onContinue} disabled={!canContinue}>
           Continue
         </Btn>
       </View>
@@ -678,10 +678,6 @@ const listenRoundStyle = {
   borderWidth: 1,
   borderColor: P.border,
   backgroundColor: P.bg,
-};
-
-const insertChipMuted = {
-  opacity: 0.45,
 };
 
 const hintRow = {
