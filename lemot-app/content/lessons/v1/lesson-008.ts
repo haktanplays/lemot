@@ -30,26 +30,11 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    id: "s02-insight-ou-frozen",
-    type: "insight-card",
-    targetItemIds: ["chunk-c-est-ou"],
-    payload: {
-      insightType: "grammar-nugget",
-      title: "It's... where?",
-      body:
-        "Où = where. Spoken French loves this shape: C'est où ? Literally, \"it's where?\". You already own c'est from L3. Take the question whole.",
-      examples: [
-        { fr: "C'est où ?", en: "Where is it?" },
-        { fr: "Le café, c'est où ?", en: "The café, where is it?" },
-      ],
-    },
-  },
-  {
     id: "s03-fill-c-est-blank",
     type: "fill-with-traps",
     targetItemIds: ["adverb-ou-where", "chunk-c-est-ou"],
     payload: {
-      prompt: "What fits the empty space?",
+      prompt: "You need a room and cannot see it. Which word asks?",
       sentenceBefore: "C'est ",
       sentenceAfter: " ?",
       blankCount: 1,
@@ -82,14 +67,17 @@ const screens: LessonScreen[] = [
     type: "weave",
     targetItemIds: ["chunk-c-est-ou", "adverb-ou-where"],
     payload: {
-      weaveType: "supported",
+      // The scene carries the task. Pieces stay behind the hint button and the
+      // cloze holds only the shape, so the question itself is the learner's.
+      weaveType: "context",
       prompt: "Ask where it is.",
       context:
         "You're looking for the room. Someone friendly is standing nearby.",
       suggestedPieces: [
-        { text: "c'est", itemId: "chunk-c-est", required: true, label: "it is" },
-        { text: "où", itemId: "adverb-ou-where", required: true, label: "where" },
+        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+        { text: "où", itemId: "adverb-ou-where", label: "where" },
       ],
+      hintCloze: "C'est ___ ?",
       expectedAnswers: ["C'est où ?"],
       acceptedAlternatives: ["C'est où", "c'est où"],
       reveal: {
@@ -104,18 +92,88 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Reflection, placed after the learner has actually asked once.
+    id: "s02-insight-ou-frozen",
+    type: "insight-card",
+    targetItemIds: ["chunk-c-est-ou"],
+    payload: {
+      insightType: "grammar-nugget",
+      title: "It's... where?",
+      body:
+        "Où = where. Spoken French loves this shape: C'est où ? Literally, \"it's where?\". You already own c'est. Take the question whole.",
+      examples: [
+        { fr: "C'est où ?", en: "Where is it?" },
+        { fr: "Le café, c'est où ?", en: "The café, where is it?" },
+      ],
+    },
+  },
+  {
+    // First contact with the ANSWER side. The learner owns c'est and ici
+    // separately, but has never met them joined as the reply to the question
+    // just asked, so the next weave is no longer a cold ask.
+    id: "s08-meet-c-est-ici",
+    type: "meet-card",
+    targetItemIds: ["chunk-c-est"],
+    payload: {
+      fr: "C'est ici.",
+      en: "It's here.",
+      title: "The other side of the question.",
+      highlights: [
+        { text: "c'est", itemId: "chunk-c-est" },
+        { text: "ici", itemId: "word-ici" },
+      ],
+      tts: true,
+    },
+  },
+  {
+    // One small contrast before the answer weave: which word replies, and
+    // which word asks.
+    id: "s09-fill-which-side",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-c-est"],
+    payload: {
+      prompt: "Someone asks you where it is. You are standing at the door. Which word answers?",
+      sentenceBefore: "C'est ",
+      sentenceAfter: ".",
+      blankCount: 1,
+      options: [
+        { id: "opt-ici-answer", text: "ici", isCorrect: true },
+        {
+          id: "opt-ou-answer",
+          text: "où",
+          isCorrect: false,
+          trapReason:
+            "Où asks the question. Using it here would hand the question back instead of answering it.",
+        },
+        {
+          id: "opt-oui-answer",
+          text: "oui",
+          isCorrect: false,
+          trapReason: "Oui says yes. Nobody asked a yes or no question.",
+        },
+      ],
+      answer: ["opt-ici-answer"],
+      reveal: {
+        short: "ici",
+        explanation: "Ici = here. It lands the answer where you are standing.",
+        natural: "C'est ici.",
+      },
+    },
+  },
+  {
     id: "s05-weave-answer-here",
     type: "weave",
     targetItemIds: ["chunk-c-est"],
     payload: {
-      weaveType: "supported",
+      weaveType: "context",
       prompt: "Tell them: it's here.",
       context:
         "Now you're the local. Someone asks you C'est où ? And you're standing right at the door.",
       suggestedPieces: [
-        { text: "c'est", itemId: "chunk-c-est", required: true, label: "it is" },
-        { text: "ici", itemId: "word-ici", required: true, label: "here" },
+        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+        { text: "ici", itemId: "word-ici", label: "here" },
       ],
+      hintCloze: "C'est ___.",
       expectedAnswers: ["C'est ici."],
       reveal: {
         modelAnswer: "C'est ici.",
@@ -124,6 +182,17 @@ const screens: LessonScreen[] = [
         ifMissingTargetPiece: "C'est carries the answer. Ici lands it.",
       },
       validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // Reveal after both sides have been produced: the pair, heard together.
+    id: "s10-reveal-both-sides",
+    type: "natural-reveal",
+    payload: {
+      modelAnswer: "C'est où ? C'est ici.",
+      naturalAlternatives: ["Le café, c'est où ?"],
+      explanation:
+        "The same two words do both jobs. Où turns it into a question; ici answers it. Put a name in front and you can ask about anything you can point at.",
     },
   },
   {
@@ -145,7 +214,7 @@ const screens: LessonScreen[] = [
         modelAnswer: "Bonjour, c'est où ?",
         naturalAlternatives: ["C'est où ?"],
         explanation:
-          "Both work. Bonjour opens the moment first. The L1 habit, still carrying you.",
+          "Both work. Bonjour opens the moment first. The greeting habit, still carrying you.",
       },
       validationMode: "model-answer-only",
     },
@@ -158,7 +227,7 @@ const screens: LessonScreen[] = [
       lines: [
         "You asked where something is, with two words you mostly had already.",
         "You answered the same question from the other side.",
-        "Où is small, and it unlocks every place you'll ever look for.",
+        "Où is small, and it opens every place you'll ever look for.",
       ],
       piecesUsed: ["où", "c'est", "ici", "Bonjour"],
       nextLabel: "Continue",
@@ -174,7 +243,7 @@ export const lesson008: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
-  estimatedMinutes: 5,
+  estimatedMinutes: 7,
   canDo: "Ask where something is, and answer it's here.",
   whyItExists:
     "L7 gave direction (je vais). L8 gives orientation: the smallest natural question, C'est où ?, built almost entirely from owned pieces (c'est from L3, ici from L2). This is a COMPACT de-scope of the full L08 où/movement spec: no où est-ce que, no movement system, no new places: one frozen question and its answer.",
@@ -189,16 +258,21 @@ export const lesson008: Lesson = {
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Compact de-scope of docs/syllabus/L08-ou-location-movement-questions.lesson-spec.md against the shipped registry: the owned unit is the frozen question chunk-c-est-ou; adverb-ou-where is supported inside the frame (same ownership pattern as ce n'est pas).",
-    "No est-ce que wrapper, no où est, no movement/destination system, no new place nouns.",
+    "No est-ce que frame, no où est, no movement/destination system, no new place nouns.",
+    "Progression: both weaves run at context, holding the L7 ceiling with no regression. No weave carries constitutive support, so evidence class is unchanged.",
+    "Rhythm deliberately differs from L7 and L9: the ou insight is a REFLECTION placed after the first real ask, not a preamble, and the lesson runs ask-side then answer-side.",
+    "Added screens carry one role each: s08 gives first contact with the joined answer form before it is produced, s09 contrasts which word asks and which answers, s10 reveals the pair working together.",
     "oui appears ONLY as a fill trap: it stays passive/recognition, never active-produced (L3 decision carried forward).",
     "Question-form Weave answers carry no-question-mark acceptedAlternatives (CI rule).",
     "Recycled load: chunk-c-est (target support), ici and chunk-bonjour as light carryover: the new question stays the headline of every screen.",
     "adverb-ou-where uses the disambiguated id recommended by L08 spec section 18: où (where) folds to ou (or) under accent-stripping, so the id carries the sense to avoid a future collision/migration.",
+    "No learner-facing lesson numbers.",
     "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
   ],
   qaChecks: [
     "TTS reads C'est où ? with a natural question contour and no placeholder speech.",
     "s03 trap reasons fire on ici and oui.",
+    "s09 trap reasons fire on où and oui.",
     "s04 accepts C'est où without the question mark via acceptedAlternatives.",
     "Recap chips are atoms/frames only; the full question C'est où ? never appears as a chip.",
     "où keeps its accent in all learner-facing strings.",
