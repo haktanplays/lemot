@@ -154,15 +154,17 @@ export default function HomeScreen() {
   const showV1Path =
     PRODUCT_STAGE === "sandbox" || PRODUCT_STAGE === "dev-apk";
 
-  // Round 1 dev-apk scope is L0-L6. The bridge (L0 / number 0) is excluded so
-  // it never appears as a normal lesson card, and nothing above L6 is shown.
+  // Pilot scope is L0-L10. The bridge (L0 / number 0) is excluded so it never
+  // appears as a normal lesson card, and nothing above L10 is shown: L11+ stay
+  // hidden until they are explicitly opened in a later pass.
   const v1PathLessons = V1_LESSONS.filter(
-    (l) => l.number >= 1 && l.number <= 6
+    (l) => l.number >= 1 && l.number <= 10
   ).sort((a, b) => a.number - b.number);
   const v1Done = (n: number) =>
     prog[`${n}-${V1_COMPLETION_SECTION_KEY}`] === true;
 
   // Simple linear unlock: L1 is open; lesson n+1 opens when lesson n is done.
+  // Prerequisite behaviour is unchanged — only the visible range moved.
   let v1PrevDone = true;
   const v1PathState = v1PathLessons.map((l) => {
     const done = v1Done(l.number);
@@ -170,6 +172,18 @@ export default function HomeScreen() {
     v1PrevDone = done;
     return { lesson: l, done, available };
   });
+
+  // Exactly one recommended next step: the first lesson that is open and not
+  // yet finished. Every other row stays quiet, so there is never a second
+  // competing primary action on this screen.
+  const nextLessonId =
+    v1PathState.find(({ done, available }) => available && !done)?.lesson.id ??
+    null;
+  // The lock reason is stated ONCE, under the first locked row, instead of
+  // repeating the same sentence beneath every row below it.
+  const firstLockedId =
+    v1PathState.find(({ done, available }) => !available && !done)?.lesson.id ??
+    null;
 
   const greeting = getHomeGreeting();
 
@@ -343,10 +357,11 @@ export default function HomeScreen() {
           );
         })}
 
-        {/* v1 Round 1 path (L1-L6) — the dev-apk first-run lesson surface.
-            Surfaced in sandbox (internal comparison) and dev-apk (tester
-            wave); public-beta keeps it hidden. Linear unlock; completed
-            lessons read as Done, locked ones stay quiet. No reward / unlock
+        {/* The Journey path (L1-L10) — the pilot lesson surface. Surfaced in
+            sandbox (internal comparison) and dev-apk (tester wave);
+            public-beta keeps it hidden. Linear unlock; exactly one row is
+            presented as the recommended next step, completed lessons stay
+            open for replay, locked ones stay quiet. No reward / unlock
             ceremony language. */}
         {showV1Path && v1PathState.length > 0 && (
           <View className="mt-2 mb-3">
@@ -355,8 +370,11 @@ export default function HomeScreen() {
             </Text>
             {v1PathState.map(({ lesson, done, available }) => {
               const locked = !available && !done;
-              const stateLabel = done ? "Done" : available ? "Start" : "Not yet";
-              const stateColor = done ? P.green : available ? P.red : P.ink3;
+              // Under the linear unlock exactly one row can be open-and-unfinished,
+              // so "Start" appears at most once: one recommended step, never two.
+              const isNext = lesson.id === nextLessonId;
+              const stateLabel = done ? "Done" : isNext ? "Start" : "Not yet";
+              const stateColor = done ? P.green : isNext ? P.red : P.ink3;
               return (
                 <Pressable
                   key={lesson.id}
@@ -365,11 +383,15 @@ export default function HomeScreen() {
                     router.push(`/v1-lesson/${lesson.id}` as never)
                   }
                   className="bg-lm-paper rounded-xl p-4 border mb-2"
-                  style={{ borderColor: P.border, opacity: locked ? 0.55 : 1 }}
+                  style={{
+                    borderColor: isNext ? P.red + "55" : P.border,
+                    borderWidth: isNext ? 1.5 : 1,
+                    opacity: locked ? 0.55 : 1,
+                  }}
                 >
-                  <View className="flex-row items-center justify-between">
+                  <View className="flex-row items-center justify-between gap-3">
                     <Text
-                      className="text-sm font-semibold"
+                      className="text-sm font-semibold flex-1"
                       style={{ color: P.ink }}
                     >
                       {lesson.title}
@@ -381,11 +403,17 @@ export default function HomeScreen() {
                       {stateLabel}
                     </Text>
                   </View>
-                  <Text className="text-xs mt-0.5" style={{ color: P.ink3 }}>
-                    {locked
-                      ? "Complete the previous lesson first"
-                      : lesson.canDo}
-                  </Text>
+                  {!locked && (
+                    <Text className="text-xs mt-0.5" style={{ color: P.ink3 }}>
+                      {lesson.canDo}
+                    </Text>
+                  )}
+                  {/* Said once, under the first locked row only. */}
+                  {lesson.id === firstLockedId && (
+                    <Text className="text-xs mt-0.5" style={{ color: P.ink3 }}>
+                      Opens when you finish the lesson before it.
+                    </Text>
+                  )}
                 </Pressable>
               );
             })}

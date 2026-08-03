@@ -1002,13 +1002,58 @@ describe("learning stats route, component and completion wiring (source-level)",
     ]) {
       assert(!values.includes(banned), `stats copy must not contain "${banned}"`);
     }
-    assertEqual(LEARNING_STATS_COPY.title, "Learning in motion", "title");
+    assertEqual(LEARNING_STATS_COPY.title, "Learning summary", "screen title");
+    assertEqual(LEARNING_STATS_COPY.sectionTitle, "Learning in motion", "the one section");
     assertEqual(
-      LEARNING_STATS_COPY.readyToRevisitPieces,
-      "Ready for another pass",
-      "calm revisit copy",
+      LEARNING_STATS_COPY.sectionSubtitle,
+      "A calm view of the French you’ve been practising.",
+      "section subtitle",
     );
-    assertEqual(LEARNING_STATS_COPY.supportedPieces, "Growing with support", "no mechanism");
+    assertEqual(
+      LEARNING_STATS_COPY.empty,
+      "Nothing to show yet. This fills in as you use French.",
+      "empty state",
+    );
+    // The four rows are the Mon Lexique bands, word for word.
+    assertEqual(LEARNING_STATS_COPY.yours, "Yours", "row 1");
+    assertEqual(LEARNING_STATS_COPY.becomingYours, "Becoming yours", "row 2");
+    assertEqual(LEARNING_STATS_COPY.metThis, "You’ve met this", "row 3");
+    assertEqual(LEARNING_STATS_COPY.worthAnotherLook, "Worth another look", "row 4");
+  });
+
+  test("the engine-counter block is gone from the learner surface, not renamed", () => {
+    const values = Object.values(LEARNING_STATS_COPY).join(" ");
+    for (const retired of [
+      "Practice moments",
+      "Open attempts",
+      "Practice Hub returns",
+      "Used in more than one place",
+      "Recognition practice",
+      "Ready for another pass",
+      "Growing with support",
+      "Used independently",
+      "Hints opened",
+      "Replays",
+      "Slow listening",
+      "Support used",
+      "French in use",
+      "Practice activity",
+    ]) {
+      assert(!values.includes(retired), `retired counter copy survived: "${retired}"`);
+    }
+    const summary = read("components/learning-stats/LearningStatsSummary.tsx");
+    for (const banned of [
+      "practiceMoments",
+      "openAttempts",
+      "practiceHubMoments",
+      "crossSurfacePieces",
+      "hintMoments",
+      "replayCount",
+      "slowPlaybackMoments",
+      "recognitionMoments",
+    ]) {
+      assert(!summary.includes(banned), `the summary must not read ${banned}`);
+    }
   });
 
   test("the dumb component receives the projection and reaches nothing else", () => {
@@ -1031,27 +1076,32 @@ describe("learning stats route, component and completion wiring (source-level)",
     assert(!copySrc.includes("import "), "the copy module imports nothing");
   });
 
-  test("all three completion projection links route through the one settled gate", () => {
+  test("the one completion shortcut still routes through the settled gate", () => {
     const src = read("components/lesson-v1/LessonRendererV1.tsx");
     const completion = src.slice(src.indexOf("function CompletionView"));
-    for (const dest of ["/practice-hub", "/mon-lexique", "/learning-stats"]) {
-      assert(
-        completion.includes(`openProjection(() => router.push("${dest}" as never))`),
-        `${dest} waits for settlement`,
-      );
-    }
+    assert(
+      completion.includes(
+        'openProjection(() => router.push("/mon-lexique" as never))',
+      ),
+      "the surviving shortcut waits for settlement",
+    );
     assertEqual(
       (completion.match(/router\.push\(/g) ?? []).length,
-      3,
-      "exactly the three settled projection pushes",
+      1,
+      "exactly one settled projection push — the row of three equal links is gone",
     );
+    for (const gone of ["/practice-hub", "/learning-stats", "See learning summary"]) {
+      assert(
+        !completion.includes(gone),
+        `${gone} no longer competes with the primary action`,
+      );
+    }
     assertEqual(
       (completion.match(/createSettledNavigationGate/g) ?? []).length,
       1,
       "one gate — no second settlement helper",
     );
     assert(completion.includes("onPress={exitToPrevious}"), "Back to Home stays direct");
-    assert(completion.includes("See learning summary"), "the calm entry label");
     assertEqual(
       (src.match(/mk\(lesson\.number, V1_COMPLETION_SECTION_KEY\)/g) ?? []).length,
       1,

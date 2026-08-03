@@ -233,12 +233,19 @@ function pickScreen(
 // Completion view: standalone card with no lesson header. Only the completion
 // message and the return actions.
 //
-// PR-09 settlement barrier: the final lesson screen may queue its learning
-// event and land here before that event has settled, so BOTH projection links
-// (Practice Hub, Mon Lexique) route through one settled-navigation gate —
-// tap → session settles → navigate → destination reads a settled log. Opening
-// either surface is navigation only: not learning evidence, no event. Back to
-// Home stays direct and unchanged — it reads no projection.
+// One primary action, one quiet shortcut. This surface used to carry three
+// equal underlined links to the standing surfaces, because those surfaces were
+// reachable from nowhere else. They are permanent tabs now, so completion no
+// longer has to act as their gateway: Back to Home is the single primary
+// action, and Open Mon Lexique remains as the one calm shortcut to the words
+// the learner just used.
+//
+// Settlement barrier: the final lesson screen may queue its learning event and
+// land here before that event has settled, so the projection shortcut routes
+// through one settled-navigation gate — tap → session settles → navigate →
+// destination reads a settled log. Opening it is navigation only: not learning
+// evidence, no event. Back to Home stays direct and unchanged — it reads no
+// projection.
 function CompletionView({ lesson }: { lesson: Lesson }) {
   const session = useLessonV1LearningSession();
   // Latest-session ref: the gate is created once per completion view, but must
@@ -288,11 +295,12 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
         <Btn onPress={exitToPrevious}>
           <Text style={{ color: P.paper, fontSize: 15 }}>Back to Home</Text>
         </Btn>
-        {/* Typed-route casts are the narrow bridge the house rules allow for
-            freshly added routes. */}
+        {/* The one secondary shortcut. Typed-route casts are the narrow bridge
+            the house rules allow for routes Metro has not regenerated types
+            for yet. */}
         <Pressable
           onPress={() =>
-            openProjection(() => router.push("/practice-hub" as never))
+            openProjection(() => router.push("/mon-lexique" as never))
           }
           style={{ marginTop: 12, alignSelf: "center", padding: 6 }}
           accessibilityRole="button"
@@ -301,35 +309,7 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
             className="text-sm"
             style={{ color: P.ink2, textDecorationLine: "underline" }}
           >
-            Practice what came back
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() =>
-            openProjection(() => router.push("/mon-lexique" as never))
-          }
-          style={{ marginTop: 4, alignSelf: "center", padding: 6 }}
-          accessibilityRole="button"
-        >
-          <Text
-            className="text-sm"
-            style={{ color: P.ink2, textDecorationLine: "underline" }}
-          >
             Open Mon Lexique
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() =>
-            openProjection(() => router.push("/learning-stats" as never))
-          }
-          style={{ marginTop: 4, alignSelf: "center", padding: 6 }}
-          accessibilityRole="button"
-        >
-          <Text
-            className="text-sm"
-            style={{ color: P.ink2, textDecorationLine: "underline" }}
-          >
-            See learning summary
           </Text>
         </Pressable>
       </View>

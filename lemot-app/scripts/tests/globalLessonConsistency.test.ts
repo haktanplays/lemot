@@ -540,10 +540,10 @@ describe("nothing identity-bearing moved", () => {
     assertEqual(new Set(qualified).size, qualified.length, "no collision");
   });
 
-  test("the Home visibility cap is untouched", () => {
+  test("the Journey visibility cap is L1-L10", () => {
     assert(
-      src("app/(tabs)/index.tsx").includes("l.number >= 1 && l.number <= 6"),
-      "no visibility change in this PR",
+      src("app/(tabs)/index.tsx").includes("l.number >= 1 && l.number <= 10"),
+      "the pilot's visible range",
     );
   });
 });

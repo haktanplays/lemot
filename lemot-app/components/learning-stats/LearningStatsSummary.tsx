@@ -1,64 +1,52 @@
-import type { ReactNode } from "react";
 import { View, Text, type ViewStyle, type TextStyle } from "react-native";
 import { P } from "@/constants/theme";
 import type { LearningStatsProjection } from "@/content/learning-engine/learning-stats";
 import { LEARNING_STATS_COPY } from "./learningStatsCopy";
 
 /**
- * Learning Stats summary (PR-10) — DUMB, learner-facing presentation.
+ * Learning summary — DUMB, learner-facing presentation.
  *
- * Receives ONE already-safe `LearningStatsProjection` and renders three calm
- * sections of label + count rows. It derives no mastery, reads no event, no
- * repository, no telemetry; it writes nothing, navigates nowhere, and has no
- * per-metric interaction. All copy comes from the pure copy module — no
- * charts, percentages, streaks, XP, levels, badges, rankings, goals,
- * time-spent claims, accuracy, dates, item lists or failure styling.
+ * Receives ONE already-safe `LearningStatsProjection` and renders a single calm
+ * section of four label + count rows, using the SAME four bands as Mon Lexique.
+ * It derives no mastery, reads no event, no repository, no telemetry; it writes
+ * nothing, navigates nowhere, and has no per-metric interaction. All copy comes
+ * from the pure copy module — no charts, percentages, streaks, XP, levels,
+ * badges, rankings, goals, time-spent claims, accuracy, dates, item lists or
+ * failure styling.
  *
- * The "Support used" section renders only when at least one support fact is
- * non-zero, and frames hints / replays / slow listening neutrally — how the
- * learner worked, never a shortfall.
+ * `summaryHasContent` is the emptiness rule for THIS surface: the projection's
+ * own `hasActivity` also turns true for activity none of these four rows can
+ * show (a replay, an open attempt), which would render a wall of zeros. The
+ * caller uses this helper so an all-zero section is never displayed.
  */
+export function summaryHasContent(stats: LearningStatsProjection): boolean {
+  return (
+    stats.independentPieces > 0 ||
+    stats.supportedPieces > 0 ||
+    stats.recognitionPieces > 0 ||
+    stats.readyToRevisitPieces > 0
+  );
+}
+
 export function LearningStatsSummary({
   stats,
 }: {
   stats: LearningStatsProjection;
 }) {
   const c = LEARNING_STATS_COPY;
-  const showSupport =
-    stats.hintMoments > 0 || stats.replayCount > 0 || stats.slowPlaybackMoments > 0;
 
   return (
     <View style={page}>
-      <Section title={c.sectionFrenchInUse}>
-        <Row label={c.independentPieces} value={stats.independentPieces} />
-        <Row label={c.supportedPieces} value={stats.supportedPieces} />
-        <Row label={c.recognitionMoments} value={stats.recognitionMoments} />
-        <Row label={c.readyToRevisitPieces} value={stats.readyToRevisitPieces} />
-      </Section>
-
-      <Section title={c.sectionPracticeActivity}>
-        <Row label={c.practiceMoments} value={stats.practiceMoments} />
-        <Row label={c.openAttempts} value={stats.openAttempts} />
-        <Row label={c.practiceHubMoments} value={stats.practiceHubMoments} />
-        <Row label={c.crossSurfacePieces} value={stats.crossSurfacePieces} />
-      </Section>
-
-      {showSupport ? (
-        <Section title={c.sectionSupportUsed}>
-          <Row label={c.hintMoments} value={stats.hintMoments} />
-          <Row label={c.replayCount} value={stats.replayCount} />
-          <Row label={c.slowPlaybackMoments} value={stats.slowPlaybackMoments} />
-        </Section>
-      ) : null}
-    </View>
-  );
-}
-
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <View style={section}>
-      <Text style={sectionTitle}>{title}</Text>
-      <View style={card}>{children}</View>
+      <View style={heading}>
+        <Text style={sectionTitle}>{c.sectionTitle}</Text>
+        <Text style={sectionSubtitle}>{c.sectionSubtitle}</Text>
+      </View>
+      <View style={card}>
+        <Row label={c.yours} value={stats.independentPieces} />
+        <Row label={c.becomingYours} value={stats.supportedPieces} />
+        <Row label={c.metThis} value={stats.recognitionPieces} />
+        <Row label={c.worthAnotherLook} value={stats.readyToRevisitPieces} />
+      </View>
     </View>
   );
 }
@@ -72,14 +60,19 @@ function Row({ label, value }: { label: string; value: number }) {
   );
 }
 
-const page: ViewStyle = { gap: 18 };
-const section: ViewStyle = { gap: 8 };
+const page: ViewStyle = { gap: 12 };
+const heading: ViewStyle = { gap: 4 };
 const sectionTitle: TextStyle = {
+  color: P.ink,
+  fontSize: 18,
+  lineHeight: 24,
+  fontFamily: "Newsreader",
+};
+const sectionSubtitle: TextStyle = {
   color: P.ink3,
-  fontSize: 12,
-  letterSpacing: 1,
+  fontSize: 13,
+  lineHeight: 18,
   fontFamily: "Outfit",
-  textTransform: "uppercase",
 };
 const card: ViewStyle = {
   borderRadius: 12,

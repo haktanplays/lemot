@@ -81,12 +81,16 @@ function learnerStrings(node: unknown, out: string[]): void {
 
 // ── Visibility ─────────────────────────────────────────────────────────────
 
-describe("L7-L10 visibility is unchanged by this PR", () => {
-  test("the Home path still caps the learner-visible lessons at L6", () => {
+describe("L7-L10 visibility", () => {
+  test("the Journey path caps the learner-visible lessons at L10", () => {
     const home = readFileSync(join(APP_ROOT, "app/(tabs)/index.tsx"), "utf8");
     assert(
-      home.includes("l.number >= 1 && l.number <= 6"),
-      "the visibility cap must stay exactly as it was: surfacing L7-L10 is a separate PR",
+      home.includes("l.number >= 1 && l.number <= 10"),
+      "L1-L10 are the pilot's visible range",
+    );
+    assert(
+      !home.includes("l.number <= 6"),
+      "the old L1-L6 cap is gone, not left beside the new one",
     );
   });
 

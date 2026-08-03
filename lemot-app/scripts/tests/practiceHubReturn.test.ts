@@ -702,7 +702,7 @@ describe("hub privacy and reset", () => {
 
 describe("legacy quarantine and hub source boundaries (source-level)", () => {
   const hubFiles = [
-    "app/practice-hub.tsx",
+    "app/(tabs)/practice-hub.tsx",
     "components/practice-hub/PracticeHubPractice.tsx",
     "content/lesson-v1-evidence/practiceHub.ts",
   ];
@@ -747,7 +747,7 @@ describe("legacy quarantine and hub source boundaries (source-level)", () => {
   });
 
   test("the hub renders no raw item id and no weakness language", () => {
-    const ui = codeOf(read("app/practice-hub.tsx"));
+    const ui = codeOf(read("app/(tabs)/practice-hub.tsx"));
     const itemIdUses = ui.match(/\{entry\.itemId\}/g) ?? [];
     const keyUses = ui.match(/key=\{entry\.itemId\}/g) ?? [];
     assertEqual(
@@ -763,7 +763,7 @@ describe("legacy quarantine and hub source boundaries (source-level)", () => {
     }
   });
 
-  test("lesson completion still calls mk() exactly once; the hub link is navigation only", () => {
+  test("lesson completion still calls mk() exactly once and emits nothing", () => {
     const src = read("components/lesson-v1/LessonRendererV1.tsx");
     assertEqual(
       (src.match(/mk\(lesson\.number, V1_COMPLETION_SECTION_KEY\)/g) ?? []).length,
@@ -771,15 +771,21 @@ describe("legacy quarantine and hub source boundaries (source-level)", () => {
       "legacy completion marker unchanged",
     );
     const completion = src.slice(src.indexOf("function CompletionView"));
-    assert(completion.includes('router.push("/practice-hub"'), "the entry link exists");
-    assert(!/record[A-Z]/.test(completion), "opening the hub emits nothing");
+    assert(!/record[A-Z]/.test(completion), "leaving the lesson emits nothing");
+    // Practice reaches the learner through its permanent tab now, so completion
+    // no longer carries a link to it. The reachability guarantee moved to
+    // navigationStandingSurfaces.test.ts; it did not disappear.
+    assert(
+      !completion.includes('router.push("/practice-hub"'),
+      "completion is no longer Practice's only gateway",
+    );
   });
 
-  test("FEATURES.practice and the legacy tab wiring are unchanged", () => {
+  test("the legacy Practice tab is not in the learner tab bar", () => {
     const tabs = read("app/(tabs)/_layout.tsx");
     assert(
-      tabs.includes("FEATURES.practice ? undefined : null"),
-      "the legacy tab gate is exactly as before",
+      /<Tabs\.Screen name="practice" options=\{\{ href: null \}\} \/>/.test(tabs),
+      "the legacy scenario/SRS route stays mounted but permanently unlisted",
     );
   });
 });
@@ -798,7 +804,7 @@ describe("PR-08 changed no frozen contract", () => {
   test("the carryover selector was not conscripted into the hub", () => {
     for (const rel of [
       "content/lesson-v1-evidence/practiceHub.ts",
-      "app/practice-hub.tsx",
+      "app/(tabs)/practice-hub.tsx",
       "components/practice-hub/PracticeHubPractice.tsx",
     ]) {
       assert(
@@ -827,8 +833,8 @@ describe("PR-08 changed no frozen contract", () => {
     const files = readdirSync(dir).sort();
     assertEqual(
       files.join(","),
-      "PracticeHubPractice.tsx,settledClose.ts",
-      "one reuse surface plus the settled-close gate, no new renderer",
+      "PracticeHubPractice.tsx,practiceCardCopy.ts,settledClose.ts",
+      "one reuse surface, the settled-close gate and the pure card-copy module",
     );
     assertEqual(
       files.filter((f) => f.endsWith(".tsx")).join(","),

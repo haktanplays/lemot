@@ -2,6 +2,7 @@ import { View, Text, type ViewStyle, type TextStyle } from "react-native";
 import { P } from "@/constants/theme";
 import type { MonLexiqueEntry } from "@/content/learning-engine/mon-lexique";
 import { MonLexiqueEntryCard } from "./MonLexiqueEntryCard";
+import { resolveMonLexiqueBand } from "./monLexiqueCopy";
 
 /**
  * Mon Lexique learner shell (P4.3) — DUMB, learner-facing presentation.
@@ -12,19 +13,34 @@ import { MonLexiqueEntryCard } from "./MonLexiqueEntryCard";
  * none. It owns no store, derives nothing, writes no events, calls no
  * `scoreEvents`, and never touches `LocalRepository`.
  *
+ * `now` is passed in, never read here: the sandbox host supplies the snapshot's
+ * own `updatedAt`, so this preview stays deterministic and clock-free.
+ *
  * No Word Graph, no notes/notebook, no Practice Pool / Daily Review, no
  * gamification / streak / XP language (P4.3 scope).
  */
-export function MonLexiqueShell({ entries }: { entries: MonLexiqueEntry[] }) {
+export function MonLexiqueShell({
+  entries,
+  now,
+}: {
+  entries: MonLexiqueEntry[];
+  now: number;
+}) {
   return (
     <View style={section}>
       <Text style={title}>Mon Lexique</Text>
       {entries.length === 0 ? (
-        <Text style={empty}>Your words will appear here as you use them.</Text>
+        <Text style={empty}>
+          {"Your words will appear here as you use them. Start anywhere on your path."}
+        </Text>
       ) : (
         <View style={list}>
           {entries.map((entry) => (
-            <MonLexiqueEntryCard key={entry.itemId} entry={entry} />
+            <MonLexiqueEntryCard
+              key={entry.itemId}
+              entry={entry}
+              band={resolveMonLexiqueBand(entry, now)}
+            />
           ))}
         </View>
       )}

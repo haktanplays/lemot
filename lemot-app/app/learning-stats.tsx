@@ -1,17 +1,21 @@
 /**
- * Learning Stats route (PR-10) — the learner-safe summary of the ONE spine.
+ * Learning summary route — reached from Mon Lexique's header action.
  *
- * Reads the SAME shared learning-event history as lessons, the Practice Hub and
- * Mon Lexique through the app runtime's explicit `readLearningStats()`
- * projection. Stats is a PROJECTION: this route owns no store, writes no state,
- * emits no learning event, creates no controller — opening, scrolling and
- * leaving change nothing anywhere.
+ * NOT a fourth tab, and not a dead end: it lives on the root stack above the
+ * tab group, so it opens over Mon Lexique and Back returns there.
  *
- * D-3 boundary honored: learner Stats derive from `LearningEvent` only. Nothing
- * here touches `TelemetryStore` or its key — telemetry stays content-debugging
- * and product-funnel data, never a learning history. The legacy tab
- * (`app/(tabs)/stats.tsx`) stays quarantined on its frozen legacy stores and is
- * neither imported nor modified.
+ * Reads the SAME shared learning-event history as lessons, Practice and Mon
+ * Lexique through the app runtime's explicit `readLearningStats()` projection.
+ * It is a PROJECTION: this route owns no store, writes no state, emits no
+ * learning event, creates no controller — opening, scrolling and leaving change
+ * nothing anywhere.
+ *
+ * D-3 boundary honored: the learner summary derives from `LearningEvent` only.
+ * Nothing here touches `TelemetryStore` or its key — telemetry stays
+ * content-debugging and product-funnel data, never a learning history. The
+ * legacy tab (`app/(tabs)/stats.tsx`) stays quarantined on its frozen legacy
+ * stores, is no longer reachable from the tab bar, and is neither imported nor
+ * modified.
  *
  * The projection is aggregate-only, so the route needs NO clock and can render
  * no raw ids, dates, learner text, percentages, streaks or scores even by
@@ -27,7 +31,10 @@ import { ChevronLeft } from "lucide-react-native";
 import { P } from "@/constants/theme";
 import type { LearningStatsProjection } from "@/content/learning-engine/learning-stats";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
-import { LearningStatsSummary } from "@/components/learning-stats/LearningStatsSummary";
+import {
+  LearningStatsSummary,
+  summaryHasContent,
+} from "@/components/learning-stats/LearningStatsSummary";
 import { LEARNING_STATS_COPY } from "@/components/learning-stats/learningStatsCopy";
 
 type StatsState =
@@ -65,40 +72,46 @@ export default function LearningStatsRoute() {
     };
   }, [load, generation]);
 
+  // Back always lands on Mon Lexique, which is where this surface is opened
+  // from — never on a blank stack.
+  const goBack = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace("/mon-lexique" as never);
+  };
+
+  const showSummary =
+    state.phase === "ready" &&
+    state.stats.hasActivity &&
+    summaryHasContent(state.stats);
+
   return (
     <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: P.bg }}>
       <View
         style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 8,
           paddingHorizontal: 16,
           paddingTop: 12,
           paddingBottom: 14,
           borderBottomWidth: 1,
           borderBottomColor: P.border,
-          gap: 4,
         }}
       >
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <Pressable
-            onPress={() => {
-              if (router.canGoBack()) router.back();
-              else router.replace("/(tabs)");
-            }}
-            hitSlop={10}
-            accessibilityRole="button"
-            accessibilityLabel="Go back"
-            style={{ padding: 4 }}
-          >
-            <ChevronLeft size={22} color={P.ink2} />
-          </Pressable>
-          <Text
-            className="text-lg"
-            style={{ color: P.ink, fontFamily: "serif", fontStyle: "italic" }}
-          >
-            {LEARNING_STATS_COPY.title}
-          </Text>
-        </View>
-        <Text className="text-sm" style={{ color: P.ink3, paddingLeft: 34 }}>
-          {LEARNING_STATS_COPY.intro}
+        <Pressable
+          onPress={goBack}
+          hitSlop={10}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          style={{ padding: 4 }}
+        >
+          <ChevronLeft size={22} color={P.ink2} />
+        </Pressable>
+        <Text
+          className="text-lg"
+          style={{ color: P.ink, fontFamily: "serif", fontStyle: "italic" }}
+        >
+          {LEARNING_STATS_COPY.title}
         </Text>
       </View>
 
@@ -118,7 +131,7 @@ export default function LearningStatsRoute() {
         </View>
       )}
 
-      {state.phase === "ready" && !state.stats.hasActivity && (
+      {state.phase === "ready" && !showSummary && (
         <View style={{ padding: 20 }}>
           <Text className="text-sm" style={{ color: P.ink2 }}>
             {LEARNING_STATS_COPY.empty}
@@ -126,7 +139,7 @@ export default function LearningStatsRoute() {
         </View>
       )}
 
-      {state.phase === "ready" && state.stats.hasActivity && (
+      {state.phase === "ready" && showSummary && (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
           <LearningStatsSummary stats={state.stats} />
         </ScrollView>

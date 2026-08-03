@@ -1,13 +1,28 @@
 import { Tabs } from "expo-router";
-import {
-  Mountain,
-  MessageCircle,
-  Layers,
-  BarChart3,
-} from "lucide-react-native";
+import { Mountain, BookMarked, Layers } from "lucide-react-native";
 import { P } from "@/constants/theme";
-import { FEATURES } from "@/config/productStage";
 
+/**
+ * The three permanent learner-facing surfaces.
+ *
+ * Journey, Mon Lexique and Practice are always reachable — nothing the learner
+ * has built is allowed to live behind a one-time completion screen. There is no
+ * fourth tab: the learning summary is a header action inside Mon Lexique.
+ *
+ * Route files keep their engineering names (`mon-lexique`, `practice-hub`);
+ * only the `title` is learner-facing, so no route rename risk is taken here.
+ *
+ * The legacy `chat` / `practice` / `stats` route files stay mounted but are
+ * permanently absent from the bar (`href: null`). They render frozen legacy
+ * surfaces (AI chat, SRS scenario cards, the 24-lesson syllabus table) that are
+ * not part of the learner product shell, and "Stats" / "Practice Hub" are not
+ * words the learner ever sees.
+ *
+ * The tab bar only exists inside this group. Lesson Zero (`/lesson-zero`), the
+ * lesson routes (`/v1-lesson/[id]`, `/lesson/[id]`) and the learning summary
+ * (`/learning-stats`) all live on the root stack above it, so an active lesson
+ * never renders the bar.
+ */
 export default function TabLayout() {
   return (
     <Tabs
@@ -38,44 +53,26 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="chat"
+        name="mon-lexique"
         options={{
-          title: "Chat",
-          // Hide tab in dev-apk (FEATURES.aiChat=false). The route file stays
-          // mounted; it just doesn't appear in the bottom bar. Sandbox /
-          // public-beta keep aiChat=true so the tab remains visible.
-          href: FEATURES.aiChat ? undefined : null,
+          title: "Mon Lexique",
           tabBarIcon: ({ color, size }) => (
-            <MessageCircle color={color} size={size} />
+            <BookMarked color={color} size={size} />
           ),
         }}
       />
       <Tabs.Screen
-        name="practice"
+        name="practice-hub"
         options={{
           title: "Practice",
-          // Hide tab in dev-apk (FEATURES.practice=false). Practice surfaces
-          // legacy scenario / flashcard material beyond the Dev APK path.
-          // Sandbox keeps practice=true so the tab remains visible there.
-          href: FEATURES.practice ? undefined : null,
-          tabBarIcon: ({ color, size }) => (
-            <Layers color={color} size={size} />
-          ),
+          tabBarIcon: ({ color, size }) => <Layers color={color} size={size} />,
         }}
       />
-      <Tabs.Screen
-        name="stats"
-        options={{
-          title: "Progress",
-          // Hide tab in dev-apk (FEATURES.progress=false). stats.tsx renders
-          // the legacy 24-lesson syllabus / milestone tiers, which are out of
-          // the Round 1 L0-L6 surface. Sandbox / public-beta keep it visible.
-          href: FEATURES.progress ? undefined : null,
-          tabBarIcon: ({ color, size }) => (
-            <BarChart3 color={color} size={size} />
-          ),
-        }}
-      />
+
+      {/* Frozen legacy routes — mounted, never in the bar. */}
+      <Tabs.Screen name="chat" options={{ href: null }} />
+      <Tabs.Screen name="practice" options={{ href: null }} />
+      <Tabs.Screen name="stats" options={{ href: null }} />
     </Tabs>
   );
 }

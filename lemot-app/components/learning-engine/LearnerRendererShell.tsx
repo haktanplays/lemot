@@ -332,7 +332,12 @@ export function LearnerRendererShell({
               </>
             )}
 
-            <MonLexiqueShell entries={monLexiqueEntries} />
+            {/* `now` is the snapshot's own `updatedAt` — the same deterministic,
+                clock-free instant the Practice Pool preview above uses. */}
+            <MonLexiqueShell
+              entries={monLexiqueEntries}
+              now={snapshot?.updatedAt ?? 0}
+            />
             <PracticePoolShell
               buckets={practiceBuckets}
               onSelectItem={openPractice}

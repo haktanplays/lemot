@@ -55,8 +55,10 @@ import {
   type MonLexiqueEntry,
 } from "../../content/learning-engine/mon-lexique";
 import {
-  MON_LEXIQUE_STATUS_COPY,
-  PRODUCTION_CLAIM_COPY,
+  MON_LEXIQUE_BAND_COPY,
+  MON_LEXIQUE_BANDS,
+  resolveMonLexiqueBand,
+  usedSuccessfullyToday,
 } from "../../components/learning-engine/monLexiqueCopy";
 import { createSettledNavigationGate } from "../../components/lesson-v1/settledNavigation";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
@@ -289,25 +291,40 @@ describe("mon lexique registry compatibility (both authored forms)", () => {
   });
 });
 
-// ── Parts B/C: truthful claim copy ──────────────────────────────────────────
+// ── Parts B/C: truthful band copy ───────────────────────────────────────────
 
-describe("claim copy is calm, claim-level and separate from membership", () => {
-  test("the exact learner copy", () => {
-    assertEqual(PRODUCTION_CLAIM_COPY.independent, "Used independently", "independent");
-    assertEqual(PRODUCTION_CLAIM_COPY.supported, "Growing with support", "supported");
-    assertEqual(MON_LEXIQUE_STATUS_COPY.added, "Collected", "added");
-    assertEqual(MON_LEXIQUE_STATUS_COPY.weak, "Needs another look", "weak");
+/** A viewing instant well after the fixtures' event timestamps. */
+const VIEW_NOW = NOW + 30 * 86_400_000;
+
+describe("band copy is calm, claim-level and singular", () => {
+  test("the exact learner copy — four bands, no more", () => {
+    assertEqual(MON_LEXIQUE_BAND_COPY.yours, "Yours", "yours");
+    assertEqual(MON_LEXIQUE_BAND_COPY.becoming, "Becoming yours", "becoming");
+    assertEqual(MON_LEXIQUE_BAND_COPY.met, "You’ve met this", "met");
+    assertEqual(MON_LEXIQUE_BAND_COPY.revisit, "Worth another look", "revisit");
+    assertEqual(Object.keys(MON_LEXIQUE_BAND_COPY).length, 4, "exactly four bands");
+    assertEqual(MON_LEXIQUE_BANDS.length, 4, "the ordered list agrees");
   });
 
-  test("`none` has no claim copy — absence is not a verdict", () => {
-    assert(!("none" in PRODUCTION_CLAIM_COPY), "no fabricated line for none");
+  test("the retired vocabulary is gone from the learner surface", () => {
+    const all = Object.values(MON_LEXIQUE_BAND_COPY).join(" ").toLowerCase();
+    for (const retired of [
+      "collected",
+      "needs another look",
+      "growing with support",
+      "used independently",
+      "recognition",
+      "supported",
+      "independent",
+      "mastered",
+      "due",
+    ]) {
+      assert(!all.includes(retired), `retired band word survived: "${retired}"`);
+    }
   });
 
   test("no copy asserts an assistance mechanism or a judgment", () => {
-    const all = [
-      ...Object.values(PRODUCTION_CLAIM_COPY),
-      ...Object.values(MON_LEXIQUE_STATUS_COPY),
-    ].join(" ");
+    const all = Object.values(MON_LEXIQUE_BAND_COPY).join(" ");
     for (const banned of [
       "hint",
       "help",
@@ -324,8 +341,93 @@ describe("claim copy is calm, claim-level and separate from membership", () => {
     ]) {
       assert(
         !all.toLowerCase().includes(banned),
-        `claim/status copy must not contain "${banned}"`,
+        `band copy must not contain "${banned}"`,
       );
+    }
+  });
+
+  test("the band mapper is a pure presentation map over status + claim", () => {
+    const base = { lastProducedAt: null };
+    assertEqual(
+      resolveMonLexiqueBand(
+        { ...base, status: "added", productionClaim: "independent" },
+        VIEW_NOW,
+      ),
+      "yours",
+      "independent → Yours",
+    );
+    assertEqual(
+      resolveMonLexiqueBand(
+        { ...base, status: "added", productionClaim: "supported" },
+        VIEW_NOW,
+      ),
+      "becoming",
+      "supported → Becoming yours",
+    );
+    assertEqual(
+      resolveMonLexiqueBand(
+        { ...base, status: "added", productionClaim: "none" },
+        VIEW_NOW,
+      ),
+      "met",
+      "no production claim → You’ve met this",
+    );
+    assertEqual(
+      resolveMonLexiqueBand(
+        { ...base, status: "weak", productionClaim: "none" },
+        VIEW_NOW,
+      ),
+      "revisit",
+      "weak → Worth another look",
+    );
+  });
+
+  test("a piece successfully used TODAY never reads as Worth another look", () => {
+    const morning = new Date(2026, 6, 2, 9, 30).getTime();
+    const evening = new Date(2026, 6, 2, 21, 15).getTime();
+    const nextDay = new Date(2026, 6, 3, 9, 30).getTime();
+
+    assert(
+      usedSuccessfullyToday({ lastProducedAt: morning }, evening),
+      "same local day counts as today",
+    );
+    assert(
+      !usedSuccessfullyToday({ lastProducedAt: morning }, nextDay),
+      "the next day is not today",
+    );
+    assert(
+      !usedSuccessfullyToday({ lastProducedAt: null }, evening),
+      "never produced is never today",
+    );
+
+    const weakButUsedToday = {
+      status: "weak" as const,
+      productionClaim: "supported" as const,
+      lastProducedAt: morning,
+    };
+    assertEqual(
+      resolveMonLexiqueBand(weakButUsedToday, evening),
+      "becoming",
+      "same-day success falls back to the earned band, not to revisit",
+    );
+    assertEqual(
+      resolveMonLexiqueBand(weakButUsedToday, nextDay),
+      "revisit",
+      "the suppression is same-day only — it never hides the state forever",
+    );
+    // Suppression is DISPLAY only: the mapper reads nothing but the three
+    // entry fields, so mastery, eligibility and scheduling cannot move.
+    const mapper = codeOf(read("components/learning-engine/monLexiqueCopy.ts"));
+    for (const banned of [
+      "practiceEligibility",
+      "dueAt",
+      "leitnerBox",
+      "scoreEvent",
+      "LocalRepository",
+      "setItem",
+      "Date.now",
+    ]) {
+      assert(!mapper.includes(banned), `the band mapper must not touch ${banned}`);
     }
   });
 });
@@ -351,9 +453,9 @@ describe("supported-path proof (real runtime → reducer → selector)", () => {
     assertEqual(entry.productionClaim, "supported", "supported claim");
     assertEqual(entry.fr, "café", "the registry surface, not event text");
     assertEqual(
-      PRODUCTION_CLAIM_COPY[entry.productionClaim as "supported"],
-      "Growing with support",
-      "the learner sees the Supported copy",
+      MON_LEXIQUE_BAND_COPY[resolveMonLexiqueBand(entry, VIEW_NOW)],
+      "Becoming yours",
+      "the learner sees one band, not a mechanism",
     );
     assertEqual(
       [...kv.map.keys()].join(","),
@@ -398,9 +500,9 @@ describe("independent-path proof", () => {
     assertEqual(entry.productionClaim, "independent", "independent claim");
     assert(entry.productionClaim !== "supported", "no Supported label appears");
     assertEqual(
-      PRODUCTION_CLAIM_COPY[entry.productionClaim as "independent"],
-      "Used independently",
-      "independent copy",
+      MON_LEXIQUE_BAND_COPY[resolveMonLexiqueBand(entry, VIEW_NOW)],
+      "Yours",
+      "independent band copy",
     );
     const rendered = JSON.stringify(entry);
     assert(!rendered.includes("attempts"), "no raw counters on the entry");
@@ -549,10 +651,10 @@ describe("weak precedence keeps claims honest", () => {
     const entry = entries.find((e) => e.itemId === "chunk-je-voudrais") as MonLexiqueEntry;
     assertEqual(entry.status, "weak", "reducer weakness surfaces");
     assertEqual(entry.productionClaim, "none", "no fabricated production claim");
-    assertEqual(MON_LEXIQUE_STATUS_COPY[entry.status], "Needs another look", "calm chip");
-    assert(
-      !(entry.productionClaim in PRODUCTION_CLAIM_COPY),
-      "none renders no claim line",
+    assertEqual(
+      MON_LEXIQUE_BAND_COPY[resolveMonLexiqueBand(entry, VIEW_NOW)],
+      "Worth another look",
+      "one calm band, and only one",
     );
   });
 
@@ -825,19 +927,16 @@ describe("completion and provider wiring (source-level)", () => {
     );
   });
 
-  test("both projection links route through the settled gate; Back to Home does not", () => {
+  test("the projection shortcut routes through the settled gate; Back to Home does not", () => {
     const src = read("components/lesson-v1/LessonRendererV1.tsx");
     const completion = src.slice(src.indexOf("function CompletionView"));
     assert(
-      completion.includes('openProjection(() => router.push("/practice-hub" as never))'),
-      "the Practice Hub link now waits for settlement",
-    );
-    assert(
       completion.includes('openProjection(() => router.push("/mon-lexique" as never))'),
-      "the Mon Lexique link waits for settlement",
+      "the Mon Lexique shortcut waits for settlement",
     );
-    // PR-10 added the third projection link (learning stats) through the SAME
-    // gate — the count grew, the invariant (every push settled) is unchanged.
+    // Completion now carries ONE shortcut instead of three equal links (the
+    // standing surfaces are permanent tabs). The count shrank; the invariant —
+    // every projection push is settled — is unchanged.
     assertEqual(
       (completion.match(/router\.push\(/g) ?? []).length,
       (completion.match(/openProjection\(\(\) => router\.push\(/g) ?? []).length,
@@ -880,7 +979,7 @@ describe("completion and provider wiring (source-level)", () => {
 });
 
 describe("mon lexique route and card (source-level)", () => {
-  const route = () => read("app/mon-lexique.tsx");
+  const route = () => read("app/(tabs)/mon-lexique.tsx");
 
   test("the route reads through the runtime projection and owns no store", () => {
     const code = codeOf(route());
@@ -888,8 +987,16 @@ describe("mon lexique route and card (source-level)", () => {
     assert(code.includes("selectMonLexiqueEntries"), "the existing pure selector");
     assert(code.includes("loadToken"), "stale-read token present");
     assert(code.includes("[load, generation]"), "reset generation re-reads the log");
+    // ONE orchestration-boundary clock read, and no more. The route was
+    // clock-free until same-day display suppression needed a "today"; the
+    // selector and the band mapper are still pure, and ordering still comes
+    // from the selector's persisted timestamps, never from this clock.
+    assertEqual(
+      (codeOf(route()).match(/Date\.now\(\)/g) ?? []).length,
+      1,
+      "exactly one clock read, at the load boundary",
+    );
     for (const banned of [
-      "Date.now",
       "LocalRepository",
       "appendEvent",
       "scoreEvent(",
@@ -904,7 +1011,10 @@ describe("mon lexique route and card (source-level)", () => {
       "monLexiqueStatus",
       "deriveProductionClaim",
     ]) {
-      assert(!code.includes(banned), `app/mon-lexique.tsx must not reference ${banned}`);
+      assert(
+        !code.includes(banned),
+        `app/(tabs)/mon-lexique.tsx must not reference ${banned}`,
+      );
     }
     assert(!/record[A-Z]/.test(code), "opening Mon Lexique emits nothing");
   });
@@ -931,16 +1041,18 @@ describe("mon lexique route and card (source-level)", () => {
     assertEqual(itemIdUses.length, keyUses.length, "itemId is a React key, never text");
   });
 
-  test("the card shows the claim through the copy map and no internal field", () => {
+  test("the card shows ONE band through the copy map and no internal field", () => {
     const src = read("components/learning-engine/MonLexiqueEntryCard.tsx");
     const code = codeOf(src);
-    assert(code.includes("PRODUCTION_CLAIM_COPY"), "claim line from the pure copy map");
-    assert(code.includes("MON_LEXIQUE_STATUS_COPY"), "membership from the pure copy map");
-    assert(
-      code.includes('entry.productionClaim !== "none"'),
-      "none renders no claim line",
-    );
+    assert(code.includes("MON_LEXIQUE_BAND_COPY"), "band label from the pure copy map");
+    // The band is resolved by the caller: the card reads no status, no claim
+    // and no clock, so it cannot invent a second verdict beside the first.
     for (const banned of [
+      "entry.status",
+      "entry.productionClaim",
+      "Date.now",
+      "PRODUCTION_CLAIM_COPY",
+      "MON_LEXIQUE_STATUS_COPY",
       "entry.itemId",
       "entry.dueAt",
       "entry.lastSeenAt",
@@ -969,8 +1081,8 @@ describe("mon lexique route and card (source-level)", () => {
     const shell = read("components/learning-engine/MonLexiqueShell.tsx");
     assert(shell.includes("MonLexiqueEntryCard"), "same card — one implementation");
     assert(
-      !read("app/mon-lexique.tsx").includes('"Collected"'),
-      "membership copy lives only in the pure copy module",
+      !read("app/(tabs)/mon-lexique.tsx").includes('"Yours"'),
+      "band copy lives only in the pure copy module",
     );
   });
 });
@@ -989,7 +1101,7 @@ describe("PR-09 changed no frozen contract", () => {
   test("the practice hub files were not conscripted into Mon Lexique", () => {
     for (const rel of [
       "content/lesson-v1-evidence/practiceHub.ts",
-      "app/practice-hub.tsx",
+      "app/(tabs)/practice-hub.tsx",
       "components/practice-hub/PracticeHubPractice.tsx",
     ]) {
       assert(
@@ -1000,7 +1112,7 @@ describe("PR-09 changed no frozen contract", () => {
   });
 
   test("no legacy vocabulary surface gained a connection", () => {
-    const src = read("app/mon-lexique.tsx");
+    const src = read("app/(tabs)/mon-lexique.tsx");
     for (const banned of ["dictionary", "scenarios", "useSRS"]) {
       assert(!src.includes(banned), `no legacy ${banned} connection`);
     }
