@@ -1,4 +1,4 @@
-# L1–L10 Sentence & Chunk System — Candidate v0.1
+# L1–L10 Sentence & Chunk System — Candidate v0.2
 
 > **Status: CANDIDATE. Not approved, not implemented, not reviewed.**
 > Every French sentence in this document is AI-authored candidate content.
@@ -12,8 +12,10 @@
 | Base commit | `b3bb0e6cc4d65482a72e9b8733616e19771df1a3` |
 | Working branch | `content/l1-l10-sentence-chunk-canon-draft` |
 | Scope | Lessons 1–10 (`v1-lesson-001` … `v1-lesson-010`) |
-| Master CSV | `L1_L10_SENTENCE_CHUNK_ROWS_v0.1.csv` (one row per sentence family) |
-| Reviewer CSV | `docs/qa/french/L1_L10_HUMAN_FRENCH_REVIEW_SIMPLE_v0.2.csv` |
+| Master CSV | `L1_L10_SENTENCE_CHUNK_ROWS_v0.1.csv` (one row per **exact surface**) |
+| Reviewer sentence CSV | `docs/qa/french/L1_L10_HUMAN_FRENCH_REVIEW_SIMPLE_v0.2.csv` (exact surfaces) |
+| Reviewer chunk CSV | `docs/qa/french/L1_L10_HUMAN_FRENCH_CHUNK_REVIEW_SIMPLE_v0.1.csv` |
+| L1 density reference | `docs/workstreams/L1_SENTENCE_ECOSYSTEM_v0.1.md` (30 seeds, preserved) |
 | Evidence base | `docs/qa/french/L1_L10_FRENCH_QA_PACK_v0.1.md` (the extraction of what ships today) |
 
 **Governing canon read for this draft:** Content Bible v1.0 (§5.2 surface
@@ -26,7 +28,700 @@ disagreement is reported as a founder decision rather than resolved silently.
 
 ---
 
+## 0. Counting model — read before §1
+
+**The human French-QA unit is an exact learner-facing surface, not a sentence
+family.** The v0.1 draft of this document counted 68 sentence families and
+offered them to the reviewer as the review inventory. That was wrong twice
+over: a family hides the exact strings a reviewer has to judge, and 68 rows
+under-scopes ten lessons of French.
+
+This revision keeps families as the *internal* planning unit — they are still
+in §2 and §3, and they are still what the implementation map is built on — and
+adds the layer that actually goes to the reviewer:
+
+| Layer | Unit | Count | Where it lives |
+|---|---|---:|---|
+| Human QA inventory | exact French surface | **305** | `L1_L10_HUMAN_FRENCH_REVIEW_SIMPLE_v0.2.csv` |
+| Human QA chunk inventory | exact French chunk, per lesson | **140** | `L1_L10_HUMAN_FRENCH_CHUNK_REVIEW_SIMPLE_v0.1.csv` |
+| Internal master | exact surface + internal metadata | **305** | `L1_L10_SENTENCE_CHUNK_ROWS_v0.1.csv` |
+| Internal planning | sentence family | 68 | §2 and §3 of this document |
+
+**The density reference is L1's existing 30-seed set**
+(`docs/workstreams/L1_SENTENCE_ECOSYSTEM_v0.1.md`, reviewer pack
+`L1_HUMAN_FRENCH_QA_REVIEW_PACK_v0.1.md`). All 30 seeds — `L1-SE-001` through
+`L1-SE-033` — are preserved here verbatim: same exact French, same role, same
+treatment, same input-only and model-only distinctions. Nothing in L1 was
+reduced, merged or re-worded. L2–L10 are authored to that same granularity.
+
+### Surfaces per lesson
+
+| | L1 | L2 | L3 | L4 | L5 | L6 | L7 | L8 | L9 | L10 | Total |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Exact French surfaces | 30 | 30 | 30 | 30 | 30 | 32 | 30 | 30 | 30 | 33 | **305** |
+| Chunks for review | 16 | 16 | 14 | 15 | 13 | 12 | 12 | 14 | 12 | 16 | **140** |
+| Active-new chunks | 3 | 1 | 4 | 1 | 2 | 0 | 1 | 1 | 1 | 0 | — |
+
+### What a surface is, and what it is not
+
+| Treatment | Rows | What the learner does |
+|---|---:|---|
+| INTERLOCUTOR | 95 | hears the other person say it |
+| PRODUCE | 77 | writes or says it from intent |
+| MODEL | 50 | is shown it after their own attempt, as one natural way |
+| SUPPORTED | 35 | produces it with the pieces visible on screen |
+| READ/LISTEN | 27 | reads or hears it; never asked to produce it |
+| ACCEPTED ALTERNATIVE | 13 | may write it instead, and is marked right |
+| CONTRAST | 8 | sees it beside the target, to feel a difference |
+
+**This is a QA inventory, not a screen plan.** A lesson can carry ~30 surfaces
+for review while still rendering 11–14 screens, asking for 3–5 production
+actions, and introducing 1–4 active-new chunks. Most of the density is French
+the learner *hears or reads* — the other person's lines, ambient service
+French, models shown after an attempt. Those need a native eye precisely
+because nobody is grading them.
+
+### Padding controls applied
+
+- No surface repeats inside a lesson.
+- No surface exists only as an emphatic punctuation twin. Three such rows
+  (`Je suis ici !`, `J'ai faim !`, a second `Merci beaucoup. Au revoir.`) were
+  written and then cut, and replaced with surfaces that do a different job.
+- Five same-words/different-punctuation pairs survive **on purpose**, because
+  each is a real question for the reviewer, not a variant:
+
+| Lesson | Pair | Why both |
+|---|---|---|
+| L3 | `Non, merci.` / `Non merci.` | comma or no comma is exactly the kind of call the L1 pack routes to a decision card |
+| L5 | `une table` / `Une table ?` | one is a package chip the learner assembles; the other is a spoken offer with a rising tone |
+| L7 | `Je vais à la maison. Au revoir.` / `Je vais à la maison, au revoir.` | the shipped natural-reveal already teaches this as two rhythms |
+| L9 | `On fait une pause ?` / `On fait une pause.` | suggesting versus announcing — different acts |
+| L10 | `Bonjour. C'est où ?` / `Bonjour, c'est où ?` | the shipped accepted-alternative pair |
+
+- Cross-lesson repetition is deliberate and carries a different situation each
+  time: 305 rows over 230 distinct strings. A recycled surface is a
+  different review question in a different scene, and the reviewer sees the
+  scene on every row.
+
+---
+
+## 0b. Lesson-by-lesson surface inventory
+
+The complete reviewer inventory. Chunk tables follow each lesson.
+
+### L1 — 30 surfaces, 16 chunks, 3 active-new
+
+*Get attention, order politely, thank — and recover when you lose the thread.*
+
+**Preserved verbatim from the L1 30-seed set.** Every row carries its
+original `L1-SE-###` id in the origin column of the master CSV.
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **Bonjour.** | Hello. | You walk in and open the exchange. | PRODUCE | L1-SE-001 (preserved) |
+| 2 | **Je voudrais un café.** | I would like a coffee. | You have already greeted; now you order. | PRODUCE | L1-SE-002 (preserved) |
+| 3 | **Bonjour, je voudrais un café.** | Hello, I would like a coffee. | Greeting and order in one turn. | PRODUCE | L1-SE-003 (preserved) |
+| 4 | **Bonjour, je voudrais un café, s'il vous plaît.** | Hello, I would like a coffee, please. | The full polite order — the central L1 sentence. | PRODUCE | L1-SE-004 (preserved, anchor) |
+| 5 | **Je voudrais un café, s'il vous plaît.** | I would like a coffee, please. | Ordering when you have already said hello. | PRODUCE | L1-SE-005 (preserved) |
+| 6 | **Un café, s'il vous plaît.** | A coffee, please. | The short order a regular gives at a busy counter. | PRODUCE | L1-SE-006 (preserved) |
+| 7 | **Je voudrais un thé, s'il vous plaît.** | I would like a tea, please. | Same order, different drink; the words for the tea are in front of you. | SUPPORTED | L1-SE-007 (preserved) |
+| 8 | **Un thé, s'il vous plaît.** | A tea, please. | The short tea order; the words are in front of you. | SUPPORTED | L1-SE-008 (preserved) |
+| 9 | **Merci.** | Thank you. | The drink arrives and you thank them. | PRODUCE | L1-SE-009 (preserved) |
+| 10 | **Au revoir.** | Goodbye. | You close the exchange and leave. | PRODUCE | L1-SE-010 (preserved) |
+| 11 | **Merci, au revoir.** | Thank you, goodbye. | Thanks and goodbye as one exit. | PRODUCE | L1-SE-011 (preserved) |
+| 12 | **S'il vous plaît.** | Please. | The formula shown and heard on its own, never demanded alone. | READ/LISTEN | L1-SE-012 (preserved) |
+| 13 | **Je ne comprends pas.** | I don't understand. | You lost the thread; the formula is in front of you. | SUPPORTED | L1-SE-013 (preserved) |
+| 14 | **Vous pouvez répéter ?** | Can you say that again? | Asking for a repeat; the formula is in front of you. | SUPPORTED | L1-SE-014 (preserved) |
+| 15 | **Je ne comprends pas. Vous pouvez répéter ?** | I don't understand. Can you say that again? | The whole recovery move in one turn. | SUPPORTED | L1-SE-015 (preserved) |
+| 16 | **Excusez-moi, je ne comprends pas.** | Excuse me, I don't understand. | Interrupting politely to say you are lost. | SUPPORTED | L1-SE-016 (preserved) |
+| 17 | **Excusez-moi.** | Excuse me. | Getting someone's attention — not an apology. | SUPPORTED | L1-SE-017 (preserved) |
+| 18 | **Je veux un café.** | I want a coffee. | Shown as a contrast: real French, but blunt with a stranger. | CONTRAST | L1-SE-018 (preserved) |
+| 19 | **Bonjour, monsieur.** | Hello, sir. | The server greets you; you only hear it. | INTERLOCUTOR | L1-SE-019 (preserved) |
+| 20 | **Bonjour, madame.** | Hello, madam. | The server greets you; you only hear it. | INTERLOCUTOR | L1-SE-020 (preserved) |
+| 21 | **Un café, madame ?** | A coffee, madam? | The server offers, with a rising tone. | INTERLOCUTOR | L1-SE-021 (preserved) |
+| 22 | **Un café.** | One coffee. | The server repeats your order back, flat. | INTERLOCUTOR | L1-SE-023 (preserved) |
+| 23 | **Un croissant ?** | A croissant? | The server offers something extra; heard only. | INTERLOCUTOR | L1-SE-024 (preserved) |
+| 24 | **Voilà.** | Here you are. | The drink is set down in front of you. | INTERLOCUTOR | L1-SE-025 (preserved) |
+| 25 | **Voilà, monsieur.** | Here you are, sir. | The same handover, addressed. | INTERLOCUTOR | L1-SE-026 (preserved) |
+| 26 | **Merci, madame.** | Thank you, madam. | Shown after your own thanks, as a warmer version. | MODEL | L1-SE-027 (preserved) |
+| 27 | **Au revoir, madame.** | Goodbye, madam. | The server's close, shown as a model. | MODEL | L1-SE-028 (preserved) |
+| 28 | **Bonjour, je voudrais un café, s'il vous plaît. Merci !** | Hello, I would like a coffee, please. Thank you! | One natural way to run the whole order. | MODEL | L1-SE-030 (preserved) |
+| 29 | **Bonjour, un café, s'il vous plaît. Merci !** | Hello, a coffee, please. Thank you! | The shorter, more casual way to run the same order. | MODEL | L1-SE-031 (preserved) |
+| 30 | **Merci beaucoup, au revoir !** | Thank you very much, goodbye! | A warmer exit, shown after yours. | MODEL | L1-SE-033 (preserved) |
+
+**Chunks — L1**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| merci | thank you | Closes any exchange. | **active-new** |
+| s'il vous plaît | please | Softens any request; always used whole. | **active-new** |
+| bonjour | hello | Opens any exchange, from morning to late afternoon. | recycled |
+| je voudrais | I would like | The polite way to ask for something. | recycled |
+| un café | a coffee | The drink and its little word, learned together. | noun package |
+| un thé | a tea | The second drink; given to the learner when they produce it. | supported |
+| excusez-moi | excuse me | Getting attention — not an apology. | supported |
+| je ne comprends pas | I don't understand | Said whole when you lose the thread. | survival formula |
+| vous pouvez répéter ? | can you say that again? | Said whole to ask for a repeat. | survival formula |
+| au revoir | goodbye | Closes the moment as you leave. | **active-new** |
+| merci beaucoup | thank you very much | A warmer thanks. | supported |
+| madame | madam | Address form; heard, not required. | recognition-only |
+| monsieur | sir | Address form; heard, not required. | recognition-only |
+| un croissant | a croissant | Heard at the counter; produced later. | recognition-only |
+| voilà | here you are | Heard as something is handed over. | recognition-only |
+| je veux | I want | Shown only as a blunt contrast to je voudrais. | recognition-only |
+
+Active-new: `merci`, `s'il vous plaît`, `au revoir` — 3 of a maximum 4.
+
+---
+
+### L2 — 30 surfaces, 16 chunks, 1 active-new
+
+*Put yourself somewhere, and say what state you are in.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **Je suis ici.** | I am here. | Someone calls your name and you answer. | PRODUCE | shipped L2 |
+| 2 | **Bonjour, je suis ici.** | Hello, I am here. | You step into the room and greet before placing yourself. | PRODUCE | shipped L2 (met, produced in L6) |
+| 3 | **Je suis là.** | I'm here. | The same answer with the other place word; both are normal. | ACCEPTED ALTERNATIVE | new |
+| 4 | **Je suis à l'heure.** | I'm on time. | The opposite of being late, said with relief. | READ/LISTEN | new |
+| 5 | **Je suis en retard.** | I'm late. | You arrive after things have started. | SUPPORTED | new |
+| 6 | **Excusez-moi, je suis en retard.** | Excuse me, I'm late. | Slipping in once the room is already busy. | SUPPORTED | new |
+| 7 | **Bonjour, je suis en retard.** | Hello, I'm late. | Greeting and owning it in one turn. | PRODUCE | new |
+| 8 | **Moi, je suis ici.** | Me, I'm here. | Shown as a contrast: same meaning, more emphasis on you. | CONTRAST | new |
+| 9 | **Je suis fatigué.** | I'm tired. | The same shape naming a state instead of a place (man speaking). | READ/LISTEN | new |
+| 10 | **Je suis fatiguée.** | I'm tired. | The same sentence when a woman says it. | READ/LISTEN | new |
+| 11 | **Je suis prêt.** | I'm ready. | Another state, shown beside the place (man speaking). | READ/LISTEN | shipped L2 insight |
+| 12 | **Je suis prête.** | I'm ready. | The same sentence when a woman says it. | READ/LISTEN | new |
+| 13 | **Je suis désolé.** | I'm sorry. | Heard after arriving late (man speaking). | READ/LISTEN | new |
+| 14 | **Je suis désolée.** | I'm sorry. | The same apology when a woman says it. | READ/LISTEN | new |
+| 15 | **Vous êtes ici ?** | Are you here? | Someone checks whether you have arrived. | INTERLOCUTOR | new |
+| 16 | **Vous êtes là ?** | Are you there? | The same check, called through a door. | INTERLOCUTOR | new |
+| 17 | **Ah, vous êtes là !** | Ah, there you are! | They spot you and are pleased. | INTERLOCUTOR | new |
+| 18 | **Vous êtes prêt ?** | Are you ready? | Someone asks if you are set (asking a man). | INTERLOCUTOR | new |
+| 19 | **Vous êtes prête ?** | Are you ready? | The same question asked of a woman. | INTERLOCUTOR | new |
+| 20 | **Vous êtes en retard.** | You're late. | Said to you, without reproach. | INTERLOCUTOR | new |
+| 21 | **Ce n'est pas grave.** | It's fine / no harm done. | The reply after you say you're late. | INTERLOCUTOR | new |
+| 22 | **Entrez.** | Come in. | Heard at the door; you only need to understand it. | INTERLOCUTOR | new |
+| 23 | **Par ici.** | This way. | Someone shows you where to go. | INTERLOCUTOR | new |
+| 24 | **Une seconde.** | One second. | Heard while someone finishes something. | INTERLOCUTOR | new |
+| 25 | **Asseyez-vous.** | Have a seat. | Heard as you are shown in. | INTERLOCUTOR | new |
+| 26 | **Bonjour. Je suis ici. Merci.** | Hello. I'm here. Thank you. | One natural way to run a whole small arrival. | MODEL | new |
+| 27 | **Bonjour, je suis en retard. Excusez-moi.** | Hello, I'm late. Sorry. | The same arrival on a day that went wrong. | MODEL | new |
+| 28 | **Je ne comprends pas.** | I don't understand. | Still available when the room answers too fast. | SUPPORTED | L1 seed, recycled |
+| 29 | **Vous pouvez répéter ?** | Can you say that again? | The second half of the same recovery. | SUPPORTED | L1 seed, recycled |
+| 30 | **Excusez-moi.** | Excuse me. | Getting attention before you place yourself. | SUPPORTED | L1 seed, recycled |
+
+**Chunks — L2**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| je suis | I am | Says who or where you are. | **active-new** |
+| ici | here | The place word that answers where. | supported |
+| là | here / there | The other place word; just as common. | supported |
+| en retard | late | A state; never changes form. | supported |
+| fatigué / fatiguée | tired | A state; the ending changes with the speaker. | recognition-only |
+| prêt / prête | ready | A state; the ending changes with the speaker. | recognition-only |
+| désolé / désolée | sorry | An apology; the ending changes with the speaker. | recognition-only |
+| vous êtes | you are | The same shape pointed at the other person; heard only. | recognition-only |
+| ce n'est pas grave | it's fine / no harm done | The reassurance you get after apologising. | recognition-only |
+| entrez | come in | Heard at a door. | recognition-only |
+| par ici | this way | Heard when someone shows you where to go. | recognition-only |
+| asseyez-vous | have a seat | Heard as you are shown in. | recognition-only |
+| une seconde | one second | Heard while someone finishes something. | recognition-only |
+| bonjour | hello | Still opening every arrival. | recycled |
+| à l'heure | on time | The opposite of en retard; never changes form. | recognition-only |
+| excusez-moi | excuse me | Now used before placing yourself. | recycled |
+
+Active-new: `je suis` — 1 of a maximum 4.
+
+---
+
+### L3 — 30 surfaces, 14 chunks, 4 active-new
+
+*Answer yes or no, refuse politely, and say what is not so.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **Non.** | No. | The fastest answer there is. | PRODUCE | shipped L3 |
+| 2 | **Oui.** | Yes. | Its opposite, just as fast. | PRODUCE | shipped L3 |
+| 3 | **Non, merci.** | No, thank you. | Turning down an offer without being sharp. | PRODUCE | shipped L3 (choice only) |
+| 4 | **Non merci.** | No thanks. | The same refusal written without the comma. | ACCEPTED ALTERNATIVE | shipped L3 |
+| 5 | **Oui, merci.** | Yes, thank you. | Accepting the same offer. | PRODUCE | new |
+| 6 | **Je ne suis pas ici.** | I am not here. | Someone is looking for you in the wrong room. | PRODUCE | shipped L3 |
+| 7 | **Non, je ne suis pas ici.** | No, I am not here. | Answering first, then explaining. | PRODUCE | shipped L3 |
+| 8 | **Je ne suis pas là.** | I'm not there. | The same answer with the other place word. | ACCEPTED ALTERNATIVE | new |
+| 9 | **Ce n'est pas ici.** | It is not here. | Someone points at the wrong place. | PRODUCE | shipped L3 |
+| 10 | **Non, ce n'est pas ici.** | No, it is not here. | Answering a where-question in the negative. | PRODUCE | new |
+| 11 | **Je ne comprends pas.** | I don't understand. | Now built from the wrap the lesson teaches. | PRODUCE | L1 seed, owned here |
+| 12 | **Excusez-moi, je ne comprends pas.** | Excuse me, I don't understand. | Interrupting politely to say you are lost. | SUPPORTED | L1 seed, recycled |
+| 13 | **Vous pouvez répéter ?** | Can you say that again? | The repeat request that follows it. | SUPPORTED | L1 seed, recycled |
+| 14 | **Je ne suis pas en retard.** | I'm not late. | The same wrap on a different state. | MODEL | new |
+| 15 | **Je ne suis pas fatigué.** | I'm not tired. | Another state turned around (man speaking). | MODEL | new |
+| 16 | **Je ne veux pas.** | I don't want to. | The full written form of a plain refusal. | READ/LISTEN | new |
+| 17 | **Je veux pas.** | I don't want to. | Shown as a contrast: how it is usually said out loud. | CONTRAST | new |
+| 18 | **Vous voulez un café ?** | Would you like a coffee? | The offer you are going to turn down. | INTERLOCUTOR | new |
+| 19 | **Un café ?** | Coffee? | The same offer, shortened. | INTERLOCUTOR | L1 pattern, recycled |
+| 20 | **Un thé ?** | Tea? | The other offer. | INTERLOCUTOR | new |
+| 21 | **Vous êtes ici ?** | Are you here? | The question that gets a no. | INTERLOCUTOR | L2, recycled |
+| 22 | **C'est ici ?** | Is it here? | Someone checking the place with you. | INTERLOCUTOR | new |
+| 23 | **Ce n'est pas grave.** | It's fine. | Now something you can take apart, not just recognise. | READ/LISTEN | L2, recycled |
+| 24 | **Pas de problème.** | No problem. | The usual reply to a refusal. | INTERLOCUTOR | new |
+| 25 | **D'accord.** | All right. | Heard when someone accepts your no. | INTERLOCUTOR | new |
+| 26 | **Ah, d'accord.** | Ah, all right. | The same, with the beat of understanding in front. | INTERLOCUTOR | new |
+| 27 | **Ça va.** | It's fine / I'm fine. | Heard constantly; understood long before it is used. | READ/LISTEN | new |
+| 28 | **Non, merci, ça va.** | No thanks, I'm fine. | One natural way to refuse warmly. | MODEL | new |
+| 29 | **Non, je ne comprends pas.** | No, I don't understand. | Answering a check with an honest no. | MODEL | new |
+| 30 | **Excusez-moi, ce n'est pas ici.** | Excuse me, it's not here. | Correcting someone politely. | MODEL | new |
+
+**Chunks — L3**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| non | no | The fastest refusal. | **active-new** |
+| oui | yes | Its opposite. | **active-new** |
+| je ne suis pas | I am not | Said whole; the two halves never separate. | **active-new** |
+| ce n'est pas | it is not | Said whole; the two halves never separate. | **active-new** |
+| non merci | no thanks | A soft, complete refusal. | supported |
+| je ne comprends pas | I don't understand | Now built from the wrap this lesson teaches. | survival formula |
+| je ne veux pas | I don't want to | A plain refusal; shown, not required. | recognition-only |
+| je veux pas | I don't want to (spoken) | How it is usually said out loud; contrast only. | recognition-only |
+| pas de problème | no problem | The usual reply to a refusal. | recognition-only |
+| d'accord | all right | Heard when someone accepts your answer. | recognition-only |
+| ça va | it's fine / I'm fine | Heard constantly long before it is used. | recognition-only |
+| vous voulez | would you like | Opens the offer you will refuse; heard only. | recognition-only |
+| merci | thank you | Now softening a refusal. | recycled |
+| ici | here | Still the place being denied. | recycled |
+
+Active-new: `non`, `oui`, `je ne suis pas`, `ce n'est pas` — 4 of a maximum 4.
+
+---
+
+### L4 — 30 surfaces, 15 chunks, 1 active-new
+
+*Say what you feel and what you have.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **J'ai faim.** | I'm hungry. | Past noon and you have not eaten. | PRODUCE | shipped L4 |
+| 2 | **J'ai soif.** | I'm thirsty. | A long afternoon with nothing to drink. | PRODUCE | new |
+| 3 | **J'ai une question.** | I have a question. | You came with one thing to ask. | PRODUCE | shipped L4 |
+| 4 | **Bonjour, j'ai une question.** | Hello, I have a question. | Greeting first, then opening your question. | PRODUCE | shipped L4 |
+| 5 | **Excusez-moi, j'ai une question.** | Excuse me, I have a question. | Nobody has looked up yet. | PRODUCE | new |
+| 6 | **J'ai une idée.** | I have an idea. | Something has stalled and you can see a way through. | SUPPORTED | new |
+| 7 | **Vous avez une idée ?** | Do you have an idea? | Someone asks you for a way forward. | INTERLOCUTOR | new |
+| 8 | **J'ai une question, s'il vous plaît.** | I have a question, please. | Softening the ask with the formula you own. | ACCEPTED ALTERNATIVE | new |
+| 9 | **J'ai froid.** | I'm cold. | Shown as an example: the pattern reaches further. | READ/LISTEN | new |
+| 10 | **J'ai chaud.** | I'm hot. | Its opposite, shown beside it. | READ/LISTEN | new |
+| 11 | **Je n'ai pas faim.** | I'm not hungry. | The wrap from the last lesson, on the new engine. | MODEL | new |
+| 12 | **Je suis ici.** | I'm here. | Shown beside J'ai faim: two engines, two jobs. | CONTRAST | L2, recycled |
+| 13 | **Je suis fatigué, et j'ai faim.** | I'm tired, and I'm hungry. | Two feelings, split across the two engines. | READ/LISTEN | new |
+| 14 | **J'ai une petite question.** | I have a small question. | One natural way to make the ask lighter. | MODEL | new |
+| 15 | **Vous avez faim ?** | Are you hungry? | Someone asks you first. | INTERLOCUTOR | new |
+| 16 | **Vous avez soif ?** | Are you thirsty? | The same question about drinking. | INTERLOCUTOR | new |
+| 17 | **Vous avez une question ?** | Do you have a question? | They notice you waiting. | INTERLOCUTOR | new |
+| 18 | **Une question ?** | A question? | The same thing, shortened. | INTERLOCUTOR | new |
+| 19 | **Dites-moi.** | Tell me. | The invitation to go ahead. | INTERLOCUTOR | new |
+| 20 | **Je vous écoute.** | I'm listening. | A slightly warmer version of the same invitation. | INTERLOCUTOR | new |
+| 21 | **Allez-y.** | Go ahead. | Heard when it is your turn to speak. | INTERLOCUTOR | new |
+| 22 | **Bien sûr.** | Of course. | The easy yes to a request. | INTERLOCUTOR | new |
+| 23 | **Moi aussi, j'ai faim.** | Me too, I'm hungry. | Someone agrees with you. | INTERLOCUTOR | new |
+| 24 | **Vous voulez un café ?** | Would you like a coffee? | The offer that answers your thirst. | INTERLOCUTOR | L3, recycled |
+| 25 | **Oui, j'ai soif. Je voudrais un café, s'il vous plaît.** | Yes, I'm thirsty. I'd like a coffee, please. | A state, and the request it leads to. | MODEL | new |
+| 26 | **Non merci, je n'ai pas soif.** | No thanks, I'm not thirsty. | Turning the offer down with a reason. | MODEL | new |
+| 27 | **Excusez-moi, j'ai soif.** | Excuse me, I'm thirsty. | Saying what you need before asking for it. | MODEL | new |
+| 28 | **Je ne comprends pas.** | I don't understand. | Still there when the answer comes too fast. | SUPPORTED | L1 seed, recycled |
+| 29 | **Vous pouvez répéter ?** | Can you say that again? | The repeat request. | SUPPORTED | L1 seed, recycled |
+| 30 | **Merci beaucoup.** | Thank you very much. | The warmer thanks, once they have answered. | MODEL | L1 seed, recycled |
+
+**Chunks — L4**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| j'ai | I have | Says what you feel or have. | **active-new** |
+| faim | hunger | Used bare, with no little word. | supported |
+| soif | thirst | Used bare, exactly like faim. | supported |
+| une question | a question | A thing you can have. | noun package |
+| une idée | an idea | Another thing you can have. | supported |
+| je n'ai pas | I don't have / I'm not | The wrap on the new shape; shown, not required. | recognition-only |
+| froid | cold | Heard in examples only. | recognition-only |
+| chaud | hot | Heard in examples only. | recognition-only |
+| vous avez | do you have / are you | The question pointed at you; heard only. | recognition-only |
+| dites-moi | tell me | The invitation to speak. | recognition-only |
+| je vous écoute | I'm listening | A warmer invitation. | recognition-only |
+| allez-y | go ahead | Heard when it is your turn. | recognition-only |
+| bien sûr | of course | The easy yes. | recognition-only |
+| une petite question | a small question | A lighter way to open an ask. | recognition-only |
+| je suis | I am | Now standing next to j'ai for contrast. | recycled |
+
+Active-new: `j'ai` — 1 of a maximum 4.
+
+---
+
+### L5 — 30 surfaces, 13 chunks, 2 active-new
+
+*Ask for and name things with the little word that travels with them.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **un café** | a coffee | The drink and its little word, learned as one piece. | PRODUCE | shipped L5 |
+| 2 | **une question** | a question | The other package, with the other little word. | PRODUCE | shipped L5 |
+| 3 | **un thé** | a tea | A second un package, already met. | SUPPORTED | L1, recycled |
+| 4 | **une table** | a table | A une package you can actually ask for. | SUPPORTED | new |
+| 5 | **un croissant** | a croissant | The package heard at the counter in Lesson 1. | SUPPORTED | L1 ghost, produced here |
+| 6 | **Je voudrais un café.** | I would like a coffee. | The package inside a request. | PRODUCE | shipped L5 |
+| 7 | **Je voudrais un café, s'il vous plaît.** | I would like a coffee, please. | The same request, softened. | PRODUCE | L1, recycled |
+| 8 | **J'ai une question.** | I have a question. | The une package inside the engine you own. | PRODUCE | shipped L5 |
+| 9 | **Je voudrais une table, s'il vous plaît.** | I would like a table, please. | You step into a small restaurant at lunchtime. | PRODUCE | new |
+| 10 | **Je voudrais un croissant, s'il vous plaît.** | I would like a croissant, please. | Back at the counter, and this time you're hungry. | PRODUCE | new |
+| 11 | **Je voudrais un thé, s'il vous plaît.** | I would like a tea, please. | The tea order, back with the package in focus. | PRODUCE | L1, recycled |
+| 12 | **Un café, s'il vous plaît.** | A coffee, please. | The package on its own at a busy counter. | PRODUCE | L1 seed, recycled |
+| 13 | **Une table, s'il vous plaît.** | A table, please. | The short version at the restaurant door. | ACCEPTED ALTERNATIVE | new |
+| 14 | **Un croissant, s'il vous plaît.** | A croissant, please. | The short version at the counter. | ACCEPTED ALTERNATIVE | new |
+| 15 | **un question** | (wrong package) | Shown as a wrong option only; never accepted. | CONTRAST | shipped L5 trap |
+| 16 | **question** | question (on its own) | Shown as a wrong option only: the noun without its word. | CONTRAST | shipped L5 trap |
+| 17 | **Je voudrais un café et un croissant, s'il vous plaît.** | I'd like a coffee and a croissant, please. | Two packages in one order. | MODEL | new |
+| 18 | **Une table pour deux, s'il vous plaît.** | A table for two, please. | Heard at the door; you only need to follow it. | READ/LISTEN | new |
+| 19 | **Vous voulez une table ?** | Would you like a table? | The greeter meets you at the door. | INTERLOCUTOR | new |
+| 20 | **Une table ?** | A table? | The same question, shortened. | INTERLOCUTOR | new |
+| 21 | **Un café ou un thé ?** | Coffee or tea? | Being offered a choice. | INTERLOCUTOR | new |
+| 22 | **Et avec ceci ?** | Anything else? | The line every French counter says. | INTERLOCUTOR | new |
+| 23 | **C'est tout ?** | Is that everything? | The same check, more plainly. | INTERLOCUTOR | new |
+| 24 | **Oui, c'est tout, merci.** | Yes, that's everything, thank you. | One natural way to close the order. | MODEL | new |
+| 25 | **Voilà, un café.** | Here you are, one coffee. | The handover, naming what it is. | INTERLOCUTOR | new |
+| 26 | **Voilà votre café.** | Here's your coffee. | The same handover, a little warmer. | INTERLOCUTOR | new |
+| 27 | **un restaurant** | a restaurant | Another package, heard in passing. | READ/LISTEN | new |
+| 28 | **une maison** | a house | A une package you will need later. | READ/LISTEN | new |
+| 29 | **Merci, c'est parfait.** | Thank you, that's perfect. | One natural way to accept what arrives. | MODEL | new |
+| 30 | **Je ne comprends pas.** | I don't understand. | Still there when the counter answers fast. | SUPPORTED | L1 seed, recycled |
+
+**Chunks — L5**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| un café | a coffee | The package, now taught as the unit. | **active-new** |
+| une question | a question | The other package, with the other little word. | **active-new** |
+| un thé | a tea | A second un package. | supported |
+| une table | a table | A une package you can ask for. | supported |
+| un croissant | a croissant | A un package you can ask for. | supported |
+| un restaurant | a restaurant | Heard in passing. | recognition-only |
+| une maison | a house | Heard in passing; needed later. | recognition-only |
+| et avec ceci ? | anything else? | The line every counter says. | recognition-only |
+| c'est tout ? | is that everything? | The same check, more plainly. | recognition-only |
+| voilà | here you are | Still heard at every handover. | recycled |
+| je voudrais | I would like | Still carrying every request. | recycled |
+| j'ai | I have | Still carrying the question. | recycled |
+| s'il vous plaît | please | Still softening every ask. | recycled |
+
+Active-new: `un café`, `une question` — 2 of a maximum 4.
+
+---
+
+### L6 — 32 surfaces, 12 chunks, 0 active-new
+
+*Carry one whole small moment, from the door to goodbye.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **Bonjour.** | Hello. | You are at the door. | PRODUCE | L1 seed, recycled |
+| 2 | **Bonjour, je suis ici.** | Hello, I am here. | Greeting, then placing yourself. | PRODUCE | shipped L6 |
+| 3 | **Je suis ici.** | I am here. | Inside, once they look up. | PRODUCE | L2, recycled |
+| 4 | **J'ai une question.** | I have a question. | The reason you came. | PRODUCE | L4/L5, recycled |
+| 5 | **Excusez-moi, j'ai une question.** | Excuse me, I have a question. | Nobody has looked up yet. | PRODUCE | new |
+| 6 | **Non merci.** | No thanks. | Someone offers you a coffee and you're fine. | PRODUCE | L3, recycled |
+| 7 | **Non merci. J'ai une question.** | No thanks. I have a question. | Declining the offer and saying why you're there. | PRODUCE | new |
+| 8 | **Merci.** | Thank you. | Once they have helped. | PRODUCE | L1 seed, recycled |
+| 9 | **Au revoir.** | Goodbye. | The close of the moment. | PRODUCE | shipped L6 |
+| 10 | **Merci, au revoir.** | Thank you, goodbye. | Thanks and goodbye together. | PRODUCE | shipped L6 |
+| 11 | **Bonjour. Je suis ici. J'ai une question.** | Hello. I'm here. I have a question. | The three-beat arrival. | PRODUCE | shipped L6 |
+| 12 | **Bonjour. Je suis ici. J'ai une question. Merci. Au revoir.** | Hello. I'm here. I have a question. Thank you. Goodbye. | The whole moment, door to goodbye. | PRODUCE | shipped L6 |
+| 13 | **Bonjour. J'ai une question. Merci. Au revoir.** | Hello. I have a question. Thank you. Goodbye. | The same moment with the middle beat left out. | ACCEPTED ALTERNATIVE | shipped L6 |
+| 14 | **Bonjour. Excusez-moi, je suis en retard.** | Hello. Excuse me, I'm late. | The same arrival on a day that went wrong. | MODEL | new |
+| 15 | **Merci, à bientôt.** | Thank you, see you soon. | Closing when you know you are coming back. | MODEL | new |
+| 16 | **Merci beaucoup, au revoir !** | Thank you very much, goodbye! | The warmest of the three closes. | MODEL | L1 seed, recycled |
+| 17 | **Merci, au revoir, madame.** | Thank you, goodbye, madam. | The close with the address form added. | MODEL | new |
+| 18 | **Bonjour, madame.** | Hello, madam. | How you will be greeted at the door. | READ/LISTEN | L1 seed, recycled |
+| 19 | **Au revoir, monsieur.** | Goodbye, sir. | How you will be sent off. | READ/LISTEN | new |
+| 20 | **Bonne journée !** | Have a good day! | The close you will hear more than any other. | INTERLOCUTOR | new |
+| 21 | **Bonne journée, au revoir !** | Have a good day, goodbye! | The two closes together. | MODEL | new |
+| 22 | **À bientôt.** | See you soon. | Heard when you are expected back. | INTERLOCUTOR | new |
+| 23 | **Ah, bonjour ! Entrez.** | Ah, hello! Come in. | They recognise you at the door. | INTERLOCUTOR | new |
+| 24 | **Vous êtes là ?** | Are you there? | Called through the door before you answer. | INTERLOCUTOR | L2, recycled |
+| 25 | **Vous voulez un café ?** | Would you like a coffee? | The offer you will decline. | INTERLOCUTOR | L3, recycled |
+| 26 | **Une question ? Bien sûr.** | A question? Of course. | The easy yes when you open your question. | INTERLOCUTOR | new |
+| 27 | **Je vous en prie.** | You're welcome. | The formal reply to your thanks. | INTERLOCUTOR | new |
+| 28 | **De rien.** | It's nothing. | The everyday reply to your thanks. | INTERLOCUTOR | new |
+| 29 | **Asseyez-vous.** | Have a seat. | Heard as you are shown in. | INTERLOCUTOR | L2, recycled |
+| 30 | **Je ne comprends pas. Vous pouvez répéter ?** | I don't understand. Can you say that again? | The recovery, in a room where people talk fast. | SUPPORTED | L1 seed, recycled |
+| 31 | **Excusez-moi, je ne comprends pas.** | Excuse me, I don't understand. | Interrupting to say you're lost. | SUPPORTED | L1 seed, recycled |
+| 32 | **Voilà.** | There we go. | Heard as something is handed to you. | INTERLOCUTOR | L1 seed, recycled |
+
+**Chunks — L6**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| au revoir | goodbye | Closes the arc that bonjour opened. | recycled |
+| bonne journée | have a good day | The close you will hear most often. | recognition-only |
+| à bientôt | see you soon | Heard when you are expected back. | recognition-only |
+| je vous en prie | you're welcome | The formal reply to thanks. | recognition-only |
+| de rien | it's nothing | The everyday reply to thanks. | recognition-only |
+| bonjour | hello | Opening the moment. | recycled |
+| je suis | I am | Placing yourself inside it. | recycled |
+| j'ai | I have | Opening your reason for being there. | recycled |
+| une question | a question | The reason itself. | recycled |
+| merci | thank you | Closing it. | recycled |
+| non merci | no thanks | Declining the coffee on the way through. | recycled |
+| excusez-moi | excuse me | Getting attention inside the room. | recycled |
+
+Active-new: none. This is an integration lesson and adds no new active chunk.
+
+---
+
+### L7 — 30 surfaces, 12 chunks, 1 active-new
+
+*Say where you are heading, and leave well.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **Je vais à la maison.** | I'm going home. | The evening is winding down. | PRODUCE | shipped L7 |
+| 2 | **Je vais au café.** | I'm going to the café. | Midday, and someone asks where you're off to. | PRODUCE | new |
+| 3 | **Je vais à la maison. Au revoir.** | I'm going home. Goodbye. | Saying where you're going, then leaving. | PRODUCE | shipped L7 |
+| 4 | **Je vais à la maison, au revoir.** | I'm going home, goodbye. | The same two moves run together in one breath. | ACCEPTED ALTERNATIVE | shipped L7 |
+| 5 | **Merci. Je vais à la maison. Au revoir.** | Thank you. I'm going home. Goodbye. | The gathering is ending and you take your leave. | PRODUCE | shipped L7 |
+| 6 | **à la maison** | home | The destination, learned whole. | SUPPORTED | shipped L7 |
+| 7 | **au café** | to the café | A second destination, learned the same way. | SUPPORTED | new |
+| 8 | **Je vais au restaurant.** | I'm going to the restaurant. | A third destination, heard only. | READ/LISTEN | new |
+| 9 | **Je ne vais pas à la maison.** | I'm not going home. | The wrap you own, on the new engine. | MODEL | new |
+| 10 | **Je suis à la maison.** | I'm at home. | Shown beside Je vais à la maison: being there, not heading there. | CONTRAST | new |
+| 11 | **J'y vais.** | I'm off. | The shortest way to say you're leaving; heard only. | READ/LISTEN | new |
+| 12 | **On y va.** | Let's go. | Said by someone else as the group moves. | INTERLOCUTOR | new |
+| 13 | **Vous allez où ?** | Where are you going? | The question your sentence answers. | INTERLOCUTOR | new |
+| 14 | **Vous allez à la maison ?** | Are you going home? | The same question, guessing the answer. | INTERLOCUTOR | new |
+| 15 | **Vous partez ?** | Are you leaving? | Noticed as you pick up your coat. | INTERLOCUTOR | new |
+| 16 | **Déjà ?** | Already? | The mild surprise that follows. | INTERLOCUTOR | new |
+| 17 | **Vous venez ?** | Are you coming? | Someone heading out asks you along. | INTERLOCUTOR | new |
+| 18 | **Bonne soirée !** | Have a good evening! | The evening version of the goodbye you know. | INTERLOCUTOR | new |
+| 19 | **Bonne journée !** | Have a good day! | The daytime version. | INTERLOCUTOR | L6, recycled |
+| 20 | **Bonne route !** | Safe trip! | Heard when you say you're heading home. | INTERLOCUTOR | new |
+| 21 | **À demain.** | See you tomorrow. | Said when you'll be back the next day. | INTERLOCUTOR | new |
+| 22 | **À bientôt.** | See you soon. | Said when the next time is vaguer. | INTERLOCUTOR | L6, recycled |
+| 23 | **Au revoir, à demain !** | Goodbye, see you tomorrow! | One natural way to close a working day. | MODEL | new |
+| 24 | **Merci beaucoup. Au revoir.** | Thank you very much. Goodbye. | The warmer close you already know. | MODEL | L6, recycled |
+| 25 | **Non merci, je vais à la maison.** | No thanks, I'm going home. | Turning down one last coffee. | MODEL | new |
+| 26 | **Excusez-moi, je vais à la maison.** | Excuse me, I'm going home. | Leaving a conversation that is still going. | MODEL | new |
+| 27 | **Je suis fatigué. Je vais à la maison.** | I'm tired. I'm going home. | The reason, then the move. | MODEL | new |
+| 28 | **Je vais faire une pause.** | I'm going to take a break. | Heard now; you will say it yourself next lesson. | READ/LISTEN | preview of L9 |
+| 29 | **Je ne comprends pas.** | I don't understand. | Still there when the goodbyes come fast. | SUPPORTED | L1 seed, recycled |
+| 30 | **Au revoir.** | Goodbye. | On its own, at the door. | PRODUCE | L1 seed, recycled |
+
+**Chunks — L7**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| je vais | I'm going | Says where you are heading. | **active-new** |
+| à la maison | home | A destination, learned whole. | supported |
+| au café | to the café | A second destination, learned the same way. | supported |
+| je ne vais pas | I'm not going | The wrap on the new shape; shown, not required. | recognition-only |
+| j'y vais | I'm off | The shortest way to announce leaving; heard only. | recognition-only |
+| on y va | let's go | Said by the group; heard only. | recognition-only |
+| vous allez | you are going | The question pointed at you; heard only. | recognition-only |
+| bonne soirée | have a good evening | The evening close. | recognition-only |
+| à demain | see you tomorrow | Said when you'll be back. | recognition-only |
+| bonne route | safe trip | Heard when you say you're heading home. | recognition-only |
+| au revoir | goodbye | Closing the door behind you. | recycled |
+| merci | thank you | Thanking the moment before you go. | recycled |
+
+Active-new: `je vais` — 1 of a maximum 4.
+
+---
+
+### L8 — 30 surfaces, 14 chunks, 1 active-new
+
+*Ask where something is, and answer from either side.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **C'est où ?** | Where is it? | You're looking for a room and can't see it. | PRODUCE | shipped L8 |
+| 2 | **C'est ici.** | It's here. | Now you're the one who knows. | PRODUCE | shipped L8 |
+| 3 | **C'est là.** | It's there. | The same answer, pointing a little further. | PRODUCE | new |
+| 4 | **Le café, c'est où ?** | The café, where is it? | Naming the thing first, then asking. | PRODUCE | shipped L8 example, produced here |
+| 5 | **Ce n'est pas ici.** | It's not here. | Answering a where-question honestly. | PRODUCE | L3, recycled |
+| 6 | **Bonjour, c'est où ?** | Hello, where is it? | Opening politely before you ask. | PRODUCE | shipped L8 |
+| 7 | **Excusez-moi, c'est où ?** | Excuse me, where is it? | Stopping a stranger in a corridor. | PRODUCE | new |
+| 8 | **où** | where | The one word that turns a statement into a question. | SUPPORTED | shipped L8 |
+| 9 | **c'est** | it is / this is | The frame that carries both the question and the answer. | SUPPORTED | shipped L8 |
+| 10 | **Excusez-moi, le café c'est où, s'il vous plaît ?** | Excuse me, where's the café, please? | The full polite version of the ask. | MODEL | new |
+| 11 | **La maison, c'est où ?** | The house, where is it? | The same pattern with a different place. | READ/LISTEN | new |
+| 12 | **Les toilettes, c'est où ?** | Where are the toilets? | The question you will need first, heard here. | READ/LISTEN | new |
+| 13 | **Où est le café ?** | Where is the café? | Shown as a contrast: the fuller, more written way to ask. | CONTRAST | new |
+| 14 | **Oui, c'est ici.** | Yes, it's here. | Confirming when someone asks you. | PRODUCE | new |
+| 15 | **Non, ce n'est pas ici.** | No, it's not here. | The other half of the same answer. | MODEL | L3, recycled |
+| 16 | **C'est là-bas.** | It's over there. | The answer you will get most often. | INTERLOCUTOR | new |
+| 17 | **C'est par là.** | It's that way. | The same answer, with a gesture. | INTERLOCUTOR | new |
+| 18 | **Par ici.** | This way. | Someone walks you towards it. | INTERLOCUTOR | L2, recycled |
+| 19 | **À droite.** | On the right. | Part of the answer you must be able to follow. | INTERLOCUTOR | new |
+| 20 | **À gauche.** | On the left. | Its opposite. | INTERLOCUTOR | new |
+| 21 | **Tout droit.** | Straight ahead. | The third direction you will hear. | INTERLOCUTOR | new |
+| 22 | **C'est au fond.** | It's at the back. | Heard inside a building. | INTERLOCUTOR | new |
+| 23 | **Vous cherchez quelque chose ?** | Are you looking for something? | Someone notices you standing lost. | INTERLOCUTOR | new |
+| 24 | **Je peux vous aider ?** | Can I help you? | The same offer, more directly. | INTERLOCUTOR | new |
+| 25 | **Vous êtes où ?** | Where are you? | Asked on the phone when you can't be found. | INTERLOCUTOR | new |
+| 26 | **Je ne sais pas.** | I don't know. | The honest answer you will sometimes get. | INTERLOCUTOR | new |
+| 27 | **Je ne comprends pas. Vous pouvez répéter ?** | I don't understand. Can you say that again? | Directions come fast; this is the way out. | SUPPORTED | L1 seed, recycled |
+| 28 | **Excusez-moi, je ne comprends pas.** | Excuse me, I don't understand. | Stopping the directions politely. | SUPPORTED | L1 seed, recycled |
+| 29 | **Merci beaucoup !** | Thank you very much! | Once you have been pointed the right way. | MODEL | L1 seed, recycled |
+| 30 | **C'est où, s'il vous plaît ?** | Where is it, please? | The softened version of the bare question. | ACCEPTED ALTERNATIVE | new |
+
+**Chunks — L8**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| c'est où | where is it | The whole question, taken as one piece. | **active-new** |
+| où | where | The one word that asks. | supported |
+| c'est | it is / this is | Carries both the question and the answer. | supported |
+| le café | the café | Naming the place you are asking about. | supported |
+| là-bas | over there | The answer you will hear most. | recognition-only |
+| par là | that way | The same answer, with a gesture. | recognition-only |
+| à droite | on the right | Part of any direction. | recognition-only |
+| à gauche | on the left | Its opposite. | recognition-only |
+| tout droit | straight ahead | The third direction. | recognition-only |
+| au fond | at the back | Heard inside a building. | recognition-only |
+| je ne sais pas | I don't know | The honest answer you will sometimes get. | recognition-only |
+| je peux vous aider ? | can I help you? | The offer of help; heard only. | recognition-only |
+| ici | here | Now the answer rather than the place. | recycled |
+| ce n'est pas | it is not | Answering where in the negative. | recycled |
+
+Active-new: `c'est où` — 1 of a maximum 4.
+
+---
+
+### L9 — 30 surfaces, 12 chunks, 1 active-new
+
+*Ask for a break — and see one engine ask while another announces.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **Je voudrais faire une pause.** | I'd like to take a break. | The afternoon has been long. | PRODUCE | shipped L9 |
+| 2 | **Je voudrais faire une pause, s'il vous plaît.** | I'd like to take a break, please. | The same ask, softened. | PRODUCE | shipped L9 |
+| 3 | **Je voudrais une pause.** | I'd like a break. | Asking for the break itself rather than the act. | ACCEPTED ALTERNATIVE | shipped L9 reveal |
+| 4 | **Excusez-moi, je voudrais faire une pause.** | Excuse me, I'd like to take a break. | The others are mid-conversation and you need to stop. | PRODUCE | new |
+| 5 | **Je vais faire une pause.** | I'm going to take a break. | Telling them rather than asking them. | PRODUCE | new |
+| 6 | **faire une pause** | to take a break | The action, learned as one piece. | SUPPORTED | shipped L9 |
+| 7 | **une pause** | a break | The thing itself, beside the action. | SUPPORTED | shipped L9 |
+| 8 | **Je voudrais un café.** | I'd like a coffee. | Shown beside the break: one engine, a thing and an action. | PRODUCE | L1/L5, recycled |
+| 9 | **Je ne veux pas faire une pause.** | I don't want to take a break. | The refusal, shown rather than asked for. | READ/LISTEN | new |
+| 10 | **On fait une pause ?** | Shall we take a break? | Suggesting it to the group; heard here. | READ/LISTEN | new |
+| 11 | **On fait une pause.** | We're taking a break. | The decision, once it's made. | INTERLOCUTOR | new |
+| 12 | **Je suis fatigué. Je voudrais faire une pause.** | I'm tired. I'd like to take a break. | The reason, then the ask. | MODEL | new |
+| 13 | **J'ai soif. Je voudrais un café, s'il vous plaît.** | I'm thirsty. I'd like a coffee, please. | A state, and the request it leads to. | MODEL | L4, recycled |
+| 14 | **Je voudrais faire une pause maintenant.** | I'd like to take a break now. | One natural way to say when. | MODEL | new |
+| 15 | **Je voudrais faire une pause. Merci.** | I'd like to take a break. Thank you. | The ask, closed politely. | MODEL | new |
+| 16 | **Vous voulez faire une pause ?** | Would you like to take a break? | Someone offers before you have to ask. | INTERLOCUTOR | new |
+| 17 | **Vous êtes fatigué ?** | Are you tired? | They notice before you say anything. | INTERLOCUTOR | new |
+| 18 | **Vous avez soif ?** | Are you thirsty? | The other thing they might notice. | INTERLOCUTOR | L4, recycled |
+| 19 | **Un café ?** | Coffee? | The offer that usually follows. | INTERLOCUTOR | L1/L3, recycled |
+| 20 | **Cinq minutes ?** | Five minutes? | How long the break is going to be. | INTERLOCUTOR | new |
+| 21 | **Bonne idée !** | Good idea! | The warm agreement to your suggestion. | INTERLOCUTOR | new |
+| 22 | **D'accord.** | All right. | The plain agreement. | INTERLOCUTOR | L3, recycled |
+| 23 | **Pas de problème.** | No problem. | The easy yes. | INTERLOCUTOR | L3, recycled |
+| 24 | **Après la pause.** | After the break. | Heard as things are rescheduled. | INTERLOCUTOR | new |
+| 25 | **Ça va ?** | Are you all right? | Asked when you look like you need to stop. | INTERLOCUTOR | new |
+| 26 | **Ça va, merci.** | I'm fine, thank you. | One natural way to answer it. | MODEL | new |
+| 27 | **Non merci, ça va.** | No thanks, I'm fine. | Turning down the break itself. | MODEL | L3, recycled |
+| 28 | **Oui, merci.** | Yes, thank you. | Accepting the offer of a break. | PRODUCE | L3, recycled |
+| 29 | **Je ne comprends pas.** | I don't understand. | Still there when the plan changes fast. | SUPPORTED | L1 seed, recycled |
+| 30 | **Vous pouvez répéter ?** | Can you say that again? | The repeat request. | SUPPORTED | L1 seed, recycled |
+
+**Chunks — L9**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| faire une pause | to take a break | An action, carried by je voudrais. | **active-new** |
+| une pause | a break | The thing itself, beside the action. | supported |
+| maintenant | now | Says when. | recognition-only |
+| on fait une pause ? | shall we take a break? | Suggesting it to the group; heard only. | recognition-only |
+| je ne veux pas | I don't want to | Refusing the break; shown, not required. | recognition-only |
+| cinq minutes | five minutes | How long the break will be. | recognition-only |
+| bonne idée | good idea | The warm agreement. | recognition-only |
+| ça va ? | are you all right? | Asked when you look like you need to stop. | recognition-only |
+| je voudrais | I would like | Now carrying an action, not just a thing. | recycled |
+| je vais | I'm going | Announcing the break instead of asking. | recycled |
+| s'il vous plaît | please | Still softening the ask. | recycled |
+| soif | thirst | The state that leads to the request. | recycled |
+
+Active-new: `faire une pause` — 1 of a maximum 4.
+
+---
+
+### L10 — 33 surfaces, 16 chunks, 0 active-new
+
+*Live a whole small day in French, including the part where you do not understand.*
+
+| # | Exact French | English | Situation | Treatment | Origin |
+|---|---|---|---|---|---|
+| 1 | **Bonjour. C'est où ?** | Hello. Where is it? | Morning, first time in the building. | PRODUCE | shipped L10 |
+| 2 | **Bonjour, c'est où ?** | Hello, where is it? | The same opening run as one turn. | ACCEPTED ALTERNATIVE | shipped L10 |
+| 3 | **Excusez-moi, le café c'est où ?** | Excuse me, where's the café? | Looking for somewhere to sit at midday. | MODEL | L8, recycled |
+| 4 | **Excusez-moi, je ne comprends pas. Vous pouvez répéter ?** | Excuse me, I don't understand. Can you say that again? | They answered fast and you caught almost none of it. | PRODUCE | new |
+| 5 | **Je ne comprends pas. Vous pouvez répéter ?** | I don't understand. Can you say that again? | The same recovery without the opener. | ACCEPTED ALTERNATIVE | L1 seed, recycled |
+| 6 | **Bonjour. Je suis ici.** | Hello. I'm here. | Arriving where you are expected. | PRODUCE | L2/L6, recycled |
+| 7 | **Bonjour, je suis en retard.** | Hello, I'm late. | The morning did not go to plan. | PRODUCE | L2, recycled |
+| 8 | **J'ai une question.** | I have a question. | The thing you came to ask. | PRODUCE | L4/L5, recycled |
+| 9 | **Je voudrais faire une pause.** | I'd like to take a break. | Midday, and you've been on your feet. | PRODUCE | L9, recycled |
+| 10 | **Je suis fatigué. Je voudrais faire une pause.** | I'm tired. I'd like to take a break. | The reason and the ask together (man speaking). | MODEL | L9, recycled |
+| 11 | **Je suis fatiguée. Je voudrais faire une pause.** | I'm tired. I'd like to take a break. | The same, when a woman says it. | MODEL | new |
+| 12 | **J'ai soif. Je voudrais un thé, s'il vous plaît.** | I'm thirsty. I'd like a tea, please. | The break, and what you do with it. | MODEL | new |
+| 13 | **Je voudrais un café, s'il vous plaît.** | I'd like a coffee, please. | The order you have had since the first lesson. | PRODUCE | L1 seed, recycled |
+| 14 | **C'est ici.** | It's here. | Now you can answer the question you asked this morning. | PRODUCE | L8, recycled |
+| 15 | **Non, ce n'est pas ici.** | No, it's not here. | The other answer, just as useful. | PRODUCE | L3/L8, recycled |
+| 16 | **Merci. Je vais à la maison. Au revoir.** | Thank you. I'm going home. Goodbye. | The end of your first full day. | PRODUCE | L7, recycled |
+| 17 | **Je vais à la maison. Au revoir.** | I'm going home. Goodbye. | The same leaving, without the thanks. | ACCEPTED ALTERNATIVE | L7, recycled |
+| 18 | **Non merci, je vais à la maison.** | No thanks, I'm going home. | Turning down one last coffee at the door. | MODEL | L7, recycled |
+| 19 | **Merci, au revoir.** | Thank you, goodbye. | The shortest complete exit. | PRODUCE | L1 seed, recycled |
+| 20 | **Merci beaucoup, au revoir !** | Thank you very much, goodbye! | The warmest exit, back on the last day. | MODEL | L1 seed, recycled |
+| 21 | **Au revoir, à demain !** | Goodbye, see you tomorrow! | Because you are coming back. | MODEL | L7, recycled |
+| 22 | **Merci pour tout.** | Thanks for everything. | One natural way to close a first day. | MODEL | new |
+| 23 | **Excusez-moi.** | Excuse me. | The opener that has worked all day. | SUPPORTED | L1 seed, recycled |
+| 24 | **D'accord, merci.** | All right, thank you. | Accepting an answer and closing the beat. | MODEL | new |
+| 25 | **Vous pouvez m'aider ?** | Can you help me? | Listen only — this one arrives next lesson. | READ/LISTEN | shipped L10 preview |
+| 26 | **Je peux vous aider ?** | Can I help you? | The same shape pointed the other way; heard today. | INTERLOCUTOR | L8, recycled |
+| 27 | **Bonjour ! Vous êtes là ?** | Hello! Are you there? | Called down a corridor as you arrive. | INTERLOCUTOR | L2, recycled |
+| 28 | **C'est par là.** | It's that way. | The answer to your first question of the day. | INTERLOCUTOR | L8, recycled |
+| 29 | **On fait une pause ?** | Shall we take a break? | Someone else suggests it first. | INTERLOCUTOR | L9, recycled |
+| 30 | **Bonne journée !** | Have a good day! | Heard as you head out at midday. | INTERLOCUTOR | L6, recycled |
+| 31 | **Bonne soirée !** | Have a good evening! | Heard as you leave for the last time. | INTERLOCUTOR | L7, recycled |
+| 32 | **À demain !** | See you tomorrow! | The last thing said to you. | INTERLOCUTOR | L7, recycled |
+| 33 | **Je vous en prie.** | You're welcome. | The reply to your thanks at the door. | INTERLOCUTOR | L6, recycled |
+
+**Chunks — L10**
+
+| French chunk | English | Use | Role |
+|---|---|---|---|
+| vous pouvez m'aider ? | can you help me? | Listen only — it arrives next lesson. | recognition-only |
+| merci pour tout | thanks for everything | Closing a first day. | recognition-only |
+| bonjour | hello | Opening the day. | recycled |
+| c'est où | where is it | The first question of the morning. | recycled |
+| je suis | I am | Placing yourself when you arrive. | recycled |
+| en retard | late | On the morning that went wrong. | recycled |
+| j'ai | I have | The question you brought. | recycled |
+| soif | thirst | What sends you to the café at midday. | recycled |
+| je voudrais | I would like | Asking for the break and the drink. | recycled |
+| faire une pause | to take a break | The middle of the day. | recycled |
+| je vais | I'm going | The end of it. | recycled |
+| à la maison | home | Where you are heading. | recycled |
+| au revoir | goodbye | Closing the day as it opened. | recycled |
+| je ne comprends pas | I don't understand | The move that rescues the whole day. | survival formula |
+| vous pouvez répéter ? | can you say that again? | Its other half. | survival formula |
+| excusez-moi | excuse me | The opener that worked all day. | recycled |
+
+Active-new: none. This is an integration lesson and adds no new active chunk.
+
+---
+
 ## 1. Executive summary
+
+> **Superseded counting note.** The family counts in this section are the
+> INTERNAL planning view and are unchanged from v0.1. The human-QA inventory is
+> 305 exact surfaces and 140 chunks — see §0 above.
 
 | Measure | Now | Proposed | Δ |
 |---|---:|---:|---:|
