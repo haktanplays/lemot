@@ -81,7 +81,7 @@ Whether B2 ever becomes a public claim is an [[OPEN_QUESTIONS|open question]] an
 
 **Context is a scaffold, not the organizing principle.** (Canonical) Scenes and situations carry meaning and make forms usable, but the curriculum is organized by capability, not by topic or setting. A café or a hotel is a delivery vehicle for a capability, never the reason a lesson exists.
 
-**Familiarity and control are distinct.** (Canonical) Recognising language is not the same as being able to produce it, and the two are tracked and grown separately. Encountering something never becomes an unannounced demand to produce it. How familiarity is seeded, carried, and promoted into control is Content and Curriculum Bible material.
+**Familiarity and control are distinct.** (Canonical) Recognising language and producing it are separate pedagogical dimensions. Encountering a form never becomes an unannounced demand to produce it. Promotion from familiarity into active control requires appropriate evidence. Runtime representation, measurement, and tracking of these dimensions are deferred to the Content, Curriculum, and Engineering Bibles.
 
 ## 7. Journey and Progression
 
@@ -350,7 +350,7 @@ Only reconciliation-confirmed unresolved questions appear here; the authoritativ
 
 **Amendment — 2026-08-04**
 
-- Added **Familiarity and control are distinct** to [[#6. Learning Architecture]] and **A lesson shows more world than it assigns** to [[#8. Lesson Philosophy]]: recognising language and being able to produce it are separate, separately grown things; a lesson may let the learner meet the wider language of a situation while assigning only a small part of it, and breadth of exposure never widens what the learner is asked to produce. Recorded in [[DECISION_REGISTER]] as PB-083–PB-084. The supporting learning model — how familiarity is seeded and carried, how exposure is promoted into control, and the exercise and authoring vocabulary that serve it — is Content, Curriculum, and Engineering Bible material and is documented as **spec-only** in [[Passive Familiarity and Ghost Weave]]; **nothing in it is implemented**, and no runtime state, schema, screen type, or metric is authorised by this amendment. Product version remains 1.0 (additive clarification of existing intent, no principle reversed).
+- Added **Familiarity and control are distinct** to [[#6. Learning Architecture]] and **A lesson shows more world than it assigns** to [[#8. Lesson Philosophy]]: recognising language and producing it are separate pedagogical dimensions, and promotion from familiarity into active control requires appropriate evidence — while their runtime representation, measurement, and tracking stay deferred; a lesson may let the learner meet the wider language of a situation while assigning only a small part of it, and breadth of exposure never widens what the learner is asked to produce. Recorded in [[DECISION_REGISTER]] as PB-083–PB-084. The supporting learning model — how familiarity is seeded and carried, how exposure is promoted into control, and the exercise and authoring vocabulary that serve it — is Content, Curriculum, and Engineering Bible material and is documented as **spec-only** in [[Passive Familiarity and Ghost Weave]]; **nothing in it is implemented**, and no runtime state, schema, screen type, or metric is authorised by this amendment. Product version remains 1.0 (additive clarification of existing intent, no principle reversed).
 
 **Amendment — 2026-07-23**
 

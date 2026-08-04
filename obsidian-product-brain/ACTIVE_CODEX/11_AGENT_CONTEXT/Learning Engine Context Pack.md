@@ -101,12 +101,13 @@ Toplam **11–14 ekran** (uncounted screen yok): 9–11 action + 2–3 insight-c
 per-screen action 1–3 (cap 4); 7–10 dk; **1–4 yeni active chip (değişmez müfredat disiplini)**. Ana evi: [[Lesson Flow]] · [[Difficulty and Cognitive Load]].
 
 ## Passive familiarity / ghost weave (2026-08-04, CANON — SPEC-ONLY)
-**Agent kuralı:** Pasif tanışıklık ile aktif kontrol **ayrı eksenlerdir**; bir chunk sahneye pasif girebilir
+**Agent kuralı:** Pasif tanışıklık ile aktif kontrol **ayrı pedagojik boyutlardır** (bugün ayrı **ölçülmez/takip edilmez**; runtime temsili ertelendi); bir chunk sahneye pasif girebilir
 ve öğrencinin sorumluluğu olmaz ("No surprise production"). Ghost/exposure yüzeyler `totalProductionLoad`'a
 **girmez**, weakness üretmez, tek başına ownership kanıtı değildir. **1–4 active-new tavanı ve 11–14 ekran
 bütçesi değişmedi.**
 > [!warning] **Bu kanon SPEC-ONLY'dir — kod yazarken uygulanmış varsayma.** Yeni runtime state, yeni event,
-> yeni registry alanı, yeni ekran tipi ve recoverability hesaplayıcısı **yoktur ve yetkilendirilmemiştir**.
+> yeni registry alanı, yeni ekran tipi, aşinalık yüzdesi, terfiyi zorlayan mekanizma ve recoverability
+> hesaplayıcısı **yoktur ve yetkilendirilmemiştir**.
 > `pedagogicalStatus`/`weaveRoles`/`recoverabilityBand` gibi adlar **authoring adayıdır**, şema değil.
 > Sayılar (10–15 familiarization, 3–6 ön-temas, %70–85 recoverability) **TUNABLE PLANNING BAND**'dir,
 > ampirik kalibre edilmemiştir. Ana evi: [[Passive Familiarity and Ghost Weave]].

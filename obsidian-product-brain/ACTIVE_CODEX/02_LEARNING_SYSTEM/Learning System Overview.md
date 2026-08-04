@@ -77,7 +77,9 @@ Bu, 7-aşamalı spirali değiştirmez; spiralin **önüne** bir familiarization 
 
 > [!canon] **Passive familiarity is not active mastery.** Bir yüzeyi tanımak (görmüş olmak, anlamış olmak) ile onu üretebilmek iki ayrı eksendir. Bir chip sahneye girip öğrencinin sorumluluğu *olmadan* kalabilir. Founder decision 2026-08-04.
 
-İki eksen ayrı ölçülür ve ayrı raporlanır: **tanışıklık ekseni** (hiç görülmedi → görüldü → tanınır) ve **kontrol ekseni** (desteklenmiş üretim → bağımsız üretim). Recognition/ghost teması üretim yüküne sayılmaz — bkz. [[Difficulty and Cognitive Load]].
+İki eksen **kavramsal olarak** ayrılır: **tanışıklık ekseni** (hiç görülmedi → görüldü → tanınır) ve **kontrol ekseni** (desteklenmiş üretim → bağımsız üretim). Recognition/ghost teması üretim yüküne sayılmaz — bkz. [[Difficulty and Cognitive Load]].
+
+> [!warning] **Bu iki eksen bugün ayrı ölçülmez ve ayrı raporlanmaz.** Runtime temsili, ölçümü ve takibi **ertelenmiştir**: ayrı bir tanışıklık/kontrol state'i, bir aşinalık yüzdesi ve terfiyi zorlayan bir mekanizma **yoktur**. Bunlar **pedagojik boyutlardır**, runtime enum'u değil.
 
 ### Weave iki eksen arasındaki ana köprüdür (CANONICAL, spec-only)
 

@@ -1,5 +1,17 @@
 # CHANGELOG — CAIRN Obsidian Product Brain
 
+## v0.6.1 semantic-precision clarification — 2026-08-04
+
+v0.6 pass'inin **tracking statüsü** düzeltmesi (docs-only). Doktrinin kendisi, kapsamı ve hiçbir sayısal planlama bandı **değişmedi**.
+
+- **[[CAIRN_PRODUCT_BRAIN_v1.0]] §6** — *"...the two are tracked and grown separately"* ifadesi kaldırıldı. Yerine: **"Recognising language and producing it are separate pedagogical dimensions... Promotion from familiarity into active control requires appropriate evidence. Runtime representation, measurement, and tracking of these dimensions are deferred to the Content, Curriculum, and Engineering Bibles."** §22 amendment kaydı aynı doğrultuda hizalandı.
+- **[[DECISION_REGISTER]] PB-083** — özet "separate axes, grown and tracked separately" → "separate pedagogical dimensions; exposure alone never authorises learner production". Notes alanı artık **runtime temsili ertelendi · runtime takibi ertelendi · destekleyen model spec-only · uygulanmadı** ifadelerini açıkça taşıyor. **ID, provenance, onay tarihi, statü ve Brain § referansı değişmedi. PB-084 dokunulmadı.**
+- **[[Learning System Overview]]** — *"İki eksen ayrı ölçülür ve ayrı raporlanır"* → *"İki eksen kavramsal olarak ayrılır"* + bugün ölçülmediğini söyleyen açık uyarı.
+- **[[Passive Familiarity and Ghost Weave]]** — dört katmanı (pedagojik boyut / authoring sözlüğü / aday metadata / runtime) ayıran açık callout; §4'e "ayrı ölçülmez · aşinalık yüzdesi yok · terfiyi zorlayan mekanizma yok" uyarısı; §7'deki *"Ayrı Weave rolleri kaydedilir"* → *"Authoring dili ayrı Weave rollerini ayırt eder (aday sözlük — bugün kaydedilmez)"*; Non-Claims beş kalem genişletildi.
+- **[[Learning Engine Context Pack]]** — agent kuralı "ayrı pedagojik boyutlar (bugün ayrı ölçülmez/takip edilmez)" olarak netleşti; SPEC-ONLY uyarısına aşinalık yüzdesi ve terfi mekanizması eklendi.
+
+**Değişmeyenler:** doktrin ve kapsamı · tüm sayısal planlama bantları (10–15, 3–6, %70–85, 120–145/197) · `canon_status: canonical` · `implementation_status: spec-only` · `verification_status: reported-only` · tüm HARD INVARIANT'lar · W1 / open-Weave kuralları · 1–4 active-new tavanı · 11–14 ekran bütçesi · dondurulmuş 7 ekran tipi · PB-083/PB-084 ID'leri. ADR açılmadı, D-# atanmadı, kod/registry/şema/Fransızca içerik/QA CSV'leri değişmedi.
+
 ## v0.6 passive-familiarity / ghost-weave canon pass — 2026-08-04
 
 Founder'ın 2026-08-04'te onayladığı öğrenme modelinin kanona alınması (docs-only, ACTIVE_CODEX-only). **Runtime/kod/registry/evaluator/şema/test/validator değişmedi. Fransızca aday yüzey eklenmedi/çıkarılmadı; 305-satır cümle QA CSV'si ve 140-satır chunk QA CSV'si değişmedi.**

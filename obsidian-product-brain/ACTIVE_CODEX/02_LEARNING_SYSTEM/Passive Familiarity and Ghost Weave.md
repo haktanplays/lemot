@@ -66,6 +66,8 @@ Familiarization dersin başında **haritayı** çizer. Weave, o haritadaki geni�
 
 > [!warning] **Bu not spec'tir, implementasyon değildir.** Aşağıdaki hiçbir rol, eşik veya metadata alanı bugün runtime'da yoktur. Bkz. [[#Non-Claims]].
 
+> [!canon] **Dört katman karıştırılmamalıdır.** (1) **Pedagojik boyutlar** — "passive familiarity" / "active control" gibi kavramsal eksenler (§1, §4); bunlar kanondur. (2) **Authoring sözlüğü** — yazarın ders kurarken kullandığı ayrımlar, ör. Weave rolleri (§7); aday dildir. (3) **Aday metadata** — ileride bir şemaya girebilecek alan adları (§18); **ratifiye edilmemiştir**. (4) **Runtime implementasyonu** — bugün **hiçbiri mevcut değildir**. Katman 1 canonical olabilir ve katman 4 yine de boş kalabilir: **canonical, implemented demek değildir.**
+
 ## Why It Exists
 
 Sadece izole parçalar gösteren sistemlerde öğrenci kelimeleri öğrenir ama **anı** öğrenmez: bir kafede karşısındakinin ne diyeceğini, konuşma kırıldığında ne olacağını, sahnenin kenarında duran dili hiç görmez. Cairn'in farkı, önce iletişimsel resmin bütününü göstermesi.
@@ -149,7 +151,7 @@ Bir öğrenci aynı anda şunları yapabilir:
 
 …ve yine de onu bağımsız üretmeye **muktedir ya da yetkili olmayabilir**.
 
-İki kavramsal eksen:
+İki kavramsal eksen — **"passive familiarity" ve "active control" kavramsal pedagojik boyutlardır**, sistem durumu değil:
 
 | A. Passive familiarity | B. Active control |
 |---|---|
@@ -158,7 +160,9 @@ Bir öğrenci aynı anda şunları yapabilir:
 | recognized | recalled |
 | increasingly familiar | owned / transferable |
 
-> [!warning] Bunlar **runtime enum'u değildir.** `LearningItem.status`'u değiştirmez, onun yerine geçmez. Gelecekte açık bir Engineering kararı uygulamadıkça **authoring ve pedagoji rolleri** olarak kalırlar.
+> [!warning] Bunlar **bugünün runtime enum'ları değildir.** `LearningItem.status`'u değiştirmez, onun yerine geçmez. Gelecekte açık bir Engineering kararı uygulamadıkça **authoring ve pedagoji rolleri** olarak kalırlar.
+
+> [!warning] **Bugün bu iki boyut ayrı ölçülmez.** Ayrı bir tanışıklık/kontrol takibi **yoktur**; bir **aşinalık yüzdesi mevcut değildir**; ve A'dan B'ye geçişi **zorlayan hiçbir terfi mekanizması yoktur**. Ayrım bugün **yazarın disiplinidir**; runtime temsili, ölçümü ve takibi **ertelenmiştir** ([[CAIRN_PRODUCT_BRAIN_v1.0]] §6, [[DECISION_REGISTER|PB-083]]).
 
 Bir chunk, resmî dersinden **önce** yüksek pasif aşinalığa ulaşabilirken aktif kontrolde düşük kalabilir. Bu bir tutarsızlık değil, hedeflenen durumdur.
 
@@ -204,7 +208,7 @@ Mevcut W1 ve open-Weave kuralları [[Weave System]]'de değişmeden durur. Pasif
 
 ## 7. Prompt tarafı ve output tarafı aynı şey değildir
 
-Ayrı Weave rolleri kaydedilir:
+Authoring dili ayrı Weave rollerini ayırt eder (**aday sözlük — bugün kaydedilmez, hiçbir yerde saklanmaz**):
 
 | Rol | Anlamı |
 |---|---|
@@ -435,10 +439,15 @@ Belgelenmiştir, **uygulanmamıştır**:
 
 > [!warning] Bu notun **açıkça iddia ETMEDİKLERİ**:
 
+- "Passive familiarity" ve "active control" **kavramsal pedagojik boyutlardır** — sistem durumu, ürün özelliği veya ölçüm değil.
+- Bunlar **bugünün runtime enum'ları değildir**; `LearningItem.status` hâlâ 4-değerli düz enum'dur ve genişletilmedi.
+- Bu iki boyut bugün **ayrı ölçülmez ve ayrı takip edilmez**; runtime temsili, ölçümü ve takibi **ertelenmiştir**.
+- Tanışıklıktan aktif kontrole geçişi **zorlayan hiçbir terfi mekanizması yoktur**; terfi bugün **yazarın kararıdır**.
+- Bu notta adı geçen roller, statüler ve alanlar **aday authoring sözlüğüdür** — kaydedilmez, saklanmaz, hiçbir şema tarafından tanınmaz.
 - Yeni bir runtime state machine **uygulanmadı**.
 - Mevcut hiçbir Weave renderer'ı bu rollerin **tamamını desteklemiyor**.
 - Otomatik bir **recoverability hesaplayıcısı yok**.
-- **70–80% aşinalık metriği** bugün **mevcut değil**.
+- **Hiçbir aşinalık yüzdesi bugün mevcut değil** — 70–80% dâhil hiçbir aşinalık metriği hesaplanmıyor.
 - Öğrenciye görünen hiçbir **yüzde önerilmiyor**.
 - Yeni bir **ekran tipi yetkilendirilmedi**.
 - **Registry enum genişletmesi yetkilendirilmedi**.
