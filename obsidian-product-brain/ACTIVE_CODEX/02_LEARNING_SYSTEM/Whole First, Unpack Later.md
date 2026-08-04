@@ -9,12 +9,12 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/learning-engine-v1.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/lessonTypes.ts", "lemot-app/components/lesson-v1/screens/InsightCard.tsx", "lemot-app/components/lesson-v1/screens/MeetCard.tsx"]
 test_refs: []
-related: ["[[00 Le Mot Holy Codex]]", "[[Chip System Overview]]", "[[Chip Lifecycle]]", "[[Learning Philosophy]]", "[[Natural Reveal]]", "[[Lesson Flow]]"]
+related: ["[[00 Le Mot Holy Codex]]", "[[Chip System Overview]]", "[[Chip Lifecycle]]", "[[Learning Philosophy]]", "[[Natural Reveal]]", "[[Lesson Flow]]", "[[Passive Familiarity and Ghost Weave]]"]
 supersedes: []
 superseded_by: []
 tags: [learning, principle, pedagogy]
@@ -65,6 +65,29 @@ Notice / Micro-Logic / Chunk Unpack / Contrast / Edge / Return-to-Moment kartlar
 
 > [!warning] Bu kartlar "**must not add active mastery by themselves**; they may record seen/exposure/notice state separately from production mastery" (`v0.3:224`). Yani unpack, recognition/insight'tır — active grammar üretimi değil (`v0.3:171`). Mevcut `insight-card`'ı yeniden kullanma yaklaşımı **PROPOSED**, henüz ayrı kart tipi olarak yapılmadı.
 
+### İlke iki ölçekte çalışır (CANONICAL yön, spec-only)
+
+> [!canon] "Whole first" yalnızca **chunk ölçeğinde** değil, **ders ölçeğinde** de geçerlidir. Küçük ölçek: bir chunk bütün gelir, parçaları sonra açılır. Büyük ölçek: dersin **manzarası** bütün gelir (öğrencinin o alanda karşılaşacağı yüzeyler), bu manzaranın yalnızca küçük bir bölümü öğrencinin sorumluluğuna atanır. **"Show the whole world, assign only a small part."** Founder decision 2026-08-04. Detay: [[Passive Familiarity and Ghost Weave]].
+
+### Visible structure, delayed decomposition (CANONICAL yön, spec-only)
+
+> [!canon] **"Visible structure, delayed decomposition."** Bir yapının *görünür* olması ile *çözümlenmiş* olması ayrı şeylerdir. Öğrenci bir yapıyı sahnede görebilir, tanıyabilir, hatta destekli kullanabilir — bu, o yapının gramerinin açılmış olduğu anlamına gelmez. Yapı görünür kalır; çözümleme (decomposition) gecikir. Founder decision 2026-08-04.
+
+Bu, yukarıdaki "no grammar dump before contact" kuralını **güçlendirir**, gevşetmez: görünürlük açıklama borcu yaratmaz.
+
+### Açıklama merdiveni (PROVISIONAL/TUNABLE, spec-only)
+
+> [!warning] Aşağıdaki dört basamak **provisional bir modeldir**, kilitli kanon değildir ve runtime'da karşılığı **yoktur**. Basamak adları ve sınırları tunable'dır.
+
+| Basamak | Ne yapar | Ne yapmaz |
+|---|---|---|
+| **NOTICE** | bir kenara dikkat çeker ("burada bir şey var") | kural vermez |
+| **LIGHT** | tek cümlelik işlevsel sezgi verir | paradigma açmaz |
+| **STRUCTURAL** | yapının parçalarını adlandırır | tam kural tablosu vermez |
+| **FULL** | kuralı açıkça verir | temastan önce **asla** gelmez |
+
+Merdiven tek yönlüdür ve her basamak temasa bağlıdır; bir chip merdivenin üstüne çıkmadan da uzun süre kullanılabilir.
+
 ## How It Works
 
 ### State / Lifecycle
@@ -114,4 +137,4 @@ flowchart LR
 > [!open-loop] Unpack için ayrı kart tipi mi, insight-card payload'ı mı? → [[05 Open Loops]]
 
 ## Related Notes
-[[Chip System Overview]] · [[Chip Lifecycle]] · [[Learning Philosophy]] · [[Natural Reveal]] · [[Lesson Flow]]
+[[Chip System Overview]] · [[Chip Lifecycle]] · [[Learning Philosophy]] · [[Natural Reveal]] · [[Lesson Flow]] · [[Passive Familiarity and Ghost Weave]]

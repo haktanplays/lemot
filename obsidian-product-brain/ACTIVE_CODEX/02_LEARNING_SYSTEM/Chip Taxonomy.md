@@ -9,12 +9,12 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/itemRegistry.ts", "lemot-app/content/lessonTypes.ts", "lemot-app/scripts/canonRules.ts:96-165"]
 test_refs: ["lemot-app/**/canonRules.test.ts", "lemot-app/**/v1LessonStructure.test.ts"]
-related: ["[[00 Le Mot Holy Codex]]", "[[Chip System Overview]]", "[[Chip Lifecycle]]", "[[Spine and Carryover Logic]]", "[[Whole First, Unpack Later]]", "[[Weave System]]"]
+related: ["[[00 Le Mot Holy Codex]]", "[[Chip System Overview]]", "[[Chip Lifecycle]]", "[[Spine and Carryover Logic]]", "[[Whole First, Unpack Later]]", "[[Weave System]]", "[[Passive Familiarity and Ghost Weave]]"]
 supersedes: []
 superseded_by: []
 tags: [learning, chip, taxonomy, crown]
@@ -84,6 +84,24 @@ Her aday chip **tam olarak bir** verdict alır:
 | **Forbidden as primary UI chip** | cümle / clause düzeyi — **yalnızca model answer**. |
 
 > [!warning] **Aşırı düzeltmeye karşı düzeltme:** "**Do NOT blindly canonize `je`, `pas`, `ce`, `pour`, `avec`, `là`, `ici` as forbidden.**" (`v0.3:84`). Çıplak atomlar (`je`, `pas`, `ce`) **Caveat**'tır — accounting/contrast/unpack atomu olarak yasal ama göze batan UI pill'lerine otomatik terfi etmemeli (`v0.3:121-131, 145`).
+
+### Beş ayrı boyut (CANONICAL yön, spec-only, 2026-08-04)
+
+> [!canon] Yukarıdaki **12 davranışsal tip taksonomisi yerinde kalır ve DEĞİŞMEZ.** Bu bölüm onu değiştirmez, **yanına beş bağımsız boyut** ekler: tek bir etiket bir chip hakkındaki her şeyi taşıyamaz; aynı chip beş boyutta ayrı ayrı konumlanır. Founder decision 2026-08-04. Detay: [[Passive Familiarity and Ghost Weave]].
+
+| # | Boyut | Ne sorar | Örnek değerler (aday) |
+|---|---|---|---|
+| 1 | **Pedagogical status** | Öğrenci bunu ne kadar tanıyor / ne kadar kontrol ediyor? | unseen · ghost/exposed · recognized · supported · owned |
+| 2 | **Weave role** | Bu sahnede ne işi var? | TARGET_OUTPUT · SUPPORTED_OUTPUT · INTERLOCUTOR_INPUT · AMBIENT_INPUT · MODEL_REVEAL · RECOGNITION_TARGET |
+| 3 | **Structural class** | Dilsel olarak ne cinsten bir şey? | formula chunk · noun package · grammar frame · slot value · discourse marker |
+| 4 | **Explanation depth** | Mantığı ne kadar açıldı? | NOTICE · LIGHT · STRUCTURAL · FULL ([[Whole First, Unpack Later]]) |
+| 5 | **Learner output eligibility** | Öğrenciden ne istenebilir? | istenemez · yalnızca destekli · hatırlamaya uygun |
+
+> [!warning] Boyutlar **ortogonaldir**: bir chip aynı anda `ghost` (1) + `AMBIENT_INPUT` (2) + `formula chunk` (3) + `NOTICE` (4) + `istenemez` (5) olabilir. Boyutlardan birinde ilerlemek diğerlerinde **otomatik terfi üretmez** — özellikle 1'de ilerlemek 5'te uygunluk **yaratmaz** ("No surprise production", [[Passive Familiarity and Ghost Weave]] §6).
+
+> [!warning] **NON-CLAIM:** Bu beş boyut **runtime'da yoktur.** `LearningItem.status` hâlâ 4-değerli düz enum'dur (yukarıdaki "How It Works — Runtime katmanı"). Bunlar **authoring/pedagoji dili adaylarıdır**; registry şema genişletmesi **yetkilendirilmemiştir** ve bir enum eklemesi ima **edilmemektedir**.
+
+> [!canon] Aşağıdaki Policy Hardening bölümündeki **cümle-chip yasağı, UI eligibility kuralları ve role-integrity [HARD INVARIANT]'ları aynen geçerlidir.** Yeni boyutlar hiçbir yasağı gevşetmez; özellikle `ghostExposure` hâlâ "sahip olunan üretim" saymaz.
 
 ## Bir cümle neden chip değildir
 
@@ -211,4 +229,4 @@ Bu roller **ders-içi**dir; kalıcı mastery statüsü değildir. Sayım karşı
 - **`piecesUsed` / Main Pieces / recap'te görünme:** yalnız **atomik** chip'ler (cümle/clause değil); recap `piecesUsed` atomik olmalı (`v1LessonStructure.test.ts` PROTECTED_CHUNKS zemini).
 
 ## Related Notes
-[[Chip System Overview]] · [[Chip Lifecycle]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Weave System]] · [[Mastery Model]] · [[Difficulty and Cognitive Load]] · [[Content Selection]]
+[[Chip System Overview]] · [[Chip Lifecycle]] · [[Spine and Carryover Logic]] · [[Whole First, Unpack Later]] · [[Weave System]] · [[Mastery Model]] · [[Difficulty and Cognitive Load]] · [[Content Selection]] · [[Passive Familiarity and Ghost Weave]]

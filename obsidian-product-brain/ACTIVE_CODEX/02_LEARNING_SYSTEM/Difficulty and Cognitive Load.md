@@ -9,12 +9,12 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/canon/LESSON_FLOW_CANON_v1.md", "docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "docs/learning-engine-v1.md"]
 code_refs: ["lemot-app/components/lesson-v1/screens/Weave.tsx", "lemot-app/content/learning-engine/mastery.ts:35-36", "lemot-app/scripts/canonRules.ts:158-165"]
 test_refs: ["lemot-app/**/canonRules.test.ts"]
-related: ["[[00 Le Mot Holy Codex]]", "[[Lesson Anatomy]]", "[[Chip Lifecycle]]", "[[Weave System]]", "[[Mastery Model]]", "[[Content Selection]]"]
+related: ["[[00 Le Mot Holy Codex]]", "[[Lesson Anatomy]]", "[[Chip Lifecycle]]", "[[Weave System]]", "[[Mastery Model]]", "[[Content Selection]]", "[[Passive Familiarity and Ghost Weave]]"]
 supersedes: []
 superseded_by: []
 tags: [learning, difficulty, cognitive-load]
@@ -70,6 +70,18 @@ Bilişsel yük teorisi: çalışan bellek sınırlıdır; aynı anda çok yeni p
 
 ### Insight budget (CANONICAL + MECHANIZED)
 L3 insight-card ≤3 (V5 validator, `canonRules.ts:158-165`, `INSIGHT_BUDGET_MAX=3`). Aşımı bilişsel yükü artırır → WARN.
+
+### Pasif temas (passive exposure) yükü (CANONICAL yön, spec-only)
+
+> [!canon] Bir dersin **manzarası** (familiarization panoraması) geniş olabilir; **ataması** dar kalır. Pasif olarak tanıtılan yüzeyler öğrenciye üretim sorumluluğu **yüklemez**. **"Show the whole world, assign only a small part."** Founder decision 2026-08-04. Detay: [[Passive Familiarity and Ghost Weave]].
+
+> [!canon] **[HARD INVARIANT korunur]** `recognitionOnly` ve **ghost/exposure item'ler `totalProductionLoad`'a girmez** (aşağıdaki Policy Hardening §Production-load formülü). Pasif tanışıklığın eklenmesi bu formülü **değiştirmez**.
+
+> [!canon] **[HARD INVARIANT korunur]** Yeni active chip tavanı **1–4** (integration derslerinde 0) aynen geçerlidir. Familiarization havuzunu genişletmek active-new bütçesini **açmaz**; anti-gaming kuralı burada da geçerlidir: geniş manzara, üretim yükünü gizlemek için kullanılamaz.
+
+> [!warning] Pasif temas **bedavaya gelmez**: ayrı bir yüzey/bilişsel bütçe tüketir (Policy Hardening §Bütçe sınıfları → *exposure budget*, cap **≤ 2 / ünite**, TUNABLE). Familiarization panoramasının bu cap ile nasıl ilişkilendirileceği **[OPEN]**'dir — bkz. [[OPEN_QUESTIONS]].
+
+> [!warning] "Kaç yüzey pasif gösterilebilir" sorusunun cevabı **kilitli değildir**. [[Passive Familiarity and Ghost Weave]] içindeki 10–15 planlama bandı ve 3–6 ön-temas aralığı **TUNABLE PLANNING BAND**'dir, bu notun cap tablosunu **geçersiz kılmaz**.
 
 ### Integration Rhythm (CANONICAL heuristic)
 ~3 ardışık yeni-motor dersi review beat olmadan olmaz (`learning-engine-v1.md:130`) — yük dağıtımı için.
@@ -180,4 +192,4 @@ Ayrı bütçeler; biri diğerini tüketmez:
 - Mevcut derslerin hepsinin bu ledger'a **uyduğu iddia edilmez** — retro-audit ayrı bir görev.
 
 ## Related Notes
-[[Lesson Anatomy]] · [[Chip Lifecycle]] · [[Weave System]] · [[Mastery Model]] · [[Content Selection]] · [[Spine and Carryover Logic]] · [[Error Tracking System]] · [[Content Production Workflow]]
+[[Lesson Anatomy]] · [[Chip Lifecycle]] · [[Weave System]] · [[Mastery Model]] · [[Content Selection]] · [[Spine and Carryover Logic]] · [[Error Tracking System]] · [[Content Production Workflow]] · [[Passive Familiarity and Ghost Weave]]

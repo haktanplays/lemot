@@ -1,5 +1,25 @@
 # CHANGELOG — CAIRN Obsidian Product Brain
 
+## v0.6 passive-familiarity / ghost-weave canon pass — 2026-08-04
+
+Founder'ın 2026-08-04'te onayladığı öğrenme modelinin kanona alınması (docs-only, ACTIVE_CODEX-only). **Runtime/kod/registry/evaluator/şema/test/validator değişmedi. Fransızca aday yüzey eklenmedi/çıkarılmadı; 305-satır cümle QA CSV'si ve 140-satır chunk QA CSV'si değişmedi.**
+
+### Eklenen ana ev
+- **[[Passive Familiarity and Ghost Weave]]** (yeni, `02_LEARNING_SYSTEM`) — broad-to-narrow açılış, familiarization panoraması, iki eksen (pasif tanışıklık / aktif kontrol), Weave'in ghost taşıyıcılığı, "no surprise production", weave rolleri, recoverability, üst üste binmiş bilinmeyen sistem yasağı, açıklama merdiveni, terfi merdiveni, Practice Hub ilişkisi, küratörlük, geniş chunk envanteri, aday authoring metadata. `implementation_status: spec-only`, `verification_status: reported-only`.
+
+### Kilitlenen ilkeler
+- **[[CAIRN_PRODUCT_BRAIN_v1.0]] §6** — *Familiarity and control are distinct* (Canonical). **§8** — *A lesson shows more world than it assigns* (Canonical). [[DECISION_REGISTER]] **PB-083 / PB-084**, provenance "Founder decision 2026-08-04".
+- **"Show the whole world, assign only a small part."** · **"Familiarization creates the map; Weave creates familiarity."** · **"Passive familiarity is not active mastery."** · **"No surprise production."** · **"Visible structure, delayed decomposition."**
+
+### Genişletilen mevcut evler
+- [[Learning System Overview]] (broad-to-narrow + iki eksen + Weave köprüsü) · [[Lesson Anatomy]] (familiarization panoraması; 10–15 = **planlama bandı, ekran sayısı değil**) · [[Weave System]] (ghost-exposure taşıyıcı rolü; W1 ve açık-Weave kuralları **değişmedi**) · [[Whole First, Unpack Later]] (iki ölçek + visible structure/delayed decomposition + açıklama merdiveni) · [[Difficulty and Cognitive Load]] (pasif temas; formül ve cap'ler **değişmedi**) · [[Chip Taxonomy]] (12-tip taksonomi **korundu**, yanına beş ayrı boyut) · [[Exercise System Overview]] (recognition fill / supported build / recall fill **eşit kanıt değildir**) · [[Learning Engine Context Pack]] (kompakt agent kuralı) · [[Decision Index]] (ADR adayı; **ADR açılmadı, D-# atanmadı**) · [[OPEN_QUESTIONS]] (6 gerçekten çözülmemiş kalem).
+
+### Korunan invariantlar (değişmedi)
+- Ders başına **1–4 yeni active chip** (integration 0) · **11–14 ekran** bütçesi · `totalProductionLoad` formülü · recognition/ghost'un `totalProductionLoad`'a **girmemesi** · cümle-chip yasağı ve UI eligibility kuralları · Weave W1 (açık karışık Weave **ungraded**) · 7 dondurulmuş ekran tipi.
+
+### Non-claims (açıkça)
+- Yeni bir **mastery motoru uygulanmadı** · yeni bir **familiarization ekranı uygulanmadı** · yeni **runtime state/event/registry alanı/ekran tipi yetkilendirilmedi** · **recoverability hesaplayıcısı yok** · **%70–80 aşinalık metriği mevcut değil** · öğrenciye görünen **hiçbir yüzde önerilmedi** · sayılar (10–15 familiarization, 3–6 ön-temas, %70–85 recoverability, 120–145 / 197 chunk) **founder-onaylı kanonik hedef değildir ve ampirik kalibre edilmemiştir** · mevcut **L1–L10 cümle envanteri bu pass ile onaylanmadı** · Fransızca içerik hâlâ **founder incelemesi + isimli insan French QA** bekliyor · mevcut derslerin bu modele uyduğu **iddia edilmez**.
+
 ## v0.5 content-safety policy-hardening pass — 2026-07-18 (Draft PR #198)
 
 Registry-identity / contextTags / promotion / integration-rhythm / French-QA / TUNABLE **content-safety** policy hardening (docs-only, ACTIVE_CODEX-only). **Runtime/kod/şema/test/validator değişmedi.**

@@ -9,12 +9,12 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/canon/LESSON_FLOW_CANON_v1.md", "lemot-app/content/lessonTypes.ts", "lemot-app/components/lesson-v1/LessonRendererV1.tsx", "SOURCE_ARCHIVE/AVAILABLE_INPUTS/Learning_Engine_and_Exercise_Types.md"]
 code_refs: ["lemot-app/content/lessonTypes.ts:40-47", "lemot-app/components/lesson-v1/LessonRendererV1.tsx:138-159", "lemot-app/constants/sections.ts", "lemot-app/content/learning-engine/"]
 test_refs: ["lemot-app/__tests__/v1LessonStructure.test.ts", "lemot-app/scripts/canonRules.ts"]
-related: ["[[00 Le Mot Holy Codex]]", "[[Exercise Selection Matrix]]", "[[Exercise Evidence Matrix]]", "[[Exercise Error Matrix]]", "[[Exercise Anti-Patterns]]", "[[Weave]]", "[[Learning System Overview]]", "[[Lesson Flow]]"]
+related: ["[[00 Le Mot Holy Codex]]", "[[Exercise Selection Matrix]]", "[[Exercise Evidence Matrix]]", "[[Exercise Error Matrix]]", "[[Exercise Anti-Patterns]]", "[[Weave]]", "[[Learning System Overview]]", "[[Lesson Flow]]", "[[Passive Familiarity and Ghost Weave]]"]
 tags: [exercise, index, moc]
 ---
 
@@ -33,6 +33,7 @@ tags: [exercise, index, moc]
 - [Canon validators V1–V9](#canon-validators-v1v9)
 - [Known Gaps / Open Questions](#known-gaps-open-questions)
 - [Kaynak içe aktarımı (Learning Engine Taxonomy, 2026-06-29 vault)](#kaynak-içe-aktarımı-learning-engine-taxonomy-2026-06-29-vault)
+- [Kanıt eşitliği yanılgısı (2026-08-04)](#kanıt-eşitliği-yanılgısı-2026-08-04)
 - [Related Notes](#related-notes)
 - [🧭 GitHub Navigation](#-github-navigation)
 
@@ -142,9 +143,25 @@ Not: Bir renderer birden çok ürün-davranışı taşır — `weave` hem Guided
 ### Contract-layer operasyonları (kaynak §8)
 `content/learning-engine/types.ts` operasyonları: `recognition`, `fill`, `build`, `register_switch`, `context_chain`, `open_production`. `free_conversation` **declared** ama blueprint union'ı bugün güvenli bounded seti kapsar. `lesson-v1` = bugünün Round 1 renderer'ı; `content/learning-engine/*` = contract-driven **future/parallel** engine katmanı. Bu eşleme wiring değişimi **yetkilendirmez**.
 
+## Kanıt eşitliği yanılgısı (2026-08-04)
+
+> [!canon] **Recognition fill, supported build ve recall fill eşit kanıt değildir.** Üçü de "doğru cevap" üretebilir; üçü de aynı şeyi kanıtlamaz. Founder decision 2026-08-04. Detay: [[Passive Familiarity and Ghost Weave]] §13.
+
+| Tip | Görünürlük | Ne kanıtlar | Ne kanıtlamaz |
+|---|---|---|---|
+| **Recognition fill** | seçenekler görünür | teşhis — öğrenci doğruyu **ayırt edebiliyor** | bağımsız geri getirme |
+| **Supported build** | chunk'lar görünür | kontrollü kurulum — parçaları **doğru diziyor** | desteksiz üretim |
+| **Recall fill** | doğrudan seçenek yok | aktif geri getirme | bağlamdan bağımsız transfer |
+
+> [!warning] **Basit bir fill tanımayı artırabilir ama sahipliği kanıtlamaz.** Bir egzersizi geçmek terfi üretmez; kanıt sınıfı egzersizin **görünürlük seviyesine** bağlıdır ([[Mastery Model]] Non-Signals, [[Exercise Evidence Matrix]]).
+
+> [!warning] **NON-CLAIM:** Bu ayrım bugün runtime'da **ölçülmüyor**. v1 renderer hiç `LearningEvent` yaymaz (yukarıdaki §"Kanıt boşluğu"); ayrı kanıt sınıfları **uygulanmadı** ve yeni bir ekran tipi **yetkilendirilmedi**. Bu bir **authoring/kanon ayrımıdır**.
+
+> [!canon] Ayrıca: bir yüzeyin sahnede **görünmesi** — INTERLOCUTOR_INPUT, AMBIENT_INPUT ya da MODEL_REVEAL olarak — hiçbir kanıt sınıfına girmez ve **puanlanan öğrenci çıktısına dönüştürülemez** ("No surprise production", [[Passive Familiarity and Ghost Weave]] §6).
+
 ## Related Notes
 
-[[Lesson Flow]] · [[Lesson Anatomy]] · [[Weave System]] · [[Mastery Model]] · [[Error Tracking System]] · [[Spec to Runtime Matrix]]
+[[Lesson Flow]] · [[Lesson Anatomy]] · [[Weave System]] · [[Mastery Model]] · [[Error Tracking System]] · [[Spec to Runtime Matrix]] · [[Passive Familiarity and Ghost Weave]]
 </content>
 </invoke>
 

@@ -5,7 +5,7 @@ status: Canonical
 owner: Founder
 product: Cairn
 first_product: Cairn French
-last_updated: 2026-07-23
+last_updated: 2026-08-04
 ---
 
 # Cairn Product Brain v1.0
@@ -81,6 +81,8 @@ Whether B2 ever becomes a public claim is an [[OPEN_QUESTIONS|open question]] an
 
 **Context is a scaffold, not the organizing principle.** (Canonical) Scenes and situations carry meaning and make forms usable, but the curriculum is organized by capability, not by topic or setting. A café or a hotel is a delivery vehicle for a capability, never the reason a lesson exists.
 
+**Familiarity and control are distinct.** (Canonical) Recognising language is not the same as being able to produce it, and the two are tracked and grown separately. Encountering something never becomes an unannounced demand to produce it. How familiarity is seeded, carried, and promoted into control is Content and Curriculum Bible material.
+
 ## 7. Journey and Progression
 
 **The learner can see the entire path, including future lessons.** (Canonical) Nothing about the road ahead is hidden.
@@ -131,6 +133,8 @@ The direction and these guardrails are product canon. The progression stages and
 **Lesson types remain structurally distinct under a shared lesson contract.** (Canonical) Different lesson types keep their own internal structures; they are unified by a shared contract, not flattened into one shape.
 
 **There is no rigid, universal UI template.** (Canonical) The shared rhythm is a pedagogical feel, not a forced screen-by-screen layout. Lessons are not squeezed into an identical template for the sake of uniformity.
+
+**A lesson shows more world than it assigns.** (Canonical) A lesson may let the learner meet the wider language of the situation it opens while making only a small part of it their responsibility. Breadth of exposure never widens what the learner is asked to produce. The size of that exposure and how it is authored are Content and Curriculum Bible material.
 
 **Lesson Practice is optional and lesson-specific.** (Canonical) A learner may repeat a single lesson's material as optional practice. **Lesson Practice does not, by itself, unlock the next Journey** — only [[#7. Journey and Progression|Journey Reinforcement]] does that.
 
@@ -326,9 +330,11 @@ Only reconciliation-confirmed unresolved questions appear here; the authoritativ
 | Primary learner and non-primary audiences | [[#4. Who Cairn Is For]] |
 | Expressive independence; A0–B2 and ~3,000 words internal | [[#5. Product Promise and Destination]] |
 | Journey → Capability Arc → Lessons; Arcs internal; context as scaffold | [[#6. Learning Architecture]] |
+| Familiarity and control are distinct | [[#6. Learning Architecture]] |
 | Visible path; guided linearity; locked lessons explain requirements; Journey Reinforcement gates next Journey | [[#7. Journey and Progression]] |
 | Progressive language independence; readiness-gated support fade (thermostat, not lesson/Journey number); Journey transitions narrate not gate; two support layers; gradual, reversible, learner-restorable support | [[#7. Journey and Progression]] |
 | Lessons introduce; shared rhythm; distinct types; no rigid template; optional Lesson Practice | [[#8. Lesson Philosophy]] |
+| A lesson shows more world than it assigns | [[#8. Lesson Philosophy]] |
 | Practice Hub is the mastery engine; Recommended + Choose a Subject; My Errors; finite calm sessions | [[#9. Practice Hub]] |
 | Mon Lexique; faux amis; grammar inside, no grammar tab; search-first, meaning-aware; Practice this | [[#10. Mon Lexique]] |
 | Cairn teaches, AI supports; supported and prohibited AI roles | [[#11. AI Philosophy]] |
@@ -341,6 +347,10 @@ Only reconciliation-confirmed unresolved questions appear here; the authoritativ
 | Canon-first governance; every change earns its place | [[#18. Canon Governance]] |
 
 ## 22. Change Log
+
+**Amendment — 2026-08-04**
+
+- Added **Familiarity and control are distinct** to [[#6. Learning Architecture]] and **A lesson shows more world than it assigns** to [[#8. Lesson Philosophy]]: recognising language and being able to produce it are separate, separately grown things; a lesson may let the learner meet the wider language of a situation while assigning only a small part of it, and breadth of exposure never widens what the learner is asked to produce. Recorded in [[DECISION_REGISTER]] as PB-083–PB-084. The supporting learning model — how familiarity is seeded and carried, how exposure is promoted into control, and the exercise and authoring vocabulary that serve it — is Content, Curriculum, and Engineering Bible material and is documented as **spec-only** in [[Passive Familiarity and Ghost Weave]]; **nothing in it is implemented**, and no runtime state, schema, screen type, or metric is authorised by this amendment. Product version remains 1.0 (additive clarification of existing intent, no principle reversed).
 
 **Amendment — 2026-07-23**
 

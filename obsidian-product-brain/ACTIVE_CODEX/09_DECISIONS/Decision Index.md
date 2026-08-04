@@ -9,8 +9,8 @@ implementation_status: not-started
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/STATUS.md", "docs/ROADMAP.md", "docs/canon/LESSON_FLOW_CANON_v1.md", "docs/engineering/karpathy.md", "CLAUDE.md"]
 related: ["[[Active Decisions]]", "[[Deferred Decisions]]", "[[Rejected Decisions]]", "[[Superseded Decisions]]", "[[Decision Templates]]", "[[00 Le Mot Holy Codex]]"]
 tags: [index, moc, decision, adr]
@@ -90,8 +90,9 @@ ADR numaralandırması incelendi: **ADR-0001…ADR-0025 mevcut, sıradaki numara
 | Cross-stage French QA visibility architecture | cross-stage + uzun-ömürlü + release-gating | [[French Linguistic QA]] |
 | Carryover horizon hybrid model | cross-system pedagoji + horizon | [[Chip Lifecycle]] (2026-07-18 pass) |
 | Mon Lexique projection architecture | cross-system + veri-kimliği | [[Mon Lexique]] (2026-07-18 pass) |
+| Passive familiarity / active control ayrımı ve ghost weave taşıyıcılığı | cross-system pedagoji + uzun-ömürlü + geri-dönüşü maliyetli + tek notta yanlış anlaşılmaya açık | [[Passive Familiarity and Ghost Weave]] (2026-08-04 pass); Product Brain'de PB-083 / PB-084 olarak kayıtlı; **spec-only, uygulanmadı** |
 
-> [!warning] **Neden oluşturulmadı:** ADR konvansiyonu her ADR'yi bir `decisions-history D-#` kaydına bağlar; bu policy-pass kararlarının henüz D-# karşılığı yok. Dosya sayısı için ADR **üretilmez**. Bu adaylar deliberate bir ADR authoring adımında (D-# atama + Decision Templates ile) açılabilir. Bu pass raporunda aday olarak listelendi.
+> [!warning] **Neden oluşturulmadı:** ADR konvansiyonu her ADR'yi bir `decisions-history D-#` kaydına bağlar; bu policy-pass kararlarının henüz D-# karşılığı yok. Dosya sayısı için ADR **üretilmez**. Bu adaylar deliberate bir ADR authoring adımında (D-# atama + Decision Templates ile) açılabilir. Bu pass raporunda aday olarak listelendi. **2026-08-04 eklemesi için de aynı gerekçe geçerlidir: D-# atanmadı, ADR-0026 açılmadı.**
 
 ## Related
 [[00 Le Mot Holy Codex]] · [[06 Canon and Status Legend]] · [[Product Risks]] · [[Known Gaps]] · [[Registry Architecture]] · [[French Linguistic QA]]

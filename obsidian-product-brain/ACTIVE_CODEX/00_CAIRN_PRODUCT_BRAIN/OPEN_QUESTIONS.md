@@ -4,7 +4,7 @@ version: 1.0
 status: Canonical (list of unresolved items)
 owner: Founder
 product: Cairn
-last_updated: 2026-07-20
+last_updated: 2026-08-04
 ---
 
 # Cairn Product Brain — Open Questions v1.0
@@ -34,13 +34,16 @@ Only genuinely unresolved questions confirmed by the canon reconciliation appear
 | Where exactly does the Summit narrative threshold fall in the lesson sequence, and does it align with a major advanced-language transition such as the subjunctive? | The Summit as a narrative threshold is canonical ([[DECISION_REGISTER|PB-056]]); only its exact curriculum placement is open. There is no requirement to move the subjunctive earlier in the current syllabus. | The Summit's placement shapes pacing and the felt crossing from foundational to advanced expressive French | FD-28 → [[DECISION_REGISTER|PB-056]]; Curriculum Bible |
 | How is narrow in-lesson chip exposure paired with a much wider Practice Hub retrieval range (roughly 30–40 lessons)? | A future curriculum/content architecture decision; exact budgets and ranges are not yet canon | Determines how introduction (lessons) and mastery (Practice Hub) divide retrieval load; also a Content Bible concern | FD-91, FD-90, FD-92 → [[DECISION_REGISTER|PB-078]] |
 | At what curricular stages, with what Journey-level default expectations and readiness criteria, does support step toward more French — and how do learner readiness and Journey Reinforcement interact to enable or delay a transition? | Downstream of the decided Progressive Language Independence direction; the direction is settled, the staging is not | Sets the felt pace of growing French independence without contradicting readiness-driven fade | Founder completion 2026-07-23 → [[DECISION_REGISTER|PB-079]]–[[DECISION_REGISTER|PB-081]]; D-26 / `LESSON_FLOW_CANON_v1.md` §4; Curriculum Bible |
+| How wide is a lesson's familiarization exposure, and does it vary by lesson archetype? | The principle that a lesson may show more world than it assigns is canon ([[DECISION_REGISTER|PB-084]]); the width is an unratified planning band, not canon | Sets how broad the opening panorama may be without letting exposure quietly widen production load | Founder decision 2026-08-04 → [[DECISION_REGISTER|PB-084]]; [[Passive Familiarity and Ghost Weave]]; Curriculum Bible |
+| How many meaningful encounters, across how many distinct contexts, should precede a chunk's formal lesson — and are the recoverability bands defensible? | Provisional authoring bands only; no empirical calibration exists | Encounter counts and recoverability bands drive authoring effort across the whole syllabus; guessing them wrong is expensive to unwind | Founder decision 2026-08-04 → [[DECISION_REGISTER|PB-083]]; [[Passive Familiarity and Ghost Weave]]; Curriculum Bible |
 
 ## Content decision required
 
 | Question | Current status | Why it matters | Source |
 |---|---|---|---|
 | How does each content surface display, reveal, and reduce native-language support — translation and reveal patterns, prompt- and instruction-language presentation, Reading support, Practice Hub support, and Mon Lexique bilingual / French-first treatment? | Downstream of the decided Progressive Language Independence direction; behavior-by-surface is not yet specified | Determines how the two support layers actually appear and fade on each surface without breaking the learner-safety guardrails | Founder completion 2026-07-23 → [[DECISION_REGISTER|PB-082]]; Content Bible |
-| (Beyond the item above, no other distinct content-only open question is confirmed at v1.0.) | — | Chip counts, budgets, and faux-ami authoring are Content Bible material, not open founder questions. The chip-exposure architecture above is tracked under Curriculum with a Content facet. | RECON |
+| Is a chunk's recoverability judged by a human author, or computed from what the learner has already met? | Undecided; today it is an authoring judgement with no calculator behind it | Decides whether recoverability stays a craft judgement or becomes a system that needs data, thresholds, and a way to be wrong safely | Founder decision 2026-08-04 → [[DECISION_REGISTER|PB-083]]; [[Passive Familiarity and Ghost Weave]]; Content Bible |
+| (Beyond the items above, no other distinct content-only open question is confirmed at v1.0.) | — | Chip counts, budgets, and faux-ami authoring are Content Bible material, not open founder questions. The chip-exposure architecture above is tracked under Curriculum with a Content facet. | RECON |
 
 ## Engineering decision required
 
@@ -49,6 +52,9 @@ Only genuinely unresolved questions confirmed by the canon reconciliation appear
 | Is AI semantic, free-form search introduced in Mon Lexique? | May be evaluated later; not committed | Changes the search architecture and the AI safety/consent surface | FD-55 → [[DECISION_REGISTER|PB-047]] |
 | What is the scope and guardrail set for advanced AI personalization? | Later; boundary undecided | Defines how far AI may personalize before it approaches the "AI-as-core" non-goal; requires quota, routing, and consent decisions | FD-65 → [[DECISION_REGISTER|PB-052]] |
 | What are the support-fade thermostat's thresholds, mastery inputs, calculation, reversibility mechanics, state persistence, and fallback controls? | Downstream of the decided thermostat principle; the mechanics are deferred | Defines how comprehension-gated fade is computed, persisted, and safely reversed across the content and instruction-voice layers | Founder completion 2026-07-23 → [[DECISION_REGISTER|PB-080]], [[DECISION_REGISTER|PB-082]]; D-26 / `LESSON_FLOW_CANON_v1.md` §4; Engineering Bible |
+| What evidence promotes a chunk from met, to recognised, to something the learner may be asked to produce? | The principle that promotion needs evidence is canon ([[DECISION_REGISTER|PB-083]]); the evidence itself is undefined and unmeasured today | Without it, "no surprise production" is a promise nothing enforces | Founder decision 2026-08-04 → [[DECISION_REGISTER|PB-083]]; [[Passive Familiarity and Ghost Weave]]; Engineering Bible |
+| How are an exercise's roles — what the learner is asked to produce versus what merely appears around them — represented at runtime, if at all? | Authoring vocabulary only; no runtime representation exists and none is authorised | Determines whether the distinction can ever be enforced or checked, or stays a discipline held only by authors | Founder decision 2026-08-04 → [[DECISION_REGISTER|PB-083]]; [[Passive Familiarity and Ghost Weave]]; Engineering Bible |
+| Is a lesson's opening familiarization carried by the existing screen payloads, or does it need a later interface extension? | Unresolved; the current screen-type set is frozen and no new type is authorised | Decides whether this model is expressible today or waits on interface work | Founder decision 2026-08-04 → [[DECISION_REGISTER|PB-084]]; [[Passive Familiarity and Ghost Weave]]; Engineering Bible |
 
 ---
 

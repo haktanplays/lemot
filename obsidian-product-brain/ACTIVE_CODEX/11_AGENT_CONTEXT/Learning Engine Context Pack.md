@@ -9,11 +9,11 @@ implementation_status: partial
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-26
-last_reviewed: 2026-07-26
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 amended_by: ["docs/bibles/mastery-evidence/MASTERY_EVIDENCE_FOUNDER_RATIFICATION_v0.1.md"]
 source_of_truth: ["docs/engineering/karpathy.md", "docs/canon/LESSON_FLOW_CANON_v1.md", "docs/ROADMAP.md", "docs/CAIRN_FULL_APP_ONE_SHOT_BUILD_SPEC_v1_0.md"]
-related: ["[[Canonical Context Pack]]", "[[Learning Engine Architecture]]", "[[Mastery Model]]", "[[Error Tracking System]]", "[[Self-Producing Engine]]"]
+related: ["[[Canonical Context Pack]]", "[[Learning Engine Architecture]]", "[[Mastery Model]]", "[[Error Tracking System]]", "[[Self-Producing Engine]]", "[[Passive Familiarity and Ghost Weave]]"]
 tags: [agent, context, learning-engine]
 ---
 
@@ -33,6 +33,7 @@ tags: [agent, context, learning-engine]
 - [Deterministik drill derivation (D-25, shipped #179)](#deterministik-drill-derivation-d-25-shipped-179)
 - [Kanon ama IMPLEMENTATION ertelenmiş (dikkat: motor var ≠ bağlı)](#kanon-ama-implementation-ertelenmiş-dikkat-motor-var-bağlı)
 - [Ekran bütçesi (D-29, LOCKED)](#ekran-bütçesi-d-29-locked)
+- [Passive familiarity / ghost weave (2026-08-04, CANON — SPEC-ONLY)](#passive-familiarity--ghost-weave-2026-08-04-canon--spec-only)
 - [İlgili Notlar](#ilgili-notlar)
 
 > [!warning] Bu paketteki her şey **runtime C** hakkında: `content/learning-engine/*`.
@@ -99,6 +100,17 @@ Ana evi: [[Lesson Flow]] · [[Deferred Decisions]].
 Toplam **11–14 ekran** (uncounted screen yok): 9–11 action + 2–3 insight-card. Micro-action 15–25;
 per-screen action 1–3 (cap 4); 7–10 dk; **1–4 yeni active chip (değişmez müfredat disiplini)**. Ana evi: [[Lesson Flow]] · [[Difficulty and Cognitive Load]].
 
+## Passive familiarity / ghost weave (2026-08-04, CANON — SPEC-ONLY)
+**Agent kuralı:** Pasif tanışıklık ile aktif kontrol **ayrı eksenlerdir**; bir chunk sahneye pasif girebilir
+ve öğrencinin sorumluluğu olmaz ("No surprise production"). Ghost/exposure yüzeyler `totalProductionLoad`'a
+**girmez**, weakness üretmez, tek başına ownership kanıtı değildir. **1–4 active-new tavanı ve 11–14 ekran
+bütçesi değişmedi.**
+> [!warning] **Bu kanon SPEC-ONLY'dir — kod yazarken uygulanmış varsayma.** Yeni runtime state, yeni event,
+> yeni registry alanı, yeni ekran tipi ve recoverability hesaplayıcısı **yoktur ve yetkilendirilmemiştir**.
+> `pedagogicalStatus`/`weaveRoles`/`recoverabilityBand` gibi adlar **authoring adayıdır**, şema değil.
+> Sayılar (10–15 familiarization, 3–6 ön-temas, %70–85 recoverability) **TUNABLE PLANNING BAND**'dir,
+> ampirik kalibre edilmemiştir. Ana evi: [[Passive Familiarity and Ghost Weave]].
+
 ## İlgili Notlar
 - [[Canonical Context Pack]] · [[Architecture Context Pack]] · [[Syllabus Context Pack]]
-- [[Learning Engine Architecture]] · [[Mastery Model]] · [[Error Tracking System]] · [[Self-Producing Engine]]
+- [[Learning Engine Architecture]] · [[Mastery Model]] · [[Error Tracking System]] · [[Self-Producing Engine]] · [[Passive Familiarity and Ghost Weave]]

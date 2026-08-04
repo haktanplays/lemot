@@ -9,12 +9,12 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/learning-engine-v1.md", "docs/canon/LESSON_FLOW_CANON_v1.md", "docs/syllabus/chip-taxonomy-and-lexique-lifecycle-v0.3.md", "CLAUDE.md"]
 code_refs: ["lemot-app/content/lessonTypes.ts", "lemot-app/content/itemRegistry.ts", "lemot-app/content/learning-engine/", "lemot-app/app/(tabs)/index.tsx:151-155"]
 test_refs: []
-related: ["[[00 Le Mot Holy Codex]]", "[[Lesson Anatomy]]", "[[Lesson Flow]]", "[[Chip System Overview]]", "[[Self-Producing Engine]]", "[[Weave System]]", "[[Mastery Model]]", "[[Runtime Content Architecture]]"]
+related: ["[[00 Le Mot Holy Codex]]", "[[Lesson Anatomy]]", "[[Lesson Flow]]", "[[Chip System Overview]]", "[[Self-Producing Engine]]", "[[Weave System]]", "[[Mastery Model]]", "[[Runtime Content Architecture]]", "[[Passive Familiarity and Ghost Weave]]"]
 supersedes: []
 superseded_by: []
 tags: [learning, moc, overview]
@@ -66,6 +66,24 @@ Le Mot tarihindeki en pahalı hata "karar verildi = çalışıyor = kanıtlandı
 ### Core Loop (CANONICAL, spec)
 
 `learning-engine-v1.md:29-41`: her öğrenme nesnesi 7-aşamalı spiralden geçer — **Moment → Pieces → Pattern → Production → Reveal → Memory → Ownership**. "The loop is a spiral, not a circle" (line 41). Production "the point of the app" (line 36); onu besleyen üretim yüzeyi **killer trinity: Weave + Say It Your Way + Natural Reveal** (line 23).
+
+### Broad-to-narrow: döngünün girişi (CANONICAL, spec-only)
+
+> [!canon] Spiral, dar bir noktadan değil **geniş bir manzaradan** başlar. Ders önce öğrencinin içinde yaşayacağı alanı gösterir, sonra o alanın küçük bir bölümünü öğrencinin sorumluluğuna verir. **"Show the whole world, assign only a small part."** Founder decision 2026-08-04. Detay: [[Passive Familiarity and Ghost Weave]].
+
+Bu, 7-aşamalı spirali değiştirmez; spiralin **önüne** bir familiarization (tanışma) evresi koyar. Manzara geniştir, atama dardır — active-new bütçesi (1–4) bu yüzden esnemez.
+
+### Pasif tanışıklık ile aktif kontrol ayrıdır (CANONICAL, spec-only)
+
+> [!canon] **Passive familiarity is not active mastery.** Bir yüzeyi tanımak (görmüş olmak, anlamış olmak) ile onu üretebilmek iki ayrı eksendir. Bir chip sahneye girip öğrencinin sorumluluğu *olmadan* kalabilir. Founder decision 2026-08-04.
+
+İki eksen ayrı ölçülür ve ayrı raporlanır: **tanışıklık ekseni** (hiç görülmedi → görüldü → tanınır) ve **kontrol ekseni** (desteklenmiş üretim → bağımsız üretim). Recognition/ghost teması üretim yüküne sayılmaz — bkz. [[Difficulty and Cognitive Load]].
+
+### Weave iki eksen arasındaki ana köprüdür (CANONICAL, spec-only)
+
+> [!canon] **Familiarization creates the map; Weave creates familiarity.** Weave, pasif olarak tanıtılmış parçaları öğrencinin kendi niyeti içinde tekrar tekrar önüne getiren taşıyıcıdır; bir chip'in tanışıklık ekseninden kontrol eksenine geçtiği yer çoğunlukla Weave'dir. Founder decision 2026-08-04.
+
+Weave'in mevcut W1 / open-Weave kuralları değişmez; bu yalnızca Weave'e **ghost-exposure taşıyıcısı** rolünü ekler. Detay: [[Weave System]], [[Passive Familiarity and Ghost Weave]].
 
 ### Ders girdi modeli (CANONICAL)
 
@@ -130,7 +148,7 @@ System A: sandbox + dev-apk. System B/C: yalnızca sandbox/founder-gated deep-li
 > [!open-loop] Learning-engine public yüzeye ne zaman/nasıl çıkar? → [[05 Open Loops]]
 
 ## Related Notes
-[[Lesson Anatomy]] · [[Lesson Flow]] · [[Chip System Overview]] · [[Chip Taxonomy]] · [[Weave System]] · [[Mastery Model]] · [[Error Tracking System]] · [[Self-Producing Engine]] · [[Runtime Content Architecture]]
+[[Lesson Anatomy]] · [[Lesson Flow]] · [[Chip System Overview]] · [[Chip Taxonomy]] · [[Weave System]] · [[Mastery Model]] · [[Error Tracking System]] · [[Self-Producing Engine]] · [[Runtime Content Architecture]] · [[Passive Familiarity and Ghost Weave]]
 
 <!-- gh-nav -->
 
@@ -153,6 +171,7 @@ System A: sandbox + dev-apk. System B/C: yalnızca sandbox/founder-gated deep-li
 - [Lesson Flow](./Lesson%20Flow.md)
 - [Mastery Model](./Mastery%20Model.md)
 - [Mon Lexique](./Mon%20Lexique.md)
+- [Passive Familiarity and Ghost Weave](./Passive%20Familiarity%20and%20Ghost%20Weave.md)
 - [Review and Recycling System](./Review%20and%20Recycling%20System.md)
 - [Self-Producing Engine](./Self-Producing%20Engine.md)
 - [Spine and Carryover Logic](./Spine%20and%20Carryover%20Logic.md)

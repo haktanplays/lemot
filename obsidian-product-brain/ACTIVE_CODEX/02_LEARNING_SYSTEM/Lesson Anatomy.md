@@ -9,12 +9,12 @@ implementation_status: partial
 verification_status: source-inspected
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-18
-last_reviewed: 2026-07-18
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/learning-engine-v1.md", "docs/canon/LESSON_FLOW_CANON_v1.md"]
 code_refs: ["lemot-app/content/lessonTypes.ts:40-47", "lemot-app/content/lessons/v1/lesson-001.ts", "lemot-app/content/learning-engine/lessons/"]
 test_refs: ["lemot-app/**/v1LessonStructure.test.ts"]
-related: ["[[00 Le Mot Holy Codex]]", "[[Learning System Overview]]", "[[Lesson Flow]]", "[[Spine and Carryover Logic]]", "[[Difficulty and Cognitive Load]]", "[[Chip System Overview]]"]
+related: ["[[00 Le Mot Holy Codex]]", "[[Learning System Overview]]", "[[Lesson Flow]]", "[[Spine and Carryover Logic]]", "[[Difficulty and Cognitive Load]]", "[[Chip System Overview]]", "[[Passive Familiarity and Ghost Weave]]"]
 supersedes: []
 superseded_by: []
 tags: [learning, lesson, structure]
@@ -52,6 +52,14 @@ Girdiyi "family" olarak modellemek, dersi ezberlenecek bir cümleye değil, **bi
 
 ### 1. Girdi: sentence family (CANONICAL)
 `learning-engine-v1.md:47-57` — bir ders **asla** tek cümleden ya da pasif ifade listesinden başlamaz; anchor + variation + contrast + rescue/natural + interchangeable pieces içeren bir aileden başlar.
+
+### 1b. Familiarization panoraması (CANONICAL yön, spec-only)
+
+> [!canon] Sentence family, öğrenciye **ders başında geniş bir manzara** olarak gösterilir: dersin dünyasını kuran cümle/ifade yüzeylerinin bir bölümü, öğrencinin sorumluluğu olmadan tanıtılır. **"Show the whole world, assign only a small part."** Founder decision 2026-08-04. Detay: [[Passive Familiarity and Ghost Weave]].
+
+> [!warning] **10–15 sayısı bir PLANLAMA BANDIDIR, ekran sayısı DEĞİLDİR.** Bir dersin familiarization havuzunda tipik olarak **10–15 yüzey** planlanır; bunlar **10–15 ayrı runtime ekranı anlamına gelmez**. Bant TUNABLE PLANNING BAND'dir, kilitli invariant değildir.
+
+> [!canon] **§3'teki 11–14 ekran invariantı değişmez.** Familiarization panoraması bu bütçenin *içinde* taşınır; bütçeyi genişletmez. Aynı şekilde active-new 1–4 tavanı da değişmez: manzara geniş, atama dardır.
 
 ### 2. Motor derinliği (CANONICAL)
 Üç düzey motor: **full-cycle / short-cycle / ambient** (`learning-engine-v1.md:63-69`). Bir ders tipik olarak **tek** full-cycle motora sahiptir. Full-cycle motor = spine chip'in tüm spiralden (Moment→Ownership) geçtiği şey.
@@ -149,4 +157,4 @@ v1 dersleri L1–L6 dev-apk-görünür; L7–L15 kayıtlı ama Home'da gizli; en
 - Bu archetype kontratları **authoring policy**dir; runtime bunları enforce etmez (ekran tipi seti 7'de dondurulmuş, ama archetype/load kontratı build-time/elle). Mevcut derslerin hepsinin uyduğu **iddia edilmez** (retro-audit ayrı görev).
 
 ## Related Notes
-[[Lesson Flow]] · [[Spine and Carryover Logic]] · [[Chip System Overview]] · [[Difficulty and Cognitive Load]] · [[Whole First, Unpack Later]] · [[Integration Lesson Logic]] · [[Review and Recycling System]] · [[Content Production Workflow]]
+[[Lesson Flow]] · [[Spine and Carryover Logic]] · [[Chip System Overview]] · [[Difficulty and Cognitive Load]] · [[Whole First, Unpack Later]] · [[Integration Lesson Logic]] · [[Review and Recycling System]] · [[Content Production Workflow]] · [[Passive Familiarity and Ghost Weave]]

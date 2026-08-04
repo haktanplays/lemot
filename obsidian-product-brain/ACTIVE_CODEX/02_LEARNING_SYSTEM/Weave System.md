@@ -9,12 +9,12 @@ implementation_status: implemented
 verification_status: unit-tested
 owner: cairn-product-brain
 created: 2026-07-14
-last_updated: 2026-07-14
-last_reviewed: 2026-07-14
+last_updated: 2026-08-04
+last_reviewed: 2026-08-04
 source_of_truth: ["docs/canon/LESSON_FLOW_CANON_v1.md", "docs/learning-engine-v1.md", "docs/EXERCISE_CANON.md"]
 code_refs: ["lemot-app/components/lesson-v1/screens/Weave.tsx", "lemot-app/components/lesson-v1/screens/normalizeAnswer.ts:14-45", "lemot-app/content/lessonTypes.ts:120-146"]
 test_refs: ["lemot-app/**/weaveMatch.test.ts", "lemot-app/**/weaveCopy.test.ts", "lemot-app/**/v1LessonStructure.test.ts:303-342"]
-related: ["[[00 Le Mot Holy Codex]]", "[[Weave|Weave (exercise)]]", "[[Natural Reveal]]", "[[Feedback and Scoring Philosophy]]", "[[Chip System Overview]]", "[[Difficulty and Cognitive Load]]"]
+related: ["[[00 Le Mot Holy Codex]]", "[[Weave|Weave (exercise)]]", "[[Natural Reveal]]", "[[Feedback and Scoring Philosophy]]", "[[Chip System Overview]]", "[[Difficulty and Cognitive Load]]", "[[Passive Familiarity and Ghost Weave]]"]
 supersedes: []
 superseded_by: []
 tags: [learning, weave, killer-mechanic]
@@ -57,6 +57,14 @@ Klasik çeviri egzersizi öğrenciyi "ya hep ya hiç"e zorlar: tüm cümleyi Fra
 
 ### Weave türleri (CANONICAL, `lessonTypes.ts:120-146`)
 `weaveType: supported | mid | context | open`. supported = en fazla iskele; open = serbest karışık (ungraded).
+
+### Weave'in ghost-exposure taşıyıcısı rolü (CANONICAL yön, spec-only)
+
+> [!canon] Weave, aynı zamanda **pasif tanıtılmış (ghost) parçaların taşıyıcısıdır**: bir chip, öğrencinin üretim sorumluluğu olmadan Weave sahnesinde tekrar tekrar önüne gelebilir. **Familiarization creates the map; Weave creates familiarity.** Founder decision 2026-08-04. Detay: [[Passive Familiarity and Ghost Weave]].
+
+> [!warning] Bu **yalnızca bir rol eklemesidir**. Yukarıdaki W1 kilidi ve tüm açık-Weave kuralları **aynen geçerlidir**. Ghost taşıyıcılığı, "tüm weave türleri derecelenir hale gelir" anlamına **gelmez**; açık karışık Weave derecelenmez, derecelemek hâlâ bir lint ERROR'udur.
+
+> [!warning] Ghost teması **üretim yükü sayılmaz** ve tek başına ownership kanıtı **değildir** — bkz. [[Difficulty and Cognitive Load]], [[Mastery Model]]. Bu bölüm spec-only'dir; runtime'da ghost-exposure alanı **yoktur**.
 
 ### Anti-pattern (CANONICAL, EXERCISE_CANON §16)
 - "Weave repair used as a designed translation exercise" = ERROR.
@@ -120,4 +128,4 @@ Weave üç sonuçtan birine düşer ama üçü de reveal'a gider; "none" bir hat
 > [!open-loop] Weave sonuçları engine event spine'ına ne zaman bağlanacak (evidence olarak)? → [[05 Open Loops]]
 
 ## Related Notes
-[[Weave]] · [[Natural Reveal]] · [[Feedback and Scoring Philosophy]] · [[Chip System Overview]] · [[Difficulty and Cognitive Load]]
+[[Weave]] · [[Natural Reveal]] · [[Feedback and Scoring Philosophy]] · [[Chip System Overview]] · [[Difficulty and Cognitive Load]] · [[Passive Familiarity and Ghost Weave]]
