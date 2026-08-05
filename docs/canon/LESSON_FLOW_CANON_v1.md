@@ -41,9 +41,86 @@ Mikro-aksiyon:        15-25 (toplam)
 Ekran başına aksiyon: 1-3, TAVAN 4
 Süre hedefi:          7-10 dk (estimatedMinutes yansıtır)
 Yeni aktif chip:      1-4 (müfredat disiplini, DEĞİŞMEZ)
-Üretim aksiyonu:      3-5 (yaz/kur; 30-60 sn)
+Üretim aksiyonu:      5-8 (anlamlı üretim; yaz/kur; 30-60 sn)   [standart erken ders]
+                          — GEÇİCİ (provisional) yazım hedefi, ratify EDİLMEDİ
+Yazılmış FR yüzeyi:   ~30-35 (authored surface inventory; ders envanterinin TAMAMI)
+Render edilen yoğunluk: ratify edilmiş sayı YOK — teşhis amaçlı
 Keşif aksiyonu:       kalanı (dokun/seç; 5-15 sn)
 ```
+
+> **Authored surface inventory ≠ tek bir öğrenci yolunda render edilen yüzeyler.**
+> `~30-35` **yazılmış (authored)** yüzeyleri sayar. Tek bir ders koşusu bunun
+> **pedagojik olarak seçilmiş bir alt kümesini** gösterir.
+
+**Yoğunluk sözleşmesi — üç AYRI bütçe.** `[FL — founder-locked 2026-08-05; yüzey katmanı 2026-08-05 ikinci pass'te netleştirildi]`
+Bu üç sayı **aynı şeyi saymaz**; toplanamaz, birbirine çevrilemez, birbirinin
+yerine kullanılamaz. Model: **dar sahiplenme yükü + geniş yazılmış yüzey envanteri
++ seçilmiş render yolu.**
+
+```text
+aktif-yeni yükü      = bağımsız üretimi beklenen AYRI yeni chip/item (item başına bir kez)
+üretim aksiyonu      = öğrencinin amaçlanan bir Fransızca yanıtı KURDUĞU ayrı durum
+yazılmış yüzey       = ders envanterinde HAZIRLANMIŞ, incelenebilir FR sözce
+                       (bir koşuda hiç render edilmeyebilir)
+render sunumu        = yazılmış bir yüzeyin belirli bir öğrenci yolunda GÖSTERİLMESİ
+nitelikli karşılaşma = pedagojik olarak anlamlı bir render sunumu
+```
+
+**`~30-35` yalnız YAZILMIŞ yüzeyleri sayar.** Render katmanının **ratify edilmiş
+sayısal hedefi YOKTUR**; render yoğunluğu teşhis amaçlıdır.
+
+- **Aktif-yeni 1-4 DEĞİŞMEDİ.** Dar aktif-yeni bütçesi **dar bir üretim yüzeyi
+  demek değildir**; tavan *yeni sahiplenmeyi* sınırlar, öğrencinin kaç kez
+  çalıştığını değil. Eski üretim yükünü supported/carryover/repair/integration
+  kovalarına saklayarak tavanı atlatma yasağı aynen geçerli.
+- **Tekrar eden kullanım** ancak **anlamlı bir boyut değişirse** yeni bir üretim
+  aksiyonu sayılır: operasyon · bağlam · iletişimsel amaç · slot değeri ·
+  karşıtlık · rekombinasyon · destek seviyesi · geri-getirme talebi.
+- **Sayılmaz:** pasif okuma · Continue'ya basma · sesi tekrar oynatma · Natural
+  Reveal izleme · yalnız-girdi/interlocutor Fransızcası · Fransızca yanıt
+  kurulmayan tanıma seçimi · aynı cevabın tek ekranda iki kez görünmesi ·
+  yalnız noktalama/biçim farkı · talebi değişmeyen aynı gönderim · yalnız model
+  cevap. **Tek bilişsel eylemi yapay dokunuşlara bölerek 5-8'e ulaşılamaz.**
+- **Hiçbir katmanda sayılmaz:** izole chip · tek kelimelik seçenek · parça
+  distraktör · İngilizce açıklama içinde yalnızca adı geçen Fransızca terim ·
+  gizli metadata · öğrenciye hiç gösterilmeyen kabul-edilen alternatif · aynı
+  render'dan çıkan yinelenen extraction satırı · birden çok payload alanında
+  tekrarlanıp bir kez gösterilen cümle · yalnız-noktalama normalize kopyalar.
+- **Tek kelimelik pragmatik biçim** (`Bonjour.` · `Merci.`) **bağımsız bir
+  iletişimsel örnek olarak render edildiğinde** sözce sayılabilir; yalnızca chip,
+  seçenek, etiket veya sözlük girdisi olarak gösterildiğinde **sayılmaz**.
+- **`~30-35` YAZILMIŞ yüzey envanteri hedefidir** — dersin 30-35 cümle öğrettiği,
+  sahiplenmesini istediği ya da öğrencinin her koşuda 30-35 cümle **gördüğü
+  iddiası DEĞİLDİR**. Envanter şunları içerebilir: anchor · üretim hedefi ·
+  destekli varyant · interlocutor repliği · bağlamsal örnek · karşıtlık ·
+  kurtarma/rescue repliği · Natural Reveal modeli · recap dönüşü · koşullu
+  alternatif.
+- **Yazılmış bir yüzey belirli bir koşuda hiç render edilmeyebilir.** Bir yazılmış
+  yüzey ancak **anlamlı biçimde değişmiş bir operasyon veya bağlamla** yeniden
+  ziyaret edildiğinde birden çok nitelikli karşılaşma üretir. Yinelenen extraction
+  satırları ve yinelenen payload alanları **ne fazladan yazılmış yüzey ne de
+  fazladan karşılaşma** yaratır.
+- **Render yoğunluğu teşhistir, hedef değildir [OPEN]:** görünürlük ders
+  kompozisyonuna, dallanmaya, hint kullanımına ve reveal sonucuna bağlıdır.
+  **Ratify edilmiş bir render sayısı yoktur ve burada belirlenmemiştir.**
+- **Bir ekranda birden çok render sunumu olabilir**; her ekran/yüzey/karşılaşma tam
+  üretim gerektirmez. Genişlik önce **yazılmış envanterde**, sonra payload
+  yoğunluğunda yaşar — yapıda değil: sayı tutturmak için **ekran ekleme, süre
+  uzatma, phrasebook şişkinliği veya alakasız varyant getirme yok.** Varyantlar
+  aynı sentence family, aynı iletişim sözü ve aynı ders motoru içinde kalır.
+- **Arketip kapsamı [OPEN]:** 5-8 ve ~30-35 yalnız **standart erken ders** içindir.
+  **Doorway / Integration / Review / Milestone** kendi mevcut activeNew
+  sözleşmelerini korur; onlar için üretim, yazılmış-yüzey veya render bandı
+  **uydurulmadı**, ilişki founder review'a açıktır.
+- **Eski "30-45 exposure" bandı [OPEN]:** korunur ve **ayrı, çözülmemiş bir
+  metriktir** (tüm statüler arası item/chip teması). Yazılmış yüzey, render sunumu
+  ve nitelikli karşılaşma ile **eşitlenemez, çevrilemez**; bu revizyonla
+  **çözülmemiştir**, founder review'a açıktır.
+
+> **Sahiplik:** Bu üç bütçenin kanonik evi **Content Bible v1.0 §6.9 + Ch. 19**
+> (DOC-004). Bu blok o sözleşmenin ders-akışı aynasıdır. Runtime enforcement
+> **iddia edilmez** (V1 spec-only). Mevcut derslerin (L1–L10 dâhil) uyduğu
+> **iddia edilmez**.
 
 **Zincir kuralı (v1):** Ekran içi zincir ≤4 aksiyon. Zincir yarıda kesilirse ekran
 baştan başlar (kısa zincirde kabul edilebilir; adım işaretçisi FUTURE).

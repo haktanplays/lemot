@@ -42,7 +42,7 @@ tags: [learning, difficulty, cognitive-load]
 
 ## Executive Summary
 
-Cairn dersleri bilinçli olarak **küçüktür**. Bir invariant bütçe uygulanır: **11–14 ekran, 7–10 dakika, 1–4 yeni active chip, 3–5 üretim aksiyonu, ekran başına 1–3 micro-action (cap 4)** (`LESSON_FLOW_CANON_v1.md:36-44`). Yük üç mekanizmayla yönetilir: (1) **Recycle Load Protection** — "Recycle cannot steal the lesson"; her cümlenin bir yük bütçesi var (target baskın, recycle destek, exposure capped). (2) **Prompt-fade** (PF0–PF3) — desteğin kademeli çekilmesi. (3) **Hint merdiveni** — takılınca 0→1→2, ama asla kopyaya-hazır değil. Zorluk artar ama **her seferinde bir kenar**.
+Cairn dersleri **yeni yük bakımından** bilinçli olarak küçüktür: **11–14 ekran, 7–10 dakika, 1–4 yeni active chip, ekran başına 1–3 micro-action (cap 4)**. Üretim ve yüzey envanteri ise **dar değildir** — standart erken derste **5–8 anlamlı üretim aksiyonu** (provisional) ve **~30–35 yazılmış Fransızca yüzey** hedeflenir; tek bir öğrenci yolu bunun bir **alt kümesini** render eder (`LESSON_FLOW_CANON_v1.md §1.1`; tanım evi Content Bible §6.9). Yük üç mekanizmayla yönetilir: (1) **Recycle Load Protection** — "Recycle cannot steal the lesson"; her cümlenin bir yük bütçesi var (target baskın, recycle destek, exposure capped). (2) **Prompt-fade** (PF0–PF3) — desteğin kademeli çekilmesi. (3) **Hint merdiveni** — takılınca 0→1→2, ama asla kopyaya-hazır değil. Zorluk artar ama **her seferinde bir kenar**.
 
 ## Why It Exists
 
@@ -57,7 +57,15 @@ Bilişsel yük teorisi: çalışan bellek sınırlıdır; aynı anda çok yeni p
 | Micro-action | 15–25 toplam, ekran başına 1–3 (cap 4) |
 | Süre | 7–10 dk |
 | Yeni active chip | **1–4** |
-| Üretim aksiyonu | 3–5 |
+| Anlamlı üretim aksiyonu | **5–8** (standart erken ders) — **GEÇİCİ/provisional** |
+| Yazılmış FR yüzeyi | **~30–35** (authored surface inventory; envanterin tamamı) |
+| Render edilen yoğunluk | **ratify edilmiş sayı YOK** — teşhis amaçlı |
+
+> [!canon] **Üç bütçe ayrıdır (founder-locked 2026-08-05).** Aktif-yeni yükü (ayrı yeni üretilebilir item, **1–4, ratified**), anlamlı üretim aksiyonu (yanıt kurma durumu, **5–8, provisional**) ve yazılmış FR yüzeyi (**~30–35**, ders envanterinde hazırlanmış incelenebilir sözce) **aynı şeyi saymaz**; toplanamaz, birbirine çevrilemez. Dar aktif-yeni **dar üretim yüzeyi demek değildir**. Pasif reveal, yalnız-girdi Fransızcası, yapay dokunuşlar ve extraction yinelemeleri sayımı şişiremez. Tanım evi: **Content Bible v1.0 §6.9 + Ch. 19**; ders-akışı aynası `LESSON_FLOW_CANON_v1.md §1.1`.
+
+> [!warning] **`~30–35` YAZILMIŞ yüzeyleri sayar, tek bir öğrenci koşusunu değil.** Render edilen yol envanterin **pedagojik olarak seçilmiş bir alt kümesini** gösterir; bir yazılmış yüzey belirli bir koşuda hiç görünmeyebilir. **Render katmanının ratify edilmiş sayısal hedefi yoktur.** Hiçbir sayı runtime'da enforce edilmez ve mevcut derslerin (L1–L10 dâhil) uyduğu **iddia edilmez**.
+
+> [!warning] Doorway / Integration / Review / Milestone için üretim-aksiyonu ve cümle-karşılaşması bandı **uydurulmadı**; mevcut archetype sözleşmeleri korunur ([[Lesson Anatomy]]) ve ilişki **[OPEN]**'dir. Eski **30–45 exposure** bandı **farklı bir metriktir**, korunur, sayısal olarak uzlaştırılmadı.
 
 ### Recycle Load Protection (CANONICAL, v0.3:388-390)
 > "Recycle cannot steal the lesson." Her cümlenin bir yük bütçesi var: **target load baskın, recycle load destekleyici, exposure load opsiyonel ve capped.** Bkz. [[Chip Lifecycle]], [[Content Selection]].

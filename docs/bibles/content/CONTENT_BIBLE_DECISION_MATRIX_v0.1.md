@@ -118,4 +118,40 @@ Every `NEEDS_RATIFICATION` / `CONFLICT` row maps to a live founder question (the
 - **OPEN (unresolved; routed to owner): ~6** — item-counting methodology (CB-22 → Curriculum/Content-ops); Reading exercise-family taxonomy + validator (G1 → Content/Engineering); French style-guide sub-policies incl. gender-inclusive treatment (G2 → style guide); Mon Lexique final band copy (CB-80); Summit narration recalibration (CB-84); Build/Stretch/Challenge runtime (CB-75 → Engineering).
 - **SUPERSEDED (historical, do not revive):** "every Reading ends in production"; fixed-L40 monolingual transition; Franglais name; legacy 11-section flow; + the archive-supersession list.
 
-*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24. Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*
+### Amendment — 2026-08-05: lesson-density contract (CB-13/15/17/18/22)
+
+> The CB-rows above remain the **2026-07-24 pre-ratification snapshot** and are **not** rewritten. This block records what changed after them. Live authority for all three budgets is **Content Bible v1.0 §6.9 + Ch. 19** (DOC-004); the ders-akışı mirror is LESSON_FLOW §1.1 (DOC-024).
+
+| CB ID | Effect of this pass |
+|---|---|
+| **CB-13** | **SUPERSEDED IN PART.** The row's `3–5 productions` figure is **no longer live** — replaced by **5–8 meaningful production actions** for a standard early lesson (`[FL]` founder-locked 2026-08-05), plus a new separate planning target of **~30–35 learner-visible sentence encounters**. `11–14 screens`, `7–10 min`, `1–4 chips`, and `15–25 micro` are **unchanged**. The row text is preserved as a historical snapshot only. |
+| **CB-15** | **UNCHANGED.** Payload economy's four layers and the surface ceiling (active-new **1–4**, integrations 0; supported/ghost +2–3) stand exactly as ratified. A wider production and encounter surface is carried by **payload density**, never by raising active-new or widening the lesson (§5.2 "anything beyond the ceiling goes to the Practice Pool or backlog"). |
+| **CB-17** | **UNCHANGED + clarified.** `totalProductionLoad` and the anti-gaming rule are untouched. Clarified that **production-load accounting and production-action counting are different questions**: load counts *items carrying production responsibility*; a production action counts *an occasion of constructing a response*. Neither converts into the other. |
+| **CB-18** | **UNCHANGED; scope flagged.** Per-archetype activeNew budgets (Doorway 1–2, Standard 1–4, Integration 0, Review 0, Milestone 0–3) stand. The 5–8 / ~30–35 targets are stated for the **standard early lesson only**; **no band was invented** for Doorway, Integration, Review, or Milestone. Their relationship to these targets is **OPEN → founder review** (Bible §6.9.5, §20.2). |
+| **CB-22** | **PRESERVED, NOT RECONCILED.** The coarse `30–45 exposure / 8–15 act / 8–15 sup / 10–20 rec` band is kept verbatim and **explicitly marked a different metric** from the sentence-encounter target: it counts item/chip exposures across all statuses, not complete learner-visible utterances. Because CB-22's own counting unit is still `[OPEN]`, the two **cannot be safely reconciled today** and were **not** equated, converted, or numerically rewritten. **OPEN → founder review** (Bible §6.9.6, §20.2). |
+
+**Status of this amendment.** The three definitions are **founder-locked**; secondary counting mechanics and thresholds beneath them remain `[TUNABLE]`/`[OPEN]`. **No runtime-enforcement claim** is made — enforcement stays as recorded in Ch. 19. **No claim** is made that any current lesson, including L1–L10, complies. Authorizes no code, lesson, French-content, schema, validator, or ADR change. *Superseded in part by the second-pass amendment below, which scopes the surface figure to the authored layer and marks the production band provisional.*
+
+### Amendment — 2026-08-05 (second pass): surface density is an authored-inventory metric
+
+> A comparative audit of two early lessons (one at the floor of active-new, one near the ceiling) found that the `~30–35` figure matched each lesson's **authored** surface inventory almost exactly, while a **single rendered learner path** surfaced roughly half. The figure is therefore ratified **only** at the authoring layer. Live authority remains **Content Bible v1.0 §6.9 + Ch. 19** (DOC-004); LESSON_FLOW §1.1 (DOC-024) mirrors it.
+
+**The ratified conclusion:**
+
+> **The ~30–35 figure is ratified only as an authored-surface inventory target, not as a rendered-path target.**
+
+Three layers are now distinguished and must not be conflated: **authored surface** (a reviewable utterance prepared in the full lesson inventory, which may never render in a given run) · **rendered presentation** (an authored surface actually shown on a particular path) · **qualified sentence encounter** (a pedagogically meaningful rendered presentation).
+
+| CB ID | Effect of this second pass |
+|---|---|
+| **CB-13** | **Production target: `3–5` → `5–8`, marked PROVISIONAL.** Not ratified, not a validator invariant, not runtime-enforced. **All other lesson-budget dimensions preserved unchanged:** 11–14 screens · 7–10 minutes · 1–4 active-new · 15–25 micro-actions. |
+| **CB-15** | **Unchanged.** Payload economy — four layers and the surface ceiling (active-new **1–4**, integrations 0; supported/ghost +2–3) — stands exactly as ratified. A broad authored inventory is **not** a route to widening the lesson or raising active-new. |
+| **CB-17** | **Unchanged; separation restated.** `totalProductionLoad` (items carrying production responsibility) and a **production-action occasion** (one occasion of constructing a response) remain **separate questions**. Neither converts into the other, and neither converts into a surface count. |
+| **CB-18** | **Open.** Archetype-specific production bands **and** archetype-specific authored-surface / rendered-density bands remain **unresolved**. The 5–8 and ~30–35 figures are scoped to the **standard early lesson only**; no band was invented for Doorway, Integration, Review, or Milestone. |
+| **CB-22** | **Still a separate, unresolved metric.** The coarse `30–45 exposure / 8–15 act / 8–15 sup / 10–20 rec` band counts item/chip exposures across all statuses. It is **not equated with authored surfaces, rendered presentations, or qualified sentence encounters** — four distinct things in total. CB-22's own counting unit remains `[OPEN]`, so **nothing here resolves it**. |
+
+**Status.** `~30–35 authored surfaces` and `1–4 active-new` are founder-ratified; `5–8 meaningful production actions` is **provisional** pending a further lesson sample; the rendered-presentation layer has **no ratified numeric target** and is reported as a diagnostic only. **No runtime enforcement** of any figure. **No claim** that any current lesson, including L1–L10, complies. Historical pre-ratification rows above are **not** rewritten. Authorizes no code, lesson, French-content, schema, validator, test, or ADR change.
+
+---
+
+*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24; amended 2026-08-05 (lesson-density contract), second pass 2026-08-05 (authored-surface scoping). Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*

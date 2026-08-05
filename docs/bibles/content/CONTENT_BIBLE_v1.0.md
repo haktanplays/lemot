@@ -6,7 +6,7 @@ signed_off: 2026-07-24 — founder read-through sign-off (Card 8 clarification a
 owner: Founder
 product: Cairn
 first_product: Cairn French
-last_updated: 2026-07-24
+last_updated: 2026-08-05
 governs: lesson & chip authoring, content presentation, feedback/reveal copy, French naturalness, content QA
 sits_below: CAIRN_PRODUCT_BRAIN_v1.0.md
 siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
@@ -116,6 +116,54 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 **6.7 Recap.** `[DC]` (CB-21) Ownership consolidation ("place your own stone" / "Pieces you used") + a one-line SRS note + a one-line bridge to the next scene. No celebration/streak. `piecesUsed` stays atomic (§4.8).
 
 **6.8 Archetype contracts & load formula.** `[DR]` (Q2, CB-17/18) Every lesson names a primary archetype (+≤1 secondary); ~70% template / 20% archetype-weighted / 10% bespoke (bespoke needs justification). Per-archetype activeNew budgets (Doorway 1–2, Standard 1–4, Integration 0, Review 0, Milestone 0–3). `totalProductionLoad = activeNew + supportedTarget + productionCarryover + repairItem + integrationTarget`; a lesson cannot dodge the activeNew cap by hiding old load in other buckets. *Labeled derived, founder-ratified; not a runtime-enforcement claim.*
+
+**6.9 Lesson density — three separate budgets.** `[FL — founder-locked 2026-08-05; §6.9.3 revised 2026-08-05 after comparative audit]` (CB-13/15/17/18/22) A lesson is measured by **three budgets that are not the same quantity and must never be summed, equated, or traded against each other**. The model is *narrow ownership load, broad authored surface inventory, selected rendered path.*
+
+| Budget | Standard early lesson | Status | What it counts |
+|---|---|---|---|
+| **Active-new load** | **1–4** | founder-ratified | distinct newly owned producible chips/items |
+| **Meaningful production actions** | **5–8** | **provisional authoring target** | separate occasions the learner constructs an intended French response |
+| **Authored French surfaces** | **~30–35** | authoring inventory target | reviewable learner-facing utterances prepared across the lesson's **full content inventory** |
+
+> **The third row is an authoring-inventory figure, not a rendered-path figure.** A single learner path renders a pedagogically selected **subset** of the authored inventory. Rendered-encounter count is a **diagnostic**, not a ratified numeric invariant — see §6.9.3.
+
+**6.9.1 Active-new load `[FL]`.** Counts **distinct new chips/items whose independent production is expected**, once per distinct item however many times the learner uses it. It does **not** count: complete sentences as separate active-new items · supported-new pieces · recycled items · recognition-only material · ghost/exposure material · interlocutor language · model-only reveals · repeated attempts using the same new item. **A narrow active-new budget is not a narrow production surface** — the ceiling bounds *new ownership*, not *how often the learner works*. The §6.8 anti-gaming rule stands unchanged: a lesson cannot hide genuinely new production load inside supported, carryover, repair, integration, or any other role merely to stay under the active-new ceiling.
+
+**6.9.2 Meaningful production action `[FL — provisional]`.** The **5–8** band is a **provisional authoring target**, not a ratified invariant and not runtime- or validator-enforced. It counts when the learner must **retrieve, choose, assemble, complete, type, or say an intended French response**. A repeated use of the same material counts again **only when at least one meaningful dimension changes**: operation · context · communicative purpose · slot value · contrast · recombination · support level · retrieval demand. Distinct production purposes may include scaffolded retrieval, reconstruction, slot/context variation, contrast or repair, recombination, and a short open or semi-open exit proof. **Does not count:** passive reading · tapping Continue · replaying audio · viewing a Natural Reveal · interlocutor/input-only French · recognition-only choice where no French response is constructed · the same answer rendered twice on one screen · punctuation-only or formatting-only variation · repeated identical submission with no changed demand · model-answer-only content. **A lesson must not reach 5–8 by splitting one cognitive act into artificial taps.**
+
+**6.9.3 Three layers of French surface `[FL]`.** Density is discussed at **three distinct layers**. Conflating them is the single most common error in this area, and the `~30–35` figure belongs to the **first** layer only.
+
+| Layer | Definition |
+|---|---|
+| **Authored surface** | A reviewable learner-facing French utterance prepared in the lesson's **full content inventory** — including surfaces that a given run never shows. |
+| **Rendered presentation** | An authored surface **actually shown** on a particular learner path. |
+| **Qualified sentence encounter** | A **pedagogically meaningful** rendered presentation of a full or near-full utterance. |
+
+**`~30–35` applies to authored surfaces.** It does **not** apply to one rendered learner path, and it is **not** a promise that a learner sees 30–35 sentences in a run.
+
+The authored inventory may include: anchors · production targets · supported variants · interlocutor lines · contextual examples · contrasts · recovery/rescue lines · Natural Reveal models · recap returns · conditional alternatives.
+
+Rules across the three layers:
+
+- **An authored surface may never render in a particular run.** Branching, hint usage, reveal outcome, and lesson composition all decide what a given learner actually sees.
+- **One authored surface may produce more than one qualified encounter** — but only when it is genuinely revisited through a **meaningfully changed operation or context**, never by mere repetition.
+- **Duplicate extraction rows and duplicate payload fields do not create extra authored surfaces or extra encounters.** One prepared utterance is one authored surface however many records or fields carry it; one rendered utterance is one presentation however many payload fields hold the same string.
+
+A qualified encounter's role may be: anchor · contextual variant · contrast · interlocutor line · recovery/rescue line · learner production target · Natural Reveal · recap return · the same sentence revisited through a meaningfully different operation.
+
+**Never counts, at any layer:** isolated chips · single-word options · fragmentary distractors · French terms merely named inside English explanatory copy · hidden metadata · accepted alternatives never shown to the learner · duplicate extraction rows from the same rendered surface · the same sentence repeated across payload fields but shown once · punctuation-only normalized duplicates.
+
+> **One-word pragmatic forms.** `[FL]` A form such as `Bonjour.` or `Merci.` **may** count as an utterance when rendered as a **standalone communicative example**. It does **not** count when shown merely as a chip, option, label, or glossary entry.
+
+**Rendered-path density is a diagnostic, not a target.** `[OPEN]` A rendered path surfaces a pedagogically selected subset of the authored inventory; actual visibility depends on lesson composition, branching, hint usage, and reveal outcomes. **No numeric rendered-path target is ratified**, and none is set here. Reported rendered-encounter counts are evidence for review, not a compliance test.
+
+**6.9.4 How the three fit inside the existing shape.** `[FL]` Several rendered presentations routinely occur **within one screen**, and **not every screen, surface, or encounter requires production**. Breadth lives first in the **authored inventory** and then in payload density — never in structure: **do not add screens, do not extend lesson duration, and do not import phrasebook bloat or unrelated variants to reach a number.** Every variant stays inside the same sentence family (§6.1), the same communicative promise, and the same lesson engine (§5.1). The seven frozen screen types (§6.3), the §6.5 spine caps (≤2 heavy/stateful, ≤1 board, ≤2 inline insights), the insight budget (§7.4), whole-first/unpack-later (§6.2), supported and ghost role integrity (§5.2), the active-new payload economy (§5.2), "every screen acts" and the discovery-vs-assessment split (§6.6), and Reading ending in an action without requiring heavy production (§11.2) are all **unchanged**. **No runtime-enforcement claim is made or implied** — these remain authoring policy (Ch. 19 enforcement column).
+
+**6.9.5 Archetype scope `[OPEN]`.** The **5–8** production target and the **~30–35** authored-surface target are stated for the **standard early lesson** only. **Doorway, Integration, Review, and Milestone contracts keep their current §6.8 activeNew contracts unchanged**, and no production-action, authored-surface, or rendered-density band is invented for them here. Their relationship to these targets is **unresolved and routed to founder review** (§20.2).
+
+**6.9.6 Relationship to the older "30–45 exposure" band `[OPEN]`.** The coarse early-lesson planning band `30–45 exposure / 8–15 active / 8–15 supported / 10–20 recognition` (Ch. 19, CB-22) is **preserved unchanged and remains a separate, unresolved metric.** It counts **item/chip exposures across all statuses** and is **not** equated with authored surfaces, rendered presentations, or qualified sentence encounters — three further distinct things. None of the four is interchangeable, and **none may be converted into another by assumption.** Because CB-22's own counting unit is still `[OPEN]` (item-counting methodology, §20.2), no safe reconciliation exists today; it is **routed to founder review** (§20.2) and **is not resolved by this revision**.
+
+**6.9.7 No compliance claim.** `[DR]` Nothing here asserts that any existing lesson — including L1–L10 — currently meets these targets. Retrospective audit is a separate task.
 
 ---
 
@@ -290,7 +338,9 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 | Micro-actions / lesson; per screen | 15–25; 1–3 (cap 4) | authoring default | V1 spec-only | LESSON_FLOW §1.1 |
 | Lesson time | 7–10 min | planning target | none | LESSON_FLOW §1.1 |
 | **New active chips / lesson** | **1–4** | authoring invariant (founder) | build-time review | PAYLOAD §3; LESSON_FLOW §1.1 |
-| Production actions / lesson | 3–5 | authoring default | none | LESSON_FLOW §1.1 |
+| **Meaningful production actions / standard early lesson** | **5–8** | **provisional** authoring target — not ratified, not a validator invariant | none | §6.9.2; LESSON_FLOW §1.1 |
+| **Authored French surfaces / standard early lesson** | **~30–35** | authoring **inventory** target (founder-locked 2026-08-05) — owned by the authored-surface layer | none | §6.9.3 |
+| Rendered presentations / qualified encounters per learner path | **no ratified target** | diagnostic only — depends on composition, branching, hints, reveal outcomes | none | §6.9.3 |
 | Supported / ghost additions | +2–3 each | authoring default (founder) | CPW review | PAYLOAD §3 |
 | Insight-card budget | target 2 / ceiling 3 | validator threshold + target | V5 (>3 WARNING) | LESSON_FLOW §1.4 |
 | Visible carryover / recycled / exposure / weak | ≤3 / ≤2 / ≤2 / ≤1 | validator thresholds | CPW lint (partial) | CFC §1.5 |
@@ -298,9 +348,13 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 | **W2 reveal look-ahead** | ~3–4 (max 5–6) | authoring rule (founder) | §16 lint ERROR | ANSWERS W2 |
 | Max nudges / output | 1 | authoring rule (founder) | nudge validator | EXERCISE §1.5 |
 | Breadth trajectory | L5: 18–22/30–35 · L15: 45–55/70–90 | planning target (audit) | audit report | PAYLOAD §9 |
-| Early-lesson item budget (coarse) | 30–45 / 8–15 / 8–15 / 10–20 | planning target — superseded for active-new by 1–4 | none | learning-engine §7 |
+| Early-lesson item budget (coarse) | 30–45 / 8–15 / 8–15 / 10–20 | planning target — superseded for active-new by 1–4; **a different metric from the sentence-encounter target (§6.9.6)** | none | learning-engine §7 |
 
 **Item-counting methodology** `[OPEN]` (Q4d, CB-22): how an "item" is counted toward these budgets (does a frame + variations count as one or several?) is **open** — Curriculum/Content-operations must define it before these figures are treated as precise.
+
+**Three density budgets are distinct** (§6.9): **active-new load** (1–4, distinct new producible items — founder-ratified), **meaningful production actions** (5–8, occasions of constructing an intended French response — **provisional**), and **authored French surfaces** (~30–35, reviewable utterances prepared across the full lesson inventory). They count different things and must never be summed, equated, or traded against each other.
+
+**Layer ownership of `~30–35`** (§6.9.3): the figure belongs to the **authored-surface inventory** layer. The **rendered-presentation** and **qualified-encounter** layers have **no ratified numeric target**; rendered density is a diagnostic. The **~30–45 exposure** row above is a **fourth, still-unresolved** metric counting item/chip exposures across all statuses (CB-22) — it is not equated with any of the three (§6.9.6). Exact counting mechanics beneath the founder-locked definitions remain `[TUNABLE]`/`[OPEN]`, and **no compliance by any current lesson (including L1–L10) is claimed** (§6.9.7).
 
 ---
 
@@ -309,6 +363,7 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 **20.1 Per-lesson authoring checklist (quick gate).**
 1. Sentence-family present (anchor/variation/contrast/rescue/pieces)? (§6.1)
 2. Active-new 1–4; every item placed in exactly one payload layer; supported items ≥2×? (§5)
+2b. Standard early lesson: ~30–35 **authored** French surfaces across the full inventory, and 5–8 meaningful production actions (provisional), counted per §6.9 — no artificial taps, no passive reveals or extraction duplicates counted, no added screens or minutes to hit a number, and no assumption that every authored surface renders? (§6.9)
 3. No full-sentence chips; `piecesUsed` atomic/produced-only; frozen classes untouched? (§4)
 4. Whole-first meet; ≥1 action per screen; discovery ≠ scored? (§6)
 5. Insight = 1 idea + 1 example + action; ≤3 Level-3 cards; no tables as drills? (§7)
@@ -322,6 +377,9 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 
 **20.2 Open decisions (routed to owner).** `[OPEN]`
 - Item-counting methodology → Curriculum/Content-ops (§19, CB-22).
+- Production-action and sentence-encounter bands for **Doorway / Integration / Review / Milestone** archetypes → founder review (§6.9.5). Their current §6.8 activeNew contracts stand; no band invented.
+- Relationship between the older coarse **"30–45 exposure"** band and the **~30–35 authored-surface** target → founder review (§6.9.6). Separate metrics; preserved, not reconciled numerically.
+- Whether **5–8 meaningful production actions** generalizes beyond the sampled lessons → founder review (§6.9.2). Provisional until a further lesson sample settles it.
 - Reading exercise-family taxonomy + validator → Content/Engineering (§11.6, G1).
 - French style-guide sub-policies (register boundaries, spoken-vs-written, sentence-length by band, English-explanation register, gender-inclusive treatment, punctuation, colloquial omission, reviewer staffing) → French style guide (§18, G2).
 - Mon Lexique final band copy → Content, with the style guide (§17.4).
@@ -398,6 +456,8 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 
 ## Appendix D — Change log & founder sign-off
 
+- **2026-08-05 (second pass) — `~30–35` reframed as an authored-surface inventory target (§6.9.3, §6.9.4, §6.9.6, Ch. 19).** `[FL]` A comparative audit of two early lessons found the figure matched the **authored** inventory (30 prepared surfaces per lesson) while a single rendered learner path surfaced roughly half. §6.9.3 now separates **three layers** — *authored surface* / *rendered presentation* / *qualified sentence encounter* — and assigns `~30–35` to the **authored-surface layer only**. The rendered layer gains **no ratified numeric target**; rendered density is explicitly a diagnostic. The one-word-pragmatic-form clarification (`Bonjour.` / `Merci.` count as standalone communicative examples, not as chips or options) is recorded. **5–8** production actions is now marked **provisional** wherever its status is stated; **1–4 active-new is unchanged and founder-ratified**. CB-22's `30–45 exposure` band stays a **separate unresolved metric**, not equated with any of the three layers. No runtime-enforcement claim; no compliance claim for any current lesson; no test, lesson, or registry change.
+- **2026-08-05 — Lesson-density contract hardened (§6.9, Ch. 19).** `[FL]` Three budgets separated and defined so they cannot be confused: **active-new load 1–4 (unchanged)**, **meaningful production actions 5–8** for a standard early lesson (replacing the former `3–5` authoring default), and a third density budget for learner-facing French surfaces *(scoped to the authored-surface layer by the second pass above)*. Model: *narrow ownership load, broad authored surface inventory, selected rendered path.* Passive reveals, interlocutor-only French, recognition-only choices, artificial taps, and QA-extraction duplicates cannot inflate either count; repeated use counts again only when a meaningful dimension changes. **Preserved unchanged:** the seven frozen screen types, spine and heavy/board/insight caps, sentence-family authoring, whole-first/unpack-later, supported and ghost role integrity, active-new payload economy, "every screen acts", discovery-vs-assessment, Reading ending in an action without heavy production, and the §6.8 anti-gaming rule. **No runtime-enforcement claim** and **no claim that any current lesson (incl. L1–L10) complies.** **Left open** (§20.2): archetype bands for Doorway/Integration/Review/Milestone, and the relationship to the older coarse "30–45 exposure" band, which is preserved as a different metric and not numerically reconciled. Mirrored in LESSON_FLOW §1.1; CB-13 superseded in part (Decision Matrix amendment 2026-08-05).
 - **2026-07-24 — Founder read-through sign-off (v1.0-draft → Canonical).** The founder reviewed the 12-card read-through pack ([Read-Through Pack](CONTENT_BIBLE_FOUNDER_READTHROUGH_v0.1.md)). **APPROVED:** Cards 1–7, 9, 12. **APPROVE WITH NOTE:** Card 8 (prerequisite-safety wording clarified — see below). **DEFER AS WRITTEN:** Card 10 (deferred systems). **LEAVE OPEN:** Card 11 (open parameters). **Overall:** apply the Card 8 clarification, then promote to Canonical.
 - **Card 8 clarification applied (§15.2).** "Prerequisite safety overrides correctness" reworded: prerequisite safety overrides only the *decision to require* a grammatically correct but *unseen* form as learner production; it **never** licenses incorrect or unnatural French. Naturalness, grammatical correctness, and prerequisite safety remain **three separate requirements**; an insufficiently-introduced form may appear as supported / recognition-only / blocked-production / contextual exposure, never required as production. No change to the gender (§15.4) or metropolitan-French (§15.1) rules.
 - **Status change:** `Draft — awaiting founder sign-off` → **Canonical** (2026-07-24); version `1.0-draft` → `1.0`.

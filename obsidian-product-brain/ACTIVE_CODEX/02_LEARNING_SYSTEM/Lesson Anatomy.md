@@ -42,7 +42,7 @@ tags: [learning, lesson, structure]
 
 ## Executive Summary
 
-Bir ders tek bir cümle ya da pasif kelime listesi değildir. Bir **sentence family**'den doğar: bir anchor cümle + varyasyonları + bir contrast + doğal/rescue biçim + değiştirilebilir parçalar (`learning-engine-v1.md:47-57`). Dersin etrafında döndüğü şey bir **spine chip**'tir (load-bearing üretilebilir motor). Her ders bir invariant bütçeye uyar: **11–14 ekran, 7–10 dakika, 1–4 yeni active chip, 3–5 üretim aksiyonu** (`LESSON_FLOW_CANON_v1.md:36-44`). Ve her ders süreklilik kuralına uyar: **yeni bir şey tanıt, eskisini büyüt, geleceği hazırla.**
+Bir ders tek bir cümle ya da pasif kelime listesi değildir. Bir **sentence family**'den doğar: bir anchor cümle + varyasyonları + bir contrast + doğal/rescue biçim + değiştirilebilir parçalar (`learning-engine-v1.md:47-57`). Dersin etrafında döndüğü şey bir **spine chip**'tir (load-bearing üretilebilir motor). Her ders bir bütçeye uyar: **11–14 ekran, 7–10 dakika, 1–4 yeni active chip** — ve standart erken derste **5–8 anlamlı üretim aksiyonu** (provisional) + **~30–35 yazılmış Fransızca yüzey**, bunun bir alt kümesi render edilir (`LESSON_FLOW_CANON_v1.md §1.1`; tanımlar [[Difficulty and Cognitive Load]] ve Content Bible §6.9). Ve her ders süreklilik kuralına uyar: **yeni bir şey tanıt, eskisini büyüt, geleceği hazırla.**
 
 ## Why It Exists
 
@@ -69,8 +69,11 @@ Girdiyi "family" olarak modellemek, dersi ezberlenecek bir cümleye değil, **bi
 - **11–14 toplam ekran** (9–11 aksiyon ekranı + 2–3 insight-card kotası).
 - **15–25 micro-action**, ekran başına 1–3 (cap 4).
 - **7–10 dk** hedef.
-- **1–4 yeni active chip.**
-- **3–5 üretim aksiyonu.**
+- **1–4 yeni active chip** (DEĞİŞMEZ, founder-ratified).
+- **5–8 anlamlı üretim aksiyonu** (standart erken ders) — **GEÇİCİ/provisional**, ratify edilmedi.
+- **~30–35 yazılmış Fransızca yüzey** (authored surface inventory) — tek bir öğrenci yolu bir **alt küme** render eder; render katmanının **ratify edilmiş sayısı yoktur**.
+
+> [!warning] Bu sayılar ayrı şeyleri sayar ve toplanamaz; §4'teki archetype tablosu **değişmedi** ve Doorway/Integration/Review/Milestone için üretim, yazılmış-yüzey veya render bandı **uydurulmadı** (**[OPEN]**). Tanım evi: Content Bible v1.0 §6.9. Ekran sayısı ve süre **sayı tutturmak için artırılamaz**; hiçbir sayı runtime'da enforce edilmez.
 
 ### 4. Süreklilik kuralı (CANONICAL)
 "Every lesson must **introduce something new, grow something old, and prepare something future.**" — `learning-engine-v1.md:128`. Bunun mekanik karşılığı carry-in / carry-out sistemi: bkz. [[Spine and Carryover Logic]].
