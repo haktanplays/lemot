@@ -2,6 +2,8 @@
 
 > **Purpose**: This document defines **archetype-weighted lesson templates**. It sits **between** the global `docs/syllabus/lesson-spec-template-v1.1.md` (the universal shape every lesson fills) and the individual lesson specs (`docs/syllabus/L0N-*.lesson-spec.md`). Its job is to stop future lesson specs from becoming **fully bespoke** while avoiding **one rigid formula**. Planning/spec layer only — authorizes **no** code, content, flag, or runtime change.
 
+> **Axis scope (added 2026-08-05, founder-ratified).** This document **owns the content-archetype axis**. Its archetypes describe the **linguistic / instructional engine** of a lesson — what kind of French it teaches and how the spine should be weighted. Its item budgets and **production figures are archetype-specific authoring targets, not a universal lesson floor** and not runtime enforcement. The **journey role** of a lesson — Doorway · Standard · Integration · Review · Milestone, and the active-new contracts attached to them — is a **separate axis owned by the Content Bible** (`docs/bibles/content/CONTENT_BIBLE_v1.0.md` §6.7b/§6.8). The two axes are independent: **neither can be derived from the other.**
+
 > **Authority**: Follows `docs/learning-engine-v1.md` (pedagogical canon) and the global lesson template. Where this and locked product canon (v1 Canon, Q1–Q6, D1–D6, the locked L0→L1→L2 spine) disagree, **locked canon wins**.
 
 > **The 70 / 20 / 10 model.** The target is:
@@ -351,6 +353,30 @@ Rules for combining:
 
 ---
 
+## 12b. Combining a content archetype with a journey role (2026-08-05)
+
+The two axes are declared **independently**. A content archetype never implies a journey role, and a journey role never implies a content archetype. Illustrative pairings — **examples of the shape only, not canonical assignments for any lesson**:
+
+```text
+content archetype: architecture-verb        journey role: Standard
+content archetype: architecture-verb        journey role: Doorway
+content archetype: chunk-natural-speech     journey role: Integration
+content archetype: pronoun-particle         journey role: Doorway
+```
+
+Which axis governs what:
+
+| Question | Axis | Home |
+|---|---|---|
+| Section weighting, item budget, QA risks, **production planning targets** | content archetype | **this document** |
+| Active-new budget, Standard-only defaults, Integration / Review exceptions | journey role | Content Bible §6.8 |
+
+> **The production figures in §§1–11 are content-archetype planning targets.** They are **not** a universal floor — the Content Bible retired the global `5–8` production target on 2026-08-05 and set **no replacement universal range**. They are authoring references, are not runtime-enforced, and **do not by themselves demonstrate lesson quality**. Cross-archetype quality is headed for a **structural contract**, still `[OPEN]` (Content Bible §6.9.2).
+
+> `[OPEN]` **Legacy mixed-axis values.** Two values in the shipped content-archetype union describe a **journey role**, not a linguistic engine: **`review-integration`** (archetype 10) and **`summit-milestone`** (archetype 11). They are **legacy conflations awaiting a future metadata reconciliation** once a `journeyRole` field exists. They are **not** removed, renamed, or deprecated here, and lessons currently declaring them stay valid.
+
+---
+
 ## 13. Truly bespoke lessons
 
 A lesson is **bespoke** only when no archetype (or primary+secondary combination) fits its pedagogical job.
@@ -371,6 +397,8 @@ A lesson is **bespoke** only when no archetype (or primary+secondary combination
 - **Secondary-archetype catalogue** — whether some archetypes (e.g. French-specific contrast, Sound/Writing) function mainly as *secondary flavors* rather than standalone primaries.
 - **Promotion threshold** — the precise rule for promoting a recurring bespoke pattern into an archetype (provisionally "2–3 lessons").
 - **Canonical ID / metadata conventions** — inherited open item from `learning-engine-v1.md` §17 and the template §17.
+- **`journeyRole` metadata field** — the journey axis has no representation in lesson data yet, so no lesson currently declares a journey role and the Content Bible's per-role contracts are not machine-checkable (Content Bible §6.8).
+- **Legacy mixed-axis union values** — `review-integration` and `summit-milestone` await reconciliation onto the journey axis (§12b).
 
 ---
 

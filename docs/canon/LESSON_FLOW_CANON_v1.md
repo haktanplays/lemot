@@ -41,8 +41,9 @@ Mikro-aksiyon:        15-25 (toplam)
 Ekran başına aksiyon: 1-3, TAVAN 4
 Süre hedefi:          7-10 dk (estimatedMinutes yansıtır)
 Yeni aktif chip:      1-4 (müfredat disiplini, DEĞİŞMEZ)
-Üretim aksiyonu:      5-8 (anlamlı üretim; yaz/kur; 30-60 sn)   [standart erken ders]
-                          — GEÇİCİ (provisional) yazım hedefi, ratify EDİLMEDİ
+Üretim aksiyonu:      EVRENSEL TABAN YOK (global 5-8 hedefi 2026-08-05'te geri çekildi)
+                          — sayısal planlama content-archetype eksenine ait
+                          — tanım + sayım kuralları AYNEN geçerli
 Yazılmış FR yüzeyi:   ~30-35 (authored surface inventory; ders envanterinin TAMAMI)
 Render edilen yoğunluk: ratify edilmiş sayı YOK — teşhis amaçlı
 Keşif aksiyonu:       kalanı (dokun/seç; 5-15 sn)
@@ -52,7 +53,26 @@ Keşif aksiyonu:       kalanı (dokun/seç; 5-15 sn)
 > `~30-35` **yazılmış (authored)** yüzeyleri sayar. Tek bir ders koşusu bunun
 > **pedagojik olarak seçilmiş bir alt kümesini** gösterir.
 
-**Yoğunluk sözleşmesi — üç AYRI bütçe.** `[FL — founder-locked 2026-08-05; yüzey katmanı 2026-08-05 ikinci pass'te netleştirildi]`
+**İki AYRI eksen.** `[FL — founder-ratified 2026-08-05]`
+**Content archetype** (dilsel/öğretimsel motor; kodda `primaryArchetype` /
+`secondaryArchetype`) ile **journey role** (dersin öğrenme yolculuğundaki işi;
+Doorway · Standard · Integration · Review · Milestone) **bağımsız iki eksendir**;
+biri diğerinden türetilemez ve biri diğerinin yerine geçemez.
+
+```text
+content archetype  → bölüm ağırlıklandırma · içerik bütçeleri · ÜRETİM PLANLAMA hedefleri · QA riskleri
+                     ana ev: docs/syllabus/lesson-archetype-templates-v1.md
+journey role       → active-new sözleşmeleri · Standard-only default'lar · Integration/Review istisnaları
+                     ana ev: Content Bible v1.0 §6.7b / §6.8   (gelecekteki `journeyRole` alanı — [OPEN])
+```
+
+> `[OPEN]` Ders başına journey-role ataması **ratify edilmedi**; `journeyRole`
+> metadata alanı **yoktur**, dolayısıyla bu sözleşmeler bugün **makine ile
+> denetlenemez**. Mevcut derslerin (L0–L15) uyduğu **iddia edilmez**.
+> `review-integration` ve `summit-milestone` content birliğindeki **legacy
+> karma-eksen değerleridir**; kaldırılmadı, yeniden adlandırılmadı.
+
+**Yoğunluk sözleşmesi — üç AYRI bütçe.** `[FL — founder-locked 2026-08-05; yüzey katmanı ikinci pass'te, eksen ayrımı üçüncü pass'te netleştirildi]`
 Bu üç sayı **aynı şeyi saymaz**; toplanamaz, birbirine çevrilemez, birbirinin
 yerine kullanılamaz. Model: **dar sahiplenme yükü + geniş yazılmış yüzey envanteri
 + seçilmiş render yolu.**
@@ -73,14 +93,27 @@ sayısal hedefi YOKTUR**; render yoğunluğu teşhis amaçlıdır.
   demek değildir**; tavan *yeni sahiplenmeyi* sınırlar, öğrencinin kaç kez
   çalıştığını değil. Eski üretim yükünü supported/carryover/repair/integration
   kovalarına saklayarak tavanı atlatma yasağı aynen geçerli.
-- **Tekrar eden kullanım** ancak **anlamlı bir boyut değişirse** yeni bir üretim
-  aksiyonu sayılır: operasyon · bağlam · iletişimsel amaç · slot değeri ·
-  karşıtlık · rekombinasyon · destek seviyesi · geri-getirme talebi.
+- **Evrensel bir üretim tabanı YOKTUR.** Global `5-8` hedefi ratify edilmeden
+  **geri çekildi**; eski `3-5` **geri getirilmedi**, `4-8` **kabul edilmedi**,
+  yerine **başka evrensel bir aralık konmadı**. Sayısal üretim planlaması
+  **content-archetype** eksenine aittir (`lesson-archetype-templates-v1.md`);
+  o değerler **yazım referansıdır**, global invariant değildir, runtime'da
+  enforce edilmez ve tek başına ders kalitesini **kanıtlamaz**. Bu blok o
+  tabloları **tekrarlamaz**.
+- **Yön [FL]:** arketipler arası üretim kalitesi tek bir evrensel sayı yerine
+  **yapısal gereksinimlerle** yönetilecektir. Yapısal sözleşmenin kendisi
+  **[OPEN]**'dır (Content Bible §6.9.2); aday boyutlar ratify edilmiş kural
+  değildir.
+- **Tanım ve sayım kuralları AYNEN geçerlidir.** Tekrar eden kullanım ancak
+  **anlamlı bir boyut değişirse** yeni bir üretim aksiyonu sayılır: operasyon ·
+  bağlam · iletişimsel amaç · slot değeri · karşıtlık · rekombinasyon · destek
+  seviyesi · geri-getirme talebi.
 - **Sayılmaz:** pasif okuma · Continue'ya basma · sesi tekrar oynatma · Natural
   Reveal izleme · yalnız-girdi/interlocutor Fransızcası · Fransızca yanıt
   kurulmayan tanıma seçimi · aynı cevabın tek ekranda iki kez görünmesi ·
   yalnız noktalama/biçim farkı · talebi değişmeyen aynı gönderim · yalnız model
-  cevap. **Tek bilişsel eylemi yapay dokunuşlara bölerek 5-8'e ulaşılamaz.**
+  cevap. **Tek bilişsel eylem yapay dokunuşlara bölünerek üretim aksiyonu
+  üretilemez** — bu, hangi arketip hedefi geçerli olursa olsun bağlayıcıdır.
 - **Hiçbir katmanda sayılmaz:** izole chip · tek kelimelik seçenek · parça
   distraktör · İngilizce açıklama içinde yalnızca adı geçen Fransızca terim ·
   gizli metadata · öğrenciye hiç gösterilmeyen kabul-edilen alternatif · aynı
@@ -108,17 +141,21 @@ sayısal hedefi YOKTUR**; render yoğunluğu teşhis amaçlıdır.
   yoğunluğunda yaşar — yapıda değil: sayı tutturmak için **ekran ekleme, süre
   uzatma, phrasebook şişkinliği veya alakasız varyant getirme yok.** Varyantlar
   aynı sentence family, aynı iletişim sözü ve aynı ders motoru içinde kalır.
-- **Arketip kapsamı [OPEN]:** 5-8 ve ~30-35 yalnız **standart erken ders** içindir.
-  **Doorway / Integration / Review / Milestone** kendi mevcut activeNew
-  sözleşmelerini korur; onlar için üretim, yazılmış-yüzey veya render bandı
-  **uydurulmadı**, ilişki founder review'a açıktır.
+- **Journey-role kapsamı [OPEN]:** `~30-35` yalnız **Standard journey role**
+  içindir. **Doorway / Integration / Review / Milestone** kendi mevcut activeNew
+  sözleşmelerini (1-2 / 0 / 0 / 0-3) korur; onlar için yazılmış-yüzey veya render
+  bandı **uydurulmadı**. Üretim burada kapsanmaz — content-archetype eksenine
+  aittir. Review ve Milestone'un **sevkedilmiş örneği yoktur**.
 - **Eski "30-45 exposure" bandı [OPEN]:** korunur ve **ayrı, çözülmemiş bir
   metriktir** (tüm statüler arası item/chip teması). Yazılmış yüzey, render sunumu
   ve nitelikli karşılaşma ile **eşitlenemez, çevrilemez**; bu revizyonla
   **çözülmemiştir**, founder review'a açıktır.
 
-> **Sahiplik:** Bu üç bütçenin kanonik evi **Content Bible v1.0 §6.9 + Ch. 19**
-> (DOC-004). Bu blok o sözleşmenin ders-akışı aynasıdır. Runtime enforcement
+> **Sahiplik:** Journey-role sözleşmelerinin ve yoğunluk bütçelerinin kanonik evi
+> **Content Bible v1.0 §6.7b / §6.8 / §6.9 + Ch. 19** (DOC-004); content-archetype
+> tanımları, bütçeleri ve **üretim planlama hedefleri**
+> `docs/syllabus/lesson-archetype-templates-v1.md`'e aittir. Bu blok yalnızca
+> **ayna**dır — rakip bir sayısal politika evi **değildir**. Runtime enforcement
 > **iddia edilmez** (V1 spec-only). Mevcut derslerin (L1–L10 dâhil) uyduğu
 > **iddia edilmez**.
 

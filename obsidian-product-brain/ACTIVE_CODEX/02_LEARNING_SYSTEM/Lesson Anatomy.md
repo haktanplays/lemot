@@ -42,7 +42,7 @@ tags: [learning, lesson, structure]
 
 ## Executive Summary
 
-Bir ders tek bir cümle ya da pasif kelime listesi değildir. Bir **sentence family**'den doğar: bir anchor cümle + varyasyonları + bir contrast + doğal/rescue biçim + değiştirilebilir parçalar (`learning-engine-v1.md:47-57`). Dersin etrafında döndüğü şey bir **spine chip**'tir (load-bearing üretilebilir motor). Her ders bir bütçeye uyar: **11–14 ekran, 7–10 dakika, 1–4 yeni active chip** — ve standart erken derste **5–8 anlamlı üretim aksiyonu** (provisional) + **~30–35 yazılmış Fransızca yüzey**, bunun bir alt kümesi render edilir (`LESSON_FLOW_CANON_v1.md §1.1`; tanımlar [[Difficulty and Cognitive Load]] ve Content Bible §6.9). Ve her ders süreklilik kuralına uyar: **yeni bir şey tanıt, eskisini büyüt, geleceği hazırla.**
+Bir ders tek bir cümle ya da pasif kelime listesi değildir. Bir **sentence family**'den doğar: bir anchor cümle + varyasyonları + bir contrast + doğal/rescue biçim + değiştirilebilir parçalar (`learning-engine-v1.md:47-57`). Dersin etrafında döndüğü şey bir **spine chip**'tir (load-bearing üretilebilir motor). Her ders bir bütçeye uyar: **11–14 ekran, 7–10 dakika, 1–4 yeni active chip** — ve Standard journey role'de **~30–35 yazılmış Fransızca yüzey**, bunun bir alt kümesi render edilir. Üretim aksiyonu için **evrensel sayısal taban yoktur** (`LESSON_FLOW_CANON_v1.md §1.1`; tanımlar [[Difficulty and Cognitive Load]] ve Content Bible §6.9). Ve her ders süreklilik kuralına uyar: **yeni bir şey tanıt, eskisini büyüt, geleceği hazırla.**
 
 ## Why It Exists
 
@@ -70,10 +70,12 @@ Girdiyi "family" olarak modellemek, dersi ezberlenecek bir cümleye değil, **bi
 - **15–25 micro-action**, ekran başına 1–3 (cap 4).
 - **7–10 dk** hedef.
 - **1–4 yeni active chip** (DEĞİŞMEZ, founder-ratified).
-- **5–8 anlamlı üretim aksiyonu** (standart erken ders) — **GEÇİCİ/provisional**, ratify edilmedi.
+- **Anlamlı üretim aksiyonu: evrensel taban YOK** (global 5–8 hedefi 2026-08-05'te geri çekildi). Tanım ve sayım kuralları geçerli; sayısal planlama **content-archetype** eksenine ait (`docs/syllabus/lesson-archetype-templates-v1.md`).
 - **~30–35 yazılmış Fransızca yüzey** (authored surface inventory) — tek bir öğrenci yolu bir **alt küme** render eder; render katmanının **ratify edilmiş sayısı yoktur**.
 
-> [!warning] Bu sayılar ayrı şeyleri sayar ve toplanamaz; §4'teki archetype tablosu **değişmedi** ve Doorway/Integration/Review/Milestone için üretim, yazılmış-yüzey veya render bandı **uydurulmadı** (**[OPEN]**). Tanım evi: Content Bible v1.0 §6.9. Ekran sayısı ve süre **sayı tutturmak için artırılamaz**; hiçbir sayı runtime'da enforce edilmez.
+> [!canon] **İki eksen ayrıdır (founder-ratified 2026-08-05).** aşağıdaki *Policy Hardening — Archetype Contracts* tablosundaki **Doorway / Standard / Integration / Review / Milestone** değerleri **journey role**'dür (dersin yolculuktaki işi), **content archetype** değil (dilsel motor; kodda `primaryArchetype`). Biri diğerinden türetilemez. activeNew sözleşmeleri journey role'e, üretim planlama hedefleri content archetype'a bağlanır.
+
+> [!warning] Bu sayılar ayrı şeyleri sayar ve toplanamaz; *Policy Hardening* bölümündeki activeNew sözleşmeleri **değişmedi** ve Doorway/Integration/Review/Milestone için yazılmış-yüzey veya render bandı **uydurulmadı** (**[OPEN]**). `journeyRole` metadata alanı **yoktur** → sözleşmeler makine ile **denetlenemez**; ders başına atama ve mevcut ders uyumu **[OPEN]**. Tanım evi: Content Bible v1.0 §6.7b/§6.8/§6.9. Ekran sayısı ve süre **sayı tutturmak için artırılamaz**; hiçbir sayı runtime'da enforce edilmez.
 
 ### 4. Süreklilik kuralı (CANONICAL)
 "Every lesson must **introduce something new, grow something old, and prepare something future.**" — `learning-engine-v1.md:128`. Bunun mekanik karşılığı carry-in / carry-out sistemi: bkz. [[Spine and Carryover Logic]].
@@ -135,6 +137,8 @@ v1 dersleri L1–L6 dev-apk-görünür; L7–L15 kayıtlı ama Home'da gizli; en
 > [!open-loop] L1 chip listesi **kasıtlı olarak kesinleşmedi** (~34–35 hedef, 31 aday, 3–4 eklenecek). Nihai listeyi uydurma. → [[05 Open Loops]]
 
 ## Policy Hardening — Archetype Contracts (2026-07-18)
+
+> [!canon] **Eksen notu (2026-08-05):** bu bölümün **Doorway / Standard build / Integration / Review** değerleri **journey role**'dür — `primaryArchetype` alanındaki content-archetype değerleriyle **aynı şey değildir** ve oraya yazılmaz. Tanım evi: Content Bible §6.7b/§6.8.
 
 > [!canon] **PRIMARY POLICY HOME** for lesson **archetype contracts**. Bütçe sayıları [[Difficulty and Cognitive Load]]'ta; carryover contract [[Spine and Carryover Logic]]'te; integration detay [[Integration Lesson Logic]]'te; review seçimi [[Review and Recycling System]]'de. Sınıf: **[LOCKED DEFAULT]**. Her archetype ders spec'inde adlandırılmalı ([[Content Production Workflow]] ledger `lessonArchetype`).
 

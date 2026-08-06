@@ -152,6 +152,45 @@ Three layers are now distinguished and must not be conflated: **authored surface
 
 **Status.** `~30–35 authored surfaces` and `1–4 active-new` are founder-ratified; `5–8 meaningful production actions` is **provisional** pending a further lesson sample; the rendered-presentation layer has **no ratified numeric target** and is reported as a diagnostic only. **No runtime enforcement** of any figure. **No claim** that any current lesson, including L1–L10, complies. Historical pre-ratification rows above are **not** rewritten. Authorizes no code, lesson, French-content, schema, validator, test, or ADR change.
 
+### Amendment — 2026-08-05 (third pass): two axes separated; global production floor retired
+
+> A taxonomy audit across all 16 registered v1 lessons found that the single word **"archetype"** had been carrying **two different taxonomies**, producing a routing conflict that made §6.8's contracts unaddressable. Live authority remains **Content Bible v1.0 §6.7b / §6.8 / §6.9 + Ch. 19** (DOC-004); content-archetype definitions and budgets are owned by `docs/syllabus/lesson-archetype-templates-v1.md`; LESSON_FLOW §1.1 (DOC-024) mirrors both without owning either.
+
+**Two-axis diagnosis.**
+
+- **Content archetype** and **journey role** are **independent axes**. Neither is derivable from the other, and no one-to-one map exists.
+- The prior use of one word — *"archetype"* — for both created the routing conflict: §6.8's load contracts and the templates doc's content budgets appeared to attach to the same field.
+- The current **`primaryArchetype` / `secondaryArchetype`** fields belong to the **content axis** (linguistic / instructional engine).
+- A future **`journeyRole`** field belongs to the **journey-function axis** (Doorway · Standard · Integration · Review · Milestone).
+- Decisive evidence: one content-archetype value spans several journey roles and vice-versa; and the shipped union already mixes the axes, since `review-integration` and `summit-milestone` are journey functions sitting among linguistic engines.
+
+**Production decision.**
+
+- The provisional global **`5–8`** production target is **superseded before ratification**. Audited lessons returned **5, 4 and 3** meaningful production actions.
+- **No global numeric production floor replaces it.** The former `3–5` is **not** restored; `4–8` is **not** adopted; **no new universal range is set**.
+- **Content-archetype numeric targets remain planning references**, owned by the templates document — not reproduced in the Bible, not a global invariant, not runtime enforcement, and not proof of quality on their own.
+- **The meaningful-production definition, counting rules, and exclusions are unchanged and remain live.** Only the universal numeric floor is retired.
+- **Structural quality becomes the future enforcement direction** and remains **`[OPEN]`**: candidate dimensions are recorded (retrieval without full answer support · meaningful changed-dimension reuse · recombination or genuine exit proof · no duplicate guided/open targets · active-new inside the applicable journey-role contract) but **none is ratified**.
+
+**Active-new decision.**
+
+- Budgets remain **journey-role-specific and numerically unchanged**: Doorway 1–2 · Standard 1–4 · Integration 0 · Review 0 · Milestone 0–3.
+- Standard's `1–4` may act as the outer ordinary-teaching ceiling where no narrower contract applies, but **must not erase** the stricter contracts.
+- **No current lesson compliance claim** (L0–L15). **Metadata and per-lesson mapping remain unresolved**, so these contracts are **not machine-enforceable today**.
+
+**Effect on earlier rows — superseded in part, never erased.**
+
+| CB ID | Effect of this third pass |
+|---|---|
+| **CB-13** | Production dimension **superseded in part again**: the `3–5` figure (original row) and the `5–8` figure (first amendment) are **both historical**. No production figure is live in the lesson-budget row. `11–14 screens`, `7–10 min`, `1–4 active-new`, `15–25 micro` remain unchanged. |
+| **CB-17** | **Unchanged.** `totalProductionLoad` and the anti-gaming rule stand. Production-load responsibility and production-action occasions remain separate questions. |
+| **CB-18** | **Axis clarified; contracts unchanged.** Its five values are now explicitly **journey roles**, not content archetypes. The per-role activeNew budgets stand verbatim. Per-lesson mapping, metadata representation, and archetype-specific production/surface bands all remain **`[OPEN]`**. |
+| **CB-15, CB-22** | **Unaffected** by this pass. |
+
+**Unresolved mappings and enforcement gaps recorded.** `journeyRole` metadata/schema design · per-lesson journey-role assignment · L0's bridge role vs the Doorway band · L1's hybrid Standard/Integration character · L5's light-Integration vs Standard character · **L6 and L13 declaring integration work while carrying non-zero active-new against Integration's 0** · **Review and Milestone have no shipped samples**, so their contracts are unvalidated · structural production-quality specification · chip-composition reconciliation for sentence-shaped forms such as `j'ai faim` (§4.3 *unpackable chunk* vs §6.9.1 protected-chunk-only) · legacy mixed-axis values in the content union.
+
+**Traceability.** Earlier amendments are preserved in full; only the affected clauses are marked superseded in part. The historical `3–5` text and the provisional `5–8` text both remain visible in the decision trail above. Authorizes no code, lesson, French-content, schema, validator, test, or ADR change.
+
 ---
 
-*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24; amended 2026-08-05 (lesson-density contract), second pass 2026-08-05 (authored-surface scoping). Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*
+*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24; amended 2026-08-05 (lesson-density contract), second pass 2026-08-05 (authored-surface scoping), third pass 2026-08-05 (two-axis separation; production floor retired). Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*
