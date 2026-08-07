@@ -38,6 +38,11 @@ import {
   countDeclaredJourneyRoles,
   validateJourneyRoles,
 } from "../content/lessons/journeyRoles";
+import {
+  countLessonsDeclaringDemands,
+  totalAcquisitionDemands,
+  validateAcquisitionDemands,
+} from "../content/lessons/acquisitionDemands";
 import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
 import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
@@ -123,6 +128,18 @@ for (const error of journeyRoleErrors) {
   console.log(`  ERROR ${error}`);
 }
 
+// AD-001..AD-005: structural coherence of the authored active-new source of
+// truth. No demand is inferred, and no journey-role budget is enforced here.
+const demandErrors = validateAcquisitionDemands(V1_LESSONS);
+console.log(
+  `Lesson acquisition demands (AD-001..AD-005) over ${V1_LESSONS.length} lessons: ` +
+    `${countLessonsDeclaringDemands(V1_LESSONS)} lesson(s) declaring, ` +
+    `${totalAcquisitionDemands(V1_LESSONS)} demand(s), ${demandErrors.length} hard error(s)`,
+);
+for (const error of demandErrors) {
+  console.log(`  ERROR ${error}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
@@ -133,7 +150,8 @@ if (
   linkErrors.length > 0 ||
   payloadErrors.length > 0 ||
   componentErrors.length > 0 ||
-  journeyRoleErrors.length > 0
+  journeyRoleErrors.length > 0 ||
+  demandErrors.length > 0
 ) {
   process.exit(1);
 }

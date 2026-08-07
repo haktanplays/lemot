@@ -281,6 +281,7 @@ export const lesson010: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "integration",
+  acquisitionDemandItemIds: [],
   estimatedMinutes: 8,
   canDo: "Arrive, ask where, take a break, and leave.",
   whyItExists:

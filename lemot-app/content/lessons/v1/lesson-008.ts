@@ -246,6 +246,7 @@ export const lesson008: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "doorway",
+  acquisitionDemandItemIds: ["chunk-c-est-ou"],
   estimatedMinutes: 7,
   canDo: "Ask where something is, and answer it's here.",
   whyItExists:

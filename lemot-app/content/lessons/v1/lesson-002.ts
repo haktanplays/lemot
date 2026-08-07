@@ -212,6 +212,7 @@ export const lesson002: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
   journeyRole: "standard",
+  acquisitionDemandItemIds: ["chunk-je-suis"],
   estimatedMinutes: 5,
   canDo: "Say where you are, in French.",
   whyItExists:

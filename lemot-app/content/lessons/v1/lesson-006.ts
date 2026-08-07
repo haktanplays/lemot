@@ -309,6 +309,7 @@ export const lesson006: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "review-integration",
   journeyRole: "integration",
+  acquisitionDemandItemIds: ["chunk-au-revoir"],
   estimatedMinutes: 7,
   canDo: "Carry a whole small moment, from greeting to goodbye.",
   whyItExists:

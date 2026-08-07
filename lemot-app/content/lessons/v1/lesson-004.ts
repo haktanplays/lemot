@@ -269,6 +269,7 @@ export const lesson004: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
   journeyRole: "standard",
+  acquisitionDemandItemIds: ["chunk-j-ai"],
   estimatedMinutes: 6,
   canDo: "Say how you feel and what you have.",
   whyItExists:

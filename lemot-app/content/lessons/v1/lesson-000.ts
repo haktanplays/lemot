@@ -200,6 +200,12 @@ export const lesson000: Lesson = {
   phase: "first-step",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
+  acquisitionDemandItemIds: [
+    "chunk-bonjour",
+    "chunk-je-voudrais",
+    "noun-cafe",
+    "chunk-sil-vous-plait",
+  ],
   estimatedMinutes: 5,
   canDo: "Order a coffee politely in a French café.",
   whyItExists:

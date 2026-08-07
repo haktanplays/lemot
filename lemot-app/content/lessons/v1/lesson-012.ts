@@ -253,6 +253,7 @@ export const lesson012: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "doorway",
+  acquisitionDemandItemIds: ["chunk-est-ce-que"],
   estimatedMinutes: 5,
   canDo: "Turn a sentence you own into a clear yes/no question with est-ce que.",
   whyItExists:

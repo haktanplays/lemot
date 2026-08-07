@@ -285,6 +285,11 @@ export const lesson003: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "pronoun-particle",
   journeyRole: "standard",
+  acquisitionDemandItemIds: [
+    "chunk-je-ne-suis-pas",
+    "chunk-ce-n-est-pas",
+    "chunk-non",
+  ],
   estimatedMinutes: 6,
   canDo: "Say no, and say what is not true.",
   whyItExists:

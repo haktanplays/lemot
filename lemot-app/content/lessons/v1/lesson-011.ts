@@ -261,6 +261,7 @@ export const lesson011: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
   journeyRole: "doorway",
+  acquisitionDemandItemIds: ["chunk-je-peux"],
   estimatedMinutes: 5,
   canDo: "Ask if you can do something, say you can't, and ask for help.",
   whyItExists:

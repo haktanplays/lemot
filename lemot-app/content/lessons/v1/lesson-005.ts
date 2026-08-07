@@ -271,6 +271,10 @@ export const lesson005: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "standard",
+  acquisitionDemandItemIds: [
+    "chunk-un-cafe",
+    "chunk-une-question",
+  ],
   estimatedMinutes: 5,
   canDo: "Ask for things with the right little word.",
   whyItExists:

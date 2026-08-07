@@ -31,8 +31,10 @@ export type LearningItemType =
  * one acquisition concept, two runtime ids, with all L1 evidence flowing to the
  * PRIMARY id only. Reciprocity, existence, no-self-link and one-primary-per-
  * linked are enforced by `content/identity/acquisitionLinks.ts`. This mechanism
- * performs NO id remapping anywhere — persisted history is never rewritten, and
- * it deliberately does not touch the pre-existing café dual-id debt.
+ * performs NO id remapping anywhere — persisted history is never rewritten. It
+ * also does not link `noun-cafe` and `chunk-un-cafe`: those are INTENTIONALLY
+ * separate acquisition identities (L0 owns the lexical item, L5 the article+noun
+ * package demand), not a debt to repay, unless canon says otherwise later.
  */
 export type AcquisitionIdentityLink =
   | { role: "primary"; linkedItemIds: readonly string[] }
@@ -537,6 +539,28 @@ export type Lesson = {
   secondaryArchetype?: LessonArchetype;
   /** Journey-role axis — independent of the archetypes above. Unset for L0. */
   journeyRole?: JourneyRole;
+  /**
+   * The distinct NEW learner-facing active production demands introduced by
+   * THIS lesson (PRJ-015 IC-002) — the source of truth for active-new.
+   *
+   * Includes a genuine promotion of an already-known item from supported or
+   * recognition to active production. Excludes carryover, recycled use,
+   * recognition-only exposure, supported-only use, wholes already covered by
+   * `acquisitionComponents`, and `acquisitionLink` linked-only identities.
+   *
+   * This is NOT every item the lesson uses, targets, evidences or displays.
+   * Presentation fields — `targetItemIds`, `evidenceTargetItemIds`,
+   * `suggestedPieces`, screen type — are NOT the source of truth and may only
+   * raise review against this declaration, never replace it.
+   *
+   * `[]` means adjudicated and explicitly zero (an Integration lesson that
+   * genuinely introduces nothing). Absence means unadjudicated or legacy — the
+   * two are deliberately distinguishable. Optional in the schema; every shipped
+   * v1 lesson L0–L15 nonetheless declares it.
+   *
+   * Structure is enforced by `content/lessons/acquisitionDemands.ts`.
+   */
+  acquisitionDemandItemIds?: readonly string[];
 
   estimatedMinutes: number;
   canDo: string;

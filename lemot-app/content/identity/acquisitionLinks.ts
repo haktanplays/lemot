@@ -13,9 +13,11 @@
  *    primary claims it.
  *
  * What this deliberately is NOT: an id-remapping layer. Nothing here rewrites
- * persisted history, merges mastery rows, or repairs the pre-existing café
- * dual-id debt — evidence routing stays exactly where events put it, which for
- * L1 is the PRIMARY tea id only.
+ * persisted history or merges mastery rows — evidence routing stays exactly
+ * where events put it, which for L1 is the PRIMARY tea id only. It also does not
+ * link `noun-cafe` and `chunk-un-cafe`: those are INTENTIONALLY separate
+ * acquisition identities (L0 owns the lexical item, L5 the package demand), so
+ * linking them would erase a ratified demand rather than fix anything.
  */
 import { ITEM_REGISTRY } from "../itemRegistry";
 import type { LearningItem } from "../lessonTypes";

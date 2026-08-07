@@ -273,6 +273,7 @@ export const lesson009: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "doorway",
+  acquisitionDemandItemIds: ["chunk-faire-une-pause"],
   estimatedMinutes: 7,
   canDo: "Ask for a break, politely, in French.",
   whyItExists:

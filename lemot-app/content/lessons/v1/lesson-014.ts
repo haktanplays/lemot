@@ -204,6 +204,10 @@ export const lesson014: Lesson = {
   primaryArchetype: "pronoun-particle",
   secondaryArchetype: "chunk-natural-speech",
   journeyRole: "doorway",
+  acquisitionDemandItemIds: [
+    "word-y-place",
+    "chunk-on-y-va",
+  ],
   estimatedMinutes: 5,
   canDo: "Say you're going there (j'y vais) and suggest going (on y va) without repeating the place.",
   whyItExists:

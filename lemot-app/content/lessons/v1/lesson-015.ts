@@ -207,6 +207,7 @@ export const lesson015: Lesson = {
   primaryArchetype: "architecture-verb",
   secondaryArchetype: "chunk-natural-speech",
   journeyRole: "doorway",
+  acquisitionDemandItemIds: ["chunk-il-faut"],
   estimatedMinutes: 5,
   canDo: "Say what one must do (il faut) and what you have to do (je dois).",
   whyItExists:

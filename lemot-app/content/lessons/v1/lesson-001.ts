@@ -321,6 +321,7 @@ export const lesson001: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "standard",
+  acquisitionDemandItemIds: ["chunk-merci"],
   estimatedMinutes: 6,
   canDo: "Greet, ask for something politely, and thank.",
   whyItExists:

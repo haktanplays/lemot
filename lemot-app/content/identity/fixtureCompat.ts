@@ -66,8 +66,9 @@ export const FIXTURE_ITEM_ALIASES: Readonly<Record<string, ItemId>> =
  * `noun_phrase:un-cafe` ("un café", one package) faces two shipped canonical
  * identities: `noun-cafe` (type noun, text "café" — the id the shipped L0/L1
  * payloads actually attach to the "un café" tile) and `chunk-un-cafe` (type
- * chunk, text "un café" — the package). That split is the known dual-identity
- * debt; picking either here would silently decide acquisition ownership.
+ * chunk, text "un café" — the package). That split is INTENTIONAL for acquisition
+ * accounting — L0 declares `noun-cafe`, L5 declares `chunk-un-cafe` — so picking
+ * either here would silently collapse two ratified, separate demands.
  */
 export const AMBIGUOUS_FIXTURE_ITEM_IDS: readonly string[] = Object.freeze([
   "noun_phrase:un-cafe",
