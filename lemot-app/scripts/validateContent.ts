@@ -30,6 +30,10 @@ import { loadShippedTagManifest, collectUsedTags, checkShippedErrorTags } from "
 import { checkCanonRules } from "./canonRules";
 import { checkLessonEvidenceRules } from "./lessonEvidenceRules";
 import { validateAcquisitionLinks } from "../content/identity/acquisitionLinks";
+import {
+  countDeclaredAcquisitionComponents,
+  validateAcquisitionComponents,
+} from "../content/identity/acquisitionComponents";
 import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
 import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
@@ -91,6 +95,19 @@ for (const error of [...linkErrors, ...payloadErrors]) {
   console.log(`  ERROR ${error}`);
 }
 
+// Structural shape of every declared acquisition-component relation. Structure
+// only — no active-new count is derived, and absence of the field asserts
+// nothing about independent ownership.
+const componentErrors = validateAcquisitionComponents();
+const declaredComponentRelations = countDeclaredAcquisitionComponents();
+console.log(
+  `Acquisition-component coverage (AC-001..AC-006): ` +
+    `${declaredComponentRelations} declared relation(s), ${componentErrors.length} hard error(s)`,
+);
+for (const error of componentErrors) {
+  console.log(`  ERROR ${error}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
@@ -99,7 +116,8 @@ if (
   canonErrors.length > 0 ||
   evidenceFindings.length > 0 ||
   linkErrors.length > 0 ||
-  payloadErrors.length > 0
+  payloadErrors.length > 0 ||
+  componentErrors.length > 0
 ) {
   process.exit(1);
 }

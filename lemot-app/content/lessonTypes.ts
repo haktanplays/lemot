@@ -60,6 +60,28 @@ export type LearningItem = {
   frenchQa?: import("./identity/frenchQaStatus").FrenchQaStatus;
   /** Primary ↔ linked acquisition relation, when this item participates in one. */
   acquisitionLink?: AcquisitionIdentityLink;
+  /**
+   * Acquisition-scoped coverage: the component identities that between them
+   * carry this identity's acquisition responsibility.
+   *
+   * ONLY author this when the listed identities COMPLETELY carry the whole
+   * identity's acquisition responsibility. This is NOT generic linguistic
+   * decomposition: `je ne suis pas` is linguistically `je suis` + `ne…pas` yet
+   * is owned as one pedagogical unit, and `on y va` cannot be listed because
+   * `on` has no identity of its own — neither may declare this field. Presence
+   * asserts coverage; it is not a parts list.
+   *
+   * MIGRATION STATE: absence currently means only "no acquisition
+   * decomposition has been declared". It does NOT yet mean "independently
+   * owned" — registry coverage has not been exhaustively adjudicated, so no
+   * consumer may read absence as an ownership claim.
+   *
+   * Distinct from {@link AcquisitionIdentityLink}, which owns identity
+   * granularity and evidence routing and forbids its `linked` side from being
+   * a target. Composites listed here remain fully legal lesson targets.
+   * Structure is enforced by `content/identity/acquisitionComponents.ts`.
+   */
+  acquisitionComponents?: readonly string[];
 };
 
 export type ScreenType =
