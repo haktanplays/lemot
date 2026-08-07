@@ -19,6 +19,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import type { Lesson, WeaveScreen } from "../../content/lessonTypes";
+import { reviewProductionQuality } from "../../content/lessons/productionQuality";
 
 const APP_ROOT = process.cwd();
 const src = (rel: string) => readFileSync(join(APP_ROOT, rel), "utf8");
@@ -268,12 +269,19 @@ describe("L1 Say It is a scene, not a checklist", () => {
 describe("rhythm corrections in L2, L3, L5 and L6", () => {
   const seq = (n: number) => V1_LESSONS.find((l) => l.number === n)!.screens.map((s) => s.type);
 
-  test("L2 no longer renders its two equivalent productions consecutively", () => {
-    const ids = V1_LESSONS.find((l) => l.number === 2)!.screens.map((s) => s.id);
-    const a = ids.indexOf("s04-weave-je-suis-ici");
-    const b = ids.indexOf("s05-weave-call-and-respond");
-    assert(b - a > 1, "the reflection must sit between the two weaves");
-    assertEqual(ids[a + 1], "s06-insight-shape-noticed", "the existing reflection sits between");
+  // The L2 adjacency rule is RETIRED. Separating two identical demands does not
+  // make them two demands; PQ-3 names the real problem and reports L2's pair as
+  // known content debt. Policing the same intent two different ways is worse
+  // than policing it once, well.
+  test("L2's two equivalent productions are reported as one duplicate demand (PQ-3)", () => {
+    const warnings = reviewProductionQuality(V1_LESSONS).filter((d) => d.code === "PQ-3");
+    assertEqual(warnings.length, 1, "exactly the known duplicate");
+    assertEqual(warnings[0].lessonId, "v1-lesson-002", "in L2");
+    assertEqual(
+      warnings[0].screenIds,
+      ["s04-weave-je-suis-ici", "s05-weave-call-and-respond"],
+      "the equivalent pair",
+    );
   });
 
   test("L3 has no run of three weaves", () => {
@@ -320,16 +328,16 @@ describe("rhythm corrections in L2, L3, L5 and L6", () => {
     }
   });
 
-  test("production counts are unchanged by the reordering", () => {
-    const EXPECTED: Record<number, number> = {
-      1: 5, 2: 3, 3: 4, 4: 3, 5: 3, 6: 5, 7: 3, 8: 3, 9: 3, 10: 4,
-    };
-    for (const l of AUTHORED) {
-      const n = l.screens.filter(
-        (s) => s.type === "weave" || s.type === "say-it-your-way",
-      ).length;
-      assertEqual(n, EXPECTED[l.number], `${l.id} production count`);
-    }
+  // The exact per-lesson production-count lock is RETIRED. It froze layout:
+  // any legitimate re-authoring failed it, and a count never distinguished a
+  // real ladder from repetition. PQ-2 guards the structure instead; counts are
+  // reported (never contracted) in scripts/tests/productionQuality.test.ts.
+  test("every authored lesson still demands unsupplied generation (PQ-2)", () => {
+    assertEqual(
+      reviewProductionQuality(AUTHORED).filter((d) => d.code === "PQ-2"),
+      [],
+      "reordering never removed a lesson's retrieval floor",
+    );
   });
 });
 

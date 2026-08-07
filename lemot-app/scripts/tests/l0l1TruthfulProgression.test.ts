@@ -31,6 +31,7 @@ import type {
   WeaveScreen,
 } from "../../content/lessonTypes";
 import { matchExpected } from "../../components/lesson-v1/screens/normalizeAnswer";
+import { reviewProductionQuality } from "../../content/lessons/productionQuality";
 
 const APP_ROOT = process.cwd();
 const readSource = (rel: string) => readFileSync(join(APP_ROOT, rel), "utf8");
@@ -45,7 +46,6 @@ const byId = <T extends LessonScreen>(id: string): T => {
   return found as T;
 };
 
-const PRODUCTION_TYPES = new Set(["weave", "say-it-your-way"]);
 
 describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () => {
   test("screen count stays inside the authored 11-14 band", () => {
@@ -74,11 +74,16 @@ describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () =>
     }
   });
 
-  test("production actions stay inside the authored 3-5 band", () => {
-    const production = types.filter((t) => PRODUCTION_TYPES.has(t)).length;
-    assert(
-      production >= 3 && production <= 5,
-      `expected 3-5 production actions, got ${production}`,
+  // The "3-5 production actions" band is RETIRED: it was the retired global
+  // production floor in disguise, and it is not replaced by another number.
+  // Structure is now guarded by PQ-2 (scripts/tests/productionQuality.test.ts),
+  // which asks whether the lesson ever demands unsupplied generation rather
+  // than how many screens it spends doing so.
+  test("the lesson demands genuine unsupplied generation (PQ-2)", () => {
+    assertEqual(
+      reviewProductionQuality([lesson001]).filter((d) => d.code === "PQ-2"),
+      [],
+      "retrieval floor satisfied",
     );
   });
 

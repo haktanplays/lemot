@@ -48,6 +48,7 @@ import {
   reviewAcquisitionDemandDrift,
   summarizeDrift,
 } from "../content/lessons/acquisitionDemandDrift";
+import { reviewProductionQuality } from "../content/lessons/productionQuality";
 import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
 import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
@@ -173,6 +174,20 @@ for (const d of drift) {
   console.log(`  ${d.severity.toUpperCase()} ${d.code} ${d.lessonId}/${d.itemId}: ${d.message}`);
 }
 
+// PQ-2 (hard error) / PQ-3 (advisory): structural production quality. Separate
+// from acquisition accounting and from the drift review above. No production
+// COUNT is enforced anywhere — only structure.
+const pq = reviewProductionQuality(V1_LESSONS);
+const pqErrors = pq.filter((d) => d.severity === "error");
+const pqWarnings = pq.filter((d) => d.severity === "warning");
+console.log(
+  `Production quality (PQ-2 hard, PQ-3 advisory): ${V1_LESSONS.length} lesson(s) checked, ` +
+    `${pqErrors.length} retrieval-floor error(s), ${pqWarnings.length} duplicate-demand warning(s)`,
+);
+for (const d of pq) {
+  console.log(`  ${d.severity.toUpperCase()} ${d.code} ${d.lessonId}: ${d.message}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
@@ -185,7 +200,8 @@ if (
   componentErrors.length > 0 ||
   journeyRoleErrors.length > 0 ||
   demandErrors.length > 0 ||
-  budget.errors.length > 0
+  budget.errors.length > 0 ||
+  pqErrors.length > 0
 ) {
   process.exit(1);
 }

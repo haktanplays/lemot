@@ -23,6 +23,7 @@ import { join } from "node:path";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
 import type { Lesson, LessonScreen, WeaveScreen } from "../../content/lessonTypes";
+import { reviewProductionQuality } from "../../content/lessons/productionQuality";
 
 const APP_ROOT = process.cwd();
 
@@ -35,7 +36,6 @@ const byNumber = (n: number): Lesson => {
 const L6 = byNumber(6);
 const TARGETS = [7, 8, 9, 10].map(byNumber);
 
-const PRODUCTION_TYPES = new Set(["weave", "say-it-your-way"]);
 /** Least support -> most independence. Index is the independence level. */
 const TIER_ORDER = ["supported", "mid", "context", "open"] as const;
 const tierIndex = (t: string) => TIER_ORDER.indexOf(t as (typeof TIER_ORDER)[number]);
@@ -144,9 +144,15 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
       );
     });
 
-    test(`${l.id}: 3-5 production actions`, () => {
-      const n = types.filter((t) => PRODUCTION_TYPES.has(t)).length;
-      assert(n >= 3 && n <= 5, `expected 3-5 production actions, got ${n}`);
+    // "3-5 production actions" RETIRED — no replacement number. PQ-2 asks the
+    // question that band was reaching for: does the lesson ever require
+    // unsupplied generation?
+    test(`${l.id}: demands genuine unsupplied generation (PQ-2)`, () => {
+      assertEqual(
+        reviewProductionQuality([l]).filter((d) => d.code === "PQ-2"),
+        [],
+        "retrieval floor satisfied",
+      );
     });
 
     test(`${l.id}: no three consecutive screens share an archetype`, () => {
