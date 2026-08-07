@@ -447,6 +447,34 @@ export type MonolingualMode =
   | "mostly-french"
   | "french-led";
 
+/**
+ * The lesson's primary pedagogical job in the learner's progression — the
+ * SECOND of two independent axes, and not derivable from the first.
+ *
+ * `primaryArchetype` / `secondaryArchetype` answer *"what instructional or
+ * linguistic engine is this lesson built around?"*. `journeyRole` answers
+ * *"what job does this lesson perform in the learner's progression?"*. Neither
+ * axis maps onto the other: `chunk-natural-speech` currently ships as
+ * `standard`, `doorway` AND `integration`. Never derive one from the other, and
+ * do not read it off a screen type or an acquisition item's status either.
+ *
+ * Optional by design. Absence is meaningful for L0, which is pre-curriculum
+ * bootstrap and sits deliberately outside the five roles — there is no sixth
+ * `bootstrap` value, and no `hybrid`. Optionality is also what keeps a new
+ * lesson authorable before its role is ratified.
+ *
+ * DECLARATIVE ONLY. The canonical per-role active-new budgets (doorway 1–2 ·
+ * standard 1–4 · integration 0 · review 0 · milestone 0–3) are NOT enforced
+ * here: machine checking depends on the separate lesson-level
+ * acquisition-responsibility derivation, which does not exist yet.
+ */
+export type JourneyRole =
+  | "doorway"
+  | "standard"
+  | "integration"
+  | "review"
+  | "milestone";
+
 export type LessonArchetype =
   | "architecture-verb"
   | "gateway-time-mood"
@@ -507,6 +535,8 @@ export type Lesson = {
   monolingualMode: MonolingualMode;
   primaryArchetype: LessonArchetype;
   secondaryArchetype?: LessonArchetype;
+  /** Journey-role axis — independent of the archetypes above. Unset for L0. */
+  journeyRole?: JourneyRole;
 
   estimatedMinutes: number;
   canDo: string;

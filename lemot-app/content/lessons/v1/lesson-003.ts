@@ -284,6 +284,7 @@ export const lesson003: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "pronoun-particle",
+  journeyRole: "standard",
   estimatedMinutes: 6,
   canDo: "Say no, and say what is not true.",
   whyItExists:

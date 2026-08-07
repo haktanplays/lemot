@@ -266,6 +266,7 @@ export const lesson013: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "review-integration",
   secondaryArchetype: "chunk-natural-speech",
+  journeyRole: "integration",
   estimatedMinutes: 5,
   canDo:
     "Ask for help and permission, say what you can't do, and exit a moment, in one natural after-class flow.",

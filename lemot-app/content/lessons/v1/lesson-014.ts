@@ -203,6 +203,7 @@ export const lesson014: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "pronoun-particle",
   secondaryArchetype: "chunk-natural-speech",
+  journeyRole: "doorway",
   estimatedMinutes: 5,
   canDo: "Say you're going there (j'y vais) and suggest going (on y va) without repeating the place.",
   whyItExists:

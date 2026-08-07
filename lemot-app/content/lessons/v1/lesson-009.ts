@@ -272,6 +272,7 @@ export const lesson009: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
+  journeyRole: "doorway",
   estimatedMinutes: 7,
   canDo: "Ask for a break, politely, in French.",
   whyItExists:

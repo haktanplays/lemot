@@ -262,6 +262,7 @@ export const lesson007: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
+  journeyRole: "doorway",
   estimatedMinutes: 7,
   canDo: "Say you're heading home, and close the moment.",
   whyItExists:

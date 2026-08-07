@@ -270,6 +270,7 @@ export const lesson005: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
+  journeyRole: "standard",
   estimatedMinutes: 5,
   canDo: "Ask for things with the right little word.",
   whyItExists:

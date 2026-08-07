@@ -211,6 +211,7 @@ export const lesson002: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
+  journeyRole: "standard",
   estimatedMinutes: 5,
   canDo: "Say where you are, in French.",
   whyItExists:

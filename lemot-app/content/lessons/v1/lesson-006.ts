@@ -308,6 +308,7 @@ export const lesson006: Lesson = {
   phase: "summit-gate",
   monolingualMode: "english-guided",
   primaryArchetype: "review-integration",
+  journeyRole: "integration",
   estimatedMinutes: 7,
   canDo: "Carry a whole small moment, from greeting to goodbye.",
   whyItExists:

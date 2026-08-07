@@ -245,6 +245,7 @@ export const lesson008: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
+  journeyRole: "doorway",
   estimatedMinutes: 7,
   canDo: "Ask where something is, and answer it's here.",
   whyItExists:

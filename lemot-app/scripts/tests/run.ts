@@ -53,6 +53,7 @@ import "./practiceSelector.test";
 import "./nearMissMasteryTiming.test";
 import "./canonicalItems.test";
 import "./acquisitionComponents.test";
+import "./journeyRoles.test";
 import "./fixtureCompat.test";
 import "./sentenceIdentity.test";
 import "./eventEnvelope.test";

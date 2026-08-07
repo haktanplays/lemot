@@ -260,6 +260,7 @@ export const lesson011: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
+  journeyRole: "doorway",
   estimatedMinutes: 5,
   canDo: "Ask if you can do something, say you can't, and ask for help.",
   whyItExists:

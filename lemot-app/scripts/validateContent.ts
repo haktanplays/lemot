@@ -34,6 +34,10 @@ import {
   countDeclaredAcquisitionComponents,
   validateAcquisitionComponents,
 } from "../content/identity/acquisitionComponents";
+import {
+  countDeclaredJourneyRoles,
+  validateJourneyRoles,
+} from "../content/lessons/journeyRoles";
 import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
 import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
@@ -108,6 +112,17 @@ for (const error of componentErrors) {
   console.log(`  ERROR ${error}`);
 }
 
+// JR-001: every declared journey role names a canonical value. Absence is
+// legal (L0 is deliberately roleless) and no role BUDGET is enforced here.
+const journeyRoleErrors = validateJourneyRoles(V1_LESSONS);
+console.log(
+  `Journey-role metadata (JR-001) over ${V1_LESSONS.length} lessons: ` +
+    `${countDeclaredJourneyRoles(V1_LESSONS)} declared role(s), ${journeyRoleErrors.length} hard error(s)`,
+);
+for (const error of journeyRoleErrors) {
+  console.log(`  ERROR ${error}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
@@ -117,7 +132,8 @@ if (
   evidenceFindings.length > 0 ||
   linkErrors.length > 0 ||
   payloadErrors.length > 0 ||
-  componentErrors.length > 0
+  componentErrors.length > 0 ||
+  journeyRoleErrors.length > 0
 ) {
   process.exit(1);
 }

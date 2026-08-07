@@ -268,6 +268,7 @@ export const lesson004: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
+  journeyRole: "standard",
   estimatedMinutes: 6,
   canDo: "Say how you feel and what you have.",
   whyItExists:

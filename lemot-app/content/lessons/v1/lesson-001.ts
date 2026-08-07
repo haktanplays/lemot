@@ -320,6 +320,7 @@ export const lesson001: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
+  journeyRole: "standard",
   estimatedMinutes: 6,
   canDo: "Greet, ask for something politely, and thank.",
   whyItExists:
