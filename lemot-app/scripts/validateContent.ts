@@ -43,6 +43,7 @@ import {
   totalAcquisitionDemands,
   validateAcquisitionDemands,
 } from "../content/lessons/acquisitionDemands";
+import { validateJourneyRoleDemandBudgets } from "../content/lessons/journeyRoleDemandBudgets";
 import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
 import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
@@ -140,6 +141,20 @@ for (const error of demandErrors) {
   console.log(`  ERROR ${error}`);
 }
 
+// JB-001..JB-004: the authored demand count against the canonical journey-role
+// band. Nothing is reconstructed from presentation; L0 is role-less and skipped,
+// and L6 passes only through its exact named exception.
+const budget = validateJourneyRoleDemandBudgets(V1_LESSONS);
+console.log(
+  `Journey-role demand budgets (JB-001..JB-004): ` +
+    `${budget.normalPasses + budget.exceptionPasses} role-bearing lesson(s) checked, ` +
+    `${budget.normalPasses} normal band pass(es), ${budget.exceptionPasses} named exception pass(es), ` +
+    `${budget.skippedRoleless} role-less lesson(s) skipped, ${budget.errors.length} hard error(s)`,
+);
+for (const error of budget.errors) {
+  console.log(`  ERROR ${error}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
@@ -151,7 +166,8 @@ if (
   payloadErrors.length > 0 ||
   componentErrors.length > 0 ||
   journeyRoleErrors.length > 0 ||
-  demandErrors.length > 0
+  demandErrors.length > 0 ||
+  budget.errors.length > 0
 ) {
   process.exit(1);
 }

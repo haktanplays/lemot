@@ -55,6 +55,7 @@ import "./canonicalItems.test";
 import "./acquisitionComponents.test";
 import "./journeyRoles.test";
 import "./acquisitionDemands.test";
+import "./journeyRoleDemandBudgets.test";
 import "./fixtureCompat.test";
 import "./sentenceIdentity.test";
 import "./eventEnvelope.test";
