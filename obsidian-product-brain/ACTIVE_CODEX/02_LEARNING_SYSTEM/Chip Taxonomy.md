@@ -73,6 +73,8 @@ Her tip **davranışıyla** tanımlıdır:
 
 > [!warning] "Unpackable chunk" (9) bir *yaşam döngüsü durumu*dur (§5): whole → use → notice → unpack → reuse. Ayrıntı: [[Chip Lifecycle]]. Model answer bir tip değil, bir *rol*; listeye taksonominin dışladığı sınır olduğu için dâhil edildi.
 
+> [!canon] **Verdict ≠ muhasebe (2026-08-06).** Aşağıdaki üç yollu verdict **UI chip uygunluğunu** belirler; bir kimliğin **active-new slotu tüketip tüketmediğini BELİRLEMEZ.** Acquisition muhasebesi ayrı bir katmandır: **PRJ-015 IC-001/IC-003/IC-004** (Content Bible §6.9.1'den yönlendirilir). **`identity count ≠ acquisition count`** — slotu **bağımsız sahiplenme** yaratır, kimliğe sahip olmak değil. `PROTECTED_CHUNKS` bir **render istisnasıdır**, muhasebe beyaz listesi değil.
+
 ### 3-yollu verdict (CANONICAL — v0.3:102)
 
 Her aday chip **tam olarak bir** verdict alır:

@@ -222,6 +222,57 @@ Active-new is determined from **lesson-level instructional responsibility** — 
 
 **Still open.** Chip-composition reconciliation (`j'ai faim`, `chunk-j-y-vais`, sentence-shaped unpackable chunks, `PROTECTED_CHUNKS`, §4.3 vs §6.9.1) — **affects exact item accounting, not the journey-role taxonomy** · **Review/Milestone empirical validation** (no shipped examples) · **`journeyRole` schema implementation and metadata migration** · **exact automated active-new computation**. Journey roles for L3, L4 and L14 are ratified **even though their chip-level accounting remains open**. Authorizes no code, lesson, metadata, schema, validator, test, or ADR change.
 
+### Amendment — 2026-08-06 (second pass): active-new counting routed to acquisition identity
+
+> A chip-composition reconciliation audit examined every sentence-shaped chunk in the registry against its lesson-level use. Live authority for **item counting** is `PRJ-015 Item-Counting Contract v1.0` (**IC-001 / IC-003 / IC-004**); live authority for the **1–4 active-new invariant** remains **Content Bible v1.0 §6.9.1 / §6.9.1a**. PRJ-015 was **not amended** — it already carried the governing rule and already names Content as owner of the invariant.
+
+**Diagnosis: a routing gap, not a contradiction.**
+
+The apparent §4.3-versus-§6.9.1 conflict was never a canon contradiction. The two clauses answer **different questions** and neither was wrong:
+
+| Level | Question | Home |
+|---|---|---|
+| Content identity | May this form exist as a canonical item? | §4.3 |
+| Rendering | May it appear as a chip/pill? | §4.4 |
+| Rendering exception | May a sentence-shaped form still render as one unit? | §4.6 (`PROTECTED_CHUNKS`, `SURVIVAL_FORMULAS`) |
+| Acquisition accounting | Does it consume an active-new slot? | §6.9.1 → **PRJ-015** |
+
+The Content Bible simply **never cited PRJ-015**, while ten other documents did. The fix is a citation and a routing rule, not a new policy.
+
+**Ratified: the ownership-unit model.**
+
+> **An identity count is not an acquisition count.** Count the **primary independently owned acquisition responsibility**, not every representation of it. Canonical identities **do not multiply acquisition load merely by existing**.
+
+**Ratified: independent ownership determines the slot.** None of the following, alone, creates an active-new slot — having its own registry ID · being `status: "active"` · being sentence-shaped · being idiomatic or non-compositional · being a modelled identity · being the composite result of pieces already owned in the same lesson.
+
+**The complete-sentence exclusion, correctly read.** §6.9.1's exclusion of complete sentences is an **anti-double-counting rule**: a sentence built from pieces the lesson already owns is not a *separate* item. It is **not** a ban on sentence shape, **not** a rule that `PROTECTED_CHUNKS` are the only sentence-shaped ownership units, and **not** a claim that composites are free. A sentence-shaped form that is **independently owned** does count.
+
+**Primary cases adjudicated** (audit-supported examples; **no registry metadata has been corrected**):
+
+| Item | Independently owned in-lesson? | Active-new cost |
+|---|---|---|
+| `chunk-j-ai-faim` | No — composite of owned pieces | **0** |
+| `chunk-j-ai-une-question` | No — composite of owned pieces | **0** |
+| `chunk-j-y-vais` | No — composite; recognition-only seed in L13 | **0** |
+| `chunk-je-suis-ici` | No — composite of owned pieces | **0** |
+| `chunk-je-ne-suis-pas` | Yes — required piece, independent retrieval | **1** |
+| `chunk-ce-n-est-pas` | Yes — required piece, independent retrieval | **1** |
+| `chunk-au-revoir` | Yes — produced as a whole, no owned pieces | **1** |
+
+**Formula chunks follow the same rule.** Membership in `PROTECTED_CHUNKS` / `SURVIVAL_FORMULAS` is a **rendering exception**, not an accounting whitelist. Frozen status neither exempts an item from the count nor automatically earns it a slot: `au revoir` counts (**1**), `non merci` does not (**0**, supported only).
+
+**Recount consequences** (documentation-level accounting only): **L2 → 1** · **L3 → 3** · **L4 → 1** · **L5 → 2** · **L6 → 1** · **L14 → 2**. All sit inside the applicable journey-role band. **L6's named Integration exception remains necessary and unchanged** — `au revoir` is genuinely owned, so the recount does not dissolve it.
+
+**Journey roles are unaffected.** The ratified map (2026-08-06, first pass) stands **verbatim**. This pass changes how items are *counted*, not what any lesson *is*.
+
+**Effect on earlier rows.** No CB row is superseded. **CB-13**'s `1–4 active-new` figure is **unchanged** — this pass clarifies the *unit being counted*, not the band. **CB-18**'s per-role bands are **unchanged**. Historical rows are **not** rewritten. The `[OPEN]` chip-composition item recorded in the 2026-08-05 third pass and the 2026-08-06 first pass is hereby **closed**.
+
+**Recorded follow-up (Engineering, not authorized here).** Extend `acquisitionLink` coverage so composite identities carry `role: "linked"` with a `primaryItemId` — candidates `chunk-j-ai-faim`, `chunk-j-ai-une-question`, `chunk-j-y-vais`, `chunk-je-suis-ici`. Where a composite draws on several primaries, the current single-`primaryItemId` shape is a **known schema limitation** to be flagged, not worked around. **No `countsAsActiveNew` boolean (or any duplicate flag) may be introduced** — it would create a second source of truth alongside the ownership model.
+
+**Recorded automation principle.** Deterministic, machine-derivable inputs (required pieces, expected answers, evidence targets, `acquisitionLink` edges) may feed an automated count. The **ownership judgement itself is semantic and human**; automation may surface candidates and contradictions, but must not silently assign ownership. Exact automated active-new computation remains **`[OPEN]`**.
+
+**Still open.** `acquisitionLink` coverage completion and multi-primary schema shape · `journeyRole` schema implementation and metadata migration · structural production-quality specification · Review/Milestone empirical validation. Authorizes no code, lesson, French-content, registry-metadata, schema, validator, test, or ADR change.
+
 ---
 
-*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24; amended 2026-08-05 (lesson-density contract), second pass 2026-08-05 (authored-surface scoping), third pass 2026-08-05 (two-axis separation; production floor retired), fourth pass 2026-08-06 (journey-role assignment; bootstrap and Integration exception). Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*
+*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24; amended 2026-08-05 (lesson-density contract), second pass 2026-08-05 (authored-surface scoping), third pass 2026-08-05 (two-axis separation; production floor retired), fourth pass 2026-08-06 (journey-role assignment; bootstrap and Integration exception), fifth pass 2026-08-06 (active-new counting routed to acquisition identity). Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*

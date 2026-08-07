@@ -85,10 +85,22 @@ dönüştürebilir — journey role dersin **birincil pedagojik işini** tarifle
 > N'de active-new **sayılmadan** (L10→L11, L13→L14). Runtime algoritması
 > **belirlenmedi**.
 
+> **Sayma birimi = edinim sorumluluğu, ID değil (2026-08-06).** Active-new
+> muhasebesi `PRJ-015 Item-Counting Contract v1.0` (**IC-001 / IC-003 / IC-004**)
+> kurallarını izler; tanım evi **Content Bible §6.9.1 / §6.9.1a**. Yazarken
+> **temsil değil, bağımsız sahiplenilen edinim sorumluluğu** sayılır: kendi ID'sine
+> sahip olmak, `status: "active"` olmak, cümle biçiminde olmak, deyimsel olmak ya
+> da aynı derste zaten sahiplenilen parçalardan **bileşik** olmak **tek başına slot
+> kurmaz** (`j'ai faim`, `j'y vais` → **0**). Buna karşılık **bağımsız sahiplenilen**
+> donmuş/formül bir chunk **sayılır** (`au revoir` → **1**; `non merci` → **0**).
+> `PROTECTED_CHUNKS` bir **render istisnasıdır**, muhasebe beyaz listesi değil.
+> **Kimlik sayısı ≠ edinim sayısı.**
+
 > `[OPEN]` `journeyRole` metadata alanı **koda eklenmedi**; sözleşmeler bugün
-> **makine ile denetlenemez**. Chip-composition muhasebesi **açıktır** ve bu
-> **journey-role taksonomisini etkilemez**. **Review ve Milestone'un sevkedilmiş
-> örneği yoktur.** `review-integration` ve `summit-milestone` content birliğindeki
+> **makine ile denetlenemez**. Chip-composition muhasebesi 2026-08-06'da
+> **çözüldü** (yukarıdaki sahiplik birimi kuralı) ve **journey-role taksonomisini
+> etkilemedi**; `acquisitionLink` kapsamının tamamlanması **Engineering işidir**.
+> **Review ve Milestone'un sevkedilmiş örneği yoktur.** `review-integration` ve `summit-milestone` content birliğindeki
 > **legacy karma-eksen değerleridir**; kaldırılmadı, yeniden adlandırılmadı.
 
 **Yoğunluk sözleşmesi — üç AYRI bütçe.** `[FL — founder-locked 2026-08-05; yüzey katmanı ikinci pass'te, eksen ayrımı üçüncü pass'te netleştirildi]`
