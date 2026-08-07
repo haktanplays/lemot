@@ -20,6 +20,7 @@ import {
 } from "../../content/identity/acquisitionComponents";
 import { validateAcquisitionLinks } from "../../content/identity/acquisitionLinks";
 import { getItem } from "../../content/itemRegistry";
+import { V1_LESSONS } from "../../content/lessons/v1";
 import type { LearningItem } from "../../content/lessonTypes";
 
 /** Minimal well-formed registry row; `over` supplies the id and the field under test. */
@@ -31,13 +32,8 @@ const reg = (...rows: LearningItem[]): Readonly<Record<string, LearningItem>> =>
   Object.fromEntries(rows.map((r) => [r.id, r]));
 
 describe("acquisitionComponents — structural contract", () => {
-  test("the shipped registry declares no relations and passes unchanged", () => {
+  test("the shipped registry's declared relations pass AC-001..AC-006", () => {
     assertEqual(validateAcquisitionComponents().join(" | "), "", "shipped registry is clean");
-    assertEqual(
-      countDeclaredAcquisitionComponents(),
-      0,
-      "no registry edges are authored in this pass",
-    );
   });
 
   test("one, two and variadic component relations are all valid", () => {
@@ -247,5 +243,83 @@ describe("acquisitionComponents — non-regression", () => {
       undefined,
       "declaring components does not imply an acquisitionLink role",
     );
+  });
+});
+
+describe("acquisitionComponents — shipped registry coverage", () => {
+  // The exact ratified set. Asserted as whole arrays, not by inclusion: a
+  // silently added or reordered component would change what the edge claims.
+  const RATIFIED: Record<string, string[]> = {
+    "chunk-j-ai-faim": ["chunk-j-ai", "noun-faim"],
+    "chunk-j-ai-une-question": ["chunk-j-ai", "chunk-une-question"],
+    "chunk-j-y-vais": ["chunk-je-vais", "word-y-place"],
+    "chunk-je-suis-ici": ["chunk-je-suis", "word-ici"],
+    "chunk-non-merci": ["chunk-non", "chunk-merci"],
+  };
+
+  test("the five ratified relations are declared exactly", () => {
+    for (const [id, components] of Object.entries(RATIFIED)) {
+      assertEqual(
+        getItem(id as never).acquisitionComponents,
+        components,
+        `${id} declares exactly its ratified components`,
+      );
+    }
+  });
+
+  test("exactly five relations are declared registry-wide", () => {
+    assertEqual(
+      countDeclaredAcquisitionComponents(),
+      5,
+      "no sixth relation may enter silently",
+    );
+  });
+
+  test("collapse guards — deliberately independent units carry no edge", () => {
+    // Each of these is linguistically decomposable, and for several the
+    // component identities already exist. They are owned as wholes anyway:
+    // `je suis` would collapse into pronoun-je + verb-etre (IC-005 analysis
+    // granularity), the negation frames are protected pedagogical units,
+    // `on y va` cannot decompose at all (no `on` identity), and L8/L9 own
+    // `c'est où ?` and `faire une pause` as question/whole doorways.
+    // Linguistically decomposable ≠ acquisition-covered composite.
+    const INDEPENDENT = [
+      "chunk-je-suis",
+      "chunk-j-ai",
+      "chunk-c-est-ou",
+      "chunk-faire-une-pause",
+      "chunk-je-ne-suis-pas",
+      "chunk-ce-n-est-pas",
+      "chunk-on-y-va",
+      "chunk-au-revoir",
+    ];
+    for (const id of INDEPENDENT) {
+      assertEqual(
+        getItem(id as never).acquisitionComponents,
+        undefined,
+        `${id} must stay an independent acquisition unit`,
+      );
+    }
+  });
+
+  test("acquisition-covered identities remain legal lesson targets", () => {
+    // The relation carries no target/evidence prohibition. These composites are
+    // named across the shipped payloads and must keep being named.
+    const EXPECTED_TARGETS: Record<string, string[]> = {
+      "chunk-je-suis-ici": ["v1-lesson-002", "v1-lesson-004", "v1-lesson-006"],
+      "chunk-j-ai-faim": ["v1-lesson-004"],
+      "chunk-j-ai-une-question": ["v1-lesson-004", "v1-lesson-006"],
+      "chunk-j-y-vais": ["v1-lesson-013", "v1-lesson-014"],
+    };
+    for (const [id, expected] of Object.entries(EXPECTED_TARGETS)) {
+      const lessons = V1_LESSONS.filter((lesson) =>
+        lesson.screens.some((screen) => (screen.targetItemIds ?? []).includes(id)),
+      ).map((lesson) => lesson.id);
+      assertEqual(lessons, expected, `${id} stays a target in ${expected.join(", ")}`);
+      assert(
+        getItem(id as never).acquisitionComponents !== undefined,
+        `precondition: ${id} declares components`,
+      );
+    }
   });
 });

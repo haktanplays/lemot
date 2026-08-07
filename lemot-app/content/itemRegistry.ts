@@ -242,6 +242,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Bonjour, je suis ici.",
     exampleEn: "Hello, I am here.",
     relatedItemIds: ["chunk-je-suis"],
+    acquisitionComponents: ["chunk-je-suis", "word-ici"],
   },
   "word-ici": {
     id: "word-ici",
@@ -370,6 +371,7 @@ export const ITEM_REGISTRY = {
     exampleEn: "No thank you.",
     relatedItemIds: ["chunk-non", "chunk-merci"],
     weakPointTags: ["politeness", "negation"],
+    acquisitionComponents: ["chunk-non", "chunk-merci"],
   },
   "grammar-ne-pas-sandwich": {
     id: "grammar-ne-pas-sandwich",
@@ -396,6 +398,7 @@ export const ITEM_REGISTRY = {
     exampleEn: "I am hungry.",
     relatedItemIds: ["chunk-j-ai", "micro-je-suis-vs-j-ai"],
     weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
+    acquisitionComponents: ["chunk-j-ai", "noun-faim"],
   },
   "noun-faim": {
     id: "noun-faim",
@@ -423,6 +426,7 @@ export const ITEM_REGISTRY = {
     exampleEn: "Hello, I have a question.",
     relatedItemIds: ["chunk-j-ai", "noun-question"],
     weakPointTags: ["j-ai-vs-je-suis"],
+    acquisitionComponents: ["chunk-j-ai", "chunk-une-question"],
   },
   "chunk-un-cafe": {
     id: "chunk-un-cafe",
@@ -645,6 +649,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "J'y vais.",
     exampleEn: "I'm off.",
     relatedItemIds: ["word-y-place", "chunk-je-vais"],
+    acquisitionComponents: ["chunk-je-vais", "word-y-place"],
   },
   "chunk-on-y-va": {
     id: "chunk-on-y-va",

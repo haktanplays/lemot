@@ -71,6 +71,11 @@ export type LearningItem = {
    * `on` has no identity of its own — neither may declare this field. Presence
    * asserts coverage; it is not a parts list.
    *
+   * NOT RETROACTIVE: acquisition ownership is authored pedagogical history.
+   * A component identity created later does not oblige — or silently create —
+   * an edge on an identity the curriculum already owns as a whole. Adding a
+   * `faire` identity would not rewrite L9's ownership of `faire une pause`.
+   *
    * MIGRATION STATE: absence currently means only "no acquisition
    * decomposition has been declared". It does NOT yet mean "independently
    * owned" — registry coverage has not been exhaustively adjudicated, so no
