@@ -44,6 +44,10 @@ import {
   validateAcquisitionDemands,
 } from "../content/lessons/acquisitionDemands";
 import { validateJourneyRoleDemandBudgets } from "../content/lessons/journeyRoleDemandBudgets";
+import {
+  reviewAcquisitionDemandDrift,
+  summarizeDrift,
+} from "../content/lessons/acquisitionDemandDrift";
 import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
 import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
@@ -153,6 +157,20 @@ console.log(
 );
 for (const error of budget.errors) {
   console.log(`  ERROR ${error}`);
+}
+
+// DD-001..DD-004: ADVISORY drift review. Presentation may corroborate or
+// contradict the authored declaration; it never decides ownership, and these
+// diagnostics deliberately do NOT participate in the exit condition below.
+const drift = reviewAcquisitionDemandDrift(V1_LESSONS);
+const driftCounts = summarizeDrift(drift);
+console.log(
+  `Acquisition-demand drift review (DD-001..DD-004, advisory): ` +
+    `${V1_LESSONS.length} lesson(s) checked, ${driftCounts.warnings} warning(s), ` +
+    `${driftCounts.authorReviews} author-review item(s)`,
+);
+for (const d of drift) {
+  console.log(`  ${d.severity.toUpperCase()} ${d.code} ${d.lessonId}/${d.itemId}: ${d.message}`);
 }
 
 const hardErrors = findings.filter((f) => f.severity === "error");
