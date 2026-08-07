@@ -66,11 +66,30 @@ journey role       → active-new sözleşmeleri · Standard-only default'lar ·
                      ana ev: Content Bible v1.0 §6.7b / §6.8   (gelecekteki `journeyRole` alanı — [OPEN])
 ```
 
-> `[OPEN]` Ders başına journey-role ataması **ratify edilmedi**; `journeyRole`
-> metadata alanı **yoktur**, dolayısıyla bu sözleşmeler bugün **makine ile
-> denetlenemez**. Mevcut derslerin (L0–L15) uyduğu **iddia edilmez**.
-> `review-integration` ve `summit-milestone` content birliğindeki **legacy
-> karma-eksen değerleridir**; kaldırılmadı, yeniden adlandırılmadı.
+**Journey-role bantları** (founder-ratified): Doorway **1-2** · Standard **1-4** ·
+Integration **0** · Review **0** · Milestone **0-3**. Integration `0-1` DEĞİLDİR.
+`Hybrid` diye bir journey role **yoktur**; bir Standard ders yoğun biçimde geri
+dönüştürebilir — journey role dersin **birincil pedagojik işini** tarifler.
+
+> **Ders başına atama ratify EDİLDİ (2026-08-06).** Kanonik harita ve gerekçeleri
+> **yalnızca Content Bible §6.8.5**'te yaşar; bu blok haritayı **tekrarlamaz**.
+> **L0** beş rolün **dışındadır** (pre-curriculum/bootstrap; `journeyRole` **boş
+> bırakılır**) — altıncı bir enum değeri **eklenmedi** ve Doorway sözleşmesi
+> **gevşetilmedi**. **L6** adı konmuş, **derse özgü** bir istisnadır (tek sosyal
+> formül chunk'ı `au revoir`); bandı genişletmez, genellenmez.
+
+> **Sorumluluk kaydı [FL]:** **registry status global/statik metadatadır ve
+> ders-seviyesi active-new sorumluluğunu KURMAZ.** *İlk karşılaşma ≠ destekli
+> kullanım ≠ aktif sahiplenme.* İleri-tohumlama (forward-seeding) **serbesttir**:
+> bir item N dersinde recognition-only görünüp N+1'de supported/active olabilir,
+> N'de active-new **sayılmadan** (L10→L11, L13→L14). Runtime algoritması
+> **belirlenmedi**.
+
+> `[OPEN]` `journeyRole` metadata alanı **koda eklenmedi**; sözleşmeler bugün
+> **makine ile denetlenemez**. Chip-composition muhasebesi **açıktır** ve bu
+> **journey-role taksonomisini etkilemez**. **Review ve Milestone'un sevkedilmiş
+> örneği yoktur.** `review-integration` ve `summit-milestone` content birliğindeki
+> **legacy karma-eksen değerleridir**; kaldırılmadı, yeniden adlandırılmadı.
 
 **Yoğunluk sözleşmesi — üç AYRI bütçe.** `[FL — founder-locked 2026-08-05; yüzey katmanı ikinci pass'te, eksen ayrımı üçüncü pass'te netleştirildi]`
 Bu üç sayı **aynı şeyi saymaz**; toplanamaz, birbirine çevrilemez, birbirinin

@@ -6,7 +6,7 @@ signed_off: 2026-07-24 — founder read-through sign-off (Card 8 clarification a
 owner: Founder
 product: Cairn
 first_product: Cairn French
-last_updated: 2026-08-05
+last_updated: 2026-08-06
 governs: lesson & chip authoring, content presentation, feedback/reveal copy, French naturalness, content QA
 sits_below: CAIRN_PRODUCT_BRAIN_v1.0.md
 siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
@@ -134,7 +134,68 @@ siblings: [Curriculum Bible, Engineering Bible, Brand Bible]
 
 > **Standard's `1–4`** is the Standard journey-role band. It may also operate as the **outer ordinary-teaching ceiling** where no narrower journey-role contract applies — but it **must not erase** the stricter Doorway, Integration, Review, or Milestone contracts.
 
-> `[OPEN]` **Per-lesson journey-role mapping is not ratified.** `[OPEN — future journeyRole field]` **Metadata representation does not exist**, so these contracts are **not machine-enforceable today**. **No compliance claim is made for any current lesson (L0–L15).** Specifically unresolved: L0's bridge role vs the Doorway band · L1's hybrid Standard/Integration character · L5's light-Integration vs Standard character · L6 and L13 declaring integration work while carrying non-zero active-new · **Review and Milestone have no shipped samples** and are therefore unvalidated (§20.2).
+**6.8.1 Journey-role bands.** `[FL — founder-ratified 2026-08-06]`
+
+| Journey role | active-new |
+|---|---|
+| **Doorway** | **1–2** |
+| **Standard** | **1–4** |
+| **Integration** | **0** |
+| **Review** | **0** |
+| **Milestone** | **0–3** |
+
+**Integration stays at 0.** It is **not** `0–1`. L10 and L13 demonstrate that a substantial Integration lesson — dense recombination, forward-seeding, a full communicative arc — can be built owning **nothing new**. Allowing "just one" item by default would license gradual novelty drift, which is precisely what the contract exists to prevent.
+
+**There is no `Hybrid` journey role, and none may be added.** A Standard lesson may recycle heavily; journey role describes a lesson's **primary pedagogical job**, not the proportion of recycled material. Integration-flavoured character on a Standard lesson is expressed on the **content axis** (`secondaryArchetype`), never by inventing a sixth role.
+
+**6.8.2 L0 is outside the journey-role table.** `[FL — founder-ratified 2026-08-06]` **L0 is a pre-curriculum / bootstrap lesson** and is **not** Doorway, Standard, Integration, Review, or Milestone. It has **no prerequisites**, teaches no system, and `ADR-0006` defines it as *a first-use bridge, not Lesson 1*; its 4-item active-new load is structurally unlike the Doorway 1–2 contract. Future metadata treatment: **`journeyRole` unset / absent**.
+
+> **No sixth enum value (e.g. `bootstrap`) is introduced**, and **the Doorway contract is not weakened to accommodate L0**. The absence of a value is itself the statement that L0 sits outside the journey.
+
+**6.8.3 L6 — explicit, lesson-specific Integration exception.** `[FL — founder-ratified 2026-08-06]`
+
+> **L6 may carry one new social formula chunk (`au revoir`) because the lesson's pedagogical promise is a complete human moment from greeting to leave-taking. The exception does not create a general Integration 0–1 band and does not permit a new grammar system or paradigm.**
+
+L6's journey role is **Integration**; its canonical active-new is **1** (`chunk-au-revoir`), which is **genuine new ownership** — met on its own card, produced, and reused in the closing synthesis. No counting correction can make it 0, and **no learner-facing content changes**. The exception is **named, lesson-specific, and does not generalise to any other lesson**.
+
+**6.8.4 Active-new responsibility is lesson-level, not registry-level.** `[FL — founder-ratified 2026-08-06]`
+
+> **Registry status is global/static metadata and is not sufficient to establish lesson-level active-new responsibility.**
+
+Active-new must be determined from **lesson-level instructional responsibility**. Signals may include: production targets · expected answers · required/suggested pieces · evidence-target responsibility · independent-retrieval expectation · explicit lesson design notes. **A first appearance, or `status: "active"` alone, does not establish active-new ownership.**
+
+Preserve the distinction: **first encounter ≠ supported use ≠ active ownership.**
+
+**Forward-seeding is allowed.** An item may appear **recognition-only** in lesson *N* and become supported or active in lesson *N+1* **without counting as active-new in lesson *N***. Documented examples: **L10 → L11** and **L13 → L14**. *(No runtime algorithm is specified here.)*
+
+**6.8.5 Ratified journey-role map.** `[FL — founder-ratified 2026-08-06]` This is the **single canonical home** for the map; other documents reference it rather than repeating it.
+
+| Lesson | Journey role | Note |
+|---|---|---|
+| **L0** | *(unset — bootstrap, §6.8.2)* | outside the table |
+| **L1** | Standard | owns one bounded new edge; heavy recycling ≠ Integration |
+| **L2** | Standard | |
+| **L3** | Standard | |
+| **L4** | Standard | |
+| **L5** | Standard | two new package chunks reach production; retro-naming ≠ Integration |
+| **L6** | **Integration** | **explicit one-item exception, §6.8.3** |
+| **L7** | Doorway | |
+| **L8** | Doorway | |
+| **L9** | Doorway | |
+| **L10** | Integration | active-new 0 |
+| **L11** | Doorway | |
+| **L12** | Doorway | |
+| **L13** | **Integration** | **active-new 0** — see below |
+| **L14** | Doorway | first pronoun doorway in the production/ownership sense |
+| **L15** | Doorway | |
+
+**L13 / L14 sequencing is intentional and correct.** `chunk-j-y-vais` and `word-y-place` appear in L13 as **recognition-only forward seeds**, not as active-new ownership; L13's canonical active-new is **0**. The apparent violation came from **reading global registry status as lesson-level responsibility** (§6.8.4). **L14 remains the first pronoun doorway** in the production/ownership sense, graduating L13's seed. **No content, ordering, or prose correction is required.**
+
+> `[OPEN]` **Journey role is ratified; exact chip-level accounting is not.** The roles above stand even where item-level counting remains open — see §6.8.6. **Review and Milestone have no shipped examples**, so their contracts remain empirically unvalidated (§20.2).
+
+**6.8.6 Chip-composition accounting `[OPEN]`.** Sentence-shaped and composite items — `j'ai faim`, `chunk-j-y-vais`, unpackable chunks, `PROTECTED_CHUNKS` — remain unresolved between §4.3's composition classes and §6.9.1's active-new counting. **This affects exact item accounting, not the journey-role taxonomy**, and it does not reopen any assignment in §6.8.5. Routed to a separate reconciliation pass (§20.2).
+
+**6.8.7 `journeyRole` metadata posture `[OPEN — not implemented]`.** The anticipated field is `journeyRole?: "doorway" | "standard" | "integration" | "review" | "milestone"`. **It does not exist in code and is not implemented by this decision.** When implemented it should be **optional** — L0 intentionally carries no role, so presence must not itself become a contract — populated for L1–L15 per §6.8.5, with contract-compliance validation **reporting-only at first**.
 
 **6.9 Lesson density — three separate budgets.** `[FL — founder-locked 2026-08-05; §6.9.3 revised 2026-08-05 after comparative audit]` (CB-13/15/17/18/22) A lesson is measured by **three budgets that are not the same quantity and must never be summed, equated, or traded against each other**. The model is *narrow ownership load, broad authored surface inventory, selected rendered path.*
 
@@ -407,12 +468,12 @@ A qualified encounter's role may be: anchor · contextual variant · contrast ·
 - Production-action and sentence-encounter bands for **Doorway / Integration / Review / Milestone** archetypes → founder review (§6.9.5). Their current §6.8 activeNew contracts stand; no band invented.
 - Relationship between the older coarse **"30–45 exposure"** band and the **~30–35 authored-surface** target → founder review (§6.9.6). Separate metrics; preserved, not reconciled numerically.
 - **Structural production-quality contract** — the guard set that replaces the retired global floor → founder review (§6.9.2). Candidate dimensions recorded; none ratified.
-- **Journey-role metadata / schema design** (`journeyRole` field) → Engineering + founder (§6.7b, §6.8).
-- **Per-lesson journey-role assignment**, including L0's bridge role vs the Doorway band, L1's hybrid character, and L5's light-Integration character → Curriculum + founder (§6.8).
-- **L6 and L13** declare integration work while carrying non-zero active-new against Integration's 0 → founder (§6.8).
-- **Review and Milestone have no shipped samples**; their contracts are unvalidated → Curriculum (§6.8).
+- **`journeyRole` schema + metadata migration** — field design, lesson population, and validation posture → Engineering (§6.8.7). *The map itself is ratified (§6.8.5); only the implementation is open.*
+- **Exact automated active-new computation** — the responsibility principle is ratified (§6.8.4) but **no runtime algorithm is specified** → Engineering.
+- **Review and Milestone have no shipped samples**; their contracts remain empirically unvalidated → Curriculum (§6.8.5).
+- *(Closed 2026-08-06: per-lesson journey-role assignment, L0 bootstrap status, L1/L5 Standard, the Integration=0 question, L6's exception, and L13/L14 sequencing — all ratified in §6.8.1–§6.8.5.)*
 - **Legacy mixed-axis values** (`review-integration`, `summit-milestone`) in the content-archetype union → future metadata reconciliation (§6.7b).
-- **Chip-composition reconciliation**: §4.3 admits *unpackable chunk* as a legal multi-word class, but §6.9.1 admits sentence-shaped active-new items only via named protected chunks. The classification of forms such as `j'ai faim` is **unresolved** → Content (§4.3, §6.9.1).
+- **Chip-composition reconciliation** `[OPEN]`: §4.3 admits *unpackable chunk* as a legal multi-word class, but §6.9.1 admits sentence-shaped active-new items only via named protected chunks. The classification of `j'ai faim`, `chunk-j-y-vais`, other sentence-shaped unpackable chunks, and `PROTECTED_CHUNKS` is **unresolved** → Content (§4.3, §6.9.1). **This affects exact item accounting, not the journey-role taxonomy** (§6.8.6).
 - Reading exercise-family taxonomy + validator → Content/Engineering (§11.6, G1).
 - French style-guide sub-policies (register boundaries, spoken-vs-written, sentence-length by band, English-explanation register, gender-inclusive treatment, punctuation, colloquial omission, reviewer staffing) → French style guide (§18, G2).
 - Mon Lexique final band copy → Content, with the style guide (§17.4).
@@ -489,6 +550,7 @@ A qualified encounter's role may be: anchor · contextual variant · contrast ·
 
 ## Appendix D — Change log & founder sign-off
 
+- **2026-08-06 — Journey roles assigned; L0 bootstrap and L6 exception ratified (§6.8.1–§6.8.7, §20.2).** `[FL]` The **journey-role map for L1–L15 is ratified** (§6.8.5): Standard L1–L5 · Integration L6, L10, L13 · Doorway L7–L9, L11, L12, L14, L15. **L0 is a pre-curriculum/bootstrap lesson outside the five roles**, with `journeyRole` intentionally **unset**; **no sixth enum value is introduced** and **the Doorway 1–2 contract is not weakened**. **Integration stays at 0** — *not* 0–1 — because L10 and L13 show a substantial Integration lesson can own nothing new. **L6 is a named, lesson-specific exception**: one new social formula chunk (`au revoir`), because the lesson's promise is a complete moment from greeting to leave-taking; it neither widens the band nor permits a new grammar system. **L13's canonical active-new is 0** — `chunk-j-y-vais` and `word-y-place` are **recognition-only forward seeds**, and the apparent violation came from reading global registry status as lesson-level responsibility. **L14 remains the first pronoun doorway** in the production/ownership sense; **no content, ordering, or prose correction is required**. **No `Hybrid` role** is added: a Standard lesson may recycle heavily. Ratified principle (§6.8.4): **registry status is global/static metadata and does not establish lesson-level active-new responsibility** — *first encounter ≠ supported use ≠ active ownership* — and **forward-seeding is allowed** (L10→L11, L13→L14). Still `[OPEN]`: chip-composition accounting (§6.8.6), `journeyRole` schema/migration (§6.8.7), the automated counting algorithm, and Review/Milestone empirical validation. No schema, lesson, registry, test, or runtime change.
 - **2026-08-05 (third pass) — two axes separated; global production floor retired (§6.7b, §6.8, §6.9.2, §6.9.5, Ch. 19, §20.2).** `[FL]` **Content archetype** (linguistic/instructional engine; current `primaryArchetype`/`secondaryArchetype`; owned by [`lesson-archetype-templates-v1.md`](../../syllabus/lesson-archetype-templates-v1.md)) and **journey role** (pedagogical job; future `journeyRole` metadata; owned by this Bible) are ratified as **two independent axes** — not synonyms, no one-to-one map, neither replacing the other. §6.8's Doorway / Standard / Integration / Review / Milestone are explicitly **journey roles**, with activeNew budgets **unchanged** (1–2 / 1–4 / 0 / 0 / 0–3); Standard's 1–4 may act as the outer ordinary-teaching ceiling without erasing stricter contracts. The **provisional global `5–8` production floor is retired before ratification** — audited lessons returned 5, 4, 3; the single number flattened content-archetype variation; and a raw count cannot detect structural weakness. `3–5` is **not** restored, `4–8` is **not** adopted, and **no replacement universal range is set**. Numeric production planning routes to the content-archetype templates; the **meaningful-production definition, counting rules, and exclusions are unchanged and remain live**. Ratified direction: *cross-archetype production quality will be governed by structural requirements rather than one universal numeric floor* — the guard set itself stays `[OPEN]`. `~30–35` authored surfaces and the diagnostic-only rendered layer are **unchanged**. `review-integration` and `summit-milestone` are recorded as **legacy mixed-axis values** awaiting metadata reconciliation — not deprecated, renamed, or migrated. **No per-lesson journey-role mapping is ratified**, **no compliance claim** for L0–L15, and no schema, lesson, test, or runtime change.
 - **2026-08-05 (second pass) — `~30–35` reframed as an authored-surface inventory target (§6.9.3, §6.9.4, §6.9.6, Ch. 19).** `[FL]` A comparative audit of two early lessons found the figure matched the **authored** inventory (30 prepared surfaces per lesson) while a single rendered learner path surfaced roughly half. §6.9.3 now separates **three layers** — *authored surface* / *rendered presentation* / *qualified sentence encounter* — and assigns `~30–35` to the **authored-surface layer only**. The rendered layer gains **no ratified numeric target**; rendered density is explicitly a diagnostic. The one-word-pragmatic-form clarification (`Bonjour.` / `Merci.` count as standalone communicative examples, not as chips or options) is recorded. **5–8** production actions is now marked **provisional** wherever its status is stated; **1–4 active-new is unchanged and founder-ratified**. CB-22's `30–45 exposure` band stays a **separate unresolved metric**, not equated with any of the three layers. No runtime-enforcement claim; no compliance claim for any current lesson; no test, lesson, or registry change.
 - **2026-08-05 — Lesson-density contract hardened (§6.9, Ch. 19).** `[FL]` Three budgets separated and defined so they cannot be confused: **active-new load 1–4 (unchanged)**, **meaningful production actions 5–8** for a standard early lesson (replacing the former `3–5` authoring default), and a third density budget for learner-facing French surfaces *(scoped to the authored-surface layer by the second pass above)*. Model: *narrow ownership load, broad authored surface inventory, selected rendered path.* Passive reveals, interlocutor-only French, recognition-only choices, artificial taps, and QA-extraction duplicates cannot inflate either count; repeated use counts again only when a meaningful dimension changes. **Preserved unchanged:** the seven frozen screen types, spine and heavy/board/insight caps, sentence-family authoring, whole-first/unpack-later, supported and ghost role integrity, active-new payload economy, "every screen acts", discovery-vs-assessment, Reading ending in an action without heavy production, and the §6.8 anti-gaming rule. **No runtime-enforcement claim** and **no claim that any current lesson (incl. L1–L10) complies.** **Left open** (§20.2): archetype bands for Doorway/Integration/Review/Milestone, and the relationship to the older coarse "30–45 exposure" band, which is preserved as a different metric and not numerically reconciled. Mirrored in LESSON_FLOW §1.1; CB-13 superseded in part (Decision Matrix amendment 2026-08-05).

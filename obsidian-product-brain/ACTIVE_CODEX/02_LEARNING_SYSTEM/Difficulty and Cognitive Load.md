@@ -67,7 +67,9 @@ Bilişsel yük teorisi: çalışan bellek sınırlıdır; aynı anda çok yeni p
 
 > [!warning] **`~30–35` YAZILMIŞ yüzeyleri sayar, tek bir öğrenci koşusunu değil.** Render edilen yol envanterin **pedagojik olarak seçilmiş bir alt kümesini** gösterir; bir yazılmış yüzey belirli bir koşuda hiç görünmeyebilir. **Render katmanının ratify edilmiş sayısal hedefi yoktur.** Hiçbir sayı runtime'da enforce edilmez ve mevcut derslerin (L1–L10 dâhil) uyduğu **iddia edilmez**.
 
-> [!warning] Doorway / Integration / Review / Milestone **journey role**'leridir; activeNew sözleşmeleri (1–2 / 0 / 0 / 0–3) korunur ([[Lesson Anatomy]]) ama `journeyRole` metadata alanı **olmadığı için makine ile denetlenemez** ve ders başına atama **[OPEN]**'dir. Arketipler arası üretim kalitesi ileride **yapısal gereksinimlerle** yönetilecek — sözleşme **[OPEN]**. Eski **30–45 exposure** bandı **farklı bir metriktir**, korunur, sayısal olarak uzlaştırılmadı.
+> [!canon] Doorway / Integration / Review / Milestone **journey role**'leridir; activeNew sözleşmeleri (1–2 / 0 / 0 / 0–3) korunur ([[Lesson Anatomy]]). **Ders başına atama 2026-08-06'da ratify edildi** — kanonik harita **Content Bible §6.8.5**'te. **L0** bootstrap olarak dışarıdadır; **Integration = 0** korunur ve **L6** adı konmuş tek-formül istisnasıdır. **Registry status ders-seviyesi active-new sorumluluğunu KURMAZ**; ileri-tohumlama serbesttir (L10→L11, L13→L14).
+
+> [!warning] `journeyRole` metadata alanı **koda eklenmedi** → sözleşmeler **makine ile denetlenemez**. Arketipler arası üretim kalitesi ileride **yapısal gereksinimlerle** yönetilecek — sözleşme **[OPEN]**. Chip-composition muhasebesi **[OPEN]**. Eski **30–45 exposure** bandı **farklı bir metriktir**, korunur, sayısal olarak uzlaştırılmadı.
 
 ### Recycle Load Protection (CANONICAL, v0.3:388-390)
 > "Recycle cannot steal the lesson." Her cümlenin bir yük bütçesi var: **target load baskın, recycle load destekleyici, exposure load opsiyonel ve capped.** Bkz. [[Chip Lifecycle]], [[Content Selection]].

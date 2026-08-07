@@ -191,6 +191,37 @@ Three layers are now distinguished and must not be conflated: **authored surface
 
 **Traceability.** Earlier amendments are preserved in full; only the affected clauses are marked superseded in part. The historical `3–5` text and the provisional `5–8` text both remain visible in the decision trail above. Authorizes no code, lesson, French-content, schema, validator, test, or ADR change.
 
+### Amendment — 2026-08-06: journey roles assigned; bootstrap and Integration exception ratified
+
+> A reconciliation audit across L0, L1, L5, L6, L13 and L14 adjudicated the lessons whose functional role or novelty ownership was contradictory. Live authority is **Content Bible v1.0 §6.8.1–§6.8.7** (DOC-004), which is the **single canonical home for the journey-role map**; other documents reference it rather than repeating it.
+
+| Decision | Ratified outcome |
+|---|---|
+| **L0** | **Pre-curriculum / bootstrap, outside the five journey roles.** `journeyRole` intentionally **unset**. **No sixth enum value** (e.g. `bootstrap`) is created, and **the Doorway 1–2 contract is not weakened**. Basis: no prerequisites, no system taught, `ADR-0006` "first-use bridge, not Lesson 1", and a 4-item load structurally unlike Doorway. |
+| **L1** | **Standard.** Owns one bounded new edge, recycles the L0 spine, grows it in a new context, delivers genuine recombination. **Heavy recycling does not make a lesson Integration.** |
+| **L5** | **Standard.** Two new package chunks, both reaching production responsibility, carried by recycled frames. **Retro-naming / formalisation does not make it Integration.** |
+| **Integration band** | **Stays exactly 0 — not 0–1.** L10 and L13 demonstrate that meaningful Integration lessons satisfy 0 active-new. Allowing "just one" by default would create gradual novelty drift. **L6 is a justified exception, not evidence the contract is wrong.** |
+| **L6** | **Integration**, canonical active-new **1** (`chunk-au-revoir`, genuine new ownership). Recorded as an **explicit, named, lesson-specific exception** — see wording below. No learner-facing content change. |
+| **L13** | **Integration**, canonical active-new **0**. `chunk-j-y-vais` and `word-y-place` are **recognition-only forward seeds**, not ownership. The apparent violation came from **reading global registry status as lesson-level responsibility**. **No content, ordering, or prose correction required.** |
+| **L14** | **Doorway.** L13→L14 sequencing is intentional: L13 exposes once, L14 graduates into production ownership. **L14 remains the first pronoun doorway** in the production/ownership sense. |
+| **Hybrid** | **Not added, and may not be added.** Journey role describes a lesson's primary pedagogical job, not the proportion of recycled material. |
+
+**The L6 exception, as ratified:**
+
+> **L6 may carry one new social formula chunk (`au revoir`) because the lesson's pedagogical promise is a complete human moment from greeting to leave-taking. The exception does not create a general Integration 0–1 band and does not permit a new grammar system or paradigm.**
+
+**Active-new responsibility principle (ratified).**
+
+> **Registry status is global/static metadata and is not sufficient to establish lesson-level active-new responsibility.**
+
+Active-new is determined from **lesson-level instructional responsibility** — production targets, expected answers, required/suggested pieces, evidence-target responsibility, independent-retrieval expectation, explicit design notes. A first appearance or `status: "active"` alone establishes nothing. The distinction **first encounter ≠ supported use ≠ active ownership** is preserved, and **forward-seeding is allowed**: an item may be recognition-only in lesson *N* and supported/active in *N+1* without counting as active-new in *N* (documented: **L10→L11**, **L13→L14**). No runtime algorithm is specified.
+
+**Ratified map** (canonical home: Bible §6.8.5): L1–L5 Standard · L6, L10, L13 Integration · L7–L9, L11, L12, L14, L15 Doorway · L0 unset.
+
+**Effect on earlier rows.** **CB-18** — its five values were clarified as journey roles by the 2026-08-05 third pass; this pass **closes the per-lesson mapping** that was left `[OPEN]` there, while its numeric bands stand **verbatim and unchanged**. No other CB row is affected. Historical rows are **not** rewritten.
+
+**Still open.** Chip-composition reconciliation (`j'ai faim`, `chunk-j-y-vais`, sentence-shaped unpackable chunks, `PROTECTED_CHUNKS`, §4.3 vs §6.9.1) — **affects exact item accounting, not the journey-role taxonomy** · **Review/Milestone empirical validation** (no shipped examples) · **`journeyRole` schema implementation and metadata migration** · **exact automated active-new computation**. Journey roles for L3, L4 and L14 are ratified **even though their chip-level accounting remains open**. Authorizes no code, lesson, metadata, schema, validator, test, or ADR change.
+
 ---
 
-*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24; amended 2026-08-05 (lesson-density contract), second pass 2026-08-05 (authored-surface scoping), third pass 2026-08-05 (two-axis separation; production floor retired). Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*
+*End of Decision Matrix v0.1. Analysis complete; founder-ratified 2026-07-24; amended 2026-08-05 (lesson-density contract), second pass 2026-08-05 (authored-surface scoping), third pass 2026-08-05 (two-axis separation; production floor retired), fourth pass 2026-08-06 (journey-role assignment; bootstrap and Integration exception). Authorizes no code/lesson/ADR change; feeds `CONTENT_BIBLE_v1.0.md`.*
