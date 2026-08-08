@@ -50,6 +50,8 @@ const RATIFIED: Record<string, readonly string[]> = {
   // L17 is Standard: three ratified demands, inside the 1-4 band and inside
   // PRJ-015 IC-002's normal 1-3 target.
   "v1-lesson-017": ["chunk-ca-va", "adj-fatigue", "adj-content"],
+  // L18 is a Doorway: one question word, inside the 1-2 band.
+  "v1-lesson-018": ["adverb-comment"],
 };
 
 /** Minimal synthetic lesson carrying one declaration and one reference site. */
@@ -60,7 +62,7 @@ const lesson = (over: object): Lesson =>
 const refScreen = (...ids: string[]) =>
   ({ id: "s00", type: "meet-card", targetItemIds: ids, payload: {} }) as never;
 
-describe("acquisitionDemands — shipped L0–L17 map", () => {
+describe("acquisitionDemands — shipped L0–L18 map", () => {
   test("every lesson declares exactly its ratified demands", () => {
     assertEqual(
       V1_LESSONS.map((l) => l.id).sort(),
@@ -76,16 +78,16 @@ describe("acquisitionDemands — shipped L0–L17 map", () => {
     }
   });
 
-  test("total declared demands across v1 is 24", () => {
-    // 21 through L16 (Integration contributed 0) + L17's three.
-    assertEqual(totalAcquisitionDemands(V1_LESSONS), 24, "current-v1 regression total");
+  test("total declared demands across v1 is 25", () => {
+    // 21 through L16 (Integration contributed 0) + L17's three + L18's one.
+    assertEqual(totalAcquisitionDemands(V1_LESSONS), 25, "current-v1 regression total");
   });
 
-  test("migration is complete — all 18 lessons declare the field", () => {
-    assertEqual(V1_LESSONS.length, 18, "18 shipped lessons");
+  test("migration is complete — all 19 lessons declare the field", () => {
+    assertEqual(V1_LESSONS.length, 19, "19 shipped lessons");
     assertEqual(
       countLessonsDeclaringDemands(V1_LESSONS),
-      18,
+      19,
       "none is left unadjudicated",
     );
     for (const l of V1_LESSONS) {
@@ -307,6 +309,7 @@ describe("acquisitionDemands — non-regression", () => {
         "doorway",
         "integration",
         "standard",
+        "doorway",
       ],
       "the ratified role map is untouched",
     );
