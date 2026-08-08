@@ -3,13 +3,15 @@
 > Follows `docs/learning-engine-v1.md` + `docs/syllabus/lesson-spec-template-v1.1.md` + `docs/syllabus/lesson-archetype-templates-v1.md` + `docs/syllabus/canonical-item-id-convention-v0.1.md` + `docs/syllabus/ai-generation-contract-v1.md` + `docs/syllabus/L10-L20-band-map-v0.md` + **`docs/syllabus/L16-integration-small-moment-gate-review.md`** (Step 22A — the scope this spec implements) + the L10 (after-class integration) / L11 (pouvoir) / L12 (est-ce que) / L13 (can-do integration) / L14 (`y`-light) / L15 (devoir/falloir-light) specs.
 > **Compact spec** (intentionally shorter than the full template — see §1) — planning/spec only. Authorizes **no** code, content, flag, or runtime change. Locked product canon wins on conflict. Dev APK runtime (L1–L5 only) is unaffected.
 
-> **Gate applied (Step 22A, Option B — bounded seed).** L16 is **Review/Integration primary**: it recombines **L11–L15** (pouvoir help/permission + `est-ce que` yes/no wrapper + place-`y` + `il faut`/`je dois` obligation-light + repair/help language) in one after-class human scene, with **0 new grammar systems, 0 new architecture verbs**. It **also seeds A Small Moment** — but **only** as a **`model-answer-only`, present-only, known-items-only, ≤2–3 line reading + one short scaffolded response**. It does **not** open live AI evaluation, free chat, personalization, Mini Mission / Mini Conversation, advice/coaching tone, new emotional vocabulary, past/future, `il faut que`/subjunctive, conditionnel/advice, `y`+modal chains, or productive object pronouns. New feature ownership = **seed shape only**; the deep AI-driven A Small Moment stays **paid-zone**.
+> **Gate applied (Step 22A, Option B — bounded seed).** L16 is **Review/Integration primary**: it recombines **L11–L15** (pouvoir help/permission + `est-ce que` yes/no wrapper + place-`y` + `il faut`/`je dois` obligation-light + **help language**, `vous pouvez m'aider`) in one after-class human scene, with **0 new grammar systems, 0 new architecture verbs**. It **also seeds A Small Moment** — but **only** as a **`model-answer-only`, present-only, known-items-only, ≤2–3 line reading + one short scaffolded response**. It does **not** open live AI evaluation, free chat, personalization, Mini Mission / Mini Conversation, advice/coaching tone, new emotional vocabulary, past/future, `il faut que`/subjunctive, conditionnel/advice, `y`+modal chains, or productive object pronouns. New feature ownership = **seed shape only**; the deep AI-driven A Small Moment stays **paid-zone**.
 
 > **Five locked gates (Step 22A §11):** (1) seed = `model-answer-only` reading-comprehension + scaffolded response; (2) reading **present-only / known-items-only / ≤2–3 lines**; (3) **no object-pronoun production** beyond frozen prior chunks (`m'aider` stays inside `vous pouvez m'aider`); (4) **deep A Small Moment = paid-zone**, L19 may recur it lightly, **L16 does not launch the full feature**; (5) **a recognition-only forward hook is permitted but NOT required** — L16 carries **none**, and **no new system ownership** (see the founder decision below).
 
 > ## Founder decision (canonical, resolves the L16 generation blocker)
 >
-> **`fatigué` is NOT a canonical identity, and will not become one for L16.** No `adj-fatigue`, no `chunk-je-suis-fatigue`, no equivalent registry entry, and no `acquisitionLink` / `acquisitionComponents` relation for it. Every earlier L16 reading candidate that opened on `Je suis fatigué.` is therefore **unbuildable** — the spec's own *known-items-only* gate and its chosen first line were mutually unsatisfiable, which is exactly what the Content Factory pre-flight surfaced.
+> **`fatigué` must not be introduced by L16 merely to preserve the superseded L16 reading.** No `adj-fatigue`, no `chunk-je-suis-fatigue`, no equivalent registry entry, and no `acquisitionLink` / `acquisitionComponents` relation is created **by this lesson**. Every earlier L16 reading candidate that opened on `Je suis fatigué.` is therefore **unbuildable as an L16 line** — the spec's own *known-items-only* gate and its chosen first line were mutually unsatisfiable, which is exactly what the Content Factory pre-flight surfaced.
+>
+> **Scope correction (2026-08-08).** An earlier draft of this banner said `fatigué` "is NOT a canonical identity and will not become one." That was **over-broad and is withdrawn**. This ruling is **L16-scoped only**. It makes **no** decision about whether `fatigué` may become canonical later: the L02 lesson spec legitimately planned it as active-new (`adj-fatigue`), and the shipped L2 compact slice simply did not carry it. **L17 adjudicates that question separately** — nothing here forecloses it. What is settled is narrow and permanent: an **Integration** lesson may not mint an identity to rescue its own stale reading.
 >
 > **Canonical reading (supersedes candidate B′):**
 > - `Il faut faire une pause.`
@@ -25,6 +27,18 @@
 > > **L16's "A Small Moment" seed is semantic / human-context preparation for L17, not a required lexical preview.**
 >
 > The small-moment experience *is* the forward seed. Wherever this document previously demanded exactly one recognition-only lexical forward preview, that demand is narrowed to "permitted, not required."
+>
+> **Repair beat, de-scoped (2026-08-08).** This spec repeatedly called the breakdown/repair trio **recycled from L1/L11**. That claim is **false against shipped content** and is withdrawn:
+>
+> - `chunk-je-ne-comprends-pas` and `chunk-vous-pouvez-repeter` exist in the registry as **PR-07 L1-pilot registrations** (`frenchQa: founder_waived_provisional`), but **no shipped lesson works them**. `lesson-001.ts` says so in its own words — *"the three rescue chunks are registered for the frozen L1 ledger but **not activated by these payloads**"*, and *"the wider rescue/location kit from the L1 syllabus spec is **intentionally out of this compact slice**."*
+> - **`c'est pas grave` has no canonical identity at all.**
+> - `lesson-010.ts` and `lesson-013.ts` had already de-scoped the same material for the same reason.
+>
+> **Therefore L16 de-scopes the repair beat.** An Integration lesson may not be the first place material is worked, so L16 neither recycles nor introduces it. This is the same defect class as the `fatigué` line: *prose calling something "recycled" is not evidence — only a worked shipped identity is.*
+>
+> **What is NOT affected: the L11 help capability is genuinely owned and stays.** `chunk-vous-pouvez` and `chunk-m-aider` **are** worked at L11 (both carry first-worked evidence there), so `vous pouvez m'aider` remains legitimately recyclable in L16. Do not read "repair is de-scoped" as "help is de-scoped" — they are different capabilities with different ownership histories. Wherever this document writes **"repair/help"** as one phrase, read it as **help only**.
+>
+> **Not retrofitted here.** Giving the repair rail a real acquisition home earlier in the spine is a separate, non-blocking task; this spec makes no claim about where that home should be.
 
 > **Archetype #10 weighting (read first).** Review/Integration lessons are **recombination-weighted**: **Weave It / Say It Your Way / Natural Reveal carry the lesson; Meet It / Why This Works are light** (little new to meet or explain). The A Small Moment Seed is a **bounded new beat**, not a new system — its novelty comes from the **reading-response *format***, not from grammar or vocabulary.
 
@@ -54,7 +68,8 @@
 - **`est-ce que + [owned clause]`** (L12 — yes/no wrapper).
 - **`j'y vais` / `on y va`** (L14 — place-`y`, antecedent owned).
 - **`il faut + inf.` (primary) / `je dois + inf.` (supported)** (L15 — obligation-light).
-- **repair / politeness** (L1/L11): `je ne comprends pas`, `vous pouvez répéter ?`, `c'est pas grave`, `bonjour`, `merci`.
+- **politeness** (L1): `bonjour`, `merci` — genuinely worked in shipped content.
+- ~~**repair** (L1/L11): `je ne comprends pas`, `vous pouvez répéter ?`, `c'est pas grave`.~~ **DE-SCOPED** — never worked in shipped L0–L15; see the repair-beat note in the banner. Not recycled, not introduced.
 
 **A Small Moment seed (the one bounded new beat):**
 - **one ≤2–3 line reading** — present-only, known-items-only;
@@ -94,16 +109,18 @@ Recognition-only or deferred — never production targets / never built in L16:
 | **Active — new** | **3** *(planning tier)* | ~1–3 (meta) | `phen:integration-review` *(applied, cf. L10/L13)*, `phen:a-small-moment-seed`, `phen:model-answer-only-reveal` — **all meta, 0 new lexis**. **Contributes 0 to the engineering active-new count** — see the counting note below. |
 | **Supported — new** | **4** | ~3–4 | `sent:l16-small-moment-reading-*` (the ≤2–3 line read, composed), `sent:l16-small-moment-response-1` (scaffolded response), `frame:after-class-flow` *(recycled scaffold, L10)*, `phen:engine-chaining` *(recycled, L10)* |
 | **Recognition / ambient** | **6** | ~6–8 | `je dois y aller`/`je peux y aller` (y+modal preview), `il faut que`/`je devrais` (blocked-recognition), object-pronoun preview (`vous aider`), `phen:request-register-ladder` *(recycled)*. **No lexical forward preview** — the retired fatigué-carried L17 hook is not replaced (founder decision). |
-| **Recycled (L1–L15)** | **~24** | ~22–28 | bonjour, je suis, j'ai besoin d'aide, je voudrais faire une pause, faire une pause/ça, je ne fais pas ça, je peux / je ne peux pas, vous pouvez m'aider / répéter, est-ce que (+ wrapper), je vais à + place, j'y vais / on y va, où est…?, tu vas où, il faut + inf., je dois + inf., je ne comprends pas, pouvez-vous répéter, c'est pas grave, merci |
+| **Recycled (L1–L15)** | **~19** | ~22–28 *(now under band — see note)* | bonjour, je suis, je voudrais faire une pause, faire une pause, je peux / je ne peux pas, vous pouvez m'aider, est-ce que (+ wrapper), je vais à + place, j'y vais / on y va, c'est où ?, il faut + inf., je dois + inf., merci. **Removed as phantom ownership:** je ne comprends pas · pouvez-vous répéter · c'est pas grave · j'ai besoin d'aide · faire ça / je ne fais pas ça · tu vas où — none is worked in shipped L0–L15. |
 | **Traps (option-only)** | **7** | — | `trap:generic-ai-chat-drift`, `trap:mini-mission-resurrection`, `trap:conditionnel-advice-too-early` *(reuse L15)*, `trap:new-vocab-dump`, `trap:object-pronoun-pressure-too-early`, `trap:past-future-reading-leak`, `trap:y-modal-chain-too-early` |
-| **Total exposure** | **~37** | ~34–40 | within band |
-| **Production targets** | **7** | ~6–8 | `Il faut faire une pause.` · `Je dois aller à la maison.` · `Est-ce que je peux faire une pause ?` · `J'y vais.` · `Je ne comprends pas. Vous pouvez répéter ?` · *(A Small Moment response)* `Je dois faire une pause.` · *(chained)* `Il faut faire une pause, je vais à la maison.` |
+| **Total exposure** | **~32** | ~34–40 *(now under band — see note)* | see the recycled-row correction |
+| **Production targets** | **6** | ~6–8 | `Il faut faire une pause.` · `Je dois aller à la maison.` · `Est-ce que je peux faire une pause ?` · `J'y vais.` · *(A Small Moment response)* `Je dois faire une pause.` · *(chained)* `Il faut faire une pause, je vais à la maison.` — **the repair target `Je ne comprends pas. Vous pouvez répéter ?` is removed** (de-scoped, see banner) |
 
 **New grammar systems: 0. New architecture verbs: 0. New feature ownership: seed shape only.**
 
 > **Counting note — "Active — new: 3" vs PRJ-015 (no conflict, two different counts).** The table above is **authoring/planning vocabulary**: it counts the *tiers this spec plans against*, including meta phenomena. **PRJ-015 Item-Counting Contract v1.0 remains authoritative for the engineering active-new count**, and under **IC-002** all three entries here (`phen:integration-review`, `phen:a-small-moment-seed`, `phen:model-answer-only-reveal`) are `phen:` **meta** and therefore contribute **0**. PRJ-015 names L16 as **0** active-new, and this spec agrees: L16's authored declaration is `acquisitionDemandItemIds: []`. Keep both readings — the planning tier is useful to authors; the PRJ-015 count is what validators and budgets use.
 
-> **Where does novelty come from?** **Recombination + the reading-response *format* — not new grammar or vocabulary.** Active-new is **3 (planning tier — meta, 0 lexis; 0 under PRJ-015)** vs **~24 recycled**; the load is **retrieval + chaining + reading comprehension**, not acquisition. This is the consolidation the rhythm rule prescribes after L14–L15, with the A Small Moment seed as the differentiator from L13's pure integration. If smoke shows it feels empty, strengthen the **reading's human warmth and the response's coherence** — **do not add lexis, a forward preview, or AI.**
+> **Where does novelty come from?** **Recombination + the reading-response *format* — not new grammar or vocabulary.** Active-new is **3 (planning tier — meta, 0 lexis; 0 under PRJ-015)** vs **~19 recycled**; the load is **retrieval + chaining + reading comprehension**, not acquisition. This is the consolidation the rhythm rule prescribes after L14–L15, with the A Small Moment seed as the differentiator from L13's pure integration. If smoke shows it feels empty, strengthen the **reading's human warmth and the response's coherence** — **do not add lexis, a forward preview, or AI.**
+>
+> **Why the exposure bands are now under-shot.** The recycled and total-exposure figures fell below their planning bands once phantom-ownership entries were struck. That is **correct, not a defect**: the bands were computed against an inventory the shipped corpus never contained. **Do not restore the numbers by adding material** — an Integration lesson cannot introduce, and the honest count is the smaller one. The bands themselves are planning heuristics (IC-006 records `30–45 total exposure` as non-binding), not validators.
 
 ---
 
@@ -115,7 +132,7 @@ Recognition-only or deferred — never production targets / never built in L16:
 
 | Candidate | Verdict | Reason |
 |---|---|---|
-| **A** — `Je suis fatigué.` / `Il faut aller à la maison.` / `Est-ce que vous pouvez répéter ?` | ⚠️ owned but **contextually weak** *(also superseded — see C)* | `Est-ce que vous pouvez répéter ?` is incoherent in a reading (nothing has been said to repeat); it reads as a drill, not a moment |
+| **A** — `Je suis fatigué.` / `Il faut aller à la maison.` / `Est-ce que vous pouvez répéter ?` | ⚠️ contextually weak *(and superseded — see C; **two** of its lines are also phantom-owned)* | `Est-ce que vous pouvez répéter ?` is incoherent in a reading (nothing has been said to repeat); it reads as a drill, not a moment. It is *also* unbuildable — `répéter` is never worked in shipped content — as is `fatigué`. |
 | **B (as briefed)** — `Je suis fatigué.` / `Il faut faire une pause.` / `Après, je vais à la maison.` | 🚫 **leaks new vocab** *(also superseded — see C)* | **`Après` (afterwards) is NOT owned in L1–L15** — a discourse adverb dump (`trap:new-vocab-dump`). Demote. |
 | **B′ (formerly chosen)** — `Je suis fatigué.` / `Il faut faire une pause.` / `Je vais à la maison.` | 🚫 **SUPERSEDED — unbuildable** | The "100% owned" claim was **wrong**: `fatigué` has **no canonical identity** and, per the founder decision, will not get one. `Je suis fatigué.` cannot be carried, so B′ violated the very known-items-only gate it was chosen to satisfy. Retained here as the decision history that produced the blocker. |
 | **C (CANONICAL)** — `Il faut faire une pause.` / `Je vais à la maison.` / `On y va ?` | ✅ **canonical** | 3 lines, present-only, every line carried by an existing identity (`chunk-il-faut` + `chunk-faire-une-pause` · `chunk-je-vais` + `chunk-a-la-maison` · `chunk-on-y-va`); coherent human moment, and the closing question **invites** the response the seed asks for |
@@ -134,15 +151,15 @@ Recognition-only or deferred — never production targets / never built in L16:
 | `Il faut faire une pause.` | ✅ in scope | L15 primary |
 | `Je dois faire une pause.` / `Je dois aller à la maison.` | ✅ in scope | L15 supported (`je dois + owned inf.`) |
 | `J'y vais.` | ✅ in scope **if** the place is already named | L14 place-`y`; keep antecedent clear |
-| `Je ne comprends pas. Vous pouvez répéter ?` | ✅ in scope | L1/L11 repair (frozen) |
-| **`Je peux vous aider.`** | 🚫 **avoid** | object-pronoun pressure (`vous aider` outside frozen `vous pouvez m'aider`) — offer help via `Je peux faire ça` instead |
+| `Je ne comprends pas. Vous pouvez répéter ?` | 🚫 **DE-SCOPED** *(was: ✅ in scope, "L1/L11 repair (frozen)")* | Phantom ownership: neither chunk is worked in shipped L0–L15, and `c'est pas grave` has no identity. An Integration lesson may not be the first place they are taught. Kept as history. |
+| **`Je peux vous aider.`** | 🚫 **avoid** | object-pronoun pressure (`vous aider` outside frozen `vous pouvez m'aider`). *(The former suggested workaround `Je peux faire ça` is withdrawn — `faire ça` is not owned either. L16 has **no** owned surface for offering help; the learner asks for help, they do not yet offer it.)* |
 | **`Je peux y aller.` / `Je dois y aller.`** | 🚫 **avoid** | `y`+pouvoir / `y`+devoir chains deferred (recognition only) |
 | **`Il faut que tu partes.`** | 🚫 **avoid** | subjunctive / deeper clause deferred |
 | **`Tu devrais…`** / `Hier…` / `Demain…` / `Plus tard…` | 🚫 **avoid** | advice (conditionnel) + past/future narrative drift |
 
 - **Anchor (chained, recycled):** `Il faut faire une pause, je vais à la maison.` *(two owned engines in one breath — obligation + movement; present-only)*
 - **A Small Moment response (signature):** model answer `Je dois faire une pause.` — bounded accepted alternatives: `Il faut faire une pause.`, `Je vais à la maison.`, `J'y vais.` *(the place is named on line 2, so `y` has its antecedent)*
-- **Comprehension check (closed):** "What does this person need to do?" → choose **`faire une pause`** among owned distractors (`faire ça` / `aller à la maison`).
+- **Comprehension check (closed):** "What does this person need to do?" → choose **`faire une pause`** among owned distractors (`aller à la maison` — the wrong order of the moment / `y aller` — the deferred `y`+modal chain). *(The former `faire ça` distractor is withdrawn: `faire ça` is not owned.)*
 
 ---
 
@@ -220,7 +237,7 @@ Recognition-only or deferred — never production targets / never built in L16:
 - **over-answering with new vocabulary** (importing feelings/topic words) — hint: "answer with what you already know." (`trap:new-vocab-dump`)
 - **turning obligation into advice** (`Tu devrais faire une pause.`) — hint: "this is what you *have to* do, not advice." (`trap:conditionnel-advice-too-early`)
 - **`y` with a modal** (`je dois y aller` / `je peux y aller`) — hint: "for now, `je dois aller à la maison` / `j'y vais`." (`trap:y-modal-chain-too-early`)
-- **producing an object pronoun** (`Je peux vous aider.` / `il faut m'aider`) — hint: "keep `m'aider` only inside `vous pouvez m'aider`; offer help with `je peux faire ça`." (`trap:object-pronoun-pressure-too-early`)
+- **producing an object pronoun** (`Je peux vous aider.` / `il faut m'aider`) — hint: "keep `m'aider` only inside `vous pouvez m'aider`." (`trap:object-pronoun-pressure-too-early`)
 - **treating A Small Moment as chat** (writing a multi-line conversation) — hint: "one short answer is enough." (`trap:generic-ai-chat-drift`)
 - **moralizing with `il faut` / `je dois`** ("you must rest, it's important…") — passive mirror only; no coaching.
 - **writing too long** — one short line; this is a small moment, not an essay.
@@ -243,7 +260,7 @@ Recognition-only or deferred — never production targets / never built in L16:
 
 **Applied to AI-contract §15 in commit `f47d62f`** (review approved). The **canonical applied row + L16 note live in `docs/syllabus/ai-generation-contract-v1.md` §15**. Original proposal kept below for traceability:
 
-> **⚠️ Stale reading in the quoted proposal and in AI-contract §15.** Both were written against the superseded B′ reading and still open on `Je suis fatigué.`. The **canonical reading is now `Il faut faire une pause.` / `Je vais à la maison.` / `On y va ?`** (founder decision, above). The quote below is **kept verbatim as history, not as guidance**; the **allowed / blocked lists remain correct** — only the reading text changed. **Follow-up (out of this patch's scope):** `docs/syllabus/ai-generation-contract-v1.md` §15's L16 row needs the same reading correction.
+> **⚠️ Stale reading in the quoted proposal and in AI-contract §15.** Both were written against the superseded B′ reading and still open on `Je suis fatigué.`. The **canonical reading is now `Il faut faire une pause.` / `Je vais à la maison.` / `On y va ?`** (founder decision, above). The quote below is **kept verbatim as history, not as guidance**. **Applied:** `docs/syllabus/ai-generation-contract-v1.md` §15's **L16 row and L16 note are now reconciled** — the canonical reading is licensed, `Je suis fatigué.` and the repair trio moved to Blocked with ownership reasons, and "repair/help" narrowed to **help only** so the genuinely-owned L11 capability is untouched. The L11/L12/L13/L17 rows still carry the same phantom-repair licensing and are **deferred** to their own bounded tasks.
 
 > **L16 row** — **Allowed:** the present-only recombination reading (`Je suis fatigué. Il faut faire une pause. Je vais à la maison.`) + scaffolded owned responses (`Je dois faire une pause.` · `Il faut faire une pause.` · `J'y vais.` · `Est-ce que je peux faire une pause ?`). **Blocked:** free-text AI response / open chat · past/future (`Hier, j'ai…`) · advice/conditionnel (`Tu devrais…`/`Il faudrait…`) · `il faut que` + subjunctive · `je dois y aller`/`je peux y aller` (y+modal) · `Je peux vous aider.` (object pronoun) · new emotional vocab · `Après,…` / connectors (new vocab) · personalized/adaptive generation.
 
@@ -273,7 +290,7 @@ Recognition-only or deferred — never production targets / never built in L16:
 - **Is A Small Moment too early?** **No — as a `model-answer-only` seed.** It is **not** new (L6–L10 already carry the optional present-only reading micro-paragraph); L16 only **owns one such beat in-lesson**. The early-risk forms (free response, AI eval, personalization) are all deferred. *If the seed could not be `model-answer-only`, it would be too early — but it can.*
 - **Does `model-answer-only` solve the pre-Campfire AI/paywall risk?** **Yes.** With no live AI at L16, there is **no chatbot surface to drift into** and **nothing paid-zone is spent** — the deterministic reveal gives the *form* while reserving the *intelligence* (live eval, personalization, free conversation) for the paid tier.
 - **Does L16 preserve paid-depth value?** **Yes.** The deep, AI-driven, personalized A Small Moment (and open-ended Challenge response intelligence) stays paid-zone (band map §5). L16 spends only the small reading-and-respond slice.
-- **Is object-pronoun pressure controlled?** **Yes.** `m'aider` stays frozen inside `vous pouvez m'aider`; `Je peux vous aider.` is demoted/blocked; help is offered via `Je peux faire ça` / `Il faut faire une pause` (`trap:object-pronoun-pressure-too-early`).
+- **Is object-pronoun pressure controlled?** **Yes.** `m'aider` stays frozen inside `vous pouvez m'aider`; `Je peux vous aider.` is demoted/blocked, and no phantom workaround is offered in its place — L16 owns asking for help, not offering it (`trap:object-pronoun-pressure-too-early`).
 - **Is the reading present-only and known-items-only?** **Yes, now.** Two leaks were removed to get here: the briefed `Après,` (**new-vocab leak**) and B′'s `Je suis fatigué.` (**phantom-ownership leak** — assumed owned, but no identity carries it). The canonical read (`Il faut faire une pause. / Je vais à la maison. / On y va ?`) is present-only and every line is carried by an existing identity.
 - **Should L17 remain Human Context / Feelings?** **Yes** — but L16 no longer hands it a lexical hook. **L16's small moment is semantic / human-context preparation for L17, not a required lexical preview**; L17 owns feelings-in-frames on its own terms. L16 does not pre-empt it (no emotional-vocab dump here) and no longer *pre-spends* it either.
 - **Top risks:** (1) **A Small Moment scope-creep into free-text / generic AI chat** (the #1 leak — guarded by `model-answer-only` + `trap:generic-ai-chat-drift`/`trap:mini-mission-resurrection`); (2) **past/future tense in the reading** (`trap:past-future-reading-leak`); (3) **new-vocab leak in the read** (the demoted `Après,`); (4) **object-pronoun pressure** (`vous aider`); (5) **obligation→advice slide** (`tu devrais`); (6) **phantom ownership** — a line called "owned" in prose while no identity carries it (the retired `Je suis fatigué.`). All guarded by §3/§6/§9/§10 + seven traps; (6) is now caught mechanically by the Content Factory pre-flight (CF-001).
