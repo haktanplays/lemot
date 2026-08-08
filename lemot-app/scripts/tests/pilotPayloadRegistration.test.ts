@@ -212,8 +212,9 @@ describe("french-qa status — waiver is never approval", () => {
 // ── Parts B/C: item registration + tea relationship ─────────────────────────
 
 describe("five canonical item registrations", () => {
-  test("canonical count is 59 and the five new ids exist; the old 54 survive", () => {
-    assertEqual(CANONICAL_ITEM_COUNT, 59, "54 frozen + 5 new");
+  test("canonical count is 62 and the five new ids exist; the old 54 survive", () => {
+    // 54 frozen + PR-07's 5 + L17's 3 (chunk-ca-va, adj-fatigue, adj-content).
+    assertEqual(CANONICAL_ITEM_COUNT, 62, "54 frozen + 5 PR-07 + 3 L17");
     for (const id of NEW_ITEM_IDS) {
       assert(CANONICAL_ITEM_ID_SET.has(id), `${id} registered`);
     }
@@ -222,11 +223,11 @@ describe("five canonical item registrations", () => {
     }
   });
 
-  test("the manifest froze exactly the same 59 ids (bidirectional)", () => {
+  test("the manifest froze exactly the same 62 ids (bidirectional)", () => {
     const manifest = JSON.parse(read("scripts/shipped-item-ids.json")) as {
       ids: string[];
     };
-    assertEqual(manifest.ids.length, 59, "manifest count");
+    assertEqual(manifest.ids.length, 62, "manifest count");
     assertEqual(
       manifest.ids.slice().sort().join(","),
       [...CANONICAL_ITEM_ID_SET].sort().join(","),

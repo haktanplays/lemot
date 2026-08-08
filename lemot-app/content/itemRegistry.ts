@@ -777,6 +777,59 @@ export const ITEM_REGISTRY = {
     frenchQa: "founder_waived_provisional",
     acquisitionLink: { role: "linked", primaryItemId: "chunk-un-the" },
   },
+
+  // ── L17 batch: social check-in + the first two state adjectives ───────────
+  // Three identities, three acquisition demands. Deliberately NOT created:
+  // `chunk-ca-va-question` (the rising-intonation ask is a USE of the frozen
+  // chunk, exactly as `Je peux faire une pause ?` is a use of chunk-je-peux —
+  // punctuation does not mint an identity); `chunk-ca-ne-va-pas` (composed from
+  // this chunk plus the owned ne...pas operation, per the je-ne-peux-pas canon);
+  // and any `chunk-je-suis-fatigue` / `chunk-je-suis-content` composite (the
+  // adjectives compose with the owned chunk-je-suis, exactly as chunk-je-vais
+  // composes with chunk-a-la-maison). Feminine forms are authored surfaces of
+  // one identity each, never separate ids (PRJ-015 IC-005).
+  "chunk-ca-va": {
+    id: "chunk-ca-va",
+    type: "chunk",
+    text: "ça va",
+    status: "active",
+    fr: "ça va",
+    en: "how's it going? / I'm okay",
+    meaning:
+      "Frozen social check-in, taken whole. One unit with two uses: asked with a rising voice (Ça va ?) and answered with a falling one (Ça va.). It is NOT productive aller and NOT futur proche — va rides only with ça here, and the aller of je vais à la maison stays a separate, movement-only engine. The negative answer, Ça ne va pas., is built with the ne...pas you already own.",
+    exampleFr: "Ça va ?",
+    exampleEn: "How's it going?",
+    relatedItemIds: ["chunk-bonjour", "chunk-je-suis"],
+    weakPointTags: ["aller-future"],
+  },
+  "adj-fatigue": {
+    id: "adj-fatigue",
+    type: "adjective",
+    text: "fatigué",
+    status: "active",
+    fr: "fatigué",
+    en: "tired",
+    meaning:
+      "Tired. Two written forms shown as a fixed pair — fatigué when a man says it, fatiguée when a woman does — never taught as an agreement rule. It drops into the je suis ___ frame you already own; the adjective-agreement system stays closed.",
+    exampleFr: "Je suis fatigué.",
+    exampleEn: "I'm tired.",
+    relatedItemIds: ["chunk-je-suis", "adj-content"],
+    weakPointTags: ["gender"],
+  },
+  "adj-content": {
+    id: "adj-content",
+    type: "adjective",
+    text: "content",
+    status: "active",
+    fr: "content",
+    en: "glad, pleased",
+    meaning:
+      "Glad, pleased — the first good thing you can say about how you are. A fixed pair like fatigué: content (m) / contente (f), shown, not ruled. Same je suis ___ frame; no agreement system, and no wider feelings vocabulary yet.",
+    exampleFr: "Je suis content.",
+    exampleEn: "I'm glad.",
+    relatedItemIds: ["chunk-je-suis", "adj-fatigue"],
+    weakPointTags: ["gender"],
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;

@@ -1,12 +1,15 @@
 /**
  * Factory V0 — lesson-contract pre-flight (CF-001..CF-005).
  *
- * The load-bearing test here is the L16 fixture. Its spec's chosen reading opens
- * on `Je suis fatigué.` and no `fatigué` identity exists, so pre-flight must
- * BLOCK. It must not swap in an owned word and carry on: the earlier dry run
- * did exactly that by hand, which was useful as an experiment and would be
- * wrong as automated behaviour, because substituting a word changes what the
- * lesson teaches.
+ * The load-bearing test here is the L16 fixture: a contract that requires an
+ * identity the registry does not have must BLOCK. Pre-flight must not swap in
+ * an owned word and carry on — the earlier dry run did exactly that by hand,
+ * which was useful as an experiment and would be wrong as automated behaviour,
+ * because substituting a word changes what the lesson teaches.
+ *
+ * Historically the missing identity was `fatigué`. It exists now (L17 owns it),
+ * so the fixture uses a permanently-absent id instead; see the note on
+ * L16_CONTRACT.
  */
 import { describe, test, assert, assertEqual } from "./harness";
 import {
@@ -39,7 +42,14 @@ const codes = (c: LessonContract) =>
  * docs/syllabus/L16-integration-small-moment-seed.compact-spec.md.
  *
  * Fixture only — this creates no lesson, no registry identity, and no shipped
- * content. `adj-fatigue` is named because the spec's chosen reading requires it.
+ * content.
+ *
+ * HISTORICAL NOTE. The real L16 blocker was `adj-fatigue`, which did not exist
+ * when this fixture was written. It exists now — L17 owns it — so the fixture
+ * names `adj-inexistant` instead. What is under test is the CF-001 MECHANISM,
+ * not one word's registry status; pinning it to a real id would silently stop
+ * testing anything the day that id shipped, which is exactly what just
+ * happened.
  */
 const L16_CONTRACT: LessonContract = {
   lessonId: "v1-lesson-016",
@@ -78,7 +88,7 @@ const L16_CONTRACT: LessonContract = {
   ],
   requiredItemIds: [
     // The A Small Moment read, per the spec's chosen variant B'.
-    "adj-fatigue", // `Je suis fatigué.` — DOES NOT EXIST in the registry.
+    "adj-inexistant", // stands for the missing identity — DOES NOT EXIST.
     "chunk-je-suis",
     "chunk-il-faut",
     "chunk-faire-une-pause",
@@ -160,12 +170,12 @@ describe("factory preflight — passing contracts", () => {
 describe("factory preflight — blockers", () => {
   test("CF-001 — an unknown required identity blocks", () => {
     const result = preflightLessonContract({
-      contract: base({ requiredItemIds: ["chunk-merci", "adj-fatigue"] }),
+      contract: base({ requiredItemIds: ["chunk-merci", "adj-inexistant"] }),
     });
     const cf1 = result.diagnostics.filter((d) => d.code === "CF-001");
     assertEqual(cf1.length, 1, "one missing identity");
-    assertEqual(cf1[0].subject, "adj-fatigue", "names the missing id");
-    assertEqual(result.missingIdentities, ["adj-fatigue"], "reported for the founder");
+    assertEqual(cf1[0].subject, "adj-inexistant", "names the missing id");
+    assertEqual(result.missingIdentities, ["adj-inexistant"], "reported for the founder");
     assert(!result.generationReady, "not generation-ready");
   });
 
@@ -247,7 +257,7 @@ describe("factory preflight — the L16 fixture", () => {
     assert(!result.generationReady, "blocked");
     const cf1 = result.diagnostics.filter((d) => d.code === "CF-001");
     assertEqual(cf1.length, 1, "exactly one missing identity");
-    assertEqual(cf1[0].subject, "adj-fatigue", "`fatigué` has no canonical identity");
+    assertEqual(cf1[0].subject, "adj-inexistant", "the required identity does not exist");
   });
 
   test("L16 does NOT block on the active-new budget", () => {
@@ -276,17 +286,17 @@ describe("factory preflight — the L16 fixture", () => {
     // à la maison. / On y va ?) must never become automated behaviour.
     assertEqual(
       result.missingIdentities,
-      ["adj-fatigue"],
+      ["adj-inexistant"],
       "the gap is reported as-is",
     );
     // The real property: no diagnostic OFFERS an alternative identity. (The
     // CF-001 text does contain the word "substitute" — as a prohibition.)
     const cf1 = result.diagnostics.find((d) => d.code === "CF-001");
     const namedIds = [...(cf1?.message.match(/"[a-z0-9-]+"/g) ?? [])];
-    assertEqual(namedIds, ['"adj-fatigue"'], "only the missing id is named — no candidate replacement");
+    assertEqual(namedIds, ['"adj-inexistant"'], "only the missing id is named — no candidate replacement");
     // The contract is returned untouched: nothing was added to requiredItemIds.
     assert(
-      L16_CONTRACT.requiredItemIds.includes("adj-fatigue"),
+      L16_CONTRACT.requiredItemIds.includes("adj-inexistant"),
       "the contract still names the identity it needs",
     );
   });
@@ -296,7 +306,7 @@ describe("factory preflight — report", () => {
   test("blockers are printed before founder decisions, ordering stable", () => {
     const result = preflightLessonContract({
       contract: base({
-        requiredItemIds: ["adj-fatigue"],
+        requiredItemIds: ["adj-inexistant"],
         openDecisions: [{ code: "X-1", description: "open" }],
       }),
     });
