@@ -16,6 +16,26 @@
 > 7. **The standalone futur-proche preview lesson is retired** (sequence decision §2); its hook is re-homed to the end of L20 as FP-C (§3 there).
 >
 > This review's job is to **settle the remaining scope questions** — sense boundary, question-system boundary, continuity, archetype, canDo, prohibited scope, Factory readiness — and to state honestly where L18 is thin.
+>
+> **Status since (2026-08-08):** input 4's *"planned, not created"* was true when this review was written and is now **superseded** — `adverb-comment` shipped in commit `b6013aa`, and the implementation-level canon is **`docs/syllabus/L18-question-expansion-2.compact-spec.md`**. The secondary archetype, left open in §7 below, is now locked to **`thematic-context`**. §10's `generationReady = false` and its CF-001 blocker are likewise resolved.
+
+> ## ⚠️ CORRECTION (2026-08-08) — the L8 premise. Read before §2, §3.2, §5, §9.
+>
+> Writing the compact spec required checking L8's shipped surface. **Three claims below are false**, and they are the ones this review leaned on to justify `C'est comment ?`. This is a fifth instance of the phantom-ownership class (after L10, L13, L16, and the band map's `faire` row) — inherited, once again, from an L8 *planning* spec rather than shipped content.
+>
+> **What shipped `lesson-008.ts` actually contains — three French strings, total:** `C'est où ?` · `C'est ici.` · `Le café, c'est où ?`
+>
+> | Claim below | Reality |
+> |---|---|
+> | *"L8 taught the slot, and it has held exactly one word ever since"* (§3.2) | **False.** L8's `acquisitionDemandItemIds` is `["chunk-c-est-ou"]` — a **frozen question**. `adverb-ou-where` is `status: "supported"`, and its own registry meaning reads *"the question word inside `c'est où ?`, **owned as part of the frame first**."* L8's lesson note says the same: *"the owned unit is the frozen question."* **There is no owned productive `C'est ___ ?` slot.** |
+> | *"`Tu vas où ?`"* as shipped L8 material (§2, §5) | **False.** No identity exists; the string appears nowhere in the lesson. Planning-spec material the compact slice dropped. |
+> | *"`Où est … ?`"* as shipped L8 material (§5) | **False.** Same — no identity, not in the lesson. L8's own note says *"no `où est-ce que`, no movement system, no new places: one frozen question and its answer."* |
+>
+> **`C'est comment ?` survives, and the honest argument is stronger than the false one.** It composes `chunk-c-est` — a genuine registered identity, `status: "supported"`, first worked in L3 — plus `adverb-comment`. And `Le café, c'est où ?` is L8's own shipped line, so the fronted-topic shape is already met. **L18's architectural contribution is precisely that it turns a frozen formula into a slot** by putting a second word where `où` sits. That is exactly what the two-host requirement exists to prove. **No host was substituted and nothing was silently swapped**; only the justification changed, and it improved.
+>
+> **One consequence worth stating plainly:** L18's ownership model (demand = the *word*, `active`) is a **deliberate departure** from L8's (demand = the *frozen question*, Q-word merely `supported`). That asymmetry is recorded on `adverb-comment` itself and in the compact spec §2. It is the decision, not an inconsistency.
+>
+> Everything else in this review — the founder-locked inputs, the `comment`-selection argument (§2.1), the sense boundary (§3), the thinness finding (§1, §4.2), the archetype ruling (§7), the leak analysis (§8) — **stands unchanged.**
 
 > **Why this gate exists.** "Question Expansion 2" has been a named, deferred lesson in this repo since L12 — L12's compact spec §3 and Carry-Out and L13's compact spec §3 and Carry-Out all route the question-word family to *"a later Question Expansion 2"*. It now has a number. But question formation is the single archetype-#3 surface most prone to ballooning into a grammar unit (the L3 pilot finding, restated by the L12 gate), and **a question word is a worse offender than a wrapper**: `est-ce que` operates on sentences the learner already owns, whereas a question word demands an **answer** the learner may not own. That asymmetry — not the question mechanism — is what this gate has to police.
 
@@ -24,7 +44,7 @@
 ## 1. Executive Summary
 
 - **Should L18 be Question Expansion 2?** **Yes.** It is the only genuinely-seeded, in-band capability left. It is named as a deferred lesson twice in shipped canon, the band map's free-tier Q-word allowance is **unspent**, and the alternative (a standalone futur-proche preview) is structurally unbuildable under ratified journey-role canon (sequence decision §2).
-- **What exactly should L18 own?** **`comment` in its manner/state sense, and nothing else.** One `adverb-comment` identity, dropped into **frames the learner already owns** — the L8 end-placement frame (`C'est ___ ?`) and, front-placed, the L17 social check-in (`Comment ça va ?`). **0 new question mechanisms, 0 new grammar systems, 0 new architecture verbs.**
+- **What exactly should L18 own?** **`comment` in its manner/state sense, and nothing else.** One `adverb-comment` identity, dropped into **two hosts the learner already owns** — final position after L3's `c'est`, in the spot L8's frozen `C'est où ?` occupies, and front-placed before L17's social check-in (`Comment ça va ?`). **0 new question mechanisms, 0 new grammar systems, 0 new architecture verbs.**
 - **What must remain deferred?** Every other question word (`pourquoi`, `quand`, `combien`, `qui`, `que`); `qu'est-ce que`; **`comment` + `est-ce que`**; inversion (`comment allez-vous ?`, `comment vas-tu ?`); embedded questions; the `Comment ?` repair sense; the procedural sense (`comment on fait ça ?`); the exclamative sense; and **futur proche** in every form.
 - **Is L18 safe after L17?** **Yes**, with one honest caveat. The rhythm is fine (L17→L18 is two consecutive new-capability lessons before L19's beat, inside the ≤3 ceiling), the load is one adverb, and L17 shipped exactly the answers `comment` needs. **The caveat is surface thinness** — see the headline below. It is a spec problem, not a sequencing problem.
 
@@ -39,7 +59,7 @@ Verified against the **shipped** corpus, not against planning specs — the phan
 | Lesson | Shipped question capability | Deferred / recognition | Bridge to L18 |
 |---|---|---|---|
 | **L3** | yes/no by **intonation** (`C'est bon ?`, `Vous êtes prêt ?`) | `est-ce que` recognition; Q-words + inversion deferred | establishes the yes/no move |
-| **L8** | **one question word, `où`**, via a fixed frame (`Où est … ?`) **and spoken end-placement** (`C'est où ?`, `Tu vas où ?`) | `est-ce que`/inversion recognition; all other Q-words deferred | **the load-bearing precedent** — the end-placement frame is a *slot*, and it currently holds exactly one word |
+| **L8** | ~~**one question word, `où`**, via a fixed frame (`Où est … ?`) **and spoken end-placement** (`C'est où ?`, `Tu vas où ?`)~~ → **CORRECTED:** **one frozen question**, `chunk-c-est-ou` (`C'est où ?`), plus `C'est ici.` and `Le café, c'est où ?`. `adverb-ou-where` is **supported inside the frame**, never productive. `Tu vas où ?` and `Où est … ?` **never shipped**. | `est-ce que`/inversion recognition; all other Q-words deferred | ~~the end-placement frame is a *slot*~~ → **the load-bearing precedent is the opposite one**: L8 proves the final slot after `c'est` has held **one frozen word** since L8, so putting a second word there is L18's actual contribution |
 | **L9** | `tu fais quoi ?` as a **fixed supported chunk** | `quoi` **only** inside that chunk; `qu'est-ce que` recognition | proves a Q-word can live frozen-in-chunk before its system |
 | **L11** | `je peux …?` / `vous pouvez …?` by rising intonation | `est-ce que je peux …?` recognition; `puis-je` deferred | — |
 | **L12** | **`est-ce que` as a yes/no wrapper** over owned clauses | **all Q-words** → *"a later Question Expansion 2"*; inversion; `qu'est-ce que`; `où + est-ce que` | **routes here explicitly** |
@@ -91,7 +111,7 @@ Teaching `Comment ?` at L18 would **half-solve** the rail — the learner could 
 
 | Host frame | Owned since | With `comment` | Note |
 |---|---|---|---|
-| **end-placement** `C'est ___ ?` | **L8** (`C'est où ?`) | `C'est comment ?` | the **structural** argument: L8 taught the slot, and it has held exactly one word ever since. `comment` is the second. |
+| **final position, after `c'est`** | **L3** `chunk-c-est` (supported) + the shape met at **L8** (`C'est où ?`, `Le café, c'est où ?`) | `C'est comment ?` · `Le café, c'est comment ?` | the **structural** argument, *as corrected*: L8 shipped that spot as part of **one frozen question**, so putting a second word in it is exactly what turns a formula into a slot. Composes `chunk-c-est` + `adverb-comment`. |
 | **front-placed + frozen social chunk** | **L17** (`chunk-ca-va`) | `Comment ça va ?` | the **natural-frequency** argument: this is how the check-in is actually opened |
 
 **These two must both appear, and must be visibly different, or the doorway claim fails** (§1, §4). One is a slot the learner can generalize; the other is the high-frequency social use. Authoring only the second produces a frozen chunk wearing a doorway's label.
@@ -114,7 +134,7 @@ Teaching `Comment ?` at L18 would **half-solve** the rail — the learner could 
 | **Primary archetype (schema)** | **`chunk-natural-speech`**, following shipped L8 and L12 — see §7 |
 | **Primary archetype (prose)** | **#3 Negation / Question / Social Choice** — the planning family; **no enum member exists for it** (§7) |
 | **Secondary archetype** | **open — compact spec decides**, constrained to a real enum member (§7) |
-| **New question mechanisms** | **0** — `comment` rides the L8 end-placement slot and sits in front of a frozen L17 chunk |
+| **New question mechanisms** | **0** — `comment` takes final position after the owned `chunk-c-est` (the spot L8's frozen `C'est où ?` occupies) and sits in front of the frozen L17 chunk |
 | **New grammar systems** | **0** |
 | **New architecture verbs** | **0** |
 | **Q-words owned** | **1** |
@@ -146,10 +166,11 @@ These are **gate conditions**, not recommendations. A compact spec that misses a
 |---|---|---|
 | **`comment`** (manner/state) | **ACTIVE (new — the one demand)** | `adverb-comment` |
 | **`Comment ça va ?`** | **ACTIVE — composed** | `adverb-comment` + `chunk-ca-va`; **not** an identity |
-| **`C'est comment ?`** | **ACTIVE** | `comment` in the owned L8 end-placement slot; the evidence that the slot generalizes |
+| **`C'est comment ?`** | **ACTIVE** | `chunk-c-est` (L3, supported) + `adverb-comment`, in the spot L8's frozen question occupies — the evidence that turns a formula into a slot |
 | **`ça va` / `ça ne va pas`** | **RECYCLED (active)** | L17 — the answers |
 | **`je suis fatigué(e)` / `je suis content(e)`** | **RECYCLED (active)** | L17 — the answers |
-| **`C'est où ?` / `Où est … ?` / `Tu vas où ?`** | **RECYCLED** | L8 — the frame `comment` joins; the contrast that makes the slot visible |
+| **`C'est où ?` / `Le café, c'est où ?` / `C'est ici.`** | **RECYCLED** | L8 — **the whole of its shipped French**. The contrast that makes the slot visible. ~~`Où est … ?` / `Tu vas où ?`~~ **struck — never shipped, no identity exists.** |
+| **`c'est`** (`chunk-c-est`, supported) | **RECYCLED** | L3 — the actual carrier of `C'est comment ?` |
 | **`est-ce que` + owned clause** | **RECYCLED (active)** | L12 — but see the next row |
 | **`Comment est-ce que ça va ?`** | **BLOCKED** | Q-word + wrapper. L12 already holds `où + est-ce que` at **recognition only**; L18 does not graduate it. **The #1 leak.** |
 | **`Comment ?`** (bare, repair) | **BLOCKED / DEFERRED** | founder decision; RR-A (§3.1) |
@@ -226,7 +247,7 @@ The content archetype and the journey role are **independent axes** (archetype t
 > **Drafted §15 L18 row (for the compact spec to apply — NOT applied by this task; see §11).**
 > **Allowed:** `Comment ça va ?` *(composed from `adverb-comment` + `chunk-ca-va`)* · `C'est comment ?` · `Ça va.` · `Ça ne va pas.` · `Je suis fatigué.` / `Je suis fatiguée.` · `Je suis content.` / `Je suis contente.` · `C'est où ?` · `Bonjour.` / `Merci.` / `Au revoir.` · plus genuinely owned recycled material.
 > **Blocked:** `Comment est-ce que ça va ?` *(Q-word + wrapper)* · `Comment allez-vous ?` / `Comment vas-tu ?` *(inversion)* · `Comment ?` *(repair sense — RR-A)* · `Comment on fait ça ?` *(procedural; `on fait` unowned)* · `Comment tu vas ?` *(productive `tu vas` unowned)* · `Pourquoi …?` / `Quand …?` / `Combien …?` / `Qui …?` *(second Q-word)* · `Qu'est-ce que tu fais ?` *(recognition only)* · `Je vais bien.` / `Ça va bien.` / `Ça va aller.` *(unowned answers; `aller`/futur leak)* · `Tu devrais …` / `Il faudrait …` *(advice)* · `Je ne comprends pas.` / `Vous pouvez répéter ?` / `C'est pas grave.` *(phantom repair)* · `Je vais faire une pause.` *(futur proche)* · past/future · object-pronoun production · open-ended AI chat.
-> **Note:** L18 = Question Expansion 2, **one** Q-word (`comment`), manner/state sense only; **journeyRole doorway; active-new exactly 1**; 0 new question mechanisms; the productive slot is the **already-owned L8 end-placement frame**, and `Comment ça va ?` is composition, not an identity.
+> **Note:** L18 = Question Expansion 2, **one** Q-word (`comment`), manner/state sense only; **journeyRole doorway; active-new exactly 1**; 0 new question mechanisms; the second host composes the owned `chunk-c-est` with `comment` in the spot L8's frozen `C'est où ?` occupies, and **both** hosts are composition, not identities.
 
 ---
 
@@ -238,7 +259,8 @@ The content archetype and the journey role are **independent axes** (archetype t
 | `chunk-ca-va` | chunk | **recycled (active)** | L17 — keep its `aller`/futur guard and `weakPointTags: ["aller-future"]` |
 | `adj-fatigue` / `adj-content` | adjective | **recycled (active)** | L17 — the answers |
 | `adverb-ou-where` | adverb | **recycled** | L8 — the slot's first occupant; the contrast partner |
-| `chunk-c-est-ou` | chunk | **recycled** | L8 — the end-placement frame |
+| `chunk-c-est-ou` | chunk | **recycled** | L8 — the **frozen** question that supplies the contrast (not an owned slot) |
+| `chunk-c-est` | chunk | **recycled (supported)** | L3 — the actual carrier of `C'est comment ?` |
 | ~~`chunk-comment-ca-va`~~ | — | **NOT CREATED** | founder decision 5; composition, not an identity |
 | ~~`adverb-comment-repair`~~ | — | **NOT CREATED** | the repair sense is not owned, so it needs no id |
 | `trap:question-word-dump` | trap | **reuse** (L12) | do not fork |
@@ -297,7 +319,7 @@ The content archetype and the journey role are **independent axes** (archetype t
 ## 12. Final Verdict
 
 - **Is L18 ready for detailed spec writing?** **Yes — ready for a *compact* spec.** All founder decisions are locked and every scope question this gate opened is settled. The only implementation blocker is the `adverb-comment` identity, which is a **known, expected, mechanical** step (§10).
-- **What should L18 own?** **`comment` in its manner/state sense — one identity, `adverb-comment`, in two already-owned host frames** (`C'est comment ?` end-placement from L8; `Comment ça va ?` front-placed with L17's frozen chunk), answered from L17's shipped set. **1 demand · 0 new question mechanisms · 0 new grammar systems · 0 new architecture verbs.**
+- **What should L18 own?** **`comment` in its manner/state sense — one identity, `adverb-comment`, in two already-owned hosts** (`C'est comment ?` = L3's `chunk-c-est` + `comment`, in the spot L8's frozen question occupies; `Comment ça va ?` = `comment` + L17's frozen chunk), answered entirely from L17's shipped set. **1 demand · 0 new question mechanisms · 0 new grammar systems · 0 new architecture verbs.**
 - **What should L18 absolutely NOT own?** **Any second question word**; **`comment` + `est-ce que`**; **inversion**; **`qu'est-ce que`**; the **repair** sense (`Comment ?`); the **procedural** sense; **embedded questions**; **`faire` / an infinitive slot**; **futur proche**; **past/future**; **object pronouns**; **advice or consolation**; **open AI chat**.
 - **Single highest-risk leak: `Comment est-ce que ça va ?`** Both halves are owned, the combination is perfectly correct French, and L12 deliberately held `Q-word + est-ce que` at recognition. It is a **prerequisite-safety** leak, not a correctness one — which makes it invisible to any check that only asks whether the French is right, and makes AI generation the likeliest vector.
 - **Highest-risk *authoring* failure (distinct from the leak): thinness.** One adverb is a small doorway, and the easy way to fill a lesson is to lean on `Comment ça va ?` — at which point L18 has taught a **greeting variant** wearing a doorway's label. §4.2's two-frame requirement is the binding guard, and it is the thing to check first when the candidate arrives.
@@ -313,4 +335,4 @@ The content archetype and the journey role are **independent axes** (archetype t
 - **`[OPEN]`** French QA for `adverb-comment` (§10) — founder decision required; no provenance may be fabricated.
 - **No runtime, code, content, registry, flag, or ID change is authorized by this document.** `adverb-comment` is **planned, not created**. Dev APK scope (L1–L5 only, no paywall) is unaffected; L18 is far out of dev-apk scope. The Dev APK smoke test remains the boundary before any runtime work.
 
-*End of L18 Question Expansion 2 Gate Review. Planning/review only — no lesson spec, no identity, no code/content/registry/runtime change. Ratified: L18 = **Question Expansion 2**, `journeyRole: doorway`, **active-new exactly 1** (`adverb-comment`), owning `comment` in its manner/state sense only — into the already-owned L8 end-placement frame and in front of L17's frozen `chunk-ca-va` — with the repair sense, the procedural sense, every other question word, `Q-word + est-ce que`, inversion, `qu'est-ce que`, embedded questions, and futur proche all deferred. The standalone futur-proche preview lesson is retired; its hook lives at the end of L20 as FP-C.*
+*End of L18 Question Expansion 2 Gate Review. Planning/review only — no lesson spec, no identity, no code/content/registry/runtime change. Ratified: L18 = **Question Expansion 2**, `journeyRole: doorway`, **active-new exactly 1** (`adverb-comment`), owning `comment` in its manner/state sense only — in final position after L3's owned `chunk-c-est` (the spot L8's frozen `C'est où ?` occupies) and in front of L17's frozen `chunk-ca-va` — with the repair sense, the procedural sense, every other question word, `Q-word + est-ce que`, inversion, `qu'est-ce que`, embedded questions, and futur proche all deferred. The standalone futur-proche preview lesson is retired; its hook lives at the end of L20 as FP-C.*
