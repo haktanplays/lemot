@@ -15,14 +15,15 @@
  * also needs the corpus, for a different reason: "first worked here" is only
  * meaningful against the lessons that came before.
  *
- * SHIPPING PARITY. Two guards below (learner copy, recap chip taxonomy) are not
- * factory rules at all — they are the repo's own shipping rules, reached through
- * the modules that now own them. They were added after L16, the first
+ * SHIPPING PARITY. Five guards below are not factory rules at all — they are
+ * the repo's own shipping rules, reached through the modules that now own them.
+ * Learner copy and recap chip taxonomy were added after L16, the first
  * factory-produced lesson, passed candidate validation and then failed both at
  * shipping time: em dashes in learner copy, and the non-atomic recap chip
- * `"on y va"`. Neither rule changed; they were only made callable on a lesson
- * that is not in `V1_LESSONS` yet. A candidate the repo would reject must not
- * be able to pass here first.
+ * `"on y va"`. Screen-type legality, canonical item resolution and doubled
+ * negation followed, closing the last known candidate-level omissions. No rule
+ * changed; each was only made callable on a lesson that is not in `V1_LESSONS`
+ * yet. A candidate the repo would reject must not be able to pass here first.
  *
  * WHAT THIS CANNOT TELL YOU. Deterministic validation says nothing about
  * whether the French is natural, whether a reading feels like a human moment,
@@ -33,6 +34,7 @@ import { reviewAcquisitionDemandDrift } from "../../content/lessons/acquisitionD
 import { validateAcquisitionDemands } from "../../content/lessons/acquisitionDemands";
 import { reviewRecapChips } from "../../content/lessons/chipTaxonomy";
 import { reviewLearnerCopy } from "../../content/lessons/learnerCopy";
+import { reviewLessonStructure } from "../../content/lessons/lessonStructure";
 import { validateJourneyRoles } from "../../content/lessons/journeyRoles";
 import { validateJourneyRoleDemandBudgets } from "../../content/lessons/journeyRoleDemandBudgets";
 import {
@@ -145,6 +147,21 @@ export function validateFactoryCandidate(args: {
   }
   for (const d of reviewRecapChips(candidate)) {
     blockingErrors.push({ code: d.code, source: "chipTaxonomy", message: d.message });
+  }
+  // Screen-type legality, canonical item resolution, doubled negation. The
+  // middle one is the anti-hallucination guard: item references are plain
+  // strings, so an invented id is caught here or not at all.
+  const structureSource = {
+    "SCREEN-TYPE": "screenType",
+    "ITEM-REFERENCE": "itemReference",
+    "DOUBLED-NEGATION": "doubledNegation",
+  } as const;
+  for (const d of reviewLessonStructure(candidate, registry)) {
+    blockingErrors.push({
+      code: d.code,
+      source: structureSource[d.code],
+      message: d.message,
+    });
   }
 
   // DD-001..DD-004 — advisory only, and corpus-scoped for "first worked here".

@@ -13,61 +13,18 @@
 import { describe, test, assert } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
-import type { Lesson, LessonScreen } from "../../content/lessonTypes";
+import type { Lesson } from "../../content/lessonTypes";
 // The recap chip taxonomy now lives in content/ so the Content Factory can
 // enforce the same rule on a candidate that is not in V1_LESSONS yet.
 import { sentenceChipProblem } from "../../content/lessons/chipTaxonomy";
-
-const REGISTRY_IDS = new Set(Object.keys(ITEM_REGISTRY));
-
-// Must match the renderer's pickScreen cases (LessonRendererV1.tsx).
-const SUPPORTED_SCREEN_TYPES = new Set([
-  "meet-card",
-  "insight-card",
-  "fill-with-traps",
-  "weave",
-  "say-it-your-way",
-  "natural-reveal",
-  "recap",
-]);
-
-// "ne ne", "pas pas" and similar doubled negation tokens in French strings.
-const REPEATED_NEGATION = /\b(ne\s+ne|pas\s+pas|n'\s*n')\b/i;
-
-function assertItemId(id: string, where: string): void {
-  assert(
-    REGISTRY_IDS.has(id),
-    `${where}: itemId "${id}" is not in ITEM_REGISTRY`,
-  );
-}
-
-/** Collect the French-facing strings worth scanning for doubled negation. */
-function frenchStrings(screen: LessonScreen): string[] {
-  const out: string[] = [];
-  const p = screen.payload as Record<string, unknown>;
-  for (const key of ["fr", "natural", "modelAnswer"]) {
-    if (typeof p[key] === "string") out.push(p[key] as string);
-  }
-  const reveal = p.reveal as Record<string, unknown> | undefined;
-  if (reveal) {
-    for (const key of ["modelAnswer", "natural", "short"]) {
-      if (typeof reveal[key] === "string") out.push(reveal[key] as string);
-    }
-    if (Array.isArray(reveal.naturalAlternatives)) {
-      for (const s of reveal.naturalAlternatives) {
-        if (typeof s === "string") out.push(s);
-      }
-    }
-  }
-  for (const key of ["expectedAnswers", "acceptedAlternatives"]) {
-    if (Array.isArray(p[key])) {
-      for (const s of p[key] as unknown[]) {
-        if (typeof s === "string") out.push(s);
-      }
-    }
-  }
-  return out;
-}
+// Screen-type legality, canonical item resolution and doubled negation now
+// live in content/ for the same reason: the Content Factory must be able to
+// run them on a candidate that is not in V1_LESSONS yet.
+import {
+  reviewDoubledNegation,
+  reviewLessonItemReferences,
+  reviewSupportedScreenTypes,
+} from "../../content/lessons/lessonStructure";
 
 function endsWithQuestionMark(s: string): boolean {
   return s.trim().endsWith("?");
@@ -191,33 +148,14 @@ function registerLessonTests(lesson: Lesson): void {
   });
 
   test(`${L}: screen types are supported by the v1 renderer`, () => {
-    for (const screen of lesson.screens) {
-      assert(
-        SUPPORTED_SCREEN_TYPES.has(screen.type),
-        `${L}/${screen.id}: unsupported screen type "${screen.type}"`,
-      );
+    for (const d of reviewSupportedScreenTypes(lesson)) {
+      assert(false, d.message);
     }
   });
 
   test(`${L}: every referenced itemId exists in ITEM_REGISTRY`, () => {
-    for (const screen of lesson.screens) {
-      const where = `${L}/${screen.id}`;
-      for (const id of screen.targetItemIds ?? []) {
-        assertItemId(id, `${where} targetItemIds`);
-      }
-      const p = screen.payload as Record<string, unknown>;
-      if (Array.isArray(p.highlights)) {
-        for (const h of p.highlights as { itemId?: string }[]) {
-          if (h.itemId) assertItemId(h.itemId, `${where} highlights`);
-        }
-      }
-      if (Array.isArray(p.suggestedPieces)) {
-        for (const piece of p.suggestedPieces as { itemId?: string }[]) {
-          if (piece.itemId) {
-            assertItemId(piece.itemId, `${where} suggestedPieces`);
-          }
-        }
-      }
+    for (const d of reviewLessonItemReferences(lesson, ITEM_REGISTRY)) {
+      assert(false, d.message);
     }
   });
 
@@ -349,13 +287,8 @@ function registerLessonTests(lesson: Lesson): void {
   });
 
   test(`${L}: no repeated negation tokens in French strings`, () => {
-    for (const screen of lesson.screens) {
-      for (const s of frenchStrings(screen)) {
-        assert(
-          !REPEATED_NEGATION.test(s),
-          `${L}/${screen.id}: repeated negation token in ${JSON.stringify(s)}`,
-        );
-      }
+    for (const d of reviewDoubledNegation(lesson)) {
+      assert(false, d.message);
     }
   });
 }

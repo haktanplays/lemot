@@ -328,6 +328,180 @@ describe("factory candidate — corpus context", () => {
   });
 });
 
+describe("factory candidate — screen-type parity", () => {
+  test("an unsupported screen type blocks the candidate", () => {
+    // Generated/runtime data can carry a type the renderer has no case for.
+    // The cast simulates that; the production Lesson union is not touched.
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thank you.", ["chunk-merci"]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+          { id: "s2-bogus", type: "video-card", payload: { fr: "Merci." } },
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assert(
+      r.blockingErrors.some(
+        (e) => e.code === "SCREEN-TYPE" && e.message.includes('unsupported screen type "video-card"'),
+      ),
+      `unrenderable screen must block, got ${JSON.stringify(r.blockingErrors)}`,
+    );
+    assert(!r.candidateValid, "the app could not render this lesson");
+  });
+
+  test("every currently supported screen type is accepted", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          { id: "s0", type: "insight-card", payload: { insightType: "lesson-goal", title: "T", body: "B" } },
+          { id: "s1", type: "meet-card", targetItemIds: ["chunk-merci"], payload: { fr: "Merci." } },
+          {
+            id: "s2",
+            type: "fill-with-traps",
+            targetItemIds: ["chunk-merci"],
+            payload: {
+              prompt: "Pick one.",
+              options: [{ id: "o1", text: "merci", isCorrect: true }],
+              answer: ["o1"],
+              reveal: { short: "merci" },
+            },
+          },
+          weave("s3", "supported", ["Merci."], "Say thank you.", ["chunk-merci"]),
+          sayIt("s4", "Someone helped you.", ["chunk-merci"]),
+          { id: "s5", type: "natural-reveal", payload: { explanation: "Because it is." } },
+          { id: "s6", type: "recap", payload: { lines: ["You did it."], piecesUsed: ["merci"] } },
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assertEqual(
+      r.blockingErrors.filter((e) => e.code === "SCREEN-TYPE"),
+      [],
+      "all seven renderer cases stay legal",
+    );
+  });
+});
+
+describe("factory candidate — canonical item resolution", () => {
+  test("an unknown targetItemId blocks the candidate", () => {
+    // The anti-hallucination case: item references are plain strings, so a
+    // generator can invent one and TypeScript will not object.
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thank you.", ["chunk-mercii"]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    const hit = r.blockingErrors.find((e) => e.code === "ITEM-REFERENCE");
+    assert(hit !== undefined, `unknown id must block, got ${JSON.stringify(r.blockingErrors)}`);
+    assert(hit?.message.includes('"chunk-mercii"'), `the id is named: ${hit?.message}`);
+    assert(hit?.message.includes("targetItemIds"), `the site is named: ${hit?.message}`);
+    assert(!r.candidateValid, "a hallucinated id can never be candidate-valid");
+  });
+
+  test("an unknown suggestedPieces itemId blocks the candidate", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          {
+            id: "s0",
+            type: "weave",
+            targetItemIds: ["chunk-merci"],
+            payload: {
+              weaveType: "supported",
+              prompt: "Say thank you.",
+              suggestedPieces: [{ text: "merci", itemId: "chunk-invented" }],
+              expectedAnswers: ["Merci."],
+              reveal: { modelAnswer: "Merci." },
+            },
+          },
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    const hit = r.blockingErrors.find((e) => e.code === "ITEM-REFERENCE");
+    assert(hit !== undefined, "payload-level itemId is guarded too");
+    assert(hit?.message.includes("suggestedPieces"), `the site is named: ${hit?.message}`);
+  });
+
+  test("an unknown highlights itemId blocks the candidate", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          {
+            id: "s0",
+            type: "meet-card",
+            targetItemIds: ["chunk-merci"],
+            payload: { fr: "Merci.", highlights: [{ text: "merci", itemId: "chunk-nope" }] },
+          },
+          weave("s1", "supported", ["Merci."], "Say thank you.", ["chunk-merci"]),
+          sayIt("s2", "Someone helped you.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assert(
+      r.blockingErrors.some((e) => e.code === "ITEM-REFERENCE" && e.message.includes("highlights")),
+      "the third reference site is guarded",
+    );
+  });
+
+  test("real registry references pass", () => {
+    const r = run(goodCandidate());
+    assertEqual(
+      r.blockingErrors.filter((e) => e.code === "ITEM-REFERENCE"),
+      [],
+      "the check is against the real registry, not string typing",
+    );
+    assert(r.candidateValid, "valid references pass");
+  });
+});
+
+describe("factory candidate — doubled negation", () => {
+  test("a repeated negation token blocks the candidate", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Je ne ne suis pas ici."], "Say you are not here.", [
+            "chunk-je-ne-suis-pas",
+          ]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assert(
+      r.blockingErrors.some(
+        (e) => e.code === "DOUBLED-NEGATION" && e.message.includes("repeated negation token"),
+      ),
+      `malformed French must block, got ${JSON.stringify(r.blockingErrors)}`,
+    );
+    assert(!r.candidateValid, "same rejection the shipped-content guard makes");
+  });
+
+  test("ordinary negation is not a false positive", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Je ne suis pas ici."], "Say you are not here.", [
+            "chunk-je-ne-suis-pas",
+          ]),
+          weave("s1", "context", ["Ce n'est pas ici."], "Say it is not here.", [
+            "chunk-ce-n-est-pas",
+          ]),
+          sayIt("s2", "Someone helped you.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assertEqual(
+      r.blockingErrors.filter((e) => e.code === "DOUBLED-NEGATION"),
+      [],
+      "legal ne...pas negation is untouched — the scan was not widened",
+    );
+    assert(r.candidateValid, "valid negation passes");
+  });
+});
+
 describe("factory candidate — the shipped factory lesson stays clean", () => {
   // L16 is the lesson that exposed both parity gaps. Re-validating the SHIPPED
   // article against the enhanced facade proves the corrections were real fixes
