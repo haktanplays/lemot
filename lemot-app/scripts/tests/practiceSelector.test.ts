@@ -9,6 +9,8 @@ import {
   TODAYS_SET_MAX,
   type PracticeCandidate,
 } from "../../content/learning-engine/practice-selector";
+import { ITEM_REGISTRY } from "../../content/itemRegistry";
+import { WEAK_POINT_TAGS } from "../../content/weakPointTags";
 
 const NOW = 1_720_000_000_000;
 const DAY = 86_400_000;
@@ -147,5 +149,75 @@ describe("practice selector (today's set, canon §5.2)", () => {
 
   test("empty pool yields an empty set without failing", () => {
     assertEqual(selectTodaysSet({ due: [], weakTags: [], budget: 6, now: NOW }).itemIds, [], "empty is calm");
+  });
+});
+
+/**
+ * Weak-point ELIGIBILITY, not selector behaviour.
+ *
+ * The Practice Hub builds each candidate's `weakPointTags` from the ITEM
+ * REGISTRY (`practiceHub.ts`: `weakPointTags: registryItem.weakPointTags ?? []`)
+ * — screen-level tags have no runtime consumer at all. So an owned item with no
+ * registry tag can still be OFFERED, but `weaknessOf()` returns 0 for it and it
+ * can never rise within the not-yet-due tier no matter how often the learner
+ * gets it wrong.
+ *
+ * L14 shipped place-`y` ownership while `word-y-place` and `chunk-on-y-va`
+ * carried no tag, even though the taxonomy has always defined `y`. These tests
+ * pin the repair so it cannot silently regress, and pin the two properties that
+ * must NOT have changed with it.
+ */
+describe("weak-point eligibility — the y identities", () => {
+  const tagsOf = (id: string) =>
+    (ITEM_REGISTRY as Record<string, { weakPointTags?: readonly string[] }>)[id].weakPointTags ?? [];
+
+  test("`y` is a real taxonomy value, not an invented one", () => {
+    assert((WEAK_POINT_TAGS as readonly string[]).includes("y"), "y predates this repair");
+  });
+
+  test("both place-y identities carry the y tag", () => {
+    assertEqual([...tagsOf("word-y-place")], ["y"], "word-y-place is the place-y pronoun");
+    assertEqual([...tagsOf("chunk-on-y-va")], ["y"], "on y va is frozen around the same y");
+  });
+
+  test("an errored y item now outranks untagged peers in the not-yet-due tier", () => {
+    const set = selectTodaysSet({
+      due: [
+        c("chunk-bonjour", "chunk", null, []),
+        c("word-y-place", "pronoun", null, [...tagsOf("word-y-place")]),
+        c("chunk-merci", "chunk", null, []),
+      ],
+      weakTags: [{ tag: "y", errorCount: 9 }],
+      budget: TODAYS_SET_MIN,
+      now: NOW,
+    });
+    assertEqual(set.itemIds[0], "word-y-place", "weakness promotes it to the front");
+  });
+
+  test("stripping the tag sinks it again — the tag is what does the work", () => {
+    const set = selectTodaysSet({
+      due: [
+        c("chunk-bonjour", "chunk", null, []),
+        c("word-y-place", "pronoun", null, []),
+        c("chunk-merci", "chunk", null, []),
+      ],
+      weakTags: [{ tag: "y", errorCount: 9 }],
+      budget: TODAYS_SET_MIN,
+      now: NOW,
+    });
+    assert(set.itemIds[0] !== "word-y-place", "untagged, the same errors buy it nothing");
+  });
+
+  test("SRS-due order is NOT reordered by the new weakness signal", () => {
+    const set = selectTodaysSet({
+      due: [
+        c("chunk-bonjour", "chunk", NOW - 5 * DAY, []),
+        c("word-y-place", "pronoun", NOW - DAY, ["y"]),
+      ],
+      weakTags: [{ tag: "y", errorCount: 99 }],
+      budget: TODAYS_SET_MIN,
+      now: NOW,
+    });
+    assertEqual(set.itemIds, ["chunk-bonjour", "word-y-place"], "due tier stays oldest-first");
   });
 });

@@ -636,6 +636,13 @@ export const ITEM_REGISTRY = {
     exampleFr: "J'y vais.",
     exampleEn: "I'm going there.",
     relatedItemIds: ["chunk-je-vais", "chunk-j-y-vais"],
+    // The taxonomy has always defined "y"; L14 shipped place-y ownership and
+    // this identity IS that pronoun, so the omission was an oversight. Without
+    // it the Practice Hub can still OFFER the item, but can never promote it on
+    // the strength of learner errors (weaknessOf() returns 0 for an untagged
+    // candidate), so a y the learner keeps getting wrong stays at the bottom of
+    // the not-yet-due tier.
+    weakPointTags: ["y"],
   },
   "chunk-j-y-vais": {
     id: "chunk-j-y-vais",
@@ -663,6 +670,9 @@ export const ITEM_REGISTRY = {
     exampleFr: "On y va ?",
     exampleEn: "Shall we go?",
     relatedItemIds: ["word-y-place", "chunk-j-y-vais"],
+    // Frozen, but the thing that goes wrong inside it is the same place-y.
+    // Same reason as word-y-place above.
+    weakPointTags: ["y"],
   },
   "chunk-il-faut": {
     id: "chunk-il-faut",
