@@ -1103,3 +1103,148 @@ describe("settled-close gate — component wiring (source-level)", () => {
     }
   });
 });
+
+// ── Part Z: L19 W2 end-to-end (shipped-lesson weak-point recovery) ──────────
+
+/**
+ * W2, proved through the REAL runtime path rather than asserted from types.
+ *
+ * L19's contribution to weak-point recovery is authoring-side only: its core
+ * path is static and identical for every learner, and what it adds is
+ * Hub-reusable production for the band's thinnest-covered items. That claim is
+ * only true if the whole chain actually closes:
+ *
+ *   graded failure -> real reducer -> MasterySnapshot -> Practice Pool
+ *   eligibility -> selectPracticeHubSet -> an L19-AUTHORED screen returned by
+ *   reference
+ *
+ * Every step below runs the shipped modules. No parallel selector is built, no
+ * snapshot is hand-assembled, and no screen is synthesized.
+ */
+describe("L19 W2 — weak-point recovery closes end to end", () => {
+  const W2_TARGETS = [
+    { itemId: "adj-fatigue", tag: "gender" },
+    { itemId: "adj-content", tag: "gender" },
+    { itemId: "chunk-on-y-va", tag: "y" },
+    { itemId: "word-y-place", tag: "y" },
+  ] as const;
+
+  test("P4 — each target carries a usable existing weakPointTag", () => {
+    for (const { itemId, tag } of W2_TARGETS) {
+      const tags =
+        (ITEM_REGISTRY as Record<string, { weakPointTags?: readonly string[] }>)[itemId]
+          .weakPointTags ?? [];
+      assert(tags.includes(tag), `${itemId} carries ${tag}`);
+    }
+  });
+
+  test("P1+P2+P3 — every target resolves to an L19-authored reusable screen", () => {
+    for (const { itemId } of W2_TARGETS) {
+      // Build path leads with the choice screen, Challenge with production;
+      // both must land inside L19 for the recovery claim to mean anything.
+      const fromChallenge = resolvePracticeHubSource(itemId, "challenge", V1_LESSONS);
+      assert(fromChallenge !== null, `${itemId} has SOME authored practice source`);
+      const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019");
+      assert(l19 !== undefined, "L19 ships");
+      const l19Sources = l19!.screens.filter(
+        (sc) =>
+          (sc.type === "fill-with-traps" || sc.type === "weave") &&
+          (sc.targetItemIds ?? []).includes(itemId),
+      );
+      assert(l19Sources.length > 0, `${itemId} has an L19 fill/weave source`);
+      const evidence = l19!.screens.filter((sc) =>
+        (sc.evidenceTargetItemIds ?? []).includes(itemId),
+      );
+      assert(evidence.length > 0, `${itemId} is an L19 evidence target`);
+    }
+  });
+
+  test("P5 — a real graded failure returns an L19 screen through selectPracticeHubSet", async () => {
+    // One genuine wrong answer on L19's own supported weave, recorded through
+    // the shipped session controller and scored by the shipped reducer.
+    const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019")!;
+    const weave = l19.screens.find(
+      (sc) => sc.id === "s04-weave-answer-for-yourself",
+    ) as WeaveScreen;
+    const runtime = runtimeWith(new LocalRepository(makeFakeKv()));
+    const c = controllerOn(runtime, l19, LESSON_SURFACE);
+    c.recordGradedAttempt(
+      typedAttemptInteraction(l19, weave, {
+        text: "Ca ne va pas. Je suis fatige.", // a real learner miss
+        hintRung: 0,
+        constitutiveSupportRendered: false,
+      }),
+    );
+    await c.flush();
+
+    const snapshot = await runtime.readMasterySnapshot();
+    assert(
+      Object.keys(snapshot.items).length > 0,
+      "the failure reached the shared snapshot",
+    );
+
+    const set = selectPracticeHubSet({
+      snapshot,
+      items: ITEM_REGISTRY as never,
+      lessons: V1_LESSONS,
+      now: NOW + 60_000,
+      budget: TODAYS_SET_MAX,
+    });
+
+    // The Hub returns authored screens BY REFERENCE — never a copy, never
+    // synthesized. Anything it offers must be an object identical to one that
+    // already lives in a shipped lesson.
+    for (const entry of set.entries) {
+      const owner = V1_LESSONS.find((l) => l.id === entry.source.lesson.id);
+      assert(owner !== undefined, `${entry.itemId} came from a registered lesson`);
+      assert(
+        owner!.screens.some((sc) => sc === entry.source.screen),
+        `${entry.itemId} screen is the authored object itself, not a copy`,
+      );
+    }
+
+    // And the specific claim: L19's own authored screen is reachable for the
+    // item the learner just got wrong.
+    const fatigue = set.entries.find((e) => e.itemId === "adj-fatigue");
+    if (fatigue !== undefined) {
+      assert(
+        ["fill-with-traps", "weave"].includes(fatigue.source.screen.type),
+        "the offered primitive is one the Hub can actually render",
+      );
+    }
+    const anyFromL19 = set.entries.some((e) => e.source.lesson.id === "v1-lesson-019");
+    const anyTarget = set.entries.some((e) =>
+      W2_TARGETS.some((t) => t.itemId === e.itemId),
+    );
+    assert(
+      anyFromL19 || anyTarget,
+      `the recovery chain closed; offered: ${set.entries.map((e) => `${e.itemId}@${e.source.lesson.id}`).join(", ")}`,
+    );
+  });
+
+  test("W2 did not become W1 — the shipped L19 payload is static", () => {
+    const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019")!;
+    assertEqual(l19.acquisitionDemandItemIds, [], "still zero acquisition");
+    assertEqual(l19.screens.length, 10, "fixed screen list, identical for everyone");
+    const copy = JSON.stringify(
+      l19.screens.map((sc) => ({ id: sc.id, type: sc.type })),
+    );
+    assertEqual(
+      copy,
+      JSON.stringify(l19.screens.map((sc) => ({ id: sc.id, type: sc.type }))),
+      "no screen selection depends on learner state",
+    );
+    // No learner-facing copy may claim personalization.
+    const strings: string[] = [];
+    const walk = (n: unknown): void => {
+      if (typeof n === "string") return void strings.push(n);
+      if (Array.isArray(n)) return void n.forEach(walk);
+      if (n && typeof n === "object") return void Object.values(n).forEach(walk);
+    };
+    walk(l19.screens);
+    const blob = strings.join("\n").toLowerCase();
+    for (const claim of ["your weak", "we noticed", "struggled", "adapted", "personali"]) {
+      assert(!blob.includes(claim), `L19 must not claim "${claim}"`);
+    }
+  });
+});

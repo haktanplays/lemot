@@ -177,9 +177,9 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
     assertEqual(out.errors.join(" | "), "", "current v1 is budget-clean");
   });
 
-  test("current outcome: 17 normal passes, 1 named exception, 1 role-less skip", () => {
+  test("current outcome: 18 normal passes, 1 named exception, 1 role-less skip", () => {
     const out = validateJourneyRoleDemandBudgets(V1_LESSONS);
-    assertEqual(out.normalPasses, 17, "L1-L5, L7-L18 minus L6");
+    assertEqual(out.normalPasses, 18, "L1-L5, L7-L19 minus L6");
     assertEqual(out.exceptionPasses, 1, "L6 only");
     assertEqual(out.skippedRoleless, 1, "L0 only");
   });
@@ -212,13 +212,14 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
         [16, "integration", 0],
         [17, "standard", 3],
         [18, "doorway", 1],
+        [19, "integration", 0],
       ],
       "current-v1 regression matrix",
     );
   });
 
-  test("L10, L13 and L16 pass the ordinary Integration=0 rule, not an exception", () => {
-    for (const id of ["v1-lesson-010", "v1-lesson-013", "v1-lesson-016"]) {
+  test("L10, L13, L16 and L19 pass the ordinary Integration=0 rule, not an exception", () => {
+    for (const id of ["v1-lesson-010", "v1-lesson-013", "v1-lesson-016", "v1-lesson-019"]) {
       const l = V1_LESSONS.find((x) => x.id === id);
       assertEqual(l?.acquisitionDemandItemIds, [], `${id} declares explicit zero`);
       assert(
