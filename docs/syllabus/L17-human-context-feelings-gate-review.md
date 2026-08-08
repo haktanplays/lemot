@@ -3,6 +3,21 @@
 > Follows `docs/learning-engine-v1.md` + `docs/syllabus/lesson-spec-template-v1.1.md` + `docs/syllabus/lesson-archetype-templates-v1.md` + `docs/syllabus/canonical-item-id-convention-v0.1.md` + `docs/syllabus/ai-generation-contract-v1.md` + `docs/syllabus/L10-L20-band-map-v0.md` + the L4 (avoir-states) / L6 (human-context integration) / L10 / L13 / L15 / L16 specs.
 > **Pre-spec planning/review only.** This is a **gate review**, NOT the L17 lesson spec. It authorizes **no** code, content, flag, or runtime change, and does **not** create `docs/syllabus/L17-*.lesson-spec.md` / `*.compact-spec.md`. Locked product canon wins on conflict. Dev APK runtime (L1–L5 only) is unaffected.
 
+> ## Ratified after this review (2026-08-08) — read first
+>
+> This is **Step 23A planning history**. A founder audit against **shipped** L0–L16 content settled the open questions and overturned this review's load-bearing premise. Where the text below disagrees, this banner wins.
+>
+> - **The "Critical observation" is false.** This review scoped L17 on the claim that *"the learner can already express a wide band of human states — tired, hungry, thirsty, afraid, not ready, needing help, not understanding, it's okay."* Against shipped content, **one** of those ships: `j'ai faim` (L4). `fatigué`, `soif`, `peur`, `besoin d'aide`, first-person `prêt`, `étudiant`, `mais`, `c'est pas grave`, `je ne comprends pas`, `vous pouvez répéter` are **not owned** — the first has no identity at all, and the repair pair exists only as PR-07 L1-pilot registrations no shipped lesson works. Every "recyclable in L17, no re-teaching" claim below is withdrawn. **None is provisioned here**; each is separate curriculum work.
+> - **The active-new cap survives, its justification does not.** Cutting 7–9 → 3–5 was right, but *not* because a rich inventory already existed. It is right on cognitive-load grounds. **Ratified count: exactly 3.**
+> - **Journey role: `standard`** — chosen pedagogically (L17 extends expressive/social range inside owned frames and opens no engine; every shipped Doorway opens one). Budget result recorded separately: band 1–4, count 3, PASS.
+> - **`Ça va ?` / `Ça va.` are ONE identity, `chunk-ca-va`** — the rising ask is a use of the frozen chunk, as `Je peux faire une pause ?` is of `chunk-je-peux`. **`chunk-ca-va-question` is not created.** **`Ça ne va pas.` is composed** from it plus the owned `ne…pas` (L3), per the shipped `je ne peux pas` canon — **`chunk-ca-ne-va-pas` is not created** either.
+> - **Two state adjectives, one identity each:** `adj-fatigue` and `adj-content`, composing with the owned `chunk-je-suis`; feminine forms are authored surfaces, not ids (IC-005). **`fatigué` is NEW in L17**, not recycled — the L02 spec planned it and the shipped L2 slice dropped it.
+> - **The `je comprends` promotion is de-scoped** — you cannot promote the affirmative of a chunk never acquired.
+>
+> **Exact ratified demands:** `chunk-ca-va` · `adj-fatigue` · `adj-content`.
+>
+> Everything else in this review — the Option A–D adjudication, the advice demotion, the `ça va` homograph guard, the paywall analysis, the deferred matrix — stands.
+
 > **Why this gate exists.** The band map (Option C) pencils **L17 = "Human context / feelings / advice"** under the **Thematic Vocabulary / Context (#9)** archetype, with **active-new ~7–9** and the phrase **"feelings + light advice."** Both the number and the phrase are dangerous: #9's named QA risk is literally *"vocabulary dump · low production"*, and **"advice"** is the **conditionnel register (`tu devrais` / `il faudrait`) that L15 deliberately deferred to the paid zone**. After L16's integration beat, a feelings lesson can very easily become (a) an emotion-word list, (b) a therapy/coaching chat, (c) a `se sentir` reflexive-verb lesson, or (d) a past/future feeling narrative ("hier j'étais triste"). This review fixes the safest narrow scope **before** the spec is written — and pushes back on the band map where it over-reaches.
 
 ---
@@ -12,7 +27,7 @@
 - **Should L17 be Human Context / Feelings?** **Yes — but much narrower than the band map implies.** Broadening human/social language is the right next move (the L1–L5 retrospective flagged café/transactional-centricity; L6 began the fix; L16's reading seed continued it). But L17 must be a **near-integration thematic lesson** — feelings expressed in **already-owned frames**, with **a tiny freshness hook**, not a vocabulary lesson.
 - **What exactly should L17 own?** feelings/states inside the **owned `je suis + state` / `j'ai + state` / `je ne suis pas + state` frames**, **plus the social-check chunk `ça va ?` / `ça va` / `ça ne va pas`** (genuinely new, high-utility, and explicitly *reserved for "a later social-check lesson"* by the L1 spec) **plus one positive feeling adjective** (`content`) so the learner can finally say something *positive* about how they feel. **0 new grammar systems, 0 new architecture verbs.**
 - **What must remain deferred?** **advice / conditionnel** (`tu devrais` / `il faudrait` — the band map's "light advice" is **demoted**, it is paid-zone per L15); **`se sentir` / `je me sens`** (reflexive system); **broad emotional lexis** (more than ~1–2 new adjectives); **opinion verbs** (`je pense que`); **past/future feeling narrative**; **deep emotional AI personalization / coaching**; **object-pronoun production**; **futur proche ownership** (L18's job).
-- **Is L17 safe after L16 Integration + A Small Moment seed?** **Yes**, on conditions: it owns **no** new system, adds **≤2 new lexical items** (`ça va` chunk-set + `content`), keeps "feelings" mostly **recycled** (fatigué/faim/peur/besoin/pas prêt), bans the advice register, and carries at most a **light** A Small Moment recurrence (the real recurrence is **L19**). Its danger is the inverse of an engine lesson: **over-vocabularizing** a lesson that should mostly recombine.
+- **Is L17 safe after L16 Integration + A Small Moment seed?** **Yes**, on conditions: it owns **no** new system, adds **3 new lexical items** *(as reviewed: "≤2"; ratified: `chunk-ca-va` + `adj-fatigue` + `adj-content` — `fatigué` turned out to be new, not recycled)*, keeps "feelings" mostly **recycled** *(of the list originally given here, only `j'ai faim` actually ships)*, bans the advice register, and carries at most a **light** A Small Moment recurrence (the real recurrence is **L19**). Its danger is the inverse of an engine lesson: **over-vocabularizing** a lesson that should mostly recombine.
 
 > **Headline recommendation (product-critical, not flattering the band map).** Two sharpenings the band map needs: **(1) cut active-new from ~7–9 to ~3–5.** The learner already owns a rich state inventory (fatigué, faim, soif, peur, besoin, prêt, pas, c'est pas grave); a "feelings" lesson at the #9 band's *top* (7–9 new) would be the exact emotion-vocab dump #9 warns against. L17 should sit **near the integration band**, not the thematic top. **(2) Demote "light advice."** Advice = the conditionnel (`tu devrais`/`il faudrait`) L15 reserved for the paid zone; pairing it with the owned `il faut`/`je dois` invites a moralizing/therapy register. **L17 owns feeling-*statements* and a social check-in, not advice.** Framed this way, L17 is a safe, human, low-leak lesson; framed as "feelings + advice, ~7–9 new words," it is two leaks waiting to happen.
 
@@ -30,9 +45,9 @@
 | **L15** il faut / je dois obligation-light | `il faut + inf.` / `je dois + inf.`; **advice/conditionnel (`devrais`/`faudrait`) deferred (paid-zone)** | **the advice line L17 must NOT cross** — obligation ≠ advice |
 | **L16** A Small Moment seed | `model-answer-only`, present-only reading-response seed; recurs L19 | L17 may *lightly* reference it; must **not** become "A Small Moment 2" |
 
-**Owned state/feeling inventory (recyclable in L17, no re-teaching):** `je suis fatigué` · `je suis prêt` / `je ne suis pas prêt` · `je suis étudiant` · `j'ai faim` · `j'ai soif` · `j'ai peur` (light) · `j'ai besoin de` / `j'ai besoin d'aide` · `je ne comprends pas` · `c'est pas grave` · `comprendre` (infinitive) · `mais` (recognition). **Recognition/deferred from L4:** `froid` / `chaud`, `j'ai envie de`.
+**Owned state/feeling inventory (recyclable in L17, no re-teaching) — ⚠️ WITHDRAWN, only `j'ai faim` ships; see the banner:** `je suis fatigué` · `je suis prêt` / `je ne suis pas prêt` · `je suis étudiant` · `j'ai faim` · `j'ai soif` · `j'ai peur` (light) · `j'ai besoin de` / `j'ai besoin d'aide` · `je ne comprends pas` · `c'est pas grave` · `comprendre` (infinitive) · `mais` (recognition). **Recognition/deferred from L4:** `froid` / `chaud`, `j'ai envie de`.
 
-**Critical observation (defines the scope).** The learner can **already express a wide band of human states** — tired, hungry, thirsty, afraid, not ready, needing help, not understanding, "it's okay." What is **missing** is: (1) a **social check-in** (`ça va ?` — how a real conversation opens/repairs), explicitly **deferred from L1** to "a later social-check lesson"; and (2) **a positive feeling** (every owned state is negative/neutral — the learner cannot yet say "I'm good/glad"). So L17's genuine new value is **tiny and specific**: `ça va ?` + one positive adjective. Everything else is recombination. **A 7–9-word feelings lesson would be inventing a need that doesn't exist.**
+**Critical observation (defines the scope) — ⚠️ FALSE, see the banner.** This review asserted that the learner can **already express a wide band of human states** — tired, hungry, thirsty, afraid, not ready, needing help, not understanding, "it's okay." What is **missing** is: (1) a **social check-in** (`ça va ?` — how a real conversation opens/repairs), explicitly **deferred from L1** to "a later social-check lesson"; and (2) **a positive feeling** (every owned state is negative/neutral — the learner cannot yet say "I'm good/glad"). So L17's genuine new value is **tiny and specific**: `ça va ?` + one positive adjective. Everything else is recombination. **A 7–9-word feelings lesson would be inventing a need that doesn't exist.**
 
 ---
 
@@ -51,9 +66,9 @@
 - **Verdict:** **reject as a primary** — fold its items in as **recycled contrast**, not as the owned target.
 
 ### Option C — Social response / empathy chunks
-**Own:** `ça va ?` / `ça va` / `ça ne va pas` (**new** social-check, deferred from L1) + `c'est pas grave` (recycled) + `je comprends` (light promotion of the affirmative, currently frozen in `je ne comprends pas`).
+**Own:** `ça va ?` / `ça va` / `ça ne va pas` (**new** social-check, deferred from L1) + `c'est pas grave` (recycled) + `je comprends` (light promotion of the affirmative, currently frozen in `je ne comprends pas`). *(Ratified: `ça va` is **one** identity and `ça ne va pas` is composed; `c'est pas grave` and `je comprends` are **both struck** — neither is owned. See the banner.)*
 - **Strengths:** **the genuinely missing, high-utility, high-social-importance piece** — `ça va ?` is how real French conversations open, check in, and repair; it was **explicitly reserved** for a later social-check lesson (L1 spec §15). As **frozen chunks** these open no system (`ça va` is NOT productive `aller` and NOT futur proche). High emotional/social usefulness (engine §11) for almost no load.
-- **Weaknesses:** `ça va` is a homograph of `aller` 3rd-person — must be owned as a **frozen chunk** with a guard so it never opens `aller`/futur; `je comprends` (affirmative) is a tiny promotion that must not imply a `comprendre` paradigm.
+- **Weaknesses:** `ça va` is a homograph of `aller` 3rd-person — must be owned as a **frozen chunk** with a guard so it never opens `aller`/futur *(ratified and carried onto the identity itself)*; ~~`je comprends` (affirmative) is a tiny promotion~~ — **struck**, its source was never acquired.
 - **Verdict:** **adopt as the freshness core.**
 
 ### Option D — Pure integration (no new feeling items)
@@ -61,7 +76,7 @@
 - **Evaluation:** **too flat here.** **L16 was already an integration beat (+ A Small Moment); L13 was integration; L19 is the next one.** A third integration at L17 stalls the band and ignores the real gap (`ça va ?`, a positive feeling). Pure integration is L19's job, not L17's.
 - **Verdict:** **reject** (but keep L17 *integration-disciplined* — recycle-heavy).
 
-**Recommendation: a narrow hybrid of C (primary) + A (capped).** Own **`ça va ?` / `ça va` / `ça ne va pas`** (social check-in, new chunks) **+ `je suis content`** (one new positive adjective in the owned frame), with **`c'est pas grave`, `je comprends`/`je ne comprends pas`, fatigué/faim/peur/besoin/pas prêt all recycled**. Defer everything else. This gives L17 a real, human freshness hook (the social check) and a positive feeling, with **≤2 new lexical items** and **0 new systems**.
+**Recommendation: a narrow hybrid of C (primary) + A (capped).** *(Direction ratified; inventory corrected.)* Own **`chunk-ca-va`** (one frozen social check-in, asked and answered) **+ `adj-content`** (the positive state) **+ `adj-fatigue`** (the negative state — new, not recycled), with `Ça ne va pas.` **composed** from the owned negation and only genuinely-shipped material recycled. `c'est pas grave`, `je comprends`, `peur`, `besoin`, first-person `prêt` are **struck** — not owned, not provisioned here. Defer everything else. **3 new lexical items, 0 new systems.**
 
 ---
 
@@ -88,14 +103,14 @@
 
 | Item | Classification | Note |
 |---|---|---|
-| **`je suis fatigué`** | **ACTIVE (recycled)** | L2/L6 owned state |
+| **`je suis fatigué`** | **ACTIVE (NEW in L17)** *(was: "recycled — L2/L6 owned state")* | `adj-fatigue` did not exist; the L02 spec planned it and the shipped L2 slice dropped it. L17 owns it. |
 | **`je ne suis pas prêt`** | **ACTIVE (recycled)** | L6 negated state |
 | **`j'ai besoin d'aide`** | **ACTIVE (recycled)** | L4/L6 |
 | **`j'ai faim`** | **ACTIVE (recycled)** | L4 |
 | **`j'ai peur`** | **SUPPORTED (recycled)** | L4 light-active — kept light |
-| **`ça va ?`** | **ACTIVE (new chunk)** | social check-in — **frozen chunk**, opens no `aller`/futur |
-| **`ça va` / `ça ne va pas`** | **ACTIVE / SUPPORTED (new chunks)** | the answers to the check-in |
-| **`je comprends` / `je ne comprends pas`** | **SUPPORTED / ACTIVE (recycled)** | `je ne comprends pas` owned (L1); affirmative `je comprends` a light promotion |
+| **`ça va ?` / `ça va`** | **ACTIVE (new — ONE chunk, `chunk-ca-va`)** | social check-in — **frozen chunk**, opens no `aller`/futur. Ask and answer are two uses of one identity. |
+| **`ça ne va pas`** | **composed, not an identity** | `chunk-ca-va` + the owned `ne…pas` (L3) |
+| ~~**`je comprends` / `je ne comprends pas`**~~ | **STRUCK — not owned** *(was: "SUPPORTED / ACTIVE (recycled)")* | `je ne comprends pas` exists only as a PR-07 L1-pilot registration that no shipped lesson works, so there is nothing to promote. Separate curriculum work. |
 | **`c'est pas grave`** | **ACTIVE (recycled)** | L2/L6 reassurance |
 | **`je suis content`** | **ACTIVE (new — one positive adjective)** | the one new feeling adjective; in the owned `je suis ___` frame |
 | **`je suis triste`** | **RECOGNITION only** | shown, not required — caps the adjective load (defer to avoid a dump) |
@@ -116,7 +131,7 @@
 |---|---|---|
 | `Ça va ?` | ✅ in scope (**new**, the hook) | social check-in (frozen chunk) |
 | `Ça va.` / `Ça ne va pas.` | ✅ in scope (new) | the answers |
-| `Je suis fatigué.` | ✅ in scope | L2/L6 |
+| `Je suis fatigué.` | ✅ in scope — but as **NEW**, not recycled | `adj-fatigue` is created for L17 (banner) |
 | `Je suis content.` | ✅ in scope (**new** adjective) | one positive feeling in the owned frame |
 | `Je ne comprends pas.` | ✅ in scope | L1 frozen repair |
 | `C'est pas grave.` | ✅ in scope | L2/L6 reassurance |
@@ -209,7 +224,7 @@
 
 **Recommendation: write a COMPACT L17 spec next** (consistent with L13/L14/L15/L16). Do **not** write a full spec; do **not** make L17 pure integration (Option D); do **not** postpone feelings; do **not** split feelings into two lessons.
 
-- **Compact, not full:** L17 owns **0 new systems / 0 architecture verbs** and **≤2 new lexical items** over owned frames — a compact spec fits. A full spec would invite the emotion-vocabulary tables and the advice register the gate forbids.
+- **Compact, not full:** L17 owns **0 new systems / 0 architecture verbs** and **3 new lexical items** over owned frames — a compact spec fits. A full spec would invite the emotion-vocabulary tables and the advice register the gate forbids.
 - **Not pure integration:** L16/L13 already did integration; L19 is the next integration beat. L17 must carry the small, real human hook (`ça va ?` + a positive feeling).
 - **Not postponed / not split:** the gap (social check-in, a positive feeling) is real and small; one lesson covers it. Splitting feelings across two lessons would over-weight a thematic area and risk two vocab lists.
 
@@ -232,7 +247,7 @@
 ## 12. Final Verdict
 
 - **Is L17 ready for detailed spec writing?** **Yes — ready for a *compact* spec**, once the five §11 gates are locked. The *direction* (human context / feelings) is right; the band map's **size (7–9) and "advice"** must be cut first.
-- **What should L17 own?** feelings/states in the **owned `je suis + state` / `j'ai + state`** frames, **+ `ça va ?` / `ça va` / `ça ne va pas`** (new social check-in chunks), **+ `je suis content`** (one new positive adjective), with `c'est pas grave` / `je comprends` / fatigué / faim / peur / besoin recycled. **0 new grammar systems, 0 new architecture verbs.**
+- **What should L17 own?** *(ratified)* the **owned `je suis + state`** frame filled by **`adj-fatigue`** and **`adj-content`**, plus the frozen social check-in **`chunk-ca-va`** (asked and answered), with `Ça ne va pas.` composed from the owned negation. Only `j'ai faim` and the other verified shipped material is recycled. **3 demands, 0 new grammar systems, 0 new architecture verbs.**
 - **What should L17 absolutely NOT own?** **advice / conditionnel** (`tu devrais` / `il faudrait`); **`se sentir` / `je me sens`** as a system; **a broad emotion vocabulary** (beyond `content` active + `triste` recognition); **opinion verbs**; **past/future feeling narrative**; **therapy/coaching tone**; **futur proche** (L18's job); **object-pronoun production**; **a full A Small Moment feature**.
 - **Single highest-risk leak:** **the emotion-vocabulary dump** — the band map's ~7–9 active-new + the Thematic-Vocabulary archetype together push toward a list of feeling words, which would overload a lesson that should mostly recombine and would burn the "feelings in frames" discipline. **Close second:** the **advice / therapy tone** (the band map's "light advice" + the owned `il faut`/`je dois`) — L17 owns feeling-statements and a social check-in, **not** counseling.
 
@@ -246,4 +261,4 @@
 - **`ça va ?` provenance:** the L1 spec §15 cut "comme ci, comme ça" as *"a 'ça va ?' response — belongs to a later social-check lesson."* L17 is the intended home; this gate confirms it.
 - **No runtime/code/content/flag/ID change is authorized.** `content/itemRegistry.ts` (at `lemot-app/content/`) was **not** read or modified — the ID convention + prior specs supplied the grounding. Dev APK scope (L1–L5 only) is unaffected; L17 is far out of dev-apk scope. The Dev APK smoke test remains the boundary before any runtime work.
 
-*End of L17 Human Context / Feelings Gate Review. Planning/review only — no lesson spec, no code/content/flag/runtime change. Recommendation: L17 = a narrow, recycle-dominant human-context/feelings lesson — feelings in owned frames + the social check-in `ça va ?` + one positive adjective (`content`), active-new ~3–5 (not the band map's 7–9) — with advice/conditionnel, `se sentir`, broad emotion lexis, past/future feeling narrative, therapy tone, and the deep emotional A Small Moment all deferred (paid-zone or later). The band map's "feelings + light advice / ~7–9" is sharpened down, not flattered.*
+*End of L17 Human Context / Feelings Gate Review. Planning/review only — no lesson spec, no code/content/flag/runtime change. Recommendation *(as ratified 2026-08-08)*: L17 = a narrow, recycle-dominant human-context/feelings lesson at `journeyRole: standard` — the frozen social check-in `chunk-ca-va` + two capped state adjectives (`adj-fatigue`, `adj-content`) in the owned `je suis + state` frame, **active-new exactly 3** (not the band map's 7–9, and not this review's own ~3–5) — with advice/conditionnel, `se sentir`, broad emotion lexis, past/future feeling narrative, therapy tone, and the deep emotional A Small Moment all deferred (paid-zone or later). The band map's "feelings + light advice / ~7–9" is sharpened down, not flattered.*
