@@ -39,6 +39,7 @@ const RATIFIED: Record<string, string | undefined> = {
   "v1-lesson-013": "integration",
   "v1-lesson-014": "doorway",
   "v1-lesson-015": "doorway",
+  "v1-lesson-016": "integration",
 };
 
 describe("journeyRole — shipped map", () => {
@@ -67,14 +68,14 @@ describe("journeyRole — shipped map", () => {
     );
   });
 
-  test("JR-003 — L1..L15 each declare a role; L0 does not", () => {
+  test("JR-003 — L1..L16 each declare a role; L0 does not", () => {
     const withRole = V1_LESSONS.filter((lesson) => lesson.journeyRole !== undefined);
     assertEqual(
       withRole.map((lesson) => lesson.number).sort((a, b) => a - b),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
       "migration is complete for the current shipped sequence",
     );
-    assertEqual(countDeclaredJourneyRoles(V1_LESSONS), 15, "15 of 16 lessons carry a role");
+    assertEqual(countDeclaredJourneyRoles(V1_LESSONS), 16, "16 of 17 lessons carry a role");
   });
 
   test("the current role distribution is as ratified", () => {
@@ -85,7 +86,7 @@ describe("journeyRole — shipped map", () => {
     }
     assertEqual(
       counts,
-      { doorway: 7, standard: 5, integration: 3, review: 0, milestone: 0, unset: 1 },
+      { doorway: 7, standard: 5, integration: 4, review: 0, milestone: 0, unset: 1 },
       "no review or milestone lesson ships yet",
     );
   });

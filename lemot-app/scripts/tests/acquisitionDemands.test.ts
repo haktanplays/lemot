@@ -1,5 +1,5 @@
 /**
- * Lesson acquisition-demand contract (AD-001..AD-005) + the shipped L0–L15 map.
+ * Lesson acquisition-demand contract (AD-001..AD-005) + the shipped L0–L16 map.
  *
  * `acquisitionDemandItemIds` is the authored SOURCE OF TRUTH for active-new, so
  * the map is asserted as exact arrays: an extra, missing or reordered id changes
@@ -22,7 +22,7 @@ import { V1_LESSONS } from "../../content/lessons/v1";
 import { getItem } from "../../content/itemRegistry";
 import type { Lesson } from "../../content/lessonTypes";
 
-/** The ratified L0–L15 declaration map. */
+/** The ratified L0–L16 declaration map. */
 const RATIFIED: Record<string, readonly string[]> = {
   "v1-lesson-000": [
     "chunk-bonjour",
@@ -45,6 +45,8 @@ const RATIFIED: Record<string, readonly string[]> = {
   "v1-lesson-013": [],
   "v1-lesson-014": ["word-y-place", "chunk-on-y-va"],
   "v1-lesson-015": ["chunk-il-faut"],
+  // L16 is Integration: PRJ-015 IC-006 binds its active-new to zero.
+  "v1-lesson-016": [],
 };
 
 /** Minimal synthetic lesson carrying one declaration and one reference site. */
@@ -55,7 +57,7 @@ const lesson = (over: object): Lesson =>
 const refScreen = (...ids: string[]) =>
   ({ id: "s00", type: "meet-card", targetItemIds: ids, payload: {} }) as never;
 
-describe("acquisitionDemands — shipped L0–L15 map", () => {
+describe("acquisitionDemands — shipped L0–L16 map", () => {
   test("every lesson declares exactly its ratified demands", () => {
     assertEqual(
       V1_LESSONS.map((l) => l.id).sort(),
@@ -72,14 +74,15 @@ describe("acquisitionDemands — shipped L0–L15 map", () => {
   });
 
   test("total declared demands across v1 is 21", () => {
+    // L16 ships without moving this number: an Integration lesson contributes 0.
     assertEqual(totalAcquisitionDemands(V1_LESSONS), 21, "current-v1 regression total");
   });
 
-  test("migration is complete — all 16 lessons declare the field", () => {
-    assertEqual(V1_LESSONS.length, 16, "16 shipped lessons");
+  test("migration is complete — all 17 lessons declare the field", () => {
+    assertEqual(V1_LESSONS.length, 17, "17 shipped lessons");
     assertEqual(
       countLessonsDeclaringDemands(V1_LESSONS),
-      16,
+      17,
       "none is left unadjudicated",
     );
     for (const l of V1_LESSONS) {
@@ -90,8 +93,8 @@ describe("acquisitionDemands — shipped L0–L15 map", () => {
     }
   });
 
-  test("L10 and L13 declare an explicit empty array, not an omission", () => {
-    for (const id of ["v1-lesson-010", "v1-lesson-013"]) {
+  test("L10, L13 and L16 declare an explicit empty array, not an omission", () => {
+    for (const id of ["v1-lesson-010", "v1-lesson-013", "v1-lesson-016"]) {
       const l = V1_LESSONS.find((x) => x.id === id);
       assert(l?.acquisitionDemandItemIds !== undefined, `${id} declares the field`);
       assertEqual(l?.acquisitionDemandItemIds, [], `${id} is adjudicated zero`);
@@ -299,6 +302,7 @@ describe("acquisitionDemands — non-regression", () => {
         "integration",
         "doorway",
         "doorway",
+        "integration",
       ],
       "the ratified role map is untouched",
     );
