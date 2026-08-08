@@ -14,6 +14,9 @@ import { describe, test, assert } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
 import type { Lesson, LessonScreen } from "../../content/lessonTypes";
+// The recap chip taxonomy now lives in content/ so the Content Factory can
+// enforce the same rule on a candidate that is not in V1_LESSONS yet.
+import { sentenceChipProblem } from "../../content/lessons/chipTaxonomy";
 
 const REGISTRY_IDS = new Set(Object.keys(ITEM_REGISTRY));
 
@@ -30,50 +33,6 @@ const SUPPORTED_SCREEN_TYPES = new Set([
 
 // "ne ne", "pas pas" and similar doubled negation tokens in French strings.
 const REPEATED_NEGATION = /\b(ne\s+ne|pas\s+pas|n'\s*n')\b/i;
-
-// ── Recap chip taxonomy guard (chip-taxonomy-and-lexique-lifecycle-v0.3 §7/§11)
-//
-// `piecesUsed` is a primary UI chip surface: entries must be atomic chips or
-// approved formula/package chunks — never full sentences or clauses (those
-// belong in model answers). This is the mechanical form of the rule whose
-// prose-only status caused the §29 L4/L6 sentence-chip regression.
-//
-// Heuristic: an entry is sentence-like when it starts with a French subject
-// pronoun (including elided j'/c'/qu' forms) and runs to 3+ word tokens
-// (apostrophe splits count: "j'ai une question" = j' + ai + une + question).
-// Two-token spine chips ("je suis", "j'ai", "je voudrais") stay legal.
-// Approved multi-token frames/formulas are exempted via PROTECTED_CHUNKS.
-// Elided forms (j'/c') attach straight to the verb, so only the full pronouns
-// require a following space.
-const SUBJECT_START =
-  /^(?:(?:je|tu|il|elle|on|nous|vous|ils|elles|ce)(?:\s|$)|[jc]')/i;
-const TERMINAL_PUNCTUATION = /[.!?]\s*$/;
-
-// Canonical multi-token chunks allowed as UI chips even though they trip the
-// subject-start + 3-token heuristic (negation frames per the v0.3 verdict
-// table). Extend deliberately — additions mean the chunk is approved canon.
-const PROTECTED_CHUNKS = new Set(["je ne suis pas", "ce n'est pas"]);
-
-function tokenCount(entry: string): number {
-  // Split on whitespace, then split elisions so "j'ai" counts as two tokens.
-  return entry
-    .trim()
-    .split(/\s+/)
-    .flatMap((w) => w.split(/(?<=')/))
-    .filter((t) => t.length > 0).length;
-}
-
-function sentenceChipProblem(entry: string): string | null {
-  const normalized = entry.trim().toLowerCase();
-  if (TERMINAL_PUNCTUATION.test(entry)) {
-    return "ends with sentence punctuation";
-  }
-  if (PROTECTED_CHUNKS.has(normalized)) return null;
-  if (SUBJECT_START.test(normalized) && tokenCount(normalized) >= 3) {
-    return "subject pronoun + 3+ tokens (sentence/clause)";
-  }
-  return null;
-}
 
 function assertItemId(id: string, where: string): void {
   assert(

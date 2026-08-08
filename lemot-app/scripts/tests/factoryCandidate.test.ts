@@ -165,6 +165,142 @@ describe("factory candidate — advisory only", () => {
   });
 });
 
+/**
+ * Shipping parity. Both classes below were found the hard way: L16, the first
+ * factory-produced lesson, passed candidate validation and then failed the
+ * repo's shipping guards. Nothing here is L16-specific — the synthetic
+ * candidates carry the same CLASS of violation, not its strings.
+ */
+const recap = (piecesUsed: string[]) => ({
+  id: "s-recap",
+  type: "recap",
+  payload: { title: "You can do it.", lines: ["A line."], piecesUsed },
+});
+
+describe("factory candidate — learner copy parity", () => {
+  test("an em dash in learner copy blocks the candidate", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thank you — politely.", ["chunk-merci"]),
+          weave("s1", "context", ["Au revoir !"], "Take your leave.", ["chunk-au-revoir"]),
+          sayIt("s2", "The room is emptying.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assert(
+      r.blockingErrors.some((e) => e.code === "COPY-GUARD" && e.message.includes("em/en dash")),
+      `dash must block, got ${JSON.stringify(r.blockingErrors)}`,
+    );
+    assert(!r.candidateValid, "the repo would reject this, so the factory must too");
+  });
+
+  test("an en dash blocks too, and the message names the guard's own wording", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thanks – now.", ["chunk-merci"]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    const hit = r.blockingErrors.find((e) => e.code === "COPY-GUARD");
+    assert(hit !== undefined, "en dash blocks");
+    assert(hit?.source === "learnerCopy", "sourced from the extracted policy, not a factory copy");
+  });
+
+  test("a banned gamification term in learner copy blocks the candidate", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Perfect! Say thank you.", ["chunk-merci"]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assert(
+      r.blockingErrors.some((e) => e.code === "COPY-GUARD" && e.message.includes("banned term")),
+      `banned term must block, got ${JSON.stringify(r.blockingErrors)}`,
+    );
+  });
+
+  test("ordinary punctuation and French hyphens pass", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thank you, politely.", ["chunk-merci"]),
+          weave("s1", "context", ["Au revoir !"], "Pouvez-vous partir ? Take your leave.", [
+            "chunk-au-revoir",
+          ]),
+          sayIt("s2", "The room is emptying.", ["chunk-merci"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assertEqual(
+      r.blockingErrors.filter((e) => e.code === "COPY-GUARD"),
+      [],
+      "commas, colons and French hyphenation are not dashes",
+    );
+    assert(r.candidateValid, "clean copy passes");
+  });
+});
+
+describe("factory candidate — recap chip parity", () => {
+  test("a sentence-like recap chip blocks the candidate", () => {
+    // Subject pronoun + 3 tokens: the class that shipped as "on y va" in L16.
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thank you.", ["chunk-merci"]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+          recap(["merci", "nous allons ici"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assert(
+      r.blockingErrors.some(
+        (e) => e.code === "CHIP-TAXONOMY" && e.message.includes("is not atomic"),
+      ),
+      `non-atomic chip must block, got ${JSON.stringify(r.blockingErrors)}`,
+    );
+    assert(!r.candidateValid, "the shipped-content validator would reject it");
+  });
+
+  test("a chip ending in sentence punctuation blocks the candidate", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thank you.", ["chunk-merci"]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+          recap(["Merci."]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    const hit = r.blockingErrors.find((e) => e.code === "CHIP-TAXONOMY");
+    assert(hit !== undefined, "terminal punctuation blocks");
+    assert(hit?.source === "chipTaxonomy", "sourced from the extracted policy");
+  });
+
+  test("atomic chips and approved protected chunks pass", () => {
+    const r = run(
+      goodCandidate({
+        screens: [
+          weave("s0", "supported", ["Merci."], "Say thank you.", ["chunk-merci"]),
+          sayIt("s1", "Someone helped you.", ["chunk-merci"]),
+          // "je suis" is a two-token spine chip; "je ne suis pas" is protected.
+          recap(["merci", "je suis", "je ne suis pas", "y"]),
+        ],
+      } as unknown as Partial<Lesson>),
+    );
+    assertEqual(
+      r.blockingErrors.filter((e) => e.code === "CHIP-TAXONOMY"),
+      [],
+      "the taxonomy was reused, not re-invented or tightened",
+    );
+    assert(r.candidateValid, "atomic chips pass");
+  });
+});
+
 describe("factory candidate — corpus context", () => {
   test("L6's named exception does not go stale during candidate validation", () => {
     // JB-004 reports an exception whose lesson is absent as dead policy, so the
@@ -189,6 +325,33 @@ describe("factory candidate — corpus context", () => {
     const before = V1_LESSONS.length;
     run(goodCandidate());
     assertEqual(V1_LESSONS.length, before, "candidate was never appended to the corpus");
+  });
+});
+
+describe("factory candidate — the shipped factory lesson stays clean", () => {
+  // L16 is the lesson that exposed both parity gaps. Re-validating the SHIPPED
+  // article against the enhanced facade proves the corrections were real fixes
+  // and not a loosened rule — if either guard were widened, this would fail.
+  const l16 = V1_LESSONS.find((l) => l.id === "v1-lesson-016") as Lesson;
+  const priorCorpus = V1_LESSONS.filter((l) => l.id !== "v1-lesson-016");
+
+  test("precondition: L16 ships", () => {
+    assert(l16 !== undefined, "v1-lesson-016 is registered");
+  });
+
+  test("shipped L16 passes every blocking check, copy and chips included", () => {
+    const r = validateFactoryCandidate({ candidate: l16, shippedLessons: priorCorpus });
+    assertEqual(r.blockingErrors, [], `expected clean, got ${JSON.stringify(r.blockingErrors)}`);
+    assert(r.candidateValid, "candidateValid");
+    assertEqual(r.journeyRoleBudget, "pass", "Integration = 0 on the plain band");
+    assertEqual(r.acquisitionDemandCount, 0, "acquisitionDemandItemIds is []");
+    assertEqual(r.journeyRole, "integration", "role unchanged");
+  });
+
+  test("shipped L16 raises no advisory of its own", () => {
+    const r = validateFactoryCandidate({ candidate: l16, shippedLessons: priorCorpus });
+    assertEqual(r.warnings, [], "no PQ-3 and no canon warning");
+    assertEqual(r.authorReview, [], "no DD advisory");
   });
 });
 

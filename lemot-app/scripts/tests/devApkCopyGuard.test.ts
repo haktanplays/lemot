@@ -18,6 +18,11 @@
  *   - Banned alphabetic terms are matched whole-word, so French hyphenated forms
  *     (pouvez-vous, est-ce que, allez-y) and substrings (e.g. "label") are safe.
  *
+ * The RULES THEMSELVES now live in `content/lessons/learnerCopy.ts` so the
+ * Content Factory candidate facade can enforce the same policy on a lesson that
+ * is not in `V1_LESSONS` yet. This file keeps the per-lesson shipping
+ * assertions; it no longer owns a private copy of the policy.
+ *
  * Pure tsx: the v1 content import graph is type-only (no React Native / Expo /
  * device layer is loaded). Component-embedded copy (CompletionView, Lesson Zero,
  * How Weave Works) is intentionally NOT covered here — see the gap note at the
@@ -25,68 +30,18 @@
  */
 import { describe, test, assert } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
-
-// Keys whose string values are internal identifiers / enums, not learner copy.
-const EXCLUDE_KEYS = new Set([
-  "id",
-  "type",
-  "insightType",
-  "weaveType",
-  "validationMode",
-  "targetItemIds",
-  "weakPointTags",
-  "itemId",
-  "answer",
-]);
-
-// Gamification / internal terms that must never appear in learner-facing copy.
-// Matched whole-word, case-insensitive.
-const BANNED_WORDS = [
-  "XP",
-  "streak",
-  "level",
-  "reward",
-  "Unlocked",
-  "Perfect",
-  "Amazing",
-  "score",
-  "percent",
-  "scaffold",
-  "flow",
-  "lab",
-];
-
-// Banned multi-word phrases (case-insensitive substring).
-const BANNED_PHRASES = ["Mini Mission", "Mini Chat"];
-
-// En dash (U+2013) and em dash (U+2014). Plain ASCII hyphen is allowed so French
-// orthography (s'il vous plaît stays untouched; pouvez-vous, allez-y) is safe.
-const DASH = /[–—]/;
-
-/** Collect every learner-facing string under `node`, skipping EXCLUDE_KEYS. */
-function collectLearnerStrings(node: unknown, out: string[]): void {
-  if (typeof node === "string") {
-    out.push(node);
-    return;
-  }
-  if (Array.isArray(node)) {
-    for (const v of node) collectLearnerStrings(v, out);
-    return;
-  }
-  if (node && typeof node === "object") {
-    for (const [key, value] of Object.entries(node)) {
-      if (EXCLUDE_KEYS.has(key)) continue;
-      collectLearnerStrings(value, out);
-    }
-  }
-}
+import {
+  COPY_BANNED_PHRASES,
+  COPY_BANNED_WORDS,
+  COPY_DASH,
+  lessonLearnerStrings,
+} from "../../content/lessons/learnerCopy";
 
 describe("dev-apk v1 copy guard", () => {
   // Covers every registered v1 lesson, so L1-L6 content PRs are born guarded
   // (Round 1 slice spec, PR B). Previously only lesson-001 was scanned.
   for (const lesson of V1_LESSONS) {
-    const strings: string[] = [];
-    collectLearnerStrings(lesson.screens, strings);
+    const strings = lessonLearnerStrings(lesson);
     const L = lesson.id;
 
     test(`${L} exposes learner-facing screen strings to check`, () => {
@@ -99,7 +54,7 @@ describe("dev-apk v1 copy guard", () => {
     test(`${L} learner copy has no em dash or en dash`, () => {
       for (const s of strings) {
         assert(
-          !DASH.test(s),
+          !COPY_DASH.test(s),
           `${L} learner string contains an em/en dash: ${JSON.stringify(s)}`,
         );
       }
@@ -107,7 +62,7 @@ describe("dev-apk v1 copy guard", () => {
 
     test(`${L} learner copy has no banned gamification / internal terms`, () => {
       for (const s of strings) {
-        for (const word of BANNED_WORDS) {
+        for (const word of COPY_BANNED_WORDS) {
           const re = new RegExp(`\\b${word}\\b`, "i");
           assert(
             !re.test(s),
@@ -115,7 +70,7 @@ describe("dev-apk v1 copy guard", () => {
           );
         }
         const lower = s.toLowerCase();
-        for (const phrase of BANNED_PHRASES) {
+        for (const phrase of COPY_BANNED_PHRASES) {
           assert(
             !lower.includes(phrase.toLowerCase()),
             `${L} learner string contains banned phrase "${phrase}": ${JSON.stringify(s)}`,

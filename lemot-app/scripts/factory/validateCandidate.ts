@@ -15,6 +15,15 @@
  * also needs the corpus, for a different reason: "first worked here" is only
  * meaningful against the lessons that came before.
  *
+ * SHIPPING PARITY. Two guards below (learner copy, recap chip taxonomy) are not
+ * factory rules at all — they are the repo's own shipping rules, reached through
+ * the modules that now own them. They were added after L16, the first
+ * factory-produced lesson, passed candidate validation and then failed both at
+ * shipping time: em dashes in learner copy, and the non-atomic recap chip
+ * `"on y va"`. Neither rule changed; they were only made callable on a lesson
+ * that is not in `V1_LESSONS` yet. A candidate the repo would reject must not
+ * be able to pass here first.
+ *
  * WHAT THIS CANNOT TELL YOU. Deterministic validation says nothing about
  * whether the French is natural, whether a reading feels like a human moment,
  * whether the register holds, or whether the exit proof convinces. Those stay
@@ -22,6 +31,8 @@
  */
 import { reviewAcquisitionDemandDrift } from "../../content/lessons/acquisitionDemandDrift";
 import { validateAcquisitionDemands } from "../../content/lessons/acquisitionDemands";
+import { reviewRecapChips } from "../../content/lessons/chipTaxonomy";
+import { reviewLearnerCopy } from "../../content/lessons/learnerCopy";
 import { validateJourneyRoles } from "../../content/lessons/journeyRoles";
 import { validateJourneyRoleDemandBudgets } from "../../content/lessons/journeyRoleDemandBudgets";
 import {
@@ -125,6 +136,15 @@ export function validateFactoryCandidate(args: {
     };
     if (d.severity === "error") blockingErrors.push(entry);
     else warnings.push(entry);
+  }
+
+  // Shipping parity — the repo's own guards, same rules, same messages. Both
+  // are blocking at shipping time, so both block here.
+  for (const d of reviewLearnerCopy(candidate)) {
+    blockingErrors.push({ code: d.code, source: "learnerCopy", message: d.message });
+  }
+  for (const d of reviewRecapChips(candidate)) {
+    blockingErrors.push({ code: d.code, source: "chipTaxonomy", message: d.message });
   }
 
   // DD-001..DD-004 — advisory only, and corpus-scoped for "first worked here".
