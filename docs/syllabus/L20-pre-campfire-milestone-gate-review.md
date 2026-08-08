@@ -18,7 +18,7 @@
 ## 1. Executive Summary
 
 - **What is L20's job?** **Test more than it teaches.** The learner demonstrates they can carry a small French moment end-to-end with substantially less supplied structure than any earlier lesson. The question it answers is *"can the learner now do something coherent with the French they own?"* — not *"can they hit isolated lesson targets?"*
-- **What distinguishes it from L19 — measurably?** **Where its production ladder starts.** **Every shipped lesson L13–L19 opens at support rank 4 (`supported`).** L20 opens at **rank 2 (`context`)** and never offers a `supported` or `mid` beat at all: **2 → 1 → 0**. L20 *begins* where L19 *ends*. That is a structural signature, not a rhetorical claim, and it is visible in the corpus.
+- **What distinguishes it from L19 — measurably?** **Where its production ladder starts.** **Every shipped lesson L13–L19 opens at support rank 4 (`supported`).** L20 opens at **rank 2 (`context`)** and never offers a `supported` or `mid` beat at all: **2 → 1 → 0**. L20 *begins* where L19's ladder *finishes*, and below every lesson in the integration sequence it follows. **The numeric ladder itself is not a corpus first** — `v1-lesson-009` already ships `2 → 1 → 0` (see §3.1). The claim is scoped to the L13–L19 band it exits, not to the whole corpus.
 - **What does it own?** **Nothing.** Zero demands, zero identities, zero new systems.
 - **What about FP-C?** Representable honestly and with precedent — an `insight-card` carrying French with **no `targetItemIds` and no `itemId` anywhere**. Forty shipped screens already use that exact shape. See §7.
 - **Is "milestone" a runtime gate?** **No.** `journeyRole` has **no runtime consumer anywhere** — grep-verified. Milestone is currently a **curriculum role, not a product gate**, and the spec must not pretend otherwise.
@@ -74,9 +74,25 @@ Verified against **shipped** `lesson-000.ts … lesson-019.ts` and the 63-identi
 | Screens | 10 | **compact** — a milestone need not be large |
 | New material | none | none |
 
-**The test.** *If L20 collapses into "L19 but harder", the design has failed.* It does not, and the reason is measurable rather than rhetorical: **no shipped lesson has ever opened its production above rank 4.** L20 opening at rank 2 and never descending to a supported beat is a shape the corpus has not contained. The learner does not get an easier version of the same lesson — they get the same moment **without the scaffolding that made L19 teachable**.
+**The test.** *If L20 collapses into "L19 but harder", the design has failed.* The measurable part is where the ladder starts: **every lesson in the L13–L19 band opens at rank 4**, and L20 opens at rank 2 without ever offering a `supported` or `mid` beat. The learner does not get an easier version of the same lesson — they get the same moment **without the scaffolding that made L19 teachable**.
+
+**What the ladder does NOT prove, stated plainly.** Opening at rank 2 is not by itself unprecedented: `v1-lesson-005`, `v1-lesson-008` and `v1-lesson-009` all open at rank 2, and **`v1-lesson-009` already has the exact `2 → 1 → 0` sequence**. The ladder is therefore evidence that L20 exits its own band, not evidence of a globally new shape. The stronger structural test is §3.1, and the decisive test is not structural at all: **no L20 production beat may re-ask an L19 reference answer with less support.** That is a per-beat check on the authored candidate, and no validator performs it.
 
 **And the difference is not bought with novelty.** L20 stays at zero demands. What changes is how much of the moment the learner supplies.
+
+### 3.1 The structural distinction actually observed
+
+Measured against the shipped corpus (L0–L19) while reviewing the first L20 candidate, the combination that no shipped lesson has is:
+
+| | Observation |
+|---|---|
+| **No `meet-card`** | all 20 shipped lessons have one; nothing is met because nothing is new |
+| **No `fill-with-traps`** | all 20 shipped lessons have one; nothing is chosen from supplied options |
+| **Meaningful production begins at contextual retrieval** | first production beat is `weave` · `context`, not `supported` |
+| **Bounded learner agency** | several independently-owned routes are accepted, inside existing deterministic validation |
+| **End-to-end communicative performance** | one whole moment carried at rank 0 |
+
+**Descriptive, not a rule.** This records how the *first* Milestone candidate came out. It is **not** promoted to a Milestone invariant and **must not** become a validator: a later Milestone that uses a meet-card or a fill is not thereby defective. Nothing in the Factory checks any of it, and nothing should be wired to.
 
 ---
 
@@ -283,4 +299,4 @@ Futur proche is one of the four **headline engines reserved for the paid/promise
 - **Charter unchanged:** `L18+ | Open / provisional`. **This gate does not promote it.**
 - **No runtime, code, content, registry, flag or ID change is authorized by this document.**
 
-*End of L20 Pre-Campfire Milestone Gate Review. Planning/review only. Ratified: L20 = `journeyRole: milestone`, **acquisition exactly 0**, `summit-milestone` + `thematic-context`, proving integrated capability by having the learner carry one small owned moment end to end — with the production ladder opening at `context` and never offering a supported beat (**2 → 1 → 0**, against every shipped lesson's 4-opening), genuine route choice inside existing deterministic validation, and exactly one recognition-only FP-C card (`Je vais faire une pause.`) carrying no identity, no demand and no production target. Milestone is a curriculum role, not a runtime gate; Campfire is not announced.*
+*End of L20 Pre-Campfire Milestone Gate Review. Planning/review only. Ratified: L20 = `journeyRole: milestone`, **acquisition exactly 0**, `summit-milestone` + `thematic-context`, proving integrated capability by having the learner carry one small owned moment end to end — with the production ladder opening at `context` and never offering a supported beat (**2 → 1 → 0**, against the rank-4 opening of every lesson in the L13–L19 band it exits — the numeric ladder itself is not a corpus first, `v1-lesson-009` already has it), genuine route choice inside existing deterministic validation, and exactly one recognition-only FP-C card (`Je vais faire une pause.`) carrying no identity, no demand and no production target. Milestone is a curriculum role, not a runtime gate; Campfire is not announced.*

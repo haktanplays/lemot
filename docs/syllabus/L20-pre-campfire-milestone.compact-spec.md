@@ -49,7 +49,7 @@ A coherent moment plausibly runs **open → ask → answer honestly → act on w
 
 ---
 
-## 3. Support Model — the structural signature
+## 3. Support Model — where the ladder starts
 
 **Measured fact this rests on: every shipped lesson L13–L19 opens its production ladder at support rank 4 (`supported`).** L20 does not.
 
@@ -61,7 +61,11 @@ A coherent moment plausibly runs **open → ask → answer honestly → act on w
 
 **Ladder: 2 → 1 → 0. No `supported` beat, no `mid` beat, anywhere.**
 
-**L20 begins where L19 ends.** That is the mechanical difference between a milestone and "L19 with fewer hints", and it is visible in the corpus rather than asserted.
+**L20 begins where L19's ladder finishes**, and below every lesson in the L13–L19 band it exits.
+
+**What this does not prove.** The numeric ladder is **not** a corpus first: `v1-lesson-005`, `v1-lesson-008` and `v1-lesson-009` all open at rank 2, and **`v1-lesson-009` already has the exact `2 → 1 → 0` sequence**. So the ladder shows L20 exits its band; it does not by itself distinguish a milestone from a review. **The mechanical difference between a milestone and "L19 with fewer hints" is a per-beat check, not a ladder check: no L20 production beat may re-ask an L19 reference answer at lower support.** No validator performs it — it is authoring and review work.
+
+**The structural distinction actually observed** while reviewing the first L20 candidate, against shipped L0–L19: **no `meet-card`** + **no `fill-with-traps`** (all 20 shipped lessons have both) + **meaningful production beginning at contextual retrieval** + **bounded learner agency** + **one end-to-end communicative performance**. **Descriptive, not a rule** — this records how the first Milestone came out. It is not a Milestone invariant, must not become a validator, and a later Milestone using a meet-card or a fill is not thereby defective.
 
 **Withdrawal, not hostility:**
 - the deterministic reveal on each weave is the recovery route;
@@ -235,7 +239,7 @@ Both halves are met surfaces (`je vais`, L7 frozen; `faire une pause`, L9 packag
 | Risk | Guard |
 |---|---|
 | **Coverage sweep** — every owned system paraded once | §2 and §5's deliberate exclusions. **Check this first in smoke.** |
-| **"L19 with fewer hints"** | §3's ladder: if a `supported` or `mid` beat appears, the milestone signature is gone |
+| **"L19 with fewer hints"** | §3's per-beat rule, **not** the ladder: a `supported` or `mid` beat is disqualifying, but a clean ladder is not sufficient. Check every production beat against L19's reference answers by hand. |
 | **Invented milestone machinery** — unlock, score, threshold | §8; no runtime gate exists |
 | **Campfire arrival copy** | §9 |
 | **FP-C drifting into ownership** — an identity, a production target, a recap chip | §7's restriction table |
@@ -247,4 +251,4 @@ Both halves are met surfaces (`je vais`, L7 frozen; `faire une pause`, L9 packag
 
 ---
 
-*End of L20 Pre-Campfire Milestone Compact Spec. Spec only — no lesson content, no code, no runtime change. L20 = `journeyRole: milestone`, **acquisition exactly 0**, `summit-milestone` + `thematic-context`, proving integrated capability by having the learner carry one small owned moment end to end. Its structural signature is the support ladder **2 → 1 → 0** — no `supported` beat, no `mid` beat — against every shipped lesson's rank-4 opening: **L20 begins where L19 ends.** Exactly one recognition-only FP-C card, `Je vais faire une pause.`, carries no identity, no demand and no production target. Milestone is a curriculum role, not a runtime gate, and Campfire is not announced.*
+*End of L20 Pre-Campfire Milestone Compact Spec. Spec only — no lesson content, no code, no runtime change. L20 = `journeyRole: milestone`, **acquisition exactly 0**, `summit-milestone` + `thematic-context`, proving integrated capability by having the learner carry one small owned moment end to end. Its support ladder is **2 → 1 → 0** — no `supported` beat, no `mid` beat — against the rank-4 opening of every lesson in the L13–L19 band it exits: **L20 begins where L19's ladder finishes.** That ladder is not a corpus first (`v1-lesson-009` already has it), so the milestone/review distinction is carried by a per-beat rule instead: **no L20 beat may re-ask an L19 reference answer at lower support** (§3). Exactly one recognition-only FP-C card, `Je vais faire une pause.`, carries no identity, no demand and no production target. Milestone is a curriculum role, not a runtime gate, and Campfire is not announced.*
