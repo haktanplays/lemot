@@ -779,6 +779,13 @@ export const ITEM_REGISTRY = {
   },
 
   // ── L17 batch: social check-in + the first two state adjectives ───────────
+  // FOUNDER-WAIVED PROVISIONAL FRENCH QA. No named human has reviewed these
+  // three surfaces. They are internally learner-reachable ONLY under the
+  // founder's explicit risk acceptance for the internal tester APK; they are
+  // NOT public / content-complete ready, and the comprehensive human French QA
+  // pass remains mandatory before any wider release. Same posture as the PR-07
+  // block above, and for the same reason.
+  //
   // Three identities, three acquisition demands. Deliberately NOT created:
   // `chunk-ca-va-question` (the rising-intonation ask is a USE of the frozen
   // chunk, exactly as `Je peux faire une pause ?` is a use of chunk-je-peux —
@@ -801,6 +808,7 @@ export const ITEM_REGISTRY = {
     exampleEn: "How's it going?",
     relatedItemIds: ["chunk-bonjour", "chunk-je-suis"],
     weakPointTags: ["aller-future"],
+    frenchQa: "founder_waived_provisional",
   },
   "adj-fatigue": {
     id: "adj-fatigue",
@@ -815,6 +823,7 @@ export const ITEM_REGISTRY = {
     exampleEn: "I'm tired.",
     relatedItemIds: ["chunk-je-suis", "adj-content"],
     weakPointTags: ["gender"],
+    frenchQa: "founder_waived_provisional",
   },
   "adj-content": {
     id: "adj-content",
@@ -829,6 +838,7 @@ export const ITEM_REGISTRY = {
     exampleEn: "I'm glad.",
     relatedItemIds: ["chunk-je-suis", "adj-fatigue"],
     weakPointTags: ["gender"],
+    frenchQa: "founder_waived_provisional",
   },
 } as const satisfies Record<string, LearningItem>;
 

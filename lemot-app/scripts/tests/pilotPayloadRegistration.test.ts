@@ -739,14 +739,17 @@ describe("PM-011 — Supported tea order (real screen, real spine)", () => {
 // ── Part L: provisional-surface inventory ───────────────────────────────────
 
 describe("QA debt stays queryable", () => {
-  test("the inventory lists 5 items, 2 sentences, 2 payloads — deterministically", () => {
+  test("the inventory lists 8 items, 2 sentences, 2 payloads — deterministically", () => {
+    // 5 from PR-07 + 3 from L17. The count GROWING is the point: every surface
+    // shipped under a founder waiver stays queryable until a named human reads
+    // it, so this number may only fall when real French QA lands.
     const one = listProvisionalRegisteredSurfaces();
-    assertEqual(one.items.length, 5, "five provisional items");
+    assertEqual(one.items.length, 8, "five PR-07 + three L17 provisional items");
     assertEqual(one.sentences.length, 2, "two provisional sentences");
     assertEqual(one.payloads.length, 2, "two registered payloads");
     assertEqual(
       one.items.map((i) => i.itemId).join(","),
-      "chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the",
+      "adj-content,adj-fatigue,chunk-ca-va,chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the",
       "sorted item ordering",
     );
     assertEqual(

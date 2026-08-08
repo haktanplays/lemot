@@ -14,6 +14,9 @@
 > - **Two state adjectives, one identity each:** `adj-fatigue` and `adj-content`, composing with the owned `chunk-je-suis`; feminine forms are authored surfaces, not ids (IC-005). **`fatigué` is NEW in L17**, not recycled — the L02 spec planned it and the shipped L2 slice dropped it.
 > - **The `je comprends` promotion is de-scoped** — you cannot promote the affirmative of a chunk never acquired.
 >
+> - **The canDo verb is "open", not "answer"** (ratified after the first generation run). The learner can initiate a check-in and answer honestly about themselves, but **cannot yet console** — `c'est pas grave` is unowned and advice is deferred, and neither is imported to fake it. Canonical: *"I can ask how someone is, say how I am — okay, not okay, tired, glad, — and **open** a small human moment kindly, without giving advice."*
+> - **French QA:** the three new identities carry `founder_waived_provisional` — internally reachable under the founder's explicit risk acceptance, **never** named-human approved, and not public-release ready.
+>
 > **Exact ratified demands:** `chunk-ca-va` · `adj-fatigue` · `adj-content`.
 >
 > Everything else in this review — the Option A–D adjudication, the advice demotion, the `ça va` homograph guard, the paywall analysis, the deferred matrix — stands.

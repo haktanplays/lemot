@@ -19,6 +19,10 @@ import {
   getCanonicalItem,
   isCanonicalItemId,
 } from "../../content/identity/canonicalItems";
+import {
+  isHumanFrenchApproved,
+  isInternalPilotFrenchReachable,
+} from "../../content/identity/frenchQaStatus";
 
 describe("canonical item boundary", () => {
   test("every ITEM_REGISTRY key equals its record id", () => {
@@ -174,6 +178,58 @@ describe("L17 social-state identities", () => {
       const item = (ITEM_REGISTRY as Record<string, Record<string, unknown>>)[id];
       assertEqual(item.acquisitionLink, undefined, `${id} needs no link`);
       assertEqual(item.acquisitionComponents, undefined, `${id} needs no components`);
+    }
+  });
+});
+
+/**
+ * L17's French-QA truth, restated where it cannot drift.
+ *
+ * The founder waived the pre-registration human French gate for the internal
+ * tester APK, exactly as PR-07 did. That waiver is a risk acceptance, NOT an
+ * attestation: no named human has read these three surfaces. The debt is real
+ * and must stay visible, so this block asserts both halves — reachable
+ * internally, and never human-approved.
+ */
+describe("L17 French QA — provisional, never approved", () => {
+  const L17_IDS = ["chunk-ca-va", "adj-fatigue", "adj-content"] as const;
+  const qaOf = (id: string) =>
+    (ITEM_REGISTRY as Record<string, { frenchQa?: string }>)[id].frenchQa;
+
+  test("all three carry the founder waiver, and only that", () => {
+    for (const id of L17_IDS) {
+      assertEqual(qaOf(id), "founder_waived_provisional", `${id} French QA status`);
+    }
+  });
+
+  test("none is human-approved — the waiver is not an attestation", () => {
+    for (const id of L17_IDS) {
+      assert(
+        !isHumanFrenchApproved(qaOf(id) as never),
+        `${id} must not claim named-human French approval`,
+      );
+    }
+  });
+
+  test("all three are internally pilot-reachable under the existing helper", () => {
+    for (const id of L17_IDS) {
+      assert(
+        isInternalPilotFrenchReachable(qaOf(id) as never),
+        `${id} may reach an internal tester`,
+      );
+    }
+  });
+
+  test("the public-release French-QA debt stays visible in the registry", () => {
+    const provisional = CANONICAL_ITEM_IDS.filter(
+      (id) => qaOf(id) === "founder_waived_provisional",
+    );
+    assert(
+      provisional.length > 0,
+      "unreviewed French is still shipping internally; this must not silently reach zero",
+    );
+    for (const id of L17_IDS) {
+      assert(provisional.includes(id), `${id} is part of the outstanding human-QA debt`);
     }
   });
 });

@@ -28,6 +28,14 @@
 > **6 · Two state adjectives, one identity each.** `adj-fatigue` (`fatigué` / `fatiguée`) and `adj-content` (`content` / `contente`), both composing with the owned `chunk-je-suis`. **Feminine forms are authored surfaces, never separate ids** (PRJ-015 IC-005 names `content`/`contente` as its own worked example). No `chunk-je-suis-fatigue` composite, no `word-fatigue`, no `acquisitionLink`/`acquisitionComponents`. **`fatigué` is NEW in L17** — the L02 spec planned it and the shipped L2 compact slice dropped it; it was never actually recycled.
 >
 > **7 · The `je comprends` promotion is de-scoped.** You cannot promote the affirmative of a chunk the learner never acquired: its source, `je ne comprends pas`, is part of the orphaned repair rail. **`chunk-je-comprends` is not created** and L17 declares no demand for it.
+>
+> **8 · The canDo says "open", not "answer" (ratified after the first generation run).** Generating the lesson proved what the owned inventory can and cannot do. The learner can **initiate** a check-in — noticing someone looks worn out and asking `Ça va ?` — and can **answer honestly** about themselves. They **cannot yet console**: with `c'est pas grave` unowned and all advice deferred, there is no owned way to respond to *another person's* trouble. "Answer a small human moment kindly" could be read as promising that reply, so the canonical verb is now **open**:
+>
+> > **"I can ask how someone is, say how I am — okay, not okay, tired, glad — and open a small human moment kindly, without giving advice."**
+>
+> The kindness L17 teaches is **asking first**. Consolation waits for a later lesson, and **no repair or advice language is imported to fake it**.
+>
+> **9 · French QA for the three new identities is `founder_waived_provisional`.** Internally learner-reachable under the founder's explicit risk acceptance for the tester APK; **not** named-human approved, **not** public/content-complete ready. The comprehensive human French QA pass remains mandatory before wider release.
 
 > **Archetype weighting (read first).** Primary = **Thematic Vocabulary / Context (#9)** run with **Review/Integration (#10) restraint** (recycle-dominant; feelings in owned frames; Opening Sentence Family / Mon Lexique / Say It Your Way strong; new-grammar light). Secondary flavor = **Chunk / Natural Speech (#1)** (`ça va ?` as the near-chunk vehicle). Not a second budget.
 
@@ -40,12 +48,12 @@
 | **Lesson number** | L17 |
 | **Lesson title** | How Are You? (Human Context / Feelings Light) |
 | **Journey phase** | First Ascent (Core 150) · *(legacy bracket diverges — band map / v1 spine)* |
-| **Primary archetype** | `thematic-vocabulary` (#9) — run with `review-integration` (#10) restraint |
+| **Primary archetype** | Thematic Vocabulary / Context (#9) — schema value **`thematic-context`** — run with `review-integration` (#10) restraint |
 | **Secondary archetype** | flavor only: `chunk-natural-speech` (#1) — `ça va ?` as a near-chunk. Not a second budget. |
 | **Estimated lesson time** | ~5–6 min |
 | **Monolingual mode / explanation language** | `english-guided` |
 | **Practice Pool expansion level** | Build + Stretch + Challenge (feelings-in-frames; Challenge stays lesson-scoped — no open emotional chat) |
-| **Main can-do outcome** | "I can **ask how someone is**, **say how I am** — okay, not okay, tired, glad — and **answer a small human moment kindly**, using what I already know. **Without giving advice.**" *(Ratified 2026-08-08. "Not ready" is struck: first-person `prêt` is not provisioned and is not L17's to provision.)* |
+| **Main can-do outcome** | "I can **ask how someone is**, **say how I am** — okay, not okay, tired, glad — and **open a small human moment kindly**, using what I already know. **Without giving advice.**" *(Ratified 2026-08-08; "answer" → "open" ratified after the first generation run — see banner §8. "Not ready" is struck: first-person `prêt` is not provisioned and is not L17's to provision.)* |
 | **Why a compact spec is sufficient** | L17 owns **0 new grammar systems / 0 new architecture verbs** and **3 new lexical items** (`chunk-ca-va` + `adj-fatigue` + `adj-content`) over already-owned frames. The full template's thematic vocabulary tables would be exactly the emotion-word dump the gate forbids. A compact spec captures the owned hooks, the deferred set, the human scene, the AI guardrail, and the L18 forward hook. |
 
 ---
