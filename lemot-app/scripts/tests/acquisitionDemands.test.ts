@@ -1,5 +1,5 @@
 /**
- * Lesson acquisition-demand contract (AD-001..AD-005) + the shipped L0–L16 map.
+ * Lesson acquisition-demand contract (AD-001..AD-005) + the shipped L0–L17 map.
  *
  * `acquisitionDemandItemIds` is the authored SOURCE OF TRUTH for active-new, so
  * the map is asserted as exact arrays: an extra, missing or reordered id changes
@@ -22,7 +22,7 @@ import { V1_LESSONS } from "../../content/lessons/v1";
 import { getItem } from "../../content/itemRegistry";
 import type { Lesson } from "../../content/lessonTypes";
 
-/** The ratified L0–L16 declaration map. */
+/** The ratified L0–L17 declaration map. */
 const RATIFIED: Record<string, readonly string[]> = {
   "v1-lesson-000": [
     "chunk-bonjour",
@@ -47,6 +47,9 @@ const RATIFIED: Record<string, readonly string[]> = {
   "v1-lesson-015": ["chunk-il-faut"],
   // L16 is Integration: PRJ-015 IC-006 binds its active-new to zero.
   "v1-lesson-016": [],
+  // L17 is Standard: three ratified demands, inside the 1-4 band and inside
+  // PRJ-015 IC-002's normal 1-3 target.
+  "v1-lesson-017": ["chunk-ca-va", "adj-fatigue", "adj-content"],
 };
 
 /** Minimal synthetic lesson carrying one declaration and one reference site. */
@@ -57,7 +60,7 @@ const lesson = (over: object): Lesson =>
 const refScreen = (...ids: string[]) =>
   ({ id: "s00", type: "meet-card", targetItemIds: ids, payload: {} }) as never;
 
-describe("acquisitionDemands — shipped L0–L16 map", () => {
+describe("acquisitionDemands — shipped L0–L17 map", () => {
   test("every lesson declares exactly its ratified demands", () => {
     assertEqual(
       V1_LESSONS.map((l) => l.id).sort(),
@@ -73,16 +76,16 @@ describe("acquisitionDemands — shipped L0–L16 map", () => {
     }
   });
 
-  test("total declared demands across v1 is 21", () => {
-    // L16 ships without moving this number: an Integration lesson contributes 0.
-    assertEqual(totalAcquisitionDemands(V1_LESSONS), 21, "current-v1 regression total");
+  test("total declared demands across v1 is 24", () => {
+    // 21 through L16 (Integration contributed 0) + L17's three.
+    assertEqual(totalAcquisitionDemands(V1_LESSONS), 24, "current-v1 regression total");
   });
 
-  test("migration is complete — all 17 lessons declare the field", () => {
-    assertEqual(V1_LESSONS.length, 17, "17 shipped lessons");
+  test("migration is complete — all 18 lessons declare the field", () => {
+    assertEqual(V1_LESSONS.length, 18, "18 shipped lessons");
     assertEqual(
       countLessonsDeclaringDemands(V1_LESSONS),
-      17,
+      18,
       "none is left unadjudicated",
     );
     for (const l of V1_LESSONS) {
@@ -303,6 +306,7 @@ describe("acquisitionDemands — non-regression", () => {
         "doorway",
         "doorway",
         "integration",
+        "standard",
       ],
       "the ratified role map is untouched",
     );

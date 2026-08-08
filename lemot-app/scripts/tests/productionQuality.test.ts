@@ -250,8 +250,8 @@ describe("productionQuality — shipped v1", () => {
     // These differ from earlier figures precisely because fills no longer count.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [2, 5, 3, 4, 3, 3, 5, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4],
-      "L0-L16 meaningful production actions",
+      [2, 5, 3, 4, 3, 3, 5, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4, 5],
+      "L0-L17 meaningful production actions",
     );
     for (const l of V1_LESSONS) {
       assert(
