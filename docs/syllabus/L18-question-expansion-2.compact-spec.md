@@ -128,7 +128,7 @@ Never production targets in L18:
 | Asks about | **a person** | **a thing** |
 | Position of `comment` | **first** | **last** |
 | Already-met evidence | `Ça va ?` (L17) | `C'est où ?` / `Le café, c'est où ?` (L8) |
-| Answers (all owned) | `Ça va.` · `Ça ne va pas.` · `Je suis fatigué(e).` · `Je suis content(e).` | `Ça va.` · `Ça ne va pas.` |
+| Learner answers in French? | **may** — L17's owned set: `Ça va.` · `Ça ne va pas.` · `Je suis fatigué(e).` · `Je suis content(e).` | **NO — none is owned.** The learner produces the question only; see §8. |
 
 **The two differ on three axes at once** — position of `comment` (first vs last), what is being asked about (person vs thing), and host type (frozen chunk vs supported chunk). That is what makes them structurally distinct rather than cosmetic variants.
 
@@ -150,7 +150,7 @@ Never production targets in L18:
 | **Ask about the person (new — Host A)** | `Comment ça va ?` | composition: `adverb-comment` + `chunk-ca-va` |
 | **Answer (recycled, L17)** | `Ça va.` / `Ça ne va pas. Je suis fatigué(e).` | the owned answer set |
 | **Ask about a thing (new — Host B)** | `Le café, c'est comment ?` | composition: `chunk-c-est` + `adverb-comment`; fronted topic met at L8 |
-| **Answer (recycled, L17)** | `Ça va.` | natural, owned; the same two answers serve both hosts |
+| **Answer to Host B** | *(none in French)* | **the learner is never asked to answer this one** — meaning comes from the situation and from choosing which question fits (§8) |
 | **Contrast (recycled, L8)** | `Le café, c'est où ?` | the `où`/`comment` contrast — **the insight**, shown not ruled |
 | **Close (recycled)** | `Merci. Au revoir.` | L1/L6 |
 
@@ -185,16 +185,44 @@ Never production targets in L18:
 
 The registry contains **no descriptive adjectives**. `adj-fatigue` and `adj-content` are person-state adjectives that live in `je suis + state`; there is no `bon`, `super`, `joli`, `grand`, `petit`, or any other quality word. **Do not manufacture adjective vocabulary to make `C'est comment ?` feel richer.** That would be the emotion-vocab-dump failure L17 was scoped to avoid, transplanted onto things.
 
-**What actually answers `C'est comment ?` from owned material:**
+> ### ⚠️ CORRECTED (2026-08-08) — the two hosts do NOT share an answer inventory
+>
+> An earlier version of this section claimed that `Ça va.` and `Ça ne va pas.` answer `C'est comment ?`, that *"the same two answers serve both hosts"*, and that `— Le café, c'est comment ? — Ça va.` is the intended productive exchange. **Founder ruling, 2026-08-08: that is withdrawn and must not be generated.**
+>
+> **Why.** `chunk-ca-va` was canonically acquired at L17 as the **social check-in / personal-state formula**. Using it as a generic evaluation of a café would **silently broaden the identity's acquired sense** — the learner would be handed a second meaning for a frozen chunk without ever being taught it. Colloquial French may tolerate wider uses of `ça va`; **L18 does not spend them.**
 
-- **`Ça va.`** — "it's fine / OK". Natural, idiomatic, owned (L17).
-- **`Ça ne va pas.`** — "it's not good". Natural, composed (L17).
+**The two hosts are asymmetric. This is the load-bearing rule of the lesson.**
 
-That is the whole set, and it is enough. `— Le café, c'est comment ? — Ça va.` is a real French exchange. **The same two answers serve both hosts**, which is precisely why L18 needs no new vocabulary — an elegance to preserve, not a gap to fill.
+| | **Host A — `Comment ça va ?`** | **Host B — `C'est comment ?` / `Le café, c'est comment ?`** |
+|---|---|---|
+| Learner produces | the question | **the question** |
+| Learner answers in French | **may** — the L17 social inventory applies | **NO — L18 requires no French answer** |
+| Owned answer set | `Ça va.` · `Ça ne va pas.` · `Je suis fatigué(e).` · `Je suis content(e).` | **none exists** |
 
-**Permitted supports** where the answer would otherwise strain (current canon): closed comprehension · `model-answer-only` reveal · contexts whose answer uses genuinely owned state language.
+- **Host A** is a social check-in, and L17's four answers are semantically appropriate responses to it. The learner may understand and use them.
+- **Host B** does **not** inherit that inventory. There is **no owned productive French answer** to "what is the café like", and L18 does not create one.
 
-> **The canDo is about producing the QUESTION.** It does not claim a rich descriptive answer lexicon, and must not be written as though it does. A learner who can ask `Comment ça va ?` and `C'est comment ?` and understand the answers has met it.
+**How Host B's meaning is established instead** — any of these, none of which needs a French answer:
+
+- the **situation / context** makes clear what is being asked;
+- the learner **chooses which question fits** (where vs what-it-is-like);
+- **English or model explanation**;
+- **non-productive interlocutor context**, where canon permits it.
+
+**Never license as L18 Host-B answers** — not as model answers, not as accepted alternatives, not as reveal copy, not as context the learner is asked to produce:
+
+```text
+Le café, c'est comment ?  →  Ça va.
+Le café, c'est comment ?  →  Ça ne va pas.
+Le café, c'est comment ?  →  Je suis fatigué(e).
+Le café, c'est comment ?  →  Je suis content(e).
+```
+
+And never manufacture a descriptive answer instead: the registry contains **no** quality adjective, and inventing `bon` / `super` / `joli` / `très` / `bien` / `mal` to fill the gap is the same failure by another route.
+
+> **Host B exists to prove productive `comment` beyond the frozen social frame, not to expand the learner's descriptive answer vocabulary.**
+
+> **The canDo is about producing the QUESTION.** It does not claim a descriptive answer lexicon, and must not be written as though it does. A learner who can ask `Comment ça va ?` and `C'est comment ?` — and who knows what each one is asking for — has met it.
 
 ---
 
@@ -255,7 +283,7 @@ Full allowed/blocked policy: `docs/syllabus/ai-generation-contract-v1.md` **§15
 | **`Comment est-ce que ça va ?`** — the #1 leak; both halves owned, French correct | only lesson-listed frames; L12 holds `Q-word + est-ce que` at recognition; `trap:question-word-dump` |
 | **Q-word dump** (`pourquoi` / `quand` / `combien`) | blocked **even when correct**; one Q-word only |
 | **Inversion** (`Comment allez-vous ?`) | reuse `trap:inversion-too-early` (L8) |
-| **Unowned answers** (`Je vais bien.` / `Pas mal.` / `C'est super.`) | answers restricted to L17's shipped set; `Je vais bien` also leaks `aller` against `chunk-ca-va`'s explicit guard |
+| **Unowned answers** (`Je vais bien.` / `Pas mal.` / `C'est super.`) | Host-A answers restricted to L17's owned set; **Host B takes no French answer at all** (§8); `Je vais bien` also leaks `aller` against `chunk-ca-va`'s explicit guard |
 | **`aller` / futur via `va`** | `chunk-ca-va`'s registry meaning carries the guard and `weakPointTags: ["aller-future"]` — keep it |
 | **Repair-sense leak** (bare `Comment ?` glossed) | `trap:comment-repair-sense-too-early`; never shown as a usable move |
 | **Composite drift** (`chunk-comment-ca-va` treated as one unit) | both hosts are authored composition; no id, no link, no components |
@@ -292,4 +320,4 @@ Full allowed/blocked policy: `docs/syllabus/ai-generation-contract-v1.md` **§15
 
 ---
 
-*End of L18 Question Expansion 2 Compact Spec. Spec only — no lesson content, no code, no runtime change. L18 = `journeyRole: doorway`, active-new exactly **1** (`adverb-comment`), owning `comment` in its manner/state sense across **two** already-owned hosts — `Comment ça va ?` (front, L17 carrier) and `C'est comment ?` (final, L3/L8 carrier) — answered entirely from L17's shipped set. Bare `Comment ?`, every other question word, `Q-word + est-ce que`, inversion, `qu'est-ce que`, embedded questions, the procedural sense, and futur proche are all deferred. The two-host requirement is binding: one host proves a sentence, two prove a word.*
+*End of L18 Question Expansion 2 Compact Spec. Spec only — no lesson content, no code, no runtime change. L18 = `journeyRole: doorway`, active-new exactly **1** (`adverb-comment`), owning `comment` in its manner/state sense across **two** already-owned hosts — `Comment ça va ?` (front, L17 carrier) and `C'est comment ?` (final, L3/L8 carrier). **The hosts are asymmetric: Host A may be answered from L17's owned set; Host B requires no French answer at all** (§8). Bare `Comment ?`, every other question word, `Q-word + est-ce que`, inversion, `qu'est-ce que`, embedded questions, the procedural sense, and futur proche are all deferred. The two-host requirement is binding: one host proves a sentence, two prove a word.*
