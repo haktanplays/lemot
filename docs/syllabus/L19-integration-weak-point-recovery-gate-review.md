@@ -122,7 +122,24 @@ Measured over the shipped corpus — how many `fill-with-traps`/`weave` screens 
 | **`adj-content`** | **1** | L17 |
 | **`chunk-on-y-va`** | **1** | L14 |
 
-**The four thinnest are `adj-fatigue`, `adj-content`, `chunk-on-y-va` and `word-y-place`.** Three of them (`adj-fatigue`, `adj-content`) additionally carry a real registry tag (`gender`) that the Hub's weakness priority can act on, so they are exactly the items most likely to surface as weak with the least authored material behind them. **These are L19's recovery targets.**
+**The four thinnest are `adj-fatigue`, `adj-content`, `chunk-on-y-va` and `word-y-place`.** Two of them — `adj-fatigue` and `adj-content` — additionally carry a real registry tag (`gender`) the Hub's weakness priority can act on, so they are exactly the items most likely to surface as weak with the least authored material behind them. *(The `y` pair carried no tag at all when this was written; the eligibility repair later gave both the pre-existing `y` tag.)* **These are L19's recovery targets.**
+
+> ### ⚠️ MEASURED AFTER SHIPPING (2026-08-08) — source contribution is not uniform
+>
+> This section said L19 would give the Hub *"better material to offer"* for all four. Measured against `resolvePracticeHubSource` rather than one replay, that holds for **two** of the four.
+>
+> **The rule:** the resolver walks `V1_LESSONS` in **registry order**, ranks each Hub-legal screen by the path's type preference (`build` = fill-with-traps first; `stretch`/`challenge` = weave first), and updates its pick only on a **strictly better** rank, returning immediately on rank 0. **An equal-ranked later source can never displace an earlier one**, and L19 is last in the registry.
+>
+> | Target | Resolver returns | L19 source reachable? |
+> |---|---|---|
+> | `adj-fatigue` | **L19 s03** on `build` (the corpus's only fill for it); L17 s06 on stretch/challenge | **YES** |
+> | `adj-content` | **L19 s03** on `build`; L17 s07 on stretch/challenge | **YES** |
+> | `chunk-on-y-va` | L14 s06 on every path | **NO** |
+> | `word-y-place` | L14 s04 / s05 on every path | **NO** |
+>
+> **Honest reading.** For the two state adjectives L19 adds a genuinely **newly selectable** recovery source. For the two `y` items **L19 reinforces the item inside the linear Integration lesson, and Practice Hub recovery currently resolves that item to the earlier L14 reusable source** — both L19 screens stay Hub-legal, both items stay fully recoverable, and the eligibility repair is what lets weakness prioritise them at all, but L19 does not add an independently returned source for them today.
+>
+> **No runtime change is proposed and none is warranted.** The registry-order rule is deterministic and documented; **no source rotation, recency weighting, lesson preference or extra selector tier is suggested.** Full measurement in the compact spec §3 banner.
 
 > **`[OPEN]` Registry debt, surfaced not fixed.** Six band demands carry **no** registry `weakPointTags` at all — `chunk-je-peux`, `chunk-est-ce-que`, `word-y-place`, `chunk-on-y-va`, `chunk-il-faut`, `adverb-comment` — so they are **invisible to the weakness-priority rule** no matter how many screens exist. Fixing that means editing identities, which **this task does not authorize**. Recorded as debt; L19 works within it.
 
@@ -270,4 +287,4 @@ Both axes are declared independently (archetype templates §12b).
 - **Charter unchanged:** `L18+ | Open / provisional`. This gate does not promote it.
 - **No runtime, code, content, registry, flag or ID change is authorized by this document.**
 
-*End of L19 Integration + Weak-Point Recovery Gate Review. Planning/review only. Ratified: L19 = `journeyRole: integration`, **acquisition exactly 0**, recombining the task/movement band (L11–L15) with the person/question band (L17–L18) in the first two-sided exchange the curriculum can build; the second A Small Moment recurrence is a **two-voice** read the learner continues; and weak-point recovery is **W2** — a deterministic core path plus authored Practice-Hub-reusable production for the band's thinnest-covered items, with no adaptive runtime behaviour claimed or implied.*
+*End of L19 Integration + Weak-Point Recovery Gate Review. Planning/review only. Ratified: L19 = `journeyRole: integration`, **acquisition exactly 0**, recombining the task/movement band (L11–L15) with the person/question band (L17–L18) in the first two-sided exchange the curriculum can build; the second A Small Moment recurrence is a **two-voice** read the learner continues; and weak-point recovery is **W2** — a deterministic core path plus authored Practice-Hub-reusable production for the band's thinnest-covered items, of which **two are newly selectable Hub sources and two resolve to their earlier L14 sources under the registry-order rule** (§4.2 banner), with no adaptive runtime behaviour claimed or implied.*

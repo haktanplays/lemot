@@ -1159,18 +1159,36 @@ describe("L19 W2 — weak-point recovery closes end to end", () => {
     }
   });
 
-  test("P5 — a real graded failure returns an L19 screen through selectPracticeHubSet", async () => {
+  test("P5 — a real graded failure recovers every target through selectPracticeHubSet", async () => {
     // One genuine wrong answer on L19's own supported weave, recorded through
     // the shipped session controller and scored by the shipped reducer.
     const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019")!;
     const weave = l19.screens.find(
       (sc) => sc.id === "s04-weave-answer-for-yourself",
     ) as WeaveScreen;
+    const stateFill = l19.screens.find(
+      (sc) => sc.id === "s03-fill-which-state-fits",
+    ) as FillWithTrapsScreen;
+    const askThenGo = l19.screens.find(
+      (sc) => sc.id === "s06-weave-ask-then-go",
+    ) as WeaveScreen;
     const runtime = runtimeWith(new LocalRepository(makeFakeKv()));
     const c = controllerOn(runtime, l19, LESSON_SURFACE);
+    // One real miss per W2 target, on L19's own authored screens. All four must
+    // enter the snapshot for the recovery claim to be about all four.
     c.recordGradedAttempt(
       typedAttemptInteraction(l19, weave, {
-        text: "Ca ne va pas. Je suis fatige.", // a real learner miss
+        text: "Ca ne va pas. Je suis fatige.", // adj-fatigue
+        hintRung: 0,
+        constitutiveSupportRendered: false,
+      }),
+    );
+    c.recordGradedAttempt(
+      choiceInteraction(l19, stateFill, { optionId: "opt-fatigue" }), // adj-content
+    );
+    c.recordGradedAttempt(
+      typedAttemptInteraction(l19, askThenGo, {
+        text: "Le cafe c'est comment ? On va ?", // chunk-on-y-va + word-y-place
         hintRung: 0,
         constitutiveSupportRendered: false,
       }),
@@ -1212,14 +1230,66 @@ describe("L19 W2 — weak-point recovery closes end to end", () => {
         "the offered primitive is one the Hub can actually render",
       );
     }
-    const anyFromL19 = set.entries.some((e) => e.source.lesson.id === "v1-lesson-019");
-    const anyTarget = set.entries.some((e) =>
-      W2_TARGETS.some((t) => t.itemId === e.itemId),
-    );
-    assert(
-      anyFromL19 || anyTarget,
-      `the recovery chain closed; offered: ${set.entries.map((e) => `${e.itemId}@${e.source.lesson.id}`).join(", ")}`,
-    );
+    // What we actually care about: every target the learner got wrong came back
+    // with SOME authored screen behind it. Which lesson supplied that screen is
+    // a separate question, pinned below.
+    const offered = new Map(set.entries.map((e) => [e.itemId as string, e.source.lesson.id]));
+    for (const { itemId } of W2_TARGETS) {
+      assert(
+        offered.has(itemId),
+        `${itemId} came back; offered: ${[...offered].map(([i, l]) => `${i}@${l}`).join(", ")}`,
+      );
+    }
+  });
+
+  /**
+   * Source contribution is NOT uniform, and the test says so rather than
+   * asserting the flattering version.
+   *
+   * `resolvePracticeHubSource` walks the lesson registry in order, ranks each
+   * Hub-legal screen by the path's type preference, and updates its pick only on
+   * a STRICTLY better rank (returning immediately on rank 0). An equal-ranked
+   * later source can therefore never displace an earlier one — and L19 is last.
+   *
+   * So L19 wins only where it supplies a better-ranked primitive than anything
+   * before it: it holds the corpus's only `fill-with-traps` for the two state
+   * adjectives, which outranks L17's weave on the Build path. For the two `y`
+   * items L14 already holds an equal-or-better screen earlier in the registry,
+   * so L19's s06 stays Hub-legal but is never the returned source.
+   *
+   * This pins observed behaviour, not a desired lesson ordering. If the resolver
+   * ever gains rotation, recency or diversity, this test SHOULD fail and be
+   * re-read — it is not defending the tie-break as a product contract.
+   */
+  test("source contribution is split — L19 wins only where it out-ranks an earlier lesson", () => {
+    const from = (itemId: string, path: "build" | "stretch" | "challenge") =>
+      resolvePracticeHubSource(itemId as never, path, V1_LESSONS)?.lesson.id ?? null;
+
+    // L19 supplies the only fill-with-traps for these two; Build prefers fills.
+    assertEqual(from("adj-fatigue", "build"), "v1-lesson-019", "L19 s03 is reachable");
+    assertEqual(from("adj-content", "build"), "v1-lesson-019", "L19 s03 is reachable");
+    // Stretch/Challenge prefer weaves, and L17's weave comes first in registry order.
+    assertEqual(from("adj-fatigue", "challenge"), "v1-lesson-017", "earlier weave wins");
+
+    // L14 holds an equal-or-better screen earlier, on every path.
+    for (const path of ["build", "stretch", "challenge"] as const) {
+      assertEqual(from("chunk-on-y-va", path), "v1-lesson-014", `y chunk resolves to L14 on ${path}`);
+      assertEqual(from("word-y-place", path), "v1-lesson-014", `place-y resolves to L14 on ${path}`);
+    }
+
+    // Still true, and the point of the eligibility repair: both y items remain
+    // fully recoverable and weakness-prioritisable — only the SOURCE is L14's.
+    for (const itemId of ["chunk-on-y-va", "word-y-place"]) {
+      assert(
+        resolvePracticeHubSource(itemId as never, "challenge", V1_LESSONS) !== null,
+        `${itemId} is recoverable`,
+      );
+      const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019")!;
+      assert(
+        l19.screens.some((sc) => (sc.evidenceTargetItemIds ?? []).includes(itemId as never)),
+        `${itemId} still carries L19 linear evidence`,
+      );
+    }
   });
 
   test("W2 did not become W1 — the shipped L19 payload is static", () => {

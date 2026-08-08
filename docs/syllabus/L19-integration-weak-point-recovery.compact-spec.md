@@ -65,6 +65,25 @@ greet  →  ask the person  →  hear  →  answer about yourself  →  ask abou
 
 > **L19 authors additional Practice-Hub-reusable production screens for the band items whose authored practice coverage is thinnest, so the already-shipped Hub has better material to offer when those items go weak.**
 
+> ### ⚠️ MEASURED AFTER SHIPPING (2026-08-08) — separate item recovery from source contribution
+>
+> Reading `resolvePracticeHubSource` rather than inferring from one replay: it walks `V1_LESSONS` **in registry order**, ranks each Hub-legal screen by the path's type preference (`build` = fill-with-traps first; `stretch`/`challenge` = weave first), and updates its pick only on a **strictly better** rank — with an immediate return on rank 0. **A later lesson can therefore never displace an earlier one of equal rank.** L19 is last in the registry, so an L19 screen is returned only when no earlier lesson offers an equal-or-better-ranked Hub-legal screen for that item.
+>
+> Measured outcome across all three paths:
+>
+> | Target | Sources before L19 | L19 source | Resolver returns | L19 source reachable? |
+> |---|---|---|---|---|
+> | `adj-fatigue` | L17 s06 *(weave)* | s03 **fill**, s04 weave | **L19 s03** on `build`; L17 on stretch/challenge | **YES** |
+> | `adj-content` | L17 s07 *(weave)* | s03 **fill** | **L19 s03** on `build`; L17 on stretch/challenge | **YES** |
+> | `chunk-on-y-va` | L14 s06 *(weave)* | s06 weave | **L14 s06** on every path | **NO** |
+> | `word-y-place` | L14 s04 *(fill)* + s05 *(weave)* | s06 weave | **L14** on every path | **NO** |
+>
+> **The two state adjectives are reachable because L19 supplies the corpus's only `fill-with-traps` for them**, which outranks L17's weave on the `build` path. The two `y` items are not: L14 already holds an equal-or-better-ranked screen at an earlier registry position.
+>
+> **Correction to the claim above, scoped:** for `adj-fatigue` and `adj-content`, L19 genuinely adds a **newly selectable** recovery source. For `chunk-on-y-va` and `word-y-place`, **L19 reinforces the item inside the linear Integration lesson, and Practice Hub recovery currently resolves that item to the earlier L14 reusable source.** Both `y` screens remain Hub-legal and both items remain fully recoverable — the eligibility repair is what makes weakness able to prioritise them at all — but L19 does not add an independently returned source for them today.
+>
+> **This is a measurement, not a defect, and no runtime change is proposed.** The registry-order rule is deterministic and documented; more authored coverage is not made worthless by not winning a tie-break. **No source rotation, recency weighting, lesson preference or extra selector tier is being suggested** — there is no demonstrated learner problem to fix.
+
 **Binding authoring rules that follow:**
 
 1. **Production beats must be `weave` or `fill-with-traps`.** Those are the *only* primitives the Hub can reuse. A production beat authored as anything else is invisible to recovery.
@@ -234,4 +253,4 @@ What it does contribute is **use history**: items worked here gain another autho
 
 ---
 
-*End of L19 Integration + Weak-Point Recovery Compact Spec. Spec only — no lesson content, no code, no runtime change. L19 = `journeyRole: integration`, **acquisition exactly 0**, `review-integration` + `thematic-context`, crossing the task/movement band (L11–L15) with the person/question band (L17–L18) in the first two-sided exchange the curriculum can build. The second A Small Moment recurrence is a **two-voice** read the learner continues, with a comprehension-level action. Weak-point recovery is **W2**: a deterministic core path plus authored Practice-Hub-reusable production for the four thinnest-covered band items — **no adaptive runtime behaviour is claimed, implied, or available.***
+*End of L19 Integration + Weak-Point Recovery Compact Spec. Spec only — no lesson content, no code, no runtime change. L19 = `journeyRole: integration`, **acquisition exactly 0**, `review-integration` + `thematic-context`, crossing the task/movement band (L11–L15) with the person/question band (L17–L18) in the first two-sided exchange the curriculum can build. The second A Small Moment recurrence is a **two-voice** read the learner continues, with a comprehension-level action. Weak-point recovery is **W2**: a deterministic core path plus authored Practice-Hub-reusable production for the four thinnest-covered band items — of which **two (`adj-fatigue`, `adj-content`) are newly selectable Hub sources and two (`chunk-on-y-va`, `word-y-place`) resolve to their earlier L14 sources under the registry-order rule** (§3 banner). **No adaptive runtime behaviour is claimed, implied, or available.***
