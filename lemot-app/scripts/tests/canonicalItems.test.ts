@@ -233,3 +233,106 @@ describe("L17 French QA — provisional, never approved", () => {
     }
   });
 });
+
+/**
+ * L18's single identity — the first question word this curriculum owns as a
+ * WORD rather than as a frozen question.
+ *
+ * The contrast with L8 is the whole point and is asserted here so it cannot
+ * drift: L8 owns `chunk-c-est-ou` (a frozen question) and leaves
+ * `adverb-ou-where` merely *supported* inside it, whereas L18 declares
+ * `adverb-comment` itself as the acquisition demand and makes it *active*.
+ * That asymmetry is what makes L18 Question Expansion 2 instead of a second
+ * frozen question — and it is only honest if `comment` works in two different
+ * owned hosts, which is why neither host became an identity of its own.
+ */
+describe("L18 question-word identity", () => {
+  const comment = (ITEM_REGISTRY as Record<string, Record<string, unknown>>)["adverb-comment"];
+
+  test("adverb-comment exists and uses the existing adverb type", () => {
+    assert(CANONICAL_ITEM_ID_SET.has("adverb-comment"), "adverb-comment must be registered");
+    assertEqual(comment.type, "adverb", "same type as adverb-ou-where; no new LearningItemType");
+    assertEqual(comment.text, "comment", "surface");
+  });
+
+  test("it is ACTIVE — the word is owned, not merely supported inside a frame", () => {
+    assertEqual(comment.status, "active", "L18 owns the interrogative itself");
+    assertEqual(
+      (ITEM_REGISTRY as Record<string, { status: string }>)["adverb-ou-where"].status,
+      "supported",
+      "L8's question word stays supported — the asymmetry is deliberate, not drift",
+    );
+  });
+
+  test("no host frame became a composite identity", () => {
+    for (const id of ["chunk-comment-ca-va", "chunk-c-est-comment", "chunk-comment"]) {
+      assert(
+        !CANONICAL_ITEM_ID_SET.has(id),
+        `${id} must not exist — both hosts are authored composition, not identities`,
+      );
+    }
+  });
+
+  test("no repair-sense identity was introduced", () => {
+    // Bare `Comment ?` ("sorry?") is deferred with the orphaned repair rail.
+    // L18 must not half-solve that rail by minting a pragmatic-sense id.
+    for (const id of ["adverb-comment-repair", "chunk-comment-repair", "chunk-pardon"]) {
+      assert(!CANONICAL_ITEM_ID_SET.has(id), `${id} must not exist — repair stays deferred`);
+    }
+    assert(
+      !CANONICAL_ITEM_ID_SET.has("chunk-c-est-pas-grave"),
+      "the repair rail is still unowned; L18 did not backfill it",
+    );
+  });
+
+  test("it carries no acquisition link or component relation", () => {
+    assertEqual(comment.acquisitionLink, undefined, "no link — it is a primary identity");
+    assertEqual(comment.acquisitionComponents, undefined, "no components — it is atomic");
+  });
+
+  test("the two owned hosts it composes with are genuinely registered", () => {
+    for (const id of ["chunk-ca-va", "chunk-c-est"]) {
+      assert(CANONICAL_ITEM_ID_SET.has(id), `${id} must exist for the composition to be real`);
+    }
+  });
+});
+
+/**
+ * L18's French-QA truth, restated where it cannot drift — same posture and same
+ * reason as PR-07 and L17. The founder waived the pre-registration human French
+ * gate for the internal tester APK. That is a risk acceptance, NOT an
+ * attestation: no named human has read `comment` in either host frame.
+ */
+describe("L18 French QA — provisional, never approved", () => {
+  const qa = (ITEM_REGISTRY as Record<string, { frenchQa?: string }>)["adverb-comment"].frenchQa;
+
+  test("it carries the founder waiver, and only that", () => {
+    assertEqual(qa, "founder_waived_provisional", "adverb-comment French QA status");
+  });
+
+  test("it is not human-approved — the waiver is not an attestation", () => {
+    assert(
+      !isHumanFrenchApproved(qa as never),
+      "adverb-comment must not claim named-human French approval",
+    );
+  });
+
+  test("it is internally pilot-reachable under the existing helper", () => {
+    assert(
+      isInternalPilotFrenchReachable(qa as never),
+      "adverb-comment may reach an internal tester",
+    );
+  });
+
+  test("it stays visible in the outstanding public-release French-QA debt", () => {
+    const provisional = CANONICAL_ITEM_IDS.filter(
+      (id) =>
+        (ITEM_REGISTRY as Record<string, { frenchQa?: string }>)[id].frenchQa ===
+        "founder_waived_provisional",
+    );
+    assert(
+      provisional.includes("adverb-comment"),
+      "adverb-comment is part of the outstanding human-QA debt",
+    );
+  });
+});

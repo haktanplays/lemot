@@ -840,6 +840,44 @@ export const ITEM_REGISTRY = {
     weakPointTags: ["gender"],
     frenchQa: "founder_waived_provisional",
   },
+
+  // ── L18: Question Expansion 2 — the first productively-owned question word ─
+  // FOUNDER-WAIVED PROVISIONAL FRENCH QA, same posture and same reason as the
+  // PR-07 and L17 blocks above: no named human has read this surface. It is
+  // internally learner-reachable ONLY under the founder's explicit risk
+  // acceptance for the internal tester APK, is NOT public / content-complete
+  // ready, and the comprehensive human French QA pass remains mandatory.
+  //
+  // ONE identity, ONE acquisition demand. The ownership unit is the WORD, not a
+  // frozen question — and that is a deliberate departure from L8, which owns
+  // `chunk-c-est-ou` as a frozen question with `adverb-ou-where` merely
+  // supported inside it. L18's whole job is Question Expansion 2, so the demand
+  // has to be the interrogative itself, evidenced by working in two different
+  // owned host frames (Comment ca va ? and C'est comment ?). One frame would
+  // only prove another frozen question. Hence status "active" here against
+  // adverb-ou-where's "supported": that asymmetry IS the decision.
+  //
+  // Deliberately NOT created: chunk-comment-ca-va and chunk-c-est-comment
+  // (both are authored compositions of this adverb with an already-owned host,
+  // per the je-ne-peux-pas / ca-ne-va-pas canon — adjacency does not mint an
+  // identity), and any repair-sense id for bare "Comment ?" (that pragmatic
+  // sense is deferred with the rest of the orphaned repair rail, so there is
+  // nothing to identify yet). No sense suffix is needed: unlike ou/ou, comment
+  // has no homograph to disambiguate under accent-stripping.
+  "adverb-comment": {
+    id: "adverb-comment",
+    type: "adverb",
+    text: "comment",
+    status: "active",
+    fr: "comment",
+    en: "how",
+    meaning:
+      "How. The question word for asking how someone is or what something is like. It sits in front of ça va (Comment ça va ?) and at the end after c'est (C'est comment ?) — the same end spot où already occupies. Comment has other everyday uses on its own; those are separate, later doorways.",
+    exampleFr: "Comment ça va ?",
+    exampleEn: "How's it going?",
+    relatedItemIds: ["chunk-ca-va", "chunk-c-est", "adverb-ou-where"],
+    frenchQa: "founder_waived_provisional",
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;

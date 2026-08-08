@@ -212,9 +212,10 @@ describe("french-qa status — waiver is never approval", () => {
 // ── Parts B/C: item registration + tea relationship ─────────────────────────
 
 describe("five canonical item registrations", () => {
-  test("canonical count is 62 and the five new ids exist; the old 54 survive", () => {
-    // 54 frozen + PR-07's 5 + L17's 3 (chunk-ca-va, adj-fatigue, adj-content).
-    assertEqual(CANONICAL_ITEM_COUNT, 62, "54 frozen + 5 PR-07 + 3 L17");
+  test("canonical count is 63 and the five new ids exist; the old 54 survive", () => {
+    // 54 frozen + PR-07's 5 + L17's 3 (chunk-ca-va, adj-fatigue, adj-content)
+    // + L18's 1 (adverb-comment).
+    assertEqual(CANONICAL_ITEM_COUNT, 63, "54 frozen + 5 PR-07 + 3 L17 + 1 L18");
     for (const id of NEW_ITEM_IDS) {
       assert(CANONICAL_ITEM_ID_SET.has(id), `${id} registered`);
     }
@@ -223,11 +224,11 @@ describe("five canonical item registrations", () => {
     }
   });
 
-  test("the manifest froze exactly the same 62 ids (bidirectional)", () => {
+  test("the manifest froze exactly the same 63 ids (bidirectional)", () => {
     const manifest = JSON.parse(read("scripts/shipped-item-ids.json")) as {
       ids: string[];
     };
-    assertEqual(manifest.ids.length, 62, "manifest count");
+    assertEqual(manifest.ids.length, 63, "manifest count");
     assertEqual(
       manifest.ids.slice().sort().join(","),
       [...CANONICAL_ITEM_ID_SET].sort().join(","),
@@ -739,17 +740,18 @@ describe("PM-011 — Supported tea order (real screen, real spine)", () => {
 // ── Part L: provisional-surface inventory ───────────────────────────────────
 
 describe("QA debt stays queryable", () => {
-  test("the inventory lists 8 items, 2 sentences, 2 payloads — deterministically", () => {
-    // 5 from PR-07 + 3 from L17. The count GROWING is the point: every surface
-    // shipped under a founder waiver stays queryable until a named human reads
-    // it, so this number may only fall when real French QA lands.
+  test("the inventory lists 9 items, 2 sentences, 2 payloads — deterministically", () => {
+    // 5 from PR-07 + 3 from L17 + 1 from L18. The count GROWING is the point:
+    // every surface shipped under a founder waiver stays queryable until a
+    // named human reads it, so this number may only fall when real French QA
+    // lands.
     const one = listProvisionalRegisteredSurfaces();
-    assertEqual(one.items.length, 8, "five PR-07 + three L17 provisional items");
+    assertEqual(one.items.length, 9, "five PR-07 + three L17 + one L18 provisional items");
     assertEqual(one.sentences.length, 2, "two provisional sentences");
     assertEqual(one.payloads.length, 2, "two registered payloads");
     assertEqual(
       one.items.map((i) => i.itemId).join(","),
-      "adj-content,adj-fatigue,chunk-ca-va,chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the",
+      "adj-content,adj-fatigue,adverb-comment,chunk-ca-va,chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the",
       "sorted item ordering",
     );
     assertEqual(
