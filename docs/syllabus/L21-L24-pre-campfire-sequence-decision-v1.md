@@ -120,16 +120,18 @@ Rejected explicitly: *L21 random new thing · L22 random new thing · L23 review
 
 ### L23 — "The whole exchange" *(title provisional)*
 
+> **⚠️ ARCHITECTURE RESOLVED 2026-08-09 — `docs/syllabus/L23-transaction-integration-gate-review.md` is authoritative over this card.** Two things this card left open are now decided. **(1) The canDo is superseded**: the list-shaped *"greet, order, ask what it costs, say what I think, and close"* is replaced by **"Ask what something costs, decide what to do about the answer, and tell someone afterwards how it was."** — because shipped **L22's exit already runs that list end to end**, so repeating it would make L23 "L22's say-it plus one sentence". **(2) The architecture is MODEL T, two beats welded by consequence** — the counter, where the **price determines the ending**, and afterwards, where the learner **reports** what it was like. One continuous scene was rejected: `bon` has no honest basis before the coffee is tasted. The **decision branch is ratified as load-bearing** (buy / `Merci, au revoir.`), which is also the only justification for a second price display. Role, demands, archetypes and place in the arc are **unchanged**; this refines the architecture, it does not reverse the sequence.
+
 | | |
 |---|---|
 | **Why it exists** | L21 and L22 add two capabilities that have never met each other or the L0–L20 spine. Integration is warranted because there is genuinely new material to integrate — the failure mode §18 warns about does not apply. |
-| **CanDo** | *"Run a short real exchange from start to finish: greet, order, ask what it costs, say what I think, and close."* |
+| **CanDo** | ~~*"Run a short real exchange from start to finish: greet, order, ask what it costs, say what I think, and close."*~~ **Superseded 2026-08-09:** *"Ask what something costs, decide what to do about the answer, and tell someone afterwards how it was."* |
 | **JourneyRole** | **`integration`** (band 0) |
 | **Expected demands** | **0** |
 | **Likely acquisition** | None. Recombination only. |
 | **Primary archetype** | `review-integration` |
 | **Secondary archetype** | `thematic-context` |
-| **Core context** | One continuous café transaction. |
+| **Core context** | ~~One continuous café transaction.~~ **Refined 2026-08-09: two welded beats** — the counter, then afterwards. |
 | **Does NOT teach** | anything new · a coverage sweep of every owned system · conversational repair |
 | **Why before Campfire** | The threshold should be crossed by a learner who has *used* the new capabilities, not one who has just met them. It also answers the tester question *does integration still feel coherent this late?* |
 | **Factory viability** | Full — L19 is the worked precedent for a zero-demand integration. |
