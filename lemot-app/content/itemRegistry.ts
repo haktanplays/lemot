@@ -888,6 +888,51 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-ca-va", "chunk-c-est", "adverb-ou-where"],
     frenchQa: "founder_waived_provisional",
   },
+
+  // ── L21: Evaluation — the answer L18 shipped without ──────────────────────
+  // FOUNDER-WAIVED PROVISIONAL FRENCH QA, same posture and same reason as the
+  // PR-07, L17 and L18 blocks above: no named human has read this surface. It
+  // is internally learner-reachable ONLY under the founder's explicit risk
+  // acceptance for the internal tester APK, is NOT public / content-complete
+  // ready, and the comprehensive human French QA pass remains mandatory.
+  //
+  // ONE identity, ONE acquisition demand, and it follows L18's rule exactly:
+  // the ownership unit is the WORD, and no host frame becomes an identity.
+  // Deliberately NOT created: chunk-c-est-bon and chunk-ce-n-est-pas-bon (both
+  // are authored compositions of this adjective with an already-owned host —
+  // adjacency does not mint an identity), and no adj-mauvais (the negative
+  // route is the owned ce n'est pas host, not a second adjective).
+  //
+  // `chunk-c-est` is deliberately NOT promoted to a demand alongside this.
+  // Shipped evidence: the learner already produces c'est unaided in L18 (s05,
+  // s06, s08), L19 (s06) and L20 (s03) with no suggested piece, so declaring it
+  // "newly introduced" at L21 would be a false novelty claim; and its
+  // supported/composed status is a recorded founder call (the L3 DD-002 row).
+  // Its registry status is likewise left alone: status is read per-lesson by
+  // `lesson-v1-evidence/treatment.ts`, so flipping it to active would
+  // retroactively rewrite the treatment recorded for seven shipped lessons -
+  // including L8, where c'est is first met, and L12, where it is a required
+  // piece. Acquisition ownership is authored history and is not back-dated.
+  //
+  // Bounded on purpose: L21 owns evaluative `bon` in the predicate slot after
+  // an owned c'est / ce n'est pas host. Attributive use (un bon café), the
+  // feminine and plural forms, intensifiers, comparison and the adjective
+  // placement rules are all out of scope; no adjective-agreement system opens
+  // here, which is why this row carries no "gender" tag - see the note below.
+  "adj-bon": {
+    id: "adj-bon",
+    type: "adjective",
+    text: "bon",
+    status: "active",
+    fr: "bon",
+    en: "good",
+    meaning:
+      "Good — what you say about a thing rather than about a person. It goes straight after c'est, and the same word answers the question you already know how to ask: Le café, c'est comment ? — C'est bon. The negative rides the ne … pas you already own: Ce n'est pas bon. Bon has other everyday uses in front of a noun and in fixed expressions; those are separate, later doorways.",
+    exampleFr: "C'est bon.",
+    exampleEn: "It's good.",
+    relatedItemIds: ["chunk-c-est", "chunk-ce-n-est-pas", "adverb-comment"],
+    frenchQa: "founder_waived_provisional",
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;
