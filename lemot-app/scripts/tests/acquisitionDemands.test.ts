@@ -68,6 +68,10 @@ const RATIFIED: Record<string, readonly string[]> = {
   // order - which is why Standard rather than Doorway. No number or currency
   // identity exists: the price answer is a numeral, not French.
   "v1-lesson-022": ["adverb-combien"],
+  // L23 is an Integration: zero demands by definition. It adds no French at
+  // all - its job is that an answer the learner OBTAINED decides what they say
+  // next, and that a purchase licenses a later report about it.
+  "v1-lesson-023": [],
 };
 
 /** Minimal synthetic lesson carrying one declaration and one reference site. */
@@ -78,7 +82,7 @@ const lesson = (over: object): Lesson =>
 const refScreen = (...ids: string[]) =>
   ({ id: "s00", type: "meet-card", targetItemIds: ids, payload: {} }) as never;
 
-describe("acquisitionDemands — shipped L0–L22 map", () => {
+describe("acquisitionDemands — shipped L0–L23 map", () => {
   test("every lesson declares exactly its ratified demands", () => {
     assertEqual(
       V1_LESSONS.map((l) => l.id).sort(),
@@ -98,14 +102,15 @@ describe("acquisitionDemands — shipped L0–L22 map", () => {
     // 21 through L16 (Integration contributed 0) + L17's three + L18's one.
     // L19 is Integration and L20 is Milestone; both add none. L21's one
     // evaluative adjective takes it to 26, and L22's one question word to 27.
+    // L23 is Integration and adds none, so the total holds at 27.
     assertEqual(totalAcquisitionDemands(V1_LESSONS), 27, "current-v1 regression total");
   });
 
-  test("migration is complete — all 23 lessons declare the field", () => {
-    assertEqual(V1_LESSONS.length, 23, "23 shipped lessons");
+  test("migration is complete — all 24 lessons declare the field", () => {
+    assertEqual(V1_LESSONS.length, 24, "24 shipped lessons");
     assertEqual(
       countLessonsDeclaringDemands(V1_LESSONS),
-      23,
+      24,
       "none is left unadjudicated",
     );
     for (const l of V1_LESSONS) {
@@ -332,6 +337,7 @@ describe("acquisitionDemands — non-regression", () => {
         "milestone",
         "doorway",
         "standard",
+        "integration",
       ],
       "the ratified role map is untouched",
     );

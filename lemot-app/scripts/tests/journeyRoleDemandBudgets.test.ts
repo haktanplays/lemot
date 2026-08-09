@@ -177,9 +177,9 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
     assertEqual(out.errors.join(" | "), "", "current v1 is budget-clean");
   });
 
-  test("current outcome: 21 normal passes, 1 named exception, 1 role-less skip", () => {
+  test("current outcome: 22 normal passes, 1 named exception, 1 role-less skip", () => {
     const out = validateJourneyRoleDemandBudgets(V1_LESSONS);
-    assertEqual(out.normalPasses, 21, "L1-L5, L7-L22 minus L6");
+    assertEqual(out.normalPasses, 22, "L1-L5, L7-L23 minus L6");
     assertEqual(out.exceptionPasses, 1, "L6 only");
     assertEqual(out.skippedRoleless, 1, "L0 only");
   });
@@ -216,6 +216,7 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
         [20, "milestone", 0],
         [21, "doorway", 1],
         [22, "standard", 1],
+        [23, "integration", 0],
       ],
       "current-v1 regression matrix",
     );
