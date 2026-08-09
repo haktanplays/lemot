@@ -135,7 +135,7 @@ Rejected explicitly: *L21 random new thing · L22 random new thing · L23 review
 | **Does NOT teach** | anything new · a coverage sweep of every owned system · conversational repair |
 | **Why before Campfire** | The threshold should be crossed by a learner who has *used* the new capabilities, not one who has just met them. It also answers the tester question *does integration still feel coherent this late?* |
 | **Factory viability** | Full — L19 is the worked precedent for a zero-demand integration. |
-| **Main risk** | Reading as "L19 again". L23's crossing must be the **transaction**, which L19 could not build; the L19 review's own per-beat rule applies — no L23 beat may re-ask an earlier reference answer at lower support. |
+| **Main risk** | Reading as "L19 again". L23's crossing must be the **transaction**, which L19 could not build. **Replay rule, narrowed 2026-08-09:** L23 is zero-demand by design, so it *must* reuse owned French, often at lower support. **L23 may reuse an earlier reference surface at lower support only when the communicative task or dependency has materially changed. "Same answer, same job, fewer hints" remains a failure.** (The stricter L20 formulation — *no beat may re-ask an earlier reference answer at lower support* — stays scoped to **L20**, a milestone whose job was proving independence, and does not govern an integration lesson.) This is semantic author-review guidance; there is no validator for it. |
 
 ### L24 — "The threshold" *(title provisional)*
 
