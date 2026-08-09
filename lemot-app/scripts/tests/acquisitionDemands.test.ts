@@ -58,6 +58,11 @@ const RATIFIED: Record<string, readonly string[]> = {
   // that zero is pedagogical rather than a budget fit: a checkpoint that
   // taught something would not be a checkpoint.
   "v1-lesson-020": [],
+  // L21 is a Doorway: one evaluative adjective, inside the 1-2 band. The host
+  // `chunk-c-est` is deliberately NOT declared - the learner already produces
+  // it unaided in L18-L20, so a demand here would claim a novelty the shipped
+  // corpus disproves. The negative rides `chunk-ce-n-est-pas`, an L3 demand.
+  "v1-lesson-021": ["adj-bon"],
 };
 
 /** Minimal synthetic lesson carrying one declaration and one reference site. */
@@ -68,7 +73,7 @@ const lesson = (over: object): Lesson =>
 const refScreen = (...ids: string[]) =>
   ({ id: "s00", type: "meet-card", targetItemIds: ids, payload: {} }) as never;
 
-describe("acquisitionDemands — shipped L0–L20 map", () => {
+describe("acquisitionDemands — shipped L0–L21 map", () => {
   test("every lesson declares exactly its ratified demands", () => {
     assertEqual(
       V1_LESSONS.map((l) => l.id).sort(),
@@ -84,18 +89,18 @@ describe("acquisitionDemands — shipped L0–L20 map", () => {
     }
   });
 
-  test("total declared demands across v1 is 25", () => {
+  test("total declared demands across v1 is 26", () => {
     // 21 through L16 (Integration contributed 0) + L17's three + L18's one.
-    // L19 is Integration and L20 is Milestone; both add none, so the total is
-    // unchanged.
-    assertEqual(totalAcquisitionDemands(V1_LESSONS), 25, "current-v1 regression total");
+    // L19 is Integration and L20 is Milestone; both add none. L21's one
+    // evaluative adjective takes it to 26.
+    assertEqual(totalAcquisitionDemands(V1_LESSONS), 26, "current-v1 regression total");
   });
 
-  test("migration is complete — all 21 lessons declare the field", () => {
-    assertEqual(V1_LESSONS.length, 21, "21 shipped lessons");
+  test("migration is complete — all 22 lessons declare the field", () => {
+    assertEqual(V1_LESSONS.length, 22, "22 shipped lessons");
     assertEqual(
       countLessonsDeclaringDemands(V1_LESSONS),
-      21,
+      22,
       "none is left unadjudicated",
     );
     for (const l of V1_LESSONS) {
@@ -320,6 +325,7 @@ describe("acquisitionDemands — non-regression", () => {
         "doorway",
         "integration",
         "milestone",
+        "doorway",
       ],
       "the ratified role map is untouched",
     );
