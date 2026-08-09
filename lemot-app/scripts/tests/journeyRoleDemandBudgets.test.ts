@@ -177,9 +177,9 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
     assertEqual(out.errors.join(" | "), "", "current v1 is budget-clean");
   });
 
-  test("current outcome: 18 normal passes, 1 named exception, 1 role-less skip", () => {
+  test("current outcome: 19 normal passes, 1 named exception, 1 role-less skip", () => {
     const out = validateJourneyRoleDemandBudgets(V1_LESSONS);
-    assertEqual(out.normalPasses, 18, "L1-L5, L7-L19 minus L6");
+    assertEqual(out.normalPasses, 19, "L1-L5, L7-L20 minus L6");
     assertEqual(out.exceptionPasses, 1, "L6 only");
     assertEqual(out.skippedRoleless, 1, "L0 only");
   });
@@ -213,6 +213,7 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
         [17, "standard", 3],
         [18, "doorway", 1],
         [19, "integration", 0],
+        [20, "milestone", 0],
       ],
       "current-v1 regression matrix",
     );
@@ -232,9 +233,19 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
     }
   });
 
-  test("no shipped Review or Milestone lesson exists yet", () => {
-    const roles = new Set(V1_LESSONS.map((l) => l.journeyRole));
-    assert(!roles.has("review"), "no Review lesson was invented to exercise the band");
-    assert(!roles.has("milestone"), "no Milestone lesson was invented either");
+  test("Milestone ships once, at L20; no Review lesson exists yet", () => {
+    const roles = V1_LESSONS.map((l) => l.journeyRole);
+    assert(!roles.includes("review"), "no Review lesson was invented to exercise the band");
+    const milestones = V1_LESSONS.filter((l) => l.journeyRole === "milestone");
+    assertEqual(
+      milestones.map((l) => l.number),
+      [20],
+      "L20 is the only Milestone, and it was ratified rather than invented to exercise the band",
+    );
+    assertEqual(
+      milestones[0]?.acquisitionDemandItemIds?.length,
+      0,
+      "the Milestone band is 0-3 and L20 takes 0 — no exception is requested",
+    );
   });
 });
