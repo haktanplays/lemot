@@ -74,7 +74,7 @@ What that does and does not mean:
 
 ## 3. The arc, in one sentence
 
-**From proving you can be *present* in a moment to being able to *take part* in one** — say what you think (L21), handle quantity and price (L22), run the whole exchange unaided (L23) — and then, at the threshold, see that everything you own happens **now**, and that *before* and *after* are what lies past Campfire (L24).
+**From proving you can be *present* in a moment to being able to *take part* in one** — say what you think (L21), ask what it costs (L22), run the whole exchange unaided (L23) — and then, at the threshold, see that everything you own happens **now**, and that *before* and *after* are what lies past Campfire (L24).
 
 Rejected explicitly: *L21 random new thing · L22 random new thing · L23 review · L24 ceremony.*
 
@@ -100,6 +100,8 @@ Rejected explicitly: *L21 random new thing · L22 random new thing · L23 review
 | **Main risk** | **Thinness.** One invariable chunk can read as a footnote. Mitigation is breadth of reuse, not padding: it applies to everything already owned. L17 is the worked precedent for a recycle-dominant thematic lesson with a capped adjective. |
 
 ### L22 — "How much, how many" *(title provisional)*
+
+> **⚠️ MECHANISM REFINED 2026-08-09 — `docs/syllabus/L22-price-gate-review.md` is authoritative over this card.** The implementation gate resolved the broad job below to **PRICE ONLY**: **1 demand (`adverb-combien`)**, canDo **"Ask how much something costs before I order it."**, price answers written as a **numeral plus `€`** and never as French words, and **productive quantity deferred to a later doorway**. Reason: every natural "how many" (`Combien de cafés ?`, `Vous en voulez combien ?`) needs `de`, plural noun morphology, determiner deletion or `en` — all reserved by §6. **This refines the mechanism; it does not reverse the sequence.** The role, archetypes, context and place in the arc are unchanged. Open item §9.1 is closed by that decision.
 
 | | |
 |---|---|
@@ -196,7 +198,7 @@ RR-A (`je ne comprends pas` · `vous pouvez répéter ?` · `c'est pas grave` ·
 
 ## 9. Deliberately left open — the compact-spec gate
 
-1. **L22's number set: size, and how it is counted.** The Charter's stop conditions include *"a counting question not answered by the Item-Counting Contract v1.0"*. Whether a number slice is one acquisition concept or N is a **PRJ-015** question and is **not improvised here**. The *pedagogy* is decided (ask-and-understand; production capped; the answer is largely heard); the *count* is not.
+1. ~~**L22's number set: size, and how it is counted.**~~ **CLOSED 2026-08-09 by `docs/syllabus/L22-price-gate-review.md`: there is no number set.** The price answer is a numeral plus `€` — shared orthography, not French lexis — so no number or currency identity exists, nothing is claimed about `deux` or `euros`, and the PRJ-015 counting question never arises. The "largely heard" pedagogy was also dropped: the product has **no listening exercise** (`useSpeech` is wired only to the meet-card Listen button), so no canDo may claim a learner understands a spoken price.
 2. **L21's second demand, if any.** One invariable evaluative chunk may be enough for a doorway. The gate review decides.
 3. **L24's promise device.** §10 states the constraints; the exact screen is compact-spec work.
 4. **Titles.** All four are provisional. No canon fixes them.
@@ -259,4 +261,4 @@ Nothing in L21–L24 may be authored, generated or shipped on the strength of th
 
 ---
 
-*End of L21–L24 Pre-Campfire Sequence Decision v1. Sequence only — no lesson content, no compact spec, no identity, no code, no runtime or commercial change. Ratifies: L21 `doorway` (1–2, evaluation) → L22 `standard` (1–3, quantity and price) → L23 `integration` (0, the whole exchange) → L24 `milestone` (0, the threshold). No headline engine is spent, RR-A stays parked, the Campfire position remains Product-Brain-owned, and no runtime gate exists or is implied.*
+*End of L21–L24 Pre-Campfire Sequence Decision v1. Sequence only — no lesson content, no compact spec, no identity, no code, no runtime or commercial change. Ratifies: L21 `doorway` (1–2, evaluation) → L22 `standard` (quantity and price — **refined 2026-08-09 to price only, 1 demand**; see `L22-price-gate-review.md`) → L23 `integration` (0, the whole exchange) → L24 `milestone` (0, the threshold). No headline engine is spent, RR-A stays parked, the Campfire position remains Product-Brain-owned, and no runtime gate exists or is implied.*
