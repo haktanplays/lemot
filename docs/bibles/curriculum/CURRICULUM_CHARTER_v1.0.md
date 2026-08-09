@@ -152,7 +152,8 @@ discovery §5–§6.*
 | L0–L6 | Founder-locked, shipped, smoke-accepted, frozen | Current learner-visible foundation (L0 is the uncounted first-use bridge; L6 is the last visible lesson) |
 | L7–L15 | Approved working sequence, runtime-registered but learner-hidden | Default planning order; revisable through future Curriculum authority |
 | L16–L17 | Approved spec-only continuation | Authored (compact specs + gate reviews), not implemented |
-| L18+ | Open / provisional | No authoritative sequence |
+| L18–L20 | Approved working sequence, runtime-registered but learner-hidden | Authored (compact specs + gate reviews) and shipped as lesson files. **Not** smoke-accepted and **not** founder-locked. *(Narrow update 2026-08-09; provenance: `docs/syllabus/L18-L20-sequence-decision-v1.md` + shipped `lesson-018/019/020.ts`.)* |
+| L21+ | Open / provisional | No authoritative sequence. `docs/syllabus/L21-L24-pre-campfire-sequence-decision-v1.md` ratifies the L21–L24 **sequence shape only**; lesson-level gate/spec work is unauthored, so this row is **unchanged in substance** and L21–L24 are **not** promoted. |
 
 > **Ratifying the current spine ratifies order, lesson purpose, and tiered
 > status. It does not ratify every numeric payload recorded in historical
@@ -362,7 +363,12 @@ Preserved explicitly — none is resolved, and silence is never approval:
 - **PRJ-036** — Campfire/paywall position (Product Brain-owned; Curriculum
   plans against the working direction without hardening it);
 - **Capability Arc composition** (none exists);
-- **post-L17 lesson sequence** (L18–L20 provisional roles; L21–L23 open);
+- **post-L17 lesson sequence** — narrowed 2026-08-09, **not closed**: L18–L20 are
+  authored and shipped (§5), while **L21–L24 remain open** — their sequence
+  *shape* is ratified in
+  `docs/syllabus/L21-L24-pre-campfire-sequence-decision-v1.md`, but no
+  lesson-level gate review or compact spec exists and no placement is
+  authoritative; post-L24 sequencing is untouched (PRJ-029);
 - **futur-proche ownership** (L18 preview-only is provisional; no pre-L24
   production ownership may be inferred);
 - **full tense architecture** (passé composé Campfire-adjacent but
