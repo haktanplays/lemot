@@ -933,6 +933,52 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-c-est", "chunk-ce-n-est-pas", "adverb-comment"],
     frenchQa: "founder_waived_provisional",
   },
+
+  // ── L22: Price — the third occupant of the c'est ___ slot ─────────────────
+  // FOUNDER-WAIVED PROVISIONAL FRENCH QA, same posture and same reason as the
+  // PR-07, L17, L18 and L21 blocks above: no named human has read this surface.
+  // It is internally learner-reachable ONLY under the founder's explicit risk
+  // acceptance for the internal tester APK, is NOT public / content-complete
+  // ready, and the comprehensive human French QA pass remains mandatory.
+  //
+  // ONE identity, ONE acquisition demand, and the ownership unit is the WORD,
+  // as in L18. Deliberately NOT created: chunk-c-est-combien (an authored
+  // composition of this adverb with an already-owned host — adjacency does not
+  // mint an identity), and no euro/number identity of any kind (see below).
+  //
+  // L18's honesty test was that `comment` works in TWO owned hosts. That test
+  // is NOT available here: French offers `combien` no second owned host —
+  // "ça va combien ?" and "je voudrais combien ?" are not sentences. Word-hood
+  // rests on different evidence instead: the learner demonstrably controls the
+  // c'est ___ end slot itself, having produced `où` there since L8 and
+  // `comment` there since L18, so a third occupant of a slot they already work
+  // is stronger evidence of slot productivity than freezing a third whole
+  // question would be — and freezing would repeat the L8 chunk-c-est-ou branch
+  // that canonicalItems.test.ts records as the weaker one.
+  //
+  // BOUNDED. L22 owns `combien` in the PRICE question only. `combien de + noun`
+  // is NOT opened: it needs `de`, plural noun morphology and determiner
+  // deletion, none of which exists. Nor are `ça fait combien ?`,
+  // `combien ça coûte ?`, `vous en voulez combien ?` or `combien êtes-vous ?`.
+  // Productive quantity stays a later doorway.
+  //
+  // NO CURRENCY IDENTITY. The price answer is written as a numeral plus the €
+  // symbol (2 €), which is orthography rather than French lexis, so nothing is
+  // claimed about understanding `deux` or `euros` and neither word may appear.
+  "adverb-combien": {
+    id: "adverb-combien",
+    type: "adverb",
+    text: "combien",
+    status: "active",
+    fr: "combien",
+    en: "how much",
+    meaning:
+      "How much. The question word for asking a price. It goes in the same end spot after c'est that où and comment already occupy: C'est combien ? and, when you need to name the thing, Un café, c'est combien ? Combien has other everyday uses for counting things; those need words you do not have yet and are a separate, later doorway.",
+    exampleFr: "C'est combien ?",
+    exampleEn: "How much is it?",
+    relatedItemIds: ["chunk-c-est", "adverb-comment", "adverb-ou-where", "chunk-un-cafe"],
+    frenchQa: "founder_waived_provisional",
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;
