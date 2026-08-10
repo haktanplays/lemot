@@ -177,9 +177,9 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
     assertEqual(out.errors.join(" | "), "", "current v1 is budget-clean");
   });
 
-  test("current outcome: 22 normal passes, 1 named exception, 1 role-less skip", () => {
+  test("current outcome: 23 normal passes, 1 named exception, 1 role-less skip", () => {
     const out = validateJourneyRoleDemandBudgets(V1_LESSONS);
-    assertEqual(out.normalPasses, 22, "L1-L5, L7-L23 minus L6");
+    assertEqual(out.normalPasses, 23, "L1-L5, L7-L24 minus L6");
     assertEqual(out.exceptionPasses, 1, "L6 only");
     assertEqual(out.skippedRoleless, 1, "L0 only");
   });
@@ -217,6 +217,7 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
         [21, "doorway", 1],
         [22, "standard", 1],
         [23, "integration", 0],
+        [24, "milestone", 0],
       ],
       "current-v1 regression matrix",
     );
@@ -236,19 +237,21 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
     }
   });
 
-  test("Milestone ships once, at L20; no Review lesson exists yet", () => {
+  test("Milestone ships twice, at L20 and L24; no Review lesson exists yet", () => {
     const roles = V1_LESSONS.map((l) => l.journeyRole);
     assert(!roles.includes("review"), "no Review lesson was invented to exercise the band");
     const milestones = V1_LESSONS.filter((l) => l.journeyRole === "milestone");
     assertEqual(
       milestones.map((l) => l.number),
-      [20],
-      "L20 is the only Milestone, and it was ratified rather than invented to exercise the band",
+      [20, 24],
+      "L20 and L24 are the two Milestones, both ratified rather than invented to exercise the band",
     );
-    assertEqual(
-      milestones[0]?.acquisitionDemandItemIds?.length,
-      0,
-      "the Milestone band is 0-3 and L20 takes 0 — no exception is requested",
-    );
+    for (const m of milestones) {
+      assertEqual(
+        m.acquisitionDemandItemIds?.length,
+        0,
+        "the Milestone band is 0-3 and both take 0 — no exception is requested",
+      );
+    }
   });
 });

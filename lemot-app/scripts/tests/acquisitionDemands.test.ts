@@ -72,6 +72,10 @@ const RATIFIED: Record<string, readonly string[]> = {
   // all - its job is that an answer the learner OBTAINED decides what they say
   // next, and that a purchase licenses a later report about it.
   "v1-lesson-023": [],
+  // L24 is the second Milestone: zero demands by definition. It adds no French
+  // at all - its job is that the learner supplies the PURPOSE of a bounded
+  // moment and carries it through from owned material.
+  "v1-lesson-024": [],
 };
 
 /** Minimal synthetic lesson carrying one declaration and one reference site. */
@@ -102,15 +106,15 @@ describe("acquisitionDemands — shipped L0–L23 map", () => {
     // 21 through L16 (Integration contributed 0) + L17's three + L18's one.
     // L19 is Integration and L20 is Milestone; both add none. L21's one
     // evaluative adjective takes it to 26, and L22's one question word to 27.
-    // L23 is Integration and adds none, so the total holds at 27.
+    // L23 and L24 add none, so the total holds at 27.
     assertEqual(totalAcquisitionDemands(V1_LESSONS), 27, "current-v1 regression total");
   });
 
-  test("migration is complete — all 24 lessons declare the field", () => {
-    assertEqual(V1_LESSONS.length, 24, "24 shipped lessons");
+  test("migration is complete — all 25 lessons declare the field", () => {
+    assertEqual(V1_LESSONS.length, 25, "25 shipped lessons");
     assertEqual(
       countLessonsDeclaringDemands(V1_LESSONS),
-      24,
+      25,
       "none is left unadjudicated",
     );
     for (const l of V1_LESSONS) {
@@ -338,6 +342,7 @@ describe("acquisitionDemands — non-regression", () => {
         "doorway",
         "standard",
         "integration",
+        "milestone",
       ],
       "the ratified role map is untouched",
     );
