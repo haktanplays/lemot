@@ -139,10 +139,12 @@ Rejected explicitly: *L21 random new thing · L22 random new thing · L23 review
 
 ### L24 — "The threshold" *(title provisional)*
 
+> **⚠️ ARCHITECTURE AND DEVICE RESOLVED 2026-08-09 — `docs/syllabus/L24-pre-campfire-threshold-gate-review.md` is authoritative over this card.** Three things this card left open are now decided. **(1) The canDo is superseded**: *"Carry a real exchange in French on my own, and see what French I'll be able to reach for next."* is replaced by **"Decide what I want out of a moment in French, and carry it through on my own."** — because the first half restates shipped L20's proof (L20 already carried an exchange unaided) and the second half promises a forward look the lesson deliberately does not deliver in French. **(2) The architecture is MODEL I, a ladder of agency** — *move free → speech-act free → purpose free* — in which the app supplies **circumstances, not instructions**. The distinguishing capability is **purpose-selection**: at L20, with 25 demands, every owned reason to speak was another person, so *"what are you here for?"* had exactly one answer; `adj-bon` (L21) and `adverb-combien` (L22) are what gave it more. **(3) The promise device is resolved to English-only**: `supportedItemIds: []`, `recognitionItemIds: []`, **no French in the forward-looking surface at all**, and **L20's FP-C hook is neither replayed nor depended on**. The boundary is stated as **deixis, not tense** — *everything you can currently do stays inside the moment you're in* — because `chunk-je-voudrais` is a **conditionnel** owned since L0, which makes any "all present tense" claim false. Role, demands, archetypes and place in the arc are **unchanged**; this refines the architecture and closes §9.3, it does not reverse the sequence.
+
 | | |
 |---|---|
 | **Why it exists** | The last authored lesson of the free arc. Its job is to make two things true at once: *I can already do this*, and *I can see what becomes possible next* — without fake mastery. |
-| **CanDo** | *"Carry a real exchange in French on my own, and see what French I'll be able to reach for next."* |
+| **CanDo** | ~~*"Carry a real exchange in French on my own, and see what French I'll be able to reach for next."*~~ **Superseded 2026-08-09:** *"Decide what I want out of a moment in French, and carry it through on my own."* |
 | **JourneyRole** | **`milestone`** (band 0–3, takes **0**) |
 | **Expected demands** | **0** |
 | **Likely acquisition** | None. |
@@ -202,7 +204,7 @@ RR-A (`je ne comprends pas` · `vous pouvez répéter ?` · `c'est pas grave` ·
 
 1. ~~**L22's number set: size, and how it is counted.**~~ **CLOSED 2026-08-09 by `docs/syllabus/L22-price-gate-review.md`: there is no number set.** The price answer is a numeral plus `€` — shared orthography, not French lexis — so no number or currency identity exists, nothing is claimed about `deux` or `euros`, and the PRJ-015 counting question never arises. The "largely heard" pedagogy was also dropped: the product has **no listening exercise** (`useSpeech` is wired only to the meet-card Listen button), so no canDo may claim a learner understands a spoken price.
 2. **L21's second demand, if any.** One invariable evaluative chunk may be enough for a doorway. The gate review decides.
-3. **L24's promise device.** §10 states the constraints; the exact screen is compact-spec work.
+3. ~~**L24's promise device.**~~ **CLOSED 2026-08-09 by `docs/syllabus/L24-pre-campfire-threshold-gate-review.md`: the device carries no French.** §10's constraints are met by an English-only, post-performance boundary reflection with **no `targetItemIds`, no `itemId` and no `examples` French** — `supportedItemIds: []` and `recognitionItemIds: []`. Reason: the forward look here is about a **boundary**, not a **form**, and a past/future sample would demonstrate the very systems §6 reserves. **L20's FP-C card is not replayed, not recalled and not depended on** — the threshold must land for a learner who has forgotten it. **L24 also does not use the word *Campfire* in learner copy**: the position is Product-Brain-owned (PRJ-036), no runtime surface exists, and the threshold works without the product noun.
 4. **Titles.** All four are provisional. No canon fixes them.
 
 ---
