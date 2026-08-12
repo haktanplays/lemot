@@ -257,15 +257,15 @@ describe("standing surfaces are reachable without a lesson or a deep link", () =
 
 // ── Part B: Journey visibility ──────────────────────────────────────────────
 
-describe("Journey shows L1-L10 and hides L11+", () => {
+describe("Journey shows the full authored path L1-L24", () => {
   const journey = () => read(JOURNEY);
 
-  test("the visible range is L1-L10", () => {
+  test("the visible range is L1-L24", () => {
     assert(
-      journey().includes("l.number >= 1 && l.number <= 10"),
-      "the cap is exactly L1-L10",
+      journey().includes("l.number >= 1 && l.number <= 24"),
+      "the cap is exactly L1-L24",
     );
-    for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+    for (const n of Array.from({ length: 24 }, (_, i) => i + 1)) {
       assert(
         V1_LESSONS.some((l) => l.number === n),
         `L${n} must be registered to be visible`,
@@ -273,13 +273,10 @@ describe("Journey shows L1-L10 and hides L11+", () => {
     }
   });
 
-  test("L11-L15 stay hidden", () => {
-    const hidden = V1_LESSONS.filter((l) => l.number >= 11);
-    assert(hidden.length > 0, "there are registered lessons above L10 to hide");
-    for (const l of hidden) {
-      assert(l.number > 10, `${l.id} is outside the visible cap`);
-    }
-    // The cap is a numeric filter, so nothing above 10 can leak; assert the
+  test("nothing above L24 leaks and no second lesson list exists", () => {
+    const hidden = V1_LESSONS.filter((l) => l.number >= 25);
+    assertEqual(hidden.length, 0, "no lesson above L24 is registered yet");
+    // The cap is a numeric filter, so a future L25 cannot leak; assert the
     // filter is the ONLY path that builds the path list.
     assertEqual(
       (journey().match(/V1_LESSONS\.filter/g) ?? []).length,

@@ -82,15 +82,15 @@ function learnerStrings(node: unknown, out: string[]): void {
 // ── Visibility ─────────────────────────────────────────────────────────────
 
 describe("L7-L10 visibility", () => {
-  test("the Journey path caps the learner-visible lessons at L10", () => {
+  test("the Journey path includes L7-L10 inside the full L1-L24 range", () => {
     const home = readFileSync(join(APP_ROOT, "app/(tabs)/index.tsx"), "utf8");
     assert(
-      home.includes("l.number >= 1 && l.number <= 10"),
-      "L1-L10 are the pilot's visible range",
+      home.includes("l.number >= 1 && l.number <= 24"),
+      "L1-L24 is the visible range, so L7-L10 are inside it",
     );
     assert(
-      !home.includes("l.number <= 6"),
-      "the old L1-L6 cap is gone, not left beside the new one",
+      !home.includes("l.number <= 6") && !home.includes("l.number <= 10"),
+      "the old L1-L6 and L1-L10 caps are gone, not left beside the new one",
     );
   });
 

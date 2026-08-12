@@ -28,7 +28,7 @@ const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 
 // Mirrors LessonRendererV1's completion marker: a finished v1 lesson writes
 // prog["{number}-read_listen"] = true. Home reads the same key to drive the
-// simple linear unlock of the L1-L6 path (no scoring, no ceremony).
+// simple linear unlock of the L1-L24 path (no scoring, no ceremony).
 const V1_COMPLETION_SECTION_KEY = "read_listen";
 
 // Time-aware Home greeting from device local time:
@@ -148,17 +148,17 @@ export default function HomeScreen() {
   // no paywall, no locks, no banners.
   const visibleLessons = PRODUCT_STAGE === "dev-apk" ? [] : LESSONS;
 
-  // v1 Round 1 lesson path (L1-L6). Surfaced for internal (sandbox) and the
+  // v1 lesson path (L1-L24). Surfaced for internal (sandbox) and the
   // dev-apk tester wave only; public-beta keeps it hidden. Home-only
   // condition; does NOT flip the v1LessonEngine feature flag.
   const showV1Path =
     PRODUCT_STAGE === "sandbox" || PRODUCT_STAGE === "dev-apk";
 
-  // Pilot scope is L0-L10. The bridge (L0 / number 0) is excluded so it never
-  // appears as a normal lesson card, and nothing above L10 is shown: L11+ stay
-  // hidden until they are explicitly opened in a later pass.
+  // The full authored path is L0-L24. The bridge (L0 / number 0) is excluded
+  // so it never appears as a normal lesson card; L1-L24 are all visible under
+  // the same linear unlock, with L24 as the final currently authored row.
   const v1PathLessons = V1_LESSONS.filter(
-    (l) => l.number >= 1 && l.number <= 10
+    (l) => l.number >= 1 && l.number <= 24
   ).sort((a, b) => a.number - b.number);
   const v1Done = (n: number) =>
     prog[`${n}-${V1_COMPLETION_SECTION_KEY}`] === true;
@@ -357,10 +357,10 @@ export default function HomeScreen() {
           );
         })}
 
-        {/* The Journey path (L1-L10) — the pilot lesson surface. Surfaced in
-            sandbox (internal comparison) and dev-apk (tester wave);
-            public-beta keeps it hidden. Linear unlock; exactly one row is
-            presented as the recommended next step, completed lessons stay
+        {/* The Journey path (L1-L24) — the full authored lesson surface.
+            Surfaced in sandbox (internal comparison) and dev-apk (tester
+            wave); public-beta keeps it hidden. Linear unlock; exactly one row
+            is presented as the recommended next step, completed lessons stay
             open for replay, locked ones stay quiet. No reward / unlock
             ceremony language. */}
         {showV1Path && v1PathState.length > 0 && (
