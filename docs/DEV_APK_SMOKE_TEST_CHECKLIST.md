@@ -56,6 +56,18 @@ Build assertion contract (MUST — the build is blocked until every line holds):
       EAS environment (`EXPO_PUBLIC_SUPABASE_URL` and
       `EXPO_PUBLIC_SUPABASE_ANON_KEY` absent) → effective
       `supabaseReady = false`
+- [ ] SUPABASE — EAS SERVER-SIDE ENVIRONMENT (blocking): inspect the actual
+      EAS environment store the build resolves, not just `eas.json` —
+      `eas.json` alone is NOT sufficient evidence of the effective build
+      environment (an internal-distribution build pulls the server-side
+      `preview` environment by default). Run
+      `npx eas-cli env:list preview`
+      and require that `EXPO_PUBLIC_SUPABASE_URL` and
+      `EXPO_PUBLIC_SUPABASE_ANON_KEY` are ABSENT for this accountless tester
+      artifact. If either is present, the build is blocked until it is removed
+      (found present and deleted 2026-08-12; they were residue of the
+      superseded legacy in-lesson-AI preview setup in
+      `docs/EAS_PREVIEW_BUILD.md`).
 - [ ] AUTH: with Supabase env absent, no Sign In / Account affordance renders
       in normal tester UI (verified again on-device in §4)
 - [ ] V1 AI PAYLOAD: zero shipped L0–L24 say-it screens declare
