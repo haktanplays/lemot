@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
-import { View, Text, ScrollView, TextInput } from "react-native";
-import { Btn } from "@/components/Btn";
+import { View, Text, TextInput } from "react-native";
+import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
+import { PrimaryAction, QuietAction, LinkAction } from "@/components/ui/actions";
 import { P } from "@/constants/theme";
 import { FEATURES } from "@/config/productStage";
 import { evaluateSayIt } from "@/lib/ai";
@@ -111,10 +112,27 @@ export function SayItYourWayV1({
       0);
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: P.bg }}
-      contentContainerStyle={{ padding: 20 }}
-      keyboardShouldPersistTaps="handled"
+    <LessonScreenFrame
+      footer={
+        isInput ? (
+          <PrimaryAction
+            label="Check"
+            onPress={handleCheck}
+            disabled={!canCheck}
+          />
+        ) : isConfirm ? (
+          <View>
+            <QuietAction label="Try again" onPress={handleTryAgain} />
+            <View style={{ height: 8 }} />
+            <PrimaryAction
+              label="Keep and compare"
+              onPress={handleKeepAndCompare}
+            />
+          </View>
+        ) : (
+          <PrimaryAction label="Continue" onPress={onContinue} />
+        )
+      }
     >
       <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
         Say It Your Way
@@ -147,13 +165,13 @@ export function SayItYourWayV1({
         payload.suggestedPieces.length > 0 &&
         !showPieces &&
         isInput && (
-          <Text
-            onPress={() => setShowPieces(true)}
-            className="text-xs mt-3"
-            style={{ color: P.ink3, textDecorationLine: "underline" }}
-          >
-            Need a hint?
-          </Text>
+          <View className="mt-3">
+            <LinkAction
+              label="Need a hint?"
+              align="left"
+              onPress={() => setShowPieces(true)}
+            />
+          </View>
         )}
 
       {payload.suggestedPieces &&
@@ -211,12 +229,6 @@ export function SayItYourWayV1({
         />
       </View>
 
-      {isInput && (
-        <Btn onPress={handleCheck} disabled={!canCheck}>
-          <Text style={{ color: P.paper, fontSize: 15 }}>Check</Text>
-        </Btn>
-      )}
-
       {isConfirm && (
         <View className="mt-4">
           <View
@@ -240,20 +252,6 @@ export function SayItYourWayV1({
               Want to try once more, or keep this and compare?
             </Text>
           </View>
-          <Btn
-            color={P.paper}
-            onPress={handleTryAgain}
-            style={{ borderWidth: 1, borderColor: P.border }}
-          >
-            <Text style={{ color: P.ink, fontSize: 15, fontWeight: "600" }}>
-              Try again
-            </Text>
-          </Btn>
-          <Btn onPress={handleKeepAndCompare}>
-            <Text style={{ color: P.paper, fontSize: 15, fontWeight: "600" }}>
-              Keep and compare
-            </Text>
-          </Btn>
         </View>
       )}
 
@@ -359,12 +357,7 @@ export function SayItYourWayV1({
         </View>
       )}
 
-      {isRevealed && (
-        <Btn onPress={onContinue}>
-          <Text style={{ color: P.paper, fontSize: 15 }}>Continue</Text>
-        </Btn>
-      )}
-    </ScrollView>
+    </LessonScreenFrame>
   );
 }
 

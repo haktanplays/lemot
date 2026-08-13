@@ -3,8 +3,8 @@ import { View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
-import { Btn } from "@/components/Btn";
-import { P } from "@/constants/theme";
+import { PrimaryAction, LinkAction } from "@/components/ui/actions";
+import { P, SPACE } from "@/constants/theme";
 import { useApp } from "@/providers/AppProvider";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { MeetCard } from "./screens/MeetCard";
@@ -124,10 +124,10 @@ function LessonHeader({
       style={{
         flexDirection: "row",
         alignItems: "center",
-        gap: 8,
-        paddingHorizontal: 16,
-        paddingTop: 12,
-        paddingBottom: 14,
+        gap: SPACE.sm,
+        paddingHorizontal: SPACE.lg,
+        paddingTop: SPACE.md,
+        paddingBottom: SPACE.lg,
         borderBottomWidth: 1,
         borderBottomColor: P.border,
         backgroundColor: P.bg,
@@ -138,14 +138,14 @@ function LessonHeader({
         hitSlop={10}
         accessibilityRole="button"
         accessibilityLabel="Go back"
-        style={{ padding: 4 }}
+        style={{ padding: SPACE.xs }}
       >
         <ChevronLeft size={22} color={P.ink2} />
       </Pressable>
       <View style={{ flex: 1 }}>
         <Text
           className="text-xs"
-          style={{ color: P.ink3, marginBottom: 2 }}
+          style={{ color: P.ink3, marginBottom: 3, letterSpacing: 0.4 }}
         >
           {`part ${current} of ${total}`}
         </Text>
@@ -292,26 +292,20 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
         <Text className="text-sm" style={{ color: P.ink2 }}>
           A small French shape is now familiar.
         </Text>
-        <Btn onPress={exitToPrevious}>
-          <Text style={{ color: P.paper, fontSize: 15 }}>Back to Home</Text>
-        </Btn>
+        <View style={{ marginTop: SPACE.lg }}>
+          <PrimaryAction label="Back to Home" onPress={exitToPrevious} />
+        </View>
         {/* The one secondary shortcut. Typed-route casts are the narrow bridge
             the house rules allow for routes Metro has not regenerated types
             for yet. */}
-        <Pressable
-          onPress={() =>
-            openProjection(() => router.push("/mon-lexique" as never))
-          }
-          style={{ marginTop: 12, alignSelf: "center", padding: 6 }}
-          accessibilityRole="button"
-        >
-          <Text
-            className="text-sm"
-            style={{ color: P.ink2, textDecorationLine: "underline" }}
-          >
-            Open Mon Lexique
-          </Text>
-        </Pressable>
+        <View style={{ marginTop: SPACE.sm }}>
+          <LinkAction
+            label="Open Mon Lexique"
+            onPress={() =>
+              openProjection(() => router.push("/mon-lexique" as never))
+            }
+          />
+        </View>
       </View>
     </View>
   );

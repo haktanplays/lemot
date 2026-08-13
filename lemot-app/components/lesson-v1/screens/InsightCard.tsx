@@ -1,5 +1,6 @@
-import { View, Text, ScrollView } from "react-native";
-import { Btn } from "@/components/Btn";
+import { View, Text } from "react-native";
+import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
+import { PrimaryAction } from "@/components/ui/actions";
 import { P } from "@/constants/theme";
 import type {
   InsightCardScreen,
@@ -27,9 +28,8 @@ export function InsightCard({
   const examples = payload.examples ?? [];
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: P.bg }}
-      contentContainerStyle={{ padding: 20 }}
+    <LessonScreenFrame
+      footer={<PrimaryAction label="Continue" onPress={onContinue} />}
     >
       <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
         {INSIGHT_LABELS[payload.insightType]}
@@ -98,9 +98,6 @@ export function InsightCard({
         )}
       </View>
 
-      <Btn onPress={onContinue}>
-        <Text style={{ color: P.paper, fontSize: 15 }}>Continue</Text>
-      </Btn>
-    </ScrollView>
+    </LessonScreenFrame>
   );
 }

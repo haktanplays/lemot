@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
-import { Btn } from "@/components/Btn";
+import { View, Text, TextInput, Pressable } from "react-native";
+import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
+import { PrimaryAction, LinkAction } from "@/components/ui/actions";
 import { P } from "@/constants/theme";
 import type { WeavePayload, WeaveScreen } from "@/content/lessonTypes";
 import { type MatchResult } from "./normalizeAnswer";
@@ -107,10 +108,18 @@ export function Weave({
           { bg: P.bg, border: P.border, color: P.ink2 };
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: P.bg }}
-      contentContainerStyle={{ padding: 20 }}
-      keyboardShouldPersistTaps="handled"
+    <LessonScreenFrame
+      footer={
+        !isRevealed ? (
+          <PrimaryAction
+            label="Check"
+            onPress={handleCheck}
+            disabled={!canCheck}
+          />
+        ) : (
+          <PrimaryAction label="Continue" onPress={onContinue} />
+        )
+      }
     >
       {/* Branded mechanic: the Weave name is visible again as a small badge.
           Neutral ink pill (premium brand tag) — intentionally NOT red/amber/green
@@ -222,14 +231,11 @@ export function Weave({
       {!isRevealed && (hasPieces || hasCloze) && (
         <View className="mt-3">
           {hintLevel === 0 && (
-            <Pressable onPress={() => setHintLevel(1)}>
-              <Text
-                className="text-xs"
-                style={{ color: P.ink3, textDecorationLine: "underline" }}
-              >
-                Need a hint?
-              </Text>
-            </Pressable>
+            <LinkAction
+              label="Need a hint?"
+              align="left"
+              onPress={() => setHintLevel(1)}
+            />
           )}
 
           {/* Pieces are the terminal support when there is no cloze. When an
@@ -271,14 +277,13 @@ export function Weave({
           )}
 
           {hintLevel === 1 && hasCloze && (
-            <Pressable className="mt-2" onPress={() => setHintLevel(2)}>
-              <Text
-                className="text-xs"
-                style={{ color: P.ink3, textDecorationLine: "underline" }}
-              >
-                Need more help?
-              </Text>
-            </Pressable>
+            <View className="mt-2">
+              <LinkAction
+                label="Need more help?"
+                align="left"
+                onPress={() => setHintLevel(2)}
+              />
+            </View>
           )}
 
           {hintLevel >= 2 && hasCloze && (
@@ -330,12 +335,6 @@ export function Weave({
         />
       </View>
 
-      {!isRevealed && (
-        <Btn onPress={handleCheck} disabled={!canCheck}>
-          <Text style={{ color: P.paper, fontSize: 15 }}>Check</Text>
-        </Btn>
-      )}
-
       {isRevealed && note && (
         <View
           className="rounded-xl border mt-4"
@@ -366,11 +365,6 @@ export function Weave({
         </View>
       )}
 
-      {isRevealed && (
-        <Btn onPress={onContinue}>
-          <Text style={{ color: P.paper, fontSize: 15 }}>Continue</Text>
-        </Btn>
-      )}
-    </ScrollView>
+    </LessonScreenFrame>
   );
 }

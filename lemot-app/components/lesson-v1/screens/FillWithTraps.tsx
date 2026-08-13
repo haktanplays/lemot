@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
-import { Btn } from "@/components/Btn";
+import { View, Text, Pressable } from "react-native";
+import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
+import { PrimaryAction } from "@/components/ui/actions";
 import { P } from "@/constants/theme";
 import type { FillWithTrapsScreen } from "@/content/lessonTypes";
 import { AnswerReveal } from "./AnswerReveal";
@@ -36,9 +37,12 @@ export function FillWithTraps({
     selected !== undefined && payload.answer.includes(selected.id);
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: P.bg }}
-      contentContainerStyle={{ padding: 20 }}
+    <LessonScreenFrame
+      footer={
+        selected !== undefined ? (
+          <PrimaryAction label="Continue" onPress={onContinue} />
+        ) : undefined
+      }
     >
       <Text className="text-sm mb-3" style={{ color: P.ink2 }}>
         {payload.prompt}
@@ -140,11 +144,6 @@ export function FillWithTraps({
         </View>
       )}
 
-      {selected !== undefined && (
-        <Btn onPress={onContinue}>
-          <Text style={{ color: P.paper, fontSize: 15 }}>Continue</Text>
-        </Btn>
-      )}
-    </ScrollView>
+    </LessonScreenFrame>
   );
 }

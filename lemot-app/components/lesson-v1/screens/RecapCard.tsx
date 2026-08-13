@@ -1,5 +1,6 @@
-import { View, Text, ScrollView } from "react-native";
-import { Btn } from "@/components/Btn";
+import { View, Text } from "react-native";
+import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
+import { PrimaryAction } from "@/components/ui/actions";
 import { P } from "@/constants/theme";
 import type { RecapScreen } from "@/content/lessonTypes";
 
@@ -15,9 +16,8 @@ export function RecapCard({
   const buttonLabel = payload.nextLabel ?? "Continue";
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: P.bg }}
-      contentContainerStyle={{ padding: 20 }}
+    <LessonScreenFrame
+      footer={<PrimaryAction label={buttonLabel} onPress={onContinue} />}
     >
       <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
         A small recap
@@ -92,9 +92,6 @@ export function RecapCard({
         </View>
       )}
 
-      <Btn onPress={onContinue}>
-        <Text style={{ color: P.paper, fontSize: 15 }}>{buttonLabel}</Text>
-      </Btn>
-    </ScrollView>
+    </LessonScreenFrame>
   );
 }

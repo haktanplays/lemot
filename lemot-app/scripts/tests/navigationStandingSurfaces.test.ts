@@ -222,9 +222,9 @@ describe("standing surfaces are reachable without a lesson or a deep link", () =
     assert(completion.includes("Back to Home"), "the single primary action");
     assert(completion.includes("Open Mon Lexique"), "the one secondary shortcut");
     assertEqual(
-      (completion.match(/<Pressable/g) ?? []).length,
+      (completion.match(/<LinkAction/g) ?? []).length,
       1,
-      "one secondary Pressable beside the primary Btn",
+      "one secondary LinkAction beside the primary action",
     );
     for (const gone of [
       "Practice what came back",

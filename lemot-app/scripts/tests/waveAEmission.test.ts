@@ -622,7 +622,7 @@ describe("typed production assistance capture", () => {
     const emit = src.indexOf("onTypedAttempt?.(");
     assert(check >= 0 && emit > check, "the single emission sits inside handleCheck");
     assert(
-      /<Btn onPress=\{onContinue\}>/.test(src),
+      /<PrimaryAction label="Continue" onPress=\{onContinue\} \/>/.test(src),
       "Continue still calls only onContinue",
     );
   });

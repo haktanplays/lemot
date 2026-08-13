@@ -1,7 +1,8 @@
 import { useRef } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { Volume2 } from "lucide-react-native";
-import { Btn } from "@/components/Btn";
+import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
+import { PrimaryAction } from "@/components/ui/actions";
 import { P } from "@/constants/theme";
 import { useSpeech } from "@/hooks/useSpeech";
 import type { MeetCardScreen } from "@/content/lessonTypes";
@@ -37,9 +38,8 @@ export function MeetCard({
   };
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: P.bg }}
-      contentContainerStyle={{ padding: 20 }}
+    <LessonScreenFrame
+      footer={<PrimaryAction label="Continue" onPress={handleContinue} />}
     >
       {payload.title && (
         <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
@@ -128,9 +128,6 @@ export function MeetCard({
         )}
       </View>
 
-      <Btn onPress={handleContinue}>
-        <Text style={{ color: P.paper, fontSize: 15 }}>Continue</Text>
-      </Btn>
-    </ScrollView>
+    </LessonScreenFrame>
   );
 }

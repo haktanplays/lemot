@@ -17,6 +17,28 @@ export const P = {
   sh: "0 1px 4px rgba(44,40,37,0.06)",
 } as const;
 
+// UI Slice 1 foundation tokens - additive, consumed by components/ui and the
+// lesson frame. The palette above is untouched; these only name the spacing
+// rhythm and radius pair the lesson surfaces already use informally, so new
+// presentation code stops re-inventing raw numbers.
+export const SPACE = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+} as const;
+
+export const RADIUS = {
+  // Cards and inputs.
+  card: 12,
+  // Small nested surfaces (hint cloze, example blocks).
+  inner: 8,
+  // Chips, pills, round affordances.
+  pill: 999,
+} as const;
+
 // Home motivation rotation — 3 layers interleaved so the daily index
 // naturally cycles through proverb → soft reflection → path reflection.
 // Reward / cheerleader / pressure tones are intentionally absent
