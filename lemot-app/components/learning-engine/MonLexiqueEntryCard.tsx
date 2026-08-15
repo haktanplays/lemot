@@ -27,45 +27,63 @@ import {
 export function MonLexiqueEntryCard({
   entry,
   band,
+  showBand = true,
+  divided = false,
 }: {
   entry: MonLexiqueEntry;
   band: MonLexiqueBand;
+  /**
+   * Whether this row states its own band.
+   *
+   * The tab surface groups rows under a band heading, so repeating the label on
+   * every row would print the same verdict twice down the whole column. The
+   * sandbox preview lists entries ungrouped and keeps the chip, which is why
+   * this defaults to true: one band statement per word, wherever it is shown.
+   */
+  showBand?: boolean;
+  /** Hairline above, for a row that follows another inside the same group. */
+  divided?: boolean;
 }) {
   return (
-    <View style={row}>
+    <View style={[row, divided ? dividedRow : null]}>
       <View style={textCol}>
         <Text style={fr}>{entry.fr}</Text>
         <Text style={en}>{entry.en}</Text>
       </View>
-      <Text style={[chip, BAND_CHIP_STYLE[band]]}>
-        {MON_LEXIQUE_BAND_COPY[band]}
-      </Text>
+      {showBand && (
+        <Text style={[chip, BAND_CHIP_STYLE[band]]}>
+          {MON_LEXIQUE_BAND_COPY[band]}
+        </Text>
+      )}
     </View>
   );
 }
 
+// Flat rows on the page rather than a stack of bordered cards: at Lexique
+// density a border per word turns the column into a grid, and the French stops
+// being the thing you see. The surface holds the words; hairlines separate
+// them.
 const row: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
   gap: 12,
-  borderRadius: 12,
-  borderWidth: 1,
-  borderColor: P.border,
-  backgroundColor: P.paper,
-  paddingHorizontal: 14,
-  paddingVertical: 10,
+  paddingVertical: 12,
 };
-const textCol: ViewStyle = { flex: 1, gap: 2 };
+const dividedRow: ViewStyle = {
+  borderTopWidth: 1,
+  borderTopColor: P.border,
+};
+const textCol: ViewStyle = { flex: 1, gap: 3 };
 const fr: TextStyle = {
   color: P.ink,
-  fontSize: 17,
-  lineHeight: 23,
+  fontSize: 18,
+  lineHeight: 26,
   fontFamily: "Newsreader",
 };
 const en: TextStyle = {
   color: P.ink2,
   fontSize: 13,
-  lineHeight: 18,
+  lineHeight: 19,
   fontFamily: "Outfit",
 };
 const chip: TextStyle = {

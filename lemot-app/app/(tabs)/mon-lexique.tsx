@@ -11,8 +11,17 @@
  * Read-only by construction: no search, no filters, no sorting controls, no
  * edit/delete, no manual word addition, no notes, no learner-authored examples,
  * no Word Graph, no Daily Review, no practice actions, no pronunciation
- * controls. The entry card renders one calm band; ordering comes from the
- * selector's persisted-timestamp rules.
+ * controls.
+ *
+ * Entries are GROUPED under their band, strongest claim first, through the
+ * order the pure copy module already publishes. The grouping is display only:
+ * each group is a `filter` over the selector's own output, so ordering inside a
+ * band still comes from the selector's persisted-timestamp rules and no second
+ * ordering rule, comparator or clock exists here. A band with no entries simply
+ * does not appear.
+ *
+ * The band is stated once per word — by the group heading here, so the row
+ * itself suppresses the chip it shows when it is listed ungrouped elsewhere.
  *
  * The ONE clock read: `Date.now()` at the load boundary, mirroring the Practice
  * route. It feeds display only — the pure band mapper suppresses "Worth another
@@ -40,9 +49,13 @@ import {
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import { MonLexiqueEntryCard } from "@/components/learning-engine/MonLexiqueEntryCard";
 import {
+  MON_LEXIQUE_BANDS,
+  MON_LEXIQUE_BAND_COPY,
   resolveMonLexiqueBand,
   type MonLexiqueBand,
 } from "@/components/learning-engine/monLexiqueCopy";
+import { SurfaceHeader, QuietState } from "@/components/ui/StandingSurface";
+import { SPACE } from "@/constants/theme";
 
 type BandedEntry = { entry: MonLexiqueEntry; band: MonLexiqueBand };
 
@@ -90,90 +103,89 @@ export default function MonLexiqueRoute() {
 
   return (
     <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: P.bg }}>
-      <View
-        style={{
-          paddingHorizontal: 16,
-          paddingTop: 12,
-          paddingBottom: 14,
-          borderBottomWidth: 1,
-          borderBottomColor: P.border,
-          gap: 4,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
-          }}
-        >
-          <Text
-            className="text-lg"
-            style={{
-              color: P.ink,
-              fontFamily: "serif",
-              fontStyle: "italic",
-              flexShrink: 1,
-            }}
-          >
-            Mon Lexique
-          </Text>
-          {/* The learning summary is a header action here, never a fourth tab.
-              Typed-route casts are the narrow bridge the house rules allow for
-              routes whose types Metro has not regenerated yet. */}
+      <SurfaceHeader
+        title="Mon Lexique"
+        subtitle="French that has started to stay with you."
+        trailing={
+          // The learning summary is a header action here, never a fourth tab.
+          // Typed-route casts are the narrow bridge the house rules allow for
+          // routes whose types Metro has not regenerated yet.
           <Pressable
             onPress={() => router.push("/learning-stats" as never)}
-            hitSlop={8}
+            hitSlop={12}
             accessibilityRole="button"
             style={{
               borderRadius: 999,
               borderWidth: 1,
               borderColor: P.border,
-              paddingHorizontal: 12,
-              paddingVertical: 6,
+              paddingHorizontal: 14,
+              paddingVertical: 8,
               flexShrink: 0,
             }}
           >
-            <Text className="text-xs" style={{ color: P.ink2 }}>
-              Learning summary
-            </Text>
+            <Text style={{ color: P.ink2, fontSize: 12 }}>Learning summary</Text>
           </Pressable>
-        </View>
-        <Text className="text-sm" style={{ color: P.ink3 }}>
-          French that has started to stay with you.
-        </Text>
-      </View>
+        }
+      />
 
       {state.phase === "loading" && (
-        <View style={{ padding: 20 }}>
-          <Text className="text-sm" style={{ color: P.ink3 }}>
-            Gathering what you’ve used…
-          </Text>
-        </View>
+        <QuietState tone="waiting" text={"Gathering what you’ve used…"} />
       )}
 
       {state.phase === "error" && (
-        <View style={{ padding: 20 }}>
-          <Text className="text-sm" style={{ color: P.ink2 }}>
-            Mon Lexique is resting for a moment. Come back shortly.
-          </Text>
-        </View>
+        <QuietState text="Mon Lexique is resting for a moment. Come back shortly." />
       )}
 
       {state.phase === "ready" && state.entries.length === 0 && (
-        <View style={{ padding: 20 }}>
-          <Text className="text-sm" style={{ color: P.ink2 }}>
-            {"Your words will appear here as you use them. Start anywhere on your path."}
-          </Text>
-        </View>
+        <QuietState
+          text={
+            "Your words will appear here as you use them. Start anywhere on your path."
+          }
+        />
       )}
 
       {state.phase === "ready" && state.entries.length > 0 && (
-        <ScrollView contentContainerStyle={{ padding: 20, gap: 8 }}>
-          {state.entries.map(({ entry, band }) => (
-            <MonLexiqueEntryCard key={entry.itemId} entry={entry} band={band} />
-          ))}
+        <ScrollView
+          contentContainerStyle={{
+            paddingHorizontal: SPACE.xl,
+            paddingTop: SPACE.lg,
+            paddingBottom: SPACE.xxl,
+          }}
+        >
+          {MON_LEXIQUE_BANDS.map((band) => {
+            // Grouping is display only. `filter` keeps the selector's own
+            // order inside each band, and the bands run strongest-claim-first
+            // through the order the pure copy module already publishes, so the
+            // learner can glance once and see what is settled and what is
+            // still moving. No sorting, no clock, no second ordering rule.
+            const inBand = state.entries.filter((e) => e.band === band);
+            if (inBand.length === 0) return null;
+            return (
+              <View key={band} style={{ marginBottom: SPACE.xxl }}>
+                <Text
+                  style={{
+                    color: P.ink3,
+                    fontSize: 12,
+                    letterSpacing: 0.4,
+                    marginBottom: SPACE.sm,
+                  }}
+                >
+                  {MON_LEXIQUE_BAND_COPY[band]}
+                </Text>
+                {inBand.map(({ entry }, i) => (
+                  // The group heading already names the band, so the row does
+                  // not repeat it: one band statement per word, as before.
+                  <MonLexiqueEntryCard
+                    key={entry.itemId}
+                    entry={entry}
+                    band={band}
+                    showBand={false}
+                    divided={i > 0}
+                  />
+                ))}
+              </View>
+            );
+          })}
         </ScrollView>
       )}
     </SafeAreaView>

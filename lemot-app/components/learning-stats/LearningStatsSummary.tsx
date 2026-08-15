@@ -41,8 +41,14 @@ export function LearningStatsSummary({
         <Text style={sectionTitle}>{c.sectionTitle}</Text>
         <Text style={sectionSubtitle}>{c.sectionSubtitle}</Text>
       </View>
-      <View style={card}>
-        <Row label={c.yours} value={stats.independentPieces} />
+      {/*
+        The same four band words Mon Lexique groups by, in the same order, as
+        quiet hairline rows rather than a boxed panel. Reading the same
+        vocabulary in the same shape is what makes this a mirror of Mon Lexique
+        instead of a second place where progress gets reported.
+      */}
+      <View style={rows}>
+        <Row label={c.yours} value={stats.independentPieces} first />
         <Row label={c.becomingYours} value={stats.supportedPieces} />
         <Row label={c.metThis} value={stats.recognitionPieces} />
         <Row label={c.worthAnotherLook} value={stats.readyToRevisitPieces} />
@@ -51,53 +57,58 @@ export function LearningStatsSummary({
   );
 }
 
-function Row({ label, value }: { label: string; value: number }) {
+function Row({
+  label,
+  value,
+  first = false,
+}: {
+  label: string;
+  value: number;
+  first?: boolean;
+}) {
   return (
-    <View style={row}>
+    <View style={[row, first ? null : dividedRow]}>
       <Text style={rowLabel}>{label}</Text>
       <Text style={rowValue}>{value}</Text>
     </View>
   );
 }
 
-const page: ViewStyle = { gap: 12 };
-const heading: ViewStyle = { gap: 4 };
+const page: ViewStyle = { gap: 20 };
+const heading: ViewStyle = { gap: 6 };
 const sectionTitle: TextStyle = {
   color: P.ink,
-  fontSize: 18,
-  lineHeight: 24,
+  fontSize: 21,
+  lineHeight: 29,
   fontFamily: "Newsreader",
 };
 const sectionSubtitle: TextStyle = {
   color: P.ink3,
   fontSize: 13,
-  lineHeight: 18,
+  lineHeight: 19,
   fontFamily: "Outfit",
 };
-const card: ViewStyle = {
-  borderRadius: 12,
-  borderWidth: 1,
-  borderColor: P.border,
-  backgroundColor: P.paper,
-  paddingHorizontal: 14,
-  paddingVertical: 4,
-};
+const rows: ViewStyle = {};
 const row: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
-  paddingVertical: 8,
+  paddingVertical: 14,
+};
+const dividedRow: ViewStyle = {
+  borderTopWidth: 1,
+  borderTopColor: P.border,
 };
 const rowLabel: TextStyle = {
   color: P.ink2,
-  fontSize: 14,
-  lineHeight: 19,
+  fontSize: 15,
+  lineHeight: 21,
   fontFamily: "Outfit",
   flexShrink: 1,
 };
 const rowValue: TextStyle = {
   color: P.ink,
-  fontSize: 16,
-  fontFamily: "Outfit",
+  fontSize: 17,
+  fontFamily: "Newsreader",
   marginLeft: 12,
 };

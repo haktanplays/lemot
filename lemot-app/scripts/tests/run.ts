@@ -83,6 +83,7 @@ import "./l7l10Progression.test";
 import "./globalLessonConsistency.test";
 import "./navigationStandingSurfaces.test";
 import "./expressionRevealSurfaces.test";
+import "./standingSurfacePresentation.test";
 import { runAll } from "./harness";
 
 void runAll();

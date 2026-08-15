@@ -18,7 +18,7 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { View, Text, Pressable } from "react-native";
-import { P } from "@/constants/theme";
+import { P, SPACE } from "@/constants/theme";
 import type {
   EventSurfaceResolver,
   LearningSessionController,
@@ -158,13 +158,18 @@ export function PracticeHubPractice({
 
   return (
     <View style={{ flex: 1 }}>
+      {/* A thin band above the reused screen, matching the standing surfaces'
+          spacing. Deliberately minimal: the exercise below is the shipped
+          lesson screen, and wrapping it in Practice-specific chrome would make
+          it read as a different, lesser thing than the one the learner met. */}
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingHorizontal: 16,
-          paddingVertical: 10,
+          gap: SPACE.md,
+          paddingHorizontal: SPACE.xl,
+          paddingVertical: SPACE.md,
           borderBottomWidth: 1,
           borderBottomColor: P.border,
         }}
@@ -173,20 +178,21 @@ export function PracticeHubPractice({
           style={{
             color: P.ink3,
             fontSize: 12,
-            letterSpacing: 0.3,
+            letterSpacing: 0.4,
           }}
         >
           Practice this piece
         </Text>
         <Pressable
           onPress={requestSettledClose}
-          hitSlop={8}
+          hitSlop={12}
+          accessibilityRole="button"
           style={{
             borderRadius: 999,
             borderWidth: 1,
             borderColor: P.border,
             paddingHorizontal: 14,
-            paddingVertical: 6,
+            paddingVertical: 8,
           }}
         >
           <Text style={{ color: P.ink2, fontSize: 13 }}>Close</Text>

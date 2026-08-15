@@ -23,7 +23,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { P } from "@/constants/theme";
+import { P, SPACE } from "@/constants/theme";
+import { SurfaceHeader, QuietState } from "@/components/ui/StandingSurface";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import { V1_LESSONS } from "@/content/lessons/v1";
 import {
@@ -100,84 +101,88 @@ export default function PracticeRoute() {
         <PracticeHubPractice source={active.source} onClose={closePractice} />
       ) : (
         <View style={{ flex: 1 }}>
-          <View
-            style={{
-              paddingHorizontal: 16,
-              paddingTop: 12,
-              paddingBottom: 14,
-              borderBottomWidth: 1,
-              borderBottomColor: P.border,
-              gap: 4,
-            }}
-          >
-            <Text
-              className="text-lg"
-              style={{
-                color: P.ink,
-                fontFamily: "serif",
-                fontStyle: "italic",
-              }}
-            >
-              Practice
-            </Text>
-            <Text className="text-sm" style={{ color: P.ink3 }}>
-              French you have used, coming back once more.
-            </Text>
-          </View>
+          <SurfaceHeader
+            title="Practice"
+            subtitle="French you have used, coming back once more."
+          />
 
           {state.phase === "loading" && (
-            <View style={{ padding: 20 }}>
-              <Text className="text-sm" style={{ color: P.ink3 }}>
-                Looking at what you’ve used…
-              </Text>
-            </View>
+            <QuietState tone="waiting" text={"Looking at what you’ve used…"} />
           )}
 
           {state.phase === "error" && (
-            <View style={{ padding: 20 }}>
-              <Text className="text-sm" style={{ color: P.ink2 }}>
-                Practice is resting for a moment. Come back shortly.
-              </Text>
-            </View>
+            <QuietState text="Practice is resting for a moment. Come back shortly." />
           )}
 
           {state.phase === "ready" && state.set.entries.length === 0 && (
-            <View style={{ padding: 20 }}>
-              <Text className="text-sm" style={{ color: P.ink2 }}>
-                {"Nothing needs your attention right now. Pieces return here after you use them in a lesson."}
-              </Text>
-            </View>
+            <QuietState
+              text={
+                "Nothing needs your attention right now. Pieces return here after you use them in a lesson."
+              }
+            />
           )}
 
           {state.phase === "ready" && state.set.entries.length > 0 && (
-            <ScrollView contentContainerStyle={{ padding: 20, gap: 10 }}>
-              {state.set.entries.map((entry) => (
+            <ScrollView
+              contentContainerStyle={{
+                paddingHorizontal: SPACE.xl,
+                paddingTop: SPACE.lg,
+                paddingBottom: SPACE.xxl,
+              }}
+            >
+              {state.set.entries.map((entry, i) => (
                 <Pressable
                   key={entry.itemId}
                   onPress={() => setActive(entry)}
-                  className="rounded-xl border"
+                  accessibilityRole="button"
                   style={{
-                    backgroundColor: P.paper,
-                    borderColor: P.border,
-                    padding: 16,
+                    paddingVertical: SPACE.lg,
+                    borderTopWidth: i === 0 ? 0 : 1,
+                    borderTopColor: P.border,
                   }}
                 >
+                  {/*
+                    The piece itself leads, in the serif it wears everywhere
+                    else, so the row reads as material returning rather than as
+                    a task assigned. The entries used to be identical bordered
+                    cards of equal loudness, which gave the set more weight than
+                    the French inside it; hairlines and rhythm carry it instead.
+                  */}
                   <Text
-                    className="text-base"
                     style={{
                       color: P.ink,
                       fontFamily: "serif",
                       fontStyle: "italic",
+                      fontSize: 19,
+                      lineHeight: 27,
                     }}
                   >
                     {entry.fr}
                   </Text>
-                  <Text className="text-sm mt-1" style={{ color: P.ink2 }}>
+                  <Text
+                    style={{
+                      color: P.ink2,
+                      fontSize: 14,
+                      lineHeight: 21,
+                      marginTop: 2,
+                    }}
+                  >
                     {entry.en}
                   </Text>
-                  {/* The authored scene from the original screen, by reference —
-                      never the reducer's path or due flag. */}
-                  <Text className="text-xs mt-2" style={{ color: P.ink3 }}>
+                  {/*
+                    The authored scene from the original screen, by reference.
+                    Never the reducer's path, its return reason or its due flag:
+                    those are the tier wearing a sentence, and the learner does
+                    not have a tier.
+                  */}
+                  <Text
+                    style={{
+                      color: P.ink3,
+                      fontSize: 13,
+                      lineHeight: 20,
+                      marginTop: SPACE.sm,
+                    }}
+                  >
                     {practiceCardLine(entry.source)}
                   </Text>
                 </Pressable>

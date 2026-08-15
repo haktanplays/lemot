@@ -28,7 +28,8 @@ import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
-import { P } from "@/constants/theme";
+import { P, SPACE } from "@/constants/theme";
+import { SurfaceHeader, QuietState } from "@/components/ui/StandingSurface";
 import type { LearningStatsProjection } from "@/content/learning-engine/learning-stats";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import {
@@ -86,61 +87,43 @@ export default function LearningStatsRoute() {
 
   return (
     <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: P.bg }}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 8,
-          paddingHorizontal: 16,
-          paddingTop: 12,
-          paddingBottom: 14,
-          borderBottomWidth: 1,
-          borderBottomColor: P.border,
-        }}
-      >
-        <Pressable
-          onPress={goBack}
-          hitSlop={10}
-          accessibilityRole="button"
-          accessibilityLabel="Go back"
-          style={{ padding: 4 }}
-        >
-          <ChevronLeft size={22} color={P.ink2} />
-        </Pressable>
-        <Text
-          className="text-lg"
-          style={{ color: P.ink, fontFamily: "serif", fontStyle: "italic" }}
-        >
-          {LEARNING_STATS_COPY.title}
-        </Text>
-      </View>
+      {/* The back affordance is the visible half of this surface's relationship
+          to Mon Lexique: the summary opens over it and always returns there. */}
+      <SurfaceHeader
+        title={LEARNING_STATS_COPY.title}
+        leading={
+          <Pressable
+            onPress={goBack}
+            hitSlop={12}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            style={{ padding: SPACE.xs }}
+          >
+            <ChevronLeft size={22} color={P.ink2} />
+          </Pressable>
+        }
+      />
 
       {state.phase === "loading" && (
-        <View style={{ padding: 20 }}>
-          <Text className="text-sm" style={{ color: P.ink3 }}>
-            Gathering your summary…
-          </Text>
-        </View>
+        <QuietState tone="waiting" text={"Gathering your summary…"} />
       )}
 
       {state.phase === "error" && (
-        <View style={{ padding: 20 }}>
-          <Text className="text-sm" style={{ color: P.ink2 }}>
-            {LEARNING_STATS_COPY.error}
-          </Text>
-        </View>
+        <QuietState text={LEARNING_STATS_COPY.error} />
       )}
 
       {state.phase === "ready" && !showSummary && (
-        <View style={{ padding: 20 }}>
-          <Text className="text-sm" style={{ color: P.ink2 }}>
-            {LEARNING_STATS_COPY.empty}
-          </Text>
-        </View>
+        <QuietState text={LEARNING_STATS_COPY.empty} />
       )}
 
       {state.phase === "ready" && showSummary && (
-        <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingHorizontal: SPACE.xl,
+            paddingTop: SPACE.xl,
+            paddingBottom: SPACE.xxl,
+          }}
+        >
           <LearningStatsSummary stats={state.stats} />
         </ScrollView>
       )}
