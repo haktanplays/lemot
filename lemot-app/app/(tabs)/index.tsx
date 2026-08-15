@@ -131,13 +131,12 @@ export default function HomeScreen() {
     m.ids.every((id) => lp(id) === SECS.length)
   );
 
-  // Journey image — based on highest completed lesson
-  const highestLesson = LESSONS.reduce(
-    (max, l) => (lp(l.id) > 0 && l.id > max ? l.id : max),
-    0
-  );
-  const journeyPhase = getJourneyPhase(highestLesson);
-  const journeyImage = getJourneyImage(highestLesson);
+  // Journey image / phase — driven by the actual v1 path position, computed
+  // below from v1PathState (the highest completed v1 lesson NUMBER). The image
+  // no longer depends on the legacy LESSONS list, which stayed phase-0 for a v1
+  // learner and made the hero misrepresent progress. Phases 1-4 already span
+  // L1-L24 in A1, so this reuses existing art and existing phase data with the
+  // correct source — no new stage mapping and no new image is introduced.
 
   // Daily quote
   const quote = MOTIV[Math.floor(Date.now() / 86400000) % MOTIV.length];
@@ -185,6 +184,28 @@ export default function HomeScreen() {
     v1PathState.find(({ done, available }) => !available && !done)?.lesson.id ??
     null;
 
+  // Presentation tiers over the SAME linear-unlock state — no new progression
+  // logic. The next step is the one dominant anchor; everything else is quiet.
+  const nextState = v1PathState.find(({ lesson }) => lesson.id === nextLessonId);
+  const crossedStates = v1PathState.filter(({ done }) => done);
+  // Ahead = everything not done and not the anchor. A row that is `available`
+  // here is the rare seeded-gap case (a later lesson finished out of order): it
+  // stays tappable and is NOT labelled "Not yet", so the label matches real
+  // availability. Truly locked rows stay dimmed and disabled.
+  const aheadStates = v1PathState.filter(
+    ({ lesson, done }) => !done && lesson.id !== nextLessonId,
+  );
+  const allComplete = showV1Path && v1PathState.length > 0 && nextState === undefined && aheadStates.length === 0;
+
+  // The hero reflects the highest completed v1 lesson number (0 when fresh),
+  // feeding the existing phase/image helpers with the correct source.
+  const highestV1Done = crossedStates.reduce(
+    (max, { lesson }) => (lesson.number > max ? lesson.number : max),
+    0,
+  );
+  const journeyPhase = getJourneyPhase(highestV1Done);
+  const journeyImage = getJourneyImage(highestV1Done);
+
   const greeting = getHomeGreeting();
 
   return (
@@ -195,7 +216,9 @@ export default function HomeScreen() {
           <View>
             <Text className="text-base font-bold text-lm-ink">{greeting}</Text>
             <Text className="text-xs text-lm-ink3">
-              Your next step is ready.
+              {allComplete
+                ? "You have walked the whole path for now."
+                : "Your next step is ready."}
             </Text>
           </View>
           {/* Sign In / Account entry only renders when Supabase is configured.
@@ -357,66 +380,184 @@ export default function HomeScreen() {
           );
         })}
 
-        {/* The Journey path (L1-L24) — the full authored lesson surface.
-            Surfaced in sandbox (internal comparison) and dev-apk (tester
-            wave); public-beta keeps it hidden. Linear unlock; exactly one row
-            is presented as the recommended next step, completed lessons stay
-            open for replay, locked ones stay quiet. No reward / unlock
-            ceremony language. */}
+        {/* The Journey path (L1-L24) — the full authored lesson surface, shaped
+            as a calm path rather than 24 equal-weight rows. One dominant next
+            step anchors the screen; the road ahead and the ground already
+            walked stay quiet and compact but every lesson remains reachable.
+            Surfaced in sandbox (internal comparison) and dev-apk (tester wave);
+            public-beta keeps it hidden. No reward / unlock ceremony language. */}
         {showV1Path && v1PathState.length > 0 && (
           <View className="mt-2 mb-3">
-            <Text className="text-lg font-bold text-lm-ink mb-3">
-              Your path
-            </Text>
-            {v1PathState.map(({ lesson, done, available }) => {
-              const locked = !available && !done;
-              // Under the linear unlock exactly one row can be open-and-unfinished,
-              // so "Start" appears at most once: one recommended step, never two.
-              const isNext = lesson.id === nextLessonId;
-              const stateLabel = done ? "Done" : isNext ? "Start" : "Not yet";
-              const stateColor = done ? P.green : isNext ? P.red : P.ink3;
-              return (
+            {/* WHAT DO I DO NEXT — the single dominant focal element, derived
+                from the same lesson the linear logic already flags as next. */}
+            {nextState && (
+              <View className="mb-6">
+                <Text
+                  className="text-xs mb-2"
+                  style={{ color: P.ink3, letterSpacing: 0.4 }}
+                >
+                  Your next step
+                </Text>
                 <Pressable
-                  key={lesson.id}
-                  disabled={locked}
                   onPress={() =>
-                    router.push(`/v1-lesson/${lesson.id}` as never)
+                    router.push(`/v1-lesson/${nextState.lesson.id}` as never)
                   }
-                  className="bg-lm-paper rounded-xl p-4 border mb-2"
+                  className="bg-lm-paper rounded-2xl border"
                   style={{
-                    borderColor: isNext ? P.red + "55" : P.border,
-                    borderWidth: isNext ? 1.5 : 1,
-                    opacity: locked ? 0.55 : 1,
+                    borderColor: P.red + "55",
+                    borderWidth: 1.5,
+                    padding: 18,
                   }}
                 >
-                  <View className="flex-row items-center justify-between gap-3">
+                  <Text
+                    className="text-lg"
+                    style={{
+                      color: P.ink,
+                      fontFamily: "serif",
+                      fontStyle: "italic",
+                      lineHeight: 26,
+                    }}
+                  >
+                    {nextState.lesson.title}
+                  </Text>
+                  <Text
+                    className="text-sm mt-1.5"
+                    style={{ color: P.ink2, lineHeight: 20 }}
+                  >
+                    {nextState.lesson.canDo}
+                  </Text>
+                  <View
+                    className="rounded-xl items-center mt-4"
+                    style={{ backgroundColor: P.red, paddingVertical: 12 }}
+                  >
                     <Text
-                      className="text-sm font-semibold flex-1"
-                      style={{ color: P.ink }}
+                      style={{ color: P.paper, fontSize: 15, fontWeight: "600" }}
+                    >
+                      {crossedStates.length === 0 ? "Begin" : "Start"}
+                    </Text>
+                  </View>
+                </Pressable>
+              </View>
+            )}
+
+            {/* WHERE THE PATH IS COMPLETE — a passive reflection, no ceremony,
+                no fake next lesson, no L25. Every lesson stays below for replay. */}
+            {allComplete && (
+              <View
+                className="mb-6 rounded-2xl border"
+                style={{ backgroundColor: P.paper, borderColor: P.border, padding: 18 }}
+              >
+                <Text
+                  className="text-lg"
+                  style={{
+                    color: P.ink,
+                    fontFamily: "serif",
+                    fontStyle: "italic",
+                    lineHeight: 26,
+                  }}
+                >
+                  You have walked the whole path.
+                </Text>
+                <Text
+                  className="text-sm mt-1.5"
+                  style={{ color: P.ink2, lineHeight: 20 }}
+                >
+                  Every moment is still here. Return to any of it whenever you like.
+                </Text>
+              </View>
+            )}
+
+            {/* THE ROAD AHEAD — restrained. The path clearly continues, order
+                stays legible, locked rows cannot open, but future work does not
+                demand equal attention. Rendered compact and dimmed. */}
+            {aheadStates.length > 0 && (
+              <View className="mb-6">
+                <Text
+                  className="text-xs mb-2"
+                  style={{ color: P.ink3, letterSpacing: 0.4 }}
+                >
+                  The road ahead
+                </Text>
+                {aheadStates.map(({ lesson, done, available }) => {
+                  const locked = !available && !done;
+                  return (
+                    <Pressable
+                      key={lesson.id}
+                      disabled={locked}
+                      onPress={() =>
+                        router.push(`/v1-lesson/${lesson.id}` as never)
+                      }
+                      className="flex-row items-center justify-between border-b"
+                      style={{
+                        borderBottomColor: P.border,
+                        paddingVertical: 12,
+                        opacity: locked ? 0.5 : 1,
+                      }}
+                    >
+                      <View className="flex-1 pr-3">
+                        <Text
+                          className="text-sm"
+                          style={{ color: P.ink2 }}
+                          numberOfLines={1}
+                        >
+                          {lesson.title}
+                        </Text>
+                        {/* Said once, under the first locked row only. */}
+                        {lesson.id === firstLockedId && (
+                          <Text
+                            className="text-xs mt-0.5"
+                            style={{ color: P.ink3 }}
+                          >
+                            Opens when you finish the lesson before it.
+                          </Text>
+                        )}
+                      </View>
+                      <Text className="text-xs" style={{ color: P.ink3 }}>
+                        {locked ? "Not yet" : "Open"}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            )}
+
+            {/* WHAT HAVE I CROSSED — visible and replayable, but quiet. Compact
+                rows, not full cards, so history never competes with the next
+                step. Kept in authored order for a legible trail. */}
+            {crossedStates.length > 0 && (
+              <View>
+                <Text
+                  className="text-xs mb-2"
+                  style={{ color: P.ink3, letterSpacing: 0.4 }}
+                >
+                  Behind you
+                </Text>
+                {crossedStates.map(({ lesson }) => (
+                  <Pressable
+                    key={lesson.id}
+                    onPress={() =>
+                      router.push(`/v1-lesson/${lesson.id}` as never)
+                    }
+                    className="flex-row items-center justify-between border-b"
+                    style={{ borderBottomColor: P.border, paddingVertical: 12 }}
+                  >
+                    <Text
+                      className="text-sm flex-1 pr-3"
+                      style={{ color: P.ink2 }}
+                      numberOfLines={1}
                     >
                       {lesson.title}
                     </Text>
                     <Text
                       className="text-xs font-semibold"
-                      style={{ color: stateColor }}
+                      style={{ color: P.green }}
                     >
-                      {stateLabel}
+                      Done
                     </Text>
-                  </View>
-                  {!locked && (
-                    <Text className="text-xs mt-0.5" style={{ color: P.ink3 }}>
-                      {lesson.canDo}
-                    </Text>
-                  )}
-                  {/* Said once, under the first locked row only. */}
-                  {lesson.id === firstLockedId && (
-                    <Text className="text-xs mt-0.5" style={{ color: P.ink3 }}>
-                      Opens when you finish the lesson before it.
-                    </Text>
-                  )}
-                </Pressable>
-              );
-            })}
+                  </Pressable>
+                ))}
+              </View>
+            )}
           </View>
         )}
 

@@ -317,11 +317,22 @@ describe("Journey shows the full authored path L1-L24", () => {
   test("no internal id or route name reaches the Journey row", () => {
     const src = codeOf(journey());
     // `lesson.id` may be used as a React key and as a route argument, never as
-    // rendered text.
+    // rendered text. The number is an internal sequence id and stays unrendered.
     assert(!/>\s*\{lesson\.id\}/.test(src), "no raw lesson id is rendered");
-    assert(!src.includes("{lesson.number}"), "no internal number is rendered raw");
-    assert(src.includes("{lesson.title}"), "the row shows the authored title");
-    assert(src.includes("{lesson.canDo}"), "and the authored canDo line");
+    assert(!/>\s*\{nextState\.lesson\.id\}/.test(src), "no raw next-step id is rendered");
+    assert(!/\{[a-zA-Z.]*lesson\.number\}/.test(src), "no internal number is rendered raw");
+    // The path still surfaces the authored title (compact rows) and the
+    // authored canDo (the next-step anchor) — the same guarantee, now over the
+    // tiered layout's variables.
+    assert(src.includes("{lesson.title}"), "the rows show the authored title");
+    assert(
+      src.includes("{nextState.lesson.title}"),
+      "the next-step anchor shows the authored title",
+    );
+    assert(
+      src.includes("{nextState.lesson.canDo}"),
+      "the next-step anchor shows the authored canDo line",
+    );
   });
 });
 
