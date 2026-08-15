@@ -269,43 +269,70 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
   }
   const openProjection = gate.current.requestSettledNavigation;
 
+  // Milestone lessons read their role from the metadata the content already
+  // declares. Nothing is derived from the number, the title or the screen mix,
+  // and the role changes presentation only: same view, same actions, same
+  // settlement. Currently L20 and L24 carry it.
+  const isMilestone = lesson.journeyRole === "milestone";
+
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: P.bg,
-        padding: 20,
+        paddingHorizontal: SPACE.xl,
+        paddingVertical: SPACE.xxl,
         justifyContent: "center",
       }}
     >
-      <View
-        className="rounded-xl border"
+      {/* A quiet landing rather than a card on a page. The closing line is the
+          only thing with weight, whitespace does the rest, and the two actions
+          sit well below it so the screen ends calmly. No badge, no tally, no
+          celebration: finishing is acknowledged, never rewarded. */}
+      {isMilestone && (
+        <View
+          style={{
+            height: 1,
+            width: 48,
+            backgroundColor: P.ink3,
+            marginBottom: SPACE.xl,
+          }}
+        />
+      )}
+      <Text
         style={{
-          backgroundColor: P.paper,
-          borderColor: P.border,
-          padding: 20,
+          color: P.ink,
+          fontFamily: "serif",
+          fontStyle: "italic",
+          fontSize: isMilestone ? 26 : 22,
+          lineHeight: isMilestone ? 36 : 31,
         }}
       >
-        <Text className="text-base mb-2" style={{ color: P.ink }}>
-          {`You reached the end of Lesson ${lesson.number}.`}
-        </Text>
-        <Text className="text-sm" style={{ color: P.ink2 }}>
-          A small French shape is now familiar.
-        </Text>
-        <View style={{ marginTop: SPACE.lg }}>
-          <PrimaryAction label="Back to Home" onPress={exitToPrevious} />
-        </View>
-        {/* The one secondary shortcut. Typed-route casts are the narrow bridge
-            the house rules allow for routes Metro has not regenerated types
-            for yet. */}
-        <View style={{ marginTop: SPACE.sm }}>
-          <LinkAction
-            label="Open Mon Lexique"
-            onPress={() =>
-              openProjection(() => router.push("/mon-lexique" as never))
-            }
-          />
-        </View>
+        {`You reached the end of Lesson ${lesson.number}.`}
+      </Text>
+      <Text
+        style={{
+          color: P.ink2,
+          fontSize: 15,
+          lineHeight: 23,
+          marginTop: SPACE.md,
+        }}
+      >
+        A small French shape is now familiar.
+      </Text>
+      <View style={{ marginTop: isMilestone ? 44 : 36 }}>
+        <PrimaryAction label="Back to Home" onPress={exitToPrevious} />
+      </View>
+      {/* The one secondary shortcut. Typed-route casts are the narrow bridge
+          the house rules allow for routes Metro has not regenerated types
+          for yet. */}
+      <View style={{ marginTop: SPACE.sm }}>
+        <LinkAction
+          label="Open Mon Lexique"
+          onPress={() =>
+            openProjection(() => router.push("/mon-lexique" as never))
+          }
+        />
       </View>
     </View>
   );

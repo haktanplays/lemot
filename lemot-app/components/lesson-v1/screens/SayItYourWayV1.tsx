@@ -2,7 +2,9 @@ import { useRef, useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction, QuietAction, LinkAction } from "@/components/ui/actions";
-import { P } from "@/constants/theme";
+import { PieceChip } from "@/components/ui/PieceChip";
+import { SceneCard } from "@/components/ui/SceneCard";
+import { P, RADIUS, SPACE } from "@/constants/theme";
 import { FEATURES } from "@/config/productStage";
 import { evaluateSayIt } from "@/lib/ai";
 import type { SayItYourWayScreen } from "@/content/lessonTypes";
@@ -48,6 +50,9 @@ export function SayItYourWayV1({
   // grades, never blocks (beyond empty input), and never shows the answer early.
   const [phase, setPhase] = useState<"input" | "confirm" | "revealed">("input");
   const [ai, setAi] = useState<AiState>({ status: "idle" });
+  // Presentation only: a warm focus accent so the expression surface feels
+  // owned, matching the working surface in Weave. Touches no input behaviour.
+  const [focused, setFocused] = useState(false);
   // Support, not assembly: suggested pieces stay hidden until the learner opts in
   // via "Need a hint?", so the initial screen does not read as guided assembly.
   const [showPieces, setShowPieces] = useState(false);
@@ -134,38 +139,56 @@ export function SayItYourWayV1({
         )
       }
     >
-      <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+      <Text
+        style={{
+          color: P.ink3,
+          fontSize: 12,
+          letterSpacing: 0.4,
+          marginBottom: SPACE.md,
+        }}
+      >
         Say It Your Way
       </Text>
 
-      <View
-        className="rounded-xl border"
-        style={{
-          backgroundColor: P.paper,
-          borderColor: P.border,
-          padding: 16,
-        }}
-      >
-        <Text className="text-sm mb-2" style={{ color: P.ink }}>
-          {payload.situation}
-        </Text>
+      {/* SCENE. The situation used to share one flat card with the goal, which
+          made the moment and the task read as a single block of instructions.
+          It is now a staged scene the learner steps into, quiet and editorial,
+          and it steps aside once the comparison is on screen. */}
+      {!isRevealed && <SceneCard text={payload.situation} />}
+
+      {/* EXPRESSION. What do I want to say? This is the hero of the input
+          state: it was previously the smallest, faintest text on the screen.
+          In the result state it recedes to a quiet reference so the natural
+          French below becomes the strongest surface. */}
+      {isRevealed ? (
         <Text
-          className="text-sm"
           style={{
             color: P.ink2,
-            fontStyle: "italic",
-            lineHeight: 20,
+            fontSize: 15,
+            lineHeight: 22,
           }}
         >
           {payload.communicativeGoal}
         </Text>
-      </View>
+      ) : (
+        <Text
+          style={{
+            color: P.ink,
+            fontSize: 20,
+            fontWeight: "600",
+            lineHeight: 28,
+            marginTop: SPACE.lg,
+          }}
+        >
+          {payload.communicativeGoal}
+        </Text>
+      )}
 
       {payload.suggestedPieces &&
         payload.suggestedPieces.length > 0 &&
         !showPieces &&
         isInput && (
-          <View className="mt-3">
+          <View style={{ marginTop: SPACE.md }}>
             <LinkAction
               label="Need a hint?"
               align="left"
@@ -174,155 +197,110 @@ export function SayItYourWayV1({
           </View>
         )}
 
+      {/* Support the learner asked for. Same PieceChip as Weave: these are the
+          same kind of thing, small pieces of French within reach. The old
+          red-tinted pills read as validation colour on a screen that grades
+          nothing. */}
       {payload.suggestedPieces &&
         payload.suggestedPieces.length > 0 &&
-        showPieces && (
-          <View className="mt-3">
-            <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+        showPieces &&
+        !isRevealed && (
+          <View style={{ marginTop: SPACE.lg }}>
+            <Text
+              style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.sm }}
+            >
               Ideas you can use.
             </Text>
-            <View className="flex-row flex-wrap gap-2">
+            <View
+              style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}
+            >
               {payload.suggestedPieces.map((p, i) => (
-                <View
-                  key={`${p.text}-${i}`}
-                  className="rounded-full"
-                  style={{
-                    backgroundColor: P.rl,
-                    borderWidth: 1,
-                    borderColor: P.rb,
-                    paddingHorizontal: 10,
-                    paddingVertical: 4,
-                  }}
-                >
-                  <Text className="text-xs" style={{ color: P.ink2 }}>
-                    {p.text}
-                  </Text>
-                </View>
+                <PieceChip key={`${p.text}-${i}`} text={p.text} />
               ))}
             </View>
           </View>
         )}
 
-      <View className="mt-4">
-        <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
-          Write your answer in French.
+      {/* THE EXPRESSION SURFACE. Say-It is free production, so it gets more
+          room and less scaffolding than Weave: a taller field, no piece rail,
+          no cloze ladder. Once the learner commits it becomes the words they
+          kept, held read-only and carried into the comparison rather than
+          re-printed underneath it. */}
+      <View style={{ marginTop: SPACE.xl }}>
+        <Text style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.sm }}>
+          {isInput ? "Write your answer in French." : "You wrote:"}
         </Text>
         <TextInput
           value={text}
           onChangeText={setText}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           editable={isInput}
           multiline
           autoCapitalize="sentences"
           autoCorrect={false}
           textAlignVertical="top"
           style={{
-            minHeight: 96,
-            backgroundColor: P.paper,
+            minHeight: isInput ? 120 : 0,
+            backgroundColor: isInput ? P.paper : P.bg,
             borderWidth: 1,
-            borderColor: P.border,
-            borderRadius: 12,
-            padding: 12,
-            color: P.ink,
-            fontSize: 15,
-            lineHeight: 22,
+            borderColor: focused && isInput ? P.red + "66" : P.border,
+            borderRadius: RADIUS.card,
+            padding: SPACE.md,
+            color: isInput ? P.ink : P.ink2,
+            fontSize: 16,
+            lineHeight: 24,
           }}
         />
       </View>
 
+      {/* CONFIRM. Writing is done, comparing has not started. One quiet
+          question, no surface of its own: this step must not read as handing
+          work to a judge. */}
       {isConfirm && (
-        <View className="mt-4">
-          <View
-            className="rounded-xl border"
-            style={{
-              backgroundColor: P.paper,
-              borderColor: P.border,
-              padding: 16,
-            }}
-          >
-            <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-              You wrote:
-            </Text>
-            <Text
-              className="text-sm mb-3"
-              style={{ color: P.ink, lineHeight: 22 }}
-            >
-              {text.trim()}
-            </Text>
-            <Text className="text-sm" style={{ color: P.ink2 }}>
-              Want to try once more, or keep this and compare?
-            </Text>
-          </View>
-        </View>
+        <Text
+          style={{
+            color: P.ink2,
+            fontSize: 14,
+            lineHeight: 21,
+            marginTop: SPACE.lg,
+          }}
+        >
+          Want to try once more, or keep this and compare?
+        </Text>
       )}
 
       {isRevealed && (
-        <View
-          className="rounded-xl border mt-4"
-          style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-xs" style={{ color: P.ink3 }}>
-            Your answer is saved for comparison.
-          </Text>
-        </View>
+        <Text style={{ color: P.ink3, fontSize: 12, marginTop: SPACE.sm }}>
+          Your answer is saved for comparison.
+        </Text>
       )}
 
       {isRevealed && ai.status === "loading" && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-xs" style={{ color: P.ink3 }}>
-            Looking at your answer…
-          </Text>
-        </View>
+        <Text style={{ color: P.ink3, fontSize: 12, marginTop: SPACE.lg }}>
+          Looking at your answer…
+        </Text>
       )}
 
       {isRevealed && ai.status === "done" && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.paper,
-            borderColor: P.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
+        <View style={{ marginTop: SPACE.lg }}>
+          <Text style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.xs }}>
             A note on your answer
           </Text>
-          <Text
-            className="text-sm"
-            style={{ color: P.ink2, lineHeight: 20 }}
-          >
+          <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
             {ai.feedback}
           </Text>
         </View>
       )}
 
       {isRevealed && !payload.modelAnswer && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-xs" style={{ color: P.ink3 }}>
-            Compare your answer with the suggested version when available.
-          </Text>
-        </View>
+        <Text style={{ color: P.ink3, fontSize: 12, marginTop: SPACE.lg }}>
+          Compare your answer with the suggested version when available.
+        </Text>
       )}
 
       {isRevealed && (
-        <View className="mt-3">
+        <View style={{ marginTop: SPACE.xl }}>
           <NaturalRevealView
             reveal={
               payload.modelAnswer && !payload.reveal.modelAnswer
@@ -334,15 +312,8 @@ export function SayItYourWayV1({
       )}
 
       {isRevealed && hasBands && bands && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+        <View style={{ marginTop: SPACE.lg }}>
+          <Text style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.xs }}>
             You may also see
           </Text>
           {bands.minimalAcceptable && bands.minimalAcceptable.length > 0 && (
@@ -363,17 +334,17 @@ export function SayItYourWayV1({
 
 function BandRow({ label, items }: { label: string; items: string[] }) {
   return (
-    <View style={{ marginTop: 4 }}>
-      <Text className="text-xs" style={{ color: P.ink3 }}>
-        {label}
-      </Text>
+    <View style={{ marginTop: SPACE.sm }}>
+      <Text style={{ color: P.ink3, fontSize: 12 }}>{label}</Text>
       {items.map((it, i) => (
         <Text
           key={`${label}-${i}`}
-          className="text-sm"
           style={{
             color: P.ink2,
+            fontFamily: "serif",
             fontStyle: "italic",
+            fontSize: 14,
+            lineHeight: 21,
             marginTop: 2,
           }}
         >

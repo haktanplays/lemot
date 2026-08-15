@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P } from "@/constants/theme";
+import { P, RADIUS, SPACE } from "@/constants/theme";
 import type {
   NaturalRevealPayload,
   NaturalRevealScreen,
@@ -59,27 +60,49 @@ export function NaturalRevealView({
       break;
   }
 
+  // Everything after the payoff is a quiet note. Rendering them tells us whether
+  // the hairline that separates payoff from commentary has anything to separate.
+  const hasNotes =
+    showCompareFallback ||
+    (showIfCorrect && !!reveal.ifCorrect) ||
+    notices.length > 0 ||
+    alternatives.length > 0 ||
+    !!reveal.explanation;
+
   return (
     <View>
+      {/* PRIMARY. The natural French is the payoff, so it is the one lifted
+          surface here and the largest text on the screen. Editorial and
+          confident, never an answer key: no verdict colour, no checkmark, no
+          "correct answer" label. */}
       {reveal.modelAnswer && (
         <View
-          className="rounded-xl border"
           style={{
             backgroundColor: P.paper,
+            borderWidth: 1,
             borderColor: P.border,
-            padding: 14,
+            borderRadius: RADIUS.card,
+            paddingHorizontal: SPACE.lg,
+            paddingVertical: SPACE.lg,
           }}
         >
-          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
+          <Text
+            style={{
+              color: P.ink3,
+              fontSize: 12,
+              letterSpacing: 0.4,
+              marginBottom: SPACE.sm,
+            }}
+          >
             A natural version
           </Text>
           <Text
-            className="text-base"
             style={{
               color: P.ink,
               fontFamily: "serif",
               fontStyle: "italic",
-              lineHeight: 24,
+              fontSize: 19,
+              lineHeight: 28,
             }}
           >
             {reveal.modelAnswer}
@@ -87,109 +110,119 @@ export function NaturalRevealView({
         </View>
       )}
 
-      {showCompareFallback && (
+      {/* One hairline, then flat quiet notes. The previous stack gave every
+          block an identical bordered box, so the payoff had to compete with its
+          own commentary; weight and whitespace carry the hierarchy instead. */}
+      {reveal.modelAnswer && hasNotes && (
         <View
-          className="rounded-xl border mt-3"
           style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
+            height: 1,
+            backgroundColor: P.border,
+            marginTop: SPACE.lg,
           }}
-        >
-          <Text className="text-sm" style={{ color: P.ink2 }}>
-            Compare your answer with the model.
-          </Text>
-        </View>
+        />
       )}
 
+      {showCompareFallback && (
+        <RevealNote>
+          <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
+            Compare your answer with the model.
+          </Text>
+        </RevealNote>
+      )}
+
+      {/* SECONDARY. A quiet positive signal, deliberately not a green success
+          box: the reveal is a comparison, not a verdict. In Weave the confirmed
+          FeedbackBand already sits above this, so a second coloured surface here
+          would double the same signal. */}
       {showIfCorrect && reveal.ifCorrect && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.gl,
-            borderColor: P.green,
-            padding: 12,
-          }}
-        >
-          <Text className="text-sm" style={{ color: P.green }}>
+        <RevealNote>
+          <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
             {reveal.ifCorrect}
           </Text>
-        </View>
+        </RevealNote>
       )}
 
       {notices.length > 0 && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-            Notice
-          </Text>
+        <RevealNote kicker="Notice">
           {notices.map((note, i) => (
             <Text
               key={i}
-              className="text-sm"
-              style={{ color: P.ink2, marginTop: i === 0 ? 0 : 4 }}
+              style={{
+                color: P.ink2,
+                fontSize: 14,
+                lineHeight: 21,
+                marginTop: i === 0 ? 0 : SPACE.xs,
+              }}
             >
               {note}
             </Text>
           ))}
-        </View>
+        </RevealNote>
       )}
 
+      {/* TERTIARY. Still French, still serif, but quieter ink and smaller than
+          the payoff so "another way" never competes with the natural version. */}
       {alternatives.length > 0 && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
-          }}
+        <RevealNote
+          kicker={alternatives.length === 1 ? "Another way" : "Other ways"}
         >
-          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-            {alternatives.length === 1 ? "Another way" : "Other ways"}
-          </Text>
           {alternatives.map((alt, i) => (
             <Text
               key={i}
-              className="text-sm"
               style={{
-                color: P.ink,
+                color: P.ink2,
                 fontFamily: "serif",
                 fontStyle: "italic",
-                marginTop: i === 0 ? 0 : 4,
+                fontSize: 15,
+                lineHeight: 23,
+                marginTop: i === 0 ? 0 : SPACE.xs,
               }}
             >
               {alt}
             </Text>
           ))}
-        </View>
+        </RevealNote>
       )}
 
       {reveal.explanation && (
-        <View
-          className="rounded-xl border mt-3"
-          style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-            Why it works
-          </Text>
-          <Text
-            className="text-sm"
-            style={{ color: P.ink2, lineHeight: 20 }}
-          >
+        <RevealNote kicker="Why it works">
+          <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
             {reveal.explanation}
           </Text>
-        </View>
+        </RevealNote>
       )}
+    </View>
+  );
+}
+
+/**
+ * One quiet note under the payoff: an optional kicker and its lines, flat on
+ * the page. Local to this file and immediately consumed by the blocks above —
+ * not a general content-block component.
+ */
+function RevealNote({
+  kicker,
+  children,
+}: {
+  kicker?: string;
+  children: ReactNode;
+}) {
+  return (
+    <View style={{ marginTop: SPACE.lg }}>
+      {kicker && (
+        <Text
+          style={{
+            color: P.ink3,
+            fontSize: 12,
+            letterSpacing: 0.4,
+            marginBottom: SPACE.xs,
+          }}
+        >
+          {kicker}
+        </Text>
+      )}
+      {children}
     </View>
   );
 }

@@ -1,7 +1,8 @@
 import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P } from "@/constants/theme";
+import { PieceChip } from "@/components/ui/PieceChip";
+import { P, SPACE } from "@/constants/theme";
 import type { RecapScreen } from "@/content/lessonTypes";
 
 export function RecapCard({
@@ -19,74 +20,69 @@ export function RecapCard({
     <LessonScreenFrame
       footer={<PrimaryAction label={buttonLabel} onPress={onContinue} />}
     >
-      <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+      {/* A calm mirror of what passed through the learner's hands. No box, no
+          tally, no checklist: a kicker, an editorial title, quiet lines, and
+          the pieces themselves laid out with room to breathe. The chips are the
+          same PieceChip the lesson used to hand them out, so seeing them again
+          reads as recognition rather than as a score. */}
+      <Text
+        style={{
+          color: P.ink3,
+          fontSize: 12,
+          letterSpacing: 0.4,
+          marginBottom: SPACE.sm,
+        }}
+      >
         A small recap
       </Text>
 
-      <View
-        className="rounded-xl border"
-        style={{
-          backgroundColor: P.paper,
-          borderColor: P.border,
-          padding: 16,
-        }}
-      >
-        {payload.title && (
-          <Text
-            className="text-base mb-2"
-            style={{
-              color: P.ink,
-              fontFamily: "serif",
-            }}
-          >
-            {payload.title}
-          </Text>
-        )}
-
-        {payload.lines.map((line, i) => (
-          <Text
-            key={i}
-            className="text-sm"
-            style={{
-              color: P.ink2,
-              lineHeight: 22,
-              marginTop: i === 0 ? 0 : 6,
-            }}
-          >
-            {line}
-          </Text>
-        ))}
-      </View>
-
-      {pieces.length > 0 && (
-        <View
-          className="rounded-xl border mt-3"
+      {payload.title && (
+        <Text
           style={{
-            backgroundColor: P.bg,
-            borderColor: P.border,
-            padding: 12,
+            color: P.ink,
+            fontFamily: "serif",
+            fontSize: 21,
+            lineHeight: 29,
+            marginBottom: SPACE.lg,
           }}
         >
-          <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+          {payload.title}
+        </Text>
+      )}
+
+      {payload.lines.map((line, i) => (
+        <Text
+          key={i}
+          style={{
+            color: P.ink2,
+            fontSize: 15,
+            lineHeight: 23,
+            marginTop: i === 0 ? 0 : SPACE.sm,
+          }}
+        >
+          {line}
+        </Text>
+      ))}
+
+      {pieces.length > 0 && (
+        <View style={{ marginTop: SPACE.xxl }}>
+          <View
+            style={{
+              height: 1,
+              backgroundColor: P.border,
+              marginBottom: SPACE.lg,
+            }}
+          />
+          <Text
+            style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.md }}
+          >
             Pieces you used
           </Text>
-          <View className="flex-row flex-wrap gap-2">
+          <View
+            style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}
+          >
             {pieces.map((p, i) => (
-              <View
-                key={`${p}-${i}`}
-                className="rounded-full"
-                style={{
-                  backgroundColor: P.paper,
-                  borderWidth: 1,
-                  borderColor: P.border,
-                  paddingHorizontal: 10,
-                  paddingVertical: 4,
-                }}
-              >
-                <Text className="text-xs" style={{ color: P.ink2 }}>
-                  {p}
-                </Text>
-              </View>
+              <PieceChip key={`${p}-${i}`} text={p} />
             ))}
           </View>
         </View>
