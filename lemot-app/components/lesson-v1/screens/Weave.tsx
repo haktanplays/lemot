@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction, LinkAction } from "@/components/ui/actions";
-import { P } from "@/constants/theme";
+import { PieceChip } from "@/components/ui/PieceChip";
+import { FeedbackBand, type FeedbackTone } from "@/components/ui/FeedbackBand";
+import { P, SPACE, RADIUS } from "@/constants/theme";
 import type { WeavePayload, WeaveScreen } from "@/content/lessonTypes";
 import { type MatchResult } from "./normalizeAnswer";
 import {
@@ -28,10 +30,16 @@ function orderHintPieces(input: WeavePiece[]): WeavePiece[] {
   return [...input].reverse();
 }
 
-const RESULT_NOTES: Record<MatchResult, { text: string; tone: "ok" | "warm" | "soft" }> = {
-  exact: { text: "Correct.", tone: "ok" },
-  alternative: { text: "Accepted.", tone: "warm" },
-  none: { text: "Compare with the model.", tone: "soft" },
+// Verdict copy is unchanged (canonical strings, pinned). The `band` field maps
+// each match to a presentation-only FeedbackBand tone; the text is what the
+// learner reads and what the append-only log's UI mirror shows.
+const RESULT_NOTES: Record<
+  MatchResult,
+  { text: string; tone: "ok" | "warm" | "soft"; band: FeedbackTone }
+> = {
+  exact: { text: "Correct.", tone: "ok", band: "confirmed" },
+  alternative: { text: "Accepted.", tone: "warm", band: "accepted" },
+  none: { text: "Compare with the model.", tone: "soft", band: "compare" },
 };
 
 export function Weave({
@@ -58,6 +66,9 @@ export function Weave({
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"input" | "revealed">("input");
   const [match, setMatch] = useState<MatchResult | null>(null);
+  // Presentation only: a warm focus accent so the working surface feels owned.
+  // Does not touch TextInput behaviour, submission, or normalization.
+  const [focused, setFocused] = useState(false);
   // Hint ladder: pieces stay hidden until the learner asks. This keeps Weave a
   // rebuild-the-thought task, not a copy task. 0 = hidden, 1 = pieces shown,
   // 2 = cloze shown.
@@ -98,14 +109,8 @@ export function Weave({
   };
 
   const note = match !== null ? RESULT_NOTES[match] : null;
-  const noteStyle =
-    note?.tone === "ok"
-      ? { bg: P.gl, border: P.green, color: P.green }
-      : note?.tone === "warm"
-        ? { bg: P.al, border: P.amber, color: P.amber }
-        : // "soft" = no exact/alternative match. Neutral (not red): the step is a
-          // non-blocking compare-with-the-model, not a wrong-answer error.
-          { bg: P.bg, border: P.border, color: P.ink2 };
+  const showTargetLabel = shouldShowWeaveTargetLabel(payload.weaveType);
+  const targetMeaning = weaveTargetMeaning(payload.prompt);
 
   return (
     <LessonScreenFrame
@@ -128,7 +133,7 @@ export function Weave({
         <View
           style={{
             backgroundColor: P.ink,
-            borderRadius: 999,
+            borderRadius: RADIUS.pill,
             paddingHorizontal: 10,
             paddingVertical: 3,
           }}
@@ -142,94 +147,93 @@ export function Weave({
         </View>
       </View>
 
-      <View
-        className="rounded-xl border"
-        style={{
-          backgroundColor: P.paper,
-          borderColor: P.border,
-          padding: 16,
-        }}
-      >
-        {/* Open weaves are free production: their prompt is already a directive,
-            so the "Say this:" label is suppressed to avoid doubling the
-            instruction. The target/directive below stays prominent either way. */}
-        {shouldShowWeaveTargetLabel(payload.weaveType) && (
-          <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
-            {WEAVE_TARGET_LABEL}
-          </Text>
-        )}
-        {/* Target meaning is the dominant element now: large + strong, so each
-            new Weave target is hard to skim past (Round 1.2 salience fix). The
-            "Write it in French:" instruction prefix is stripped for display. */}
+      {/* THE THOUGHT. The situation sits quietly above, the intent stands out
+          clearly below — the two no longer share one flat card, so the learner
+          scans "the scene" then "what to say" without them competing. In the
+          result state the intent recedes to a quiet reference so the natural
+          French becomes the strongest surface. */}
+      {payload.context && !isRevealed && (
         <Text
           style={{
-            color: P.ink,
-            fontSize: 20,
-            fontWeight: "600",
-            lineHeight: 28,
+            color: P.ink2,
+            fontStyle: "italic",
+            fontSize: 14,
+            lineHeight: 20,
+            marginBottom: SPACE.md,
           }}
         >
-          {weaveTargetMeaning(payload.prompt)}
+          {payload.context}
         </Text>
-        {payload.context && (
+      )}
+
+      {isRevealed ? (
+        <View style={{ marginBottom: SPACE.lg }}>
+          {showTargetLabel && (
+            <Text className="text-xs" style={{ color: P.ink3, marginBottom: 2 }}>
+              {WEAVE_TARGET_LABEL}
+            </Text>
+          )}
           <Text
-            className="text-sm mt-2"
+            style={{ color: P.ink2, fontSize: 15, lineHeight: 22 }}
+          >
+            {targetMeaning}
+          </Text>
+        </View>
+      ) : (
+        <View>
+          {showTargetLabel && (
+            <Text
+              className="text-xs"
+              style={{ color: P.ink3, marginBottom: SPACE.xs, letterSpacing: 0.4 }}
+            >
+              {WEAVE_TARGET_LABEL}
+            </Text>
+          )}
+          {/* The intent is the hero: large, strong, hard to skim past. */}
+          <Text
             style={{
-              color: P.ink2,
-              fontStyle: "italic",
-              lineHeight: 20,
+              color: P.ink,
+              fontSize: 22,
+              fontWeight: "600",
+              lineHeight: 30,
             }}
           >
-            {payload.context}
+            {targetMeaning}
           </Text>
-        )}
-      </View>
+        </View>
+      )}
 
-      {/* Compact, always-visible helper. The one-time "How Weave works"
-          interstitial carries the fuller early explanation. */}
-      <Text className="text-xs mt-2" style={{ color: P.ink3, lineHeight: 18 }}>
-        {WEAVE_HELPER}
-      </Text>
+      {/* Compact, always-visible helper (input phase only). The one-time
+          "How Weave works" interstitial carries the fuller early explanation. */}
+      {!isRevealed && (
+        <Text
+          className="text-xs"
+          style={{ color: P.ink3, lineHeight: 18, marginTop: SPACE.sm }}
+        >
+          {WEAVE_HELPER}
+        </Text>
+      )}
 
       {/* Constitutive support: part of the task, so it is visible from the first
           render and stays visible through the attempt. It is NOT behind the hint
           ladder and costs no rung — but it does permanently scope the attempt to
           Supported. Reuses the existing pieces copy; no new learner-facing text.
           The first shipped constitutive payload is PR-07's tea order. */}
-      {hasConstitutive && (
-        <View className="mt-3">
-          <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+      {hasConstitutive && !isRevealed && (
+        <View style={{ marginTop: SPACE.lg }}>
+          <Text className="text-xs" style={{ color: P.ink3, marginBottom: SPACE.sm }}>
             Pieces you can use here:
           </Text>
-          <View className="flex-row flex-wrap gap-2">
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}>
             {constitutivePieces.map((p, i) => (
-              <View
-                key={`${p.text}-${i}`}
-                className="rounded-xl"
-                style={{
-                  backgroundColor: P.rl,
-                  borderWidth: 1,
-                  borderColor: P.rb,
-                  paddingHorizontal: 10,
-                  paddingVertical: 6,
-                }}
-              >
-                <Text className="text-xs" style={{ color: P.ink2 }}>
-                  {p.text}
-                </Text>
-                {p.label && (
-                  <Text className="text-[10px] mt-0.5" style={{ color: P.ink3 }}>
-                    {p.label}
-                  </Text>
-                )}
-              </View>
+              <PieceChip key={`${p.text}-${i}`} text={p.text} label={p.label} />
             ))}
           </View>
         </View>
       )}
 
       {!isRevealed && (hasPieces || hasCloze) && (
-        <View className="mt-3">
+        <View style={{ marginTop: SPACE.lg }}>
           {hintLevel === 0 && (
             <LinkAction
               label="Need a hint?"
@@ -243,41 +247,19 @@ export function Weave({
               and shows the cloze alone, so only one support layer shows. */}
           {hintLevel >= 1 && hasPieces && !(hasCloze && hintLevel >= 2) && (
             <View>
-              <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+              <Text className="text-xs" style={{ color: P.ink3, marginBottom: SPACE.sm }}>
                 Pieces you can use here:
               </Text>
-              <View className="flex-row flex-wrap gap-2">
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}>
                 {hintPieces.map((p, i) => (
-                  <View
-                    key={`${p.text}-${i}`}
-                    className="rounded-xl"
-                    style={{
-                      backgroundColor: P.rl,
-                      borderWidth: 1,
-                      borderColor: P.rb,
-                      paddingHorizontal: 10,
-                      paddingVertical: 6,
-                    }}
-                  >
-                    <Text className="text-xs" style={{ color: P.ink2 }}>
-                      {p.text}
-                    </Text>
-                    {p.label && (
-                      <Text
-                        className="text-[10px] mt-0.5"
-                        style={{ color: P.ink3 }}
-                      >
-                        {p.label}
-                      </Text>
-                    )}
-                  </View>
+                  <PieceChip key={`${p.text}-${i}`} text={p.text} label={p.label} />
                 ))}
               </View>
             </View>
           )}
 
           {hintLevel === 1 && hasCloze && (
-            <View className="mt-2">
+            <View style={{ marginTop: SPACE.sm }}>
               <LinkAction
                 label="Need more help?"
                 align="left"
@@ -288,19 +270,20 @@ export function Weave({
 
           {hintLevel >= 2 && hasCloze && (
             <View
-              className="rounded-lg border mt-2"
+              className="border"
               style={{
                 backgroundColor: P.paper,
                 borderColor: P.border,
+                borderRadius: RADIUS.inner,
                 padding: 10,
+                marginTop: SPACE.sm,
               }}
             >
               <Text className="text-xs mb-1" style={{ color: P.ink3 }}>
                 A shape to fill in:
               </Text>
               <Text
-                className="text-sm"
-                style={{ color: P.ink, fontStyle: "italic" }}
+                style={{ color: P.ink, fontFamily: "serif", fontStyle: "italic", fontSize: 14 }}
               >
                 {payload.hintCloze}
               </Text>
@@ -309,49 +292,46 @@ export function Weave({
         </View>
       )}
 
-      <View className="mt-4">
-        <Text className="text-xs mb-2" style={{ color: P.ink3 }}>
+      {/* THE ATTEMPT — the learner's own working surface. A warm paper field
+          with a soft focus accent, comfortable height, current font system; in
+          the result state it stays visible read-only so the attempt keeps its
+          continuity with the natural realization below. */}
+      <View style={{ marginTop: SPACE.xl }}>
+        <Text className="text-xs" style={{ color: P.ink3, marginBottom: SPACE.sm }}>
           {WEAVE_INPUT_LABEL}
         </Text>
         <TextInput
           value={text}
           onChangeText={setText}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           editable={!isRevealed}
           multiline
           autoCapitalize="sentences"
           autoCorrect={false}
           textAlignVertical="top"
           style={{
-            minHeight: 96,
-            backgroundColor: P.paper,
+            minHeight: isRevealed ? 0 : 108,
+            backgroundColor: isRevealed ? P.bg : P.paper,
             borderWidth: 1,
-            borderColor: P.border,
-            borderRadius: 12,
-            padding: 12,
-            color: P.ink,
-            fontSize: 15,
-            lineHeight: 22,
+            borderColor: focused && !isRevealed ? P.red + "66" : P.border,
+            borderRadius: RADIUS.card,
+            padding: SPACE.md,
+            color: isRevealed ? P.ink2 : P.ink,
+            fontSize: 16,
+            lineHeight: 24,
           }}
         />
       </View>
 
       {isRevealed && note && (
-        <View
-          className="rounded-xl border mt-4"
-          style={{
-            backgroundColor: noteStyle.bg,
-            borderColor: noteStyle.border,
-            padding: 12,
-          }}
-        >
-          <Text className="text-sm" style={{ color: noteStyle.color }}>
-            {note.text}
-          </Text>
+        <View style={{ marginTop: SPACE.lg }}>
+          <FeedbackBand tone={note.band} text={note.text} />
         </View>
       )}
 
       {isRevealed && (
-        <View className="mt-3">
+        <View style={{ marginTop: SPACE.lg }}>
           <NaturalRevealView
             reveal={payload.reveal}
             mode={
