@@ -165,6 +165,89 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // A real day does not run clean, and until now this one did. The learner
+    // has owned je ne comprends pas since L3 and used it in L6 to reach someone
+    // again; here it does the job it exists for, in the middle of a day that
+    // was going well. Recognition first, production next.
+    id: "s11-fill-lost-the-thread",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-je-ne-comprends-pas"],
+    weakPointTags: ["negation", "natural-speech"],
+    payload: {
+      prompt:
+        "They answer you warmly, at speed, with three details you did not catch. They are already turning away.",
+      blankCount: 1,
+      options: [
+        { id: "opt-not-followed", text: "Je ne comprends pas.", isCorrect: true },
+        {
+          id: "opt-not-here",
+          text: "Ce n'est pas ici.",
+          isCorrect: false,
+          trapReason:
+            "That corrects a place. Nobody was wrong about the place; you simply did not follow.",
+        },
+        {
+          id: "opt-refuse",
+          text: "Non merci.",
+          isCorrect: false,
+          trapReason:
+            "That turns something down. They were helping, and the day stops here instead of continuing.",
+        },
+      ],
+      answer: ["opt-not-followed"],
+      reveal: {
+        short: "Je ne comprends pas.",
+        explanation:
+          "Saying it keeps the day going. The alternative is nodding, walking off, and still not knowing where to go.",
+        natural: "Je ne comprends pas.",
+      },
+    },
+  },
+  {
+    // The repair, produced. Deliberately NOT L6's repair line: there the
+    // learner reached someone again and stopped. Here they say they did not
+    // follow AND put the question back, which is the move that actually
+    // rescues a day. Both halves are owned (L3 and L8) and have never been
+    // joined before.
+    id: "s12-weave-say-so-and-ask-again",
+    type: "weave",
+    targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-c-est-ou"],
+    weakPointTags: ["negation", "politeness"],
+    payload: {
+      weaveType: "open",
+      prompt: "Say you did not follow, then put the question back.",
+      context:
+        "They have paused, willing to go again. You get one clean try at this.",
+      suggestedPieces: [
+        {
+          text: "je ne comprends pas",
+          itemId: "chunk-je-ne-comprends-pas",
+          label: "I don't understand",
+        },
+        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+        { text: "où", itemId: "adverb-ou-where", label: "where" },
+      ],
+      hintCloze: "Je ne comprends pas. ___ ?",
+      expectedAnswers: ["Je ne comprends pas. C'est où ?"],
+      acceptedAlternatives: [
+        "Je ne comprends pas. C'est où",
+        "Je ne comprends pas, c'est où ?",
+      ],
+      reveal: {
+        modelAnswer: "Je ne comprends pas. C'est où ?",
+        ifCorrect:
+          "That is the whole repair: name the problem, then ask again. The day carries on.",
+        ifCorrectButFlat:
+          "Right. Saying it plainly is faster than pretending you followed.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Say you did not follow first, then ask the question again.",
+        ifMissingTargetPiece:
+          "Je ne comprends pas names the problem. C'est où ? asks again.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s06-meet-preview-help",
     type: "meet-card",
     targetItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
@@ -248,12 +331,65 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // The payoff. Every screen before this one produced a piece of the day;
+    // this one asks for the day. Nothing is supplied, nothing is prompted line
+    // by line, and the bands say plainly that a shorter day still counts.
+    // The three bands are deliberately DIFFERENT strings: a ladder whose rungs
+    // read identically teaches nothing, which is the defect this pass repaired
+    // in L6.
+    id: "s13-sayit-the-whole-day",
+    type: "say-it-your-way",
+    targetItemIds: [
+      "chunk-bonjour",
+      "chunk-c-est-ou",
+      "chunk-faire-une-pause",
+      "chunk-je-vais",
+      "chunk-au-revoir",
+    ],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      situation:
+        "Run the day again, start to finish. You arrive somewhere new and greet them, you ask where to go, you ask for a break when the afternoon runs long, and you head home at the end.",
+      communicativeGoal: "Carry a whole day in French, from bonjour to au revoir.",
+      answerBands: {
+        minimalAcceptable: ["Bonjour. C'est où ? Merci. Au revoir."],
+        good: [
+          "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
+        ],
+        // The lift is rhythm, not vocabulary: the greeting runs into the
+        // question and the leaving runs into the goodbye, exactly the joins
+        // L7 and L8 already ship as accepted forms.
+        natural: [
+          "Bonjour, c'est où ? Je voudrais faire une pause. Je vais à la maison, au revoir.",
+        ],
+      },
+      modelAnswer:
+        "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
+      reveal: {
+        modelAnswer:
+          "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
+        ifCorrect:
+          "That is a whole day, carried in French, with nothing in it you were taught today.",
+        ifBetterThanExpected:
+          "You went past the minimum. What you just wrote is a day someone could actually have.",
+        naturalAlternatives: [
+          "Bonjour, c'est où ? Je voudrais faire une pause. Je vais à la maison, au revoir.",
+          "Bonjour. C'est où ? Je voudrais faire une pause. Merci, au revoir.",
+        ],
+        explanation:
+          "Ten lessons, and every piece of this came from one of them. The only thing that is new is how many of them you held at once.",
+      },
+      validationMode: "model-answer-only",
+    },
+  },
+  {
     id: "s08-recap-full-day",
     type: "recap",
     payload: {
       title: "You lived a day in French.",
       lines: [
         "You arrived, asked where, took a break, and left well.",
+        "It did not run clean, either. Something went past you, and you said so and asked again instead of nodding.",
         "Nothing was new. Everything was yours already.",
         "Next: a small new engine, for asking if you can.",
       ],
@@ -266,6 +402,7 @@ const screens: LessonScreen[] = [
         "je vais",
         "à la maison",
         "au revoir",
+        "je ne comprends pas",
       ],
       nextLabel: "Continue",
     },
@@ -282,7 +419,7 @@ export const lesson010: Lesson = {
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "integration",
   acquisitionDemandItemIds: [],
-  estimatedMinutes: 8,
+  estimatedMinutes: 10,
   canDo: "Arrive, ask where, take a break, and leave.",
   whyItExists:
     "Per the L10 after-class integration spec, this lesson adds (almost) nothing new: it recombines L7-L9 with the L1-L6 base under a single day-arc narrative, so the learner feels the pieces working together rather than in isolation. The only genuinely new material is one recognition-only preview: Vous pouvez m'aider ?, planted as the doorway L11 will open. Retrieval in fresh contexts, not novelty, is the point.",
@@ -307,20 +444,28 @@ export const lesson010: Lesson = {
     // a recycle owned by L2, named here as one of the day's three engines;
     // acquisitionDemandItemIds stays empty because L10 is an integration lesson.
     "chunk-je-suis",
+    // Recycled from L3 for the founder-usable pass. L10 had no repair beat at
+    // all: the day ran clean from arrival to goodbye, which is the one thing a
+    // real day never does. s11 recognises the moment and s12 produces the fix,
+    // so the item is a target on both and the lesson must state its treatment.
+    // acquisitionDemandItemIds stays empty: this is integration, not a demand.
+    "chunk-je-ne-comprends-pas",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Aligned with docs/syllabus/L10-after-class-integration.lesson-spec.md: near-zero new lexis; the lesson is deliberate spaced retrieval of L7 (je vais + a la maison), L8 (c'est ou), and L9 (faire une pause) inside one day-arc.",
     "Integration repair: the lesson now opens Goal then a French re-meet of owned material inside the day-arc (s09), so first production follows real contact instead of two explanations. The three-engines insight moved to a reflective position after two engines have already been used today.",
-    "Progression: context then open then open. The closing weave is open, so the day's summit is no more scaffolded than L6's. No weave carries constitutive support, so evidence class is unchanged.",
+    "Progression: context, open, open, open. The closing weave is still open, so the day's summit is no more scaffolded than L6's. No weave carries constitutive support, so evidence class is unchanged.",
+    "Founder-usable expansion: L10 is the PAYOFF, so the pass added the two things an integration lesson was missing rather than more acquisition. s11/s12 give the day a repair beat (it previously ran clean from arrival to goodbye, which no real day does) and s13 asks for the whole day in one unsupplied production. Everything recycles L1-L9; acquisitionDemandItemIds stays empty.",
+    "s13 answer bands are three DIFFERENT strings on purpose. The identical good/natural bands shipped in L6 were repaired in the same pass, and repeating that shape here would teach nothing: the natural rung lifts by rhythm (the comma joins L7 and L8 already ship as accepted forms), not by new vocabulary.",
     "Vous pouvez m'aider ? appears ONLY as a recognition meet-card (future hook for L11 per the spec): it is never a production target, never a suggested piece elsewhere, and never a recap chip. Its title opens with the reusable preview convention 'Just listen.'",
     "The help question is NOT a registry chunk (Haktan decision, PR #168 rework): it is a composed model sentence over the split pieces chunk-vous-pouvez + chunk-m-aider, which the preview highlights separately. Both pieces carry registry status supported (their steady-state L11 role); their L10 use is recognition-only by lesson design, since registry status is static.",
     "De-scope vs spec: the spec's fatigue combo (je suis fatigue) is dropped because fatigue is not in the shipped registry; the break weave carries that communicative moment instead.",
     "s03 fill anchors meaning first (you want to say you're going home) so je suis stays a fair trap: grammatical, but the wrong meaning.",
     "No learner-facing lesson numbers.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
-    "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
+    "Learner-visible: Home lists L1-L24 under a linear unlock, so this lesson opens once L9 is finished. The older note claiming Home capped the path at L6 was stale and was corrected during native verification of this path.",
   ],
   qaChecks: [
     "TTS reads Vous pouvez m'aider ? cleanly on the preview card.",
