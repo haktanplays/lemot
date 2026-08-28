@@ -215,6 +215,95 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // s06 put j'ai une question behind bonjour. This asks whether the learner
+    // can tell WHICH opener the moment wants, which is the same discrimination
+    // L4 teaches between engines, applied one layer out. Both openers are
+    // correct French and both were produced in L1, so the bonjour miss is a
+    // register miss, not a vocabulary miss.
+    id: "s06b-fill-opener-for-a-question",
+    type: "fill-with-traps",
+    targetItemIds: [
+      "chunk-excusez-moi",
+      "chunk-bonjour",
+      "chunk-j-ai-une-question",
+    ],
+    evidenceTargetItemIds: ["chunk-excusez-moi"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "Same question, a different moment: they are already deep in their work and have not seen you. How do you open?",
+      sentenceAfter: ", j'ai une question.",
+      blankCount: 1,
+      options: [
+        { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
+        {
+          id: "opt-bonjour",
+          text: "Bonjour",
+          isCorrect: false,
+          learningErrorTag: "wrong_register",
+          trapReason:
+            "Correct French, and polite. But a greeting expects to be met, and they have not looked up.",
+        },
+        {
+          id: "opt-non-merci",
+          text: "Non merci",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "That turns something down. Nothing has been offered to you yet.",
+        },
+      ],
+      answer: ["opt-excusez-moi"],
+      reveal: {
+        short: "Excusez-moi",
+        explanation:
+          "The engine did not move. Only the opener did: bonjour for someone who can see you, excusez-moi for someone who cannot.",
+        natural: "Excusez-moi, j'ai une question.",
+      },
+    },
+  },
+  {
+    // The one screen in L4 where the learner must choose BETWEEN the two engines
+    // while producing, with no tray telling them which is which. Both sentences
+    // are owned, so the difficulty is entirely deciding what each moment needs
+    // and retrieving it. This is also L4's least-scaffolded action: every other
+    // production here supplies its pieces.
+    id: "s06c-weave-open-here-and-hungry",
+    type: "weave",
+    targetItemIds: [
+      "chunk-je-suis-ici",
+      "chunk-je-suis",
+      "chunk-j-ai-faim",
+      "chunk-j-ai",
+    ],
+    evidenceTargetItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
+    weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
+    payload: {
+      weaveType: "open",
+      prompt: "Say you have arrived, then say you have not eaten.",
+      context:
+        "You get to your friend's door after a long trip. Two short sentences, and the second one is a feeling.",
+      expectedAnswers: ["Je suis ici. J'ai faim."],
+      acceptedAlternatives: [
+        "Je suis ici. J ai faim.",
+        "Bonjour, je suis ici. J'ai faim.",
+        "Bonjour, je suis ici. J ai faim.",
+      ],
+      reveal: {
+        modelAnswer: "Je suis ici. J'ai faim.",
+        ifCorrect:
+          "Two engines, one after the other. Where you are is je suis; how you feel is j'ai.",
+        ifCorrectButFlat:
+          "Right. Two short sentences do the work here, and each one takes a different engine.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Keep them apart: je suis carries the place, j'ai carries the feeling.",
+        ifMissingTargetPiece:
+          "Arrive first with je suis ici, then say the feeling with j'ai faim.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s07-sayit-how-you-feel",
     type: "say-it-your-way",
     targetItemIds: ["chunk-j-ai", "chunk-j-ai-faim"],
@@ -240,6 +329,26 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // L4's contrast is stated once, at s01, before the learner has used either
+    // engine. This is the same contrast AFTER four moments have used them, and
+    // it reflects rather than teaches, so it is a natural-reveal and not a
+    // fourth insight card: L4 sits at the canon 11 V5 budget of three.
+    id: "s07b-natural-reveal-two-engines",
+    type: "natural-reveal",
+    targetItemIds: ["chunk-je-suis", "chunk-j-ai", "micro-je-suis-vs-j-ai"],
+    weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
+    payload: {
+      explanation:
+        "Look at what decided each sentence.\n" +
+        "Not the word you wanted, but the kind of thing you were saying. A place took je suis. A feeling took j'ai. A thing you carry took j'ai as well. English would have used am for two of those three, which is exactly why French sounds wrong when you translate it straight across.",
+      naturalAlternatives: [
+        "Je suis ici.",
+        "J'ai faim.",
+        "J'ai une question.",
+      ],
+    },
+  },
+  {
     id: "s08-recap-jai",
     type: "recap",
     payload: {
@@ -248,12 +357,16 @@ const screens: LessonScreen[] = [
         "French often uses have where English uses be.",
         "You said j'ai faim for I am hungry.",
         "You used j'ai for a thing too: j'ai une question.",
+        "And you kept the two engines apart in one moment: je suis for the place, j'ai for the feeling.",
       ],
       piecesUsed: [
         "j'ai",
         "faim",
         "une question",
+        "je suis",
+        "ici",
         "Bonjour",
+        "Excusez-moi",
       ],
       nextLabel: "Continue",
     },
@@ -296,6 +409,11 @@ export const lesson004: Lesson = {
     "chunk-je-suis",
     "chunk-je-suis-ici",
     "chunk-bonjour",
+    // Recycled from L1 for the founder-usable pass: the second opener s06b
+    // makes the learner choose, and the refusal it traps against. Neither is
+    // re-taught and neither is a demand.
+    "chunk-excusez-moi",
+    "chunk-non-merci",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
@@ -305,6 +423,8 @@ export const lesson004: Lesson = {
     "Elision is taught lightly: je + ai becomes j'ai. Not a broad elision lecture.",
     "chunk-j-ai is promoted from supported to active in this lesson.",
     "L4 follows the enumerated 9-screen shape from the L3-L6 content plan (meet x2, insight x2, fill x1, weave x2, say-it x1, recap). The plan header's '10 screens' is treated as an off-by-one note, not a reason to add a filler screen.",
+    "Founder-usable pass (L1-L6): L4 asserted the je suis vs j'ai contrast at s01 and then only ever tested it with the pieces supplied. The three screens added deepen the discrimination instead of lengthening the phrase list. s06b moves the choice one layer out to the opener, so the engine holds still while the moment changes. s06c is the lesson's only unsupplied production and the only place both engines must be chosen between while producing. s07b re-states the contrast after four moments have used it. No new item and no new j'ai completion: acquisitionDemandItemIds stays exactly ['chunk-j-ai'].",
+    "s07b is a natural-reveal, not a fourth insight card: L4 is already at the canon 11 V5 insight budget of three, and the screen reflects rather than teaches.",
     "je n'ai pas (negated avoir) is deferred so L4 does not compete with its core j'ai engine by re-opening negation-of-avoir.",
     "j'ai besoin de (need) is deferred because it pulls in object vocabulary and a wider need frame; it should return later as a controlled need structure.",
     "L4 is not a full avoir paradigm lesson. Do not teach or imply active ownership of tu as, il a / elle a, nous avons, vous avez, ils ont, age, numbers, broad possession, or broad need.",
@@ -318,5 +438,8 @@ export const lesson004: Lesson = {
     "s02 trap reasons fire on Je suis and Je voudrais selections.",
     "The je suis vs j'ai contrast reads as natural difference, not a grammar table.",
     "No theatrical positivity tokens appear.",
+    "s06b renders the trailing frame , j'ai une question and fires the register trap on Bonjour.",
+    "s06c shows no chip tray at all and accepts the two-sentence answer with or without the leading Bonjour and with the unaccented J ai variant.",
+    "s07b renders three alternatives, grades nothing, and TTS reads each of the three cleanly.",
   ],
 };

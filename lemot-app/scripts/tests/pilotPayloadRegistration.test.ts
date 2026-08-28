@@ -330,17 +330,34 @@ describe("five canonical item registrations", () => {
         );
       }
       // The rescue kit is no longer uniformly dormant. The L1-L3 content pass
-      // deliberately activated two of the three, each in exactly one owning
-      // lesson, because they were the only registered chunks that could break
-      // L1 out of its café-only script and L3 out of its ici-only negation.
-      // The guard is kept, not dropped: it now pins WHERE each may appear, so
-      // an accidental fourth activation still fails.
+      // deliberately activated two of the three, because they were the only
+      // registered chunks that could break L1 out of its café-only script and
+      // L3 out of its ici-only negation. The L1-L6 founder-usable pass then
+      // recycled both forward, into the lessons whose moments actually need
+      // them rather than into every lesson that could take them.
+      //
+      // The guard is kept, not dropped: it pins WHERE each may appear, so an
+      // unintended activation still fails. Each list below is an ALLOW-list of
+      // owning plus recycling lessons, and every entry names a screen, so a
+      // lesson that merely declares the item without reaching it fails review
+      // here rather than passing quietly.
       const OWNED_BY: Record<string, readonly string[]> = {
-        // Introduced and demanded in L1; recycled (not re-taught) in L2 and L3.
-        "chunk-excusez-moi": ["v1-lesson-001", "v1-lesson-002"],
-        // Introduced and demanded in L3 only.
-        "chunk-je-ne-comprends-pas": ["v1-lesson-003"],
-        // Still dormant: registered for the ledger only.
+        // Introduced and demanded in L1. Recycled, never re-taught: L2 s05/s05b
+        // (the opener the busy room forces), L4 s06b (the same choice one layer
+        // out, in front of j'ai une question) and L6 s05c (reaching someone
+        // again after their answer went past you).
+        "chunk-excusez-moi": [
+          "v1-lesson-001",
+          "v1-lesson-002",
+          "v1-lesson-004",
+          "v1-lesson-006",
+        ],
+        // Introduced and demanded in L3. Recycled whole in L6 s05b/s05c, where
+        // the scene finally needs it; never decomposed into ne + verb + pas.
+        "chunk-je-ne-comprends-pas": ["v1-lesson-003", "v1-lesson-006"],
+        // Still dormant: registered for the ledger only. Reaching for it would
+        // mean a question form and vous pouvez, which is new grammar no lesson
+        // in L1-L6 owns.
         "chunk-vous-pouvez-repeter": [],
       };
       for (const [rescue, allowedLessons] of Object.entries(OWNED_BY)) {

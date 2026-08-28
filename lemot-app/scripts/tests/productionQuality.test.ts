@@ -251,11 +251,14 @@ describe("productionQuality — shipped v1", () => {
     // These differ from earlier figures precisely because fills no longer count.
     // L1-L3 content pass: L1 5 -> 6 (s15, the unsupported opener weave) and
     // L3 4 -> 5 (s12, the non-locational negation).
-    // L1-L6 founder-usable pass: L2 3 -> 4 (s06b, the two-sentence
-    // recombination weave). No other lesson moved.
+    // L1-L6 founder-usable pass, one added production per lesson, each of them
+    // the lesson's least-scaffolded action: L2 3 -> 4 (s06b, the two-sentence
+    // recombination), L4 3 -> 4 (s06c, the open two-engine weave), L5 3 -> 4
+    // (s06b, the open both-packages weave) and L6 5 -> 6 (s05c, the repair).
+    // No lesson outside L1-L6 moved.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [2, 6, 4, 5, 3, 3, 5, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      [2, 6, 4, 5, 4, 4, 6, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {
