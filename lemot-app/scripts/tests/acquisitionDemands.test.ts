@@ -30,9 +30,16 @@ const RATIFIED: Record<string, readonly string[]> = {
     "noun-cafe",
     "chunk-sil-vous-plait",
   ],
-  "v1-lesson-001": ["chunk-merci"],
+  // L1-L3 content pass: L1 gained the second opener, L3 gained the only
+  // non-locational negation in the lesson.
+  "v1-lesson-001": ["chunk-merci", "chunk-excusez-moi"],
   "v1-lesson-002": ["chunk-je-suis"],
-  "v1-lesson-003": ["chunk-je-ne-suis-pas", "chunk-ce-n-est-pas", "chunk-non"],
+  "v1-lesson-003": [
+    "chunk-je-ne-suis-pas",
+    "chunk-ce-n-est-pas",
+    "chunk-non",
+    "chunk-je-ne-comprends-pas",
+  ],
   "v1-lesson-004": ["chunk-j-ai"],
   "v1-lesson-005": ["chunk-un-cafe", "chunk-une-question"],
   "v1-lesson-006": ["chunk-au-revoir"],
@@ -102,12 +109,14 @@ describe("acquisitionDemands — shipped L0–L23 map", () => {
     }
   });
 
-  test("total declared demands across v1 is 27", () => {
+  test("total declared demands across v1 is 29", () => {
     // 21 through L16 (Integration contributed 0) + L17's three + L18's one.
     // L19 is Integration and L20 is Milestone; both add none. L21's one
     // evaluative adjective takes it to 26, and L22's one question word to 27.
-    // L23 and L24 add none, so the total holds at 27.
-    assertEqual(totalAcquisitionDemands(V1_LESSONS), 27, "current-v1 regression total");
+    // L23 and L24 add none. The L1-L3 content pass then added exactly two:
+    // chunk-excusez-moi in L1 and chunk-je-ne-comprends-pas in L3, taking the
+    // total to 29. Both lessons stay inside the standard band of 1-4.
+    assertEqual(totalAcquisitionDemands(V1_LESSONS), 29, "current-v1 regression total");
   });
 
   test("migration is complete — all 25 lessons declare the field", () => {

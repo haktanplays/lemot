@@ -194,9 +194,11 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
       matrix,
       [
         [0, "unset", 4],
-        [1, "standard", 1],
+        // L1-L3 content pass: L1 1 -> 2, L3 3 -> 4. Both stay inside the
+        // standard band (1-4).
+        [1, "standard", 2],
         [2, "standard", 1],
-        [3, "standard", 3],
+        [3, "standard", 4],
         [4, "standard", 1],
         [5, "standard", 2],
         [6, "integration", 1],

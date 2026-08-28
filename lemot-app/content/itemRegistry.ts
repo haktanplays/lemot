@@ -724,7 +724,11 @@ export const ITEM_REGISTRY = {
     id: "chunk-excusez-moi",
     type: "chunk",
     text: "excusez-moi",
-    status: "supported",
+    // IC-002 promotion: L1 now declares this as an acquisition demand and asks
+    // for it unsupported (s15), so the owned tier is the truthful row. Every
+    // other declared demand in the corpus is "active"; leaving this at
+    // "supported" was the stale status DD-003 flags.
+    status: "active",
     fr: "excusez-moi",
     en: "excuse me",
     meaning:
@@ -737,7 +741,10 @@ export const ITEM_REGISTRY = {
     id: "chunk-je-ne-comprends-pas",
     type: "chunk",
     text: "je ne comprends pas",
-    status: "supported",
+    // IC-002 promotion: L3 now declares this as an acquisition demand and asks
+    // for it in a context weave with no tray (s12). It stays ONE closed
+    // formula — promotion is about ownership tier, not about decomposing it.
+    status: "active",
     fr: "je ne comprends pas",
     en: "I don't understand",
     meaning:

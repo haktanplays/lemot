@@ -39,6 +39,10 @@ const TERMINAL_PUNCTUATION = /[.!?]\s*$/;
 export const PROTECTED_CHUNKS: ReadonlySet<string> = new Set([
   "je ne suis pas",
   "ce n'est pas",
+  // Same category as the two above: a closed negation frame the learner owns
+  // whole and never decomposes. Approved canon as of the L1-L3 content pass,
+  // where L3 declares it an acquisition demand and produces it unsupported.
+  "je ne comprends pas",
 ]);
 
 export function chipTokenCount(entry: string): number {

@@ -227,30 +227,33 @@ describe("productionQuality — shipped v1", () => {
     assertEqual(shipped.filter((d) => d.code === "PQ-2"), [], "0 retrieval-floor errors");
   });
 
-  test("PQ-3 baseline is exactly the one known L2 duplicate", () => {
-    // Known content debt, deliberately not fixed inside an infrastructure pass.
-    // Any NEW duplicate breaks this ratchet; removing L2's requires updating it.
+  test("PQ-3 baseline is clean: no shipped lesson duplicates a production", () => {
+    // The one known duplicate was L2's s04/s05, which asked for the identical
+    // string twice and made the "engine" claim impossible to feel. The L1-L3
+    // content pass fixed it at the source: s05 now recycles L1's excusez-moi,
+    // so the moment differs while je suis ici stays untouched. The ratchet is
+    // kept and tightened — the baseline is now zero, so ANY duplicate fails.
     const warnings = shipped.filter((d) => d.code === "PQ-3");
-    assertEqual(warnings.length, 1, "exactly one known duplicate");
-    assertEqual(warnings[0].lessonId, "v1-lesson-002", "in L2");
     assertEqual(
-      warnings[0].screenIds,
-      ["s04-weave-je-suis-ici", "s05-weave-call-and-respond"],
-      "the two equivalent productions",
+      warnings.map((w) => `${w.lessonId}:${w.screenIds.join("+")}`),
+      [],
+      "no duplicate production demands remain",
     );
   });
 
-  test("no other shipped lesson produces a PQ-3 finding", () => {
+  test("no shipped lesson produces a PQ-3 finding", () => {
     const lessons = new Set(shipped.filter((d) => d.code === "PQ-3").map((d) => d.lessonId));
-    assertEqual([...lessons], ["v1-lesson-002"], "L2 only");
+    assertEqual([...lessons], [], "none");
   });
 
   test("corrected production counts exclude fill-with-traps", () => {
     // Reported, never contracted: no floor, no ceiling, no per-lesson lock.
     // These differ from earlier figures precisely because fills no longer count.
+    // L1-L3 content pass: L1 5 -> 6 (s15, the unsupported opener weave) and
+    // L3 4 -> 5 (s12, the non-locational negation). No other lesson moved.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [2, 5, 3, 4, 3, 3, 5, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      [2, 6, 3, 5, 3, 3, 5, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {

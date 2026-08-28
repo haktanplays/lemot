@@ -204,6 +204,62 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // The third verb the sandwich wraps, and the first negation in this lesson
+    // that is not about a place. Registered and frozen with the original L1
+    // ledger but never reached by a payload until now.
+    //
+    // Canon guard: this stays ONE whole survival formula. The learner is shown
+    // that the familiar two pieces are visible around it — that is recognition
+    // of the pattern they own — but `comprends` is never presented as a verb
+    // they can conjugate, and the chunk is never decomposed into ne + verb + pas.
+    id: "s11-meet-je-ne-comprends-pas",
+    type: "meet-card",
+    targetItemIds: ["chunk-je-ne-comprends-pas"],
+    weakPointTags: ["negation", "ne-pas"],
+    payload: {
+      fr: "Je ne comprends pas.",
+      en: "I don't understand.",
+      title: "The same two pieces, somewhere you will actually need them.",
+      highlights: [
+        { text: "je ne comprends pas", itemId: "chunk-je-ne-comprends-pas" },
+      ],
+      tts: true,
+    },
+  },
+  {
+    // Context weave: the situation does the work, and there is no tray to lean
+    // on. Every negation the learner has produced so far ended in `ici`; this
+    // one cannot, which is the whole point of placing it here.
+    id: "s12-weave-je-ne-comprends-pas",
+    type: "weave",
+    targetItemIds: ["chunk-je-ne-comprends-pas"],
+    evidenceTargetItemIds: ["chunk-je-ne-comprends-pas"],
+    weakPointTags: ["negation", "ne-pas"],
+    payload: {
+      weaveType: "context",
+      prompt: "Write it in French: I don't understand.",
+      context:
+        "They answer you quickly, in a long sentence, and then wait. You caught almost none of it.",
+      expectedAnswers: ["Je ne comprends pas."],
+      acceptedAlternatives: [
+        "Je ne comprends pas",
+        "Non, je ne comprends pas.",
+      ],
+      reveal: {
+        modelAnswer: "Je ne comprends pas.",
+        ifCorrect:
+          "That is the most useful negative sentence you will own for a long time.",
+        ifCorrectButFlat:
+          "Right. Same two pieces you have been wrapping all lesson.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The whole thing travels together: je ne comprends pas.",
+        ifMissingTargetPiece:
+          "ne in front, pas behind, exactly as before, around a different word.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s08-weave-non-je-ne-suis-pas-ici",
     type: "weave",
     targetItemIds: ["chunk-non", "chunk-je-ne-suis-pas"],
@@ -231,26 +287,58 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // New screen family for L3. It does not add a rule; it shows the rule
+    // holding across three different verbs the learner has now actually
+    // negated, which is what turns ne … pas from a memorised line into a
+    // transform they can point at anything.
+    id: "s13-natural-reveal-one-transform",
+    type: "natural-reveal",
+    targetItemIds: [
+      "grammar-ne-pas-sandwich",
+      "chunk-je-ne-suis-pas",
+      "chunk-ce-n-est-pas",
+      "chunk-je-ne-comprends-pas",
+    ],
+    payload: {
+      explanation:
+        "Three different sentences. One move.\n" +
+        "ne went in front, pas went behind, and whatever was doing the work sat in the middle. You did it to where you are, to what something is, and to whether you followed. Nothing about the wrapping changed. Only what you wrapped.",
+      naturalAlternatives: [
+        "Je ne suis pas ici.",
+        "Ce n'est pas ici.",
+        "Je ne comprends pas.",
+      ],
+    },
+  },
+  {
     id: "s09-sayit-not-here",
     type: "say-it-your-way",
     targetItemIds: ["chunk-non", "chunk-je-ne-suis-pas", "chunk-non-merci"],
     weakPointTags: ["negation", "natural-speech"],
     payload: {
+      // Two honest exits now, not one: the moment contains both a wrong place
+      // and a sentence that got away from the learner, so refusing and
+      // admitting incomprehension are each truthful answers. The learner has to
+      // decide which one this moment is actually asking for.
       situation:
-        "You are at the wrong place. Someone is expecting you somewhere else. " +
-        "Say that you are not here.",
-      communicativeGoal: "Say no and state where you are not.",
+        "You are at the wrong place. Someone is expecting you somewhere else, " +
+        "and they are explaining where, quickly.",
+      communicativeGoal: "Say no, or say you did not follow.",
       suggestedPieces: [
         { text: "Non", itemId: "chunk-non" },
         { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas" },
         { text: "ici", itemId: "word-ici" },
+        { text: "je ne comprends pas", itemId: "chunk-je-ne-comprends-pas" },
       ],
       modelAnswer: "Non, je ne suis pas ici.",
       reveal: {
         modelAnswer: "Non, je ne suis pas ici.",
-        naturalAlternatives: ["Je ne suis pas ici."],
+        naturalAlternatives: [
+          "Je ne suis pas ici.",
+          "Non, je ne comprends pas.",
+        ],
         explanation:
-          "Both work. Non answers the call first; je ne suis pas ici states it plainly.",
+          "All three are real answers to this moment. Non answers the call first; je ne suis pas ici states the fact plainly; je ne comprends pas is the honest one when the explanation went past you. Same two pieces underneath each negative.",
       },
       validationMode: "model-answer-only",
     },
@@ -263,12 +351,14 @@ const screens: LessonScreen[] = [
       lines: [
         "You wrapped a sentence with ne and pas.",
         "You turned je suis into je ne suis pas, and c'est into ce n'est pas.",
+        "You used the same wrap where it matters most: je ne comprends pas.",
         "You refused politely with non merci.",
       ],
       piecesUsed: [
         "non",
         "je ne suis pas",
         "ce n'est pas",
+        "je ne comprends pas",
         "non merci",
       ],
       nextLabel: "Continue",
@@ -289,8 +379,9 @@ export const lesson003: Lesson = {
     "chunk-je-ne-suis-pas",
     "chunk-ce-n-est-pas",
     "chunk-non",
+    "chunk-je-ne-comprends-pas",
   ],
-  estimatedMinutes: 6,
+  estimatedMinutes: 8,
   canDo: "Say no, and say what is not true.",
   whyItExists:
     "L1 and L2 gave the learner sentences they could say. L3 gives the opposite move: how to say no and how to make a sentence negative. ne and pas wrap the verb, the first reusable transform in the slice. L3 stays bounded to the ne ... pas sandwich plus oui, non, and a polite refusal; wider negation and question forms are deferred.",
@@ -302,6 +393,18 @@ export const lesson003: Lesson = {
     "chunk-ce-n-est-pas",
     "chunk-non-merci",
     "grammar-ne-pas-sandwich",
+    // Activated in this pass: frozen in the original ledger, never reached by a
+    // payload. It is the only negation in L3 that is not about a place.
+    "chunk-je-ne-comprends-pas",
+    // PRE-EXISTING RUNTIME DEFECT, fixed here because it makes L3 unplayable.
+    // s00-meet and s02-fill/s06-weave already targeted chunk-je-suis, and
+    // s03-meet/s07-weave already targeted chunk-c-est, but neither was declared
+    // in learningItems. resolveLessonTreatmentForItem refuses to guess an
+    // unstated treatment, so recordExposure threw an uncaught
+    // LessonTreatmentError partway through the lesson. Both are recycles, not
+    // new demands: je suis is owned by L2, and c'est is the shape L3 negates.
+    "chunk-je-suis",
+    "chunk-c-est",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
@@ -309,6 +412,9 @@ export const lesson003: Lesson = {
     "First Training Pack lesson under the Training Content Factory contract. L3 maps to the slice-spec PR G. Owned core: the ne ... pas sandwich as a two-part negative frame.",
     "Metaphor: metaphor-negation-sandwich. ne and pas sit around the action, one on each side. Early naming only; do not imply it is the only negation form.",
     "Negation is taught as a transform of owned sentences: je suis ici becomes je ne suis pas ici; c'est becomes ce n'est pas.",
+    "Every negation in the original L3 ended in ici, which made the transform look like a fact about places. je ne comprends pas is the third verb the sandwich wraps and the first negation here that is not locational.",
+    "je ne comprends pas stays ONE closed survival formula. The learner is shown the familiar two pieces sitting around it, but comprends is never offered as a conjugable verb and the chunk is never decomposed.",
+    "s13 is a natural-reveal, not a fourth insight card: L3 is already at the three-insight canon budget.",
     "oui and non enter as the fastest answers; non also opens the polite refusal non merci. oui and non are answers only, not a question system.",
     "Compact, negation-centered slice. tu/vous register work, yes-no question asking, and ça / pronoun-ca remain deferred from L3 to hold cognitive load.",
     "No runtime Review, Checkpoint, or Mon Lexique surfaces are added; the Training Pack review and checkpoint material exists as PR notes only.",
@@ -321,6 +427,9 @@ export const lesson003: Lesson = {
     "Casing variants pass Weave via accepted alternatives.",
     "s02 trap reasons fire on voudrais and bonjour selections.",
     "No repeated negation tokens (ne ne / pas pas) in any French string.",
+    "TTS reads Je ne comprends pas cleanly.",
+    "s12 renders with no piece tray and no hint link, and accepts the bare-period variant.",
+    "s13 renders three alternatives, one per negated verb, and grades nothing.",
     "No theatrical positivity tokens appear.",
   ],
 };

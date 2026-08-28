@@ -136,25 +136,38 @@ const screens: LessonScreen[] = [
   {
     id: "s05-weave-call-and-respond",
     type: "weave",
-    targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis"],
+    targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis", "chunk-excusez-moi"],
     payload: {
       weaveType: "supported",
-      prompt: "Write it in French: I am here.",
+      prompt: "Write it in French: Excuse me, I am here.",
+      // Previously this screen asked for the SAME string as s04, which made the
+      // engine claim ("the shape stays, the moment changes") impossible to feel:
+      // nothing changed. Now the moment genuinely differs — nobody is looking
+      // for you, so you have to interrupt — and the L1 opener is the piece that
+      // carries that difference while je suis stays untouched.
       context:
-        "Someone in the next room calls out, looking for you. Let them know you're here.",
+        "Nobody has called for you. The room is busy and you need to announce yourself.",
       suggestedPieces: [
+        {
+          text: "Excusez-moi",
+          itemId: "chunk-excusez-moi",
+          required: true,
+          label: "reach them first",
+        },
         { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
         { text: "ici", itemId: "word-ici", required: true, label: "place word" },
       ],
-      expectedAnswers: ["Je suis ici."],
+      expectedAnswers: ["Excusez-moi, je suis ici."],
+      acceptedAlternatives: ["Excusez-moi je suis ici."],
       reveal: {
-        modelAnswer: "Je suis ici.",
-        ifCorrect: "Same shape. Different moment. That is how the engine works.",
+        modelAnswer: "Excusez-moi, je suis ici.",
+        ifCorrect: "The opener changed. The engine did not. That is the point.",
         ifCorrectButFlat:
-          "Right. The shape does not change between situations.",
+          "Right. Excusez-moi does the interrupting; je suis ici does the telling.",
         ifUnderstandableButWrong:
-          "Your meaning lands. The same two words answer from anywhere: je suis ici.",
-        ifMissingTargetPiece: "The same two words as before: je suis, then ici.",
+          "Your meaning lands. The engine stays whole and the opener sits in front of it: Excusez-moi, je suis ici.",
+        ifMissingTargetPiece:
+          "Nobody called you here, so open with excusez-moi, then the same two words as before.",
       },
       validationMode: "exact-or-alternative",
     },
@@ -170,17 +183,36 @@ const screens: LessonScreen[] = [
       communicativeGoal: "Signal you are here.",
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
+        { text: "Excusez-moi", itemId: "chunk-excusez-moi" },
         { text: "je suis", itemId: "chunk-je-suis" },
         { text: "ici", itemId: "word-ici" },
       ],
       modelAnswer: "Bonjour, je suis ici.",
       reveal: {
         modelAnswer: "Bonjour, je suis ici.",
-        naturalAlternatives: ["Je suis ici."],
+        naturalAlternatives: ["Je suis ici.", "Excusez-moi, je suis ici."],
         explanation:
-          "Both are natural. Bonjour adds a greeting. Je suis ici is enough when the moment is already clear.",
+          "All three are natural, and the engine is identical in each. Bonjour greets the room. Excusez-moi cuts through it. Je suis ici alone is enough when the moment is already clear.",
       },
       validationMode: "model-answer-only",
+    },
+  },
+  {
+    // New screen family for L2, and the screen that finally makes the "engine"
+    // claim visible instead of asserted: one unchanged shape under three
+    // different openers the learner already owns. No new word appears here.
+    id: "s09-natural-reveal-same-engine",
+    type: "natural-reveal",
+    targetItemIds: ["chunk-je-suis", "chunk-bonjour", "chunk-excusez-moi"],
+    payload: {
+      explanation:
+        "Look at what stayed still.\n" +
+        "Three different moments: walking in, being called, interrupting a busy room. Je suis ici did not change once. Only the front of the sentence moved. That is what it means for a shape to be an engine: you keep it, and you change what you attach to it.",
+      naturalAlternatives: [
+        "Je suis ici.",
+        "Bonjour, je suis ici.",
+        "Excusez-moi, je suis ici.",
+      ],
     },
   },
   {
@@ -190,13 +222,14 @@ const screens: LessonScreen[] = [
       title: "You put yourself in the room.",
       lines: [
         "You said where you are.",
-        "You added a greeting and built a full small French interaction.",
+        "You greeted a room, and you interrupted a busy one, with the same two words underneath.",
         "Je suis stayed the same every time. That is the shape you'll use again.",
       ],
       piecesUsed: [
         "je suis",
         "ici",
         "Bonjour",
+        "Excusez-moi",
       ],
       nextLabel: "Continue",
     },
@@ -223,12 +256,17 @@ export const lesson002: Lesson = {
     "chunk-je-suis-ici",
     "word-ici",
     "chunk-bonjour",
+    // Recycled from L1, never re-taught here: it is the piece that lets the
+    // same engine sit in a second kind of moment.
+    "chunk-excusez-moi",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Je suis is the L2 architecture target. No broader conjugation table appears.",
-    "Only one completion, ici, is used in L2. Wider use of the shape is deferred to later lessons.",
+    "Only one completion, ici, is used in L2. Wider use of the shape is deferred to later lessons; L2 varies the OPENER instead of the completion, which adds no new grammar.",
+    "s04 and s05 used to ask for the identical string, which is why the engine claim never landed and why validate:content flagged a duplicate production demand. s05 now recycles L1's excusez-moi so the moment differs while je suis ici stays untouched.",
+    "s09 is a natural-reveal, not a fourth insight card: L2 is already at the three-insight canon budget, and this screen reflects rather than teaches.",
     "The parallel avoir shape is intentionally absent from L2.",
     "Survival-kit callback uses chunk-bonjour. chunk-je-voudrais appears only as a fill trap, not a production target.",
     "The shape-noticed insight is a deliberate meta-reflection: it names what the learner just did without adding a new concept.",
@@ -244,5 +282,8 @@ export const lesson002: Lesson = {
     "No mention of streak, XP, level, or mission.",
     "Recap uses passive mirror tone.",
     "The shape-noticed insight references prior weaves, not future content.",
+    "s04 and s05 no longer share an expected answer; validate:content reports no duplicate production demand for v1-lesson-002.",
+    "TTS reads Excusez-moi, je suis ici cleanly.",
+    "s09 renders three alternatives and grades nothing.",
   ],
 };

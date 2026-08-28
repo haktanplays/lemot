@@ -196,6 +196,101 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Second opener, and the first thing in L1 that is not a café mechanic.
+    // bonjour greets a room you are already part of; excusez-moi buys attention
+    // you do not yet have. Registered and frozen since the L1 ledger, activated
+    // here for the first time so the polite kit stops being a counter script.
+    id: "s13-meet-excusez-moi",
+    type: "meet-card",
+    targetItemIds: ["chunk-excusez-moi"],
+    weakPointTags: ["politeness"],
+    payload: {
+      fr: "Excusez-moi.",
+      en: "Excuse me.",
+      title: "When you need their attention first.",
+      highlights: [{ text: "Excusez-moi", itemId: "chunk-excusez-moi" }],
+      tts: true,
+    },
+  },
+  {
+    // New pedagogical operation for L1: not assembly and not recall, but a
+    // choice between two polite moves the learner now owns. The trap is not a
+    // wrong word — it is the right word in the wrong moment, which is why both
+    // distractors stay fully correct French.
+    id: "s14-fill-opener-choice",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-excusez-moi", "chunk-bonjour"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "The server has their back to you and has not seen you yet. Which opener reaches them?",
+      sentenceAfter: ", je voudrais un café.",
+      blankCount: 1,
+      options: [
+        { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
+        {
+          id: "opt-bonjour-opener",
+          text: "Bonjour",
+          isCorrect: false,
+          trapReason:
+            "Bonjour is right when they are already looking at you. Here you have to reach them first.",
+        },
+        {
+          id: "opt-merci-opener",
+          text: "Merci",
+          isCorrect: false,
+          trapReason: "Merci closes a moment. It cannot open one.",
+        },
+      ],
+      answer: ["opt-excusez-moi"],
+      reveal: {
+        short: "Excusez-moi",
+        explanation:
+          "Excusez-moi asks for attention. Bonjour greets someone who already gave it to you. Both are polite; they do different work.",
+        natural: "Excusez-moi, je voudrais un café.",
+      },
+    },
+  },
+  {
+    // L1's first OPEN weave: no piece tray, no cloze, no model in front of the
+    // learner. Every word in the answer is already owned — the only genuinely
+    // new decision is which opener the moment needs, which s14 just taught. The
+    // prompt is a directive, so the "Say this:" label is correctly suppressed.
+    id: "s15-weave-excusez-moi-cafe",
+    type: "weave",
+    targetItemIds: [
+      "chunk-excusez-moi",
+      "chunk-je-voudrais",
+      "noun-cafe",
+      "chunk-sil-vous-plait",
+    ],
+    evidenceTargetItemIds: ["chunk-excusez-moi"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "open",
+      prompt: "Get their attention, then order a coffee politely.",
+      context:
+        "The server is turned away, wiping down the machine. Nobody has looked up yet.",
+      expectedAnswers: ["Excusez-moi, je voudrais un café, s'il vous plaît."],
+      acceptedAlternatives: [
+        "Excusez-moi, je voudrais un café s'il vous plaît.",
+        "Excusez-moi, un café s'il vous plaît.",
+        "Excusez-moi, je voudrais un café.",
+      ],
+      reveal: {
+        modelAnswer: "Excusez-moi, je voudrais un café, s'il vous plaît.",
+        ifCorrect: "You reached them first, then asked. That is the whole move.",
+        ifCorrectButFlat:
+          "Right. The opener does its work before the request arrives.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Excusez-moi goes first here, because it is what makes them turn around.",
+        ifMissingTargetPiece:
+          "Open with excusez-moi. Bonjour greets; excusez-moi interrupts, politely.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     // Truthful first contact with the tea package, placed immediately before
     // PM-011 asks for it. `un thé` arrives as ONE package inside the request
     // shape the learner already carried for coffee (un café -> same frame ->
@@ -255,6 +350,24 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // New screen family for L1. It teaches no word: it makes the kit portable
+    // by showing the same request under two different openers and two different
+    // drinks, so the learner leaves L1 holding a choice instead of a script.
+    // Recognition only — every piece shown is already owned.
+    id: "s16-natural-reveal-two-openers",
+    type: "natural-reveal",
+    targetItemIds: ["chunk-excusez-moi", "chunk-bonjour", "chunk-je-voudrais"],
+    payload: {
+      explanation:
+        "The request never changed. Only the way you opened it did.\n" +
+        "Bonjour when they can already see you. Excusez-moi when you have to reach them first. Everything after the opener stays exactly where you left it, which is why swapping the drink costs you nothing.",
+      naturalAlternatives: [
+        "Bonjour, je voudrais un café, s'il vous plaît.",
+        "Excusez-moi, je voudrais un thé, s'il vous plaît.",
+      ],
+    },
+  },
+  {
     id: "s08-sayit-cafe-order",
     type: "say-it-your-way",
     targetItemIds: [
@@ -269,19 +382,27 @@ const screens: LessonScreen[] = [
       situation:
         "The counter is quiet. You have been waiting a moment, and the person behind it turns to you.",
       communicativeGoal: "Order politely, then close the exchange.",
+      // Both openers are on the tray now. The learner picks the one the
+      // situation earns — the person has already turned, so bonjour is the
+      // truthful choice here, but excusez-moi is not marked wrong.
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour" },
+        { text: "Excusez-moi", itemId: "chunk-excusez-moi" },
         { text: "je voudrais", itemId: "chunk-je-voudrais" },
         { text: "un café", itemId: "noun-cafe" },
+        { text: "un thé", itemId: "chunk-un-the" },
         { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait" },
         { text: "merci", itemId: "chunk-merci" },
       ],
       modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît. Merci !",
       reveal: {
         modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît. Merci !",
-        naturalAlternatives: ["Bonjour, un café s'il vous plaît. Merci !"],
+        naturalAlternatives: [
+          "Bonjour, un café s'il vous plaît. Merci !",
+          "Excusez-moi, je voudrais un thé, s'il vous plaît. Merci !",
+        ],
         explanation:
-          "Both are natural. The longer form leans formal; the shorter form leans casual.",
+          "All three are natural. The longer form leans formal, the shorter leans casual, and the third opens with excusez-moi because you had to reach them first. The drink is yours to choose.",
       },
       validationMode: "model-answer-only",
     },
@@ -298,9 +419,11 @@ const screens: LessonScreen[] = [
         "You carried the café order you already had.",
         "You softened it with s'il vous plaît, and closed with merci.",
         "You ordered un thé too, with the piece in front of you.",
+        "And you learned to reach someone who wasn't looking: excusez-moi.",
       ],
       piecesUsed: [
         "Bonjour",
+        "Excusez-moi",
         "je voudrais",
         "un café",
         "s'il vous plaît",
@@ -321,9 +444,9 @@ export const lesson001: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "standard",
-  acquisitionDemandItemIds: ["chunk-merci"],
-  estimatedMinutes: 6,
-  canDo: "Greet, ask for something politely, and thank.",
+  acquisitionDemandItemIds: ["chunk-merci", "chunk-excusez-moi"],
+  estimatedMinutes: 8,
+  canDo: "Open a moment two ways, ask politely, and close it.",
   whyItExists:
     "L0 gave one polite café line as a first taste. L1 does not teach that line again: bonjour, je voudrais and un café are recycled straight into production, and the genuinely new ground is the polite close, merci, and the Supported tea variation. These polite chunks carry a whole first exchange before any verb system arrives in L2.",
   prerequisites: [],
@@ -334,16 +457,21 @@ export const lesson001: Lesson = {
     "chunk-je-voudrais",
     "noun-cafe",
     // PR-07: the Supported tea package (primary identity only — `noun-the` is
-    // its linked sub-identity and is never a lesson learning target; the three
-    // rescue chunks are registered for the frozen L1 ledger but not activated
-    // by these payloads).
+    // its linked sub-identity and is never a lesson learning target).
     "chunk-un-the",
+    // Activated in this pass: registered and frozen with the original L1
+    // ledger, but never reached by a payload until now. It is the second
+    // opener, and the reason L1 is no longer a single café script.
+    "chunk-excusez-moi",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "L0 owns first contact with bonjour, je voudrais and un café. L1 recycles them through production only: the duplicate meet cards that restated them were removed, so the learner extends one café moment instead of meeting it twice.",
-    "L1's new ground is s'il vous plaît, merci, and the Supported un thé variation.",
+    "L1's new ground is s'il vous plaît, merci, the Supported un thé variation, and excusez-moi as a second opener.",
+    "excusez-moi was registered and frozen with the original L1 ledger but no payload ever reached it. This pass activates it rather than inventing a new item, so the frozen manifest is untouched.",
+    "The opener pair is taught as a choice, not a synonym: s14 makes the learner pick by situation, s15 makes them produce the choice unsupported, s16 shows both side by side. That is the anti-script move for L1.",
+    "s15 is L1's first open weave: no tray, no cloze. It is only fair because every word in the answer was already produced with support earlier in the same lesson; the sole new decision is the opener.",
     "s12-meet-un-the introduces the tea package before PM-011 asks for it. It is exposure only, so the Supported production evidence still comes from PM-011 alone and no independent tea claim exists.",
     "The survival-kit insight sits after the first weave as a reflection, so the lesson never opens with two explanation screens.",
     "Compact survival kit: bonjour, je voudrais, un café, s'il vous plaît, merci. No phrasebook list of greetings.",
@@ -358,6 +486,10 @@ export const lesson001: Lesson = {
     "Apostrophe normalization handles curly quotes in s'il vous plaît.",
     "Unaccented cafe and plait variants pass Weave via accepted alternatives.",
     "s03 trap reasons fire on veux and suis selections.",
+    "TTS reads Excusez-moi cleanly; the hyphen does not split the utterance.",
+    "s14 trap reasons fire on Bonjour and Merci selections, and neither is described as wrong French.",
+    "s15 renders with no piece tray and no hint link, and accepts the unaccented cafe and plait variants.",
+    "s16 renders as a natural-reveal screen with two alternatives and no grading affordance.",
     "No theatrical positivity tokens appear.",
     "No mention of streak, XP, level, or mission.",
   ],

@@ -237,9 +237,16 @@ describe("five canonical item registrations", () => {
   });
 
   test("exact forms and treatments of the five", () => {
+    // Two of the three rescue chunks were promoted to "active" (IC-002) when
+    // the L1-L3 content pass activated them: L1 declares excusez-moi as an
+    // acquisition demand and asks for it unsupported, L3 does the same for
+    // je ne comprends pas. Every other declared demand in the corpus is
+    // "active", so "supported" would now be the stale row. The surface forms
+    // and types are still pinned exactly, and the still-dormant third chunk
+    // keeps its original treatment.
     const expectations: Array<[string, string, string, string]> = [
-      ["chunk-excusez-moi", "chunk", "supported", "excusez-moi"],
-      ["chunk-je-ne-comprends-pas", "chunk", "supported", "je ne comprends pas"],
+      ["chunk-excusez-moi", "chunk", "active", "excusez-moi"],
+      ["chunk-je-ne-comprends-pas", "chunk", "active", "je ne comprends pas"],
       ["chunk-vous-pouvez-repeter", "chunk", "supported", "vous pouvez répéter ?"],
       ["chunk-un-the", "chunk", "supported", "un thé"],
       ["noun-the", "noun", "supported", "thé"],
@@ -322,14 +329,25 @@ describe("five canonical item registrations", () => {
           `${lesson.id}/${screen.id} must not target the linked sub-identity`,
         );
       }
-      for (const rescue of [
-        "chunk-excusez-moi",
-        "chunk-je-ne-comprends-pas",
-        "chunk-vous-pouvez-repeter",
-      ]) {
+      // The rescue kit is no longer uniformly dormant. The L1-L3 content pass
+      // deliberately activated two of the three, each in exactly one owning
+      // lesson, because they were the only registered chunks that could break
+      // L1 out of its café-only script and L3 out of its ici-only negation.
+      // The guard is kept, not dropped: it now pins WHERE each may appear, so
+      // an accidental fourth activation still fails.
+      const OWNED_BY: Record<string, readonly string[]> = {
+        // Introduced and demanded in L1; recycled (not re-taught) in L2 and L3.
+        "chunk-excusez-moi": ["v1-lesson-001", "v1-lesson-002"],
+        // Introduced and demanded in L3 only.
+        "chunk-je-ne-comprends-pas": ["v1-lesson-003"],
+        // Still dormant: registered for the ledger only.
+        "chunk-vous-pouvez-repeter": [],
+      };
+      for (const [rescue, allowedLessons] of Object.entries(OWNED_BY)) {
+        if (allowedLessons.includes(lesson.id)) continue;
         assert(
           !lesson.learningItems.some((i) => i.id === rescue),
-          `${lesson.id} must not activate ${rescue} — registered for the ledger only`,
+          `${lesson.id} must not activate ${rescue} — allowed only in ${allowedLessons.length ? allowedLessons.join(", ") : "no lesson (ledger only)"}`,
         );
       }
     }
@@ -825,11 +843,16 @@ describe("PR-07 changed no frozen contract", () => {
     // Truthful-progression re-cut: the two meet cards that restated L0's first
     // contact (s00-meet-bonjour, s02-meet-je-voudrais-cafe) are gone, the
     // survival-kit insight moved after the first weave, and s12-meet-un-the
-    // introduces the tea package before PM-011 asks for it. Every SURVIVING id
-    // keeps its original name, and PM-009/PM-011 still sit between meet-merci
-    // and Say It.
+    // introduces the tea package before PM-011 asks for it.
+    //
+    // L1-L3 content pass: s13/s14/s15 add the second opener (meet, choose,
+    // produce unsupported) and s16 reflects on it. They are INSERTED, never
+    // substituted — every id that existed before still exists, in the same
+    // relative order, and PM-009/PM-011 still sit between meet-merci and Say
+    // It. That is the property this assertion is really protecting.
+    const ids = lesson001.screens.map((s) => s.id);
     assertEqual(
-      lesson001.screens.map((s) => s.id).join(","),
+      ids.join(","),
       [
         "s00-goal-survival-kit",
         "s03-fill-polite-verb",
@@ -839,12 +862,38 @@ describe("PR-07 changed no frozen contract", () => {
         "s06-weave-cafe-order-please",
         "s07-meet-merci",
         "s10-weave-merci-thanks",
+        "s13-meet-excusez-moi",
+        "s14-fill-opener-choice",
+        "s15-weave-excusez-moi-cafe",
         "s12-meet-un-the",
         "s11-weave-the-order",
+        "s16-natural-reveal-two-openers",
         "s08-sayit-cafe-order",
         "s09-recap-survival-kit",
       ].join(","),
-      "L0 duplicates removed; registered pilot ids unchanged and still before Say It",
+      "openers inserted; every pre-existing id survives in order and pilot ids stay before Say It",
+    );
+    // Explicit survival check, independent of the exact new ordering above.
+    for (const surviving of [
+      "s00-goal-survival-kit",
+      "s03-fill-polite-verb",
+      "s04-weave-cafe-order",
+      "s01-insight-survival-kit",
+      "s05-meet-sil-vous-plait",
+      "s06-weave-cafe-order-please",
+      "s07-meet-merci",
+      "s10-weave-merci-thanks",
+      "s12-meet-un-the",
+      "s11-weave-the-order",
+      "s08-sayit-cafe-order",
+      "s09-recap-survival-kit",
+    ]) {
+      assert(ids.includes(surviving), `${surviving} must survive the content pass`);
+    }
+    assert(
+      ids.indexOf("s10-weave-merci-thanks") < ids.indexOf("s08-sayit-cafe-order") &&
+        ids.indexOf("s11-weave-the-order") < ids.indexOf("s08-sayit-cafe-order"),
+      "PM-009 and PM-011 still sit before Say It",
     );
     assertEqual(
       qualifyLessonScreenId(lesson001.id, pm011Screen.id),

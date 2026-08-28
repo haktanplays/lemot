@@ -273,15 +273,12 @@ describe("rhythm corrections in L2, L3, L5 and L6", () => {
   // make them two demands; PQ-3 names the real problem and reports L2's pair as
   // known content debt. Policing the same intent two different ways is worse
   // than policing it once, well.
-  test("L2's two equivalent productions are reported as one duplicate demand (PQ-3)", () => {
+  test("L2's two productions are no longer equivalent (PQ-3 clear)", () => {
+    // s04 asks for "Je suis ici."; s05 now asks for "Excusez-moi, je suis ici."
+    // Same engine, different moment — which is what L2 claims and previously
+    // could not demonstrate.
     const warnings = reviewProductionQuality(V1_LESSONS).filter((d) => d.code === "PQ-3");
-    assertEqual(warnings.length, 1, "exactly the known duplicate");
-    assertEqual(warnings[0].lessonId, "v1-lesson-002", "in L2");
-    assertEqual(
-      warnings[0].screenIds,
-      ["s04-weave-je-suis-ici", "s05-weave-call-and-respond"],
-      "the equivalent pair",
-    );
+    assertEqual(warnings.length, 0, "no duplicate production demands");
   });
 
   test("L3 has no run of three weaves", () => {

@@ -48,10 +48,13 @@ const byId = <T extends LessonScreen>(id: string): T => {
 
 
 describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () => {
-  test("screen count stays inside the authored 11-14 band", () => {
+  // Band widened by the L1-L3 content pass: the second-opener arc (meet,
+  // choose, produce unsupported, reflect) adds four screens to L1. The band
+  // still exists so an unbounded lesson fails.
+  test("screen count stays inside the authored 11-16 band", () => {
     assert(
-      screens.length >= 11 && screens.length <= 14,
-      `expected 11-14 rendered screens, got ${screens.length}`,
+      screens.length >= 11 && screens.length <= 16,
+      `expected 11-16 rendered screens, got ${screens.length}`,
     );
   });
 
