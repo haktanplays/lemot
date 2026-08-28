@@ -118,6 +118,49 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // s03 proved the learner can complete the shape one word at a time. This is
+    // the first screen in L2 that asks them to choose a WHOLE sentence, and it
+    // asks against the engine they already own: both wrong options are lines
+    // they produced themselves in L1. Nothing new appears; the difficulty is
+    // entirely retrieval and meaning.
+    id: "s04b-fill-which-engine",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis", "chunk-je-voudrais"],
+    evidenceTargetItemIds: ["chunk-je-suis-ici"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      prompt:
+        "Someone is looking for you and calls your name across the room. They still cannot see you. What do you say?",
+      blankCount: 1,
+      options: [
+        { id: "opt-je-suis-ici", text: "Je suis ici.", isCorrect: true },
+        {
+          id: "opt-je-voudrais-un-cafe",
+          text: "Je voudrais un café.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "Real French, and you can say it. But it asks for something, and nobody here is taking an order.",
+        },
+        {
+          id: "opt-bonjour",
+          text: "Bonjour.",
+          isCorrect: false,
+          learningErrorTag: "missing_word",
+          trapReason:
+            "A greeting is polite, but on its own it still does not tell them where you are.",
+        },
+      ],
+      answer: ["opt-je-suis-ici"],
+      reveal: {
+        short: "Je suis ici.",
+        explanation:
+          "Je voudrais asks for something. Bonjour greets. Only je suis puts you somewhere.",
+        natural: "Je suis ici.",
+      },
+    },
+  },
+  {
     // Placed BETWEEN the two equivalent productions (F-12): it gives the
     // second one an explained purpose instead of leaving them consecutive.
     id: "s06-insight-shape-noticed",
@@ -173,6 +216,97 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // s09's natural-reveal CLAIMS the openers are not interchangeable, and until
+    // now nothing in L2 asked the learner to act on that. This does. It is a
+    // register choice, not a vocabulary choice: every option is correct French
+    // the learner owns, and only the room decides which one belongs.
+    id: "s05b-fill-which-opener",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-excusez-moi", "chunk-bonjour", "chunk-je-suis-ici"],
+    evidenceTargetItemIds: ["chunk-excusez-moi"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "Same two words, a different room: it is busy, and nobody has looked up. How do you open?",
+      sentenceAfter: ", je suis ici.",
+      blankCount: 1,
+      options: [
+        { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
+        {
+          id: "opt-bonjour",
+          text: "Bonjour",
+          isCorrect: false,
+          learningErrorTag: "wrong_register",
+          trapReason:
+            "Correct French, and polite. But a greeting waits to be noticed, and nobody has noticed you yet.",
+        },
+        {
+          id: "opt-merci",
+          text: "Merci",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "Merci closes something. Nothing has happened yet for you to thank them for.",
+        },
+      ],
+      answer: ["opt-excusez-moi"],
+      reveal: {
+        short: "Excusez-moi",
+        explanation:
+          "Both openers are good French. The room chooses between them: bonjour greets people who can see you, excusez-moi reaches people who cannot.",
+        natural: "Excusez-moi, je suis ici.",
+      },
+    },
+  },
+  {
+    // L2's first two-sentence production, and the first time the engine has to
+    // share a moment with the order the learner already carried through L1.
+    // Every piece here was produced in an earlier lesson; only the combination
+    // is new, which is the whole point of calling je suis an engine.
+    id: "s06b-weave-arrive-and-order",
+    type: "weave",
+    targetItemIds: [
+      "chunk-je-suis-ici",
+      "chunk-je-suis",
+      "chunk-bonjour",
+      "chunk-je-voudrais",
+    ],
+    evidenceTargetItemIds: ["chunk-je-suis-ici", "chunk-je-suis"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      weaveType: "context",
+      prompt: "Write it in French: Hello, I am here. I would like a coffee, please.",
+      context:
+        "You said you would meet them at the counter, and you have just walked up. Greet them, say you have arrived, then order.",
+      suggestedPieces: [
+        { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
+        { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
+        { text: "ici", itemId: "word-ici", label: "place word" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
+        { text: "un café", itemId: "noun-cafe", label: "what you want" },
+        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "please" },
+      ],
+      hintCloze: "Bonjour, je suis ___. Je voudrais un café, s'il vous plaît.",
+      expectedAnswers: ["Bonjour, je suis ici. Je voudrais un café, s'il vous plaît."],
+      acceptedAlternatives: [
+        "Bonjour, je suis ici. Un café, s'il vous plaît.",
+        "Bonjour, je suis ici. Je voudrais un café.",
+      ],
+      reveal: {
+        modelAnswer: "Bonjour, je suis ici. Je voudrais un café, s'il vous plaît.",
+        ifCorrect:
+          "Two French sentences, back to back. You built the second one a lesson ago and it still fits.",
+        ifCorrectButFlat:
+          "Right. The arrival lands first, then the order. Two short sentences, not one long one.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Say where you are, stop, then ask: Bonjour, je suis ici. Je voudrais un café, s'il vous plaît.",
+        ifMissingTargetPiece:
+          "Arrive before you order. Je suis ici comes first, then the request you already know.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s07-sayit-arrive-locate",
     type: "say-it-your-way",
     targetItemIds: ["chunk-je-suis", "chunk-je-suis-ici"],
@@ -223,6 +357,7 @@ const screens: LessonScreen[] = [
       lines: [
         "You said where you are.",
         "You greeted a room, and you interrupted a busy one, with the same two words underneath.",
+        "You also chose it over the two sentences you already knew, and put it in front of an order.",
         "Je suis stayed the same every time. That is the shape you'll use again.",
       ],
       piecesUsed: [
@@ -230,6 +365,8 @@ const screens: LessonScreen[] = [
         "ici",
         "Bonjour",
         "Excusez-moi",
+        "je voudrais",
+        "un café",
       ],
       nextLabel: "Continue",
     },
@@ -259,12 +396,23 @@ export const lesson002: Lesson = {
     // Recycled from L1, never re-taught here: it is the piece that lets the
     // same engine sit in a second kind of moment.
     "chunk-excusez-moi",
+    // Recycled from L0/L1 for the finishing pass. je voudrais is the engine the
+    // learner must now choose AGAINST (s04b) rather than only meet as a trap
+    // word, and it plus the café order is the second sentence of s06b. Neither
+    // is re-taught and neither is a demand: acquisitionDemandItemIds stays
+    // exactly ["chunk-je-suis"].
+    "chunk-je-voudrais",
+    "noun-cafe",
+    "chunk-sil-vous-plait",
+    "chunk-merci",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Je suis is the L2 architecture target. No broader conjugation table appears.",
     "Only one completion, ici, is used in L2. Wider use of the shape is deferred to later lessons; L2 varies the OPENER instead of the completion, which adds no new grammar.",
+    "Finishing pass (L1-L6 founder-usable phase): L2 was the thinnest early lesson at four sentences and three productions, and every screen worked the engine in isolation. The three screens added are recombination, not new scope. s04b makes the learner choose the whole sentence against je voudrais and bonjour, so je suis is retrieved by meaning rather than completed by position. s05b makes the opener a decision the room forces, which is what s09 had only asserted. s06b is L2's first two-sentence production and its first recombination with the L1 order. No new item, no second completion, and the demand list is untouched at one.",
+    "The finishing pass deliberately adds no fourth insight card: L2 is at the canon §11 V5 budget of three, so the added screens are two fills and a weave.",
     "s04 and s05 used to ask for the identical string, which is why the engine claim never landed and why validate:content flagged a duplicate production demand. s05 now recycles L1's excusez-moi so the moment differs while je suis ici stays untouched.",
     "s09 is a natural-reveal, not a fourth insight card: L2 is already at the three-insight canon budget, and this screen reflects rather than teaches.",
     "The parallel avoir shape is intentionally absent from L2.",
@@ -285,5 +433,8 @@ export const lesson002: Lesson = {
     "s04 and s05 no longer share an expected answer; validate:content reports no duplicate production demand for v1-lesson-002.",
     "TTS reads Excusez-moi, je suis ici cleanly.",
     "s09 renders three alternatives and grades nothing.",
+    "s04b offers three full sentences and fires the meaning traps on Je voudrais un café and Bonjour.",
+    "s05b renders the trailing frame , je suis ici and fires the register trap on Bonjour.",
+    "s06b accepts the two-sentence answer with or without the internal comma and period, and its hint ladder stays optional (no piece is required).",
   ],
 };
