@@ -11,7 +11,7 @@ const screens: LessonScreen[] = [
       body:
         "Today: no new rule.\n" +
         "By the end: you can carry one small human moment with pieces you already built.\n" +
-        "Main pieces: bonjour, je suis, ici, j'ai, une question, merci, au revoir.",
+        "Main pieces: bonjour, je suis, ici, c'est, j'ai, une question, je ne comprends pas, merci, au revoir.",
     },
   },
   {
@@ -83,6 +83,49 @@ const screens: LessonScreen[] = [
         ifMissingTargetPiece: "Start with bonjour, then je suis ici.",
       },
       validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // The first beat that is not about the learner. s02 asked where THEY are;
+    // this asks what the PLACE is, and the two are a real beginner confusion
+    // that no earlier lesson has put side by side. Both sentences have been
+    // owned since L3, so the whole difficulty is telling one from the other
+    // when a moment needs a specific one.
+    id: "s03b-fill-right-room",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-c-est", "chunk-ce-n-est-pas", "chunk-je-suis-ici"],
+    evidenceTargetItemIds: ["chunk-c-est"],
+    weakPointTags: ["negation"],
+    payload: {
+      prompt:
+        "Someone arrives behind you, looking for the same meeting, and checks the door. Tell them this is the place.",
+      blankCount: 1,
+      options: [
+        { id: "opt-c-est-ici", text: "C'est ici.", isCorrect: true },
+        {
+          id: "opt-ce-n-est-pas-ici",
+          text: "Ce n'est pas ici.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "That sends them away. You have just walked in, so it is the place.",
+        },
+        {
+          id: "opt-je-suis-ici",
+          text: "Je suis ici.",
+          isCorrect: false,
+          learningErrorTag: "wrong_item",
+          trapReason:
+            "True, but it is about you. They asked about the room, and the room takes c'est.",
+        },
+      ],
+      answer: ["opt-c-est-ici"],
+      reveal: {
+        short: "C'est ici.",
+        explanation:
+          "Je suis ici puts you somewhere. C'est ici says what the place is. You have had both since the negation lesson; here the moment picks one.",
+        natural: "C'est ici.",
+      },
     },
   },
   {
@@ -162,6 +205,91 @@ const screens: LessonScreen[] = [
         ifUnderstandableButWrong:
           "Your meaning lands. The question rides on have: j'ai une question.",
         ifMissingTargetPiece: "Use j'ai, then une question.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // The beat every real first exchange has and no lesson so far has staged:
+    // you asked, they answered, and you did not follow. L3 taught this formula
+    // and nothing since has needed it. Here the scene needs it, which is the
+    // difference between owning a sentence and being able to reach for it.
+    id: "s05b-fill-did-not-catch-it",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-non-merci", "chunk-ce-n-est-pas"],
+    evidenceTargetItemIds: ["chunk-je-ne-comprends-pas"],
+    weakPointTags: ["negation", "ne-pas"],
+    payload: {
+      prompt:
+        "They answer your question, quickly and at length. You catch almost none of it. What do you say?",
+      blankCount: 1,
+      options: [
+        { id: "opt-je-ne-comprends-pas", text: "Je ne comprends pas.", isCorrect: true },
+        {
+          id: "opt-non-merci",
+          text: "Non merci.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "That turns something down. They were answering you, not offering you anything.",
+        },
+        {
+          id: "opt-ce-n-est-pas-ici",
+          text: "Ce n'est pas ici.",
+          isCorrect: false,
+          learningErrorTag: "wrong_item",
+          trapReason:
+            "That is about a place. What you missed was what they said.",
+        },
+      ],
+      answer: ["opt-je-ne-comprends-pas"],
+      reveal: {
+        short: "Je ne comprends pas.",
+        explanation:
+          "Saying it is not a failure in the moment; it is the sentence that keeps the moment going.",
+        natural: "Je ne comprends pas.",
+      },
+    },
+  },
+  {
+    // Recognising the sentence and reaching for it under your own power are
+    // different things, so the beat is produced as well as chosen. Two chunks
+    // the learner has owned since L1 and L3 meet for the first time here, and
+    // je ne comprends pas stays ONE closed formula: it is offered whole and is
+    // never decomposed into ne + verb + pas.
+    id: "s05c-weave-excusez-moi-je-ne-comprends-pas",
+    type: "weave",
+    targetItemIds: ["chunk-excusez-moi", "chunk-je-ne-comprends-pas"],
+    weakPointTags: ["politeness", "negation"],
+    payload: {
+      weaveType: "context",
+      prompt: "Write it in French: Excuse me, I don't understand.",
+      context:
+        "They have already moved on to the next thing. Reach them again, then say you did not follow.",
+      suggestedPieces: [
+        {
+          text: "Excusez-moi",
+          itemId: "chunk-excusez-moi",
+          label: "reach them again",
+        },
+        {
+          text: "je ne comprends pas",
+          itemId: "chunk-je-ne-comprends-pas",
+          label: "one whole sentence",
+        },
+      ],
+      expectedAnswers: ["Excusez-moi, je ne comprends pas."],
+      acceptedAlternatives: ["Excusez-moi, je ne comprends pas"],
+      reveal: {
+        modelAnswer: "Excusez-moi, je ne comprends pas.",
+        ifCorrect:
+          "You reached them first, then said it plainly. That is how the conversation stays open.",
+        ifCorrectButFlat:
+          "Right. Excusez-moi turns them back, and the rest is one sentence you already carry whole.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The opener goes first, then the whole formula: Excusez-moi, je ne comprends pas.",
+        ifMissingTargetPiece:
+          "Open with excusez-moi, then say je ne comprends pas without taking it apart.",
       },
       validationMode: "exact-or-alternative",
     },
@@ -284,14 +412,18 @@ const screens: LessonScreen[] = [
       lines: [
         "This was not a quiz. It was a small moment.",
         "You carried it in French, from bonjour to au revoir.",
+        "It did not run perfectly straight, either. You told someone which room it was, and you said when you had not followed.",
         "No new rule. Just the pieces you already built.",
       ],
       piecesUsed: [
         "Bonjour",
+        "Excusez-moi",
         "je suis",
         "ici",
+        "c'est",
         "j'ai",
         "une question",
+        "je ne comprends pas",
         "Merci",
         "Au revoir",
       ],
@@ -310,7 +442,7 @@ export const lesson006: Lesson = {
   primaryArchetype: "review-integration",
   journeyRole: "integration",
   acquisitionDemandItemIds: ["chunk-au-revoir"],
-  estimatedMinutes: 7,
+  estimatedMinutes: 8,
   canDo: "Carry a whole small moment, from greeting to goodbye.",
   whyItExists:
     "L1-L5 each gave a few pieces. L6 adds no new grammar and only one new chunk, au revoir. Its job is to let the learner carry a whole small human moment in French by recombining what they already own, from bonjour at the door to au revoir at the close. This is the Round 1 payoff: a moment, not a quiz.",
@@ -326,6 +458,17 @@ export const lesson006: Lesson = {
     "chunk-j-ai-une-question",
     "chunk-une-question",
     "chunk-merci",
+    // Recycled for the founder-usable pass, none of it re-taught and none of it
+    // a demand. L6 owned a large amount of L1-L5 material it never reached for:
+    // c'est / ce n'est pas and je ne comprends pas have been the learner's since
+    // L3, and excusez-moi since L1. They are what let the scene misfire and
+    // recover instead of running straight through. acquisitionDemandItemIds
+    // stays exactly ["chunk-au-revoir"], which is the ratified Integration
+    // exception and the only new item L6 may carry.
+    "chunk-c-est",
+    "chunk-ce-n-est-pas",
+    "chunk-je-ne-comprends-pas",
+    "chunk-excusez-moi",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
@@ -338,7 +481,9 @@ export const lesson006: Lesson = {
     "Scaffold fade: s08 is the slice's only open weave, with hint pieces that are not required, before the final situation-prompted production at s09.",
     "answerBands and ifBetterThanExpected are used on the Say It Your Way and reveal screens because LessonRendererV1 (SayItYourWayV1, NaturalReveal) renders them. modelAnswer and expectedAnswers remain authoritative for the deterministic path.",
     "Final say-it accepted alternatives match the screen context only: the learner arrives and is present, so Je suis ici fits; the Je ne suis pas ici variant is intentionally excluded from the final close.",
-    "Deferred: aide, comprendre, mais, the fuller L6 syllabus spec, and all later-lesson material. No new grammar engine, no architecture verb, no new screen type.",
+    "Founder-usable pass (L1-L6): L6 was already the densest lesson but only reached for about half the material the learner owns by this point, so the moment ran straight through with nothing to recover from. Three screens use the untouched half. s03b turns the arrival outward with c'est vs je suis ici, a real confusion no earlier lesson had put side by side. s05b and s05c stage the beat every first exchange has, where the answer goes past you and you say so. Recycling only: no new item, and the demand list stays the single ratified Integration exception.",
+    "je ne comprends pas is offered as ONE whole piece in s05c and is never decomposed into ne + verb + pas, matching how L3 owns it. Nothing here teaches comprendre as a verb.",
+    "Deferred: aide, mais, the fuller L6 syllabus spec, and all later-lesson material. No new grammar engine, no architecture verb, no new screen type.",
     "Tone: calm premium mentor, quietly motivating. No XP / streak / level / score / reward / perfect / amazing copy.",
   ],
   qaChecks: [
@@ -347,6 +492,9 @@ export const lesson006: Lesson = {
     "Open weave s08 accepts Merci, au revoir variants including no-comma forms.",
     "Final say-it shows answerBands minimal/good/natural and the ifBetterThanExpected branch; modelAnswer remains the deterministic path.",
     "No repeated negation tokens in any French string.",
+    "s03b fires the opposite-place and about-you traps; s05b fires the refusal and wrong-place traps.",
+    "s05c accepts the answer with or without the trailing period, and its two hint pieces stay optional.",
+    "TTS reads C'est ici, Je ne comprends pas, and Excusez-moi, je ne comprends pas cleanly.",
     "No theatrical positivity tokens appear; the payoff reads calm, not gamified.",
   ],
 };
