@@ -532,19 +532,37 @@ describe("L7-L10 identity is untouched", () => {
     assertEqual(new Set(qualified).size, qualified.length, "qualified ids collide");
   });
 
-  test("L7-L10 declare no new learning items", () => {
-    const EXPECTED: Record<string, number> = {
-      "v1-lesson-007": 4,
-      "v1-lesson-008": 4,
-      "v1-lesson-009": 4,
-      "v1-lesson-010": 11,
+  test("L7-L10 add no new ACQUISITION, however much they recycle", () => {
+    // This replaces a frozen learningItems COUNT. The count was a snapshot
+    // proving one earlier PR was additive; it is not the pedagogical invariant,
+    // and freezing it would forbid exactly the recycling the founder-usable
+    // expansion is made of. The invariant that actually matters is the
+    // journey-role demand budget: a doorway may claim 1-2 new items, an
+    // integration lesson none. Recycled items are free — they were acquired
+    // earlier and are declared here only so the lesson can state a treatment.
+    const EXPECTED_DEMANDS: Record<string, number> = {
+      "v1-lesson-007": 1,
+      "v1-lesson-008": 1,
+      "v1-lesson-009": 1,
+      "v1-lesson-010": 0,
     };
     for (const l of TARGETS) {
-      assertEqual(l.learningItems.length, EXPECTED[l.id], `${l.id} learningItems count`);
+      assertEqual(
+        (l.acquisitionDemandItemIds ?? []).length,
+        EXPECTED_DEMANDS[l.id],
+        `${l.id} acquisition demand count`,
+      );
       for (const item of l.learningItems) {
         assert(
           Object.prototype.hasOwnProperty.call(ITEM_REGISTRY, item.id),
           `${l.id} names unregistered item ${item.id}`,
+        );
+      }
+      // Every declared demand must actually be one of the lesson's items.
+      for (const id of l.acquisitionDemandItemIds ?? []) {
+        assert(
+          l.learningItems.some((i) => i.id === id),
+          `${l.id} demands ${id} without declaring it`,
         );
       }
     }

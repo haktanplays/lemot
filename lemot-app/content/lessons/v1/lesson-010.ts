@@ -299,6 +299,14 @@ export const lesson010: Lesson = {
     "chunk-au-revoir",
     "chunk-vous-pouvez",
     "chunk-m-aider",
+    // Same defect class repaired in L3 and L4, and the last one left open:
+    // s01-insight-three-engines targets chunk-je-suis while learningItems never
+    // declared it, so resolveLessonTreatmentForItem had no treatment to state.
+    // It stayed latent only because insight-card records no evidence today —
+    // which is a property of the renderer, not a licence for the content. It is
+    // a recycle owned by L2, named here as one of the day's three engines;
+    // acquisitionDemandItemIds stays empty because L10 is an integration lesson.
+    "chunk-je-suis",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
