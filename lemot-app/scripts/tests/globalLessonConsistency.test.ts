@@ -506,12 +506,16 @@ describe("hint and header labels are consistent", () => {
 // ── Regression ─────────────────────────────────────────────────────────────
 
 describe("nothing identity-bearing moved", () => {
-  test("L7-L10 screen counts, production counts and tiers are unchanged", () => {
+  test("L7-L10 screen counts and tier sequences match the founder-usable pass", () => {
+    // Snapshot, not contract. It was taken while L7-L10 were out of scope; the
+    // L7-L10 founder-usable pass owns them, so it moves here exactly as the
+    // L1-L3 and L1-L6 passes moved their own ranges. Every lesson now REACHES
+    // open, so the ceiling no longer regresses anywhere between L6 and L10.
     const EXPECTED: Record<number, { screens: number; tiers: string }> = {
-      7: { screens: 11, tiers: "mid,context" },
-      8: { screens: 11, tiers: "context,context" },
-      9: { screens: 11, tiers: "context,open" },
-      10: { screens: 11, tiers: "context,open,open" },
+      7: { screens: 13, tiers: "mid,context,open" },
+      8: { screens: 14, tiers: "context,context,context,open" },
+      9: { screens: 13, tiers: "context,open,open" },
+      10: { screens: 14, tiers: "context,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;

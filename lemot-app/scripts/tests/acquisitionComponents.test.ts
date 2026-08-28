@@ -307,7 +307,11 @@ describe("acquisitionComponents — shipped registry coverage", () => {
     // named across the shipped payloads and must keep being named.
     const EXPECTED_TARGETS: Record<string, string[]> = {
       "chunk-je-suis-ici": ["v1-lesson-002", "v1-lesson-004", "v1-lesson-006"],
-      "chunk-j-ai-faim": ["v1-lesson-004"],
+      // L9 joined L4 in the L7-L10 pass: s12 asks the learner to volunteer the
+      // REASON behind a request, and j'ai faim is the feeling they have owned
+      // since L4 and never had to offer unprompted. Recycled, not re-taught,
+      // and not an L9 acquisition demand.
+      "chunk-j-ai-faim": ["v1-lesson-004", "v1-lesson-009"],
       "chunk-j-ai-une-question": ["v1-lesson-004", "v1-lesson-006"],
       "chunk-j-y-vais": ["v1-lesson-013", "v1-lesson-014"],
     };

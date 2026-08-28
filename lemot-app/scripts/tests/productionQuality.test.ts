@@ -255,10 +255,15 @@ describe("productionQuality — shipped v1", () => {
     // the lesson's least-scaffolded action: L2 3 -> 4 (s06b, the two-sentence
     // recombination), L4 3 -> 4 (s06c, the open two-engine weave), L5 3 -> 4
     // (s06b, the open both-packages weave) and L6 5 -> 6 (s05c, the repair).
-    // No lesson outside L1-L6 moved.
+    // L7-L10 founder-usable pass, all of it recycling rather than acquisition:
+    // L7 3 -> 4 (s12, the open decline-and-go), L8 3 -> 5 (s12 the negative
+    // answer and s13 the open portable ask), L9 3 -> 4 (s12, the open two-part
+    // request-with-reason) and L10 3 -> 6 (s12 the repair, s13 the whole-day
+    // open production, plus the fill-free recount of its existing actions).
+    // No lesson outside L1-L10 has ever moved.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [2, 6, 4, 5, 4, 4, 6, 3, 3, 3, 4, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      [2, 6, 4, 5, 4, 4, 6, 4, 5, 4, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {

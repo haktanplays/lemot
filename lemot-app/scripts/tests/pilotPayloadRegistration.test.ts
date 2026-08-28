@@ -344,17 +344,27 @@ describe("five canonical item registrations", () => {
       const OWNED_BY: Record<string, readonly string[]> = {
         // Introduced and demanded in L1. Recycled, never re-taught: L2 s05/s05b
         // (the opener the busy room forces), L4 s06b (the same choice one layer
-        // out, in front of j'ai une question) and L6 s05c (reaching someone
-        // again after their answer went past you).
+        // out, in front of j'ai une question), L6 s05c (reaching someone again
+        // after their answer went past you) and L8 s13 (the opener that makes
+        // C'est où ? portable into a room whose occupant is facing away — the
+        // L7-L10 pass's least-scaffolded L8 screen).
         "chunk-excusez-moi": [
           "v1-lesson-001",
           "v1-lesson-002",
           "v1-lesson-004",
           "v1-lesson-006",
+          "v1-lesson-008",
         ],
         // Introduced and demanded in L3. Recycled whole in L6 s05b/s05c, where
-        // the scene finally needs it; never decomposed into ne + verb + pas.
-        "chunk-je-ne-comprends-pas": ["v1-lesson-003", "v1-lesson-006"],
+        // the scene finally needs it, and in L10 s11/s12, where the integration
+        // day finally goes wrong: the L7-L10 pass added the repair beat L10 was
+        // missing, and there it is joined to the question rather than left
+        // standing alone as in L6. Never decomposed into ne + verb + pas.
+        "chunk-je-ne-comprends-pas": [
+          "v1-lesson-003",
+          "v1-lesson-006",
+          "v1-lesson-010",
+        ],
         // Still dormant: registered for the ledger only. Reaching for it would
         // mean a question form and vous pouvez, which is new grammar no lesson
         // in L1-L6 owns.
