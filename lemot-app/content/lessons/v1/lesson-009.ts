@@ -225,6 +225,90 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // L9's job is CHOOSING WHAT YOU MEAN. Every earlier fill in this lesson
+    // picks a word inside a frame the lesson already handed over; this one
+    // picks between three whole intentions the learner owns, and only the
+    // situation says which is true. All three are correct French. Only one is
+    // the right thing to want.
+    id: "s11-fill-which-need",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-faire-une-pause"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      prompt:
+        "Two hours in. You are flagging, but you do not want the day to end. Someone asks how you are doing.",
+      blankCount: 1,
+      options: [
+        { id: "opt-pause", text: "Je voudrais faire une pause.", isCorrect: true },
+        {
+          id: "opt-home",
+          text: "Je vais à la maison.",
+          isCorrect: false,
+          trapReason:
+            "That ends the day instead of pausing it. Correct French, wrong thing to want here.",
+        },
+        {
+          id: "opt-hungry",
+          text: "J'ai faim.",
+          isCorrect: false,
+          trapReason:
+            "True, maybe, but it names a different need. Nobody offers you a break for it.",
+        },
+      ],
+      answer: ["opt-pause"],
+      reveal: {
+        short: "Je voudrais faire une pause.",
+        explanation:
+          "All three sentences are good French. Choosing between them is the whole skill: a pause stops the day for a moment, going home stops it for good.",
+        natural: "Je voudrais faire une pause.",
+      },
+    },
+  },
+  {
+    // Multi-part reconstruction at the lesson's lowest support: the ask alone
+    // was already produced at s05, so repeating it would be the same demand
+    // twice. This one adds the REASON, which the learner has owned since L4 and
+    // has never once had to volunteer. Two sentences, no target line, opt-in
+    // pieces.
+    id: "s12-weave-ask-and-say-why",
+    type: "weave",
+    targetItemIds: ["chunk-faire-une-pause", "chunk-j-ai-faim"],
+    weakPointTags: ["avoir-vs-etre", "natural-speech"],
+    payload: {
+      weaveType: "open",
+      prompt: "Ask for the break, then say what is behind it.",
+      context:
+        "They will say yes if you tell them why. You have not eaten since morning.",
+      suggestedPieces: [
+        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "I would like" },
+        {
+          text: "faire une pause",
+          itemId: "chunk-faire-une-pause",
+          label: "to take a break",
+        },
+        { text: "j'ai faim", itemId: "chunk-j-ai-faim", label: "I'm hungry" },
+      ],
+      hintCloze: "Je voudrais ___. J'ai ___.",
+      expectedAnswers: ["Je voudrais faire une pause. J'ai faim."],
+      acceptedAlternatives: [
+        "Je voudrais faire une pause, j'ai faim.",
+        "Je voudrais faire une pause. J'ai faim",
+      ],
+      reveal: {
+        modelAnswer: "Je voudrais faire une pause. J'ai faim.",
+        ifCorrect:
+          "A request and its reason. That is longer than anything the day has asked of you so far.",
+        ifCorrectButFlat:
+          "Right. The ask goes first; the reason makes it easy to say yes to.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Ask first, then give the reason: j'ai faim.",
+        ifMissingTargetPiece:
+          "The ask is je voudrais faire une pause. The reason is the feeling you own already: j'ai faim.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s06-sayit-long-afternoon",
     type: "say-it-your-way",
     targetItemIds: ["chunk-faire-une-pause"],
@@ -274,7 +358,7 @@ export const lesson009: Lesson = {
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "doorway",
   acquisitionDemandItemIds: ["chunk-faire-une-pause"],
-  estimatedMinutes: 7,
+  estimatedMinutes: 9,
   canDo: "Ask for a break, politely, in French.",
   whyItExists:
     "After movement (L7) and orientation (L8), the learner needs a way to talk about doing, and the L09 syllabus deliberately opens faire on ONE narrow, human sense: taking a pause. This compact pilot keeps that slice and nothing else: faire une pause as one active package, carried by the L1 je voudrais engine, softened by s'il vous plaît. The wider faire universe (weather, sport, idioms, the paradigm, je fais production) stays unopened, per the split-sense guardrail.",
@@ -284,12 +368,19 @@ export const lesson009: Lesson = {
     "noun-pause",
     "chunk-je-voudrais",
     "chunk-sil-vous-plait",
+    // Recycled from L4 for the founder-usable pass, never re-taught: s12 asks
+    // the learner to supply the REASON behind the request, and j'ai faim is the
+    // feeling they have owned since L4 and have never had to volunteer. It is a
+    // target there, so the lesson must be able to state its treatment.
+    // acquisitionDemandItemIds stays exactly ["chunk-faire-une-pause"].
+    "chunk-j-ai-faim",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Aligned with docs/syllabus/L09-faire-small-actions-pause.lesson-spec.md pause slice: chunk-faire-une-pause active + noun-pause supported; the scene is rest after a long stretch, per the spec (cafe deliberately absent).",
-    "Progression: context then open. The lesson reaches genuine open production, one tier above L8's ceiling, and no weave carries constitutive support, so evidence class is unchanged.",
+    "Progression: context, open, then open again. The lesson reaches genuine open production and the founder-usable pass added a SECOND open action (s12) that is strictly harder than the first: two sentences instead of one, and the second is volunteered rather than prompted. No weave carries constitutive support, so evidence class is unchanged.",
+    "Founder-usable expansion: L9's job is CHOOSING WHAT YOU MEAN. s11 is the first fill in the lesson where every option is correct French and only the situation decides, and s12 makes the learner supply a reason nobody asked for. Both recycle owned material (je vais from L7, j'ai faim from L4); no new acquisition.",
     "Rhythm deliberately differs from L7 and L8: fill before the insight, the reveal sits immediately after the first ask, and the contrast fill lands between the two weaves.",
     "Added screens carry one role each: s09 reveals the thing-versus-action pair after the first real ask, s08 contrasts which owned piece softens a request, s10 names the reach gained without adding material.",
     "je fais is NOT active-produced and does not appear: the spec holds je fais at supported (for je ne fais pas ca), which this compact pilot defers together with ca and on fait to a later pass.",
@@ -298,7 +389,7 @@ export const lesson009: Lesson = {
     "Recycled load: chunk-je-voudrais and chunk-sil-vous-plait (L1); the new package stays the headline of every screen.",
     "No learner-facing lesson numbers, and the one-off cargo metaphor is retired.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
-    "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
+    "Learner-visible: Home lists L1-L24 under a linear unlock, so this lesson opens once L8 is finished. The older note claiming Home capped the path at L6 was stale and was corrected during native verification of this path.",
   ],
   qaChecks: [
     "TTS reads Je voudrais faire une pause, s'il vous plait cleanly.",
