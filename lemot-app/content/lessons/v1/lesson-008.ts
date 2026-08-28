@@ -187,6 +187,115 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // L8's job is PORTABILITY, and until here the lesson only had two scenes
+    // with two answers. This is the third answer the pair has always implied
+    // and never said: no. Every piece is owned (ce n'est pas from L3, ici from
+    // L2), so the new thing is the situation, not the grammar.
+    id: "s11-fill-wrong-door",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-ce-n-est-pas", "chunk-c-est"],
+    weakPointTags: ["negation"],
+    payload: {
+      prompt:
+        "Someone stops at your door and asks C'est où ? The room they want is not this one.",
+      blankCount: 1,
+      options: [
+        { id: "opt-not-here", text: "Ce n'est pas ici.", isCorrect: true },
+        {
+          id: "opt-here",
+          text: "C'est ici.",
+          isCorrect: false,
+          trapReason:
+            "That says yes, this is the place. They would walk into the wrong room believing you.",
+        },
+        {
+          id: "opt-ask-back",
+          text: "C'est où ?",
+          isCorrect: false,
+          trapReason:
+            "That hands the question straight back. They asked you first.",
+        },
+      ],
+      answer: ["opt-not-here"],
+      reveal: {
+        short: "Ce n'est pas ici.",
+        explanation:
+          "The same shape you use to say where something is also says where it isn't. Ce n'est pas wraps it, ici lands it.",
+        natural: "Ce n'est pas ici.",
+      },
+    },
+  },
+  {
+    // Producing the negative answer, one scene later. The question travels; so
+    // does its refusal.
+    id: "s12-weave-not-this-one",
+    type: "weave",
+    targetItemIds: ["chunk-ce-n-est-pas"],
+    weakPointTags: ["negation", "natural-speech"],
+    payload: {
+      weaveType: "context",
+      prompt: "Tell them it isn't here.",
+      context:
+        "They are already reaching for the handle, and this is not their room.",
+      suggestedPieces: [
+        { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", label: "it isn't" },
+        { text: "ici", itemId: "word-ici", label: "here" },
+      ],
+      hintCloze: "Ce n'est pas ___.",
+      expectedAnswers: ["Ce n'est pas ici."],
+      acceptedAlternatives: ["Ce n'est pas ici"],
+      reveal: {
+        modelAnswer: "Ce n'est pas ici.",
+        ifCorrect: "Three answers now: here, not here, and the question itself.",
+        ifCorrectButFlat: "Right. Short and clear, which is kinder than vague.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. French wraps the no around the middle: ce n'est pas ici.",
+        ifMissingTargetPiece:
+          "Ce n'est pas carries the no. Ici says which place it is not.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // The lesson's summit and its least-scaffolded screen: the same question
+    // from screen 4, now in a scene that will not hand it to you. Nobody is
+    // waiting to be asked, so the learner has to open the moment first.
+    id: "s13-weave-cut-in-and-ask",
+    type: "weave",
+    targetItemIds: ["chunk-excusez-moi", "chunk-c-est-ou"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "open",
+      prompt: "Get their attention, then ask where it is.",
+      context:
+        "This one is busy and facing away. A bare question would land like a tap on the shoulder.",
+      suggestedPieces: [
+        { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
+        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+        { text: "où", itemId: "adverb-ou-where", label: "where" },
+      ],
+      hintCloze: "Excusez-moi, ___ ?",
+      expectedAnswers: ["Excusez-moi, c'est où ?"],
+      acceptedAlternatives: [
+        "Excusez-moi, c'est où",
+        "Excusez-moi. C'est où ?",
+        "Excusez-moi. C'est où",
+      ],
+      reveal: {
+        modelAnswer: "Excusez-moi, c'est où ?",
+        ifCorrect:
+          "The question travelled. Same two words, a room that was not waiting for you.",
+        ifCorrectButFlat:
+          "Right. Excusez-moi buys the second you need before the question.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Open first, then ask: excusez-moi, then c'est où ?",
+        ifMissingTargetPiece:
+          "Excusez-moi opens the moment. C'est où ? is the question you already own.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     // Reveal after both sides have been produced: the pair, heard together.
     id: "s10-reveal-both-sides",
     type: "natural-reveal",
@@ -247,7 +356,7 @@ export const lesson008: Lesson = {
   primaryArchetype: "chunk-natural-speech",
   journeyRole: "doorway",
   acquisitionDemandItemIds: ["chunk-c-est-ou"],
-  estimatedMinutes: 7,
+  estimatedMinutes: 9,
   canDo: "Ask where something is, and answer it's here.",
   whyItExists:
     "L7 gave direction (je vais). L8 gives orientation: the smallest natural question, C'est où ?, built almost entirely from owned pieces (c'est from L3, ici from L2). This is a COMPACT de-scope of the full L08 où/movement spec: no où est-ce que, no movement system, no new places: one frozen question and its answer.",
@@ -257,13 +366,22 @@ export const lesson008: Lesson = {
     "adverb-ou-where",
     "chunk-c-est",
     "chunk-bonjour",
+    // Recycled for the founder-usable pass, neither re-taught nor demanded.
+    // ce n'est pas (L3) gives the question its third answer — the no — which
+    // the ask/answer pair always implied and never said. excusez-moi (L1) is
+    // what makes the question portable into a room that is not waiting for it
+    // (s13). Both are targets, so the lesson must state their treatment.
+    // acquisitionDemandItemIds stays exactly ["chunk-c-est-ou"].
+    "chunk-ce-n-est-pas",
+    "chunk-excusez-moi",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Compact de-scope of docs/syllabus/L08-ou-location-movement-questions.lesson-spec.md against the shipped registry: the owned unit is the frozen question chunk-c-est-ou; adverb-ou-where is supported inside the frame (same ownership pattern as ce n'est pas).",
     "No est-ce que frame, no où est, no movement/destination system, no new place nouns.",
-    "Progression: both weaves run at context, holding the L7 ceiling with no regression. No weave carries constitutive support, so evidence class is unchanged.",
+    "Progression: context, context, then context and open. The founder-usable pass added s13 so the lesson ends on unsupplied production rather than holding flat at context. No weave carries constitutive support, so evidence class is unchanged.",
+    "Founder-usable expansion: L8's job is PORTABILITY. The pair it teaches stops living in one hallway — s11 and s12 add the third answer (ce n'est pas ici, the no the pair always implied), and s13 carries the question into a room that is not waiting to be asked. All recycled from L1/L3; no new acquisition.",
     "Rhythm deliberately differs from L7 and L9: the ou insight is a REFLECTION placed after the first real ask, not a preamble, and the lesson runs ask-side then answer-side.",
     "Added screens carry one role each: s08 gives first contact with the joined answer form before it is produced, s09 contrasts which word asks and which answers, s10 reveals the pair working together.",
     "oui appears ONLY as a fill trap: it stays passive/recognition, never active-produced (L3 decision carried forward).",
@@ -271,7 +389,7 @@ export const lesson008: Lesson = {
     "Recycled load: chunk-c-est (target support), ici and chunk-bonjour as light carryover: the new question stays the headline of every screen.",
     "adverb-ou-where uses the disambiguated id recommended by L08 spec section 18: où (where) folds to ou (or) under accent-stripping, so the id carries the sense to avoid a future collision/migration.",
     "No learner-facing lesson numbers.",
-    "Registered in V1_LESSONS but NOT learner-visible (Home caps at L6).",
+    "Learner-visible: Home lists L1-L24 under a linear unlock, so this lesson opens once L7 is finished. The older note claiming Home capped the path at L6 was stale and was corrected during native verification of this path.",
   ],
   qaChecks: [
     "TTS reads C'est où ? with a natural question contour and no placeholder speech.",

@@ -214,6 +214,86 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // L7's job is the LESS PREDICTABLE moment, so the lesson stops rehearsing
+    // its own script here. Nothing has asked the learner to leave; they are
+    // offered something instead, and the leaving line only fits if they read
+    // the situation rather than the pattern. Whole-sentence choice, not a word
+    // blank: the other two fills in this lesson pick a word, this one picks an
+    // intention.
+    id: "s11-fill-offer-on-the-way-out",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-non-merci", "chunk-je-vais"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "Your coat is on. They hold up the pot and offer you one more coffee. You would rather get going.",
+      blankCount: 1,
+      options: [
+        { id: "opt-decline-go", text: "Non merci. Je vais à la maison.", isCorrect: true },
+        {
+          id: "opt-accept",
+          text: "Je voudrais un café.",
+          isCorrect: false,
+          trapReason:
+            "That asks for the coffee. Polite, but now you are staying for it.",
+        },
+        {
+          id: "opt-not-followed",
+          text: "Je ne comprends pas.",
+          isCorrect: false,
+          trapReason:
+            "You understood perfectly. That line says the opposite, and the offer just stays open.",
+        },
+      ],
+      answer: ["opt-decline-go"],
+      reveal: {
+        short: "Non merci. Je vais à la maison.",
+        explanation:
+          "Turn it down, then say where you are going. The refusal alone can hang; the direction closes it.",
+        natural: "Non merci. Je vais à la maison.",
+      },
+    },
+  },
+  {
+    // The lesson's summit, and its least-scaffolded screen: no chip is marked
+    // required, the cloze holds only the join, and the learner supplies both
+    // halves. This is where L7 stops being one engine drilled and becomes a
+    // small decision made out loud.
+    id: "s12-weave-decline-and-go",
+    type: "weave",
+    targetItemIds: ["chunk-non-merci", "chunk-je-vais", "chunk-a-la-maison"],
+    weakPointTags: ["politeness", "natural-speech"],
+    payload: {
+      weaveType: "open",
+      prompt: "Turn the offer down, then say where you're heading.",
+      context:
+        "They are still holding the pot, waiting for an answer. Be kind about it and go.",
+      suggestedPieces: [
+        { text: "non merci", itemId: "chunk-non-merci", label: "turning it down" },
+        { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
+        { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
+      ],
+      hintCloze: "Non merci. ___.",
+      expectedAnswers: ["Non merci. Je vais à la maison."],
+      acceptedAlternatives: [
+        "Non merci, je vais à la maison.",
+        "Non merci. Je vais à la maison",
+      ],
+      reveal: {
+        modelAnswer: "Non merci. Je vais à la maison.",
+        ifCorrect:
+          "Two moves, and neither one is rude. That is a whole refusal in French.",
+        ifCorrectButFlat:
+          "Right. Non merci softens it; the direction explains it.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Refuse first, then give the reason you are leaving.",
+        ifMissingTargetPiece:
+          "Non merci turns the offer down. Je vais à la maison says why.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s06-sayit-take-your-leave",
     type: "say-it-your-way",
     targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
@@ -264,7 +344,7 @@ export const lesson007: Lesson = {
   primaryArchetype: "architecture-verb",
   journeyRole: "doorway",
   acquisitionDemandItemIds: ["chunk-je-vais"],
-  estimatedMinutes: 7,
+  estimatedMinutes: 8,
   canDo: "Say you're heading home, and close the moment.",
   whyItExists:
     "L6 closed the arrival arc at au revoir. L7 is the frozen-chunk doorway that adds the leaving direction: je vais + à la maison, taken whole. Per the accepted compact doorway spec, this is deliberately NOT the aller/movement lesson: no paradigm, no à/au/à la system, no futur proche. It exists so leaving feels as natural as arriving did.",
@@ -274,19 +354,26 @@ export const lesson007: Lesson = {
     "chunk-a-la-maison",
     "chunk-au-revoir",
     "chunk-merci",
+    // Recycled from L3 for the founder-usable pass, never re-taught: the
+    // unexpected offer (s11) and the open summit (s12) need a refusal the
+    // learner already owns. It is a target on both screens, so the lesson must
+    // be able to state its treatment. acquisitionDemandItemIds stays
+    // exactly ["chunk-je-vais"] — this is recycling, not a second demand.
+    "chunk-non-merci",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Follows docs/syllabus/L07-compact-doorway.compact-spec.md exactly: two new items only (chunk-je-vais active, chunk-a-la-maison supported), frozen chunks, no conjugation.",
     "Strict out-of-scope honored: no aller paradigm, no à/au/à la rule, no futur proche, no y, no où, no new destinations.",
-    "Progression: the lesson runs mid then context, so support fades WITHIN the lesson and the ceiling stays one tier from L6's open summit. No weave carries constitutive support, so evidence class is unchanged.",
+    "Progression: mid, then context, then open. Support fades WITHIN the lesson and the ceiling now MATCHES L6's open summit rather than sitting a tier below it — the founder-usable pass added s12 so the lesson ends on unsupplied production instead of its most scaffolded tier. No weave carries constitutive support, so evidence class is unchanged.",
+    "Founder-usable expansion: L7's job is the less predictable moment. s11 and s12 stop rehearsing the leaving script and make the learner read a situation nobody set up for them — an offer arrives, and the lesson's line only fits if they choose it. Both recycle chunk-non-merci from L3; no new acquisition.",
     "Added screens carry one role each: s08 protects the à la maison package before the two-sentence close, s09 reveals how that close actually lands, s10 names the two-move shape after it has been used.",
     "Recycled load: chunk-au-revoir and chunk-merci as closers (carryover supports the target; the target line leads every model answer).",
     "chunk-je-suis and chunk-je-voudrais appear only as fill traps, not production targets.",
     "No learner-facing lesson numbers: the s05 callback points at the learner's own earlier moment, not at a lesson index.",
     "No XP / streak / level-up / mission copy. SayIt is deterministic model-answer-only.",
-    "Registered in V1_LESSONS but NOT learner-visible: Home caps the path at L6. Surfacing L7 is a separate smoke-bearing unlock decision.",
+    "Learner-visible: Home lists L1-L24 under a linear unlock (app/(tabs)/index.tsx filters number 1..24), so this lesson opens once L6 is finished. The older note here claimed Home capped the path at L6; that stopped being true when the visible range moved, and it was corrected during native verification of this path.",
   ],
   qaChecks: [
     "TTS reads Je vais à la maison and the two-sentence close cleanly.",
