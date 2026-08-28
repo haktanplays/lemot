@@ -38,6 +38,7 @@ import "./selectors.test";
 import "./noSupabaseAuthGuard.test";
 import "./v1LessonStructure.test";
 import "./lessonTargetTreatment.test";
+import "./l1l6FounderCorpus.test";
 import "./shippedItemIds.test";
 import "./shippedErrorTags.test";
 import "./canonRules.test";
