@@ -283,6 +283,19 @@ export const lesson004: Lesson = {
     "micro-je-suis-vs-j-ai",
     "sound-elision",
     "noun-question",
+    // PRE-EXISTING RUNTIME DEFECT, fixed here because it makes L4 unplayable.
+    // s01-insight already targeted chunk-je-suis, s03b-fill already targeted
+    // chunk-je-suis-ici, and s06-weave already targeted chunk-bonjour, but none
+    // was declared in learningItems. resolveLessonTreatmentForItem refuses to
+    // guess an unstated treatment, so the evidence layer threw an uncaught
+    // LessonTreatmentError partway through the lesson. This is the same defect
+    // fixed in L3; all three are recycles, not new demands. je suis and je suis
+    // ici are owned by L2 and appear here only as the contrast side of the
+    // je suis vs j'ai discrimination; bonjour is the L0/L1 opener the weave
+    // puts in front of the engine. acquisitionDemandItemIds is unchanged.
+    "chunk-je-suis",
+    "chunk-je-suis-ici",
+    "chunk-bonjour",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
