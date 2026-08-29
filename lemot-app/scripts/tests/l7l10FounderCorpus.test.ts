@@ -47,7 +47,15 @@ function productionsOf(lesson: Lesson): Production[] {
   return out;
 }
 
-/** Every distinct full French sentence the lesson actually puts on screen. */
+/**
+ * Every distinct French SURFACE the lesson puts on screen.
+ *
+ * Corrected terminology (true-corpus audit): distinct STRINGS, not sentence
+ * architectures. A payload swap or an added opener makes a new surface and no
+ * new architecture. Useful as a "how much French is visible" regression floor;
+ * not evidence of linguistic breadth. See corpusClosure.test.ts for the
+ * hand-made architecture inventory.
+ */
 function visibleSentences(lesson: Lesson): Set<string> {
   const out = new Set<string>();
   const add = (v: unknown) => {
@@ -138,12 +146,12 @@ describe("an answer-band ladder never shows one sentence under two labels", () =
 
 describe("L7-L10 say more than the early demo corpus left them saying", () => {
   // Floors, not exact counts: content may grow, and a later pass must not have
-  // to edit this file to add a sentence. Each floor is the count this pass
-  // produced, and every one of them was below the floor before it
-  // (L7 7, L8 4, L9 6, L10 7).
+  // to edit this file to add a surface. Each floor is the count this pass
+  // produced, and every one was below the floor before it (L7 7, L8 4, L9 6,
+  // L10 7). These are SURFACE floors. They do not claim architecture breadth.
   const FLOOR: Record<number, number> = { 7: 10, 8: 6, 9: 9, 10: 14 };
   for (const lesson of TARGETS) {
-    test(`${lesson.id} shows at least ${FLOOR[lesson.number]} distinct French sentences`, () => {
+    test(`${lesson.id} shows at least ${FLOOR[lesson.number]} distinct French surfaces`, () => {
       const count = visibleSentences(lesson).size;
       assert(
         count >= FLOOR[lesson.number],
@@ -157,7 +165,7 @@ describe("L7-L10 say more than the early demo corpus left them saying", () => {
     // broadest of this range, it has drifted back into being another doorway.
     const widths = TARGETS.map((l) => visibleSentences(l).size);
     const l10 = visibleSentences(byNumber(10)).size;
-    assertEqual(Math.max(...widths), l10, "L10 must carry the widest corpus of L7-L10");
+    assertEqual(Math.max(...widths), l10, "L10 must carry the widest surface corpus of L7-L10");
   });
 });
 

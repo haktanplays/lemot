@@ -41,7 +41,17 @@ function isSentence(text: string): boolean {
   return normalize(text).split(" ").filter((w) => w.length > 0).length >= 2;
 }
 
-/** Every French sentence the learner can actually SEE while playing a screen. */
+/**
+ * Every French SURFACE the learner can see while playing a screen.
+ *
+ * TERMINOLOGY, corrected by the true-corpus audit: this counts distinct
+ * STRINGS, not sentence architectures. "Je voudrais un cafe." and
+ * "Je voudrais un the." are two surfaces and ONE architecture; adding an
+ * opener produces another surface and no new architecture at all. The count
+ * below is therefore a useful regression signal about how much French is on
+ * screen, and is NOT evidence of linguistic breadth. Architecture breadth is
+ * inventoried by hand in corpusClosure.test.ts, because it needs judgment.
+ */
 function visibleSentences(screen: LessonScreen): string[] {
   const out: string[] = [];
   const p = screen.payload as Record<string, unknown>;
@@ -116,7 +126,7 @@ describe("L1-L6 is a path the founder can actually walk", () => {
     for (let i = 0; i < counts.length; i++) {
       assert(
         counts[i] >= FLOORS[i],
-        `${PATH[i].id} shows ${counts[i]} distinct sentences, below its floor of ${FLOORS[i]}`,
+        `${PATH[i].id} shows ${counts[i]} distinct surfaces, below its floor of ${FLOORS[i]}`,
       );
     }
   });
@@ -230,12 +240,14 @@ describe("L1-L6 is not dominated by a handful of demo strings", () => {
       );
       for (const s of sentencesOf(lesson)) seen.add(s);
     }
-    // The whole path's corpus went 40 -> 47 distinct sentences in this phase.
-    // The floor sits above the pre-phase figure on purpose: a floor below it
-    // would have passed the very state this phase was opened to fix.
+    // SURFACES, not architectures: the whole path shows this many distinct
+    // strings. It went 40 -> 47 in the founder-usable phase. The floor sits
+    // above the pre-phase figure on purpose, but note what it does and does not
+    // prove -- it prevents the visible French shrinking, and says nothing about
+    // how many different THINGS the learner can express.
     assert(
       seen.size >= 45,
-      `L1-L6 shows ${seen.size} distinct French sentences; the path should be wider than that`,
+      `L1-L6 shows ${seen.size} distinct French surfaces; the path should be wider than that`,
     );
   });
 });
