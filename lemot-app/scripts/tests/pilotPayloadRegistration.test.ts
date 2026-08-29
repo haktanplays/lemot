@@ -902,7 +902,7 @@ describe("PR-07 changed no frozen contract", () => {
     // substituted — every id that existed before still exists, in the same
     // relative order, and PM-009/PM-011 still sit between meet-merci and Say
     // It. That is the property this assertion is really protecting.
-    const ids = lesson001.screens.map((s) => s.id);
+    const ids = flattenLessonScreens(lesson001).map((s) => s.id);
     assertEqual(
       ids.join(","),
       [
@@ -915,6 +915,9 @@ describe("PR-07 changed no frozen contract", () => {
         "s06-weave-cafe-order-please",
         "s07-meet-merci",
         "s10-weave-merci-thanks",
+        // These three are now the steps of s21-chain-second-opener. The property
+        // this assertion protects is that no pre-existing id was DELETED, so it
+        // walks the flattened list; the chain is checked separately.
         "s13-meet-excusez-moi",
         "s14-fill-opener-choice",
         "s15-weave-excusez-moi-cafe",

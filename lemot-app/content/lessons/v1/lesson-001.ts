@@ -265,98 +265,119 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    // Second opener, and the first thing in L1 that is not a café mechanic.
-    // bonjour greets a room you are already part of; excusez-moi buys attention
-    // you do not yet have. Registered and frozen since the L1 ledger, activated
-    // here for the first time so the polite kit stops being a counter script.
-    id: "s13-meet-excusez-moi",
-    type: "meet-card",
-    targetItemIds: ["chunk-excusez-moi"],
-    weakPointTags: ["politeness"],
-    payload: {
-      fr: "Excusez-moi.",
-      en: "Excuse me.",
-      title: "When you need their attention first.",
-      highlights: [{ text: "Excusez-moi", itemId: "chunk-excusez-moi" }],
-      tts: true,
-    },
-  },
-  {
-    // New pedagogical operation for L1: not assembly and not recall, but a
-    // choice between two polite moves the learner now owns. The trap is not a
-    // wrong word — it is the right word in the wrong moment, which is why both
-    // distractors stay fully correct French.
-    id: "s14-fill-opener-choice",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-excusez-moi", "chunk-bonjour"],
-    weakPointTags: ["politeness"],
-    payload: {
-      prompt:
-        "The server has their back to you and has not seen you yet. Which opener reaches them?",
-      sentenceAfter: ", je voudrais un café.",
-      blankCount: 1,
-      options: [
-        { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
-        {
-          id: "opt-bonjour-opener",
-          text: "Bonjour",
-          isCorrect: false,
-          trapReason:
-            "Bonjour is right when they are already looking at you. Here you have to reach them first.",
-        },
-        {
-          id: "opt-merci-opener",
-          text: "Merci",
-          isCorrect: false,
-          trapReason: "Merci closes a moment. It cannot open one.",
-        },
-      ],
-      answer: ["opt-excusez-moi"],
-      reveal: {
-        short: "Excusez-moi",
-        explanation:
-          "Excusez-moi asks for attention. Bonjour greets someone who already gave it to you. Both are polite; they do different work.",
-        natural: "Excusez-moi, je voudrais un café.",
-      },
-    },
-  },
-  {
-    // L1's first OPEN weave: no piece tray, no cloze, no model in front of the
-    // learner. Every word in the answer is already owned — the only genuinely
-    // new decision is which opener the moment needs, which s14 just taught. The
-    // prompt is a directive, so the "Say this:" label is correctly suppressed.
-    id: "s15-weave-excusez-moi-cafe",
-    type: "weave",
+    // CHAIN: notice, choose, produce. These were three pages that each said
+    // something about excusez-moi; together they are one moment -- meet the opener,
+    // decide which opener the busy room needs, then order behind it.
+    id: "s21-chain-second-opener",
+    type: "activity-chain",
     targetItemIds: [
+      "chunk-bonjour",
       "chunk-excusez-moi",
       "chunk-je-voudrais",
-      "noun-cafe",
       "chunk-sil-vous-plait",
+      "noun-cafe",
     ],
-    evidenceTargetItemIds: ["chunk-excusez-moi"],
     weakPointTags: ["politeness"],
     payload: {
-      weaveType: "open",
-      prompt: "Get their attention, then order a coffee politely.",
-      context:
-        "The server is turned away, wiping down the machine. Nobody has looked up yet.",
-      expectedAnswers: ["Excusez-moi, je voudrais un café, s'il vous plaît."],
-      acceptedAlternatives: [
-        "Excusez-moi, je voudrais un café s'il vous plaît.",
-        "Excusez-moi, un café s'il vous plaît.",
-        "Excusez-moi, je voudrais un café.",
-      ],
-      reveal: {
-        modelAnswer: "Excusez-moi, je voudrais un café, s'il vous plaît.",
-        ifCorrect: "You reached them first, then asked. That is the whole move.",
-        ifCorrectButFlat:
-          "Right. The opener does its work before the request arrives.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Excusez-moi goes first here, because it is what makes them turn around.",
-        ifMissingTargetPiece:
-          "Open with excusez-moi. Bonjour greets; excusez-moi interrupts, politely.",
+      intro:
+        "The counter is busy and nobody has looked up. You still want your coffee.",
+      steps: [
+    {
+      // Second opener, and the first thing in L1 that is not a café mechanic.
+      // bonjour greets a room you are already part of; excusez-moi buys attention
+      // you do not yet have. Registered and frozen since the L1 ledger, activated
+      // here for the first time so the polite kit stops being a counter script.
+      id: "s13-meet-excusez-moi",
+      type: "meet-card",
+      targetItemIds: ["chunk-excusez-moi"],
+      weakPointTags: ["politeness"],
+      payload: {
+        fr: "Excusez-moi.",
+        en: "Excuse me.",
+        title: "When you need their attention first.",
+        highlights: [{ text: "Excusez-moi", itemId: "chunk-excusez-moi" }],
+        tts: true,
       },
-      validationMode: "exact-or-alternative",
+    },
+    {
+      // New pedagogical operation for L1: not assembly and not recall, but a
+      // choice between two polite moves the learner now owns. The trap is not a
+      // wrong word — it is the right word in the wrong moment, which is why both
+      // distractors stay fully correct French.
+      id: "s14-fill-opener-choice",
+      type: "fill-with-traps",
+      targetItemIds: ["chunk-excusez-moi", "chunk-bonjour"],
+      weakPointTags: ["politeness"],
+      payload: {
+        prompt:
+          "The server has their back to you and has not seen you yet. Which opener reaches them?",
+        sentenceAfter: ", je voudrais un café.",
+        blankCount: 1,
+        options: [
+          { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
+          {
+            id: "opt-bonjour-opener",
+            text: "Bonjour",
+            isCorrect: false,
+            trapReason:
+              "Bonjour is right when they are already looking at you. Here you have to reach them first.",
+          },
+          {
+            id: "opt-merci-opener",
+            text: "Merci",
+            isCorrect: false,
+            trapReason: "Merci closes a moment. It cannot open one.",
+          },
+        ],
+        answer: ["opt-excusez-moi"],
+        reveal: {
+          short: "Excusez-moi",
+          explanation:
+            "Excusez-moi asks for attention. Bonjour greets someone who already gave it to you. Both are polite; they do different work.",
+          natural: "Excusez-moi, je voudrais un café.",
+        },
+      },
+    },
+    {
+      // L1's first OPEN weave: no piece tray, no cloze, no model in front of the
+      // learner. Every word in the answer is already owned — the only genuinely
+      // new decision is which opener the moment needs, which s14 just taught. The
+      // prompt is a directive, so the "Say this:" label is correctly suppressed.
+      id: "s15-weave-excusez-moi-cafe",
+      type: "weave",
+      targetItemIds: [
+        "chunk-excusez-moi",
+        "chunk-je-voudrais",
+        "noun-cafe",
+        "chunk-sil-vous-plait",
+      ],
+      evidenceTargetItemIds: ["chunk-excusez-moi"],
+      weakPointTags: ["politeness"],
+      payload: {
+        weaveType: "open",
+        prompt: "Get their attention, then order a coffee politely.",
+        context:
+          "The server is turned away, wiping down the machine. Nobody has looked up yet.",
+        expectedAnswers: ["Excusez-moi, je voudrais un café, s'il vous plaît."],
+        acceptedAlternatives: [
+          "Excusez-moi, je voudrais un café s'il vous plaît.",
+          "Excusez-moi, un café s'il vous plaît.",
+          "Excusez-moi, je voudrais un café.",
+        ],
+        reveal: {
+          modelAnswer: "Excusez-moi, je voudrais un café, s'il vous plaît.",
+          ifCorrect: "You reached them first, then asked. That is the whole move.",
+          ifCorrectButFlat:
+            "Right. The opener does its work before the request arrives.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Excusez-moi goes first here, because it is what makes them turn around.",
+          ifMissingTargetPiece:
+            "Open with excusez-moi. Bonjour greets; excusez-moi interrupts, politely.",
+        },
+        validationMode: "exact-or-alternative",
+      },
+    },
+      ],
     },
   },
   {

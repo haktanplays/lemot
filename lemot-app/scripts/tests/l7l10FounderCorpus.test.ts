@@ -10,6 +10,7 @@
  */
 import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import type { Lesson, LessonScreen } from "../../content/lessonTypes";
 
 const byNumber = (n: number): Lesson => {
@@ -27,7 +28,7 @@ type Production = { lessonNumber: number; screenId: string; answer: string; rank
 
 function productionsOf(lesson: Lesson): Production[] {
   const out: Production[] = [];
-  for (const screen of lesson.screens) {
+  for (const screen of flattenLessonScreens(lesson)) {
     const p = screen.payload as Record<string, unknown>;
     if (screen.type === "weave") {
       const rank = WEAVE_RANK[String(p.weaveType)] ?? 5;
@@ -61,7 +62,7 @@ function visibleSentences(lesson: Lesson): Set<string> {
   const add = (v: unknown) => {
     if (typeof v === "string" && v.trim().length > 0) out.add(v.trim());
   };
-  for (const screen of lesson.screens) {
+  for (const screen of flattenLessonScreens(lesson)) {
     const p = screen.payload as Record<string, unknown>;
     if (screen.type === "meet-card") add(p.fr);
     if (screen.type === "weave") ((p.expectedAnswers as string[]) ?? []).forEach(add);
@@ -81,7 +82,7 @@ function visibleSentences(lesson: Lesson): Set<string> {
 }
 
 const screenById = (lesson: Lesson, id: string): LessonScreen | undefined =>
-  lesson.screens.find((s) => s.id === id);
+  flattenLessonScreens(lesson).find((s) => s.id === id);
 
 // ── The L6 defect, made unrepeatable anywhere ──────────────────────────────
 

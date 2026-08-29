@@ -21,6 +21,7 @@ import { describe, test, assert, assertEqual } from "./harness";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { V1_LESSONS } from "../../content/lessons/v1";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
 import type { Lesson, LessonScreen, WeaveScreen } from "../../content/lessonTypes";
 import { reviewProductionQuality } from "../../content/lessons/productionQuality";
@@ -40,8 +41,14 @@ const TARGETS = [7, 8, 9, 10].map(byNumber);
 const TIER_ORDER = ["supported", "mid", "context", "open"] as const;
 const tierIndex = (t: string) => TIER_ORDER.indexOf(t as (typeof TIER_ORDER)[number]);
 
+/**
+ * Flattened on purpose: a weave inside an activity chain is still a weave the
+ * learner produces. Reading only top-level screens would let a lesson lose its
+ * open summit simply by chaining it, which is precisely the regression the
+ * scaffolding guards exist to prevent.
+ */
 const weavesOf = (l: Lesson): WeaveScreen[] =>
-  l.screens.filter((s): s is WeaveScreen => s.type === "weave");
+  flattenLessonScreens(l).filter((s): s is WeaveScreen => s.type === "weave");
 
 const ceilingOf = (l: Lesson): number =>
   Math.max(...weavesOf(l).map((w) => tierIndex(w.payload.weaveType)));

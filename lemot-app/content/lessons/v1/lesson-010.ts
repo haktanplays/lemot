@@ -236,93 +236,111 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    // A real day does not run clean, and until now this one did. The learner
-    // has owned je ne comprends pas since L3 and used it in L6 to reach someone
-    // again; here it does the job it exists for, in the middle of a day that
-    // was going well. Recognition first, production next.
-    id: "s11-fill-lost-the-thread",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-je-ne-comprends-pas"],
+    // CHAIN: notice the breakdown, then repair it. This is the day's error moment,
+    // and splitting recognition from repair across two pages let the learner meet
+    // the problem and fix it as if they were unrelated events.
+    id: "s21-chain-the-repair",
+    type: "activity-chain",
+    targetItemIds: [
+      "chunk-c-est-ou",
+      "chunk-je-ne-comprends-pas",
+    ],
     weakPointTags: ["negation", "natural-speech"],
     payload: {
-      prompt:
-        "They answer you warmly, at speed, with three details you did not catch. They are already turning away.",
-      blankCount: 1,
-      options: [
-        { id: "opt-not-followed", text: "Je ne comprends pas.", isCorrect: true },
-        {
-          id: "opt-not-here",
-          text: "Ce n'est pas ici.",
-          isCorrect: false,
-          trapReason:
-            "That corrects a place. Nobody was wrong about the place; you simply did not follow.",
+      intro:
+        "They answer you warmly, at speed, and you catch almost none of it.",
+      steps: [
+    {
+      // A real day does not run clean, and until now this one did. The learner
+      // has owned je ne comprends pas since L3 and used it in L6 to reach someone
+      // again; here it does the job it exists for, in the middle of a day that
+      // was going well. Recognition first, production next.
+      id: "s11-fill-lost-the-thread",
+      type: "fill-with-traps",
+      targetItemIds: ["chunk-je-ne-comprends-pas"],
+      weakPointTags: ["negation", "natural-speech"],
+      payload: {
+        prompt:
+          "They answer you warmly, at speed, with three details you did not catch. They are already turning away.",
+        blankCount: 1,
+        options: [
+          { id: "opt-not-followed", text: "Je ne comprends pas.", isCorrect: true },
+          {
+            id: "opt-not-here",
+            text: "Ce n'est pas ici.",
+            isCorrect: false,
+            trapReason:
+              "That corrects a place. Nobody was wrong about the place; you simply did not follow.",
+          },
+          {
+            id: "opt-refuse",
+            text: "Non merci.",
+            isCorrect: false,
+            trapReason:
+              "That turns something down. They were helping, and the day stops here instead of continuing.",
+          },
+        ],
+        answer: ["opt-not-followed"],
+        reveal: {
+          short: "Je ne comprends pas.",
+          explanation:
+            "Saying it keeps the day going. The alternative is nodding, walking off, and still not knowing where to go.",
+          natural: "Je ne comprends pas.",
         },
-        {
-          id: "opt-refuse",
-          text: "Non merci.",
-          isCorrect: false,
-          trapReason:
-            "That turns something down. They were helping, and the day stops here instead of continuing.",
-        },
-      ],
-      answer: ["opt-not-followed"],
-      reveal: {
-        short: "Je ne comprends pas.",
-        explanation:
-          "Saying it keeps the day going. The alternative is nodding, walking off, and still not knowing where to go.",
-        natural: "Je ne comprends pas.",
       },
     },
-  },
-  {
-    // The repair, produced. Deliberately NOT L6's repair line: there the
-    // learner reached someone again and stopped. Here they say they did not
-    // follow AND put the question back, which is the move that actually
-    // rescues a day. Both halves are owned (L3 and L8) and have never been
-    // joined before.
-    id: "s12-weave-say-so-and-ask-again",
-    type: "weave",
-    targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-c-est-ou"],
-    weakPointTags: ["negation", "politeness"],
-    payload: {
-      weaveType: "open",
-      prompt: "Say you did not follow, then put the question back.",
-      context:
-        "They have paused, willing to go again. You get one clean try at this.",
-      suggestedPieces: [
-        {
-          text: "je ne comprends pas",
-          itemId: "chunk-je-ne-comprends-pas",
-          label: "I don't understand",
+    {
+      // The repair, produced. Deliberately NOT L6's repair line: there the
+      // learner reached someone again and stopped. Here they say they did not
+      // follow AND put the question back, which is the move that actually
+      // rescues a day. Both halves are owned (L3 and L8) and have never been
+      // joined before.
+      id: "s12-weave-say-so-and-ask-again",
+      type: "weave",
+      targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-c-est-ou"],
+      weakPointTags: ["negation", "politeness"],
+      payload: {
+        weaveType: "open",
+        prompt: "Say you did not follow, then put the question back.",
+        context:
+          "They have paused, willing to go again. You get one clean try at this.",
+        suggestedPieces: [
+          {
+            text: "je ne comprends pas",
+            itemId: "chunk-je-ne-comprends-pas",
+            label: "I don't understand",
+          },
+          { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+          { text: "où", itemId: "adverb-ou-where", label: "where" },
+        ],
+        hintCloze: "Je ne comprends pas. ___ ?",
+        expectedAnswers: ["Je ne comprends pas. C'est où ?"],
+        acceptedAlternatives: [
+          "Je ne comprends pas. C'est où",
+          "Je ne comprends pas, c'est où ?",
+          // Corpus-closure reconciliation (Pass D, light by design): by L10 the
+          // learner also owns the repair pair completed in L6, so asking them to
+          // go again instead of re-asking the question is an equally true repair
+          // of the same moment. Accepted, not modelled -- the day's own model
+          // still puts the question back.
+          "Je ne comprends pas. Vous pouvez répéter ?",
+          "Je ne comprends pas. Vous pouvez répéter",
+        ],
+        reveal: {
+          modelAnswer: "Je ne comprends pas. C'est où ?",
+          ifCorrect:
+            "That is the whole repair: name the problem, then ask again. The day carries on.",
+          ifCorrectButFlat:
+            "Right. Saying it plainly is faster than pretending you followed.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Say you did not follow first, then ask the question again.",
+          ifMissingTargetPiece:
+            "Je ne comprends pas names the problem. C'est où ? asks again.",
         },
-        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
-        { text: "où", itemId: "adverb-ou-where", label: "where" },
-      ],
-      hintCloze: "Je ne comprends pas. ___ ?",
-      expectedAnswers: ["Je ne comprends pas. C'est où ?"],
-      acceptedAlternatives: [
-        "Je ne comprends pas. C'est où",
-        "Je ne comprends pas, c'est où ?",
-        // Corpus-closure reconciliation (Pass D, light by design): by L10 the
-        // learner also owns the repair pair completed in L6, so asking them to
-        // go again instead of re-asking the question is an equally true repair
-        // of the same moment. Accepted, not modelled -- the day's own model
-        // still puts the question back.
-        "Je ne comprends pas. Vous pouvez répéter ?",
-        "Je ne comprends pas. Vous pouvez répéter",
-      ],
-      reveal: {
-        modelAnswer: "Je ne comprends pas. C'est où ?",
-        ifCorrect:
-          "That is the whole repair: name the problem, then ask again. The day carries on.",
-        ifCorrectButFlat:
-          "Right. Saying it plainly is faster than pretending you followed.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Say you did not follow first, then ask the question again.",
-        ifMissingTargetPiece:
-          "Je ne comprends pas names the problem. C'est où ? asks again.",
+        validationMode: "exact-or-alternative",
       },
-      validationMode: "exact-or-alternative",
+    },
+      ],
     },
   },
   {

@@ -251,90 +251,110 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    // est-ce que, pulled forward from L12 by founder decision. It is the single
-    // highest-leverage construction available to the early path: it turns a
-    // sentence the learner already owns into a question without teaching one
-    // new verb form. L8 is its home because this is the orientation lesson --
-    // the learner has spent it being ASKED things and answering, and here they
-    // can finally ask back.
-    //
-    // Scope is deliberately one wrap. Nearly every proposition L1-L8 owns is
-    // first-person (je suis, j'ai, je voudrais, je vais), and asking yourself a
-    // question is not a human moment; the useful second-person wraps need verb
-    // forms the path does not own. So L8 owns the frame and one true wrap, and
-    // L12 keeps the job of extending it.
-    //
-    // First contact happens on the Showcase, which shows and speaks this line
-    // before the lesson starts -- so no separate meet card is needed, and the
-    // lesson goes straight to the distinction that makes the frame worth owning: the learner already
-    // has two ways to open their mouth about a place, and this is a third with
-    // a different job. C'est où ? asks WHICH place. C'est ici. states one.
-    // Est-ce que c'est ici ? checks one.
-    id: "s18-fill-which-question",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-est-ce-que", "chunk-c-est-ou"],
-    evidenceTargetItemIds: ["chunk-est-ce-que"],
+    // CHAIN: distinguish, then produce. The est-ce que frame is only worth owning
+    // against the two place-moves the learner already has -- C'est ou ? asks which
+    // place, C'est ici. states one, Est-ce que c'est ici ? checks one -- so the
+    // distinction and the first production belong to the same moment.
+    id: "s21-chain-ask-it-back",
+    type: "activity-chain",
+    targetItemIds: [
+      "chunk-c-est",
+      "chunk-c-est-ou",
+      "chunk-est-ce-que",
+    ],
     weakPointTags: ["natural-speech"],
     payload: {
-      prompt:
-        "You are standing at a door and you think this is the room, but you would rather check than walk in on strangers.",
-      blankCount: 1,
-      options: [
-        { id: "opt-est-ce-que", text: "Est-ce que c'est ici ?", isCorrect: true },
-        {
-          id: "opt-ou",
-          text: "C'est où ?",
-          isCorrect: false,
-          trapReason:
-            "That asks them to find it for you. You already think you have found it; you want a yes or a no.",
+      intro:
+        "You are at a door you think is right, and you would rather check than walk in on strangers.",
+      steps: [
+    {
+      // est-ce que, pulled forward from L12 by founder decision. It is the single
+      // highest-leverage construction available to the early path: it turns a
+      // sentence the learner already owns into a question without teaching one
+      // new verb form. L8 is its home because this is the orientation lesson --
+      // the learner has spent it being ASKED things and answering, and here they
+      // can finally ask back.
+      //
+      // Scope is deliberately one wrap. Nearly every proposition L1-L8 owns is
+      // first-person (je suis, j'ai, je voudrais, je vais), and asking yourself a
+      // question is not a human moment; the useful second-person wraps need verb
+      // forms the path does not own. So L8 owns the frame and one true wrap, and
+      // L12 keeps the job of extending it.
+      //
+      // First contact happens on the Showcase, which shows and speaks this line
+      // before the lesson starts -- so no separate meet card is needed, and the
+      // lesson goes straight to the distinction that makes the frame worth owning: the learner already
+      // has two ways to open their mouth about a place, and this is a third with
+      // a different job. C'est où ? asks WHICH place. C'est ici. states one.
+      // Est-ce que c'est ici ? checks one.
+      id: "s18-fill-which-question",
+      type: "fill-with-traps",
+      targetItemIds: ["chunk-est-ce-que", "chunk-c-est-ou"],
+      evidenceTargetItemIds: ["chunk-est-ce-que"],
+      weakPointTags: ["natural-speech"],
+      payload: {
+        prompt:
+          "You are standing at a door and you think this is the room, but you would rather check than walk in on strangers.",
+        blankCount: 1,
+        options: [
+          { id: "opt-est-ce-que", text: "Est-ce que c'est ici ?", isCorrect: true },
+          {
+            id: "opt-ou",
+            text: "C'est où ?",
+            isCorrect: false,
+            trapReason:
+              "That asks them to find it for you. You already think you have found it; you want a yes or a no.",
+          },
+          {
+            id: "opt-statement",
+            text: "C'est ici.",
+            isCorrect: false,
+            trapReason:
+              "That tells them it is the place. You are the one who does not know yet.",
+          },
+        ],
+        answer: ["opt-est-ce-que"],
+        reveal: {
+          short: "Est-ce que c'est ici ?",
+          explanation:
+            "Put est-ce que in front of a sentence you own and it becomes a question. The sentence itself does not change at all.",
+          natural: "Est-ce que c'est ici ?",
         },
-        {
-          id: "opt-statement",
-          text: "C'est ici.",
-          isCorrect: false,
-          trapReason:
-            "That tells them it is the place. You are the one who does not know yet.",
-        },
-      ],
-      answer: ["opt-est-ce-que"],
-      reveal: {
-        short: "Est-ce que c'est ici ?",
-        explanation:
-          "Put est-ce que in front of a sentence you own and it becomes a question. The sentence itself does not change at all.",
-        natural: "Est-ce que c'est ici ?",
       },
     },
-  },
-  {
-    id: "s19-weave-ask-it-back",
-    type: "weave",
-    targetItemIds: ["chunk-est-ce-que", "chunk-c-est"],
-    evidenceTargetItemIds: ["chunk-est-ce-que"],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      weaveType: "open",
-      prompt: "Check whether this is the place.",
-      context:
-        "The corridor has gone quiet and the door in front of you has no sign. Someone is passing.",
-      suggestedPieces: [
-        { text: "est-ce que", itemId: "chunk-est-ce-que", label: "makes it a question" },
-        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
-        { text: "ici", itemId: "word-ici", label: "here" },
-      ],
-      hintCloze: "Est-ce que ___ ?",
-      expectedAnswers: ["Est-ce que c'est ici ?"],
-      acceptedAlternatives: ["Est-ce que c'est ici", "Excusez-moi, est-ce que c'est ici ?"],
-      reveal: {
-        modelAnswer: "Est-ce que c'est ici ?",
-        ifCorrect:
-          "You asked a question you were never taught as a phrase. You built it out of a sentence you already had.",
-        ifCorrectButFlat: "Right. The frame goes in front; the sentence stays whole.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Est-ce que goes first, then the sentence you already own.",
-        ifMissingTargetPiece:
-          "Est-ce que turns it into a question. C'est ici is the sentence being asked about.",
+    {
+      id: "s19-weave-ask-it-back",
+      type: "weave",
+      targetItemIds: ["chunk-est-ce-que", "chunk-c-est"],
+      evidenceTargetItemIds: ["chunk-est-ce-que"],
+      weakPointTags: ["natural-speech"],
+      payload: {
+        weaveType: "open",
+        prompt: "Check whether this is the place.",
+        context:
+          "The corridor has gone quiet and the door in front of you has no sign. Someone is passing.",
+        suggestedPieces: [
+          { text: "est-ce que", itemId: "chunk-est-ce-que", label: "makes it a question" },
+          { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+          { text: "ici", itemId: "word-ici", label: "here" },
+        ],
+        hintCloze: "Est-ce que ___ ?",
+        expectedAnswers: ["Est-ce que c'est ici ?"],
+        acceptedAlternatives: ["Est-ce que c'est ici", "Excusez-moi, est-ce que c'est ici ?"],
+        reveal: {
+          modelAnswer: "Est-ce que c'est ici ?",
+          ifCorrect:
+            "You asked a question you were never taught as a phrase. You built it out of a sentence you already had.",
+          ifCorrectButFlat: "Right. The frame goes in front; the sentence stays whole.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Est-ce que goes first, then the sentence you already own.",
+          ifMissingTargetPiece:
+            "Est-ce que turns it into a question. C'est ici is the sentence being asked about.",
+        },
+        validationMode: "exact-or-alternative",
       },
-      validationMode: "exact-or-alternative",
+    },
+      ],
     },
   },
   {

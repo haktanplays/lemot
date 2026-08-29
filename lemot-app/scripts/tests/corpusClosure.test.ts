@@ -14,6 +14,7 @@
  */
 import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import type { Lesson, LessonScreen } from "../../content/lessonTypes";
 
 const PATH: readonly Lesson[] = V1_LESSONS.filter(
@@ -45,7 +46,7 @@ type Production = {
 
 function productionsOf(lesson: Lesson): Production[] {
   const out: Production[] = [];
-  for (const screen of lesson.screens) {
+  for (const screen of flattenLessonScreens(lesson)) {
     const p = screen.payload as Record<string, unknown>;
     if (screen.type === "say-it-your-way") {
       out.push({ lesson, screen, kind: "open", answers: [], context: "" });
@@ -177,7 +178,7 @@ describe("the payload this phase activated is actually used", () => {
           `L${number} declares ${itemId}`,
         );
         assert(
-          lesson!.screens.some((s) => (s.targetItemIds ?? []).includes(itemId)),
+          flattenLessonScreens(lesson!).some((s) => (s.targetItemIds ?? []).includes(itemId)),
           `L${number} declares ${itemId} but no screen targets it`,
         );
       }
@@ -192,7 +193,7 @@ describe("the payload this phase activated is actually used", () => {
     // recycling is, and requiring two uses there would force padding.
     for (const [itemId, lessons] of Object.entries(ACTIVATED)) {
       const first = PATH.find((l) => l.number === Math.min(...lessons))!;
-      const uses = first.screens.filter((s) =>
+      const uses = flattenLessonScreens(first).filter((s) =>
         (s.targetItemIds ?? []).includes(itemId),
       ).length;
       assert(
@@ -340,7 +341,7 @@ const SHIPPED: ReadonlySet<string> = (() => {
     if (typeof v === "string" && v.trim().length > 0) out.add(norm(v));
   };
   for (const lesson of PATH) {
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       const p = screen.payload as Record<string, unknown>;
       add(p.fr);
       add(p.modelAnswer);

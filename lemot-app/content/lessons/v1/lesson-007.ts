@@ -343,71 +343,90 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    // Corpus closure. Leaving is something people are ASKED about, and L7 only
-    // ever had the learner announce it unprompted. oui became producible in L3,
-    // so the departure can now be an answer as well as a statement.
-    id: "s13-fill-are-you-off",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-oui", "chunk-je-vais"],
+    // CHAIN: choose the answer, then give it in French. Leaving is something people
+    // are ASKED about, and the two halves of that -- picking the true answer and
+    // producing it under a French cue -- belong on one page.
+    id: "s21-chain-asked-on-the-way-out",
+    type: "activity-chain",
+    targetItemIds: [
+      "chunk-a-la-maison",
+      "chunk-je-vais",
+      "chunk-oui",
+    ],
     weakPointTags: ["natural-speech"],
     payload: {
-      prompt:
-        "They see you reaching for your coat and ask whether you are heading off. You are.",
-      blankCount: 1,
-      options: [
-        { id: "opt-oui-maison", text: "Oui, je vais à la maison.", isCorrect: true },
-        {
-          id: "opt-non-merci",
-          text: "Non merci.",
-          isCorrect: false,
-          trapReason:
-            "That turns down an offer. They did not offer you anything; they asked a question.",
+      intro:
+        "They see you reaching for your coat, and they say something as you go.",
+      steps: [
+    {
+      // Corpus closure. Leaving is something people are ASKED about, and L7 only
+      // ever had the learner announce it unprompted. oui became producible in L3,
+      // so the departure can now be an answer as well as a statement.
+      id: "s13-fill-are-you-off",
+      type: "fill-with-traps",
+      targetItemIds: ["chunk-oui", "chunk-je-vais"],
+      weakPointTags: ["natural-speech"],
+      payload: {
+        prompt:
+          "They see you reaching for your coat and ask whether you are heading off. You are.",
+        blankCount: 1,
+        options: [
+          { id: "opt-oui-maison", text: "Oui, je vais à la maison.", isCorrect: true },
+          {
+            id: "opt-non-merci",
+            text: "Non merci.",
+            isCorrect: false,
+            trapReason:
+              "That turns down an offer. They did not offer you anything; they asked a question.",
+          },
+          {
+            id: "opt-suis-ici",
+            text: "Je suis ici.",
+            isCorrect: false,
+            trapReason:
+              "That says where you are. They can see where you are; they asked where you are going.",
+          },
+        ],
+        answer: ["opt-oui-maison"],
+        reveal: {
+          short: "Oui, je vais à la maison.",
+          explanation:
+            "Yes, and then where. The engine does the second half; oui just opens the door for it.",
+          natural: "Oui, je vais à la maison.",
         },
-        {
-          id: "opt-suis-ici",
-          text: "Je suis ici.",
-          isCorrect: false,
-          trapReason:
-            "That says where you are. They can see where you are; they asked where you are going.",
-        },
-      ],
-      answer: ["opt-oui-maison"],
-      reveal: {
-        short: "Oui, je vais à la maison.",
-        explanation:
-          "Yes, and then where. The engine does the second half; oui just opens the door for it.",
-        natural: "Oui, je vais à la maison.",
       },
     },
-  },
-  {
-    // FRENCH-CONTEXT production. The scene is a line the learner owns, said to
-    // them, and the English helper states only their intention.
-    id: "s14-weave-answer-and-leave",
-    type: "weave",
-    targetItemIds: ["chunk-oui", "chunk-je-vais", "chunk-a-la-maison"],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      weaveType: "open",
-      prompt: "Answer them, then say where you are going.",
-      context: "Someone catches your eye on the way out: « Au revoir ? » You are leaving.",
-      suggestedPieces: [
-        { text: "oui", itemId: "chunk-oui", label: "the answer" },
-        { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-        { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
-      ],
-      hintCloze: "Oui, je vais ___.",
-      expectedAnswers: ["Oui, je vais à la maison."],
-      acceptedAlternatives: ["Oui. Je vais à la maison.", "Oui, je vais à la maison"],
-      reveal: {
-        modelAnswer: "Oui, je vais à la maison.",
-        ifCorrect: "Asked in French, answered in French, with the direction attached.",
-        ifCorrectButFlat: "Right. The yes alone would have been thinner.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Answer, then give the direction.",
-        ifMissingTargetPiece: "Oui answers. Je vais à la maison says where.",
+    {
+      // FRENCH-CONTEXT production. The scene is a line the learner owns, said to
+      // them, and the English helper states only their intention.
+      id: "s14-weave-answer-and-leave",
+      type: "weave",
+      targetItemIds: ["chunk-oui", "chunk-je-vais", "chunk-a-la-maison"],
+      weakPointTags: ["natural-speech"],
+      payload: {
+        weaveType: "open",
+        prompt: "Answer them, then say where you are going.",
+        context: "Someone catches your eye on the way out: « Au revoir ? » You are leaving.",
+        suggestedPieces: [
+          { text: "oui", itemId: "chunk-oui", label: "the answer" },
+          { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
+          { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
+        ],
+        hintCloze: "Oui, je vais ___.",
+        expectedAnswers: ["Oui, je vais à la maison."],
+        acceptedAlternatives: ["Oui. Je vais à la maison.", "Oui, je vais à la maison"],
+        reveal: {
+          modelAnswer: "Oui, je vais à la maison.",
+          ifCorrect: "Asked in French, answered in French, with the direction attached.",
+          ifCorrectButFlat: "Right. The yes alone would have been thinner.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Answer, then give the direction.",
+          ifMissingTargetPiece: "Oui answers. Je vais à la maison says where.",
+        },
+        validationMode: "exact-or-alternative",
       },
-      validationMode: "exact-or-alternative",
+    },
+      ],
     },
   },
   {

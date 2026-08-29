@@ -364,96 +364,115 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    // Corpus closure. Payload Economy v0 §6 names une idee as L4's next cargo
-    // and notes it "reuses the already-registered dormant noun-idee" -- the
-    // registry entry has carried the example "J'ai une idee." since it was
-    // written, and no lesson had ever reached it. It widens the engine past
-    // BODY need: j'ai now carries something you feel, something you want to
-    // ask, and something you have thought of.
-    id: "s09-meet-j-ai-une-idee",
-    type: "meet-card",
-    targetItemIds: ["chunk-j-ai", "noun-idee"],
-    weakPointTags: ["elision"],
-    payload: {
-      fr: "J'ai une idée.",
-      en: "I have an idea.",
-      title: "Have carries thoughts too.",
-      highlights: [
-        { text: "J'ai", itemId: "chunk-j-ai" },
-        { text: "une idée", itemId: "noun-idee" },
-      ],
-      tts: true,
-    },
-  },
-  {
-    // Three j'ai lines, three different kinds of thing to have. This is the
-    // screen that stops the engine reading as "j'ai faim and nothing else".
-    id: "s09b-fill-which-kind-of-have",
-    type: "fill-with-traps",
-    targetItemIds: ["noun-idee", "chunk-j-ai"],
-    evidenceTargetItemIds: ["noun-idee"],
+    // CHAIN: meet, distinguish, produce. Meeting a new payload, choosing it against
+    // the two the engine already carries, and then getting it past a room that is
+    // not listening is one thought, not three pages.
+    id: "s21-chain-a-third-kind-of-have",
+    type: "activity-chain",
+    targetItemIds: [
+      "chunk-excusez-moi",
+      "chunk-j-ai",
+      "noun-idee",
+    ],
     weakPointTags: ["avoir-vs-etre"],
     payload: {
-      prompt:
-        "The room has been stuck on the same problem for ten minutes. Something occurs to you.",
-      blankCount: 1,
-      options: [
-        { id: "opt-idee", text: "J'ai une idée.", isCorrect: true },
-        {
-          id: "opt-question",
-          text: "J'ai une question.",
-          isCorrect: false,
-          trapReason:
-            "That asks the room for something. You are about to give them something instead.",
-        },
-        {
-          id: "opt-faim",
-          text: "J'ai faim.",
-          isCorrect: false,
-          trapReason:
-            "Also true, possibly. But it is a body telling you something, not a way out of the problem.",
-        },
-      ],
-      answer: ["opt-idee"],
-      reveal: {
-        short: "J'ai une idée.",
-        explanation:
-          "Same engine, a third kind of thing to have. French has hunger, has questions, and has ideas.",
-        natural: "J'ai une idée.",
+      intro:
+        "The room has been stuck on the same problem for ten minutes, and something occurs to you.",
+      steps: [
+    {
+      // Corpus closure. Payload Economy v0 §6 names une idee as L4's next cargo
+      // and notes it "reuses the already-registered dormant noun-idee" -- the
+      // registry entry has carried the example "J'ai une idee." since it was
+      // written, and no lesson had ever reached it. It widens the engine past
+      // BODY need: j'ai now carries something you feel, something you want to
+      // ask, and something you have thought of.
+      id: "s09-meet-j-ai-une-idee",
+      type: "meet-card",
+      targetItemIds: ["chunk-j-ai", "noun-idee"],
+      weakPointTags: ["elision"],
+      payload: {
+        fr: "J'ai une idée.",
+        en: "I have an idea.",
+        title: "Have carries thoughts too.",
+        highlights: [
+          { text: "J'ai", itemId: "chunk-j-ai" },
+          { text: "une idée", itemId: "noun-idee" },
+        ],
+        tts: true,
       },
     },
-  },
-  {
-    // Second use of the new cargo, unsupplied, behind the opener L1 owns.
-    id: "s09c-weave-cut-in-with-an-idea",
-    type: "weave",
-    targetItemIds: ["chunk-excusez-moi", "noun-idee"],
-    weakPointTags: ["politeness", "elision"],
-    payload: {
-      weaveType: "open",
-      prompt: "Cut in, then say what you have.",
-      context: "They are still talking. What you thought of will not keep much longer.",
-      suggestedPieces: [
-        { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
-        { text: "j'ai", itemId: "chunk-j-ai", label: "I have" },
-        { text: "une idée", itemId: "noun-idee", label: "the thing you have" },
-      ],
-      hintCloze: "Excusez-moi, j'ai ___.",
-      expectedAnswers: ["Excusez-moi, j'ai une idée."],
-      acceptedAlternatives: [
-        "Excusez-moi. J'ai une idée.",
-        "Excusez-moi, j ai une idée.",
-      ],
-      reveal: {
-        modelAnswer: "Excusez-moi, j'ai une idée.",
-        ifCorrect: "The opener you own, in front of the engine you own, carrying something new.",
-        ifCorrectButFlat: "Right. Reach them first, then say what you have.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Excusez-moi buys the pause; j'ai une idée fills it.",
-        ifMissingTargetPiece:
-          "Excusez-moi reaches them. J'ai une idée is what you have.",
+    {
+      // Three j'ai lines, three different kinds of thing to have. This is the
+      // screen that stops the engine reading as "j'ai faim and nothing else".
+      id: "s09b-fill-which-kind-of-have",
+      type: "fill-with-traps",
+      targetItemIds: ["noun-idee", "chunk-j-ai"],
+      evidenceTargetItemIds: ["noun-idee"],
+      weakPointTags: ["avoir-vs-etre"],
+      payload: {
+        prompt:
+          "The room has been stuck on the same problem for ten minutes. Something occurs to you.",
+        blankCount: 1,
+        options: [
+          { id: "opt-idee", text: "J'ai une idée.", isCorrect: true },
+          {
+            id: "opt-question",
+            text: "J'ai une question.",
+            isCorrect: false,
+            trapReason:
+              "That asks the room for something. You are about to give them something instead.",
+          },
+          {
+            id: "opt-faim",
+            text: "J'ai faim.",
+            isCorrect: false,
+            trapReason:
+              "Also true, possibly. But it is a body telling you something, not a way out of the problem.",
+          },
+        ],
+        answer: ["opt-idee"],
+        reveal: {
+          short: "J'ai une idée.",
+          explanation:
+            "Same engine, a third kind of thing to have. French has hunger, has questions, and has ideas.",
+          natural: "J'ai une idée.",
+        },
       },
-      validationMode: "exact-or-alternative",
+    },
+    {
+      // Second use of the new cargo, unsupplied, behind the opener L1 owns.
+      id: "s09c-weave-cut-in-with-an-idea",
+      type: "weave",
+      targetItemIds: ["chunk-excusez-moi", "noun-idee"],
+      weakPointTags: ["politeness", "elision"],
+      payload: {
+        weaveType: "open",
+        prompt: "Cut in, then say what you have.",
+        context: "They are still talking. What you thought of will not keep much longer.",
+        suggestedPieces: [
+          { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
+          { text: "j'ai", itemId: "chunk-j-ai", label: "I have" },
+          { text: "une idée", itemId: "noun-idee", label: "the thing you have" },
+        ],
+        hintCloze: "Excusez-moi, j'ai ___.",
+        expectedAnswers: ["Excusez-moi, j'ai une idée."],
+        acceptedAlternatives: [
+          "Excusez-moi. J'ai une idée.",
+          "Excusez-moi, j ai une idée.",
+        ],
+        reveal: {
+          modelAnswer: "Excusez-moi, j'ai une idée.",
+          ifCorrect: "The opener you own, in front of the engine you own, carrying something new.",
+          ifCorrectButFlat: "Right. Reach them first, then say what you have.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Excusez-moi buys the pause; j'ai une idée fills it.",
+          ifMissingTargetPiece:
+            "Excusez-moi reaches them. J'ai une idée is what you have.",
+        },
+        validationMode: "exact-or-alternative",
+      },
+    },
+      ],
     },
   },
   {

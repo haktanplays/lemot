@@ -256,7 +256,10 @@ describe("L1-L6 is not dominated by a handful of demo strings", () => {
 });
 
 describe("the screens this phase added are wired, not just present", () => {
-  const screenIds = new Map(PATH.map((l) => [l.id, new Set(l.screens.map((s) => s.id))]));
+  // Flattened: several of these screens now live inside activity chains.
+  const screenIds = new Map(
+    PATH.map((l) => [l.id, new Set(flattenLessonScreens(l).map((s) => s.id))]),
+  );
   const ADDED: Readonly<Record<string, readonly string[]>> = {
     "v1-lesson-002": [
       "s04b-fill-which-engine",

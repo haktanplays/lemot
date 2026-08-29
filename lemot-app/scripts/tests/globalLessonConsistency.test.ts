@@ -18,6 +18,7 @@ import { describe, test, assert, assertEqual } from "./harness";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { V1_LESSONS } from "../../content/lessons/v1";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import type { Lesson, WeaveScreen } from "../../content/lessonTypes";
 import { reviewProductionQuality } from "../../content/lessons/productionQuality";
 
@@ -61,8 +62,14 @@ function learnerStrings(node: unknown, out: string[]): void {
   }
 }
 
+/**
+ * Flattened on purpose: a weave inside an activity chain is still a weave the
+ * learner produces. Reading only top-level screens would let a lesson lose its
+ * open summit simply by chaining it, which is precisely the regression the
+ * scaffolding guards exist to prevent.
+ */
 const weavesOf = (l: Lesson): WeaveScreen[] =>
-  l.screens.filter((s): s is WeaveScreen => s.type === "weave");
+  flattenLessonScreens(l).filter((s): s is WeaveScreen => s.type === "weave");
 
 const goalOf = (l: Lesson) =>
   l.screens.find(
@@ -520,10 +527,13 @@ describe("nothing identity-bearing moved", () => {
     // choice and a French-context production to L7/L8/L9. L10 is untouched:
     // its reconciliation was accepted-alternatives only, by design.
     const EXPECTED: Record<number, { screens: number; tiers: string }> = {
-      7: { screens: 16, tiers: "mid,context,open,open" },
-      8: { screens: 20, tiers: "context,context,open,context,open,open" },
-      9: { screens: 16, tiers: "context,open,open,open" },
-      10: { screens: 15, tiers: "context,open,open,open" },
+      // Page counts fell where single-action screens collapsed into chains;
+      // the TIER strings are unchanged, which is the point -- chaining moved
+      // pages, not production.
+      7: { screens: 15, tiers: "mid,context,open,open" },
+      8: { screens: 19, tiers: "context,context,open,context,open,open" },
+      9: { screens: 15, tiers: "context,open,open,open" },
+      10: { screens: 14, tiers: "context,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;

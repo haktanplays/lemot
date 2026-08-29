@@ -280,137 +280,159 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    // The beat every real first exchange has and no lesson so far has staged:
-    // you asked, they answered, and you did not follow. L3 taught this formula
-    // and nothing since has needed it. Here the scene needs it, which is the
-    // difference between owning a sentence and being able to reach for it.
-    id: "s05b-fill-did-not-catch-it",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-non-merci", "chunk-ce-n-est-pas"],
-    evidenceTargetItemIds: ["chunk-je-ne-comprends-pas"],
-    weakPointTags: ["negation", "ne-pas"],
-    payload: {
-      prompt:
-        "They answer your question, quickly and at length. You catch almost none of it. What do you say?",
-      blankCount: 1,
-      options: [
-        { id: "opt-je-ne-comprends-pas", text: "Je ne comprends pas.", isCorrect: true },
-        {
-          id: "opt-non-merci",
-          text: "Non merci.",
-          isCorrect: false,
-          learningErrorTag: "meaning_shift",
-          trapReason:
-            "That turns something down. They were answering you, not offering you anything.",
-        },
-        {
-          id: "opt-ce-n-est-pas-ici",
-          text: "Ce n'est pas ici.",
-          isCorrect: false,
-          learningErrorTag: "wrong_item",
-          trapReason:
-            "That is about a place. What you missed was what they said.",
-        },
-      ],
-      answer: ["opt-je-ne-comprends-pas"],
-      reveal: {
-        short: "Je ne comprends pas.",
-        explanation:
-          "Saying it is not a failure in the moment; it is the sentence that keeps the moment going.",
-        natural: "Je ne comprends pas.",
-      },
-    },
-  },
-  {
-    // Recognising the sentence and reaching for it under your own power are
-    // different things, so the beat is produced as well as chosen. Two chunks
-    // the learner has owned since L1 and L3 meet for the first time here, and
-    // je ne comprends pas stays ONE closed formula: it is offered whole and is
-    // never decomposed into ne + verb + pas.
-    id: "s05c-weave-excusez-moi-je-ne-comprends-pas",
-    type: "weave",
-    targetItemIds: ["chunk-excusez-moi", "chunk-je-ne-comprends-pas"],
-    weakPointTags: ["politeness", "negation"],
-    payload: {
-      weaveType: "context",
-      prompt: "Write it in French: Excuse me, I don't understand.",
-      context:
-        "They have already moved on to the next thing. Reach them again, then say you did not follow.",
-      suggestedPieces: [
-        {
-          text: "Excusez-moi",
-          itemId: "chunk-excusez-moi",
-          label: "reach them again",
-        },
-        {
-          text: "je ne comprends pas",
-          itemId: "chunk-je-ne-comprends-pas",
-          label: "one whole sentence",
-        },
-      ],
-      expectedAnswers: ["Excusez-moi, je ne comprends pas."],
-      acceptedAlternatives: ["Excusez-moi, je ne comprends pas"],
-      reveal: {
-        modelAnswer: "Excusez-moi, je ne comprends pas.",
-        ifCorrect:
-          "You reached them first, then said it plainly. That is how the conversation stays open.",
-        ifCorrectButFlat:
-          "Right. Excusez-moi turns them back, and the rest is one sentence you already carry whole.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The opener goes first, then the whole formula: Excusez-moi, je ne comprends pas.",
-        ifMissingTargetPiece:
-          "Open with excusez-moi, then say je ne comprends pas without taking it apart.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // Corpus closure, Pass B: L6 gains NO new lexis, exactly as Payload Economy
-    // v0 §6 requires of it. What it gains is the REPAIR PAIR -- named in §1 as
-    // one of the four functional holes in the whole spine. Both halves are now
-    // owned (je ne comprends pas from L3, vous pouvez répéter ? activated in
-    // L1), and no lesson had ever put them together, which meant the learner
-    // could say a conversation had broken and could ask for a repeat, but never
-    // did the one thing that actually fixes it: both, in order.
-    id: "s11-weave-the-repair-pair",
-    type: "weave",
-    targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-vous-pouvez-repeter"],
+    // CHAIN: notice, reach them, then repair properly. This is L6's error moment,
+    // and it was spread over three pages -- realising it went past you, cutting back
+    // in, and finally asking for the line again. As one page it is what it actually
+    // is: a conversation breaking and being put back together without help.
+    id: "s21-chain-the-whole-repair",
+    type: "activity-chain",
+    targetItemIds: [
+      "chunk-ce-n-est-pas",
+      "chunk-excusez-moi",
+      "chunk-je-ne-comprends-pas",
+      "chunk-non-merci",
+      "chunk-vous-pouvez-repeter",
+    ],
     weakPointTags: ["negation", "politeness"],
     payload: {
-      weaveType: "open",
-      prompt: "Say it went past you, then ask for it again.",
-      context:
-        "They answered your question and are waiting, friendly, for you to say something back.",
-      suggestedPieces: [
-        {
-          text: "je ne comprends pas",
-          itemId: "chunk-je-ne-comprends-pas",
-          label: "naming the problem",
+      intro:
+        "They answered your question quickly and at length, and you caught almost none of it. They are still here.",
+      steps: [
+    {
+      // The beat every real first exchange has and no lesson so far has staged:
+      // you asked, they answered, and you did not follow. L3 taught this formula
+      // and nothing since has needed it. Here the scene needs it, which is the
+      // difference between owning a sentence and being able to reach for it.
+      id: "s05b-fill-did-not-catch-it",
+      type: "fill-with-traps",
+      targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-non-merci", "chunk-ce-n-est-pas"],
+      evidenceTargetItemIds: ["chunk-je-ne-comprends-pas"],
+      weakPointTags: ["negation", "ne-pas"],
+      payload: {
+        prompt:
+          "They answer your question, quickly and at length. You catch almost none of it. What do you say?",
+        blankCount: 1,
+        options: [
+          { id: "opt-je-ne-comprends-pas", text: "Je ne comprends pas.", isCorrect: true },
+          {
+            id: "opt-non-merci",
+            text: "Non merci.",
+            isCorrect: false,
+            learningErrorTag: "meaning_shift",
+            trapReason:
+              "That turns something down. They were answering you, not offering you anything.",
+          },
+          {
+            id: "opt-ce-n-est-pas-ici",
+            text: "Ce n'est pas ici.",
+            isCorrect: false,
+            learningErrorTag: "wrong_item",
+            trapReason:
+              "That is about a place. What you missed was what they said.",
+          },
+        ],
+        answer: ["opt-je-ne-comprends-pas"],
+        reveal: {
+          short: "Je ne comprends pas.",
+          explanation:
+            "Saying it is not a failure in the moment; it is the sentence that keeps the moment going.",
+          natural: "Je ne comprends pas.",
         },
-        {
-          text: "vous pouvez répéter",
-          itemId: "chunk-vous-pouvez-repeter",
-          label: "asking for it again",
-        },
-      ],
-      hintCloze: "Je ne comprends pas. ___ ?",
-      expectedAnswers: ["Je ne comprends pas. Vous pouvez répéter ?"],
-      acceptedAlternatives: [
-        "Je ne comprends pas. Vous pouvez répéter",
-        "Je ne comprends pas, vous pouvez répéter ?",
-      ],
-      reveal: {
-        modelAnswer: "Je ne comprends pas. Vous pouvez répéter ?",
-        ifCorrect:
-          "Naming the problem is honest. Asking for the repeat is what actually gets you the sentence.",
-        ifCorrectButFlat:
-          "Right. One line admits it, the next one fixes it.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Say it went past you first, then ask for it again.",
-        ifMissingTargetPiece:
-          "Je ne comprends pas names the problem. Vous pouvez répéter ? asks them to go again.",
       },
-      validationMode: "exact-or-alternative",
+    },
+    {
+      // Recognising the sentence and reaching for it under your own power are
+      // different things, so the beat is produced as well as chosen. Two chunks
+      // the learner has owned since L1 and L3 meet for the first time here, and
+      // je ne comprends pas stays ONE closed formula: it is offered whole and is
+      // never decomposed into ne + verb + pas.
+      id: "s05c-weave-excusez-moi-je-ne-comprends-pas",
+      type: "weave",
+      targetItemIds: ["chunk-excusez-moi", "chunk-je-ne-comprends-pas"],
+      weakPointTags: ["politeness", "negation"],
+      payload: {
+        weaveType: "context",
+        prompt: "Write it in French: Excuse me, I don't understand.",
+        context:
+          "They have already moved on to the next thing. Reach them again, then say you did not follow.",
+        suggestedPieces: [
+          {
+            text: "Excusez-moi",
+            itemId: "chunk-excusez-moi",
+            label: "reach them again",
+          },
+          {
+            text: "je ne comprends pas",
+            itemId: "chunk-je-ne-comprends-pas",
+            label: "one whole sentence",
+          },
+        ],
+        expectedAnswers: ["Excusez-moi, je ne comprends pas."],
+        acceptedAlternatives: ["Excusez-moi, je ne comprends pas"],
+        reveal: {
+          modelAnswer: "Excusez-moi, je ne comprends pas.",
+          ifCorrect:
+            "You reached them first, then said it plainly. That is how the conversation stays open.",
+          ifCorrectButFlat:
+            "Right. Excusez-moi turns them back, and the rest is one sentence you already carry whole.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. The opener goes first, then the whole formula: Excusez-moi, je ne comprends pas.",
+          ifMissingTargetPiece:
+            "Open with excusez-moi, then say je ne comprends pas without taking it apart.",
+        },
+        validationMode: "exact-or-alternative",
+      },
+    },
+    {
+      // Corpus closure, Pass B: L6 gains NO new lexis, exactly as Payload Economy
+      // v0 §6 requires of it. What it gains is the REPAIR PAIR -- named in §1 as
+      // one of the four functional holes in the whole spine. Both halves are now
+      // owned (je ne comprends pas from L3, vous pouvez répéter ? activated in
+      // L1), and no lesson had ever put them together, which meant the learner
+      // could say a conversation had broken and could ask for a repeat, but never
+      // did the one thing that actually fixes it: both, in order.
+      id: "s11-weave-the-repair-pair",
+      type: "weave",
+      targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-vous-pouvez-repeter"],
+      weakPointTags: ["negation", "politeness"],
+      payload: {
+        weaveType: "open",
+        prompt: "Say it went past you, then ask for it again.",
+        context:
+          "They answered your question and are waiting, friendly, for you to say something back.",
+        suggestedPieces: [
+          {
+            text: "je ne comprends pas",
+            itemId: "chunk-je-ne-comprends-pas",
+            label: "naming the problem",
+          },
+          {
+            text: "vous pouvez répéter",
+            itemId: "chunk-vous-pouvez-repeter",
+            label: "asking for it again",
+          },
+        ],
+        hintCloze: "Je ne comprends pas. ___ ?",
+        expectedAnswers: ["Je ne comprends pas. Vous pouvez répéter ?"],
+        acceptedAlternatives: [
+          "Je ne comprends pas. Vous pouvez répéter",
+          "Je ne comprends pas, vous pouvez répéter ?",
+        ],
+        reveal: {
+          modelAnswer: "Je ne comprends pas. Vous pouvez répéter ?",
+          ifCorrect:
+            "Naming the problem is honest. Asking for the repeat is what actually gets you the sentence.",
+          ifCorrectButFlat:
+            "Right. One line admits it, the next one fixes it.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Say it went past you first, then ask for it again.",
+          ifMissingTargetPiece:
+            "Je ne comprends pas names the problem. Vous pouvez répéter ? asks them to go again.",
+        },
+        validationMode: "exact-or-alternative",
+      },
+    },
+      ],
     },
   },
   {
