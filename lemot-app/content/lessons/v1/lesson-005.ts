@@ -302,6 +302,80 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Corpus closure. L5's whole job is that un/une is a package distinction,
+    // and until now the une side had exactly ONE member -- so the lesson could
+    // be beaten by remembering that question is the une word. noun-idee gives
+    // une a second member, and it is the same registry item L4 activates one
+    // lesson earlier, exactly the dual-role pattern un the already uses (L1
+    // service variation, L5 package reinforcement). No new registry entry.
+    id: "s09-fill-une-family",
+    type: "fill-with-traps",
+    targetItemIds: ["noun-idee", "grammar-un-une-package"],
+    evidenceTargetItemIds: ["noun-idee"],
+    weakPointTags: ["articles", "gender", "elision"],
+    payload: {
+      prompt:
+        "You thought of something in the last lesson and said it out loud. Which package does idée travel in?",
+      blankCount: 1,
+      options: [
+        { id: "opt-une-idee", text: "une idée", isCorrect: true },
+        {
+          id: "opt-un-idee",
+          text: "un idée",
+          isCorrect: false,
+          trapReason:
+            "Idée takes une, like question. The package is fixed to the word, not chosen by the sentence.",
+        },
+        {
+          id: "opt-bare-idee",
+          text: "idée",
+          isCorrect: false,
+          trapReason:
+            "Bare, with no little word in front. French almost never leaves the noun standing alone here.",
+        },
+      ],
+      answer: ["opt-une-idee"],
+      reveal: {
+        short: "une idée",
+        explanation:
+          "Two in the un family, two in the une family. Un café and un thé; une question and une idée. The little word belongs to the word.",
+        natural: "J'ai une idée.",
+      },
+    },
+  },
+  {
+    // The une family, produced. It deliberately reuses L4's sentence at a
+    // HARDER support level and a different task: L4 supplies the opener and
+    // asks for it behind excusez-moi, this asks for the package inside the
+    // engine with nothing in the tray but the two candidate packages.
+    id: "s09b-weave-pick-the-package",
+    type: "weave",
+    targetItemIds: ["noun-idee", "chunk-j-ai"],
+    weakPointTags: ["articles", "elision"],
+    payload: {
+      weaveType: "open",
+      prompt: "Say what you have, with the right little word in front of it.",
+      context:
+        "A way through has just occurred to you, and the room is waiting for someone to speak.",
+      suggestedPieces: [
+        { text: "une idée", itemId: "noun-idee", label: "one package" },
+        { text: "une question", itemId: "chunk-une-question", label: "the other package" },
+      ],
+      hintCloze: "J'ai ___.",
+      expectedAnswers: ["J'ai une idée."],
+      acceptedAlternatives: ["J ai une idée.", "J'ai une idée"],
+      reveal: {
+        modelAnswer: "J'ai une idée.",
+        ifCorrect: "You picked the package, not just the noun. That is the whole lesson.",
+        ifCorrectButFlat: "Right. Une travels with idée wherever it goes.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The noun brings its little word along: une idée.",
+        ifMissingTargetPiece: "The package is une idée, carried by j'ai.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s07-sayit-ask-for-a-coffee",
     type: "say-it-your-way",
     targetItemIds: ["chunk-je-voudrais", "chunk-un-cafe"],
@@ -399,6 +473,12 @@ export const lesson005: Lesson = {
     // carries. Supported status, not a demand: acquisitionDemandItemIds stays
     // exactly the two package chunks L5 owns.
     "chunk-un-the",
+    // Corpus closure: the same dormant noun-idee L4 activates, recycled here as
+    // the SECOND member of the une family. Before this, une had exactly one
+    // member, so the lesson could be beaten by remembering which single word was
+    // feminine. Two members a side is the smallest corpus in which "package"
+    // reads as a property of the word. Supported, not a demand.
+    "noun-idee",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
