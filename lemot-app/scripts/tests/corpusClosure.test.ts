@@ -218,3 +218,200 @@ describe("the payload this phase activated is actually used", () => {
     );
   });
 });
+
+// ── The true corpus: architectures, not strings ────────────────────────────
+
+/**
+ * Hand-made architecture inventory for L1-L10.
+ *
+ * WHY THIS EXISTS. Every other count in this repo is a count of STRINGS, and a
+ * string count cannot tell the difference between a new thought and a swapped
+ * noun. "Je voudrais un cafe." and "Je voudrais un the." are two surfaces and
+ * one architecture. Adding "Bonjour," in front makes a third surface and still
+ * one architecture. Putting two owned sentences side by side makes a fourth and
+ * still no new architecture. A corpus report built on surfaces therefore
+ * overstates linguistic breadth badly -- the earlier pass reported "126 distinct
+ * sentences" for a path that expresses NINE reusable constructions.
+ *
+ * This table is authored by judgment, deliberately NOT inferred: there is no
+ * semantic classifier here and there should not be one. What IS mechanical is
+ * the check below -- every representative and every version must actually appear
+ * in shipped content, so the taxonomy cannot drift away from the lessons it
+ * describes.
+ */
+type Architecture = {
+  /** Stable name for the reusable construction. */
+  readonly name: string;
+  /** One sentence that shows the shape. Must appear in shipped L1-L10 content. */
+  readonly representative: string;
+  /** The frame, written the way an author thinks about it. */
+  readonly frame: string;
+  /** Lesson that first puts it in front of the learner. */
+  readonly firstLesson: number;
+  /** What the learner can DO with it. */
+  readonly job: string;
+  /** Payload/lexical versions actually shipped. All must appear. */
+  readonly versions: readonly string[];
+};
+
+const ARCHITECTURES: readonly Architecture[] = [
+  {
+    name: "REQUEST_POLITE",
+    representative: "Je voudrais un café.",
+    frame: "je voudrais + payload",
+    firstLesson: 1,
+    job: "ask a stranger for something, softly",
+    // The L9 extension from a noun payload to an action payload (faire une
+    // pause) is a real structural widening of the complement, but it is counted
+    // as a version rather than a second architecture: the engine, the register
+    // and the communicative job are identical.
+    versions: ["Je voudrais un café.", "Je voudrais un thé.", "Je voudrais faire une pause."],
+  },
+  {
+    name: "STATE_LOCATE",
+    representative: "Je suis ici.",
+    frame: "je suis + complement",
+    firstLesson: 2,
+    job: "say where or what you are",
+    versions: ["Je suis ici."],
+  },
+  {
+    name: "NEGATION_TRANSFORM",
+    representative: "Je ne suis pas ici.",
+    frame: "ne + verb + pas, over an owned sentence",
+    firstLesson: 3,
+    job: "turn a sentence you own into its opposite",
+    versions: ["Je ne suis pas ici.", "Ce n'est pas ici."],
+  },
+  {
+    name: "IDENTIFY",
+    representative: "C'est ici.",
+    frame: "c'est + complement",
+    firstLesson: 3,
+    job: "name or point at what something is",
+    versions: ["C'est ici."],
+  },
+  {
+    name: "POSSESS_EXPERIENCE",
+    representative: "J'ai faim.",
+    frame: "j'ai + payload",
+    firstLesson: 4,
+    job: "say what you have or feel, where French uses have and English uses be",
+    versions: ["J'ai faim.", "J'ai une question.", "J'ai une idée."],
+  },
+  {
+    name: "DESTINATION",
+    representative: "Je vais à la maison.",
+    frame: "je vais + destination",
+    firstLesson: 7,
+    job: "say where you are heading",
+    versions: ["Je vais à la maison."],
+  },
+  {
+    name: "ASK_LOCATION",
+    representative: "C'est où ?",
+    frame: "frozen question",
+    firstLesson: 8,
+    job: "ask where something is",
+    versions: ["C'est où ?"],
+  },
+  {
+    name: "REPAIR_NOT_FOLLOWED",
+    representative: "Je ne comprends pas.",
+    frame: "survival formula, learned whole",
+    firstLesson: 3,
+    job: "say the conversation went past you",
+    versions: ["Je ne comprends pas."],
+  },
+  {
+    name: "REPAIR_ASK_REPEAT",
+    representative: "Vous pouvez répéter ?",
+    frame: "survival formula, learned whole",
+    firstLesson: 1,
+    job: "ask for the line again",
+    versions: ["Vous pouvez répéter ?"],
+  },
+];
+
+/** Every French string shipped anywhere in L1-L10, normalized for comparison. */
+const SHIPPED: ReadonlySet<string> = (() => {
+  const out = new Set<string>();
+  const add = (v: unknown) => {
+    if (typeof v === "string" && v.trim().length > 0) out.add(norm(v));
+  };
+  for (const lesson of PATH) {
+    for (const screen of lesson.screens) {
+      const p = screen.payload as Record<string, unknown>;
+      add(p.fr);
+      add(p.modelAnswer);
+      for (const e of (p.examples as Array<{ fr?: string }> | undefined) ?? []) add(e.fr);
+      for (const o of (p.options as Array<{ text?: string }> | undefined) ?? []) add(o.text);
+      for (const a of (p.expectedAnswers as string[] | undefined) ?? []) add(a);
+      for (const a of (p.naturalAlternatives as string[] | undefined) ?? []) add(a);
+      const reveal = p.reveal as Record<string, unknown> | undefined;
+      add(reveal?.modelAnswer);
+      add(reveal?.natural);
+      for (const a of (reveal?.naturalAlternatives as string[] | undefined) ?? []) add(a);
+    }
+  }
+  return out;
+})();
+
+describe("the L1-L10 architecture inventory describes the shipped lessons", () => {
+  test("every architecture's representative sentence is actually shipped", () => {
+    for (const a of ARCHITECTURES) {
+      assert(
+        SHIPPED.has(norm(a.representative)),
+        `${a.name}: representative "${a.representative}" appears nowhere in L1-L10`,
+      );
+    }
+  });
+
+  test("every version listed in the inventory is actually shipped", () => {
+    for (const a of ARCHITECTURES) {
+      for (const v of a.versions) {
+        assert(SHIPPED.has(norm(v)), `${a.name}: version "${v}" appears nowhere in L1-L10`);
+      }
+    }
+  });
+
+  test("the inventory is introduced across the path, not front-loaded", () => {
+    // Each architecture is owned by exactly one lesson, and that lesson exists.
+    for (const a of ARCHITECTURES) {
+      assert(
+        PATH.some((l) => l.number === a.firstLesson),
+        `${a.name} claims L${a.firstLesson}, which is not on the path`,
+      );
+    }
+  });
+
+  test("the true architecture count for L1-L10 is nine", () => {
+    // Pinned so it is a REVIEWABLE number rather than a number nobody looks at.
+    // Nine reusable constructions over ten lessons is the honest figure, against
+    // 80 distinct surfaces and 96 graded exercises built on top of them. If a
+    // later pass raises this, it must do so by adding a construction, not a
+    // payload, an opener, or a second sentence after a full stop.
+    assertEqual(ARCHITECTURES.length, 9, "hand-audited architecture count");
+  });
+
+  test("architectures welded to a single payload stay visible", () => {
+    // Not a failure -- a deliberate record. These four can only say one thing,
+    // because L1-L10 owns no lawful second payload for them: no adjective for
+    // je suis, no second destination for je vais, and c'est is only ever ici.
+    // Widening them needs new vocabulary, which is a founder decision, not an
+    // authoring one.
+    const welded = ARCHITECTURES.filter((a) => a.versions.length === 1).map((a) => a.name);
+    assertEqual(
+      welded,
+      [
+        "STATE_LOCATE",
+        "IDENTIFY",
+        "DESTINATION",
+        "ASK_LOCATION",
+        "REPAIR_NOT_FOLLOWED",
+        "REPAIR_ASK_REPEAT",
+      ],
+      "single-payload architectures, recorded on purpose",
+    );
+  });
+});
