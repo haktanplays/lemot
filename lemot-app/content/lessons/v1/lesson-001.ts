@@ -350,6 +350,68 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Payload Economy v0 §4.1/§6: the second survival formula, activated here
+    // for the first time. It was registered and frozen with the original L1
+    // ledger and its own registry meaning already names L1 as its home, but no
+    // payload had ever reached it. Learned WHOLE, in the locked non-inverted
+    // shape: nothing about vous, pouvez or inversion is taught, and the lesson
+    // never decomposes it.
+    id: "s17-meet-vous-pouvez-repeter",
+    type: "meet-card",
+    targetItemIds: ["chunk-vous-pouvez-repeter"],
+    weakPointTags: ["politeness"],
+    payload: {
+      fr: "Vous pouvez répéter ?",
+      en: "Can you say that again?",
+      title: "When it goes past you.",
+      highlights: [
+        { text: "Vous pouvez répéter", itemId: "chunk-vous-pouvez-repeter" },
+      ],
+      tts: true,
+    },
+  },
+  {
+    // Second use of the formula, as the Payload Economy surface ceiling
+    // requires: a supported item appears at least twice, meet plus one real
+    // use. Here it joins the opener L1 already owns, a combination no screen
+    // has asked for before.
+    id: "s19-weave-excuse-and-repeat",
+    type: "weave",
+    targetItemIds: ["chunk-excusez-moi", "chunk-vous-pouvez-repeter"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "context",
+      prompt: "Cut in politely, then ask for it again.",
+      context:
+        "They have already turned to the next customer, and you still do not have your answer.",
+      suggestedPieces: [
+        { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
+        {
+          text: "vous pouvez répéter",
+          itemId: "chunk-vous-pouvez-repeter",
+          label: "asking again",
+        },
+      ],
+      hintCloze: "Excusez-moi, ___ ?",
+      expectedAnswers: ["Excusez-moi, vous pouvez répéter ?"],
+      acceptedAlternatives: [
+        "Excusez-moi, vous pouvez répéter",
+        "Excusez-moi. Vous pouvez répéter ?",
+      ],
+      reveal: {
+        modelAnswer: "Excusez-moi, vous pouvez répéter ?",
+        ifCorrect:
+          "Two survival moves in one breath. That is most of what a first day needs.",
+        ifCorrectButFlat: "Right. Open first, then ask.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Excusez-moi reaches them; the second half asks.",
+        ifMissingTargetPiece:
+          "Excusez-moi gets their attention. Vous pouvez répéter ? asks for the line again.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     // New screen family for L1. It teaches no word: it makes the kit portable
     // by showing the same request under two different openers and two different
     // drinks, so the learner leaves L1 holding a choice instead of a script.
@@ -463,6 +525,12 @@ export const lesson001: Lesson = {
     // ledger, but never reached by a payload until now. It is the second
     // opener, and the reason L1 is no longer a single café script.
     "chunk-excusez-moi",
+    // Activated in the corpus-closure pass. Payload Economy v0 §4.1 makes it a
+    // SURVIVAL FORMULA -- learned whole, chip-legal despite sentence shape --
+    // and §6 places it in L1. It was registered and frozen with the original L1
+    // ledger and never reached by a payload until now. Supported, not a demand:
+    // acquisitionDemandItemIds stays ["chunk-merci", "chunk-excusez-moi"].
+    "chunk-vous-pouvez-repeter",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },

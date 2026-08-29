@@ -307,6 +307,118 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Corpus closure. L2 owns one engine and one cargo word, so it can only
+    // widen by RECOMBINATION -- which makes it the lesson most at risk of being
+    // one memorised line. This fill puts the engine beside the two other whole
+    // lines the learner now owns and asks which one the moment wants. It is the
+    // first screen in L2 whose options are complete utterances.
+    id: "s10b-fill-which-line",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-je-suis-ici"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      prompt:
+        "Someone is calling for you from the next room. They cannot see you, and they are not offering you anything.",
+      blankCount: 1,
+      options: [
+        { id: "opt-ici", text: "Je suis ici.", isCorrect: true },
+        {
+          id: "opt-the",
+          text: "Je voudrais un thé, s'il vous plaît.",
+          isCorrect: false,
+          trapReason:
+            "That orders a drink. Nobody asked what you wanted; they asked where you are.",
+        },
+        {
+          id: "opt-repeter",
+          text: "Vous pouvez répéter ?",
+          isCorrect: false,
+          trapReason:
+            "That asks them to say it again. You heard them perfectly well.",
+        },
+      ],
+      answer: ["opt-ici"],
+      reveal: {
+        short: "Je suis ici.",
+        explanation:
+          "Three lines you own, one job each. This engine is the one that puts you somewhere.",
+        natural: "Je suis ici.",
+      },
+    },
+  },
+  {
+    // The first production in L1-L6 whose SCENE is in French. The learner reads
+    // what was said, not a translation of what to say, and the English helper
+    // states only the situation. Every French word in the context is already
+    // owned, and none of it leaks the answer.
+    id: "s10c-weave-answer-the-call",
+    type: "weave",
+    targetItemIds: ["chunk-je-suis-ici"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      weaveType: "context",
+      prompt: "Answer so they know where you are.",
+      context: "From the next room, someone calls: « Bonjour ? » They cannot see you.",
+      suggestedPieces: [
+        { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
+        { text: "ici", itemId: "word-ici", label: "here" },
+      ],
+      hintCloze: "Je suis ___.",
+      expectedAnswers: ["Je suis ici."],
+      acceptedAlternatives: ["Bonjour, je suis ici."],
+      reveal: {
+        modelAnswer: "Je suis ici.",
+        ifCorrect: "Two words, and the room knows where you are.",
+        ifCorrectButFlat: "Right. Nothing else is needed to answer that.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. The answer to « Bonjour ? » from an unseen room is where you are.",
+        ifMissingTargetPiece: "Je suis puts you somewhere. Ici says where.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
+    // The same two-sentence shape the lesson already built, with a different
+    // drink at the end. It exists so the recombination reads as a pattern the
+    // learner can refill rather than one sentence they memorised: the engine
+    // holds, the order changes.
+    id: "s10d-weave-arrive-and-order-tea",
+    type: "weave",
+    targetItemIds: ["chunk-je-suis-ici", "chunk-un-the"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "open",
+      prompt: "Say you have arrived, then order the other drink politely.",
+      context:
+        "Same doorway, a different afternoon. You do not feel like coffee today.",
+      suggestedPieces: [
+        { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
+        { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
+        { text: "ici", itemId: "word-ici", label: "here" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
+        { text: "un thé", itemId: "chunk-un-the", label: "the other drink" },
+        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
+      ],
+      hintCloze: "Bonjour, je suis ___. Je voudrais ___, s'il vous plaît.",
+      expectedAnswers: ["Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît."],
+      acceptedAlternatives: [
+        "Bonjour, je suis ici. Je voudrais un thé.",
+        "Bonjour. Je suis ici. Je voudrais un thé, s'il vous plaît.",
+      ],
+      reveal: {
+        modelAnswer: "Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît.",
+        ifCorrect:
+          "Same two moves, different drink. That is a shape you can refill, not a line you memorised.",
+        ifCorrectButFlat: "Right. Arrive first, then ask.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Say where you are, stop, then order.",
+        ifMissingTargetPiece:
+          "Je suis ici puts you in the room. Je voudrais un thé asks for the drink.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s07-sayit-arrive-locate",
     type: "say-it-your-way",
     targetItemIds: ["chunk-je-suis", "chunk-je-suis-ici"],
@@ -396,6 +508,11 @@ export const lesson002: Lesson = {
     // Recycled from L1, never re-taught here: it is the piece that lets the
     // same engine sit in a second kind of moment.
     "chunk-excusez-moi",
+    // Corpus closure: L1's tea package, recycled so the two-sentence
+    // recombination has a second thing to order. It is the reason s10d reads as
+    // a refillable shape rather than the café line memorised twice. Supported,
+    // supplied in the tray, never re-taught, and not a demand.
+    "chunk-un-the",
     // Recycled from L0/L1 for the finishing pass. je voudrais is the engine the
     // learner must now choose AGAINST (s04b) rather than only meet as a trap
     // word, and it plus the café order is the second sentence of s06b. Neither
