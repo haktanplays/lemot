@@ -232,6 +232,13 @@ const screens: LessonScreen[] = [
       acceptedAlternatives: [
         "Je ne comprends pas. C'est où",
         "Je ne comprends pas, c'est où ?",
+        // Corpus-closure reconciliation (Pass D, light by design): by L10 the
+        // learner also owns the repair pair completed in L6, so asking them to
+        // go again instead of re-asking the question is an equally true repair
+        // of the same moment. Accepted, not modelled -- the day's own model
+        // still puts the question back.
+        "Je ne comprends pas. Vous pouvez répéter ?",
+        "Je ne comprends pas. Vous pouvez répéter",
       ],
       reveal: {
         modelAnswer: "Je ne comprends pas. C'est où ?",
