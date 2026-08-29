@@ -3,6 +3,76 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L8's world is orientation, and it is where the learner stops being able
+    // only to ANSWER questions and starts being able to ask them. est-ce que is
+    // pulled forward from L12 by founder decision: it is the single highest
+    // leverage construction available, because it turns any owned statement
+    // into a question without teaching a new verb form.
+    id: "s20-showcase-asking",
+    type: "showcase",
+    payload: {
+      intro:
+        "Until now you could answer. Today you can ask. One small frame turns almost any sentence you already own into a question.",
+      clusters: [
+        {
+          label: "Asking where",
+          sentences: [
+            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"] },
+            { fr: "Excusez-moi, c'est où ?", en: "Excuse me, where is it?", role: "core" },
+            { fr: "Le café, c'est où ?", en: "The café, where is it?", role: "supported" },
+            { fr: "C'est loin ?", en: "Is it far?", role: "exposure" },
+          ],
+        },
+        {
+          label: "Turning a sentence into a question",
+          sentences: [
+            {
+              fr: "Est-ce que c'est ici ?",
+              en: "Is it here?",
+              role: "core",
+              itemIds: ["chunk-est-ce-que"],
+            },
+            {
+              fr: "Est-ce que vous avez un café ?",
+              en: "Do you have a coffee?",
+              role: "core",
+              itemIds: ["chunk-est-ce-que"],
+            },
+            {
+              fr: "Est-ce que vous comprenez ?",
+              en: "Do you understand?",
+              role: "supported",
+            },
+            { fr: "Est-ce que c'est loin ?", en: "Is it far?", role: "supported" },
+          ],
+        },
+        {
+          label: "Answering someone else",
+          sentences: [
+            { fr: "C'est ici.", en: "It's here.", role: "core", itemIds: ["chunk-c-est"] },
+            { fr: "Oui, c'est ici.", en: "Yes, it's here.", role: "core" },
+            { fr: "Non, ce n'est pas ici.", en: "No, it's not here.", role: "core", itemIds: ["chunk-ce-n-est-pas"] },
+            { fr: "C'est par là.", en: "It's that way.", role: "exposure" },
+            { fr: "Je ne sais pas, désolé.", en: "I don't know, sorry.", role: "exposure" },
+          ],
+        },
+        {
+          label: "When the answer is too fast",
+          sentences: [
+            {
+              fr: "Vous pouvez répéter ?",
+              en: "Can you say that again?",
+              role: "core",
+              itemIds: ["chunk-vous-pouvez-repeter"],
+            },
+            { fr: "Plus lentement, s'il vous plaît.", en: "More slowly, please.", role: "exposure" },
+            { fr: "Vous pouvez montrer ?", en: "Can you show me?", role: "exposure" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-ou",
     type: "insight-card",
     payload: {

@@ -54,17 +54,18 @@ describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () =>
   // formula needs a meet and one real use, which is the minimum the Payload
   // Economy surface ceiling allows for a supported item. The band still exists
   // so an unbounded lesson fails.
-  test("screen count stays inside the authored 11-18 band", () => {
+  test("screen count stays inside the authored 11-19 band", () => {
     assert(
-      screens.length >= 11 && screens.length <= 18,
-      `expected 11-18 rendered screens, got ${screens.length}`,
+      screens.length >= 11 && screens.length <= 19,
+      `expected 11-19 rendered screens, got ${screens.length}`,
     );
   });
 
   test("Goal is first and Recap is last", () => {
-    assertEqual(types[0], "insight-card", "first screen is the goal card");
+    assertEqual(types[0], "showcase", "first screen is the language world");
+    assertEqual(types[1], "insight-card", "the goal card follows it");
     assertEqual(
-      (screens[0] as { payload: { insightType?: string } }).payload.insightType,
+      (screens[1] as { payload: { insightType?: string } }).payload.insightType,
       "lesson-goal",
       "first screen is specifically the lesson-goal insight",
     );

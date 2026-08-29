@@ -858,8 +858,14 @@ describe("PR-07 changed no frozen contract", () => {
     assertEqual(ERROR_TAG_CODES.length, 16, "frozen tags");
   });
 
-  test("no new screen type entered the taxonomy", () => {
+  test("the screen taxonomy is exactly the shipped set", () => {
+    // "showcase" was added by the language-world rebuild, under the founder
+    // decision that nine architectures across ten lessons is too thin. It is a
+    // BREADTH surface: it grades nothing and emits no evidence, so it does not
+    // widen the evidence taxonomy this suite exists to protect -- only what the
+    // learner is shown before the lesson starts asking for anything.
     const known = new Set([
+      "showcase",
       "meet-card",
       "insight-card",
       "fill-with-traps",
@@ -896,6 +902,7 @@ describe("PR-07 changed no frozen contract", () => {
     assertEqual(
       ids.join(","),
       [
+        "s20-showcase-first-contact",
         "s00-goal-survival-kit",
         "s03-fill-polite-verb",
         "s04-weave-cafe-order",

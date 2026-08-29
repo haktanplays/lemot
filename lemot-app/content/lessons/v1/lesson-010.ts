@@ -3,6 +3,77 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L10 adds no new language. Its showcase is the whole first-ten repertoire
+    // laid out as a day, so the learner can see that the summit ahead is built
+    // entirely from things already on this page.
+    id: "s20-showcase-a-small-day",
+    type: "showcase",
+    payload: {
+      intro:
+        "Everything here is yours already. Read it as one day: you arrive somewhere new, you ask your way, something goes past you, you need a break, and you go home.",
+      clusters: [
+        {
+          label: "Arriving and asking",
+          sentences: [
+            { fr: "Bonjour. C'est où ?", en: "Hello. Where is it?", role: "core", itemIds: ["chunk-c-est-ou"] },
+            { fr: "Excusez-moi, c'est où ?", en: "Excuse me, where is it?", role: "core" },
+            { fr: "Est-ce que c'est ici ?", en: "Is it here?", role: "core", itemIds: ["chunk-est-ce-que"] },
+            { fr: "Je suis ici.", en: "I'm here.", role: "core", itemIds: ["chunk-je-suis-ici"] },
+          ],
+        },
+        {
+          label: "When it goes wrong",
+          sentences: [
+            { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"] },
+            { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core" },
+            {
+              fr: "Je ne comprends pas. Vous pouvez répéter ?",
+              en: "I don't understand. Can you say that again?",
+              role: "core",
+              itemIds: ["chunk-vous-pouvez-repeter"],
+            },
+            { fr: "Ce n'est pas ici.", en: "It's not here.", role: "core", itemIds: ["chunk-ce-n-est-pas"] },
+          ],
+        },
+        {
+          label: "Getting through the middle of the day",
+          sentences: [
+            {
+              fr: "Je voudrais faire une pause.",
+              en: "I would like to take a break.",
+              role: "core",
+              itemIds: ["chunk-faire-une-pause"],
+            },
+            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"] },
+            { fr: "J'ai une question.", en: "I have a question.", role: "core", itemIds: ["chunk-j-ai-une-question"] },
+            { fr: "Je voudrais un café, s'il vous plaît.", en: "I would like a coffee, please.", role: "core" },
+            { fr: "Non merci.", en: "No thanks.", role: "core", itemIds: ["chunk-non-merci"] },
+          ],
+        },
+        {
+          label: "Going home",
+          sentences: [
+            { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais"] },
+            { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core" },
+            { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core" },
+            { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure" },
+          ],
+        },
+        {
+          label: "The whole day",
+          sentences: [
+            {
+              fr: "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
+              en: "Hello. Where is it? I would like to take a break. I'm going home. Goodbye.",
+              role: "core",
+            },
+            { fr: "Vous pouvez m'aider ?", en: "Can you help me?", role: "exposure", itemIds: ["chunk-vous-pouvez", "chunk-m-aider"] },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-integration",
     type: "insight-card",
     payload: {

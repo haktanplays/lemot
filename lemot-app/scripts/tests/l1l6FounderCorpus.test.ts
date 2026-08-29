@@ -148,7 +148,8 @@ describe("L1-L6 is a path the founder can actually walk", () => {
 
   test("every lesson ends with a recap and opens with its goal", () => {
     for (const lesson of PATH) {
-      assertEqual(lesson.screens[0].type, "insight-card", `${lesson.id} opens on its goal card`);
+      assertEqual(lesson.screens[0].type, "showcase", `${lesson.id} opens on its language world`);
+      assertEqual(lesson.screens[1].type, "insight-card", `${lesson.id} states its goal second`);
       assertEqual(
         lesson.screens[lesson.screens.length - 1].type,
         "recap",

@@ -3,6 +3,55 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L7's world is leaving: where you are going, and the handful of ways a
+    // French goodbye actually closes. The lesson owns one destination; the rest
+    // is here so "je vais ..." reads as a direction shape, not one address.
+    id: "s20-showcase-leaving",
+    type: "showcase",
+    payload: {
+      intro:
+        "Leaving well is its own small skill in French. Say where you are heading, then close the door with a word.",
+      clusters: [
+        {
+          label: "Where you are heading",
+          sentences: [
+            { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais", "chunk-a-la-maison"] },
+            { fr: "Je vais au café.", en: "I'm going to the café.", role: "exposure" },
+            { fr: "Je vais au travail.", en: "I'm going to work.", role: "exposure" },
+            { fr: "Je dois partir.", en: "I have to go.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Closing the moment",
+          sentences: [
+            { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core" },
+            { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core" },
+            { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "supported" },
+            { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure" },
+            { fr: "À demain !", en: "See you tomorrow!", role: "exposure" },
+            { fr: "À bientôt !", en: "See you soon!", role: "exposure" },
+          ],
+        },
+        {
+          label: "Turning something down on the way out",
+          sentences: [
+            { fr: "Non merci. Je vais à la maison.", en: "No thanks. I'm going home.", role: "core" },
+            { fr: "Non merci, ça va.", en: "No thanks, I'm fine.", role: "exposure" },
+            { fr: "Une autre fois, peut-être.", en: "Another time, maybe.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Being asked",
+          sentences: [
+            { fr: "Oui, je vais à la maison.", en: "Yes, I'm going home.", role: "core", itemIds: ["chunk-oui"] },
+            { fr: "Vous partez ?", en: "Are you leaving?", role: "exposure" },
+            { fr: "On y va ?", en: "Shall we go?", role: "exposure" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-je-vais",
     type: "insight-card",
     payload: {

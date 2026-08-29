@@ -3,6 +3,78 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L9's world is asking for an action rather than a thing, and the social
+    // shapes that make such a request land: quietly to people already with you,
+    // or by opening a room that is not listening.
+    id: "s20-showcase-asking-for-a-break",
+    type: "showcase",
+    payload: {
+      intro:
+        "The same polite engine that ordered you a coffee can ask for something to happen. Today it asks for time.",
+      clusters: [
+        {
+          label: "Asking for a pause",
+          sentences: [
+            {
+              fr: "Je voudrais faire une pause.",
+              en: "I would like to take a break.",
+              role: "core",
+              itemIds: ["chunk-faire-une-pause"],
+            },
+            {
+              fr: "Je voudrais faire une pause, s'il vous plaît.",
+              en: "I would like to take a break, please.",
+              role: "core",
+            },
+            { fr: "On fait une pause ?", en: "Shall we take a break?", role: "exposure" },
+            { fr: "Cinq minutes, s'il vous plaît.", en: "Five minutes, please.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Opening a room that is not listening",
+          sentences: [
+            {
+              fr: "Excusez-moi, je voudrais faire une pause.",
+              en: "Excuse me, I would like to take a break.",
+              role: "core",
+              itemIds: ["chunk-excusez-moi"],
+            },
+            { fr: "Excusez-moi, une question.", en: "Excuse me, one question.", role: "supported" },
+            { fr: "Je peux vous demander quelque chose ?", en: "Can I ask you something?", role: "exposure" },
+          ],
+        },
+        {
+          label: "Saying why",
+          sentences: [
+            {
+              fr: "Je voudrais faire une pause. J'ai faim.",
+              en: "I would like to take a break. I'm hungry.",
+              role: "core",
+              itemIds: ["chunk-j-ai-faim"],
+            },
+            { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure" },
+            { fr: "J'ai besoin de cinq minutes.", en: "I need five minutes.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Other things you can ask for",
+          sentences: [
+            { fr: "Je voudrais un café.", en: "I would like a coffee.", role: "core" },
+            { fr: "Je voudrais un verre d'eau.", en: "I would like a glass of water.", role: "exposure" },
+            { fr: "Je voudrais rentrer.", en: "I would like to go home.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Being answered",
+          sentences: [
+            { fr: "Oui, bien sûr.", en: "Yes, of course.", role: "exposure" },
+            { fr: "Pas maintenant, désolé.", en: "Not now, sorry.", role: "exposure" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-pause",
     type: "insight-card",
     payload: {

@@ -306,15 +306,20 @@ describe("rhythm corrections in L2, L3, L5 and L6", () => {
   });
 
   test("L6 does not open Goal then a second explanation", () => {
+    // Opening contract moved by the language-world rebuild: Showcase, then the
+    // goal card, then French. The property under test is unchanged -- the goal
+    // must not be followed by a second explanation screen.
     const t = seq(6);
-    assertEqual(t[0], "insight-card", "goal first");
-    assert(t[1] !== "insight-card", "the lecture opening is gone");
+    assertEqual(t[0], "showcase", "language world first");
+    assertEqual(t[1], "insight-card", "goal second");
+    assert(t[2] !== "insight-card", "the lecture opening is gone");
   });
 
-  test("every lesson keeps Goal first, Recap last, and no three identical in a row", () => {
+  test("every lesson keeps Showcase first, Goal second, Recap last, and no three identical in a row", () => {
     for (const l of AUTHORED) {
       const t = l.screens.map((s) => s.type);
-      assertEqual(t[0], "insight-card", `${l.id} opens on the goal card`);
+      assertEqual(t[0], "showcase", `${l.id} opens on its language world`);
+      assertEqual(t[1], "insight-card", `${l.id} states its goal second`);
       assertEqual(t[t.length - 1], "recap", `${l.id} closes on the recap`);
       for (let i = 2; i < t.length; i++) {
         assert(
@@ -515,10 +520,10 @@ describe("nothing identity-bearing moved", () => {
     // choice and a French-context production to L7/L8/L9. L10 is untouched:
     // its reconciliation was accepted-alternatives only, by design.
     const EXPECTED: Record<number, { screens: number; tiers: string }> = {
-      7: { screens: 15, tiers: "mid,context,open,open" },
-      8: { screens: 17, tiers: "context,context,context,open,open" },
-      9: { screens: 15, tiers: "context,open,open,open" },
-      10: { screens: 14, tiers: "context,open,open,open" },
+      7: { screens: 16, tiers: "mid,context,open,open" },
+      8: { screens: 18, tiers: "context,context,context,open,open" },
+      9: { screens: 16, tiers: "context,open,open,open" },
+      10: { screens: 15, tiers: "context,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;

@@ -116,10 +116,11 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
     // gained an answer-shaped choice and a French-context production, and L8 --
     // the thinnest lesson on the whole path at six sentences -- needed the most.
     // The band still exists so an unbounded lesson fails.
-    test(`${l.id}: 11-17 rendered screens`, () => {
+    test(`${l.id}: 11-18 rendered screens`, () => {
+      // Band raised by exactly one: the Showcase page.
       assert(
-        l.screens.length >= 11 && l.screens.length <= 17,
-        `expected 11-17, got ${l.screens.length}`,
+        l.screens.length >= 11 && l.screens.length <= 18,
+        `expected 11-18, got ${l.screens.length}`,
       );
     });
 
@@ -130,22 +131,27 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
       );
     });
 
-    test(`${l.id}: Goal first and Recap last`, () => {
-      assertEqual(types[0], "insight-card", "opens on an insight card");
+    test(`${l.id}: Showcase first, Goal second, Recap last`, () => {
+    // OPENING CONTRACT, changed by the language-world rebuild: every L1-L10
+    // lesson now opens on its Showcase -- the language world it is about -- and
+    // the goal card follows it. The old contract put a syllabus line first
+    // ("Main pieces: je suis, ici."), which is a large part of why the early
+    // path read as grammar atoms rather than French worth entering.
+      assertEqual(types[0], "showcase", "opens on the language world");
+      assertEqual(types[1], "insight-card", "the goal card follows it");
       assertEqual(
-        (l.screens[0] as { payload: { insightType?: string } }).payload.insightType,
+        (l.screens[1] as { payload: { insightType?: string } }).payload.insightType,
         "lesson-goal",
         "specifically the lesson goal",
       );
       assertEqual(types[types.length - 1], "recap", "closes on the recap");
     });
 
-    test(`${l.id}: French contact by screen 2, and no lecture opening`, () => {
-      assertEqual(types[1], "meet-card", "screen 2 puts French in front of the learner");
-      assert(
-        types[1] !== "insight-card",
-        "Goal must not be followed by a second explanation screen",
-      );
+    test(`${l.id}: French contact by screen 3, and no lecture opening`, () => {
+      // The Showcase is already French contact; this keeps the goal card from
+      // being followed by a SECOND explanation before anything is met.
+      assertEqual(types[2], "meet-card", "screen 3 puts French in front of the learner");
+      assert(types[2] !== "insight-card", "Goal must not be followed by another explanation");
     });
 
     // "3-5 production actions" RETIRED — no replacement number. PQ-2 asks the
