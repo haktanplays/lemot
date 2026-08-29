@@ -7,6 +7,7 @@ import { PrimaryAction, LinkAction } from "@/components/ui/actions";
 import { P, SPACE } from "@/constants/theme";
 import { useApp } from "@/providers/AppProvider";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
+import { Showcase } from "@/components/lesson-v1/screens/Showcase";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
 import { FillWithTraps } from "./screens/FillWithTraps";
@@ -179,6 +180,9 @@ function pickScreen(
   session: LessonV1LearningSession,
 ) {
   switch (screen.type) {
+    // Breadth surface: no evidence callback by design. See Showcase.tsx.
+    case "showcase":
+      return <Showcase screen={screen} onContinue={onContinue} />;
     case "meet-card":
       return (
         <MeetCard

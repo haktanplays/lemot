@@ -92,6 +92,7 @@ export type LearningItem = {
 };
 
 export type ScreenType =
+  | "showcase"
   | "meet-card"
   | "insight-card"
   | "fill-with-traps"
@@ -132,6 +133,48 @@ export type NaturalRevealPayload = {
   ifBetterThanExpected?: string;
   naturalAlternatives?: string[];
   explanation?: string;
+};
+
+/**
+ * Authoring role for one showcase line. NEVER rendered to the learner.
+ *
+ *  - `core`      the lesson must give this first competence: seen, understood,
+ *                produced with support and retrieved once in a changed context.
+ *  - `supported` comprehensible from owned material and manipulable by the
+ *                lesson, but independent mastery is not required yet.
+ *  - `exposure`  enlarges the French world. It may be seen and heard and it may
+ *                NEVER be a required graded answer.
+ */
+export type ShowcaseRole = "core" | "supported" | "exposure";
+
+export type ShowcaseSentence = {
+  fr: string;
+  en: string;
+  role: ShowcaseRole;
+  /**
+   * Registry ids this line exercises. Authoring metadata used by the corpus
+   * guards; every id must resolve against the canonical registry. Absent means
+   * "composed from owned pieces", which is normal for combinations.
+   */
+  itemIds?: string[];
+};
+
+/** A small human grouping, e.g. "Getting attention". Keep these few and short. */
+export type ShowcaseCluster = {
+  label: string;
+  sentences: ShowcaseSentence[];
+};
+
+/**
+ * The lesson's opening language world: what French the learner is stepping
+ * into today. Breadth surface, NOT a mastery surface — it grades nothing and
+ * emits no evidence, because reading a list is not learning and recording it
+ * as such would hand Practice Hub a lie.
+ */
+export type ShowcasePayload = {
+  /** One short framing line. Not a goal list. */
+  intro: string;
+  clusters: ShowcaseCluster[];
 };
 
 export type MeetCardPayload = {
@@ -254,6 +297,23 @@ export type RecapPayload = {
   lines: string[];
   piecesUsed?: string[];
   nextLabel?: string;
+};
+
+export type ShowcaseScreen = {
+  id: string;
+  type: "showcase";
+  /**
+   * Present only to keep `LessonScreen` uniform for the many consumers that
+   * read `screen.targetItemIds` across the union. A showcase MUST leave both
+   * undefined: it grades nothing and emits no evidence, so declaring targets
+   * would claim credit for scrolling. That is asserted in showcase.test.ts
+   * rather than expressed in the type, because a narrower type here would force
+   * every existing consumer to narrow for a case that never occurs.
+   */
+  targetItemIds?: undefined;
+  evidenceTargetItemIds?: undefined;
+  weakPointTags?: WeakPointTag[];
+  payload: ShowcasePayload;
 };
 
 export type MeetCardScreen = {
@@ -425,6 +485,7 @@ export type RecapScreen = {
 };
 
 export type LessonScreen =
+  | ShowcaseScreen
   | MeetCardScreen
   | InsightCardScreen
   | FillWithTrapsScreen
