@@ -248,7 +248,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["negation", "natural-speech"],
     payload: {
       intro:
-        "They answer you warmly, at speed, and you catch almost none of it.",
+        "The day has run cleanly so far. This is the part where it stops, and where you keep it going anyway.",
       steps: [
     {
       // A real day does not run clean, and until now this one did. The learner

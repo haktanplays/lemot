@@ -368,7 +368,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["natural-speech"],
     payload: {
       intro:
-        "Someone is calling for you, and after that you still have a reason for being there.",
+        "You are somewhere you are expected, and you will need to say two different things about being there.",
       steps: [
     {
       // Corpus closure. L2 owns one engine and one cargo word, so it can only

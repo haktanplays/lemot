@@ -265,7 +265,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["natural-speech"],
     payload: {
       intro:
-        "You are at a door you think is right, and you would rather check than walk in on strangers.",
+        "You already have two ways to talk about a place. This is the third, and it is the one that asks.",
       steps: [
     {
       // est-ce que, pulled forward from L12 by founder decision. It is the single

@@ -296,7 +296,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["negation", "politeness"],
     payload: {
       intro:
-        "They answered your question quickly and at length, and you caught almost none of it. They are still here.",
+        "The moment has gone well so far. This is where it breaks, and where you put it back together.",
       steps: [
     {
       // The beat every real first exchange has and no lesson so far has staged:

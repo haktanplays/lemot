@@ -280,7 +280,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["politeness"],
     payload: {
       intro:
-        "The counter is busy and nobody has looked up. You still want your coffee.",
+        "Greeting works when someone is already looking at you. This is the other case.",
       steps: [
     {
       // Second opener, and the first thing in L1 that is not a café mechanic.

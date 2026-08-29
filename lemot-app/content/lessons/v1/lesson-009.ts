@@ -393,7 +393,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["politeness"],
     payload: {
       intro:
-        "The meeting has been running for three hours and nobody is looking at you.",
+        "The request itself never changes. What changes is whether the room is already listening to you.",
       steps: [
     {
       // Corpus closure. L9 asked for the break in one social shape: quietly, to

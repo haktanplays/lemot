@@ -377,7 +377,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["avoir-vs-etre"],
     payload: {
       intro:
-        "The room has been stuck on the same problem for ten minutes, and something occurs to you.",
+        "Your hunger, your questions and your ideas all arrive on the same engine. This is the third one.",
       steps: [
     {
       // Corpus closure. Payload Economy v0 §6 names une idee as L4's next cargo

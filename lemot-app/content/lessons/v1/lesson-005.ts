@@ -377,7 +377,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["articles", "elision"],
     payload: {
       intro:
-        "A way through has just occurred to you, and the room is waiting for someone to speak.",
+        "Every noun you have met carries its own small word. Choosing it is easy; saying it inside a sentence is the part that counts.",
       steps: [
     {
       // Corpus closure. L5's whole job is that un/une is a package distinction,

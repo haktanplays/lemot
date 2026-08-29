@@ -356,7 +356,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["natural-speech"],
     payload: {
       intro:
-        "They see you reaching for your coat, and they say something as you go.",
+        "Leaving is rarely something you announce. Usually somebody asks you first.",
       steps: [
     {
       // Corpus closure. Leaving is something people are ASKED about, and L7 only

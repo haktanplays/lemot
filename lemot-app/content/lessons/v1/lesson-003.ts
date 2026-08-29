@@ -372,7 +372,7 @@ const screens: LessonScreen[] = [
     weakPointTags: ["negation"],
     payload: {
       intro:
-        "Someone is looking for a room, and you are the person they found. Answer them, then answer again when it turns out to be the wrong door.",
+        "You are the person someone found. Being asked twice, about two different places, is the whole test.",
       steps: [
     {
       // Corpus closure, and the Payload Economy §4.2 payoff: oui becomes a
