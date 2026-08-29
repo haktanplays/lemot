@@ -92,6 +92,7 @@ export type LearningItem = {
 };
 
 export type ScreenType =
+  | "activity-chain"
   | "showcase"
   | "meet-card"
   | "insight-card"
@@ -299,6 +300,46 @@ export type RecapPayload = {
   nextLabel?: string;
 };
 
+/**
+ * One step inside a lesson activity chain.
+ *
+ * Steps are REAL screens, not a parallel mini-format. That is the whole design:
+ * evidence identity in this repo is `lessonId/screenId`, so a step keeps its own
+ * id, its own targets and its own payload, and therefore records exactly the
+ * evidence it would have recorded standing alone. Nothing about grading,
+ * attribution or event shape changes when a screen moves into a chain.
+ */
+export type ActivityChainStep =
+  | MeetCardScreen
+  | FillWithTrapsScreen
+  | WeaveScreen
+  | SayItYourWayScreen;
+
+export type ActivityChainPayload = {
+  /** The single moment every step belongs to. Shown once, above all of them. */
+  intro: string;
+  steps: ActivityChainStep[];
+};
+
+/**
+ * Two to four connected actions that form ONE pedagogical thought: notice then
+ * choose then produce, or attempt then contrast then repair then reproduce.
+ *
+ * The chain itself is orchestration only. It grades nothing, and it records
+ * nothing — every event comes from a step. `targetItemIds` is the union of its
+ * steps' targets purely so the existing treatment validation, which walks
+ * `screen.targetItemIds` across the union, still covers material that now sits
+ * one level down.
+ */
+export type ActivityChainScreen = {
+  id: string;
+  type: "activity-chain";
+  targetItemIds?: string[];
+  evidenceTargetItemIds?: undefined;
+  weakPointTags?: WeakPointTag[];
+  payload: ActivityChainPayload;
+};
+
 export type ShowcaseScreen = {
   id: string;
   type: "showcase";
@@ -485,6 +526,7 @@ export type RecapScreen = {
 };
 
 export type LessonScreen =
+  | ActivityChainScreen
   | ShowcaseScreen
   | MeetCardScreen
   | InsightCardScreen

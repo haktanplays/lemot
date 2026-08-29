@@ -7,6 +7,7 @@ import { PrimaryAction, LinkAction } from "@/components/ui/actions";
 import { P, SPACE } from "@/constants/theme";
 import { useApp } from "@/providers/AppProvider";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
+import { ActivityChain } from "@/components/lesson-v1/screens/ActivityChain";
 import { Showcase } from "@/components/lesson-v1/screens/Showcase";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
@@ -180,6 +181,10 @@ function pickScreen(
   session: LessonV1LearningSession,
 ) {
   switch (screen.type) {
+    // Orchestration only: it grades nothing and records nothing itself. Every
+    // event comes from a step, through the same session methods used below.
+    case "activity-chain":
+      return <ActivityChain screen={screen} onContinue={onContinue} session={session} />;
     // Breadth surface: no evidence callback by design. See Showcase.tsx.
     case "showcase":
       return <Showcase screen={screen} onContinue={onContinue} />;

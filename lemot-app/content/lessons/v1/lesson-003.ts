@@ -354,110 +354,134 @@ const screens: LessonScreen[] = [
     },
   },
   {
-    // Corpus closure, and the Payload Economy §4.2 payoff: oui becomes a
-    // producible ANSWER. The post-L3 trap rule was only ever about oui in the
-    // WRONG SLOT -- inside a question or a statement -- and those traps stay
-    // exactly where they are in L8/L13/L14. Answering a yes/no question with it
-    // is what the word is for, and L3 never once let the learner do it.
-    id: "s14-fill-answer-yes-or-no",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-oui", "chunk-non"],
+    // CHAIN. These three were three separate pages, and as pages they read as
+    // three unrelated questions about negation. They are one thought: decide
+    // which answer is TRUE, say it, then have the situation flip under you and
+    // say the opposite. Collapsing them is the point of the chain container --
+    // nothing here is new content, and each step keeps its own id, targets and
+    // grading, so the evidence is identical to what the three pages recorded.
+    id: "s17-chain-answer-and-flip",
+    type: "activity-chain",
+    // Union of the steps' targets, so treatment validation still covers them.
+    targetItemIds: [
+      "chunk-oui",
+      "chunk-non",
+      "chunk-je-suis-ici",
+      "chunk-ce-n-est-pas",
+    ],
     weakPointTags: ["negation"],
     payload: {
-      prompt:
-        "They cannot see the room you are standing in, so they ask whether you have arrived. You have.",
-      blankCount: 1,
-      options: [
-        { id: "opt-oui-ici", text: "Oui, je suis ici.", isCorrect: true },
-        {
-          id: "opt-non-pas-ici",
-          text: "Non, je ne suis pas ici.",
-          isCorrect: false,
-          trapReason:
-            "That is the honest answer to the opposite situation. You are there, so this one sends them away.",
+      intro:
+        "Someone is looking for a room, and you are the person they found. Answer them, then answer again when it turns out to be the wrong door.",
+      steps: [
+    {
+      // Corpus closure, and the Payload Economy §4.2 payoff: oui becomes a
+      // producible ANSWER. The post-L3 trap rule was only ever about oui in the
+      // WRONG SLOT -- inside a question or a statement -- and those traps stay
+      // exactly where they are in L8/L13/L14. Answering a yes/no question with it
+      // is what the word is for, and L3 never once let the learner do it.
+      id: "s14-fill-answer-yes-or-no",
+      type: "fill-with-traps",
+      targetItemIds: ["chunk-oui", "chunk-non"],
+      weakPointTags: ["negation"],
+      payload: {
+        prompt:
+          "They cannot see the room you are standing in, so they ask whether you have arrived. You have.",
+        blankCount: 1,
+        options: [
+          { id: "opt-oui-ici", text: "Oui, je suis ici.", isCorrect: true },
+          {
+            id: "opt-non-pas-ici",
+            text: "Non, je ne suis pas ici.",
+            isCorrect: false,
+            trapReason:
+              "That is the honest answer to the opposite situation. You are there, so this one sends them away.",
+          },
+          {
+            id: "opt-pas-compris",
+            text: "Je ne comprends pas.",
+            isCorrect: false,
+            trapReason:
+              "You understood the question perfectly. This answers a different problem.",
+          },
+        ],
+        answer: ["opt-oui-ici"],
+        reveal: {
+          short: "Oui, je suis ici.",
+          explanation:
+            "Oui answers. Then the sentence you already own says the rest. Yes on its own is thinner than yes plus where you are.",
+          natural: "Oui, je suis ici.",
         },
-        {
-          id: "opt-pas-compris",
-          text: "Je ne comprends pas.",
-          isCorrect: false,
-          trapReason:
-            "You understood the question perfectly. This answers a different problem.",
-        },
-      ],
-      answer: ["opt-oui-ici"],
-      reveal: {
-        short: "Oui, je suis ici.",
-        explanation:
-          "Oui answers. Then the sentence you already own says the rest. Yes on its own is thinner than yes plus where you are.",
-        natural: "Oui, je suis ici.",
       },
     },
-  },
-  {
-    // Production of the positive answer, so oui is not merely recognised. The
-    // negative half of this pair is already produced at s08, which makes this
-    // the screen that turns L3 from a negation drill into a lesson about
-    // choosing which answer is true.
-    id: "s15-weave-answer-yes",
-    type: "weave",
-    targetItemIds: ["chunk-oui", "chunk-je-suis-ici"],
-    weakPointTags: ["negation", "natural-speech"],
-    payload: {
-      weaveType: "open",
-      prompt: "Answer them, then say where you are.",
-      context: "The question comes down the hallway: « Bonjour ? » You are in the room.",
-      suggestedPieces: [
-        { text: "oui", itemId: "chunk-oui", label: "the answer" },
-        { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
-        { text: "ici", itemId: "word-ici", label: "here" },
-      ],
-      hintCloze: "Oui, ___.",
-      expectedAnswers: ["Oui, je suis ici."],
-      acceptedAlternatives: ["Oui. Je suis ici.", "Oui, je suis ici"],
-      reveal: {
-        modelAnswer: "Oui, je suis ici.",
-        ifCorrect: "Yes, and then the useful part. That is a whole answer.",
-        ifCorrectButFlat: "Right. Oui opens it; the engine finishes it.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Answer first with oui, then say where you are.",
-        ifMissingTargetPiece: "Oui answers the question. Je suis ici says the rest.",
+    {
+      // Production of the positive answer, so oui is not merely recognised. The
+      // negative half of this pair is already produced at s08, which makes this
+      // the screen that turns L3 from a negation drill into a lesson about
+      // choosing which answer is true.
+      id: "s15-weave-answer-yes",
+      type: "weave",
+      targetItemIds: ["chunk-oui", "chunk-je-suis-ici"],
+      weakPointTags: ["negation", "natural-speech"],
+      payload: {
+        weaveType: "open",
+        prompt: "Answer them, then say where you are.",
+        context: "The question comes down the hallway: « Bonjour ? » You are in the room.",
+        suggestedPieces: [
+          { text: "oui", itemId: "chunk-oui", label: "the answer" },
+          { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
+          { text: "ici", itemId: "word-ici", label: "here" },
+        ],
+        hintCloze: "Oui, ___.",
+        expectedAnswers: ["Oui, je suis ici."],
+        acceptedAlternatives: ["Oui. Je suis ici.", "Oui, je suis ici"],
+        reveal: {
+          modelAnswer: "Oui, je suis ici.",
+          ifCorrect: "Yes, and then the useful part. That is a whole answer.",
+          ifCorrectButFlat: "Right. Oui opens it; the engine finishes it.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Answer first with oui, then say where you are.",
+          ifMissingTargetPiece: "Oui answers the question. Je suis ici says the rest.",
+        },
+        validationMode: "exact-or-alternative",
       },
-      validationMode: "exact-or-alternative",
     },
-  },
-  {
-    // The negative counterpart at the same low support, about a PLACE rather
-    // than a person. L3 already produces ce n'est pas ici at s07 under a
-    // supplied tray; here the learner has to choose the ce n'est pas frame over
-    // the je ne suis pas one, which is the distinction the lesson exists for.
-    id: "s16-weave-not-that-place",
-    type: "weave",
-    targetItemIds: ["chunk-non", "chunk-ce-n-est-pas"],
-    weakPointTags: ["negation"],
-    payload: {
-      weaveType: "open",
-      prompt: "Answer them, then say it is not the place.",
-      context:
-        "Someone stops in the doorway and asks whether this is the room they want. It is not.",
-      suggestedPieces: [
-        { text: "non", itemId: "chunk-non", label: "the answer" },
-        { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", label: "it isn't" },
-        { text: "ici", itemId: "word-ici", label: "here" },
-      ],
-      hintCloze: "Non, ___ ici.",
-      expectedAnswers: ["Non, ce n'est pas ici."],
-      acceptedAlternatives: ["Non. Ce n'est pas ici.", "Non, ce n'est pas ici"],
-      reveal: {
-        modelAnswer: "Non, ce n'est pas ici.",
-        ifCorrect:
-          "The right no for a place. Je ne suis pas would have been about you instead.",
-        ifCorrectButFlat: "Right. Non answers; ce n'est pas corrects the place.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. A place takes ce n'est pas, not je ne suis pas.",
-        ifMissingTargetPiece:
-          "Non answers them. Ce n'est pas ici says which place it is not.",
+    {
+      // The negative counterpart at the same low support, about a PLACE rather
+      // than a person. L3 already produces ce n'est pas ici at s07 under a
+      // supplied tray; here the learner has to choose the ce n'est pas frame over
+      // the je ne suis pas one, which is the distinction the lesson exists for.
+      id: "s16-weave-not-that-place",
+      type: "weave",
+      targetItemIds: ["chunk-non", "chunk-ce-n-est-pas"],
+      weakPointTags: ["negation"],
+      payload: {
+        weaveType: "open",
+        prompt: "Answer them, then say it is not the place.",
+        context:
+          "Someone stops in the doorway and asks whether this is the room they want. It is not.",
+        suggestedPieces: [
+          { text: "non", itemId: "chunk-non", label: "the answer" },
+          { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", label: "it isn't" },
+          { text: "ici", itemId: "word-ici", label: "here" },
+        ],
+        hintCloze: "Non, ___ ici.",
+        expectedAnswers: ["Non, ce n'est pas ici."],
+        acceptedAlternatives: ["Non. Ce n'est pas ici.", "Non, ce n'est pas ici"],
+        reveal: {
+          modelAnswer: "Non, ce n'est pas ici.",
+          ifCorrect:
+            "The right no for a place. Je ne suis pas would have been about you instead.",
+          ifCorrectButFlat: "Right. Non answers; ce n'est pas corrects the place.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. A place takes ce n'est pas, not je ne suis pas.",
+          ifMissingTargetPiece:
+            "Non answers them. Ce n'est pas ici says which place it is not.",
+        },
+        validationMode: "exact-or-alternative",
       },
-      validationMode: "exact-or-alternative",
+    },
+      ],
     },
   },
   {

@@ -42,6 +42,7 @@ import "./l1l6FounderCorpus.test";
 import "./l7l10FounderCorpus.test";
 import "./corpusClosure.test";
 import "./showcase.test";
+import "./activityChain.test";
 import "./shippedItemIds.test";
 import "./shippedErrorTags.test";
 import "./canonRules.test";

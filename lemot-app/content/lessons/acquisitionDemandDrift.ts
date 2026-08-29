@@ -25,6 +25,7 @@
 import { ITEM_REGISTRY } from "../itemRegistry";
 import { collectLessonItemIds } from "./acquisitionDemands";
 import type { LearningItem, LearningItemType, Lesson, LessonScreen } from "../lessonTypes";
+import { flattenLessonScreens } from "./lessonStructure";
 
 export type DriftSeverity = "warning" | "author-review";
 
@@ -82,7 +83,11 @@ type LessonObservation = {
 function observe(lesson: Lesson): LessonObservation {
   const actionTargets = new Set<string>();
   const constitutiveSupport = new Set<string>();
-  for (const screen of lesson.screens ?? []) {
+  // Chain steps are lifted out of their container: a chain is a page, not an
+  // action, and its steps grade and record exactly as standalone screens do.
+  // Walking `lesson.screens` here would let a screen disappear from validation
+  // simply by being moved into a chain.
+  for (const screen of flattenLessonScreens(lesson)) {
     if (!LEARNER_ACTION_SCREEN_TYPES.has(screen.type)) continue;
     for (const id of screen.targetItemIds ?? []) actionTargets.add(id);
     const payload = (screen as LessonScreen & { payload?: unknown }).payload as

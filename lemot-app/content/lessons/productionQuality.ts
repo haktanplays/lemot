@@ -26,6 +26,7 @@
  * ranges stay authoring guidance; a count is reported for information only.
  */
 import type { Lesson, LessonScreen } from "../lessonTypes";
+import { flattenLessonScreens } from "./lessonStructure";
 
 export type ProductionKind = "typed" | "open";
 
@@ -91,7 +92,11 @@ export function isMeaningfulProductionAction(screen: LessonScreen): boolean {
 /** Every meaningful production action in a lesson, in authored order. */
 export function productionActions(lesson: Lesson): ProductionAction[] {
   const actions: ProductionAction[] = [];
-  for (const screen of lesson.screens ?? []) {
+  // Chain steps are lifted out of their container: a chain is a page, not an
+  // action, and its steps grade and record exactly as standalone screens do.
+  // Walking `lesson.screens` here would let a screen disappear from validation
+  // simply by being moved into a chain.
+  for (const screen of flattenLessonScreens(lesson)) {
     if (!isMeaningfulProductionAction(screen)) continue;
     const payload = ((screen as LessonScreen & { payload?: unknown }).payload ?? {}) as AnyPayload;
     const constitutive = (payload.suggestedPieces ?? []).some(

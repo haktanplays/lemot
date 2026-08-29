@@ -16,6 +16,7 @@
 import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import type { Lesson, ShowcaseScreen, ShowcaseSentence } from "../../content/lessonTypes";
 
 const PATH: readonly Lesson[] = V1_LESSONS.filter(
@@ -148,7 +149,9 @@ describe("showcase roles are honest", () => {
           .map((r) => norm(r.fr)),
       );
       if (exposure.size === 0) continue;
-      for (const screen of lesson.screens) {
+      // Flattened: a chain step grades exactly like a standalone screen, so
+      // nesting must not become a way to grade exposure language unnoticed.
+      for (const screen of flattenLessonScreens(lesson)) {
         const p = screen.payload as Record<string, unknown>;
         const graded: string[] = [];
         for (const a of (p.expectedAnswers as string[] | undefined) ?? []) graded.push(a);

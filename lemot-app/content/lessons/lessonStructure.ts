@@ -31,6 +31,7 @@ import type { LearningItem, Lesson, LessonScreen, ScreenType } from "../lessonTy
  * pull React Native into a pure-tsx path.
  */
 const SUPPORTED_SCREEN_TYPE_MAP: Record<ScreenType, true> = {
+  "activity-chain": true,
   showcase: true,
   "meet-card": true,
   "insight-card": true,
@@ -176,4 +177,32 @@ export function reviewLessonStructure(
     ...reviewLessonItemReferences(lesson, registry),
     ...reviewDoubledNegation(lesson),
   ];
+}
+
+/**
+ * Every learner-facing screen in a lesson, with activity-chain steps lifted out
+ * of their container.
+ *
+ * A chain is a page, not an action: its steps are real screens that grade and
+ * record exactly as they would standing alone. Anything reasoning about what a
+ * lesson ASKS OF THE LEARNER -- production counts, acquisition drift, target
+ * treatment, corpus breadth -- must therefore see the steps, or moving a screen
+ * into a chain would silently hide it from validation. Anything reasoning about
+ * NAVIGATION should keep using `lesson.screens`.
+ *
+ * Order is play order: the chain container is dropped and replaced in place by
+ * its steps, because the container itself is never an action.
+ */
+export function flattenLessonScreens(lesson: {
+  screens?: readonly LessonScreen[];
+}): LessonScreen[] {
+  const out: LessonScreen[] = [];
+  for (const screen of lesson.screens ?? []) {
+    if (screen.type === "activity-chain") {
+      out.push(...screen.payload.steps);
+      continue;
+    }
+    out.push(screen);
+  }
+  return out;
 }

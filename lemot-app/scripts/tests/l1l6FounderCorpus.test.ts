@@ -13,6 +13,7 @@
  */
 import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import { productionActions } from "../../content/lessons/productionQuality";
 import type { Lesson, LessonScreen } from "../../content/lessonTypes";
 
@@ -89,7 +90,8 @@ function visibleSentences(screen: LessonScreen): string[] {
 }
 
 const sentencesOf = (lesson: Lesson): Set<string> =>
-  new Set(lesson.screens.flatMap(visibleSentences));
+  // Chain steps count: they are the same screens, one level down.
+  new Set(flattenLessonScreens(lesson).flatMap(visibleSentences));
 
 /** Screen families in play order, for rhythm assertions. */
 const familiesOf = (lesson: Lesson): string[] => lesson.screens.map((s) => s.type);

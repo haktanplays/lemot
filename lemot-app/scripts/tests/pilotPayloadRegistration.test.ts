@@ -63,6 +63,7 @@ import {
 } from "../../content/identity/payloadRegistry";
 import { ITEM_REGISTRY, getItem } from "../../content/itemRegistry";
 import { V1_LESSONS } from "../../content/lessons/v1";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import { selectMonLexiqueEntries } from "../../content/learning-engine/mon-lexique";
 import { selectPracticeHubSet } from "../../content/lesson-v1-evidence/practiceHub";
 import type { Lesson, WeaveScreen } from "../../content/lessonTypes";
@@ -865,6 +866,9 @@ describe("PR-07 changed no frozen contract", () => {
     // widen the evidence taxonomy this suite exists to protect -- only what the
     // learner is shown before the lesson starts asking for anything.
     const known = new Set([
+      // Orchestration page added by the chained-flow rebuild. It grades nothing
+      // and records nothing; its STEPS are ordinary screens and are walked below.
+      "activity-chain",
       "showcase",
       "meet-card",
       "insight-card",
@@ -875,7 +879,7 @@ describe("PR-07 changed no frozen contract", () => {
       "recap",
     ]);
     for (const lesson of V1_LESSONS) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         assert(known.has(screen.type), `${lesson.id}/${screen.id}: known type only`);
       }
     }
