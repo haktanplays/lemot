@@ -296,6 +296,116 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Corpus closure. L8 was the thinnest lesson on the path: one question and
+    // two answers, all in one hallway. Two things the learner now owns further
+    // upstream change that -- oui became a producible answer in L3, and the
+    // repair formula was activated in L1 -- so the question can finally be
+    // ANSWERED the way people answer it, and survived when the answer is too
+    // fast.
+    id: "s14-fill-answer-the-asker",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-oui", "chunk-c-est"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      prompt:
+        "They point at the door beside you and ask whether this is the one. It is.",
+      blankCount: 1,
+      options: [
+        { id: "opt-oui-ici", text: "Oui, c'est ici.", isCorrect: true },
+        {
+          id: "opt-non-pas-ici",
+          text: "Non, ce n'est pas ici.",
+          isCorrect: false,
+          trapReason:
+            "That is the same sentence with the wrong polarity. It is the right door, so this sends them away from it.",
+        },
+        {
+          id: "opt-ou",
+          text: "C'est où ?",
+          isCorrect: false,
+          trapReason: "That hands the question back. They asked you.",
+        },
+      ],
+      answer: ["opt-oui-ici"],
+      reveal: {
+        short: "Oui, c'est ici.",
+        explanation:
+          "Oui answers, then the sentence you own confirms it. A bare c'est ici works too; the yes makes it warmer.",
+        natural: "Oui, c'est ici.",
+      },
+    },
+  },
+  {
+    // The other half of being ASKED: sometimes you are the one who did not
+    // follow. The survival formula from L1 travels into the orientation scene,
+    // which is the portability claim L8 exists to make.
+    id: "s15-fill-directions-too-fast",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-vous-pouvez-repeter"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "You asked where it was. The answer came back long, quick, and full of turns you did not catch.",
+      blankCount: 1,
+      options: [
+        { id: "opt-repeter", text: "Vous pouvez répéter ?", isCorrect: true },
+        {
+          id: "opt-ici",
+          text: "C'est ici.",
+          isCorrect: false,
+          trapReason:
+            "That answers the question you asked, as if you were the one who knew.",
+        },
+        {
+          id: "opt-merci",
+          text: "Merci.",
+          isCorrect: false,
+          trapReason:
+            "Polite, and it ends the exchange with you still lost.",
+        },
+      ],
+      answer: ["opt-repeter"],
+      reveal: {
+        short: "Vous pouvez répéter ?",
+        explanation:
+          "The formula from your first lesson, working in a scene it was never taught in. That is what makes it survival French.",
+        natural: "Vous pouvez répéter ?",
+      },
+    },
+  },
+  {
+    // FRENCH-CONTEXT production. The scene is the question itself, in French,
+    // and the English helper states only which way the answer goes. Every word
+    // shown is owned, and the context does not leak the answer.
+    id: "s16-weave-answer-in-french",
+    type: "weave",
+    targetItemIds: ["chunk-oui", "chunk-c-est"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      weaveType: "open",
+      prompt: "Answer them, then confirm the place.",
+      context: "They stop beside you and ask: « C'est où ? » It is this room.",
+      suggestedPieces: [
+        { text: "oui", itemId: "chunk-oui", label: "the answer" },
+        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+        { text: "ici", itemId: "word-ici", label: "here" },
+      ],
+      hintCloze: "Oui, ___ ici.",
+      expectedAnswers: ["Oui, c'est ici."],
+      acceptedAlternatives: ["Oui. C'est ici.", "Oui, c'est ici"],
+      reveal: {
+        modelAnswer: "Oui, c'est ici.",
+        ifCorrect:
+          "You were asked in French and you answered in French. Both sides of the question are yours now.",
+        ifCorrectButFlat: "Right. Oui carries the yes; c'est ici carries the place.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Answer first, then say which place.",
+        ifMissingTargetPiece: "Oui answers them. C'est ici names the place.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     // Reveal after both sides have been produced: the pair, heard together.
     id: "s10-reveal-both-sides",
     type: "natural-reveal",
@@ -374,6 +484,14 @@ export const lesson008: Lesson = {
     // acquisitionDemandItemIds stays exactly ["chunk-c-est-ou"].
     "chunk-ce-n-est-pas",
     "chunk-excusez-moi",
+    // Corpus closure. Both are recycled, neither is re-taught or demanded.
+    // chunk-oui (L3, rehabilitated as an answer by Payload Economy §4.2) lets
+    // L8 answer its own question the way people actually answer it;
+    // chunk-vous-pouvez-repeter (L1) is the survival formula travelling into an
+    // orientation scene, which is the portability claim this lesson exists to
+    // make. acquisitionDemandItemIds stays exactly ["chunk-c-est-ou"].
+    "chunk-oui",
+    "chunk-vous-pouvez-repeter",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },

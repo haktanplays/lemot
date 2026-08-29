@@ -309,6 +309,91 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Corpus closure. L9 asked for the break in one social shape: quietly, to
+    // people already working with you. This is the other shape -- interrupting
+    // a room that is not waiting for you -- using the opener the learner has
+    // owned since L1 but has never put in front of this request.
+    id: "s13-fill-how-to-open-the-ask",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-excusez-moi", "chunk-faire-une-pause"],
+    evidenceTargetItemIds: ["chunk-excusez-moi"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "The meeting is running and nobody is looking at you. You need to stop it for ten minutes.",
+      blankCount: 1,
+      options: [
+        {
+          id: "opt-excusez",
+          text: "Excusez-moi, je voudrais faire une pause.",
+          isCorrect: true,
+        },
+        {
+          id: "opt-bare",
+          text: "Je voudrais faire une pause.",
+          isCorrect: false,
+          trapReason:
+            "Correct French, and it works when someone is already listening. Nobody here is, so it lands in the middle of somebody else's sentence.",
+        },
+        {
+          id: "opt-non-merci",
+          text: "Non merci.",
+          isCorrect: false,
+          trapReason:
+            "That refuses something. You are asking for something instead.",
+        },
+      ],
+      answer: ["opt-excusez"],
+      reveal: {
+        short: "Excusez-moi, je voudrais faire une pause.",
+        explanation:
+          "The request did not change. What changed is that you had to buy the room's attention before making it.",
+        natural: "Excusez-moi, je voudrais faire une pause.",
+      },
+    },
+  },
+  {
+    // FRENCH-CONTEXT production, and the lesson's hardest: the room's line is
+    // in French, the helper states only the learner's intention, and nothing in
+    // the scene contains the answer.
+    id: "s14-weave-break-in-french",
+    type: "weave",
+    targetItemIds: ["chunk-excusez-moi", "chunk-faire-une-pause"],
+    weakPointTags: ["politeness", "natural-speech"],
+    payload: {
+      weaveType: "open",
+      prompt: "Cut in, and ask for what you need.",
+      context:
+        "The room is mid-sentence and someone says: « Bonjour ? » You have been at this for three hours.",
+      suggestedPieces: [
+        { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "I would like" },
+        {
+          text: "faire une pause",
+          itemId: "chunk-faire-une-pause",
+          label: "to take a break",
+        },
+      ],
+      hintCloze: "Excusez-moi, je voudrais ___.",
+      expectedAnswers: ["Excusez-moi, je voudrais faire une pause."],
+      acceptedAlternatives: [
+        "Excusez-moi. Je voudrais faire une pause.",
+        "Excusez-moi, je voudrais faire une pause, s'il vous plaît.",
+      ],
+      reveal: {
+        modelAnswer: "Excusez-moi, je voudrais faire une pause.",
+        ifCorrect:
+          "Opened a room that was not open, then asked. That is the whole social move.",
+        ifCorrectButFlat: "Right. Excusez-moi first, then the request.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Reach them first; the ask you already own does the rest.",
+        ifMissingTargetPiece:
+          "Excusez-moi buys the pause in the room. Je voudrais faire une pause is the one you want.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s06-sayit-long-afternoon",
     type: "say-it-your-way",
     targetItemIds: ["chunk-faire-une-pause"],
@@ -374,6 +459,10 @@ export const lesson009: Lesson = {
     // target there, so the lesson must be able to state its treatment.
     // acquisitionDemandItemIds stays exactly ["chunk-faire-une-pause"].
     "chunk-j-ai-faim",
+    // Corpus closure: L1's opener, recycled so the request has a second social
+    // shape -- interrupting a room rather than asking people already listening.
+    // Never re-taught, never a demand.
+    "chunk-excusez-moi",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
