@@ -44,11 +44,12 @@ const RATIFIED: Record<string, readonly string[]> = {
   "v1-lesson-005": ["chunk-un-cafe", "chunk-une-question"],
   "v1-lesson-006": ["chunk-au-revoir"],
   "v1-lesson-007": ["chunk-je-vais"],
-  "v1-lesson-008": ["chunk-c-est-ou"],
+  "v1-lesson-008": ["chunk-c-est-ou", "chunk-est-ce-que"],
   "v1-lesson-009": ["chunk-faire-une-pause"],
   "v1-lesson-010": [],
   "v1-lesson-011": ["chunk-je-peux"],
-  "v1-lesson-012": ["chunk-est-ce-que"],
+  // est-ce que now has first ownership in L8; L12 extends an owned frame.
+  "v1-lesson-012": [],
   "v1-lesson-013": [],
   "v1-lesson-014": ["word-y-place", "chunk-on-y-va"],
   "v1-lesson-015": ["chunk-il-faut"],
@@ -322,7 +323,7 @@ describe("acquisitionDemands — non-regression", () => {
     );
   });
 
-  test("journey roles are unchanged by this pass", () => {
+  test("journey roles match the shipped map", () => {
     const roles = V1_LESSONS.map((l) => l.journeyRole);
     assertEqual(
       roles,
@@ -339,7 +340,9 @@ describe("acquisitionDemands — non-regression", () => {
         "doorway",
         "integration",
         "doorway",
-        "doorway",
+        // L12: est-ce que moved to L8, so this lesson extends rather than
+        // introduces, and its role follows.
+        "integration",
         "integration",
         "doorway",
         "doorway",
@@ -353,7 +356,7 @@ describe("acquisitionDemands — non-regression", () => {
         "integration",
         "milestone",
       ],
-      "the ratified role map is untouched",
+      "the ratified role map, with L12 re-scoped by the est-ce que move",
     );
   });
 });

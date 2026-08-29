@@ -116,11 +116,13 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
     // gained an answer-shaped choice and a French-context production, and L8 --
     // the thinnest lesson on the whole path at six sentences -- needed the most.
     // The band still exists so an unbounded lesson fails.
-    test(`${l.id}: 11-18 rendered screens`, () => {
-      // Band raised by exactly one: the Showcase page.
+    test(`${l.id}: 11-20 rendered screens`, () => {
+      // Raised by the Showcase page, and again by L8, which now introduces two
+      // architectures (c'est ou and est-ce que) and is legitimately the longest
+      // doorway on the path.
       assert(
-        l.screens.length >= 11 && l.screens.length <= 18,
-        `expected 11-18, got ${l.screens.length}`,
+        l.screens.length >= 11 && l.screens.length <= 20,
+        `expected 11-20, got ${l.screens.length}`,
       );
     });
 
@@ -552,7 +554,8 @@ describe("L7-L10 identity is untouched", () => {
     // earlier and are declared here only so the lesson can state a treatment.
     const EXPECTED_DEMANDS: Record<string, number> = {
       "v1-lesson-007": 1,
-      "v1-lesson-008": 1,
+      // est-ce que pulled forward from L12; doorway band is 1-2.
+      "v1-lesson-008": 2,
       "v1-lesson-009": 1,
       "v1-lesson-010": 0,
     };

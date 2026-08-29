@@ -203,11 +203,13 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
         [5, "standard", 2],
         [6, "integration", 1],
         [7, "doorway", 1],
-        [8, "doorway", 1],
+        // est-ce que pulled forward from L12; doorway band is 1-2.
+        [8, "doorway", 2],
         [9, "doorway", 1],
         [10, "integration", 0],
         [11, "doorway", 1],
-        [12, "doorway", 1],
+        // Re-scoped: extends the owned frame instead of introducing it.
+        [12, "integration", 0],
         [13, "integration", 0],
         [14, "doorway", 2],
         [15, "doorway", 1],

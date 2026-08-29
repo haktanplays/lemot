@@ -324,15 +324,23 @@ describe("L7-L10 keep the screens that make them different from each other", () 
 
 // ── No new acquisition anywhere in the range ───────────────────────────────
 
-describe("the whole expansion is recycling", () => {
-  test("L7-L10 demand exactly what they demanded before the pass", () => {
-    // Every screen this pass added is built from items acquired in L0-L9. If a
-    // future edit reaches for a new item to make a scene work, it shows up here
-    // rather than quietly widening the doorway budget.
+describe("L7-L10 acquisition stays deliberate", () => {
+  test("L7-L10 demands are exactly the ratified set", () => {
+    // The founder-usable pass added no acquisition here at all. The
+    // language-world rebuild added exactly one, deliberately: est-ce que moved
+    // from L12 to L8, because holding the first composed question until L12
+    // left the learner able to answer for ten lessons and never ask. L8 is
+    // still inside the doorway band (1-2). Anything else appearing here is a
+    // scene quietly reaching for a new item, which is what this guards.
     assertEqual(
       TARGETS.map((l) => (l.acquisitionDemandItemIds ?? []).join(",")),
-      ["chunk-je-vais", "chunk-c-est-ou", "chunk-faire-une-pause", ""],
-      "one demand per doorway, none for the integration lesson",
+      [
+        "chunk-je-vais",
+        "chunk-c-est-ou,chunk-est-ce-que",
+        "chunk-faire-une-pause",
+        "",
+      ],
+      "one demand per doorway except L8's pulled-forward question frame; none for the integration lesson",
     );
   });
 

@@ -521,7 +521,7 @@ describe("nothing identity-bearing moved", () => {
     // its reconciliation was accepted-alternatives only, by design.
     const EXPECTED: Record<number, { screens: number; tiers: string }> = {
       7: { screens: 16, tiers: "mid,context,open,open" },
-      8: { screens: 18, tiers: "context,context,context,open,open" },
+      8: { screens: 20, tiers: "context,context,open,context,open,open" },
       9: { screens: 16, tiers: "context,open,open,open" },
       10: { screens: 15, tiers: "context,open,open,open" },
     };

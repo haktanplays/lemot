@@ -35,7 +35,8 @@ const RATIFIED: Record<string, string | undefined> = {
   "v1-lesson-009": "doorway",
   "v1-lesson-010": "integration",
   "v1-lesson-011": "doorway",
-  "v1-lesson-012": "doorway",
+  // Re-scoped: est-ce que moved to L8, so L12 extends rather than introduces.
+  "v1-lesson-012": "integration",
   "v1-lesson-013": "integration",
   "v1-lesson-014": "doorway",
   "v1-lesson-015": "doorway",
@@ -94,8 +95,8 @@ describe("journeyRole — shipped map", () => {
     }
     assertEqual(
       counts,
-      { doorway: 9, standard: 7, integration: 6, review: 0, milestone: 2, unset: 1 },
-      "L20 and L24 are the two shipped milestones; no review lesson ships yet",
+      { doorway: 8, standard: 7, integration: 7, review: 0, milestone: 2, unset: 1 },
+      "L20 and L24 are the two shipped milestones; L12 moved doorway -> integration when est-ce que moved to L8",
     );
   });
 });

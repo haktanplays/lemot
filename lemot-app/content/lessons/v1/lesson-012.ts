@@ -252,12 +252,19 @@ export const lesson012: Lesson = {
   phase: "first-ascent",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
-  journeyRole: "doorway",
-  acquisitionDemandItemIds: ["chunk-est-ce-que"],
+  journeyRole: "integration",
+  // RE-SCOPED by the language-world rebuild. est-ce que now has first
+  // ownership in L8, where the orientation lesson finally lets the learner ask
+  // instead of only answer. L12 no longer INTRODUCES the frame, so it claims no
+  // acquisition and its role moves doorway -> integration: its job is to extend
+  // a frame the learner already owns onto the permission and help material L11
+  // brings, which is exactly what its existing screens already do (wrapping
+  // je peux and vous pouvez + m'aider, neither of which L8 owns).
+  acquisitionDemandItemIds: [],
   estimatedMinutes: 5,
-  canDo: "Turn a sentence you own into a clear yes/no question with est-ce que.",
+  canDo: "Ask permission and for help as clear yes/no questions.",
   whyItExists:
-    "Per the L12 est-ce que compact spec, this lesson teaches exactly one frame: est-ce que + owned clause = yes/no question. It graduates L11's recognition-level Est-ce que je peux ... ? to owned production, and wraps only material the learner already produces (c'est ici, je peux faire une pause, vous pouvez + m'aider). No question words, no inversion, no qu'est-ce que (trap only): the wrapper is the whole lesson, so questions stop depending on intonation alone.",
+    "Re-scoped by the language-world rebuild. The est-ce que frame itself is introduced in L8, where the learner spends a whole lesson being asked things and needs to ask back; holding the first composed question until L12 left ten lessons in which the learner could only answer. L12 keeps the half that genuinely needs L11: extending the owned frame onto permission and help (je peux, vous pouvez + m'aider), neither of which L8 owns. No question words, no inversion, no qu'est-ce que (trap only).",
   prerequisites: ["v1-lesson-011"],
   learningItems: getItems([
     "chunk-est-ce-que",
