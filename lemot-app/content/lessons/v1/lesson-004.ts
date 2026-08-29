@@ -3,6 +3,66 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L4's world is the body and the mind: what you have, what you feel, what
+    // you need. French puts most of this on avoir, which is the one thing the
+    // lesson actually teaches; the width here is what makes that worth knowing.
+    id: "s20-showcase-having",
+    type: "showcase",
+    payload: {
+      intro:
+        "French says you HAVE hunger, you HAVE cold, you HAVE a question. One small engine carries almost everything you need to say about yourself today.",
+      clusters: [
+        {
+          label: "What your body is telling you",
+          sentences: [
+            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"] },
+            { fr: "J'ai soif.", en: "I'm thirsty.", role: "supported" },
+            { fr: "J'ai froid.", en: "I'm cold.", role: "exposure" },
+            { fr: "J'ai chaud.", en: "I'm hot.", role: "exposure" },
+          ],
+        },
+        {
+          label: "What you have to say",
+          sentences: [
+            {
+              fr: "J'ai une question.",
+              en: "I have a question.",
+              role: "core",
+              itemIds: ["chunk-j-ai-une-question"],
+            },
+            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"] },
+            { fr: "Excusez-moi, j'ai une question.", en: "Excuse me, I have a question.", role: "core" },
+            { fr: "J'ai un problème.", en: "I have a problem.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Time and help",
+          sentences: [
+            { fr: "J'ai le temps.", en: "I have time.", role: "supported" },
+            { fr: "Je n'ai pas le temps.", en: "I don't have time.", role: "exposure" },
+            { fr: "J'ai besoin d'aide.", en: "I need help.", role: "exposure" },
+            { fr: "J'ai fini.", en: "I'm done.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Putting it with where you are",
+          sentences: [
+            { fr: "Je suis ici. J'ai faim.", en: "I'm here. I'm hungry.", role: "core" },
+            { fr: "Bonjour, j'ai une question.", en: "Hello, I have a question.", role: "core" },
+            { fr: "Je ne comprends pas. J'ai une question.", en: "I don't understand. I have a question.", role: "supported" },
+          ],
+        },
+        {
+          label: "What people ask you",
+          sentences: [
+            { fr: "Vous avez faim ?", en: "Are you hungry?", role: "exposure" },
+            { fr: "Vous avez une question ?", en: "Do you have a question?", role: "exposure" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-jai",
     type: "insight-card",
     payload: {

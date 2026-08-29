@@ -3,6 +3,75 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // The language world L1 opens. Breadth, not a syllabus: the learner sees
+    // that French service interaction is greeting + softened request + thanks,
+    // with two repair moves and a handful of things people actually say back.
+    id: "s20-showcase-first-contact",
+    type: "showcase",
+    payload: {
+      intro:
+        "This is the French of a first counter, a first door, a first small exchange. You will learn to say some of it today. The rest is here so you recognise it when it comes back at you.",
+      clusters: [
+        {
+          label: "Opening a moment",
+          sentences: [
+            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"] },
+            { fr: "Excusez-moi.", en: "Excuse me.", role: "core", itemIds: ["chunk-excusez-moi"] },
+            { fr: "Bonjour, madame.", en: "Hello, madam.", role: "exposure" },
+            { fr: "Bonjour, monsieur.", en: "Hello, sir.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Asking for something",
+          sentences: [
+            {
+              fr: "Je voudrais un café, s'il vous plaît.",
+              en: "I would like a coffee, please.",
+              role: "core",
+              itemIds: ["chunk-je-voudrais", "noun-cafe", "chunk-sil-vous-plait"],
+            },
+            {
+              fr: "Je voudrais un thé.",
+              en: "I would like a tea.",
+              role: "core",
+              itemIds: ["chunk-un-the"],
+            },
+            { fr: "Un café, s'il vous plaît.", en: "A coffee, please.", role: "supported" },
+            { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure" },
+          ],
+        },
+        {
+          label: "When it goes past you",
+          sentences: [
+            {
+              fr: "Vous pouvez répéter ?",
+              en: "Can you say that again?",
+              role: "core",
+              itemIds: ["chunk-vous-pouvez-repeter"],
+            },
+            {
+              fr: "Excusez-moi, vous pouvez répéter ?",
+              en: "Excuse me, can you say that again?",
+              role: "supported",
+            },
+            { fr: "Pardon ?", en: "Sorry?", role: "exposure" },
+            { fr: "Je ne parle pas très bien français.", en: "I don't speak French very well.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Closing it well",
+          sentences: [
+            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"] },
+            { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported" },
+            { fr: "Voilà.", en: "There you go.", role: "exposure" },
+            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure" },
+            { fr: "Au revoir.", en: "Goodbye.", role: "exposure", itemIds: ["chunk-au-revoir"] },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-survival-kit",
     type: "insight-card",
     payload: {

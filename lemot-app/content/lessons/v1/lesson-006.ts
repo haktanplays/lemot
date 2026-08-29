@@ -3,6 +3,76 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L6 adds no new language. Its showcase is the first time the learner sees
+    // the five previous lessons standing together as one usable repertoire, so
+    // the width here is deliberately all recombination.
+    id: "s20-showcase-a-small-moment",
+    type: "showcase",
+    payload: {
+      intro:
+        "Nothing here is new. This is everything you have built so far, arranged the way a real small moment actually uses it, from the door to the goodbye.",
+      clusters: [
+        {
+          label: "Arriving",
+          sentences: [
+            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"] },
+            { fr: "Bonjour, je suis ici.", en: "Hello, I'm here.", role: "core" },
+            { fr: "Excusez-moi, je suis ici.", en: "Excuse me, I'm here.", role: "core" },
+            { fr: "C'est ici.", en: "It's here.", role: "core", itemIds: ["chunk-c-est"] },
+            { fr: "Ce n'est pas ici.", en: "It's not here.", role: "core", itemIds: ["chunk-ce-n-est-pas"] },
+          ],
+        },
+        {
+          label: "Saying what you need",
+          sentences: [
+            { fr: "J'ai une question.", en: "I have a question.", role: "core", itemIds: ["chunk-j-ai-une-question"] },
+            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"] },
+            { fr: "Je voudrais un café, s'il vous plaît.", en: "I would like a coffee, please.", role: "core" },
+            { fr: "Non merci.", en: "No thanks.", role: "core", itemIds: ["chunk-non-merci"] },
+          ],
+        },
+        {
+          label: "When it goes wrong",
+          sentences: [
+            { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"] },
+            { fr: "Excusez-moi, je ne comprends pas.", en: "Excuse me, I don't understand.", role: "core" },
+            {
+              fr: "Je ne comprends pas. Vous pouvez répéter ?",
+              en: "I don't understand. Can you say that again?",
+              role: "core",
+              itemIds: ["chunk-vous-pouvez-repeter"],
+            },
+            { fr: "Pardon, je n'ai pas compris.", en: "Sorry, I didn't catch that.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Leaving well",
+          sentences: [
+            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"] },
+            { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "core", itemIds: ["chunk-au-revoir"] },
+            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure" },
+            { fr: "À bientôt !", en: "See you soon!", role: "exposure" },
+          ],
+        },
+        {
+          label: "The whole moment",
+          sentences: [
+            {
+              fr: "Bonjour. Je suis ici. J'ai une question.",
+              en: "Hello. I'm here. I have a question.",
+              role: "core",
+            },
+            {
+              fr: "Bonjour. Je suis ici. J'ai une question. Merci. Au revoir.",
+              en: "Hello. I'm here. I have a question. Thank you. Goodbye.",
+              role: "core",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-petit-moment",
     type: "insight-card",
     payload: {

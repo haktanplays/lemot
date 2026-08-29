@@ -3,6 +3,55 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L2's world is the self: where you are, how you are, whether you are ready.
+    // The lesson only makes je suis ici its own; the rest is here so "I am ..."
+    // reads as a shape with many fillings rather than one memorised line.
+    id: "s20-showcase-self",
+    type: "showcase",
+    payload: {
+      intro:
+        "Today is about saying something about yourself. One small shape does most of it, and you will hear it everywhere once you know it.",
+      clusters: [
+        {
+          label: "Where you are",
+          sentences: [
+            { fr: "Je suis ici.", en: "I'm here.", role: "core", itemIds: ["chunk-je-suis-ici"] },
+            { fr: "Bonjour, je suis ici.", en: "Hello, I'm here.", role: "core" },
+            { fr: "Excusez-moi, je suis ici.", en: "Excuse me, I'm here.", role: "core" },
+            { fr: "Je suis là.", en: "I'm here. (right here)", role: "exposure" },
+          ],
+        },
+        {
+          label: "How you are",
+          sentences: [
+            { fr: "Ça va.", en: "I'm fine.", role: "supported" },
+            { fr: "Ça va bien, merci.", en: "I'm well, thank you.", role: "supported" },
+            { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure" },
+            { fr: "Je suis content.", en: "I'm glad.", role: "exposure" },
+            { fr: "Je suis désolé.", en: "I'm sorry.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Ready, or not yet",
+          sentences: [
+            { fr: "Je suis prêt.", en: "I'm ready.", role: "supported" },
+            { fr: "Je ne suis pas prêt.", en: "I'm not ready.", role: "exposure" },
+            { fr: "Je suis en retard.", en: "I'm late.", role: "exposure" },
+            { fr: "Une minute, s'il vous plaît.", en: "One minute, please.", role: "exposure" },
+          ],
+        },
+        {
+          label: "What people say to you",
+          sentences: [
+            { fr: "Comment ça va ?", en: "How are you doing?", role: "exposure" },
+            { fr: "Vous êtes prêt ?", en: "Are you ready?", role: "exposure" },
+            { fr: "Vous êtes là ?", en: "Are you there?", role: "exposure" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-etre",
     type: "insight-card",
     payload: {

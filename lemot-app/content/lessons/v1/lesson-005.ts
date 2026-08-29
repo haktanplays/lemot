@@ -3,6 +3,68 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L5's world is things you can ask for, and the little word that travels
+    // with each of them. The article is the lesson; the point of the width is
+    // that a package is a property of the word, not a coin flip.
+    id: "s20-showcase-things",
+    type: "showcase",
+    payload: {
+      intro:
+        "Almost every French thing arrives with a small word in front of it. You do not work it out in the moment. You carry it along with the word.",
+      clusters: [
+        {
+          label: "Things that take un",
+          sentences: [
+            { fr: "Je voudrais un café.", en: "I would like a coffee.", role: "core", itemIds: ["chunk-un-cafe"] },
+            { fr: "Je voudrais un thé.", en: "I would like a tea.", role: "core", itemIds: ["chunk-un-the"] },
+            { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure" },
+            { fr: "Un verre d'eau, s'il vous plaît.", en: "A glass of water, please.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Things that take une",
+          sentences: [
+            {
+              fr: "J'ai une question.",
+              en: "I have a question.",
+              role: "core",
+              itemIds: ["chunk-une-question"],
+            },
+            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"] },
+            { fr: "Je voudrais une table.", en: "I would like a table.", role: "exposure" },
+            { fr: "Une baguette, s'il vous plaît.", en: "A baguette, please.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Asking for two things",
+          sentences: [
+            { fr: "Je voudrais un café. J'ai une question.", en: "I would like a coffee. I have a question.", role: "core" },
+            { fr: "Un café et un thé, s'il vous plaît.", en: "A coffee and a tea, please.", role: "supported" },
+            { fr: "Deux cafés, s'il vous plaît.", en: "Two coffees, please.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Naming what something is",
+          sentences: [
+            // Not a lexical swap: this is the c'est frame from L3 pointed at a
+            // package, which is a different communicative job (identifying)
+            // from asking for one.
+            { fr: "C'est un café.", en: "It's a coffee.", role: "supported", itemIds: ["chunk-c-est"] },
+            { fr: "C'est une bonne idée.", en: "That's a good idea.", role: "exposure" },
+          ],
+        },
+        {
+          label: "At the end of the table",
+          sentences: [
+            { fr: "L'addition, s'il vous plaît.", en: "The bill, please.", role: "exposure" },
+            { fr: "C'est combien ?", en: "How much is it?", role: "exposure" },
+            { fr: "Vous avez du thé ?", en: "Do you have tea?", role: "exposure" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-un-une",
     type: "insight-card",
     payload: {

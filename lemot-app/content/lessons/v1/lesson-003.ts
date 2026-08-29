@@ -3,6 +3,73 @@ import { getItems } from "../../itemRegistry";
 
 const screens: LessonScreen[] = [
   {
+    // L3's world is answering: yes, no, not that, and the two lines that keep a
+    // conversation alive when it breaks. The lesson owns the first five; the
+    // rest are here because a learner who can only say "non" is stuck.
+    id: "s20-showcase-answering",
+    type: "showcase",
+    payload: {
+      intro:
+        "Today is about answering, refusing and correcting. These are the lines that let you stay in a conversation instead of nodding through it.",
+      clusters: [
+        {
+          label: "Yes and no",
+          sentences: [
+            { fr: "Oui, je suis ici.", en: "Yes, I'm here.", role: "core", itemIds: ["chunk-oui"] },
+            {
+              fr: "Non, je ne suis pas ici.",
+              en: "No, I'm not here.",
+              role: "core",
+              itemIds: ["chunk-non", "chunk-je-ne-suis-pas"],
+            },
+            { fr: "Non merci.", en: "No thanks.", role: "core", itemIds: ["chunk-non-merci"] },
+            { fr: "Oui, s'il vous plaît.", en: "Yes, please.", role: "supported" },
+          ],
+        },
+        {
+          label: "That's not it",
+          sentences: [
+            {
+              fr: "Ce n'est pas ici.",
+              en: "It's not here.",
+              role: "core",
+              itemIds: ["chunk-ce-n-est-pas"],
+            },
+            { fr: "Non, ce n'est pas ici.", en: "No, it's not here.", role: "core" },
+            { fr: "Ce n'est pas grave.", en: "It's not a problem.", role: "exposure" },
+            { fr: "Ce n'est pas possible.", en: "That's not possible.", role: "exposure" },
+          ],
+        },
+        {
+          label: "When you are lost",
+          sentences: [
+            {
+              fr: "Je ne comprends pas.",
+              en: "I don't understand.",
+              role: "core",
+              itemIds: ["chunk-je-ne-comprends-pas"],
+            },
+            {
+              fr: "Je ne comprends pas. Vous pouvez répéter ?",
+              en: "I don't understand. Can you say that again?",
+              role: "supported",
+            },
+            { fr: "Je ne sais pas.", en: "I don't know.", role: "exposure" },
+            { fr: "Un peu, seulement.", en: "Only a little.", role: "exposure" },
+          ],
+        },
+        {
+          label: "Softening it",
+          sentences: [
+            { fr: "Pas de problème.", en: "No problem.", role: "exposure" },
+            { fr: "Pas encore.", en: "Not yet.", role: "exposure" },
+            { fr: "Peut-être.", en: "Maybe.", role: "exposure" },
+          ],
+        },
+      ],
+    },
+  },
+  {
     id: "s00-goal-non",
     type: "insight-card",
     payload: {
