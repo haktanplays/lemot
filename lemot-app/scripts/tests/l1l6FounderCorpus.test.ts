@@ -102,14 +102,23 @@ describe("L1-L6 is a path the founder can actually walk", () => {
 
   test("no lesson on the path is thin", () => {
     // Four sentences is a demonstration, not a lesson, and that is what L2 was.
-    // Pinned rather than bounded, so a lesson that quietly loses variety fails
-    // even while staying above the floor. Measured on the shipped lessons: the
-    // same walk over the pre-phase content read [11, 4, 9, 8, 6, 11]. L2 stays
-    // the lowest by canon rather than by neglect, since it owns one completion
-    // (ici) and one demand and therefore grows by recombination only.
+    //
+    // These were EXACT pins until the corpus-closure pass. An exact pin catches
+    // a lesson quietly losing variety, which is the property worth keeping, but
+    // it also fails every deliberate widening — so it would have had to be
+    // rewritten by each content pass, which is how a guard stops being read.
+    // They are per-lesson FLOORS now: losing a sentence still fails, gaining one
+    // does not. The floors are the counts the closure pass actually shipped, and
+    // the pre-closure walk read [11, 6, 9, 11, 9, 15] (itself up from
+    // [11, 4, 9, 8, 6, 11] before the founder-usable pass).
+    const FLOORS = [13, 9, 11, 13, 12, 16];
     const counts = PATH.map((l) => sentencesOf(l).size);
-    assertEqual(counts, [11, 6, 9, 11, 9, 15], "distinct visible sentences, L1-L6");
-    for (const n of counts) assert(n >= 6, `every lesson clears the floor of six, got ${n}`);
+    for (let i = 0; i < counts.length; i++) {
+      assert(
+        counts[i] >= FLOORS[i],
+        `${PATH[i].id} shows ${counts[i]} distinct sentences, below its floor of ${FLOORS[i]}`,
+      );
+    }
   });
 
   test("every lesson asks the learner to produce, more than once", () => {

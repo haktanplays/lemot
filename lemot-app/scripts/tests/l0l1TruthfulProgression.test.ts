@@ -49,12 +49,15 @@ const byId = <T extends LessonScreen>(id: string): T => {
 
 describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () => {
   // Band widened by the L1-L3 content pass: the second-opener arc (meet,
-  // choose, produce unsupported, reflect) adds four screens to L1. The band
-  // still exists so an unbounded lesson fails.
-  test("screen count stays inside the authored 11-16 band", () => {
+  // choose, produce unsupported, reflect) adds four screens to L1. Widened
+  // again by the corpus-closure pass, by exactly two: the second survival
+  // formula needs a meet and one real use, which is the minimum the Payload
+  // Economy surface ceiling allows for a supported item. The band still exists
+  // so an unbounded lesson fails.
+  test("screen count stays inside the authored 11-18 band", () => {
     assert(
-      screens.length >= 11 && screens.length <= 16,
-      `expected 11-16 rendered screens, got ${screens.length}`,
+      screens.length >= 11 && screens.length <= 18,
+      `expected 11-18 rendered screens, got ${screens.length}`,
     );
   });
 

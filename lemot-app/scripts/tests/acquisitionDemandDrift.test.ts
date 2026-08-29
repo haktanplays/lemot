@@ -199,14 +199,27 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
     assertEqual(shipped.filter((d) => d.code === "DD-003"), [], "no declared demand is non-active");
   });
 
-  test("current corpus findings are exactly the 7 recorded supported-vs-demand calls", () => {
+  test("current corpus findings are exactly the 10 recorded supported-vs-demand calls", () => {
     // These are real, deliberate founder decisions ("supported / composed, not a
     // demand") that today live only in each lesson's prose. The detector asking
     // about them is correct behaviour, not a bug — and they are NOT fixed here.
     assertEqual(
       shipped.map((d) => `${d.code} ${d.lessonId}/${d.itemId}`),
       [
+        // Corpus-closure pass: the second survival formula is deliberately
+        // SUPPORTED cargo in L1, not a third L1 demand (Payload Economy v0
+        // §4.1/§6). It is worked there first because that is where it is
+        // activated, so the detector asking about it is correct behaviour.
+        "DD-002 v1-lesson-001/chunk-vous-pouvez-repeter",
         "DD-002 v1-lesson-003/chunk-c-est",
+        // Payload Economy v0 §4.2: oui is rehabilitated as a producible ANSWER
+        // (s14/s15). It is registry-active, but L3's standard-role demand
+        // budget is already full at four, so it is produced as recycled
+        // material rather than claimed as a fifth demand. Deliberate.
+        "DD-002 v1-lesson-003/chunk-oui",
+        // Payload Economy v0 §6: the dormant noun-idee, activated as L4's third
+        // cargo and reused as L5's second une package. Supported both times.
+        "DD-002 v1-lesson-004/noun-idee",
         "DD-002 v1-lesson-007/chunk-a-la-maison",
         "DD-002 v1-lesson-008/adverb-ou-where",
         "DD-002 v1-lesson-011/chunk-m-aider",
@@ -216,6 +229,6 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
       ],
       "current-v1 advisory baseline",
     );
-    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 7 }, "all advisory");
+    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 10 }, "all advisory");
   });
 });

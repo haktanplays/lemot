@@ -112,10 +112,14 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
   for (const l of TARGETS) {
     const types = l.screens.map((s) => s.type);
 
-    test(`${l.id}: 11-14 rendered screens`, () => {
+    // Band widened by the corpus-closure pass (11-14 -> 11-17): L7/L8/L9 each
+    // gained an answer-shaped choice and a French-context production, and L8 --
+    // the thinnest lesson on the whole path at six sentences -- needed the most.
+    // The band still exists so an unbounded lesson fails.
+    test(`${l.id}: 11-17 rendered screens`, () => {
       assert(
-        l.screens.length >= 11 && l.screens.length <= 14,
-        `expected 11-14, got ${l.screens.length}`,
+        l.screens.length >= 11 && l.screens.length <= 17,
+        `expected 11-17, got ${l.screens.length}`,
       );
     });
 

@@ -354,6 +354,10 @@ describe("five canonical item registrations", () => {
           "v1-lesson-004",
           "v1-lesson-006",
           "v1-lesson-008",
+          // Corpus closure: L9 s13/s14, where the request finally has a second
+          // social shape -- interrupting a room instead of asking people who
+          // are already listening.
+          "v1-lesson-009",
         ],
         // Introduced and demanded in L3. Recycled whole in L6 s05b/s05c, where
         // the scene finally needs it, and in L10 s11/s12, where the integration
@@ -365,10 +369,21 @@ describe("five canonical item registrations", () => {
           "v1-lesson-006",
           "v1-lesson-010",
         ],
-        // Still dormant: registered for the ledger only. Reaching for it would
-        // mean a question form and vous pouvez, which is new grammar no lesson
-        // in L1-L6 owns.
-        "chunk-vous-pouvez-repeter": [],
+        // Activated in the corpus-closure pass, in L1 s17/s18/s19. The earlier
+        // "dormant" note reasoned that reaching for it would mean teaching a
+        // question form and vous pouvez -- but Payload Economy v0 §4.1 makes it
+        // a SURVIVAL FORMULA: learned whole, never decomposed, so no question
+        // grammar is inferred and no vous pouvez pattern is opened. §6 places
+        // it in L1, and its own registry meaning already named L1 as its home.
+        // Activated in L1 (s17/s19) by the corpus-closure pass, then recycled
+        // into L6 s11 -- which finally closes the REPAIR PAIR named in Payload
+        // Economy v0 §1 as one of the four functional holes -- and into L8 s15,
+        // where the formula survives directions that came back too fast.
+        "chunk-vous-pouvez-repeter": [
+          "v1-lesson-001",
+          "v1-lesson-006",
+          "v1-lesson-008",
+        ],
       };
       for (const [rescue, allowedLessons] of Object.entries(OWNED_BY)) {
         if (allowedLessons.includes(lesson.id)) continue;
@@ -894,6 +909,8 @@ describe("PR-07 changed no frozen contract", () => {
         "s15-weave-excusez-moi-cafe",
         "s12-meet-un-the",
         "s11-weave-the-order",
+        "s17-meet-vous-pouvez-repeter",
+        "s19-weave-excuse-and-repeat",
         "s16-natural-reveal-two-openers",
         "s08-sayit-cafe-order",
         "s09-recap-survival-kit",

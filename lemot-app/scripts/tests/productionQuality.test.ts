@@ -260,10 +260,13 @@ describe("productionQuality — shipped v1", () => {
     // answer and s13 the open portable ask), L9 3 -> 4 (s12, the open two-part
     // request-with-reason) and L10 3 -> 6 (s12 the repair, s13 the whole-day
     // open production, plus the fill-free recount of its existing actions).
+    // Corpus-closure pass, all of it recombination of owned material plus two
+    // dormant registry items activated where §6 of the Payload Economy places
+    // them: L1 6 -> 7, L2 4 -> 6, L3 5 -> 7, L4 4 -> 5, L5 4 -> 5.
     // No lesson outside L1-L10 has ever moved.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [2, 6, 4, 5, 4, 4, 6, 4, 5, 4, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      [2, 7, 6, 7, 5, 5, 7, 5, 6, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {

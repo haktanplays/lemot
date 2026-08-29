@@ -511,10 +511,13 @@ describe("nothing identity-bearing moved", () => {
     // L7-L10 founder-usable pass owns them, so it moves here exactly as the
     // L1-L3 and L1-L6 passes moved their own ranges. Every lesson now REACHES
     // open, so the ceiling no longer regresses anywhere between L6 and L10.
+    // Moved again by the corpus-closure pass, which added an answer-shaped
+    // choice and a French-context production to L7/L8/L9. L10 is untouched:
+    // its reconciliation was accepted-alternatives only, by design.
     const EXPECTED: Record<number, { screens: number; tiers: string }> = {
-      7: { screens: 13, tiers: "mid,context,open" },
-      8: { screens: 14, tiers: "context,context,context,open" },
-      9: { screens: 13, tiers: "context,open,open" },
+      7: { screens: 15, tiers: "mid,context,open,open" },
+      8: { screens: 17, tiers: "context,context,context,open,open" },
+      9: { screens: 15, tiers: "context,open,open,open" },
       10: { screens: 14, tiers: "context,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {

@@ -306,7 +306,15 @@ describe("acquisitionComponents — shipped registry coverage", () => {
     // The relation carries no target/evidence prohibition. These composites are
     // named across the shipped payloads and must keep being named.
     const EXPECTED_TARGETS: Record<string, string[]> = {
-      "chunk-je-suis-ici": ["v1-lesson-002", "v1-lesson-004", "v1-lesson-006"],
+      // L3 joined in the corpus-closure pass: s14/s15 give the lesson a POSITIVE
+      // answer ("Oui, je suis ici.") so it is a choice between answers rather
+      // than a negation drill. Recycled from L2, not an L3 demand.
+      "chunk-je-suis-ici": [
+        "v1-lesson-002",
+        "v1-lesson-003",
+        "v1-lesson-004",
+        "v1-lesson-006",
+      ],
       // L9 joined L4 in the L7-L10 pass: s12 asks the learner to volunteer the
       // REASON behind a request, and j'ai faim is the feeling they have owned
       // since L4 and never had to offer unprompted. Recycled, not re-taught,
