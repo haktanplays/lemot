@@ -295,6 +295,55 @@ const screens: LessonScreen[] = [
     },
   },
   {
+    // Corpus closure, Pass B: L6 gains NO new lexis, exactly as Payload Economy
+    // v0 §6 requires of it. What it gains is the REPAIR PAIR -- named in §1 as
+    // one of the four functional holes in the whole spine. Both halves are now
+    // owned (je ne comprends pas from L3, vous pouvez répéter ? activated in
+    // L1), and no lesson had ever put them together, which meant the learner
+    // could say a conversation had broken and could ask for a repeat, but never
+    // did the one thing that actually fixes it: both, in order.
+    id: "s11-weave-the-repair-pair",
+    type: "weave",
+    targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-vous-pouvez-repeter"],
+    weakPointTags: ["negation", "politeness"],
+    payload: {
+      weaveType: "open",
+      prompt: "Say it went past you, then ask for it again.",
+      context:
+        "They answered your question and are waiting, friendly, for you to say something back.",
+      suggestedPieces: [
+        {
+          text: "je ne comprends pas",
+          itemId: "chunk-je-ne-comprends-pas",
+          label: "naming the problem",
+        },
+        {
+          text: "vous pouvez répéter",
+          itemId: "chunk-vous-pouvez-repeter",
+          label: "asking for it again",
+        },
+      ],
+      hintCloze: "Je ne comprends pas. ___ ?",
+      expectedAnswers: ["Je ne comprends pas. Vous pouvez répéter ?"],
+      acceptedAlternatives: [
+        "Je ne comprends pas. Vous pouvez répéter",
+        "Je ne comprends pas, vous pouvez répéter ?",
+      ],
+      reveal: {
+        modelAnswer: "Je ne comprends pas. Vous pouvez répéter ?",
+        ifCorrect:
+          "Naming the problem is honest. Asking for the repeat is what actually gets you the sentence.",
+        ifCorrectButFlat:
+          "Right. One line admits it, the next one fixes it.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Say it went past you first, then ask for it again.",
+        ifMissingTargetPiece:
+          "Je ne comprends pas names the problem. Vous pouvez répéter ? asks them to go again.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+  {
     id: "s06-meet-au-revoir",
     type: "meet-card",
     targetItemIds: ["chunk-au-revoir"],
@@ -478,6 +527,10 @@ export const lesson006: Lesson = {
     "chunk-ce-n-est-pas",
     "chunk-je-ne-comprends-pas",
     "chunk-excusez-moi",
+    // Corpus closure: the other half of the repair pair, recycled from L1 so
+    // s11 can join them. L6 gains no new lexis by doing this -- both halves
+    // were already owned, just never used together.
+    "chunk-vous-pouvez-repeter",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
