@@ -149,6 +149,35 @@ accepted as the frozen Round 1 surface.
   the automatic chain, #139) at current main,
   not assume the `8cefe81` coverage carries over.
 
+## L1-L10 chained lesson flow (2026-09-02, branch only)
+
+Branch `content/l1-l10-sentence-chunk-canon-draft`, NOT on main and NOT
+operator-verified on a device. Simulator only.
+
+- Chained graded actions 23% -> 73% (72 of 98) across 29 chains; every lesson
+  has 2+, L6 has 4, L10 has 3, and eight are four-step. Graded screens that
+  led nowhere: 28 -> 10.
+- No French, grammar or exercise changed. Chains group screens that were
+  already adjacent, so the flattened play order is unchanged -- which is why
+  the pinned L7-L10 scaffolding tier strings are byte-identical while their
+  page counts fall.
+- Seven consumers were blind to chain steps and are repaired: PR-06 evidence
+  metadata, canon V3/V4 exposure rules, lessonStructure guards B/C,
+  acquisition-demand reachability, the YASA 3 tag manifest, Practice Hub
+  source resolution, and registered-payload identity. `flattenLessonScreens`
+  is the single rule; `activityChain.test.ts` pins the list.
+- PAGES vs ACTIONS: lesson-size bands now count learner actions, with a
+  separate page floor. Counting pages would have read "four actions on one
+  page" as "three actions deleted".
+- Practice Hub readiness matrix is pinned for all 40 L1-L10 items
+  (`practiceHubReadiness.test.ts`): 33 practisable, 4 via a carrier chunk,
+  3 meta. No item is unreachable in practice.
+- `npm run chainCoverage` equivalent: `npx tsx scripts/chainCoverage.ts`.
+- Validation: typecheck PASS, 2009 learning-engine tests, validate:content
+  0/0/0, validate:pools exit 0 (6 pre-existing legacy-pool warnings).
+- Operator blockers open: no APK rebuild, no physical device pass. Code-side
+  ready only.
+
 ## Current main
 
 - At `91f1b04` (PR #142, `docs(syllabus): record accepted compact L7 doorway,
