@@ -540,7 +540,7 @@ describe("nothing identity-bearing moved", () => {
       7: { screens: 10, tiers: "mid,context,open,open" },
       8: { screens: 12, tiers: "context,context,open,context,open,open" },
       9: { screens: 12, tiers: "context,open,open,open" },
-      10: { screens: 11, tiers: "context,open,open,open" },
+      10: { screens: 12, tiers: "context,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;

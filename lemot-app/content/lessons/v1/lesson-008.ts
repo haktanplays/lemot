@@ -491,7 +491,7 @@ const screens: LessonScreen[] = [
   activityChain({
     id: "s25-chain-when-they-ask-you",
     intro:
-      "Now somebody stops you. They are lost, they are quick, and they are waiting.",
+      "Standing here, the questions run both ways: sometimes you are the one who knows, and sometimes you are the one who did not catch the answer.",
     steps: [
       {
         // Corpus closure. L8 was the thinnest lesson on the path: one question and

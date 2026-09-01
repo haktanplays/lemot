@@ -239,7 +239,7 @@ const screens: LessonScreen[] = [
   activityChain({
     id: "s23-chain-turning-something-down",
     intro:
-      "They will offer you something you do not want. Declining is not rudeness here, it is just the next line.",
+      "You are inside now. There is an offer to get past first, and then the thing you actually came to say.",
     steps: [
       {
         id: "s04-fill-decline-offer",

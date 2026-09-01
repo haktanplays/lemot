@@ -234,7 +234,7 @@ const screens: LessonScreen[] = [
   activityChain({
     id: "s22-chain-what-you-have-here",
     intro:
-      "Hunger and questions are both things you have. Watch how far one engine carries you before you need anything new.",
+      "Hunger and questions are both things you have. See how far that one engine carries you, and where you still need the other one.",
     steps: [
       {
         id: "s05-weave-j-ai-faim",

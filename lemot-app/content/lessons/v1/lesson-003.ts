@@ -295,7 +295,7 @@ const screens: LessonScreen[] = [
   activityChain({
     id: "s23-chain-when-you-lose-it",
     intro:
-      "Sometimes the honest answer is that you did not follow. That sentence is a tool, not an admission.",
+      "Not following someone and not being somewhere are the same shape in French. Here they arrive one after the other.",
     steps: [
       {
         // The third verb the sandwich wraps, and the first negation in this lesson

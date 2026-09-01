@@ -5,6 +5,7 @@ import { activityChain } from "../activityChain";
 const screens: LessonScreen[] = [
 
 
+
   {
     // L10 adds no new language. Its showcase is the whole first-ten repertoire
     // laid out as a day, so the learner can see that the summit ahead is built
@@ -78,6 +79,7 @@ const screens: LessonScreen[] = [
   },
 
 
+
   {
     id: "s00-goal-integration",
     type: "insight-card",
@@ -90,6 +92,7 @@ const screens: LessonScreen[] = [
         "Main pieces: c'est où, faire une pause, je vais.",
     },
   },
+
 
   activityChain({
     id: "s22-chain-the-morning",
@@ -147,6 +150,7 @@ const screens: LessonScreen[] = [
   }),
 
 
+
   {
     id: "s03-fill-engine-chooser",
     type: "fill-with-traps",
@@ -184,6 +188,7 @@ const screens: LessonScreen[] = [
   },
 
 
+
   {
     // Reflection, not preamble: the three engines are named only after the
     // learner has already used two of them today.
@@ -202,6 +207,7 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
 
 
   {
@@ -244,6 +250,7 @@ const screens: LessonScreen[] = [
   },
 
 
+
   {
     // Reveal after the midday ask: the same request with and without the
     // softener, so the day's middle beat lands before the evening one.
@@ -256,6 +263,7 @@ const screens: LessonScreen[] = [
         "Both are natural. Among people you have been working with all morning, the short form is enough; s'il vous plaît adds a little distance when you want it.",
     },
   },
+
 
   activityChain({
     id: "s21-chain-the-repair",
@@ -354,97 +362,99 @@ const screens: LessonScreen[] = [
         },
     ],
   }),
+  {
+    id: "s06-meet-preview-help",
+    type: "meet-card",
+    targetItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
+    payload: {
+      fr: "Vous pouvez m'aider ?",
+      en: "Can you help me?",
+      // Preview convention: "Just listen." opens every recognition-only card,
+      // so the learner can tell at a glance that nothing is being asked of
+      // them. This sentence is never produced, never a suggested piece, and
+      // never a recap chip.
+      title: "Just listen. This one arrives next.",
+      highlights: [
+        { text: "vous pouvez", itemId: "chunk-vous-pouvez" },
+        { text: "m'aider", itemId: "chunk-m-aider" },
+      ],
+      tts: true,
+    },
+  },
+
 
   activityChain({
     id: "s23-chain-closing-the-day",
     intro:
       "You have been here since the morning. Leaving well is the last thing the day asks of you.",
     steps: [
-      {
-        id: "s06-meet-preview-help",
-        type: "meet-card",
-        targetItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
-        payload: {
-          fr: "Vous pouvez m'aider ?",
-          en: "Can you help me?",
-          // Preview convention: "Just listen." opens every recognition-only card,
-          // so the learner can tell at a glance that nothing is being asked of
-          // them. This sentence is never produced, never a suggested piece, and
-          // never a recap chip.
-          title: "Just listen. This one arrives next.",
-          highlights: [
-            { text: "vous pouvez", itemId: "chunk-vous-pouvez" },
-            { text: "m'aider", itemId: "chunk-m-aider" },
-          ],
-          tts: true,
-        },
-      },
-      {
-        id: "s05-weave-close-the-day",
-        type: "weave",
-        targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
-        payload: {
-          // The day's summit: open production, no more scaffolded than L6's own
-          // closing weave.
-          weaveType: "open",
-          prompt: "Evening. Say you're going home, then say goodbye.",
-          context:
-            "The day at the new place is done. People are still talking, but you're finished.",
-          suggestedPieces: [
-            { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-            {
-              text: "à la maison",
-              itemId: "chunk-a-la-maison",
-              label: "home",
-            },
-            {
-              text: "au revoir",
-              itemId: "chunk-au-revoir",
-              label: "goodbye",
-            },
-          ],
-          hintCloze: "Je vais ___. Au revoir.",
-          expectedAnswers: ["Je vais à la maison. Au revoir."],
-          acceptedAlternatives: ["Je vais à la maison, au revoir."],
-          reveal: {
-            modelAnswer: "Je vais à la maison. Au revoir.",
-            ifCorrect: "You opened the day with bonjour. Now you can close it.",
-            ifCorrectButFlat: "Right. The day closes the way it opened.",
-            ifUnderstandableButWrong:
-              "Your meaning lands. Where you are going comes first, then the goodbye.",
-            ifMissingTargetPiece:
-              "Lead with je vais à la maison, then let au revoir close the door.",
+    {
+      id: "s05-weave-close-the-day",
+      type: "weave",
+      targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+      payload: {
+        // The day's summit: open production, no more scaffolded than L6's own
+        // closing weave.
+        weaveType: "open",
+        prompt: "Evening. Say you're going home, then say goodbye.",
+        context:
+          "The day at the new place is done. People are still talking, but you're finished.",
+        suggestedPieces: [
+          { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
+          {
+            text: "à la maison",
+            itemId: "chunk-a-la-maison",
+            label: "home",
           },
-          validationMode: "exact-or-alternative",
+          {
+            text: "au revoir",
+            itemId: "chunk-au-revoir",
+            label: "goodbye",
+          },
+        ],
+        hintCloze: "Je vais ___. Au revoir.",
+        expectedAnswers: ["Je vais à la maison. Au revoir."],
+        acceptedAlternatives: ["Je vais à la maison, au revoir."],
+        reveal: {
+          modelAnswer: "Je vais à la maison. Au revoir.",
+          ifCorrect: "You opened the day with bonjour. Now you can close it.",
+          ifCorrectButFlat: "Right. The day closes the way it opened.",
+          ifUnderstandableButWrong:
+            "Your meaning lands. Where you are going comes first, then the goodbye.",
+          ifMissingTargetPiece:
+            "Lead with je vais à la maison, then let au revoir close the door.",
         },
+        validationMode: "exact-or-alternative",
       },
-      {
-        id: "s07-sayit-take-your-leave",
-        type: "say-it-your-way",
-        targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
-        weakPointTags: ["natural-speech"],
-        payload: {
-          situation:
-            "The end of your first full day at the new place. Someone walks you to the door.",
-          communicativeGoal: "Take your leave warmly: thanks, direction, goodbye.",
-          suggestedPieces: [
-            { text: "merci", itemId: "chunk-merci" },
-            { text: "je vais", itemId: "chunk-je-vais" },
-            { text: "à la maison", itemId: "chunk-a-la-maison" },
-            { text: "au revoir", itemId: "chunk-au-revoir" },
-          ],
+    },
+    {
+      id: "s07-sayit-take-your-leave",
+      type: "say-it-your-way",
+      targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+      weakPointTags: ["natural-speech"],
+      payload: {
+        situation:
+          "The end of your first full day at the new place. Someone walks you to the door.",
+        communicativeGoal: "Take your leave warmly: thanks, direction, goodbye.",
+        suggestedPieces: [
+          { text: "merci", itemId: "chunk-merci" },
+          { text: "je vais", itemId: "chunk-je-vais" },
+          { text: "à la maison", itemId: "chunk-a-la-maison" },
+          { text: "au revoir", itemId: "chunk-au-revoir" },
+        ],
+        modelAnswer: "Merci. Je vais à la maison. Au revoir.",
+        reveal: {
           modelAnswer: "Merci. Je vais à la maison. Au revoir.",
-          reveal: {
-            modelAnswer: "Merci. Je vais à la maison. Au revoir.",
-            naturalAlternatives: ["Je vais à la maison. Au revoir."],
-            explanation:
-              "Both are natural. Merci thanks the day; je vais à la maison says where you're off to; au revoir closes it gently.",
-          },
-          validationMode: "model-answer-only",
+          naturalAlternatives: ["Je vais à la maison. Au revoir."],
+          explanation:
+            "Both are natural. Merci thanks the day; je vais à la maison says where you're off to; au revoir closes it gently.",
         },
+        validationMode: "model-answer-only",
       },
+    },
     ],
   }),
+
 
 
   {
@@ -499,6 +509,7 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
 
 
   {
