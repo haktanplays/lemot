@@ -22,6 +22,7 @@ import {
   resolveLessonTreatmentForItem,
 } from "../../content/lesson-v1-evidence/treatment";
 import type { ItemId } from "../../content/itemRegistry";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 
 /**
  * Known-open occurrences, as `lessonId/itemId`.
@@ -40,7 +41,7 @@ function unresolvedTargets(): string[] {
   const found: string[] = [];
   for (const lesson of V1_LESSONS) {
     const seen = new Set<string>();
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       for (const id of screen.targetItemIds ?? []) {
         if (seen.has(id)) continue;
         seen.add(id);

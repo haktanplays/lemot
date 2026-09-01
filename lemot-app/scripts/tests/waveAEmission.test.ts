@@ -71,6 +71,7 @@ import type {
   WeaveScreen,
 } from "../../content/lessonTypes";
 import type { ItemId, RawItem } from "../../content/learning-engine/types";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 
 const APP_ROOT = process.cwd();
 const read = (rel: string): string => readFileSync(join(APP_ROOT, rel), "utf8");
@@ -114,7 +115,7 @@ function makeSession(kv = makeFakeKv()) {
 }
 
 const screenOf = <T,>(lesson: Lesson, id: string): T =>
-  lesson.screens.find((s) => s.id === id) as unknown as T;
+  flattenLessonScreens(lesson).find((s) => s.id === id) as unknown as T;
 
 // ── SYNTHETIC renderer-capability fixtures ──────────────────────────────────
 //
@@ -659,7 +660,7 @@ describe("D-6 — typed recall reuses Weave", () => {
 // ── open production ─────────────────────────────────────────────────────────
 
 describe("open production: attempt then reveal, never a grade", () => {
-  const sayIt = screenOf<SayItYourWayScreen>(lesson000, lesson000.screens.filter((s) => s.type === "say-it-your-way")[0].id);
+  const sayIt = screenOf<SayItYourWayScreen>(lesson000, flattenLessonScreens(lesson000).filter((s) => s.type === "say-it-your-way")[0].id);
 
   const run = async () => {
     const { repo, controller } = makeSession();
@@ -918,7 +919,7 @@ describe("lesson evidence metadata validation", () => {
 
   test("a correct option carrying an error tag is rejected", () => {
     const bad = structuredClone(lesson001) as Lesson;
-    const screen = bad.screens.find((s) => s.id === "s03-fill-polite-verb") as FillWithTrapsScreen;
+    const screen = flattenLessonScreens(bad).find((s) => s.id === "s03-fill-polite-verb") as FillWithTrapsScreen;
     screen.payload.options[0].learningErrorTag = "wrong_item";
     const codes = checkLessonEvidenceRules([bad]).map((f) => f.code);
     assert(codes.includes("choice_tag_on_correct_option"), "rejected");
@@ -927,7 +928,7 @@ describe("lesson evidence metadata validation", () => {
   test("an incorrect option may not claim success", () => {
     for (const tag of ["correct", "accepted_variant"] as const) {
       const bad = structuredClone(lesson001) as Lesson;
-      const screen = bad.screens.find(
+      const screen = flattenLessonScreens(bad).find(
         (s) => s.id === "s03-fill-polite-verb",
       ) as FillWithTrapsScreen;
       screen.payload.options[1].learningErrorTag = tag;
@@ -938,7 +939,7 @@ describe("lesson evidence metadata validation", () => {
 
   test("an unknown error tag is rejected", () => {
     const bad = structuredClone(lesson001) as Lesson;
-    const screen = bad.screens.find((s) => s.id === "s03-fill-polite-verb") as FillWithTrapsScreen;
+    const screen = flattenLessonScreens(bad).find((s) => s.id === "s03-fill-polite-verb") as FillWithTrapsScreen;
     (screen.payload.options[1] as { learningErrorTag?: string }).learningErrorTag = "not_a_tag";
     const codes = checkLessonEvidenceRules([bad]).map((f) => f.code);
     assert(codes.includes("choice_tag_unknown"), "rejected");
@@ -984,7 +985,7 @@ describe("lesson evidence metadata validation", () => {
 
   test("open production may not be routed through deterministic grading", () => {
     const bad = structuredClone(lesson000) as Lesson;
-    const sayIt = bad.screens.find((s) => s.type === "say-it-your-way") as SayItYourWayScreen;
+    const sayIt = flattenLessonScreens(bad).find((s) => s.type === "say-it-your-way") as SayItYourWayScreen;
     sayIt.payload.validationMode = "exact-or-alternative";
     assert(
       checkLessonEvidenceRules([bad]).some((f) => f.code === "open_production_graded"),
@@ -994,7 +995,7 @@ describe("lesson evidence metadata validation", () => {
 
   test("a non-subset or non-canonical evidence target is rejected", () => {
     const bad = structuredClone(lesson000) as Lesson;
-    const fill = bad.screens.find(
+    const fill = flattenLessonScreens(bad).find(
       (s) => s.id === "s03-fill-je-voudrais-blank",
     ) as FillWithTrapsScreen;
     fill.evidenceTargetItemIds = ["chunk-merci"];

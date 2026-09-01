@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // L10 adds no new language. Its showcase is the whole first-ten repertoire
     // laid out as a day, so the learner can see that the summit ahead is built
@@ -73,6 +76,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-integration",
     type: "insight-card",
@@ -85,53 +90,63 @@ const screens: LessonScreen[] = [
         "Main pieces: c'est où, faire une pause, je vais.",
     },
   },
-  {
-    // The day-arc opens on French, not on a second explanation: owned pieces,
-    // re-met inside the situation the whole lesson will run through. Nothing
-    // here is new, so first production can follow immediately.
-    id: "s09-meet-morning-arrival",
-    type: "meet-card",
-    targetItemIds: ["chunk-bonjour", "chunk-c-est-ou"],
-    payload: {
-      fr: "Bonjour. C'est où ?",
-      en: "Hello. Where is it?",
-      title: "The day starts at a door.",
-      highlights: [
-        { text: "Bonjour", itemId: "chunk-bonjour" },
-        { text: "C'est", itemId: "chunk-c-est" },
-        { text: "où", itemId: "adverb-ou-where" },
-      ],
-      tts: true,
-    },
-  },
-  {
-    id: "s02-weave-arrive-ask-where",
-    type: "weave",
-    targetItemIds: ["chunk-c-est-ou", "adverb-ou-where"],
-    payload: {
-      weaveType: "context",
-      prompt: "Open politely, then ask where it is.",
-      context:
-        "Morning. Your first time in this building, and the room you need is not where you expected.",
-      suggestedPieces: [
-        { text: "bonjour", itemId: "chunk-bonjour", label: "hello" },
-        { text: "c'est", itemId: "chunk-c-est", label: "it is" },
-        { text: "où", itemId: "adverb-ou-where", label: "where" },
-      ],
-      hintCloze: "Bonjour. ___ ?",
-      expectedAnswers: ["Bonjour. C'est où ?"],
-      acceptedAlternatives: ["Bonjour, c'est où ?", "Bonjour, c'est où"],
-      reveal: {
-        modelAnswer: "Bonjour. C'est où ?",
-        ifCorrect: "The opener and the question, working as one move.",
-        ifCorrectButFlat: "Right. Bonjour first buys you the answer.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. A native opens the moment first: Bonjour. C'est où ?",
-        ifMissingTargetPiece: "Start with bonjour, then let c'est où do the asking.",
+
+  activityChain({
+    id: "s22-chain-the-morning",
+    intro:
+      "The day starts the way every day here starts, and you already have every piece of it.",
+    steps: [
+      {
+        // The day-arc opens on French, not on a second explanation: owned pieces,
+        // re-met inside the situation the whole lesson will run through. Nothing
+        // here is new, so first production can follow immediately.
+        id: "s09-meet-morning-arrival",
+        type: "meet-card",
+        targetItemIds: ["chunk-bonjour", "chunk-c-est-ou"],
+        payload: {
+          fr: "Bonjour. C'est où ?",
+          en: "Hello. Where is it?",
+          title: "The day starts at a door.",
+          highlights: [
+            { text: "Bonjour", itemId: "chunk-bonjour" },
+            { text: "C'est", itemId: "chunk-c-est" },
+            { text: "où", itemId: "adverb-ou-where" },
+          ],
+          tts: true,
+        },
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
+      {
+        id: "s02-weave-arrive-ask-where",
+        type: "weave",
+        targetItemIds: ["chunk-c-est-ou", "adverb-ou-where"],
+        payload: {
+          weaveType: "context",
+          prompt: "Open politely, then ask where it is.",
+          context:
+            "Morning. Your first time in this building, and the room you need is not where you expected.",
+          suggestedPieces: [
+            { text: "bonjour", itemId: "chunk-bonjour", label: "hello" },
+            { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+            { text: "où", itemId: "adverb-ou-where", label: "where" },
+          ],
+          hintCloze: "Bonjour. ___ ?",
+          expectedAnswers: ["Bonjour. C'est où ?"],
+          acceptedAlternatives: ["Bonjour, c'est où ?", "Bonjour, c'est où"],
+          reveal: {
+            modelAnswer: "Bonjour. C'est où ?",
+            ifCorrect: "The opener and the question, working as one move.",
+            ifCorrectButFlat: "Right. Bonjour first buys you the answer.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. A native opens the moment first: Bonjour. C'est où ?",
+            ifMissingTargetPiece: "Start with bonjour, then let c'est où do the asking.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
+    ],
+  }),
+
+
   {
     id: "s03-fill-engine-chooser",
     type: "fill-with-traps",
@@ -167,6 +182,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     // Reflection, not preamble: the three engines are named only after the
     // learner has already used two of them today.
@@ -185,6 +202,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s04-weave-midday-break",
     type: "weave",
@@ -223,6 +242,8 @@ const screens: LessonScreen[] = [
       validationMode: "exact-or-alternative",
     },
   },
+
+
   {
     // Reveal after the midday ask: the same request with and without the
     // softener, so the day's middle beat lands before the evening one.
@@ -235,197 +256,197 @@ const screens: LessonScreen[] = [
         "Both are natural. Among people you have been working with all morning, the short form is enough; s'il vous plaît adds a little distance when you want it.",
     },
   },
-  {
-    // CHAIN: notice the breakdown, then repair it. This is the day's error moment,
-    // and splitting recognition from repair across two pages let the learner meet
-    // the problem and fix it as if they were unrelated events.
+
+  activityChain({
     id: "s21-chain-the-repair",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-c-est-ou",
-      "chunk-je-ne-comprends-pas",
+    intro:
+      "The day has run cleanly so far. This is the part where it stops, and where you keep it going anyway.",
+    steps: [
+        {
+          // A real day does not run clean, and until now this one did. The learner
+          // has owned je ne comprends pas since L3 and used it in L6 to reach someone
+          // again; here it does the job it exists for, in the middle of a day that
+          // was going well. Recognition first, production next.
+          id: "s11-fill-lost-the-thread",
+          type: "fill-with-traps",
+          targetItemIds: ["chunk-je-ne-comprends-pas"],
+          weakPointTags: ["negation", "natural-speech"],
+          payload: {
+            prompt:
+              "They answer you warmly, at speed, with three details you did not catch. They are already turning away.",
+            blankCount: 1,
+            options: [
+              { id: "opt-not-followed", text: "Je ne comprends pas.", isCorrect: true },
+              {
+                id: "opt-not-here",
+                text: "Ce n'est pas ici.",
+                isCorrect: false,
+                trapReason:
+                  "That corrects a place. Nobody was wrong about the place; you simply did not follow.",
+              },
+              {
+                id: "opt-refuse",
+                text: "Non merci.",
+                isCorrect: false,
+                trapReason:
+                  "That turns something down. They were helping, and the day stops here instead of continuing.",
+              },
+            ],
+            answer: ["opt-not-followed"],
+            reveal: {
+              short: "Je ne comprends pas.",
+              explanation:
+                "Saying it keeps the day going. The alternative is nodding, walking off, and still not knowing where to go.",
+              natural: "Je ne comprends pas.",
+            },
+          },
+        },
+        {
+          // The repair, produced. Deliberately NOT L6's repair line: there the
+          // learner reached someone again and stopped. Here they say they did not
+          // follow AND put the question back, which is the move that actually
+          // rescues a day. Both halves are owned (L3 and L8) and have never been
+          // joined before.
+          id: "s12-weave-say-so-and-ask-again",
+          type: "weave",
+          targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-c-est-ou"],
+          weakPointTags: ["negation", "politeness"],
+          payload: {
+            weaveType: "open",
+            prompt: "Say you did not follow, then put the question back.",
+            context:
+              "They have paused, willing to go again. You get one clean try at this.",
+            suggestedPieces: [
+              {
+                text: "je ne comprends pas",
+                itemId: "chunk-je-ne-comprends-pas",
+                label: "I don't understand",
+              },
+              { text: "c'est", itemId: "chunk-c-est", label: "it is" },
+              { text: "où", itemId: "adverb-ou-where", label: "where" },
+            ],
+            hintCloze: "Je ne comprends pas. ___ ?",
+            expectedAnswers: ["Je ne comprends pas. C'est où ?"],
+            acceptedAlternatives: [
+              "Je ne comprends pas. C'est où",
+              "Je ne comprends pas, c'est où ?",
+              // Corpus-closure reconciliation (Pass D, light by design): by L10 the
+              // learner also owns the repair pair completed in L6, so asking them to
+              // go again instead of re-asking the question is an equally true repair
+              // of the same moment. Accepted, not modelled -- the day's own model
+              // still puts the question back.
+              "Je ne comprends pas. Vous pouvez répéter ?",
+              "Je ne comprends pas. Vous pouvez répéter",
+            ],
+            reveal: {
+              modelAnswer: "Je ne comprends pas. C'est où ?",
+              ifCorrect:
+                "That is the whole repair: name the problem, then ask again. The day carries on.",
+              ifCorrectButFlat:
+                "Right. Saying it plainly is faster than pretending you followed.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. Say you did not follow first, then ask the question again.",
+              ifMissingTargetPiece:
+                "Je ne comprends pas names the problem. C'est où ? asks again.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
     ],
-    weakPointTags: ["negation", "natural-speech"],
-    payload: {
-      intro:
-        "The day has run cleanly so far. This is the part where it stops, and where you keep it going anyway.",
-      steps: [
-    {
-      // A real day does not run clean, and until now this one did. The learner
-      // has owned je ne comprends pas since L3 and used it in L6 to reach someone
-      // again; here it does the job it exists for, in the middle of a day that
-      // was going well. Recognition first, production next.
-      id: "s11-fill-lost-the-thread",
-      type: "fill-with-traps",
-      targetItemIds: ["chunk-je-ne-comprends-pas"],
-      weakPointTags: ["negation", "natural-speech"],
-      payload: {
-        prompt:
-          "They answer you warmly, at speed, with three details you did not catch. They are already turning away.",
-        blankCount: 1,
-        options: [
-          { id: "opt-not-followed", text: "Je ne comprends pas.", isCorrect: true },
-          {
-            id: "opt-not-here",
-            text: "Ce n'est pas ici.",
-            isCorrect: false,
-            trapReason:
-              "That corrects a place. Nobody was wrong about the place; you simply did not follow.",
+  }),
+
+  activityChain({
+    id: "s23-chain-closing-the-day",
+    intro:
+      "You have been here since the morning. Leaving well is the last thing the day asks of you.",
+    steps: [
+      {
+        id: "s06-meet-preview-help",
+        type: "meet-card",
+        targetItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
+        payload: {
+          fr: "Vous pouvez m'aider ?",
+          en: "Can you help me?",
+          // Preview convention: "Just listen." opens every recognition-only card,
+          // so the learner can tell at a glance that nothing is being asked of
+          // them. This sentence is never produced, never a suggested piece, and
+          // never a recap chip.
+          title: "Just listen. This one arrives next.",
+          highlights: [
+            { text: "vous pouvez", itemId: "chunk-vous-pouvez" },
+            { text: "m'aider", itemId: "chunk-m-aider" },
+          ],
+          tts: true,
+        },
+      },
+      {
+        id: "s05-weave-close-the-day",
+        type: "weave",
+        targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+        payload: {
+          // The day's summit: open production, no more scaffolded than L6's own
+          // closing weave.
+          weaveType: "open",
+          prompt: "Evening. Say you're going home, then say goodbye.",
+          context:
+            "The day at the new place is done. People are still talking, but you're finished.",
+          suggestedPieces: [
+            { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
+            {
+              text: "à la maison",
+              itemId: "chunk-a-la-maison",
+              label: "home",
+            },
+            {
+              text: "au revoir",
+              itemId: "chunk-au-revoir",
+              label: "goodbye",
+            },
+          ],
+          hintCloze: "Je vais ___. Au revoir.",
+          expectedAnswers: ["Je vais à la maison. Au revoir."],
+          acceptedAlternatives: ["Je vais à la maison, au revoir."],
+          reveal: {
+            modelAnswer: "Je vais à la maison. Au revoir.",
+            ifCorrect: "You opened the day with bonjour. Now you can close it.",
+            ifCorrectButFlat: "Right. The day closes the way it opened.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Where you are going comes first, then the goodbye.",
+            ifMissingTargetPiece:
+              "Lead with je vais à la maison, then let au revoir close the door.",
           },
-          {
-            id: "opt-refuse",
-            text: "Non merci.",
-            isCorrect: false,
-            trapReason:
-              "That turns something down. They were helping, and the day stops here instead of continuing.",
+          validationMode: "exact-or-alternative",
+        },
+      },
+      {
+        id: "s07-sayit-take-your-leave",
+        type: "say-it-your-way",
+        targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+        weakPointTags: ["natural-speech"],
+        payload: {
+          situation:
+            "The end of your first full day at the new place. Someone walks you to the door.",
+          communicativeGoal: "Take your leave warmly: thanks, direction, goodbye.",
+          suggestedPieces: [
+            { text: "merci", itemId: "chunk-merci" },
+            { text: "je vais", itemId: "chunk-je-vais" },
+            { text: "à la maison", itemId: "chunk-a-la-maison" },
+            { text: "au revoir", itemId: "chunk-au-revoir" },
+          ],
+          modelAnswer: "Merci. Je vais à la maison. Au revoir.",
+          reveal: {
+            modelAnswer: "Merci. Je vais à la maison. Au revoir.",
+            naturalAlternatives: ["Je vais à la maison. Au revoir."],
+            explanation:
+              "Both are natural. Merci thanks the day; je vais à la maison says where you're off to; au revoir closes it gently.",
           },
-        ],
-        answer: ["opt-not-followed"],
-        reveal: {
-          short: "Je ne comprends pas.",
-          explanation:
-            "Saying it keeps the day going. The alternative is nodding, walking off, and still not knowing where to go.",
-          natural: "Je ne comprends pas.",
+          validationMode: "model-answer-only",
         },
       },
-    },
-    {
-      // The repair, produced. Deliberately NOT L6's repair line: there the
-      // learner reached someone again and stopped. Here they say they did not
-      // follow AND put the question back, which is the move that actually
-      // rescues a day. Both halves are owned (L3 and L8) and have never been
-      // joined before.
-      id: "s12-weave-say-so-and-ask-again",
-      type: "weave",
-      targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-c-est-ou"],
-      weakPointTags: ["negation", "politeness"],
-      payload: {
-        weaveType: "open",
-        prompt: "Say you did not follow, then put the question back.",
-        context:
-          "They have paused, willing to go again. You get one clean try at this.",
-        suggestedPieces: [
-          {
-            text: "je ne comprends pas",
-            itemId: "chunk-je-ne-comprends-pas",
-            label: "I don't understand",
-          },
-          { text: "c'est", itemId: "chunk-c-est", label: "it is" },
-          { text: "où", itemId: "adverb-ou-where", label: "where" },
-        ],
-        hintCloze: "Je ne comprends pas. ___ ?",
-        expectedAnswers: ["Je ne comprends pas. C'est où ?"],
-        acceptedAlternatives: [
-          "Je ne comprends pas. C'est où",
-          "Je ne comprends pas, c'est où ?",
-          // Corpus-closure reconciliation (Pass D, light by design): by L10 the
-          // learner also owns the repair pair completed in L6, so asking them to
-          // go again instead of re-asking the question is an equally true repair
-          // of the same moment. Accepted, not modelled -- the day's own model
-          // still puts the question back.
-          "Je ne comprends pas. Vous pouvez répéter ?",
-          "Je ne comprends pas. Vous pouvez répéter",
-        ],
-        reveal: {
-          modelAnswer: "Je ne comprends pas. C'est où ?",
-          ifCorrect:
-            "That is the whole repair: name the problem, then ask again. The day carries on.",
-          ifCorrectButFlat:
-            "Right. Saying it plainly is faster than pretending you followed.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. Say you did not follow first, then ask the question again.",
-          ifMissingTargetPiece:
-            "Je ne comprends pas names the problem. C'est où ? asks again.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
-  {
-    id: "s06-meet-preview-help",
-    type: "meet-card",
-    targetItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
-    payload: {
-      fr: "Vous pouvez m'aider ?",
-      en: "Can you help me?",
-      // Preview convention: "Just listen." opens every recognition-only card,
-      // so the learner can tell at a glance that nothing is being asked of
-      // them. This sentence is never produced, never a suggested piece, and
-      // never a recap chip.
-      title: "Just listen. This one arrives next.",
-      highlights: [
-        { text: "vous pouvez", itemId: "chunk-vous-pouvez" },
-        { text: "m'aider", itemId: "chunk-m-aider" },
-      ],
-      tts: true,
-    },
-  },
-  {
-    id: "s05-weave-close-the-day",
-    type: "weave",
-    targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
-    payload: {
-      // The day's summit: open production, no more scaffolded than L6's own
-      // closing weave.
-      weaveType: "open",
-      prompt: "Evening. Say you're going home, then say goodbye.",
-      context:
-        "The day at the new place is done. People are still talking, but you're finished.",
-      suggestedPieces: [
-        { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-        {
-          text: "à la maison",
-          itemId: "chunk-a-la-maison",
-          label: "home",
-        },
-        {
-          text: "au revoir",
-          itemId: "chunk-au-revoir",
-          label: "goodbye",
-        },
-      ],
-      hintCloze: "Je vais ___. Au revoir.",
-      expectedAnswers: ["Je vais à la maison. Au revoir."],
-      acceptedAlternatives: ["Je vais à la maison, au revoir."],
-      reveal: {
-        modelAnswer: "Je vais à la maison. Au revoir.",
-        ifCorrect: "You opened the day with bonjour. Now you can close it.",
-        ifCorrectButFlat: "Right. The day closes the way it opened.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Where you are going comes first, then the goodbye.",
-        ifMissingTargetPiece:
-          "Lead with je vais à la maison, then let au revoir close the door.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    id: "s07-sayit-take-your-leave",
-    type: "say-it-your-way",
-    targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      situation:
-        "The end of your first full day at the new place. Someone walks you to the door.",
-      communicativeGoal: "Take your leave warmly: thanks, direction, goodbye.",
-      suggestedPieces: [
-        { text: "merci", itemId: "chunk-merci" },
-        { text: "je vais", itemId: "chunk-je-vais" },
-        { text: "à la maison", itemId: "chunk-a-la-maison" },
-        { text: "au revoir", itemId: "chunk-au-revoir" },
-      ],
-      modelAnswer: "Merci. Je vais à la maison. Au revoir.",
-      reveal: {
-        modelAnswer: "Merci. Je vais à la maison. Au revoir.",
-        naturalAlternatives: ["Je vais à la maison. Au revoir."],
-        explanation:
-          "Both are natural. Merci thanks the day; je vais à la maison says where you're off to; au revoir closes it gently.",
-      },
-      validationMode: "model-answer-only",
-    },
-  },
+    ],
+  }),
+
+
   {
     // The payoff. Every screen before this one produced a piece of the day;
     // this one asks for the day. Nothing is supplied, nothing is prompted line
@@ -478,6 +499,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     id: "s08-recap-full-day",
     type: "recap",

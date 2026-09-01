@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // L9's world is asking for an action rather than a thing, and the social
     // shapes that make such a request land: quietly to people already with you,
@@ -74,6 +77,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-pause",
     type: "insight-card",
@@ -86,6 +91,8 @@ const screens: LessonScreen[] = [
         "Main pieces: faire une pause, une pause, je voudrais.",
     },
   },
+
+
   {
     id: "s01-meet-faire-une-pause",
     type: "meet-card",
@@ -101,6 +108,8 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+
+
   {
     id: "s03-fill-faire-blank",
     type: "fill-with-traps",
@@ -136,6 +145,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     // Reflection after the learner has already picked the action word out of
     // the frame, not a preamble before it.
@@ -153,6 +164,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s04-weave-ask-for-a-break",
     type: "weave",
@@ -188,6 +201,8 @@ const screens: LessonScreen[] = [
       validationMode: "exact-or-alternative",
     },
   },
+
+
   {
     // Reveal straight after the first real ask: the same request, and the
     // shorter thing-shaped version beside it.
@@ -200,86 +215,96 @@ const screens: LessonScreen[] = [
         "Both are natural. Faire une pause names the act of taking a break; une pause names the break itself. The engine in front does not change.",
     },
   },
-  {
-    // One small contrast before the polite ask: which owned piece softens a
-    // request, and which ones close a moment instead.
-    id: "s08-fill-softener",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-sil-vous-plait"],
-    payload: {
-      prompt: "You are asking for something, not thanking anyone. Which piece softens the ask?",
-      sentenceBefore: "Je voudrais faire une pause, ",
-      sentenceAfter: ".",
-      blankCount: 1,
-      options: [
-        { id: "opt-svp", text: "s'il vous plaît", isCorrect: true },
-        {
-          id: "opt-merci-soft",
-          text: "merci",
-          isCorrect: false,
-          trapReason:
-            "Merci thanks someone after they help. It cannot soften the asking itself.",
+
+  activityChain({
+    id: "s22-chain-asking-properly",
+    intro:
+      "The ask is already yours. What is missing is the half-second of politeness that makes it land.",
+    steps: [
+      {
+        // One small contrast before the polite ask: which owned piece softens a
+        // request, and which ones close a moment instead.
+        id: "s08-fill-softener",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-sil-vous-plait"],
+        payload: {
+          prompt: "You are asking for something, not thanking anyone. Which piece softens the ask?",
+          sentenceBefore: "Je voudrais faire une pause, ",
+          sentenceAfter: ".",
+          blankCount: 1,
+          options: [
+            { id: "opt-svp", text: "s'il vous plaît", isCorrect: true },
+            {
+              id: "opt-merci-soft",
+              text: "merci",
+              isCorrect: false,
+              trapReason:
+                "Merci thanks someone after they help. It cannot soften the asking itself.",
+            },
+            {
+              id: "opt-au-revoir-soft",
+              text: "au revoir",
+              isCorrect: false,
+              trapReason:
+                "Au revoir closes the moment. Here you are still in it, asking.",
+            },
+          ],
+          answer: ["opt-svp"],
+          reveal: {
+            short: "s'il vous plaît",
+            explanation:
+              "S'il vous plaît softens a request. It costs nothing and changes the tone.",
+            natural: "Je voudrais faire une pause, s'il vous plaît.",
+          },
         },
-        {
-          id: "opt-au-revoir-soft",
-          text: "au revoir",
-          isCorrect: false,
-          trapReason:
-            "Au revoir closes the moment. Here you are still in it, asking.",
-        },
-      ],
-      answer: ["opt-svp"],
-      reveal: {
-        short: "s'il vous plaît",
-        explanation:
-          "S'il vous plaît softens a request. It costs nothing and changes the tone.",
-        natural: "Je voudrais faire une pause, s'il vous plaît.",
       },
-    },
-  },
-  {
-    id: "s05-weave-break-politely",
-    type: "weave",
-    targetItemIds: ["chunk-faire-une-pause"],
-    payload: {
-      // Open: the directive prompt stands alone, no target line is shown, and
-      // every piece is opt-in. This is the lesson's independence summit.
-      weaveType: "open",
-      prompt: "Ask for a break politely: say you'd like to take a pause, please.",
-      context:
-        "You're working through something together. It's a good moment to ask.",
-      suggestedPieces: [
-        {
-          text: "je voudrais",
-          itemId: "chunk-je-voudrais",
-          label: "I would like",
+      {
+        id: "s05-weave-break-politely",
+        type: "weave",
+        targetItemIds: ["chunk-faire-une-pause"],
+        payload: {
+          // Open: the directive prompt stands alone, no target line is shown, and
+          // every piece is opt-in. This is the lesson's independence summit.
+          weaveType: "open",
+          prompt: "Ask for a break politely: say you'd like to take a pause, please.",
+          context:
+            "You're working through something together. It's a good moment to ask.",
+          suggestedPieces: [
+            {
+              text: "je voudrais",
+              itemId: "chunk-je-voudrais",
+              label: "I would like",
+            },
+            {
+              text: "faire une pause",
+              itemId: "chunk-faire-une-pause",
+              label: "to take a break",
+            },
+            {
+              text: "s'il vous plaît",
+              itemId: "chunk-sil-vous-plait",
+              label: "please",
+            },
+          ],
+          hintCloze: "Je voudrais ___, s'il vous plaît.",
+          expectedAnswers: ["Je voudrais faire une pause, s'il vous plaît."],
+          acceptedAlternatives: ["Je voudrais faire une pause s'il vous plaît."],
+          reveal: {
+            modelAnswer: "Je voudrais faire une pause, s'il vous plaît.",
+            ifCorrect: "Old politeness, new rest. The pieces keep working.",
+            ifCorrectButFlat: "Right. The comma gives it breathing room.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The please comes last, after the ask.",
+            ifMissingTargetPiece:
+              "Keep the sentence you had and let s'il vous plaît soften it.",
+          },
+          validationMode: "exact-or-alternative",
         },
-        {
-          text: "faire une pause",
-          itemId: "chunk-faire-une-pause",
-          label: "to take a break",
-        },
-        {
-          text: "s'il vous plaît",
-          itemId: "chunk-sil-vous-plait",
-          label: "please",
-        },
-      ],
-      hintCloze: "Je voudrais ___, s'il vous plaît.",
-      expectedAnswers: ["Je voudrais faire une pause, s'il vous plaît."],
-      acceptedAlternatives: ["Je voudrais faire une pause s'il vous plaît."],
-      reveal: {
-        modelAnswer: "Je voudrais faire une pause, s'il vous plaît.",
-        ifCorrect: "Old politeness, new rest. The pieces keep working.",
-        ifCorrectButFlat: "Right. The comma gives it breathing room.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The please comes last, after the ask.",
-        ifMissingTargetPiece:
-          "Keep the sentence you had and let s'il vous plaît soften it.",
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
+    ],
+  }),
+
+
   {
     // Reflection: names the reach the learner just gained, adds nothing new.
     id: "s10-insight-what-you-can-ask",
@@ -296,193 +321,185 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    // L9's job is CHOOSING WHAT YOU MEAN. Every earlier fill in this lesson
-    // picks a word inside a frame the lesson already handed over; this one
-    // picks between three whole intentions the learner owns, and only the
-    // situation says which is true. All three are correct French. Only one is
-    // the right thing to want.
-    id: "s11-fill-which-need",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-faire-une-pause"],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      prompt:
-        "Two hours in. You are flagging, but you do not want the day to end. Someone asks how you are doing.",
-      blankCount: 1,
-      options: [
-        { id: "opt-pause", text: "Je voudrais faire une pause.", isCorrect: true },
-        {
-          id: "opt-home",
-          text: "Je vais à la maison.",
-          isCorrect: false,
-          trapReason:
-            "That ends the day instead of pausing it. Correct French, wrong thing to want here.",
+
+  activityChain({
+    id: "s23-chain-the-whole-request",
+    intro:
+      "A real request has three parts: reaching them, saying what you need, and saying why.",
+    steps: [
+      {
+        // L9's job is CHOOSING WHAT YOU MEAN. Every earlier fill in this lesson
+        // picks a word inside a frame the lesson already handed over; this one
+        // picks between three whole intentions the learner owns, and only the
+        // situation says which is true. All three are correct French. Only one is
+        // the right thing to want.
+        id: "s11-fill-which-need",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-faire-une-pause"],
+        weakPointTags: ["natural-speech"],
+        payload: {
+          prompt:
+            "Two hours in. You are flagging, but you do not want the day to end. Someone asks how you are doing.",
+          blankCount: 1,
+          options: [
+            { id: "opt-pause", text: "Je voudrais faire une pause.", isCorrect: true },
+            {
+              id: "opt-home",
+              text: "Je vais à la maison.",
+              isCorrect: false,
+              trapReason:
+                "That ends the day instead of pausing it. Correct French, wrong thing to want here.",
+            },
+            {
+              id: "opt-hungry",
+              text: "J'ai faim.",
+              isCorrect: false,
+              trapReason:
+                "True, maybe, but it names a different need. Nobody offers you a break for it.",
+            },
+          ],
+          answer: ["opt-pause"],
+          reveal: {
+            short: "Je voudrais faire une pause.",
+            explanation:
+              "All three sentences are good French. Choosing between them is the whole skill: a pause stops the day for a moment, going home stops it for good.",
+            natural: "Je voudrais faire une pause.",
+          },
         },
-        {
-          id: "opt-hungry",
-          text: "J'ai faim.",
-          isCorrect: false,
-          trapReason:
-            "True, maybe, but it names a different need. Nobody offers you a break for it.",
-        },
-      ],
-      answer: ["opt-pause"],
-      reveal: {
-        short: "Je voudrais faire une pause.",
-        explanation:
-          "All three sentences are good French. Choosing between them is the whole skill: a pause stops the day for a moment, going home stops it for good.",
-        natural: "Je voudrais faire une pause.",
       },
-    },
-  },
-  {
-    // Multi-part reconstruction at the lesson's lowest support: the ask alone
-    // was already produced at s05, so repeating it would be the same demand
-    // twice. This one adds the REASON, which the learner has owned since L4 and
-    // has never once had to volunteer. Two sentences, no target line, opt-in
-    // pieces.
-    id: "s12-weave-ask-and-say-why",
-    type: "weave",
-    targetItemIds: ["chunk-faire-une-pause", "chunk-j-ai-faim"],
-    weakPointTags: ["avoir-vs-etre", "natural-speech"],
-    payload: {
-      weaveType: "open",
-      prompt: "Ask for the break, then say what is behind it.",
-      context:
-        "They will say yes if you tell them why. You have not eaten since morning.",
-      suggestedPieces: [
-        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "I would like" },
-        {
-          text: "faire une pause",
-          itemId: "chunk-faire-une-pause",
-          label: "to take a break",
+      {
+        // Multi-part reconstruction at the lesson's lowest support: the ask alone
+        // was already produced at s05, so repeating it would be the same demand
+        // twice. This one adds the REASON, which the learner has owned since L4 and
+        // has never once had to volunteer. Two sentences, no target line, opt-in
+        // pieces.
+        id: "s12-weave-ask-and-say-why",
+        type: "weave",
+        targetItemIds: ["chunk-faire-une-pause", "chunk-j-ai-faim"],
+        weakPointTags: ["avoir-vs-etre", "natural-speech"],
+        payload: {
+          weaveType: "open",
+          prompt: "Ask for the break, then say what is behind it.",
+          context:
+            "They will say yes if you tell them why. You have not eaten since morning.",
+          suggestedPieces: [
+            { text: "je voudrais", itemId: "chunk-je-voudrais", label: "I would like" },
+            {
+              text: "faire une pause",
+              itemId: "chunk-faire-une-pause",
+              label: "to take a break",
+            },
+            { text: "j'ai faim", itemId: "chunk-j-ai-faim", label: "I'm hungry" },
+          ],
+          hintCloze: "Je voudrais ___. J'ai ___.",
+          expectedAnswers: ["Je voudrais faire une pause. J'ai faim."],
+          acceptedAlternatives: [
+            "Je voudrais faire une pause, j'ai faim.",
+            "Je voudrais faire une pause. J'ai faim",
+          ],
+          reveal: {
+            modelAnswer: "Je voudrais faire une pause. J'ai faim.",
+            ifCorrect:
+              "A request and its reason. That is longer than anything the day has asked of you so far.",
+            ifCorrectButFlat:
+              "Right. The ask goes first; the reason makes it easy to say yes to.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Ask first, then give the reason: j'ai faim.",
+            ifMissingTargetPiece:
+              "The ask is je voudrais faire une pause. The reason is the feeling you own already: j'ai faim.",
+          },
+          validationMode: "exact-or-alternative",
         },
-        { text: "j'ai faim", itemId: "chunk-j-ai-faim", label: "I'm hungry" },
-      ],
-      hintCloze: "Je voudrais ___. J'ai ___.",
-      expectedAnswers: ["Je voudrais faire une pause. J'ai faim."],
-      acceptedAlternatives: [
-        "Je voudrais faire une pause, j'ai faim.",
-        "Je voudrais faire une pause. J'ai faim",
-      ],
-      reveal: {
-        modelAnswer: "Je voudrais faire une pause. J'ai faim.",
-        ifCorrect:
-          "A request and its reason. That is longer than anything the day has asked of you so far.",
-        ifCorrectButFlat:
-          "Right. The ask goes first; the reason makes it easy to say yes to.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Ask first, then give the reason: j'ai faim.",
-        ifMissingTargetPiece:
-          "The ask is je voudrais faire une pause. The reason is the feeling you own already: j'ai faim.",
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // CHAIN: choose the social shape, then produce it under a French cue. The
-    // request never changes; what changes is whether you have to buy the room's
-    // attention first.
-    id: "s21-chain-open-then-ask",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-excusez-moi",
-      "chunk-faire-une-pause",
+        {
+          // Corpus closure. L9 asked for the break in one social shape: quietly, to
+          // people already working with you. This is the other shape -- interrupting
+          // a room that is not waiting for you -- using the opener the learner has
+          // owned since L1 but has never put in front of this request.
+          id: "s13-fill-how-to-open-the-ask",
+          type: "fill-with-traps",
+          targetItemIds: ["chunk-excusez-moi", "chunk-faire-une-pause"],
+          evidenceTargetItemIds: ["chunk-excusez-moi"],
+          weakPointTags: ["politeness"],
+          payload: {
+            prompt:
+              "The meeting is running and nobody is looking at you. You need to stop it for ten minutes.",
+            blankCount: 1,
+            options: [
+              {
+                id: "opt-excusez",
+                text: "Excusez-moi, je voudrais faire une pause.",
+                isCorrect: true,
+              },
+              {
+                id: "opt-bare",
+                text: "Je voudrais faire une pause.",
+                isCorrect: false,
+                trapReason:
+                  "Correct French, and it works when someone is already listening. Nobody here is, so it lands in the middle of somebody else's sentence.",
+              },
+              {
+                id: "opt-non-merci",
+                text: "Non merci.",
+                isCorrect: false,
+                trapReason:
+                  "That refuses something. You are asking for something instead.",
+              },
+            ],
+            answer: ["opt-excusez"],
+            reveal: {
+              short: "Excusez-moi, je voudrais faire une pause.",
+              explanation:
+                "The request did not change. What changed is that you had to buy the room's attention before making it.",
+              natural: "Excusez-moi, je voudrais faire une pause.",
+            },
+          },
+        },
+        {
+          // FRENCH-CONTEXT production, and the lesson's hardest: the room's line is
+          // in French, the helper states only the learner's intention, and nothing in
+          // the scene contains the answer.
+          id: "s14-weave-break-in-french",
+          type: "weave",
+          targetItemIds: ["chunk-excusez-moi", "chunk-faire-une-pause"],
+          weakPointTags: ["politeness", "natural-speech"],
+          payload: {
+            weaveType: "open",
+            prompt: "Cut in, and ask for what you need.",
+            context:
+              "The room is mid-sentence and someone says: « Bonjour ? » You have been at this for three hours.",
+            suggestedPieces: [
+              { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
+              { text: "je voudrais", itemId: "chunk-je-voudrais", label: "I would like" },
+              {
+                text: "faire une pause",
+                itemId: "chunk-faire-une-pause",
+                label: "to take a break",
+              },
+            ],
+            hintCloze: "Excusez-moi, je voudrais ___.",
+            expectedAnswers: ["Excusez-moi, je voudrais faire une pause."],
+            acceptedAlternatives: [
+              "Excusez-moi. Je voudrais faire une pause.",
+              "Excusez-moi, je voudrais faire une pause, s'il vous plaît.",
+            ],
+            reveal: {
+              modelAnswer: "Excusez-moi, je voudrais faire une pause.",
+              ifCorrect:
+                "Opened a room that was not open, then asked. That is the whole social move.",
+              ifCorrectButFlat: "Right. Excusez-moi first, then the request.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. Reach them first; the ask you already own does the rest.",
+              ifMissingTargetPiece:
+                "Excusez-moi buys the pause in the room. Je voudrais faire une pause is the one you want.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
     ],
-    weakPointTags: ["politeness"],
-    payload: {
-      intro:
-        "The request itself never changes. What changes is whether the room is already listening to you.",
-      steps: [
-    {
-      // Corpus closure. L9 asked for the break in one social shape: quietly, to
-      // people already working with you. This is the other shape -- interrupting
-      // a room that is not waiting for you -- using the opener the learner has
-      // owned since L1 but has never put in front of this request.
-      id: "s13-fill-how-to-open-the-ask",
-      type: "fill-with-traps",
-      targetItemIds: ["chunk-excusez-moi", "chunk-faire-une-pause"],
-      evidenceTargetItemIds: ["chunk-excusez-moi"],
-      weakPointTags: ["politeness"],
-      payload: {
-        prompt:
-          "The meeting is running and nobody is looking at you. You need to stop it for ten minutes.",
-        blankCount: 1,
-        options: [
-          {
-            id: "opt-excusez",
-            text: "Excusez-moi, je voudrais faire une pause.",
-            isCorrect: true,
-          },
-          {
-            id: "opt-bare",
-            text: "Je voudrais faire une pause.",
-            isCorrect: false,
-            trapReason:
-              "Correct French, and it works when someone is already listening. Nobody here is, so it lands in the middle of somebody else's sentence.",
-          },
-          {
-            id: "opt-non-merci",
-            text: "Non merci.",
-            isCorrect: false,
-            trapReason:
-              "That refuses something. You are asking for something instead.",
-          },
-        ],
-        answer: ["opt-excusez"],
-        reveal: {
-          short: "Excusez-moi, je voudrais faire une pause.",
-          explanation:
-            "The request did not change. What changed is that you had to buy the room's attention before making it.",
-          natural: "Excusez-moi, je voudrais faire une pause.",
-        },
-      },
-    },
-    {
-      // FRENCH-CONTEXT production, and the lesson's hardest: the room's line is
-      // in French, the helper states only the learner's intention, and nothing in
-      // the scene contains the answer.
-      id: "s14-weave-break-in-french",
-      type: "weave",
-      targetItemIds: ["chunk-excusez-moi", "chunk-faire-une-pause"],
-      weakPointTags: ["politeness", "natural-speech"],
-      payload: {
-        weaveType: "open",
-        prompt: "Cut in, and ask for what you need.",
-        context:
-          "The room is mid-sentence and someone says: « Bonjour ? » You have been at this for three hours.",
-        suggestedPieces: [
-          { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
-          { text: "je voudrais", itemId: "chunk-je-voudrais", label: "I would like" },
-          {
-            text: "faire une pause",
-            itemId: "chunk-faire-une-pause",
-            label: "to take a break",
-          },
-        ],
-        hintCloze: "Excusez-moi, je voudrais ___.",
-        expectedAnswers: ["Excusez-moi, je voudrais faire une pause."],
-        acceptedAlternatives: [
-          "Excusez-moi. Je voudrais faire une pause.",
-          "Excusez-moi, je voudrais faire une pause, s'il vous plaît.",
-        ],
-        reveal: {
-          modelAnswer: "Excusez-moi, je voudrais faire une pause.",
-          ifCorrect:
-            "Opened a room that was not open, then asked. That is the whole social move.",
-          ifCorrectButFlat: "Right. Excusez-moi first, then the request.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. Reach them first; the ask you already own does the rest.",
-          ifMissingTargetPiece:
-            "Excusez-moi buys the pause in the room. Je voudrais faire une pause is the one you want.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
+  }),
+
+
   {
     id: "s06-sayit-long-afternoon",
     type: "say-it-your-way",
@@ -507,6 +524,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     id: "s07-recap-pause",
     type: "recap",

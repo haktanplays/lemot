@@ -81,10 +81,10 @@ const codeOf = (src: string): string =>
 
 const NOW = 1_800_000_000_000;
 const lesson001 = V1_LESSONS.find((l) => l.id === "v1-lesson-001") as Lesson;
-const pm009Screen = lesson001.screens.find(
+const pm009Screen = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s10-weave-merci-thanks",
 ) as WeaveScreen;
-const pm011Screen = lesson001.screens.find(
+const pm011Screen = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s11-weave-the-order",
 ) as WeaveScreen;
 
@@ -324,7 +324,7 @@ describe("five canonical item registrations", () => {
 
   test("no lesson targets the linked noun, and the rescue chunks stay unactivated", () => {
     for (const lesson of V1_LESSONS) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         assert(
           !(screen.targetItemIds ?? []).includes("noun-the"),
           `${lesson.id}/${screen.id} must not target the linked sub-identity`,
@@ -476,12 +476,20 @@ describe("registered payload identity", () => {
     assertEqual(missing.length, 2, "both payloads unresolvable without their screens");
     assert(missing.every((e) => e.includes("does not resolve")), "actionable message");
 
+    // PM-009 lives inside an activity chain, so the drift fixture has to reach
+    // one level down -- exactly as the validator itself now does. Rewriting only
+    // top-level screens would build a lesson with NO drift in it and pass this
+    // test for the wrong reason.
+    const drift = <T extends { id: string; type: string; payload: object }>(s: T): T =>
+      s.id === "s10-weave-merci-thanks" && s.type === "weave"
+        ? { ...s, payload: { ...s.payload, expectedAnswers: ["Bonjour."] } }
+        : s;
     const drifted: Lesson = {
       ...lesson001,
       screens: lesson001.screens.map((s) =>
-        s.id === "s10-weave-merci-thanks" && s.type === "weave"
-          ? { ...s, payload: { ...s.payload, expectedAnswers: ["Bonjour."] } }
-          : s,
+        s.type === "activity-chain"
+          ? { ...s, payload: { ...s.payload, steps: s.payload.steps.map(drift) } }
+          : drift(s),
       ),
     };
     const errors = validateRegisteredPayloads([drifted]);
@@ -886,7 +894,7 @@ describe("PR-07 changed no frozen contract", () => {
   });
 
   test("existing lesson-001 screens and their French are untouched", () => {
-    const s04 = lesson001.screens.find((s) => s.id === "s04-weave-cafe-order") as WeaveScreen;
+    const s04 = flattenLessonScreens(lesson001).find((s) => s.id === "s04-weave-cafe-order") as WeaveScreen;
     assertEqual(
       s04.payload.expectedAnswers[0],
       "Bonjour, je voudrais un café.",

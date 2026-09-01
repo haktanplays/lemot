@@ -39,6 +39,7 @@ import type {
   WeaveScreen,
 } from "../../content/lessonTypes";
 import type { ReusablePracticeSource } from "../../content/lesson-v1-evidence/practiceHub";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 
 const APP_ROOT = process.cwd();
 const read = (rel: string): string => readFileSync(join(APP_ROOT, rel), "utf8");
@@ -457,7 +458,7 @@ describe("learner-facing terminology is the canonical product vocabulary", () =>
 describe("Practice cards carry situations, not engine status lines", () => {
   const weaveWithContext = (): { lesson: Lesson; screen: WeaveScreen } => {
     for (const lesson of V1_LESSONS) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         if (
           screen.type === "weave" &&
           typeof screen.payload.context === "string" &&
@@ -492,7 +493,7 @@ describe("Practice cards carry situations, not engine status lines", () => {
   test("a source with no authored situation falls back to one neutral line", () => {
     let fill: { lesson: Lesson; screen: FillWithTrapsScreen } | null = null;
     for (const lesson of V1_LESSONS) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         if (screen.type === "fill-with-traps") {
           fill = { lesson, screen };
           break;

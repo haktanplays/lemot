@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // L6 adds no new language. Its showcase is the first time the learner sees
     // the five previous lessons standing together as one usable repertoire, so
@@ -72,6 +75,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-petit-moment",
     type: "insight-card",
@@ -84,77 +89,87 @@ const screens: LessonScreen[] = [
         "Main pieces: bonjour, je suis, ici, c'est, j'ai, une question, je ne comprends pas, merci, au revoir.",
     },
   },
-  {
-    id: "s01-meet-bonjour-at-the-door",
-    type: "meet-card",
-    targetItemIds: ["chunk-bonjour"],
-    payload: {
-      fr: "Bonjour.",
-      en: "Hello.",
-      title: "At the door.",
-      highlights: [{ text: "Bonjour", itemId: "chunk-bonjour" }],
-      tts: true,
-    },
-  },
-  {
-    id: "s02-fill-right-place",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-je-suis-ici", "chunk-je-ne-suis-pas"],
-    weakPointTags: ["avoir-vs-etre"],
-    payload: {
-      prompt: "You reach the right door and step in. What do you say?",
-      blankCount: 1,
-      options: [
-        { id: "opt-ici", text: "Je suis ici.", isCorrect: true },
-        {
-          id: "opt-pas-ici",
-          text: "Je ne suis pas ici.",
-          isCorrect: false,
-          trapReason:
-            "That says the opposite. You are here, so: Je suis ici.",
+
+  activityChain({
+    id: "s22-chain-at-the-door",
+    intro:
+      "Every small moment starts the same way: a door opens, and you have about two seconds.",
+    steps: [
+      {
+        id: "s01-meet-bonjour-at-the-door",
+        type: "meet-card",
+        targetItemIds: ["chunk-bonjour"],
+        payload: {
+          fr: "Bonjour.",
+          en: "Hello.",
+          title: "At the door.",
+          highlights: [{ text: "Bonjour", itemId: "chunk-bonjour" }],
+          tts: true,
         },
-        {
-          id: "opt-faim",
-          text: "J'ai faim.",
-          isCorrect: false,
-          trapReason: "That is a feeling, not where you are.",
+      },
+      {
+        id: "s02-fill-right-place",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-je-suis-ici", "chunk-je-ne-suis-pas"],
+        weakPointTags: ["avoir-vs-etre"],
+        payload: {
+          prompt: "You reach the right door and step in. What do you say?",
+          blankCount: 1,
+          options: [
+            { id: "opt-ici", text: "Je suis ici.", isCorrect: true },
+            {
+              id: "opt-pas-ici",
+              text: "Je ne suis pas ici.",
+              isCorrect: false,
+              trapReason:
+                "That says the opposite. You are here, so: Je suis ici.",
+            },
+            {
+              id: "opt-faim",
+              text: "J'ai faim.",
+              isCorrect: false,
+              trapReason: "That is a feeling, not where you are.",
+            },
+          ],
+          answer: ["opt-ici"],
+          reveal: {
+            short: "Je suis ici.",
+            explanation: "You are in the right place, so you say where you are.",
+            natural: "Je suis ici.",
+          },
         },
-      ],
-      answer: ["opt-ici"],
-      reveal: {
-        short: "Je suis ici.",
-        explanation: "You are in the right place, so you say where you are.",
-        natural: "Je suis ici.",
       },
-    },
-  },
-  {
-    id: "s03-weave-bonjour-je-suis-ici",
-    type: "weave",
-    targetItemIds: ["chunk-bonjour", "chunk-je-suis-ici", "chunk-je-suis"],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      weaveType: "context",
-      prompt: "Write it in French: Hello. I am here.",
-      context: "You are at the door. Greet, then say you have arrived.",
-      suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
-        { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
-        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
-      ],
-      hintCloze: "Bonjour, je suis ___.",
-      expectedAnswers: ["Bonjour, je suis ici."],
-      reveal: {
-        modelAnswer: "Bonjour, je suis ici.",
-        ifCorrect: "You opened the moment and said where you are.",
-        ifCorrectButFlat: "Right. The greeting and the arrival, in one line.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. A native opens first, then lands: Bonjour. Je suis ici.",
-        ifMissingTargetPiece: "Start with bonjour, then je suis ici.",
+      {
+        id: "s03-weave-bonjour-je-suis-ici",
+        type: "weave",
+        targetItemIds: ["chunk-bonjour", "chunk-je-suis-ici", "chunk-je-suis"],
+        weakPointTags: ["natural-speech"],
+        payload: {
+          weaveType: "context",
+          prompt: "Write it in French: Hello. I am here.",
+          context: "You are at the door. Greet, then say you have arrived.",
+          suggestedPieces: [
+            { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+            { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
+            { text: "ici", itemId: "word-ici", required: true, label: "place word" },
+          ],
+          hintCloze: "Bonjour, je suis ___.",
+          expectedAnswers: ["Bonjour, je suis ici."],
+          reveal: {
+            modelAnswer: "Bonjour, je suis ici.",
+            ifCorrect: "You opened the moment and said where you are.",
+            ifCorrectButFlat: "Right. The greeting and the arrival, in one line.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. A native opens first, then lands: Bonjour. Je suis ici.",
+            ifMissingTargetPiece: "Start with bonjour, then je suis ici.",
+          },
+          validationMode: "exact-or-alternative",
+        },
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
+    ],
+  }),
+
+
   {
     // The first beat that is not about the learner. s02 asked where THEY are;
     // this asks what the PLACE is, and the two are a real beginner confusion
@@ -198,6 +213,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     // Moved out of the opening (F-10): it now reflects on the arc AFTER the
     // learner has greeted and arrived in French, so the lesson never opens
@@ -218,275 +235,279 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    id: "s04-fill-decline-offer",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-non-merci"],
-    weakPointTags: ["politeness", "negation"],
-    payload: {
-      prompt: "Inside, someone offers you a coffee. You are fine without one. What do you say?",
-      blankCount: 1,
-      options: [
-        { id: "opt-non-merci", text: "Non merci.", isCorrect: true },
-        {
-          id: "opt-merci",
-          text: "Merci.",
-          isCorrect: false,
-          trapReason:
-            "Merci alone can sound like yes please. Non merci makes the no clear.",
+
+  activityChain({
+    id: "s23-chain-turning-something-down",
+    intro:
+      "They will offer you something you do not want. Declining is not rudeness here, it is just the next line.",
+    steps: [
+      {
+        id: "s04-fill-decline-offer",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-non-merci"],
+        weakPointTags: ["politeness", "negation"],
+        payload: {
+          prompt: "Inside, someone offers you a coffee. You are fine without one. What do you say?",
+          blankCount: 1,
+          options: [
+            { id: "opt-non-merci", text: "Non merci.", isCorrect: true },
+            {
+              id: "opt-merci",
+              text: "Merci.",
+              isCorrect: false,
+              trapReason:
+                "Merci alone can sound like yes please. Non merci makes the no clear.",
+            },
+            {
+              id: "opt-question",
+              text: "J'ai une question.",
+              isCorrect: false,
+              trapReason: "That does not answer the offer.",
+            },
+          ],
+          answer: ["opt-non-merci"],
+          reveal: {
+            short: "Non merci.",
+            explanation: "A soft, clear refusal: non to decline, merci to stay polite.",
+            natural: "Non merci.",
+          },
         },
-        {
-          id: "opt-question",
-          text: "J'ai une question.",
-          isCorrect: false,
-          trapReason: "That does not answer the offer.",
+      },
+      {
+        id: "s05-weave-j-ai-une-question",
+        type: "weave",
+        targetItemIds: ["chunk-j-ai", "chunk-j-ai-une-question", "chunk-une-question"],
+        weakPointTags: ["j-ai-vs-je-suis"],
+        payload: {
+          weaveType: "context",
+          prompt: "Write it in French: I have a question.",
+          context: "There is one small thing you came to ask. Open it.",
+          suggestedPieces: [
+            { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+            { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
+          ],
+          expectedAnswers: ["J'ai une question."],
+          acceptedAlternatives: [
+            "J ai une question.",
+            "J ai une question",
+          ],
+          reveal: {
+            modelAnswer: "J'ai une question.",
+            ifCorrect: "You opened your reason for being there.",
+            ifCorrectButFlat: "Right. j'ai carries the question, as one package.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The question rides on have: j'ai une question.",
+            ifMissingTargetPiece: "Use j'ai, then une question.",
+          },
+          validationMode: "exact-or-alternative",
         },
-      ],
-      answer: ["opt-non-merci"],
-      reveal: {
-        short: "Non merci.",
-        explanation: "A soft, clear refusal: non to decline, merci to stay polite.",
-        natural: "Non merci.",
       },
-    },
-  },
-  {
-    id: "s05-weave-j-ai-une-question",
-    type: "weave",
-    targetItemIds: ["chunk-j-ai", "chunk-j-ai-une-question", "chunk-une-question"],
-    weakPointTags: ["j-ai-vs-je-suis"],
-    payload: {
-      weaveType: "context",
-      prompt: "Write it in French: I have a question.",
-      context: "There is one small thing you came to ask. Open it.",
-      suggestedPieces: [
-        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
-        { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
-      ],
-      expectedAnswers: ["J'ai une question."],
-      acceptedAlternatives: [
-        "J ai une question.",
-        "J ai une question",
-      ],
-      reveal: {
-        modelAnswer: "J'ai une question.",
-        ifCorrect: "You opened your reason for being there.",
-        ifCorrectButFlat: "Right. j'ai carries the question, as one package.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The question rides on have: j'ai une question.",
-        ifMissingTargetPiece: "Use j'ai, then une question.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // CHAIN: notice, reach them, then repair properly. This is L6's error moment,
-    // and it was spread over three pages -- realising it went past you, cutting back
-    // in, and finally asking for the line again. As one page it is what it actually
-    // is: a conversation breaking and being put back together without help.
+    ],
+  }),
+
+  activityChain({
     id: "s21-chain-the-whole-repair",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-ce-n-est-pas",
-      "chunk-excusez-moi",
-      "chunk-je-ne-comprends-pas",
-      "chunk-non-merci",
-      "chunk-vous-pouvez-repeter",
+    intro:
+      "The moment has gone well so far. This is where it breaks, and where you put it back together.",
+    steps: [
+        {
+          // The beat every real first exchange has and no lesson so far has staged:
+          // you asked, they answered, and you did not follow. L3 taught this formula
+          // and nothing since has needed it. Here the scene needs it, which is the
+          // difference between owning a sentence and being able to reach for it.
+          id: "s05b-fill-did-not-catch-it",
+          type: "fill-with-traps",
+          targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-non-merci", "chunk-ce-n-est-pas"],
+          evidenceTargetItemIds: ["chunk-je-ne-comprends-pas"],
+          weakPointTags: ["negation", "ne-pas"],
+          payload: {
+            prompt:
+              "They answer your question, quickly and at length. You catch almost none of it. What do you say?",
+            blankCount: 1,
+            options: [
+              { id: "opt-je-ne-comprends-pas", text: "Je ne comprends pas.", isCorrect: true },
+              {
+                id: "opt-non-merci",
+                text: "Non merci.",
+                isCorrect: false,
+                learningErrorTag: "meaning_shift",
+                trapReason:
+                  "That turns something down. They were answering you, not offering you anything.",
+              },
+              {
+                id: "opt-ce-n-est-pas-ici",
+                text: "Ce n'est pas ici.",
+                isCorrect: false,
+                learningErrorTag: "wrong_item",
+                trapReason:
+                  "That is about a place. What you missed was what they said.",
+              },
+            ],
+            answer: ["opt-je-ne-comprends-pas"],
+            reveal: {
+              short: "Je ne comprends pas.",
+              explanation:
+                "Saying it is not a failure in the moment; it is the sentence that keeps the moment going.",
+              natural: "Je ne comprends pas.",
+            },
+          },
+        },
+        {
+          // Recognising the sentence and reaching for it under your own power are
+          // different things, so the beat is produced as well as chosen. Two chunks
+          // the learner has owned since L1 and L3 meet for the first time here, and
+          // je ne comprends pas stays ONE closed formula: it is offered whole and is
+          // never decomposed into ne + verb + pas.
+          id: "s05c-weave-excusez-moi-je-ne-comprends-pas",
+          type: "weave",
+          targetItemIds: ["chunk-excusez-moi", "chunk-je-ne-comprends-pas"],
+          weakPointTags: ["politeness", "negation"],
+          payload: {
+            weaveType: "context",
+            prompt: "Write it in French: Excuse me, I don't understand.",
+            context:
+              "They have already moved on to the next thing. Reach them again, then say you did not follow.",
+            suggestedPieces: [
+              {
+                text: "Excusez-moi",
+                itemId: "chunk-excusez-moi",
+                label: "reach them again",
+              },
+              {
+                text: "je ne comprends pas",
+                itemId: "chunk-je-ne-comprends-pas",
+                label: "one whole sentence",
+              },
+            ],
+            expectedAnswers: ["Excusez-moi, je ne comprends pas."],
+            acceptedAlternatives: ["Excusez-moi, je ne comprends pas"],
+            reveal: {
+              modelAnswer: "Excusez-moi, je ne comprends pas.",
+              ifCorrect:
+                "You reached them first, then said it plainly. That is how the conversation stays open.",
+              ifCorrectButFlat:
+                "Right. Excusez-moi turns them back, and the rest is one sentence you already carry whole.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. The opener goes first, then the whole formula: Excusez-moi, je ne comprends pas.",
+              ifMissingTargetPiece:
+                "Open with excusez-moi, then say je ne comprends pas without taking it apart.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
+        {
+          // Corpus closure, Pass B: L6 gains NO new lexis, exactly as Payload Economy
+          // v0 §6 requires of it. What it gains is the REPAIR PAIR -- named in §1 as
+          // one of the four functional holes in the whole spine. Both halves are now
+          // owned (je ne comprends pas from L3, vous pouvez répéter ? activated in
+          // L1), and no lesson had ever put them together, which meant the learner
+          // could say a conversation had broken and could ask for a repeat, but never
+          // did the one thing that actually fixes it: both, in order.
+          id: "s11-weave-the-repair-pair",
+          type: "weave",
+          targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-vous-pouvez-repeter"],
+          weakPointTags: ["negation", "politeness"],
+          payload: {
+            weaveType: "open",
+            prompt: "Say it went past you, then ask for it again.",
+            context:
+              "They answered your question and are waiting, friendly, for you to say something back.",
+            suggestedPieces: [
+              {
+                text: "je ne comprends pas",
+                itemId: "chunk-je-ne-comprends-pas",
+                label: "naming the problem",
+              },
+              {
+                text: "vous pouvez répéter",
+                itemId: "chunk-vous-pouvez-repeter",
+                label: "asking for it again",
+              },
+            ],
+            hintCloze: "Je ne comprends pas. ___ ?",
+            expectedAnswers: ["Je ne comprends pas. Vous pouvez répéter ?"],
+            acceptedAlternatives: [
+              "Je ne comprends pas. Vous pouvez répéter",
+              "Je ne comprends pas, vous pouvez répéter ?",
+            ],
+            reveal: {
+              modelAnswer: "Je ne comprends pas. Vous pouvez répéter ?",
+              ifCorrect:
+                "Naming the problem is honest. Asking for the repeat is what actually gets you the sentence.",
+              ifCorrectButFlat:
+                "Right. One line admits it, the next one fixes it.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. Say it went past you first, then ask for it again.",
+              ifMissingTargetPiece:
+                "Je ne comprends pas names the problem. Vous pouvez répéter ? asks them to go again.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
     ],
-    weakPointTags: ["negation", "politeness"],
-    payload: {
-      intro:
-        "The moment has gone well so far. This is where it breaks, and where you put it back together.",
-      steps: [
-    {
-      // The beat every real first exchange has and no lesson so far has staged:
-      // you asked, they answered, and you did not follow. L3 taught this formula
-      // and nothing since has needed it. Here the scene needs it, which is the
-      // difference between owning a sentence and being able to reach for it.
-      id: "s05b-fill-did-not-catch-it",
-      type: "fill-with-traps",
-      targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-non-merci", "chunk-ce-n-est-pas"],
-      evidenceTargetItemIds: ["chunk-je-ne-comprends-pas"],
-      weakPointTags: ["negation", "ne-pas"],
-      payload: {
-        prompt:
-          "They answer your question, quickly and at length. You catch almost none of it. What do you say?",
-        blankCount: 1,
-        options: [
-          { id: "opt-je-ne-comprends-pas", text: "Je ne comprends pas.", isCorrect: true },
-          {
-            id: "opt-non-merci",
-            text: "Non merci.",
-            isCorrect: false,
-            learningErrorTag: "meaning_shift",
-            trapReason:
-              "That turns something down. They were answering you, not offering you anything.",
-          },
-          {
-            id: "opt-ce-n-est-pas-ici",
-            text: "Ce n'est pas ici.",
-            isCorrect: false,
-            learningErrorTag: "wrong_item",
-            trapReason:
-              "That is about a place. What you missed was what they said.",
-          },
-        ],
-        answer: ["opt-je-ne-comprends-pas"],
-        reveal: {
-          short: "Je ne comprends pas.",
-          explanation:
-            "Saying it is not a failure in the moment; it is the sentence that keeps the moment going.",
-          natural: "Je ne comprends pas.",
+  }),
+
+  activityChain({
+    id: "s24-chain-and-out-again",
+    intro:
+      "The moment has to end as deliberately as it began.",
+    steps: [
+      {
+        id: "s06-meet-au-revoir",
+        type: "meet-card",
+        targetItemIds: ["chunk-au-revoir"],
+        weakPointTags: ["politeness"],
+        payload: {
+          fr: "Au revoir.",
+          en: "Goodbye.",
+          title: "The close.",
+          highlights: [{ text: "Au revoir", itemId: "chunk-au-revoir" }],
+          tts: true,
         },
       },
-    },
-    {
-      // Recognising the sentence and reaching for it under your own power are
-      // different things, so the beat is produced as well as chosen. Two chunks
-      // the learner has owned since L1 and L3 meet for the first time here, and
-      // je ne comprends pas stays ONE closed formula: it is offered whole and is
-      // never decomposed into ne + verb + pas.
-      id: "s05c-weave-excusez-moi-je-ne-comprends-pas",
-      type: "weave",
-      targetItemIds: ["chunk-excusez-moi", "chunk-je-ne-comprends-pas"],
-      weakPointTags: ["politeness", "negation"],
-      payload: {
-        weaveType: "context",
-        prompt: "Write it in French: Excuse me, I don't understand.",
-        context:
-          "They have already moved on to the next thing. Reach them again, then say you did not follow.",
-        suggestedPieces: [
-          {
-            text: "Excusez-moi",
-            itemId: "chunk-excusez-moi",
-            label: "reach them again",
-          },
-          {
-            text: "je ne comprends pas",
-            itemId: "chunk-je-ne-comprends-pas",
-            label: "one whole sentence",
-          },
+      {
+        id: "s07-sayit-step-in",
+        type: "say-it-your-way",
+        targetItemIds: [
+          "chunk-bonjour",
+          "chunk-je-suis-ici",
+          "chunk-j-ai-une-question",
         ],
-        expectedAnswers: ["Excusez-moi, je ne comprends pas."],
-        acceptedAlternatives: ["Excusez-moi, je ne comprends pas"],
-        reveal: {
-          modelAnswer: "Excusez-moi, je ne comprends pas.",
-          ifCorrect:
-            "You reached them first, then said it plainly. That is how the conversation stays open.",
-          ifCorrectButFlat:
-            "Right. Excusez-moi turns them back, and the rest is one sentence you already carry whole.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. The opener goes first, then the whole formula: Excusez-moi, je ne comprends pas.",
-          ifMissingTargetPiece:
-            "Open with excusez-moi, then say je ne comprends pas without taking it apart.",
+        weakPointTags: ["natural-speech"],
+        payload: {
+          situation:
+            "You have just stepped in. Greet them, say you are here, and open your one small question.",
+          communicativeGoal: "Greet, locate, and open your question.",
+          suggestedPieces: [
+            { text: "Bonjour", itemId: "chunk-bonjour" },
+            { text: "je suis", itemId: "chunk-je-suis" },
+            { text: "ici", itemId: "word-ici" },
+            { text: "j'ai", itemId: "chunk-j-ai" },
+            { text: "une question", itemId: "chunk-une-question" },
+          ],
+          answerBands: {
+            minimalAcceptable: ["Bonjour. J'ai une question."],
+            good: ["Bonjour. Je suis ici. J'ai une question."],
+            // The natural tier must SAY something the good tier does not, or the
+            // ladder shows one sentence under two labels. The lift is the one L2
+            // already ships as its own meet card ("Bonjour, je suis ici."): the
+            // greeting runs into the locating clause as a single breath instead of
+            // stopping dead after Bonjour. Same owned pieces, no new grammar.
+            natural: ["Bonjour, je suis ici. J'ai une question."],
+          },
+          modelAnswer: "Bonjour. Je suis ici. J'ai une question.",
+          reveal: {
+            modelAnswer: "Bonjour. Je suis ici. J'ai une question.",
+            explanation:
+              "Three pieces you already own, in the order a real moment uses them.",
+          },
+          validationMode: "model-answer-only",
         },
-        validationMode: "exact-or-alternative",
       },
-    },
-    {
-      // Corpus closure, Pass B: L6 gains NO new lexis, exactly as Payload Economy
-      // v0 §6 requires of it. What it gains is the REPAIR PAIR -- named in §1 as
-      // one of the four functional holes in the whole spine. Both halves are now
-      // owned (je ne comprends pas from L3, vous pouvez répéter ? activated in
-      // L1), and no lesson had ever put them together, which meant the learner
-      // could say a conversation had broken and could ask for a repeat, but never
-      // did the one thing that actually fixes it: both, in order.
-      id: "s11-weave-the-repair-pair",
-      type: "weave",
-      targetItemIds: ["chunk-je-ne-comprends-pas", "chunk-vous-pouvez-repeter"],
-      weakPointTags: ["negation", "politeness"],
-      payload: {
-        weaveType: "open",
-        prompt: "Say it went past you, then ask for it again.",
-        context:
-          "They answered your question and are waiting, friendly, for you to say something back.",
-        suggestedPieces: [
-          {
-            text: "je ne comprends pas",
-            itemId: "chunk-je-ne-comprends-pas",
-            label: "naming the problem",
-          },
-          {
-            text: "vous pouvez répéter",
-            itemId: "chunk-vous-pouvez-repeter",
-            label: "asking for it again",
-          },
-        ],
-        hintCloze: "Je ne comprends pas. ___ ?",
-        expectedAnswers: ["Je ne comprends pas. Vous pouvez répéter ?"],
-        acceptedAlternatives: [
-          "Je ne comprends pas. Vous pouvez répéter",
-          "Je ne comprends pas, vous pouvez répéter ?",
-        ],
-        reveal: {
-          modelAnswer: "Je ne comprends pas. Vous pouvez répéter ?",
-          ifCorrect:
-            "Naming the problem is honest. Asking for the repeat is what actually gets you the sentence.",
-          ifCorrectButFlat:
-            "Right. One line admits it, the next one fixes it.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. Say it went past you first, then ask for it again.",
-          ifMissingTargetPiece:
-            "Je ne comprends pas names the problem. Vous pouvez répéter ? asks them to go again.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
-  {
-    id: "s06-meet-au-revoir",
-    type: "meet-card",
-    targetItemIds: ["chunk-au-revoir"],
-    weakPointTags: ["politeness"],
-    payload: {
-      fr: "Au revoir.",
-      en: "Goodbye.",
-      title: "The close.",
-      highlights: [{ text: "Au revoir", itemId: "chunk-au-revoir" }],
-      tts: true,
-    },
-  },
-  {
-    id: "s07-sayit-step-in",
-    type: "say-it-your-way",
-    targetItemIds: [
-      "chunk-bonjour",
-      "chunk-je-suis-ici",
-      "chunk-j-ai-une-question",
     ],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      situation:
-        "You have just stepped in. Greet them, say you are here, and open your one small question.",
-      communicativeGoal: "Greet, locate, and open your question.",
-      suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour" },
-        { text: "je suis", itemId: "chunk-je-suis" },
-        { text: "ici", itemId: "word-ici" },
-        { text: "j'ai", itemId: "chunk-j-ai" },
-        { text: "une question", itemId: "chunk-une-question" },
-      ],
-      answerBands: {
-        minimalAcceptable: ["Bonjour. J'ai une question."],
-        good: ["Bonjour. Je suis ici. J'ai une question."],
-        // The natural tier must SAY something the good tier does not, or the
-        // ladder shows one sentence under two labels. The lift is the one L2
-        // already ships as its own meet card ("Bonjour, je suis ici."): the
-        // greeting runs into the locating clause as a single breath instead of
-        // stopping dead after Bonjour. Same owned pieces, no new grammar.
-        natural: ["Bonjour, je suis ici. J'ai une question."],
-      },
-      modelAnswer: "Bonjour. Je suis ici. J'ai une question.",
-      reveal: {
-        modelAnswer: "Bonjour. Je suis ici. J'ai une question.",
-        explanation:
-          "Three pieces you already own, in the order a real moment uses them.",
-      },
-      validationMode: "model-answer-only",
-    },
-  },
+  }),
+
+
   {
     id: "s08-weave-close-open",
     type: "weave",
@@ -512,6 +533,8 @@ const screens: LessonScreen[] = [
       validationMode: "exact-or-alternative",
     },
   },
+
+
   {
     id: "s09-sayit-whole-moment",
     type: "say-it-your-way",
@@ -554,6 +577,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     id: "s10-recap-a-small-moment",
     type: "recap",

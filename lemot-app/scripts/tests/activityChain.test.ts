@@ -19,6 +19,8 @@ import { V1_LESSONS } from "../../content/lessons/v1";
 import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import { qualifyLessonScreenId } from "../../content/lesson-v1-evidence/identity";
 import type { ActivityChainScreen, Lesson } from "../../content/lessonTypes";
+import { resolvePracticeHubSource } from "../../content/lesson-v1-evidence/practiceHub";
+import type { ItemId } from "../../content/learning-engine/types";
 
 const chainsOf = (lesson: Lesson): ActivityChainScreen[] =>
   lesson.screens.filter((s): s is ActivityChainScreen => s.type === "activity-chain");
@@ -94,6 +96,20 @@ describe("chains keep evidence identity intact", () => {
         chain.evidenceTargetItemIds,
         undefined,
         `${lesson.id}/${chain.id} declares evidence targets`,
+      );
+    }
+  });
+
+  test("every chain is built through the builder, not hand-declared", () => {
+    // `targetItemIds` on a container exists only so treatment validation still
+    // covers material one level down. Two hand-written lists that must agree
+    // forever is a drift waiting to happen, and it fails quietly in the worse
+    // direction. Deriving them makes them one list.
+    for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+      const body = src(`content/lessons/v1/lesson-${String(n).padStart(3, "0")}.ts`);
+      assert(
+        !body.includes('type: "activity-chain"'),
+        `lesson-${n} hand-writes a chain literal instead of calling activityChain()`,
       );
     }
   });
@@ -217,11 +233,22 @@ describe("nesting cannot hide content from validation", () => {
   });
 
   test("the validators that judge learner work walk the flattened list", () => {
-    // These four went blind the moment the first chain shipped. The regression
-    // is easy to reintroduce and invisible when it happens, so it is pinned.
+    // Every one of these went blind the moment a chain shipped, and each failed
+    // silently rather than loudly: the guard simply stopped seeing screens.
+    // Two of them are the strongest safety rules in the repo -- PR-06 decides
+    // what the append-only event log records forever, and canon V3/V4 is what
+    // stops a lesson grading French it never taught. The regression is trivial
+    // to reintroduce and invisible when it happens, so the list is pinned.
     for (const rel of [
       "content/lessons/productionQuality.ts",
       "content/lessons/acquisitionDemandDrift.ts",
+      "content/lessons/acquisitionDemands.ts",
+      "content/lessons/lessonStructure.ts",
+      "content/lesson-v1-evidence/practiceHub.ts",
+      "content/identity/payloadRegistry.ts",
+      "scripts/lessonEvidenceRules.ts",
+      "scripts/canonRules.ts",
+      "scripts/shippedErrorTags.ts",
     ]) {
       const body = src(rel);
       assert(
@@ -229,5 +256,24 @@ describe("nesting cannot hide content from validation", () => {
         `${rel} still walks lesson.screens and would miss chain steps`,
       );
     }
+  });
+
+  test("a chained screen is still reachable as a Practice Hub source", () => {
+    // The behavioural half of the rule above, and the one that matters most to
+    // the learner: chaining must never delete practice. `chunk-merci` is
+    // assessed only by PM-009, which now lives inside an L1 chain -- if the
+    // resolver walked top-level screens it would return null here and the item
+    // would silently drop out of the Hub.
+    const source = resolvePracticeHubSource("chunk-merci" as ItemId, "stretch", V1_LESSONS);
+    assert(source !== null, "chunk-merci resolves to an authored source");
+    const owner = V1_LESSONS.find((l) => l.id === source!.lesson.id)!;
+    assert(
+      flattenLessonScreens(owner).includes(source!.screen),
+      "the resolved screen is the authored object itself, chained or not",
+    );
+    assert(
+      !owner.screens.includes(source!.screen),
+      "precondition: this source really is nested, so the test proves something",
+    );
   });
 });

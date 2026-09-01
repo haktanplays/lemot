@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // The language world L1 opens. Breadth, not a syllabus: the learner sees
     // that French service interaction is greeting + softened request + thanks,
@@ -71,6 +74,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-survival-kit",
     type: "insight-card",
@@ -83,6 +88,8 @@ const screens: LessonScreen[] = [
         "Main pieces: s'il vous plaît, merci.",
     },
   },
+
+
   {
     id: "s03-fill-polite-verb",
     type: "fill-with-traps",
@@ -123,6 +130,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     id: "s04-weave-cafe-order",
     type: "weave",
@@ -152,6 +161,8 @@ const screens: LessonScreen[] = [
       validationMode: "exact-or-alternative",
     },
   },
+
+
   {
     // Reflection, not preamble: it lands AFTER the learner has re-produced the
     // café order, so it names what they just did instead of front-loading a
@@ -171,336 +182,341 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    id: "s05-meet-sil-vous-plait",
-    type: "meet-card",
-    targetItemIds: ["chunk-sil-vous-plait"],
-    weakPointTags: ["politeness", "elision"],
-    payload: {
-      fr: "S'il vous plaît.",
-      en: "Please.",
-      title: "The polite tail of a request.",
-      highlights: [
-        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait" },
-      ],
-      tts: true,
-    },
-  },
-  {
-    id: "s06-weave-cafe-order-please",
-    type: "weave",
-    targetItemIds: [
-      "chunk-bonjour",
-      "chunk-je-voudrais",
-      "noun-cafe",
-      "chunk-sil-vous-plait",
+
+  activityChain({
+    id: "s22-chain-the-polite-counter",
+    intro:
+      "Two small words do most of the work at a counter. One goes at the end of what you want, the other after you get it.",
+    steps: [
+      {
+        id: "s05-meet-sil-vous-plait",
+        type: "meet-card",
+        targetItemIds: ["chunk-sil-vous-plait"],
+        weakPointTags: ["politeness", "elision"],
+        payload: {
+          fr: "S'il vous plaît.",
+          en: "Please.",
+          title: "The polite tail of a request.",
+          highlights: [
+            { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait" },
+          ],
+          tts: true,
+        },
+      },
+      {
+        id: "s06-weave-cafe-order-please",
+        type: "weave",
+        targetItemIds: [
+          "chunk-bonjour",
+          "chunk-je-voudrais",
+          "noun-cafe",
+          "chunk-sil-vous-plait",
+        ],
+        weakPointTags: ["politeness"],
+        payload: {
+          weaveType: "supported",
+          prompt: "Write it in French: Hello, I would like a coffee, please.",
+          context: "Add the soft close to your order.",
+          suggestedPieces: [
+            { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+            { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
+            { text: "un café", itemId: "noun-cafe", required: true, label: "noun package" },
+            { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
+          ],
+          hintCloze: "Bonjour, je voudrais ___, s'il vous plaît.",
+          expectedAnswers: ["Bonjour, je voudrais un café, s'il vous plaît."],
+          reveal: {
+            modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
+            ifCorrect: "That is a full, polite café order.",
+            ifCorrectButFlat:
+              "Right. The commas mark small natural pauses.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The please sits at the end, after the order.",
+            ifMissingTargetPiece:
+              "Add s'il vous plaît to soften the close. It costs nothing and changes the tone.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
+      {
+        id: "s07-meet-merci",
+        type: "meet-card",
+        targetItemIds: ["chunk-merci"],
+        payload: {
+          fr: "Merci.",
+          en: "Thank you.",
+          title: "Close with thanks.",
+          highlights: [{ text: "Merci", itemId: "chunk-merci" }],
+          tts: true,
+        },
+      },
+      // ── PR-07 registered pilot payloads (screen ids are NEW and stable; the
+      // existing s00–s09 ids keep their meaning and were not renumbered) ────────
+      {
+        // PM-009 · EV-030 · sent:l01-merci — A-new typed recall, unscaffolded.
+        id: "s10-weave-merci-thanks",
+        type: "weave",
+        targetItemIds: ["chunk-merci"],
+        weakPointTags: ["politeness"],
+        payload: {
+          weaveType: "supported",
+          prompt: "The coffee arrives. Thank them.",
+          // Scene only: it gives the moment a person to react to, so the screen
+          // reads as a reaction rather than a translation task. It adds no pieces,
+          // no model and no instruction, so the attempt stays unscaffolded and the
+          // registered identity (payload id, EV-030, sentence id, evidence target)
+          // is untouched.
+          context: "The server sets it down and waits a moment.",
+          // No pieces, no cloze, no prior model: a clean unscaffolded first
+          // production of the form the learner just met. The hint ladder simply
+          // does not render.
+          expectedAnswers: ["Merci."],
+          acceptedAlternatives: ["Merci", "Merci !"],
+          reveal: {
+            modelAnswer: "Merci.",
+            ifCorrect: "That closes the exchange.",
+            ifCorrectButFlat: "Right. One word is the whole reply here.",
+            ifUnderstandableButWrong: "One word does it here: merci.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
     ],
-    weakPointTags: ["politeness"],
-    payload: {
-      weaveType: "supported",
-      prompt: "Write it in French: Hello, I would like a coffee, please.",
-      context: "Add the soft close to your order.",
-      suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
-        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
-        { text: "un café", itemId: "noun-cafe", required: true, label: "noun package" },
-        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
-      ],
-      hintCloze: "Bonjour, je voudrais ___, s'il vous plaît.",
-      expectedAnswers: ["Bonjour, je voudrais un café, s'il vous plaît."],
-      reveal: {
-        modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
-        ifCorrect: "That is a full, polite café order.",
-        ifCorrectButFlat:
-          "Right. The commas mark small natural pauses.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The please sits at the end, after the order.",
-        ifMissingTargetPiece:
-          "Add s'il vous plaît to soften the close. It costs nothing and changes the tone.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    id: "s07-meet-merci",
-    type: "meet-card",
-    targetItemIds: ["chunk-merci"],
-    payload: {
-      fr: "Merci.",
-      en: "Thank you.",
-      title: "Close with thanks.",
-      highlights: [{ text: "Merci", itemId: "chunk-merci" }],
-      tts: true,
-    },
-  },
-  // ── PR-07 registered pilot payloads (screen ids are NEW and stable; the
-  // existing s00–s09 ids keep their meaning and were not renumbered) ────────
-  {
-    // PM-009 · EV-030 · sent:l01-merci — A-new typed recall, unscaffolded.
-    id: "s10-weave-merci-thanks",
-    type: "weave",
-    targetItemIds: ["chunk-merci"],
-    weakPointTags: ["politeness"],
-    payload: {
-      weaveType: "supported",
-      prompt: "The coffee arrives. Thank them.",
-      // Scene only: it gives the moment a person to react to, so the screen
-      // reads as a reaction rather than a translation task. It adds no pieces,
-      // no model and no instruction, so the attempt stays unscaffolded and the
-      // registered identity (payload id, EV-030, sentence id, evidence target)
-      // is untouched.
-      context: "The server sets it down and waits a moment.",
-      // No pieces, no cloze, no prior model: a clean unscaffolded first
-      // production of the form the learner just met. The hint ladder simply
-      // does not render.
-      expectedAnswers: ["Merci."],
-      acceptedAlternatives: ["Merci", "Merci !"],
-      reveal: {
-        modelAnswer: "Merci.",
-        ifCorrect: "That closes the exchange.",
-        ifCorrectButFlat: "Right. One word is the whole reply here.",
-        ifUnderstandableButWrong: "One word does it here: merci.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // CHAIN: notice, choose, produce. These were three pages that each said
-    // something about excusez-moi; together they are one moment -- meet the opener,
-    // decide which opener the busy room needs, then order behind it.
+  }),
+
+  activityChain({
     id: "s21-chain-second-opener",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-bonjour",
-      "chunk-excusez-moi",
-      "chunk-je-voudrais",
-      "chunk-sil-vous-plait",
-      "noun-cafe",
+    intro:
+      "Greeting works when someone is already looking at you. This is the other case.",
+    steps: [
+        {
+          // Second opener, and the first thing in L1 that is not a café mechanic.
+          // bonjour greets a room you are already part of; excusez-moi buys attention
+          // you do not yet have. Registered and frozen since the L1 ledger, activated
+          // here for the first time so the polite kit stops being a counter script.
+          id: "s13-meet-excusez-moi",
+          type: "meet-card",
+          targetItemIds: ["chunk-excusez-moi"],
+          weakPointTags: ["politeness"],
+          payload: {
+            fr: "Excusez-moi.",
+            en: "Excuse me.",
+            title: "When you need their attention first.",
+            highlights: [{ text: "Excusez-moi", itemId: "chunk-excusez-moi" }],
+            tts: true,
+          },
+        },
+        {
+          // New pedagogical operation for L1: not assembly and not recall, but a
+          // choice between two polite moves the learner now owns. The trap is not a
+          // wrong word — it is the right word in the wrong moment, which is why both
+          // distractors stay fully correct French.
+          id: "s14-fill-opener-choice",
+          type: "fill-with-traps",
+          targetItemIds: ["chunk-excusez-moi", "chunk-bonjour"],
+          weakPointTags: ["politeness"],
+          payload: {
+            prompt:
+              "The server has their back to you and has not seen you yet. Which opener reaches them?",
+            sentenceAfter: ", je voudrais un café.",
+            blankCount: 1,
+            options: [
+              { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
+              {
+                id: "opt-bonjour-opener",
+                text: "Bonjour",
+                isCorrect: false,
+                trapReason:
+                  "Bonjour is right when they are already looking at you. Here you have to reach them first.",
+              },
+              {
+                id: "opt-merci-opener",
+                text: "Merci",
+                isCorrect: false,
+                trapReason: "Merci closes a moment. It cannot open one.",
+              },
+            ],
+            answer: ["opt-excusez-moi"],
+            reveal: {
+              short: "Excusez-moi",
+              explanation:
+                "Excusez-moi asks for attention. Bonjour greets someone who already gave it to you. Both are polite; they do different work.",
+              natural: "Excusez-moi, je voudrais un café.",
+            },
+          },
+        },
+        {
+          // L1's first OPEN weave: no piece tray, no cloze, no model in front of the
+          // learner. Every word in the answer is already owned — the only genuinely
+          // new decision is which opener the moment needs, which s14 just taught. The
+          // prompt is a directive, so the "Say this:" label is correctly suppressed.
+          id: "s15-weave-excusez-moi-cafe",
+          type: "weave",
+          targetItemIds: [
+            "chunk-excusez-moi",
+            "chunk-je-voudrais",
+            "noun-cafe",
+            "chunk-sil-vous-plait",
+          ],
+          evidenceTargetItemIds: ["chunk-excusez-moi"],
+          weakPointTags: ["politeness"],
+          payload: {
+            weaveType: "open",
+            prompt: "Get their attention, then order a coffee politely.",
+            context:
+              "The server is turned away, wiping down the machine. Nobody has looked up yet.",
+            expectedAnswers: ["Excusez-moi, je voudrais un café, s'il vous plaît."],
+            acceptedAlternatives: [
+              "Excusez-moi, je voudrais un café s'il vous plaît.",
+              "Excusez-moi, un café s'il vous plaît.",
+              "Excusez-moi, je voudrais un café.",
+            ],
+            reveal: {
+              modelAnswer: "Excusez-moi, je voudrais un café, s'il vous plaît.",
+              ifCorrect: "You reached them first, then asked. That is the whole move.",
+              ifCorrectButFlat:
+                "Right. The opener does its work before the request arrives.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. Excusez-moi goes first here, because it is what makes them turn around.",
+              ifMissingTargetPiece:
+                "Open with excusez-moi. Bonjour greets; excusez-moi interrupts, politely.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
     ],
-    weakPointTags: ["politeness"],
-    payload: {
-      intro:
-        "Greeting works when someone is already looking at you. This is the other case.",
-      steps: [
-    {
-      // Second opener, and the first thing in L1 that is not a café mechanic.
-      // bonjour greets a room you are already part of; excusez-moi buys attention
-      // you do not yet have. Registered and frozen since the L1 ledger, activated
-      // here for the first time so the polite kit stops being a counter script.
-      id: "s13-meet-excusez-moi",
-      type: "meet-card",
-      targetItemIds: ["chunk-excusez-moi"],
-      weakPointTags: ["politeness"],
-      payload: {
-        fr: "Excusez-moi.",
-        en: "Excuse me.",
-        title: "When you need their attention first.",
-        highlights: [{ text: "Excusez-moi", itemId: "chunk-excusez-moi" }],
-        tts: true,
+  }),
+
+  activityChain({
+    id: "s23-chain-ordering-and-losing-it",
+    intro:
+      "Ordering is the easy half. The hard half is the sentence that comes back at you.",
+    steps: [
+      {
+        // Truthful first contact with the tea package, placed immediately before
+        // PM-011 asks for it. `un thé` arrives as ONE package inside the request
+        // shape the learner already carried for coffee (un café -> same frame ->
+        // un thé), so the Supported weave no longer asks for a piece the lesson
+        // never showed. Exposure only: nothing is produced here, so the Supported
+        // production evidence for `chunk-un-the` still comes from PM-011 alone, and
+        // no independent claim is created. `noun-the` stays the linked
+        // sub-identity and is never named by this screen.
+        id: "s12-meet-un-the",
+        type: "meet-card",
+        targetItemIds: ["chunk-un-the"],
+        payload: {
+          fr: "Je voudrais un thé.",
+          en: "I would like a tea.",
+          title: "Same request, a different drink.",
+          highlights: [{ text: "un thé", itemId: "chunk-un-the" }],
+          tts: true,
+        },
       },
-    },
-    {
-      // New pedagogical operation for L1: not assembly and not recall, but a
-      // choice between two polite moves the learner now owns. The trap is not a
-      // wrong word — it is the right word in the wrong moment, which is why both
-      // distractors stay fully correct French.
-      id: "s14-fill-opener-choice",
-      type: "fill-with-traps",
-      targetItemIds: ["chunk-excusez-moi", "chunk-bonjour"],
-      weakPointTags: ["politeness"],
-      payload: {
-        prompt:
-          "The server has their back to you and has not seen you yet. Which opener reaches them?",
-        sentenceAfter: ", je voudrais un café.",
-        blankCount: 1,
-        options: [
-          { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
-          {
-            id: "opt-bonjour-opener",
-            text: "Bonjour",
-            isCorrect: false,
-            trapReason:
-              "Bonjour is right when they are already looking at you. Here you have to reach them first.",
+      {
+        // PM-011 · EV-040 · sent:l01-je-voudrais-un-the-sil-vous-plait —
+        // Supported tea order. `un thé` is a CONSTITUTIVE package: visible from
+        // first render, never split into un + thé, never behind the hint ladder.
+        // Evidence flows to the primary tea identity only; the recycled frame
+        // stays recallable with optional hint support.
+        id: "s11-weave-the-order",
+        type: "weave",
+        targetItemIds: ["chunk-je-voudrais", "chunk-un-the", "chunk-sil-vous-plait"],
+        evidenceTargetItemIds: ["chunk-un-the"],
+        weakPointTags: ["politeness"],
+        payload: {
+          weaveType: "supported",
+          prompt: "Order a tea politely.",
+          context: "The server looks over. This time it's a tea.",
+          suggestedPieces: [
+            {
+              text: "un thé",
+              itemId: "chunk-un-the",
+              required: true,
+              label: "your drink",
+              supportRole: "constitutive",
+            },
+            { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
+            { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "polite close" },
+          ],
+          hintCloze: "Je voudrais ___, s'il vous plaît.",
+          expectedAnswers: ["Je voudrais un thé, s'il vous plaît."],
+          reveal: {
+            modelAnswer: "Je voudrais un thé, s'il vous plaît.",
+            ifCorrect: "Same calm frame, new drink.",
+            ifCorrectButFlat: "Right. The comma settles the order before the please.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The drink keeps its little word: un thé.",
+            ifMissingTargetPiece: "The drink piece is right there: un thé.",
           },
-          {
-            id: "opt-merci-opener",
-            text: "Merci",
-            isCorrect: false,
-            trapReason: "Merci closes a moment. It cannot open one.",
+          validationMode: "exact-or-alternative",
+        },
+      },
+      {
+        // Payload Economy v0 §4.1/§6: the second survival formula, activated here
+        // for the first time. It was registered and frozen with the original L1
+        // ledger and its own registry meaning already names L1 as its home, but no
+        // payload had ever reached it. Learned WHOLE, in the locked non-inverted
+        // shape: nothing about vous, pouvez or inversion is taught, and the lesson
+        // never decomposes it.
+        id: "s17-meet-vous-pouvez-repeter",
+        type: "meet-card",
+        targetItemIds: ["chunk-vous-pouvez-repeter"],
+        weakPointTags: ["politeness"],
+        payload: {
+          fr: "Vous pouvez répéter ?",
+          en: "Can you say that again?",
+          title: "When it goes past you.",
+          highlights: [
+            { text: "Vous pouvez répéter", itemId: "chunk-vous-pouvez-repeter" },
+          ],
+          tts: true,
+        },
+      },
+      {
+        // Second use of the formula, as the Payload Economy surface ceiling
+        // requires: a supported item appears at least twice, meet plus one real
+        // use. Here it joins the opener L1 already owns, a combination no screen
+        // has asked for before.
+        id: "s19-weave-excuse-and-repeat",
+        type: "weave",
+        targetItemIds: ["chunk-excusez-moi", "chunk-vous-pouvez-repeter"],
+        weakPointTags: ["politeness"],
+        payload: {
+          weaveType: "context",
+          prompt: "Cut in politely, then ask for it again.",
+          context:
+            "They have already turned to the next customer, and you still do not have your answer.",
+          suggestedPieces: [
+            { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
+            {
+              text: "vous pouvez répéter",
+              itemId: "chunk-vous-pouvez-repeter",
+              label: "asking again",
+            },
+          ],
+          hintCloze: "Excusez-moi, ___ ?",
+          expectedAnswers: ["Excusez-moi, vous pouvez répéter ?"],
+          acceptedAlternatives: [
+            "Excusez-moi, vous pouvez répéter",
+            "Excusez-moi. Vous pouvez répéter ?",
+          ],
+          reveal: {
+            modelAnswer: "Excusez-moi, vous pouvez répéter ?",
+            ifCorrect:
+              "Two survival moves in one breath. That is most of what a first day needs.",
+            ifCorrectButFlat: "Right. Open first, then ask.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Excusez-moi reaches them; the second half asks.",
+            ifMissingTargetPiece:
+              "Excusez-moi gets their attention. Vous pouvez répéter ? asks for the line again.",
           },
-        ],
-        answer: ["opt-excusez-moi"],
-        reveal: {
-          short: "Excusez-moi",
-          explanation:
-            "Excusez-moi asks for attention. Bonjour greets someone who already gave it to you. Both are polite; they do different work.",
-          natural: "Excusez-moi, je voudrais un café.",
+          validationMode: "exact-or-alternative",
         },
       },
-    },
-    {
-      // L1's first OPEN weave: no piece tray, no cloze, no model in front of the
-      // learner. Every word in the answer is already owned — the only genuinely
-      // new decision is which opener the moment needs, which s14 just taught. The
-      // prompt is a directive, so the "Say this:" label is correctly suppressed.
-      id: "s15-weave-excusez-moi-cafe",
-      type: "weave",
-      targetItemIds: [
-        "chunk-excusez-moi",
-        "chunk-je-voudrais",
-        "noun-cafe",
-        "chunk-sil-vous-plait",
-      ],
-      evidenceTargetItemIds: ["chunk-excusez-moi"],
-      weakPointTags: ["politeness"],
-      payload: {
-        weaveType: "open",
-        prompt: "Get their attention, then order a coffee politely.",
-        context:
-          "The server is turned away, wiping down the machine. Nobody has looked up yet.",
-        expectedAnswers: ["Excusez-moi, je voudrais un café, s'il vous plaît."],
-        acceptedAlternatives: [
-          "Excusez-moi, je voudrais un café s'il vous plaît.",
-          "Excusez-moi, un café s'il vous plaît.",
-          "Excusez-moi, je voudrais un café.",
-        ],
-        reveal: {
-          modelAnswer: "Excusez-moi, je voudrais un café, s'il vous plaît.",
-          ifCorrect: "You reached them first, then asked. That is the whole move.",
-          ifCorrectButFlat:
-            "Right. The opener does its work before the request arrives.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. Excusez-moi goes first here, because it is what makes them turn around.",
-          ifMissingTargetPiece:
-            "Open with excusez-moi. Bonjour greets; excusez-moi interrupts, politely.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
-  {
-    // Truthful first contact with the tea package, placed immediately before
-    // PM-011 asks for it. `un thé` arrives as ONE package inside the request
-    // shape the learner already carried for coffee (un café -> same frame ->
-    // un thé), so the Supported weave no longer asks for a piece the lesson
-    // never showed. Exposure only: nothing is produced here, so the Supported
-    // production evidence for `chunk-un-the` still comes from PM-011 alone, and
-    // no independent claim is created. `noun-the` stays the linked
-    // sub-identity and is never named by this screen.
-    id: "s12-meet-un-the",
-    type: "meet-card",
-    targetItemIds: ["chunk-un-the"],
-    payload: {
-      fr: "Je voudrais un thé.",
-      en: "I would like a tea.",
-      title: "Same request, a different drink.",
-      highlights: [{ text: "un thé", itemId: "chunk-un-the" }],
-      tts: true,
-    },
-  },
-  {
-    // PM-011 · EV-040 · sent:l01-je-voudrais-un-the-sil-vous-plait —
-    // Supported tea order. `un thé` is a CONSTITUTIVE package: visible from
-    // first render, never split into un + thé, never behind the hint ladder.
-    // Evidence flows to the primary tea identity only; the recycled frame
-    // stays recallable with optional hint support.
-    id: "s11-weave-the-order",
-    type: "weave",
-    targetItemIds: ["chunk-je-voudrais", "chunk-un-the", "chunk-sil-vous-plait"],
-    evidenceTargetItemIds: ["chunk-un-the"],
-    weakPointTags: ["politeness"],
-    payload: {
-      weaveType: "supported",
-      prompt: "Order a tea politely.",
-      context: "The server looks over. This time it's a tea.",
-      suggestedPieces: [
-        {
-          text: "un thé",
-          itemId: "chunk-un-the",
-          required: true,
-          label: "your drink",
-          supportRole: "constitutive",
-        },
-        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
-        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "polite close" },
-      ],
-      hintCloze: "Je voudrais ___, s'il vous plaît.",
-      expectedAnswers: ["Je voudrais un thé, s'il vous plaît."],
-      reveal: {
-        modelAnswer: "Je voudrais un thé, s'il vous plaît.",
-        ifCorrect: "Same calm frame, new drink.",
-        ifCorrectButFlat: "Right. The comma settles the order before the please.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The drink keeps its little word: un thé.",
-        ifMissingTargetPiece: "The drink piece is right there: un thé.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // Payload Economy v0 §4.1/§6: the second survival formula, activated here
-    // for the first time. It was registered and frozen with the original L1
-    // ledger and its own registry meaning already names L1 as its home, but no
-    // payload had ever reached it. Learned WHOLE, in the locked non-inverted
-    // shape: nothing about vous, pouvez or inversion is taught, and the lesson
-    // never decomposes it.
-    id: "s17-meet-vous-pouvez-repeter",
-    type: "meet-card",
-    targetItemIds: ["chunk-vous-pouvez-repeter"],
-    weakPointTags: ["politeness"],
-    payload: {
-      fr: "Vous pouvez répéter ?",
-      en: "Can you say that again?",
-      title: "When it goes past you.",
-      highlights: [
-        { text: "Vous pouvez répéter", itemId: "chunk-vous-pouvez-repeter" },
-      ],
-      tts: true,
-    },
-  },
-  {
-    // Second use of the formula, as the Payload Economy surface ceiling
-    // requires: a supported item appears at least twice, meet plus one real
-    // use. Here it joins the opener L1 already owns, a combination no screen
-    // has asked for before.
-    id: "s19-weave-excuse-and-repeat",
-    type: "weave",
-    targetItemIds: ["chunk-excusez-moi", "chunk-vous-pouvez-repeter"],
-    weakPointTags: ["politeness"],
-    payload: {
-      weaveType: "context",
-      prompt: "Cut in politely, then ask for it again.",
-      context:
-        "They have already turned to the next customer, and you still do not have your answer.",
-      suggestedPieces: [
-        { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
-        {
-          text: "vous pouvez répéter",
-          itemId: "chunk-vous-pouvez-repeter",
-          label: "asking again",
-        },
-      ],
-      hintCloze: "Excusez-moi, ___ ?",
-      expectedAnswers: ["Excusez-moi, vous pouvez répéter ?"],
-      acceptedAlternatives: [
-        "Excusez-moi, vous pouvez répéter",
-        "Excusez-moi. Vous pouvez répéter ?",
-      ],
-      reveal: {
-        modelAnswer: "Excusez-moi, vous pouvez répéter ?",
-        ifCorrect:
-          "Two survival moves in one breath. That is most of what a first day needs.",
-        ifCorrectButFlat: "Right. Open first, then ask.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Excusez-moi reaches them; the second half asks.",
-        ifMissingTargetPiece:
-          "Excusez-moi gets their attention. Vous pouvez répéter ? asks for the line again.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
+    ],
+  }),
+
+
   {
     // New screen family for L1. It teaches no word: it makes the kit portable
     // by showing the same request under two different openers and two different
@@ -519,6 +535,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s08-sayit-cafe-order",
     type: "say-it-your-way",
@@ -559,6 +577,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     id: "s09-recap-survival-kit",
     type: "recap",

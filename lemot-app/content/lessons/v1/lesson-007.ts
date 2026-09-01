@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // L7's world is leaving: where you are going, and the handful of ways a
     // French goodbye actually closes. The lesson owns one destination; the rest
@@ -51,6 +54,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-je-vais",
     type: "insight-card",
@@ -63,6 +68,8 @@ const screens: LessonScreen[] = [
         "Main pieces: je vais, à la maison.",
     },
   },
+
+
   {
     id: "s01-meet-je-vais-a-la-maison",
     type: "meet-card",
@@ -78,6 +85,8 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+
+
   {
     id: "s02-insight-je-vais-frozen",
     type: "insight-card",
@@ -93,147 +102,157 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    id: "s03-fill-je-vais-blank",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-je-vais"],
-    payload: {
-      prompt: "You are leaving for home. Which word moves you?",
-      sentenceBefore: "Je ",
-      sentenceAfter: " à la maison.",
-      blankCount: 1,
-      options: [
-        { id: "opt-vais", text: "vais", isCorrect: true },
-        {
-          id: "opt-suis",
-          text: "suis",
-          isCorrect: false,
-          trapReason:
-            "Je suis says where you are. Je vais says where you're heading.",
+
+  activityChain({
+    id: "s22-chain-heading-off",
+    intro:
+      "Leaving has two halves: saying where you are going, and closing the room behind you.",
+    steps: [
+      {
+        id: "s03-fill-je-vais-blank",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-je-vais"],
+        payload: {
+          prompt: "You are leaving for home. Which word moves you?",
+          sentenceBefore: "Je ",
+          sentenceAfter: " à la maison.",
+          blankCount: 1,
+          options: [
+            { id: "opt-vais", text: "vais", isCorrect: true },
+            {
+              id: "opt-suis",
+              text: "suis",
+              isCorrect: false,
+              trapReason:
+                "Je suis says where you are. Je vais says where you're heading.",
+            },
+            {
+              id: "opt-voudrais",
+              text: "voudrais",
+              isCorrect: false,
+              trapReason:
+                "Je voudrais asks for something. It doesn't take you anywhere.",
+            },
+          ],
+          answer: ["opt-vais"],
+          reveal: {
+            short: "vais",
+            explanation: "Je vais = I'm going. The moving engine.",
+            natural: "Je vais à la maison.",
+          },
         },
-        {
-          id: "opt-voudrais",
-          text: "voudrais",
-          isCorrect: false,
-          trapReason:
-            "Je voudrais asks for something. It doesn't take you anywhere.",
-        },
-      ],
-      answer: ["opt-vais"],
-      reveal: {
-        short: "vais",
-        explanation: "Je vais = I'm going. The moving engine.",
-        natural: "Je vais à la maison.",
       },
-    },
-  },
-  {
-    id: "s04-weave-heading-home",
-    type: "weave",
-    targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
-    payload: {
-      // First production of a brand-new engine: mid keeps a little more help
-      // than the rest of the lesson, and it fades at the very next weave.
-      weaveType: "mid",
-      prompt: "Say you're going home.",
-      context: "The evening is winding down. Let them know where you're heading.",
-      suggestedPieces: [
-        { text: "je vais", itemId: "chunk-je-vais", required: true, label: "I'm going" },
-        {
-          text: "à la maison",
-          itemId: "chunk-a-la-maison",
-          required: true,
-          label: "home",
+      {
+        id: "s04-weave-heading-home",
+        type: "weave",
+        targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+        payload: {
+          // First production of a brand-new engine: mid keeps a little more help
+          // than the rest of the lesson, and it fades at the very next weave.
+          weaveType: "mid",
+          prompt: "Say you're going home.",
+          context: "The evening is winding down. Let them know where you're heading.",
+          suggestedPieces: [
+            { text: "je vais", itemId: "chunk-je-vais", required: true, label: "I'm going" },
+            {
+              text: "à la maison",
+              itemId: "chunk-a-la-maison",
+              required: true,
+              label: "home",
+            },
+          ],
+          hintCloze: "Je vais ___.",
+          expectedAnswers: ["Je vais à la maison."],
+          reveal: {
+            modelAnswer: "Je vais à la maison.",
+            ifCorrect: "One engine, one destination. That's the whole sentence.",
+            ifCorrectButFlat: "Right. The period closes the moment.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The destination stays one piece: à la maison.",
+            ifMissingTargetPiece: "Start with je vais. That is the moving shape.",
+          },
+          validationMode: "exact-or-alternative",
         },
-      ],
-      hintCloze: "Je vais ___.",
-      expectedAnswers: ["Je vais à la maison."],
-      reveal: {
-        modelAnswer: "Je vais à la maison.",
-        ifCorrect: "One engine, one destination. That's the whole sentence.",
-        ifCorrectButFlat: "Right. The period closes the moment.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The destination stays one piece: à la maison.",
-        ifMissingTargetPiece: "Start with je vais. That is the moving shape.",
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // Contrast before the harder close: the destination is ONE package, so the
-    // learner does not arrive at the two-sentence weave still splitting it.
-    id: "s08-fill-destination-package",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-a-la-maison"],
-    payload: {
-      prompt: "You are naming where you're heading. Which piece says home?",
-      sentenceBefore: "Je vais ",
-      sentenceAfter: ".",
-      blankCount: 1,
-      options: [
-        { id: "opt-a-la-maison", text: "à la maison", isCorrect: true },
-        {
-          id: "opt-maison",
-          text: "maison",
-          isCorrect: false,
-          trapReason:
-            "Maison on its own is just the word for house. The piece travels with its little words: à la maison.",
+      {
+        // Contrast before the harder close: the destination is ONE package, so the
+        // learner does not arrive at the two-sentence weave still splitting it.
+        id: "s08-fill-destination-package",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-a-la-maison"],
+        payload: {
+          prompt: "You are naming where you're heading. Which piece says home?",
+          sentenceBefore: "Je vais ",
+          sentenceAfter: ".",
+          blankCount: 1,
+          options: [
+            { id: "opt-a-la-maison", text: "à la maison", isCorrect: true },
+            {
+              id: "opt-maison",
+              text: "maison",
+              isCorrect: false,
+              trapReason:
+                "Maison on its own is just the word for house. The piece travels with its little words: à la maison.",
+            },
+            {
+              id: "opt-a-la",
+              text: "à la",
+              isCorrect: false,
+              trapReason:
+                "À la opens the piece but never lands it. Keep it whole: à la maison.",
+            },
+          ],
+          answer: ["opt-a-la-maison"],
+          reveal: {
+            short: "à la maison",
+            explanation:
+              "À la maison is one piece: home. Take it whole and it always fits.",
+            natural: "Je vais à la maison.",
+          },
         },
-        {
-          id: "opt-a-la",
-          text: "à la",
-          isCorrect: false,
-          trapReason:
-            "À la opens the piece but never lands it. Keep it whole: à la maison.",
-        },
-      ],
-      answer: ["opt-a-la-maison"],
-      reveal: {
-        short: "à la maison",
-        explanation:
-          "À la maison is one piece: home. Take it whole and it always fits.",
-        natural: "Je vais à la maison.",
       },
-    },
-  },
-  {
-    id: "s05-weave-close-the-moment",
-    type: "weave",
-    targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
-    payload: {
-      // Support fades inside the lesson: the scene carries the task, the pieces
-      // stay behind the hint button, and the cloze holds only the shape.
-      weaveType: "context",
-      prompt: "Say you're going home, then say goodbye.",
-      context: "You're at the door. Close it the way you did before.",
-      suggestedPieces: [
-        { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-        {
-          text: "à la maison",
-          itemId: "chunk-a-la-maison",
-          label: "home",
+      {
+        id: "s05-weave-close-the-moment",
+        type: "weave",
+        targetItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+        payload: {
+          // Support fades inside the lesson: the scene carries the task, the pieces
+          // stay behind the hint button, and the cloze holds only the shape.
+          weaveType: "context",
+          prompt: "Say you're going home, then say goodbye.",
+          context: "You're at the door. Close it the way you did before.",
+          suggestedPieces: [
+            { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
+            {
+              text: "à la maison",
+              itemId: "chunk-a-la-maison",
+              label: "home",
+            },
+            {
+              text: "au revoir",
+              itemId: "chunk-au-revoir",
+              label: "goodbye",
+            },
+          ],
+          hintCloze: "Je vais ___. Au revoir.",
+          expectedAnswers: ["Je vais à la maison. Au revoir."],
+          acceptedAlternatives: ["Je vais à la maison, au revoir."],
+          reveal: {
+            modelAnswer: "Je vais à la maison. Au revoir.",
+            ifCorrect: "You opened moments before. Now you can close them and leave.",
+            ifCorrectButFlat: "Right. Two short sentences, calm and complete.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The direction comes first, then the goodbye.",
+            ifMissingTargetPiece:
+              "Lead with je vais à la maison, then let au revoir close the door.",
+          },
+          validationMode: "exact-or-alternative",
         },
-        {
-          text: "au revoir",
-          itemId: "chunk-au-revoir",
-          label: "goodbye",
-        },
-      ],
-      hintCloze: "Je vais ___. Au revoir.",
-      expectedAnswers: ["Je vais à la maison. Au revoir."],
-      acceptedAlternatives: ["Je vais à la maison, au revoir."],
-      reveal: {
-        modelAnswer: "Je vais à la maison. Au revoir.",
-        ifCorrect: "You opened moments before. Now you can close them and leave.",
-        ifCorrectButFlat: "Right. Two short sentences, calm and complete.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The direction comes first, then the goodbye.",
-        ifMissingTargetPiece:
-          "Lead with je vais à la maison, then let au revoir close the door.",
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
+    ],
+  }),
+
+
   {
     // Reveal after the lesson's real production: the same close, heard the way
     // it usually lands, plus the shorter form.
@@ -246,6 +265,8 @@ const screens: LessonScreen[] = [
         "Both are natural. Two short sentences sound calm and finished; the comma version runs them together as one easy breath.",
     },
   },
+
+
   {
     // Reflection, not new material: names what the learner just did.
     id: "s10-insight-leaving-two-moves",
@@ -262,173 +283,164 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    // L7's job is the LESS PREDICTABLE moment, so the lesson stops rehearsing
-    // its own script here. Nothing has asked the learner to leave; they are
-    // offered something instead, and the leaving line only fits if they read
-    // the situation rather than the pattern. Whole-sentence choice, not a word
-    // blank: the other two fills in this lesson pick a word, this one picks an
-    // intention.
-    id: "s11-fill-offer-on-the-way-out",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-non-merci", "chunk-je-vais"],
-    weakPointTags: ["politeness"],
-    payload: {
-      prompt:
-        "Your coat is on. They hold up the pot and offer you one more coffee. You would rather get going.",
-      blankCount: 1,
-      options: [
-        { id: "opt-decline-go", text: "Non merci. Je vais à la maison.", isCorrect: true },
+
+  activityChain({
+    id: "s23-chain-caught-in-the-doorway",
+    intro:
+      "You are already half gone. This is the part where somebody notices and speaks to you anyway.",
+    steps: [
+      {
+        // L7's job is the LESS PREDICTABLE moment, so the lesson stops rehearsing
+        // its own script here. Nothing has asked the learner to leave; they are
+        // offered something instead, and the leaving line only fits if they read
+        // the situation rather than the pattern. Whole-sentence choice, not a word
+        // blank: the other two fills in this lesson pick a word, this one picks an
+        // intention.
+        id: "s11-fill-offer-on-the-way-out",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-non-merci", "chunk-je-vais"],
+        weakPointTags: ["politeness"],
+        payload: {
+          prompt:
+            "Your coat is on. They hold up the pot and offer you one more coffee. You would rather get going.",
+          blankCount: 1,
+          options: [
+            { id: "opt-decline-go", text: "Non merci. Je vais à la maison.", isCorrect: true },
+            {
+              id: "opt-accept",
+              text: "Je voudrais un café.",
+              isCorrect: false,
+              trapReason:
+                "That asks for the coffee. Polite, but now you are staying for it.",
+            },
+            {
+              id: "opt-not-followed",
+              text: "Je ne comprends pas.",
+              isCorrect: false,
+              trapReason:
+                "You understood perfectly. That line says the opposite, and the offer just stays open.",
+            },
+          ],
+          answer: ["opt-decline-go"],
+          reveal: {
+            short: "Non merci. Je vais à la maison.",
+            explanation:
+              "Turn it down, then say where you are going. The refusal alone can hang; the direction closes it.",
+            natural: "Non merci. Je vais à la maison.",
+          },
+        },
+      },
+      {
+        // The lesson's summit, and its least-scaffolded screen: no chip is marked
+        // required, the cloze holds only the join, and the learner supplies both
+        // halves. This is where L7 stops being one engine drilled and becomes a
+        // small decision made out loud.
+        id: "s12-weave-decline-and-go",
+        type: "weave",
+        targetItemIds: ["chunk-non-merci", "chunk-je-vais", "chunk-a-la-maison"],
+        weakPointTags: ["politeness", "natural-speech"],
+        payload: {
+          weaveType: "open",
+          prompt: "Turn the offer down, then say where you're heading.",
+          context:
+            "They are still holding the pot, waiting for an answer. Be kind about it and go.",
+          suggestedPieces: [
+            { text: "non merci", itemId: "chunk-non-merci", label: "turning it down" },
+            { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
+            { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
+          ],
+          hintCloze: "Non merci. ___.",
+          expectedAnswers: ["Non merci. Je vais à la maison."],
+          acceptedAlternatives: [
+            "Non merci, je vais à la maison.",
+            "Non merci. Je vais à la maison",
+          ],
+          reveal: {
+            modelAnswer: "Non merci. Je vais à la maison.",
+            ifCorrect:
+              "Two moves, and neither one is rude. That is a whole refusal in French.",
+            ifCorrectButFlat:
+              "Right. Non merci softens it; the direction explains it.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Refuse first, then give the reason you are leaving.",
+            ifMissingTargetPiece:
+              "Non merci turns the offer down. Je vais à la maison says why.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
         {
-          id: "opt-accept",
-          text: "Je voudrais un café.",
-          isCorrect: false,
-          trapReason:
-            "That asks for the coffee. Polite, but now you are staying for it.",
+          // Corpus closure. Leaving is something people are ASKED about, and L7 only
+          // ever had the learner announce it unprompted. oui became producible in L3,
+          // so the departure can now be an answer as well as a statement.
+          id: "s13-fill-are-you-off",
+          type: "fill-with-traps",
+          targetItemIds: ["chunk-oui", "chunk-je-vais"],
+          weakPointTags: ["natural-speech"],
+          payload: {
+            prompt:
+              "They see you reaching for your coat and ask whether you are heading off. You are.",
+            blankCount: 1,
+            options: [
+              { id: "opt-oui-maison", text: "Oui, je vais à la maison.", isCorrect: true },
+              {
+                id: "opt-non-merci",
+                text: "Non merci.",
+                isCorrect: false,
+                trapReason:
+                  "That turns down an offer. They did not offer you anything; they asked a question.",
+              },
+              {
+                id: "opt-suis-ici",
+                text: "Je suis ici.",
+                isCorrect: false,
+                trapReason:
+                  "That says where you are. They can see where you are; they asked where you are going.",
+              },
+            ],
+            answer: ["opt-oui-maison"],
+            reveal: {
+              short: "Oui, je vais à la maison.",
+              explanation:
+                "Yes, and then where. The engine does the second half; oui just opens the door for it.",
+              natural: "Oui, je vais à la maison.",
+            },
+          },
         },
         {
-          id: "opt-not-followed",
-          text: "Je ne comprends pas.",
-          isCorrect: false,
-          trapReason:
-            "You understood perfectly. That line says the opposite, and the offer just stays open.",
+          // FRENCH-CONTEXT production. The scene is a line the learner owns, said to
+          // them, and the English helper states only their intention.
+          id: "s14-weave-answer-and-leave",
+          type: "weave",
+          targetItemIds: ["chunk-oui", "chunk-je-vais", "chunk-a-la-maison"],
+          weakPointTags: ["natural-speech"],
+          payload: {
+            weaveType: "open",
+            prompt: "Answer them, then say where you are going.",
+            context: "Someone catches your eye on the way out: « Au revoir ? » You are leaving.",
+            suggestedPieces: [
+              { text: "oui", itemId: "chunk-oui", label: "the answer" },
+              { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
+              { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
+            ],
+            hintCloze: "Oui, je vais ___.",
+            expectedAnswers: ["Oui, je vais à la maison."],
+            acceptedAlternatives: ["Oui. Je vais à la maison.", "Oui, je vais à la maison"],
+            reveal: {
+              modelAnswer: "Oui, je vais à la maison.",
+              ifCorrect: "Asked in French, answered in French, with the direction attached.",
+              ifCorrectButFlat: "Right. The yes alone would have been thinner.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. Answer, then give the direction.",
+              ifMissingTargetPiece: "Oui answers. Je vais à la maison says where.",
+            },
+            validationMode: "exact-or-alternative",
+          },
         },
-      ],
-      answer: ["opt-decline-go"],
-      reveal: {
-        short: "Non merci. Je vais à la maison.",
-        explanation:
-          "Turn it down, then say where you are going. The refusal alone can hang; the direction closes it.",
-        natural: "Non merci. Je vais à la maison.",
-      },
-    },
-  },
-  {
-    // The lesson's summit, and its least-scaffolded screen: no chip is marked
-    // required, the cloze holds only the join, and the learner supplies both
-    // halves. This is where L7 stops being one engine drilled and becomes a
-    // small decision made out loud.
-    id: "s12-weave-decline-and-go",
-    type: "weave",
-    targetItemIds: ["chunk-non-merci", "chunk-je-vais", "chunk-a-la-maison"],
-    weakPointTags: ["politeness", "natural-speech"],
-    payload: {
-      weaveType: "open",
-      prompt: "Turn the offer down, then say where you're heading.",
-      context:
-        "They are still holding the pot, waiting for an answer. Be kind about it and go.",
-      suggestedPieces: [
-        { text: "non merci", itemId: "chunk-non-merci", label: "turning it down" },
-        { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-        { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
-      ],
-      hintCloze: "Non merci. ___.",
-      expectedAnswers: ["Non merci. Je vais à la maison."],
-      acceptedAlternatives: [
-        "Non merci, je vais à la maison.",
-        "Non merci. Je vais à la maison",
-      ],
-      reveal: {
-        modelAnswer: "Non merci. Je vais à la maison.",
-        ifCorrect:
-          "Two moves, and neither one is rude. That is a whole refusal in French.",
-        ifCorrectButFlat:
-          "Right. Non merci softens it; the direction explains it.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Refuse first, then give the reason you are leaving.",
-        ifMissingTargetPiece:
-          "Non merci turns the offer down. Je vais à la maison says why.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // CHAIN: choose the answer, then give it in French. Leaving is something people
-    // are ASKED about, and the two halves of that -- picking the true answer and
-    // producing it under a French cue -- belong on one page.
-    id: "s21-chain-asked-on-the-way-out",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-a-la-maison",
-      "chunk-je-vais",
-      "chunk-oui",
     ],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      intro:
-        "Leaving is rarely something you announce. Usually somebody asks you first.",
-      steps: [
-    {
-      // Corpus closure. Leaving is something people are ASKED about, and L7 only
-      // ever had the learner announce it unprompted. oui became producible in L3,
-      // so the departure can now be an answer as well as a statement.
-      id: "s13-fill-are-you-off",
-      type: "fill-with-traps",
-      targetItemIds: ["chunk-oui", "chunk-je-vais"],
-      weakPointTags: ["natural-speech"],
-      payload: {
-        prompt:
-          "They see you reaching for your coat and ask whether you are heading off. You are.",
-        blankCount: 1,
-        options: [
-          { id: "opt-oui-maison", text: "Oui, je vais à la maison.", isCorrect: true },
-          {
-            id: "opt-non-merci",
-            text: "Non merci.",
-            isCorrect: false,
-            trapReason:
-              "That turns down an offer. They did not offer you anything; they asked a question.",
-          },
-          {
-            id: "opt-suis-ici",
-            text: "Je suis ici.",
-            isCorrect: false,
-            trapReason:
-              "That says where you are. They can see where you are; they asked where you are going.",
-          },
-        ],
-        answer: ["opt-oui-maison"],
-        reveal: {
-          short: "Oui, je vais à la maison.",
-          explanation:
-            "Yes, and then where. The engine does the second half; oui just opens the door for it.",
-          natural: "Oui, je vais à la maison.",
-        },
-      },
-    },
-    {
-      // FRENCH-CONTEXT production. The scene is a line the learner owns, said to
-      // them, and the English helper states only their intention.
-      id: "s14-weave-answer-and-leave",
-      type: "weave",
-      targetItemIds: ["chunk-oui", "chunk-je-vais", "chunk-a-la-maison"],
-      weakPointTags: ["natural-speech"],
-      payload: {
-        weaveType: "open",
-        prompt: "Answer them, then say where you are going.",
-        context: "Someone catches your eye on the way out: « Au revoir ? » You are leaving.",
-        suggestedPieces: [
-          { text: "oui", itemId: "chunk-oui", label: "the answer" },
-          { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-          { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
-        ],
-        hintCloze: "Oui, je vais ___.",
-        expectedAnswers: ["Oui, je vais à la maison."],
-        acceptedAlternatives: ["Oui. Je vais à la maison.", "Oui, je vais à la maison"],
-        reveal: {
-          modelAnswer: "Oui, je vais à la maison.",
-          ifCorrect: "Asked in French, answered in French, with the direction attached.",
-          ifCorrectButFlat: "Right. The yes alone would have been thinner.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. Answer, then give the direction.",
-          ifMissingTargetPiece: "Oui answers. Je vais à la maison says where.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
+  }),
+
+
   {
     id: "s06-sayit-take-your-leave",
     type: "say-it-your-way",
@@ -454,6 +466,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     id: "s07-recap-heading-home",
     type: "recap",

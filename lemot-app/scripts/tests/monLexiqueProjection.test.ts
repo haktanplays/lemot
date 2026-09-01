@@ -63,6 +63,7 @@ import {
 import { createSettledNavigationGate } from "../../components/lesson-v1/settledNavigation";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
 import { V1_LESSONS } from "../../content/lessons/v1";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import type {
   FillWithTrapsScreen,
   Lesson,
@@ -84,16 +85,16 @@ const codeOf = (src: string): string =>
 
 const NOW = 1_800_000_000_000;
 const lesson001 = V1_LESSONS.find((l) => l.id === "v1-lesson-001") as Lesson;
-const fillScreen = lesson001.screens.find(
+const fillScreen = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s03-fill-polite-verb",
 ) as FillWithTrapsScreen;
-const weaveScreen = lesson001.screens.find(
+const weaveScreen = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s04-weave-cafe-order",
 ) as WeaveScreen;
-const meetScreen = lesson001.screens.find(
+const meetScreen = flattenLessonScreens(lesson001).find(
   (s) => s.type === "meet-card",
 ) as MeetCardScreen;
-const sayItScreen = lesson001.screens.find(
+const sayItScreen = flattenLessonScreens(lesson001).find(
   (s) => s.type === "say-it-your-way",
 ) as SayItYourWayScreen;
 

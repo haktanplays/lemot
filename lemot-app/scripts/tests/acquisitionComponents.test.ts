@@ -22,6 +22,7 @@ import { validateAcquisitionLinks } from "../../content/identity/acquisitionLink
 import { getItem } from "../../content/itemRegistry";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import type { LearningItem } from "../../content/lessonTypes";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 
 /** Minimal well-formed registry row; `over` supplies the id and the field under test. */
 const base = (over: object): LearningItem =>
@@ -325,7 +326,7 @@ describe("acquisitionComponents — shipped registry coverage", () => {
     };
     for (const [id, expected] of Object.entries(EXPECTED_TARGETS)) {
       const lessons = V1_LESSONS.filter((lesson) =>
-        lesson.screens.some((screen) => (screen.targetItemIds ?? []).includes(id)),
+        flattenLessonScreens(lesson).some((screen) => (screen.targetItemIds ?? []).includes(id)),
       ).map((lesson) => lesson.id);
       assertEqual(lessons, expected, `${id} stays a target in ${expected.join(", ")}`);
       assert(

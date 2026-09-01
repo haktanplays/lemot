@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // L5's world is things you can ask for, and the little word that travels
     // with each of them. The article is the lesson; the point of the width is
@@ -64,6 +67,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-un-une",
     type: "insight-card",
@@ -76,6 +81,8 @@ const screens: LessonScreen[] = [
         "Main pieces: un café, un thé, une question.",
     },
   },
+
+
   {
     id: "s00-meet-un-cafe",
     type: "meet-card",
@@ -89,6 +96,8 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+
+
   {
     id: "s03-fill-package-cafe",
     type: "fill-with-traps",
@@ -116,6 +125,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     id: "s01-meet-une-question",
     type: "meet-card",
@@ -129,6 +140,8 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+
+
   {
     id: "s04-fill-package-question",
     type: "fill-with-traps",
@@ -156,6 +169,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     // Names the pattern before the fills that apply it. The founder-usable
     // pass interleaved the meets and fills around it, so no two screens of the
@@ -183,145 +198,155 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    // Until this screen the un side of L5 had exactly one member, which makes
-    // "package" look like a coin flip between two words rather than a property
-    // a word carries. un thé is owned from L1, where the learner typed the whole
-    // order, so nothing new arrives here: this is the second data point that
-    // turns un café from a pair into a pattern.
-    id: "s02b-fill-un-family",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-un-the", "chunk-un-cafe", "grammar-un-une-package"],
-    evidenceTargetItemIds: ["chunk-un-the"],
-    weakPointTags: ["articles"],
-    payload: {
-      prompt: "Tea, at the same counter you ordered from in your first lesson. Which package is it?",
-      blankCount: 1,
-      options: [
-        { id: "opt-un-the", text: "un thé", isCorrect: true },
-        {
-          id: "opt-une-the",
-          text: "une thé",
-          isCorrect: false,
-          trapReason:
-            "Thé takes the same little word café takes. They travel together: un café, un thé.",
+
+  activityChain({
+    id: "s22-chain-the-small-word-in-use",
+    intro:
+      "Knowing which small word a noun takes is one thing. Getting it out of your mouth inside a real request is another.",
+    steps: [
+      {
+        // Until this screen the un side of L5 had exactly one member, which makes
+        // "package" look like a coin flip between two words rather than a property
+        // a word carries. un thé is owned from L1, where the learner typed the whole
+        // order, so nothing new arrives here: this is the second data point that
+        // turns un café from a pair into a pattern.
+        id: "s02b-fill-un-family",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-un-the", "chunk-un-cafe", "grammar-un-une-package"],
+        evidenceTargetItemIds: ["chunk-un-the"],
+        weakPointTags: ["articles"],
+        payload: {
+          prompt: "Tea, at the same counter you ordered from in your first lesson. Which package is it?",
+          blankCount: 1,
+          options: [
+            { id: "opt-un-the", text: "un thé", isCorrect: true },
+            {
+              id: "opt-une-the",
+              text: "une thé",
+              isCorrect: false,
+              trapReason:
+                "Thé takes the same little word café takes. They travel together: un café, un thé.",
+            },
+            {
+              id: "opt-bare-the",
+              text: "thé",
+              isCorrect: false,
+              trapReason:
+                "The little word is part of the package, not an extra you can drop: un thé.",
+            },
+          ],
+          answer: ["opt-un-the"],
+          reveal: {
+            short: "un thé",
+            explanation:
+              "un is not the café word. It is the word that belongs to café and to thé both, and you learn it with them: un café, un thé.",
+            natural: "un thé",
+          },
         },
-        {
-          id: "opt-bare-the",
-          text: "thé",
-          isCorrect: false,
-          trapReason:
-            "The little word is part of the package, not an extra you can drop: un thé.",
+      },
+      {
+        id: "s05-weave-je-voudrais-un-cafe",
+        type: "weave",
+        targetItemIds: ["chunk-je-voudrais", "chunk-un-cafe"],
+        weakPointTags: ["articles", "politeness"],
+        payload: {
+          weaveType: "context",
+          prompt: "Write it in French: I would like a coffee.",
+          context: "Order at the counter, with the right little word.",
+          suggestedPieces: [
+            { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
+            { text: "un café", itemId: "chunk-un-cafe", required: true, label: "noun package" },
+          ],
+          expectedAnswers: ["Je voudrais un café."],
+          reveal: {
+            modelAnswer: "Je voudrais un café.",
+            ifCorrect: "The package stayed together: un café.",
+            ifCorrectButFlat: "Right. un café is one piece, the little word included.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Keep the package whole: un café.",
+            ifMissingTargetPiece: "Add the little word: un café, not just café.",
+          },
+          validationMode: "exact-or-alternative",
         },
-      ],
-      answer: ["opt-un-the"],
-      reveal: {
-        short: "un thé",
-        explanation:
-          "un is not the café word. It is the word that belongs to café and to thé both, and you learn it with them: un café, un thé.",
-        natural: "un thé",
       },
-    },
-  },
-  {
-    id: "s05-weave-je-voudrais-un-cafe",
-    type: "weave",
-    targetItemIds: ["chunk-je-voudrais", "chunk-un-cafe"],
-    weakPointTags: ["articles", "politeness"],
-    payload: {
-      weaveType: "context",
-      prompt: "Write it in French: I would like a coffee.",
-      context: "Order at the counter, with the right little word.",
-      suggestedPieces: [
-        { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
-        { text: "un café", itemId: "chunk-un-cafe", required: true, label: "noun package" },
-      ],
-      expectedAnswers: ["Je voudrais un café."],
-      reveal: {
-        modelAnswer: "Je voudrais un café.",
-        ifCorrect: "The package stayed together: un café.",
-        ifCorrectButFlat: "Right. un café is one piece, the little word included.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Keep the package whole: un café.",
-        ifMissingTargetPiece: "Add the little word: un café, not just café.",
+      {
+        id: "s04b-fill-choose-package",
+        type: "fill-with-traps",
+        targetItemIds: [
+          "chunk-une-question",
+          "chunk-un-cafe",
+          "grammar-un-une-package",
+        ],
+        weakPointTags: ["articles"],
+        payload: {
+          prompt: "You have a question. Which French package fits?",
+          blankCount: 1,
+          options: [
+            { id: "opt-une-question", text: "une question", isCorrect: true },
+            {
+              id: "opt-un-cafe",
+              text: "un café",
+              isCorrect: false,
+              trapReason: "That is the coffee package, not the question package.",
+            },
+            {
+              id: "opt-bare-question",
+              text: "question",
+              isCorrect: false,
+              trapReason:
+                "In French, the noun travels with its little word here: une question.",
+            },
+            {
+              id: "opt-un-question",
+              text: "un question",
+              isCorrect: false,
+              trapReason:
+                "This package is not the one we use here. Keep it as: une question.",
+            },
+          ],
+          answer: ["opt-une-question"],
+          reveal: {
+            short: "une question",
+            explanation:
+              "You are not choosing a loose word. You are choosing the package: une question. The same way, the coffee package is un café.",
+            natural: "une question",
+          },
+        },
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    id: "s04b-fill-choose-package",
-    type: "fill-with-traps",
-    targetItemIds: [
-      "chunk-une-question",
-      "chunk-un-cafe",
-      "grammar-un-une-package",
+      {
+        id: "s06-weave-j-ai-une-question",
+        type: "weave",
+        targetItemIds: ["chunk-j-ai", "chunk-une-question"],
+        weakPointTags: ["articles"],
+        payload: {
+          weaveType: "context",
+          prompt: "Write it in French: I have a question.",
+          context: "You want to ask something. Use the right little word.",
+          suggestedPieces: [
+            { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+            { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
+          ],
+          expectedAnswers: ["J'ai une question."],
+          acceptedAlternatives: [
+            "J ai une question.",
+            "J ai une question",
+            "j ai une question",
+          ],
+          reveal: {
+            modelAnswer: "J'ai une question.",
+            ifCorrect: "The other package: une question.",
+            ifCorrectButFlat: "Right. une question is one piece too.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The little word travels with it: une question.",
+            ifMissingTargetPiece: "Keep une with question: une question.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
     ],
-    weakPointTags: ["articles"],
-    payload: {
-      prompt: "You have a question. Which French package fits?",
-      blankCount: 1,
-      options: [
-        { id: "opt-une-question", text: "une question", isCorrect: true },
-        {
-          id: "opt-un-cafe",
-          text: "un café",
-          isCorrect: false,
-          trapReason: "That is the coffee package, not the question package.",
-        },
-        {
-          id: "opt-bare-question",
-          text: "question",
-          isCorrect: false,
-          trapReason:
-            "In French, the noun travels with its little word here: une question.",
-        },
-        {
-          id: "opt-un-question",
-          text: "un question",
-          isCorrect: false,
-          trapReason:
-            "This package is not the one we use here. Keep it as: une question.",
-        },
-      ],
-      answer: ["opt-une-question"],
-      reveal: {
-        short: "une question",
-        explanation:
-          "You are not choosing a loose word. You are choosing the package: une question. The same way, the coffee package is un café.",
-        natural: "une question",
-      },
-    },
-  },
-  {
-    id: "s06-weave-j-ai-une-question",
-    type: "weave",
-    targetItemIds: ["chunk-j-ai", "chunk-une-question"],
-    weakPointTags: ["articles"],
-    payload: {
-      weaveType: "context",
-      prompt: "Write it in French: I have a question.",
-      context: "You want to ask something. Use the right little word.",
-      suggestedPieces: [
-        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
-        { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
-      ],
-      expectedAnswers: ["J'ai une question."],
-      acceptedAlternatives: [
-        "J ai une question.",
-        "J ai une question",
-        "j ai une question",
-      ],
-      reveal: {
-        modelAnswer: "J'ai une question.",
-        ifCorrect: "The other package: une question.",
-        ifCorrectButFlat: "Right. une question is one piece too.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The little word travels with it: une question.",
-        ifMissingTargetPiece: "Keep une with question: une question.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
+  }),
+
+
   {
     // Both weaves above hand the package over in the tray, so the learner never
     // actually chooses one under their own power. This is the first screen in
@@ -363,99 +388,90 @@ const screens: LessonScreen[] = [
       validationMode: "exact-or-alternative",
     },
   },
-  {
-    // CHAIN: choose the package, then use it. A gender choice that dead-ends in a
-    // correct answer teaches nothing; here the choice immediately has to survive
-    // being said inside a sentence.
+
+  activityChain({
     id: "s21-chain-pick-the-package",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-j-ai",
-      "grammar-un-une-package",
-      "noun-idee",
+    intro:
+      "Every noun you have met carries its own small word. Choosing it is easy; saying it inside a sentence is the part that counts.",
+    steps: [
+        {
+          // Corpus closure. L5's whole job is that un/une is a package distinction,
+          // and until now the une side had exactly ONE member -- so the lesson could
+          // be beaten by remembering that question is the une word. noun-idee gives
+          // une a second member, and it is the same registry item L4 activates one
+          // lesson earlier, exactly the dual-role pattern un the already uses (L1
+          // service variation, L5 package reinforcement). No new registry entry.
+          id: "s09-fill-une-family",
+          type: "fill-with-traps",
+          targetItemIds: ["noun-idee", "grammar-un-une-package"],
+          evidenceTargetItemIds: ["noun-idee"],
+          weakPointTags: ["articles", "gender", "elision"],
+          payload: {
+            prompt:
+              "You thought of something in the last lesson and said it out loud. Which package does idée travel in?",
+            blankCount: 1,
+            options: [
+              { id: "opt-une-idee", text: "une idée", isCorrect: true },
+              {
+                id: "opt-un-idee",
+                text: "un idée",
+                isCorrect: false,
+                trapReason:
+                  "Idée takes une, like question. The package is fixed to the word, not chosen by the sentence.",
+              },
+              {
+                id: "opt-bare-idee",
+                text: "idée",
+                isCorrect: false,
+                trapReason:
+                  "Bare, with no little word in front. French almost never leaves the noun standing alone here.",
+              },
+            ],
+            answer: ["opt-une-idee"],
+            reveal: {
+              short: "une idée",
+              explanation:
+                "Two in the un family, two in the une family. Un café and un thé; une question and une idée. The little word belongs to the word.",
+              natural: "J'ai une idée.",
+            },
+          },
+        },
+        {
+          // The une family, produced. It deliberately reuses L4's sentence at a
+          // HARDER support level and a different task: L4 supplies the opener and
+          // asks for it behind excusez-moi, this asks for the package inside the
+          // engine with nothing in the tray but the two candidate packages.
+          id: "s09b-weave-pick-the-package",
+          type: "weave",
+          targetItemIds: ["noun-idee", "chunk-j-ai"],
+          weakPointTags: ["articles", "elision"],
+          payload: {
+            weaveType: "open",
+            prompt: "Say what you have, with the right little word in front of it.",
+            context:
+              "A way through has just occurred to you, and the room is waiting for someone to speak.",
+            suggestedPieces: [
+              { text: "une idée", itemId: "noun-idee", label: "one package" },
+              { text: "une question", itemId: "chunk-une-question", label: "the other package" },
+            ],
+            hintCloze: "J'ai ___.",
+            expectedAnswers: ["J'ai une idée."],
+            acceptedAlternatives: ["J ai une idée.", "J'ai une idée"],
+            reveal: {
+              modelAnswer: "J'ai une idée.",
+              ifCorrect: "You picked the package, not just the noun. That is the whole lesson.",
+              ifCorrectButFlat: "Right. Une travels with idée wherever it goes.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. The noun brings its little word along: une idée.",
+              ifMissingTargetPiece: "The package is une idée, carried by j'ai.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
     ],
-    weakPointTags: ["articles", "elision"],
-    payload: {
-      intro:
-        "Every noun you have met carries its own small word. Choosing it is easy; saying it inside a sentence is the part that counts.",
-      steps: [
-    {
-      // Corpus closure. L5's whole job is that un/une is a package distinction,
-      // and until now the une side had exactly ONE member -- so the lesson could
-      // be beaten by remembering that question is the une word. noun-idee gives
-      // une a second member, and it is the same registry item L4 activates one
-      // lesson earlier, exactly the dual-role pattern un the already uses (L1
-      // service variation, L5 package reinforcement). No new registry entry.
-      id: "s09-fill-une-family",
-      type: "fill-with-traps",
-      targetItemIds: ["noun-idee", "grammar-un-une-package"],
-      evidenceTargetItemIds: ["noun-idee"],
-      weakPointTags: ["articles", "gender", "elision"],
-      payload: {
-        prompt:
-          "You thought of something in the last lesson and said it out loud. Which package does idée travel in?",
-        blankCount: 1,
-        options: [
-          { id: "opt-une-idee", text: "une idée", isCorrect: true },
-          {
-            id: "opt-un-idee",
-            text: "un idée",
-            isCorrect: false,
-            trapReason:
-              "Idée takes une, like question. The package is fixed to the word, not chosen by the sentence.",
-          },
-          {
-            id: "opt-bare-idee",
-            text: "idée",
-            isCorrect: false,
-            trapReason:
-              "Bare, with no little word in front. French almost never leaves the noun standing alone here.",
-          },
-        ],
-        answer: ["opt-une-idee"],
-        reveal: {
-          short: "une idée",
-          explanation:
-            "Two in the un family, two in the une family. Un café and un thé; une question and une idée. The little word belongs to the word.",
-          natural: "J'ai une idée.",
-        },
-      },
-    },
-    {
-      // The une family, produced. It deliberately reuses L4's sentence at a
-      // HARDER support level and a different task: L4 supplies the opener and
-      // asks for it behind excusez-moi, this asks for the package inside the
-      // engine with nothing in the tray but the two candidate packages.
-      id: "s09b-weave-pick-the-package",
-      type: "weave",
-      targetItemIds: ["noun-idee", "chunk-j-ai"],
-      weakPointTags: ["articles", "elision"],
-      payload: {
-        weaveType: "open",
-        prompt: "Say what you have, with the right little word in front of it.",
-        context:
-          "A way through has just occurred to you, and the room is waiting for someone to speak.",
-        suggestedPieces: [
-          { text: "une idée", itemId: "noun-idee", label: "one package" },
-          { text: "une question", itemId: "chunk-une-question", label: "the other package" },
-        ],
-        hintCloze: "J'ai ___.",
-        expectedAnswers: ["J'ai une idée."],
-        acceptedAlternatives: ["J ai une idée.", "J'ai une idée"],
-        reveal: {
-          modelAnswer: "J'ai une idée.",
-          ifCorrect: "You picked the package, not just the noun. That is the whole lesson.",
-          ifCorrectButFlat: "Right. Une travels with idée wherever it goes.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. The noun brings its little word along: une idée.",
-          ifMissingTargetPiece: "The package is une idée, carried by j'ai.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
+  }),
+
+
   {
     id: "s07-sayit-ask-for-a-coffee",
     type: "say-it-your-way",
@@ -480,6 +496,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     // Reflection, not a third insight card: L5 states the package rule at s02,
     // before any of it has been chosen under pressure. This looks back at three
@@ -501,6 +519,8 @@ const screens: LessonScreen[] = [
       naturalAlternatives: ["un café", "un thé", "une question"],
     },
   },
+
+
   {
     id: "s08-recap-packages",
     type: "recap",

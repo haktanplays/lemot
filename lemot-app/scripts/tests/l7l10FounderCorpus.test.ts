@@ -95,7 +95,7 @@ describe("an answer-band ladder never shows one sentence under two labels", () =
     // opinion, and it is global rather than scoped to the two repaired screens.
     const offenders: string[] = [];
     for (const lesson of V1_LESSONS) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         const bands = (screen.payload as Record<string, unknown>).answerBands as
           | Record<string, string[] | undefined>
           | undefined;
@@ -117,7 +117,7 @@ describe("an answer-band ladder never shows one sentence under two labels", () =
     // Deleting a rung would also make the ladder consistent, so pin presence.
     const withBands: string[] = [];
     for (const lesson of V1_LESSONS) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         const bands = (screen.payload as Record<string, unknown>).answerBands as
           | Record<string, string[]>
           | undefined;
@@ -297,7 +297,7 @@ describe("L7-L10 keep the screens that make them different from each other", () 
       "the repair names the problem AND asks again, which is what rescues the day",
     );
     // And it must not be L6's repair line handed back unchanged.
-    const l6Repair = byNumber(6).screens.flatMap(
+    const l6Repair = flattenLessonScreens(byNumber(6)).flatMap(
       (s) => ((s.payload as Record<string, unknown>).expectedAnswers as string[]) ?? [],
     );
     assert(
@@ -351,7 +351,7 @@ describe("L7-L10 acquisition stays deliberate", () => {
     // the evidence layer fails closed on it at play time.
     for (const lesson of TARGETS) {
       const declared = new Set(lesson.learningItems.map((i) => i.id));
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         for (const id of screen.targetItemIds ?? []) {
           assert(
             declared.has(id),

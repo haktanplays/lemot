@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // L4's world is the body and the mind: what you have, what you feel, what
     // you need. French puts most of this on avoir, which is the one thing the
@@ -62,6 +65,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-jai",
     type: "insight-card",
@@ -74,6 +79,8 @@ const screens: LessonScreen[] = [
         "Main pieces: je suis, ici, j'ai, faim, une question.",
     },
   },
+
+
   {
     id: "s00-meet-j-ai-faim",
     type: "meet-card",
@@ -90,6 +97,8 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+
+
   {
     id: "s01-insight-have-for-feelings",
     type: "insight-card",
@@ -110,6 +119,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s02-fill-have-not-be",
     type: "fill-with-traps",
@@ -144,6 +155,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     id: "s03-meet-j-ai-une-question",
     type: "meet-card",
@@ -160,6 +173,8 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+
+
   {
     id: "s03b-fill-where-feel-have",
     type: "fill-with-traps",
@@ -196,6 +211,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     id: "s04-insight-jai-elision",
     type: "insight-card",
@@ -213,268 +230,267 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    id: "s05-weave-j-ai-faim",
-    type: "weave",
-    targetItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
-    weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
-    payload: {
-      weaveType: "mid",
-      prompt: "Write it in French: I am hungry.",
-      context: "It is past noon and you have not eaten. Say how you feel, the French way.",
-      suggestedPieces: [
-        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
-        { text: "faim", itemId: "noun-faim", required: true, label: "feeling word" },
-      ],
-      expectedAnswers: ["J'ai faim."],
-      acceptedAlternatives: [
-        "J ai faim.",
-        "J ai faim",
-        "j ai faim",
-      ],
-      reveal: {
-        modelAnswer: "J'ai faim.",
-        ifCorrect: "You used have for a feeling, the French way.",
-        ifCorrectButFlat: "Right. faim is hunger; j'ai faim is I am hungry.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. French puts the feeling on have: j'ai faim.",
-        ifMissingTargetPiece: "Start with j'ai, then faim.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    id: "s06-weave-bonjour-j-ai-une-question",
-    type: "weave",
-    targetItemIds: ["chunk-bonjour", "chunk-j-ai-une-question", "chunk-j-ai"],
-    weakPointTags: ["j-ai-vs-je-suis"],
-    payload: {
-      weaveType: "context",
-      prompt: "Write it in French: Hello, I have a question.",
-      context: "You step up to ask someone something. Greet first, then say you have a question.",
-      suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
-        { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
-        { text: "une question", itemId: "noun-question", required: true, label: "noun package" },
-      ],
-      hintCloze: "Bonjour, j'ai une ___.",
-      expectedAnswers: ["Bonjour, j'ai une question."],
-      acceptedAlternatives: [
-        "Bonjour, j ai une question.",
-        "Bonjour j ai une question",
-      ],
-      reveal: {
-        modelAnswer: "Bonjour, j'ai une question.",
-        ifCorrect: "Greeting plus a clear request to ask. That is a real opening.",
-        ifCorrectButFlat: "Right. The comma lets the greeting settle first.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. French hands the question to have: j'ai une question.",
-        ifMissingTargetPiece: "Greet with bonjour, then j'ai une question.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // s06 put j'ai une question behind bonjour. This asks whether the learner
-    // can tell WHICH opener the moment wants, which is the same discrimination
-    // L4 teaches between engines, applied one layer out. Both openers are
-    // correct French and both were produced in L1, so the bonjour miss is a
-    // register miss, not a vocabulary miss.
-    id: "s06b-fill-opener-for-a-question",
-    type: "fill-with-traps",
-    targetItemIds: [
-      "chunk-excusez-moi",
-      "chunk-bonjour",
-      "chunk-j-ai-une-question",
-    ],
-    evidenceTargetItemIds: ["chunk-excusez-moi"],
-    weakPointTags: ["politeness"],
-    payload: {
-      prompt:
-        "Same question, a different moment: they are already deep in their work and have not seen you. How do you open?",
-      sentenceAfter: ", j'ai une question.",
-      blankCount: 1,
-      options: [
-        { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
-        {
-          id: "opt-bonjour",
-          text: "Bonjour",
-          isCorrect: false,
-          learningErrorTag: "wrong_register",
-          trapReason:
-            "Correct French, and polite. But a greeting expects to be met, and they have not looked up.",
+
+  activityChain({
+    id: "s22-chain-what-you-have-here",
+    intro:
+      "Hunger and questions are both things you have. Watch how far one engine carries you before you need anything new.",
+    steps: [
+      {
+        id: "s05-weave-j-ai-faim",
+        type: "weave",
+        targetItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
+        weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
+        payload: {
+          weaveType: "mid",
+          prompt: "Write it in French: I am hungry.",
+          context: "It is past noon and you have not eaten. Say how you feel, the French way.",
+          suggestedPieces: [
+            { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+            { text: "faim", itemId: "noun-faim", required: true, label: "feeling word" },
+          ],
+          expectedAnswers: ["J'ai faim."],
+          acceptedAlternatives: [
+            "J ai faim.",
+            "J ai faim",
+            "j ai faim",
+          ],
+          reveal: {
+            modelAnswer: "J'ai faim.",
+            ifCorrect: "You used have for a feeling, the French way.",
+            ifCorrectButFlat: "Right. faim is hunger; j'ai faim is I am hungry.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. French puts the feeling on have: j'ai faim.",
+            ifMissingTargetPiece: "Start with j'ai, then faim.",
+          },
+          validationMode: "exact-or-alternative",
         },
-        {
-          id: "opt-non-merci",
-          text: "Non merci",
-          isCorrect: false,
-          learningErrorTag: "meaning_shift",
-          trapReason:
-            "That turns something down. Nothing has been offered to you yet.",
+      },
+      {
+        id: "s06-weave-bonjour-j-ai-une-question",
+        type: "weave",
+        targetItemIds: ["chunk-bonjour", "chunk-j-ai-une-question", "chunk-j-ai"],
+        weakPointTags: ["j-ai-vs-je-suis"],
+        payload: {
+          weaveType: "context",
+          prompt: "Write it in French: Hello, I have a question.",
+          context: "You step up to ask someone something. Greet first, then say you have a question.",
+          suggestedPieces: [
+            { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
+            { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
+            { text: "une question", itemId: "noun-question", required: true, label: "noun package" },
+          ],
+          hintCloze: "Bonjour, j'ai une ___.",
+          expectedAnswers: ["Bonjour, j'ai une question."],
+          acceptedAlternatives: [
+            "Bonjour, j ai une question.",
+            "Bonjour j ai une question",
+          ],
+          reveal: {
+            modelAnswer: "Bonjour, j'ai une question.",
+            ifCorrect: "Greeting plus a clear request to ask. That is a real opening.",
+            ifCorrectButFlat: "Right. The comma lets the greeting settle first.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. French hands the question to have: j'ai une question.",
+            ifMissingTargetPiece: "Greet with bonjour, then j'ai une question.",
+          },
+          validationMode: "exact-or-alternative",
         },
-      ],
-      answer: ["opt-excusez-moi"],
-      reveal: {
-        short: "Excusez-moi",
-        explanation:
-          "The engine did not move. Only the opener did: bonjour for someone who can see you, excusez-moi for someone who cannot.",
-        natural: "Excusez-moi, j'ai une question.",
       },
-    },
-  },
-  {
-    // The one screen in L4 where the learner must choose BETWEEN the two engines
-    // while producing, with no tray telling them which is which. Both sentences
-    // are owned, so the difficulty is entirely deciding what each moment needs
-    // and retrieving it. This is also L4's least-scaffolded action: every other
-    // production here supplies its pieces.
-    id: "s06c-weave-open-here-and-hungry",
-    type: "weave",
-    targetItemIds: [
-      "chunk-je-suis-ici",
-      "chunk-je-suis",
-      "chunk-j-ai-faim",
-      "chunk-j-ai",
+      {
+        // s06 put j'ai une question behind bonjour. This asks whether the learner
+        // can tell WHICH opener the moment wants, which is the same discrimination
+        // L4 teaches between engines, applied one layer out. Both openers are
+        // correct French and both were produced in L1, so the bonjour miss is a
+        // register miss, not a vocabulary miss.
+        id: "s06b-fill-opener-for-a-question",
+        type: "fill-with-traps",
+        targetItemIds: [
+          "chunk-excusez-moi",
+          "chunk-bonjour",
+          "chunk-j-ai-une-question",
+        ],
+        evidenceTargetItemIds: ["chunk-excusez-moi"],
+        weakPointTags: ["politeness"],
+        payload: {
+          prompt:
+            "Same question, a different moment: they are already deep in their work and have not seen you. How do you open?",
+          sentenceAfter: ", j'ai une question.",
+          blankCount: 1,
+          options: [
+            { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
+            {
+              id: "opt-bonjour",
+              text: "Bonjour",
+              isCorrect: false,
+              learningErrorTag: "wrong_register",
+              trapReason:
+                "Correct French, and polite. But a greeting expects to be met, and they have not looked up.",
+            },
+            {
+              id: "opt-non-merci",
+              text: "Non merci",
+              isCorrect: false,
+              learningErrorTag: "meaning_shift",
+              trapReason:
+                "That turns something down. Nothing has been offered to you yet.",
+            },
+          ],
+          answer: ["opt-excusez-moi"],
+          reveal: {
+            short: "Excusez-moi",
+            explanation:
+              "The engine did not move. Only the opener did: bonjour for someone who can see you, excusez-moi for someone who cannot.",
+            natural: "Excusez-moi, j'ai une question.",
+          },
+        },
+      },
+      {
+        // The one screen in L4 where the learner must choose BETWEEN the two engines
+        // while producing, with no tray telling them which is which. Both sentences
+        // are owned, so the difficulty is entirely deciding what each moment needs
+        // and retrieving it. This is also L4's least-scaffolded action: every other
+        // production here supplies its pieces.
+        id: "s06c-weave-open-here-and-hungry",
+        type: "weave",
+        targetItemIds: [
+          "chunk-je-suis-ici",
+          "chunk-je-suis",
+          "chunk-j-ai-faim",
+          "chunk-j-ai",
+        ],
+        evidenceTargetItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
+        weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
+        payload: {
+          weaveType: "open",
+          prompt: "Say you have arrived, then say you have not eaten.",
+          context:
+            "You get to your friend's door after a long trip. Two short sentences, and the second one is a feeling.",
+          expectedAnswers: ["Je suis ici. J'ai faim."],
+          acceptedAlternatives: [
+            "Je suis ici. J ai faim.",
+            "Bonjour, je suis ici. J'ai faim.",
+            "Bonjour, je suis ici. J ai faim.",
+          ],
+          reveal: {
+            modelAnswer: "Je suis ici. J'ai faim.",
+            ifCorrect:
+              "Two engines, one after the other. Where you are is je suis; how you feel is j'ai.",
+            ifCorrectButFlat:
+              "Right. Two short sentences do the work here, and each one takes a different engine.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Keep them apart: je suis carries the place, j'ai carries the feeling.",
+            ifMissingTargetPiece:
+              "Arrive first with je suis ici, then say the feeling with j'ai faim.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
     ],
-    evidenceTargetItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
-    weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
-    payload: {
-      weaveType: "open",
-      prompt: "Say you have arrived, then say you have not eaten.",
-      context:
-        "You get to your friend's door after a long trip. Two short sentences, and the second one is a feeling.",
-      expectedAnswers: ["Je suis ici. J'ai faim."],
-      acceptedAlternatives: [
-        "Je suis ici. J ai faim.",
-        "Bonjour, je suis ici. J'ai faim.",
-        "Bonjour, je suis ici. J ai faim.",
-      ],
-      reveal: {
-        modelAnswer: "Je suis ici. J'ai faim.",
-        ifCorrect:
-          "Two engines, one after the other. Where you are is je suis; how you feel is j'ai.",
-        ifCorrectButFlat:
-          "Right. Two short sentences do the work here, and each one takes a different engine.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Keep them apart: je suis carries the place, j'ai carries the feeling.",
-        ifMissingTargetPiece:
-          "Arrive first with je suis ici, then say the feeling with j'ai faim.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // CHAIN: meet, distinguish, produce. Meeting a new payload, choosing it against
-    // the two the engine already carries, and then getting it past a room that is
-    // not listening is one thought, not three pages.
+  }),
+
+  activityChain({
     id: "s21-chain-a-third-kind-of-have",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-excusez-moi",
-      "chunk-j-ai",
-      "noun-idee",
+    intro:
+      "Your hunger, your questions and your ideas all arrive on the same engine. This is the third one.",
+    steps: [
+        {
+          // Corpus closure. Payload Economy v0 §6 names une idee as L4's next cargo
+          // and notes it "reuses the already-registered dormant noun-idee" -- the
+          // registry entry has carried the example "J'ai une idee." since it was
+          // written, and no lesson had ever reached it. It widens the engine past
+          // BODY need: j'ai now carries something you feel, something you want to
+          // ask, and something you have thought of.
+          id: "s09-meet-j-ai-une-idee",
+          type: "meet-card",
+          targetItemIds: ["chunk-j-ai", "noun-idee"],
+          weakPointTags: ["elision"],
+          payload: {
+            fr: "J'ai une idée.",
+            en: "I have an idea.",
+            title: "Have carries thoughts too.",
+            highlights: [
+              { text: "J'ai", itemId: "chunk-j-ai" },
+              { text: "une idée", itemId: "noun-idee" },
+            ],
+            tts: true,
+          },
+        },
+        {
+          // Three j'ai lines, three different kinds of thing to have. This is the
+          // screen that stops the engine reading as "j'ai faim and nothing else".
+          id: "s09b-fill-which-kind-of-have",
+          type: "fill-with-traps",
+          targetItemIds: ["noun-idee", "chunk-j-ai"],
+          evidenceTargetItemIds: ["noun-idee"],
+          weakPointTags: ["avoir-vs-etre"],
+          payload: {
+            prompt:
+              "The room has been stuck on the same problem for ten minutes. Something occurs to you.",
+            blankCount: 1,
+            options: [
+              { id: "opt-idee", text: "J'ai une idée.", isCorrect: true },
+              {
+                id: "opt-question",
+                text: "J'ai une question.",
+                isCorrect: false,
+                trapReason:
+                  "That asks the room for something. You are about to give them something instead.",
+              },
+              {
+                id: "opt-faim",
+                text: "J'ai faim.",
+                isCorrect: false,
+                trapReason:
+                  "Also true, possibly. But it is a body telling you something, not a way out of the problem.",
+              },
+            ],
+            answer: ["opt-idee"],
+            reveal: {
+              short: "J'ai une idée.",
+              explanation:
+                "Same engine, a third kind of thing to have. French has hunger, has questions, and has ideas.",
+              natural: "J'ai une idée.",
+            },
+          },
+        },
+        {
+          // Second use of the new cargo, unsupplied, behind the opener L1 owns.
+          id: "s09c-weave-cut-in-with-an-idea",
+          type: "weave",
+          targetItemIds: ["chunk-excusez-moi", "noun-idee"],
+          weakPointTags: ["politeness", "elision"],
+          payload: {
+            weaveType: "open",
+            prompt: "Cut in, then say what you have.",
+            context: "They are still talking. What you thought of will not keep much longer.",
+            suggestedPieces: [
+              { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
+              { text: "j'ai", itemId: "chunk-j-ai", label: "I have" },
+              { text: "une idée", itemId: "noun-idee", label: "the thing you have" },
+            ],
+            hintCloze: "Excusez-moi, j'ai ___.",
+            expectedAnswers: ["Excusez-moi, j'ai une idée."],
+            acceptedAlternatives: [
+              "Excusez-moi. J'ai une idée.",
+              "Excusez-moi, j ai une idée.",
+            ],
+            reveal: {
+              modelAnswer: "Excusez-moi, j'ai une idée.",
+              ifCorrect: "The opener you own, in front of the engine you own, carrying something new.",
+              ifCorrectButFlat: "Right. Reach them first, then say what you have.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. Excusez-moi buys the pause; j'ai une idée fills it.",
+              ifMissingTargetPiece:
+                "Excusez-moi reaches them. J'ai une idée is what you have.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
     ],
-    weakPointTags: ["avoir-vs-etre"],
-    payload: {
-      intro:
-        "Your hunger, your questions and your ideas all arrive on the same engine. This is the third one.",
-      steps: [
-    {
-      // Corpus closure. Payload Economy v0 §6 names une idee as L4's next cargo
-      // and notes it "reuses the already-registered dormant noun-idee" -- the
-      // registry entry has carried the example "J'ai une idee." since it was
-      // written, and no lesson had ever reached it. It widens the engine past
-      // BODY need: j'ai now carries something you feel, something you want to
-      // ask, and something you have thought of.
-      id: "s09-meet-j-ai-une-idee",
-      type: "meet-card",
-      targetItemIds: ["chunk-j-ai", "noun-idee"],
-      weakPointTags: ["elision"],
-      payload: {
-        fr: "J'ai une idée.",
-        en: "I have an idea.",
-        title: "Have carries thoughts too.",
-        highlights: [
-          { text: "J'ai", itemId: "chunk-j-ai" },
-          { text: "une idée", itemId: "noun-idee" },
-        ],
-        tts: true,
-      },
-    },
-    {
-      // Three j'ai lines, three different kinds of thing to have. This is the
-      // screen that stops the engine reading as "j'ai faim and nothing else".
-      id: "s09b-fill-which-kind-of-have",
-      type: "fill-with-traps",
-      targetItemIds: ["noun-idee", "chunk-j-ai"],
-      evidenceTargetItemIds: ["noun-idee"],
-      weakPointTags: ["avoir-vs-etre"],
-      payload: {
-        prompt:
-          "The room has been stuck on the same problem for ten minutes. Something occurs to you.",
-        blankCount: 1,
-        options: [
-          { id: "opt-idee", text: "J'ai une idée.", isCorrect: true },
-          {
-            id: "opt-question",
-            text: "J'ai une question.",
-            isCorrect: false,
-            trapReason:
-              "That asks the room for something. You are about to give them something instead.",
-          },
-          {
-            id: "opt-faim",
-            text: "J'ai faim.",
-            isCorrect: false,
-            trapReason:
-              "Also true, possibly. But it is a body telling you something, not a way out of the problem.",
-          },
-        ],
-        answer: ["opt-idee"],
-        reveal: {
-          short: "J'ai une idée.",
-          explanation:
-            "Same engine, a third kind of thing to have. French has hunger, has questions, and has ideas.",
-          natural: "J'ai une idée.",
-        },
-      },
-    },
-    {
-      // Second use of the new cargo, unsupplied, behind the opener L1 owns.
-      id: "s09c-weave-cut-in-with-an-idea",
-      type: "weave",
-      targetItemIds: ["chunk-excusez-moi", "noun-idee"],
-      weakPointTags: ["politeness", "elision"],
-      payload: {
-        weaveType: "open",
-        prompt: "Cut in, then say what you have.",
-        context: "They are still talking. What you thought of will not keep much longer.",
-        suggestedPieces: [
-          { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
-          { text: "j'ai", itemId: "chunk-j-ai", label: "I have" },
-          { text: "une idée", itemId: "noun-idee", label: "the thing you have" },
-        ],
-        hintCloze: "Excusez-moi, j'ai ___.",
-        expectedAnswers: ["Excusez-moi, j'ai une idée."],
-        acceptedAlternatives: [
-          "Excusez-moi. J'ai une idée.",
-          "Excusez-moi, j ai une idée.",
-        ],
-        reveal: {
-          modelAnswer: "Excusez-moi, j'ai une idée.",
-          ifCorrect: "The opener you own, in front of the engine you own, carrying something new.",
-          ifCorrectButFlat: "Right. Reach them first, then say what you have.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. Excusez-moi buys the pause; j'ai une idée fills it.",
-          ifMissingTargetPiece:
-            "Excusez-moi reaches them. J'ai une idée is what you have.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
+  }),
+
+
   {
     id: "s07-sayit-how-you-feel",
     type: "say-it-your-way",
@@ -500,6 +516,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     // L4's contrast is stated once, at s01, before the learner has used either
     // engine. This is the same contrast AFTER four moments have used them, and
@@ -520,6 +538,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s08-recap-jai",
     type: "recap",

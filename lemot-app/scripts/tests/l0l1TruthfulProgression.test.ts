@@ -32,13 +32,22 @@ import type {
 } from "../../content/lessonTypes";
 import { matchExpected } from "../../components/lesson-v1/screens/normalizeAnswer";
 import { reviewProductionQuality } from "../../content/lessons/productionQuality";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 
 const APP_ROOT = process.cwd();
 const readSource = (rel: string) => readFileSync(join(APP_ROOT, rel), "utf8");
 
-const screens = lesson001.screens;
+/**
+ * PAGES vs ACTIONS. A chain is one page holding several actions, so the two
+ * questions this file asks need different lists: "what does the learner do, and
+ * in what order?" is about actions, and "how is the lesson paced?" is about
+ * pages. Conflating them would let chaining silently change an answer.
+ */
+const pages = lesson001.screens;
+const screens = flattenLessonScreens(lesson001);
 const ids = screens.map((s) => s.id);
-const types = screens.map((s) => s.type);
+const types = pages.map((s) => s.type);
+const actionTypes = screens.map((s) => s.type);
 
 const byId = <T extends LessonScreen>(id: string): T => {
   const found = screens.find((s) => s.id === id);
@@ -54,18 +63,29 @@ describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () =>
   // formula needs a meet and one real use, which is the minimum the Payload
   // Economy surface ceiling allows for a supported item. The band still exists
   // so an unbounded lesson fails.
-  test("screen count stays inside the authored 11-19 band", () => {
+  // Counted in ACTIONS, not pages. The band exists so an unbounded lesson
+  // fails, and what would make a lesson unbounded is how much it asks -- which
+  // is exactly what chaining does not change. Measuring pages here would have
+  // made grouping four actions onto one page look like deleting three of them.
+  test("action count stays inside the authored 11-19 band", () => {
     assert(
       screens.length >= 11 && screens.length <= 19,
-      `expected 11-19 rendered screens, got ${screens.length}`,
+      `expected 11-19 learner actions, got ${screens.length}`,
     );
+  });
+
+  test("the lesson is still paced across pages, not collapsed into a few", () => {
+    // The other half of the band, now that actions and pages are counted
+    // separately: chaining may group actions, but it may not turn the lesson
+    // into three dense screens.
+    assert(pages.length >= 8, `expected at least 8 pages, got ${pages.length}`);
   });
 
   test("Goal is first and Recap is last", () => {
     assertEqual(types[0], "showcase", "first screen is the language world");
     assertEqual(types[1], "insight-card", "the goal card follows it");
     assertEqual(
-      (screens[1] as { payload: { insightType?: string } }).payload.insightType,
+      (pages[1] as { payload: { insightType?: string } }).payload.insightType,
       "lesson-goal",
       "first screen is specifically the lesson-goal insight",
     );
@@ -73,10 +93,13 @@ describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () =>
   });
 
   test("no three consecutive screens share one archetype", () => {
-    for (let i = 2; i < types.length; i++) {
+    // On actions: a chain is a container the learner never feels, so three
+    // chains holding three different sequences are varied, and three meet-cards
+    // are not -- whether or not a chain happens to hold them.
+    for (let i = 2; i < actionTypes.length; i++) {
       assert(
-        !(types[i] === types[i - 1] && types[i] === types[i - 2]),
-        `three consecutive ${types[i]} screens at index ${i - 2}`,
+        !(actionTypes[i] === actionTypes[i - 1] && actionTypes[i] === actionTypes[i - 2]),
+        `three consecutive ${actionTypes[i]} screens at index ${i - 2}`,
       );
     }
   });
@@ -358,7 +381,7 @@ describe("L1 recap separates what was recycled from what was extended", () => {
   const joined = lines.join(" ");
 
   test("it does not repeat an L0 recap line verbatim", () => {
-    const l0Recap = lesson000.screens.find((s) => s.type === "recap") as RecapScreen;
+    const l0Recap = flattenLessonScreens(lesson000).find((s) => s.type === "recap") as RecapScreen;
     for (const line of lines) {
       assert(
         !l0Recap.payload.lines.includes(line),

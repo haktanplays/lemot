@@ -72,12 +72,12 @@ const weavesOf = (l: Lesson): WeaveScreen[] =>
   flattenLessonScreens(l).filter((s): s is WeaveScreen => s.type === "weave");
 
 const goalOf = (l: Lesson) =>
-  l.screens.find(
+  flattenLessonScreens(l).find(
     (s) => (s.payload as { insightType?: string }).insightType === "lesson-goal",
   ) as { payload: { title?: string } } | undefined;
 
 const recapOf = (l: Lesson) =>
-  l.screens.find((s) => s.type === "recap") as
+  flattenLessonScreens(l).find((s) => s.type === "recap") as
     | { payload: { title?: string; lines: string[]; nextLabel?: string } }
     | undefined;
 
@@ -196,7 +196,7 @@ describe("Weave feedback presentation is one stable shape", () => {
 describe("Fill prompts stand alone and start from intention", () => {
   test("no bare UI-blank prompt in L1-L10", () => {
     for (const l of AUTHORED) {
-      for (const s of l.screens) {
+      for (const s of flattenLessonScreens(l)) {
         if (s.type !== "fill-with-traps") continue;
         const p = (s.payload as { prompt: string }).prompt;
         assert(
@@ -209,7 +209,7 @@ describe("Fill prompts stand alone and start from intention", () => {
 
   test("no prompt depends on the previous screen", () => {
     for (const l of AUTHORED) {
-      for (const s of l.screens) {
+      for (const s of flattenLessonScreens(l)) {
         if (s.type !== "fill-with-traps") continue;
         const p = (s.payload as { prompt: string }).prompt.trim();
         assert(!/^and\b/i.test(p), `${l.id}/${s.id} opens with a dependent "And"`);
@@ -220,7 +220,7 @@ describe("Fill prompts stand alone and start from intention", () => {
 
   test("options, answers and trapReasons still exist on every fill", () => {
     for (const l of AUTHORED) {
-      for (const s of l.screens) {
+      for (const s of flattenLessonScreens(l)) {
         if (s.type !== "fill-with-traps") continue;
         const p = s.payload as {
           options: { id: string; isCorrect?: boolean; trapReason?: string }[];
@@ -241,7 +241,7 @@ describe("Fill prompts stand alone and start from intention", () => {
 
 describe("L1 Say It is a scene, not a checklist", () => {
   const l1 = V1_LESSONS.find((l) => l.number === 1)!;
-  const sayIt = l1.screens.find((s) => s.id === "s08-sayit-cafe-order") as {
+  const sayIt = flattenLessonScreens(l1).find((s) => s.id === "s08-sayit-cafe-order") as {
     payload: { situation: string; communicativeGoal: string; modelAnswer?: string };
   };
 
@@ -324,10 +324,17 @@ describe("rhythm corrections in L2, L3, L5 and L6", () => {
 
   test("every lesson keeps Showcase first, Goal second, Recap last, and no three identical in a row", () => {
     for (const l of AUTHORED) {
-      const t = l.screens.map((s) => s.type);
-      assertEqual(t[0], "showcase", `${l.id} opens on its language world`);
-      assertEqual(t[1], "insight-card", `${l.id} states its goal second`);
-      assertEqual(t[t.length - 1], "recap", `${l.id} closes on the recap`);
+      const pages = l.screens.map((s) => s.type);
+      assertEqual(pages[0], "showcase", `${l.id} opens on its language world`);
+      assertEqual(pages[1], "insight-card", `${l.id} states its goal second`);
+      assertEqual(pages[pages.length - 1], "recap", `${l.id} closes on the recap`);
+      // Sameness is judged on ACTIONS, not pages. The rule protects the learner
+      // from three identical-feeling screens in a row, and "activity-chain" is
+      // not something the learner feels -- what they feel is the meet, the
+      // choice and the production inside it. Three consecutive chains that each
+      // hold a different sequence are varied; three consecutive meet-cards are
+      // not, whether or not a chain happens to contain them.
+      const t = flattenLessonScreens(l).map((s) => s.type);
       for (let i = 2; i < t.length; i++) {
         assert(
           !(t[i] === t[i - 1] && t[i] === t[i - 2]),
@@ -493,7 +500,7 @@ describe("hint and header labels are consistent", () => {
 
   test("PM-009 stays an intentionally unscaffolded checkpoint", () => {
     const l1 = V1_LESSONS.find((l) => l.number === 1)!;
-    const pm009 = l1.screens.find((s) => s.id === "s10-weave-merci-thanks") as WeaveScreen;
+    const pm009 = flattenLessonScreens(l1).find((s) => s.id === "s10-weave-merci-thanks") as WeaveScreen;
     assertEqual(
       (pm009.payload.suggestedPieces ?? []).length,
       0,
@@ -530,10 +537,10 @@ describe("nothing identity-bearing moved", () => {
       // Page counts fell where single-action screens collapsed into chains;
       // the TIER strings are unchanged, which is the point -- chaining moved
       // pages, not production.
-      7: { screens: 15, tiers: "mid,context,open,open" },
-      8: { screens: 19, tiers: "context,context,open,context,open,open" },
-      9: { screens: 15, tiers: "context,open,open,open" },
-      10: { screens: 14, tiers: "context,open,open,open" },
+      7: { screens: 10, tiers: "mid,context,open,open" },
+      8: { screens: 12, tiers: "context,context,open,context,open,open" },
+      9: { screens: 12, tiers: "context,open,open,open" },
+      10: { screens: 11, tiers: "context,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;
@@ -548,8 +555,8 @@ describe("nothing identity-bearing moved", () => {
 
   test("registered pilot payload screens still exist with their evidence surface", () => {
     const l1 = V1_LESSONS.find((l) => l.number === 1)!;
-    const pm009 = l1.screens.find((s) => s.id === "s10-weave-merci-thanks")!;
-    const pm011 = l1.screens.find((s) => s.id === "s11-weave-the-order")!;
+    const pm009 = flattenLessonScreens(l1).find((s) => s.id === "s10-weave-merci-thanks")!;
+    const pm011 = flattenLessonScreens(l1).find((s) => s.id === "s11-weave-the-order")!;
     assertEqual(
       JSON.stringify((pm009 as { targetItemIds?: string[] }).targetItemIds),
       JSON.stringify(["chunk-merci"]),
@@ -563,7 +570,9 @@ describe("nothing identity-bearing moved", () => {
   });
 
   test("every qualified screen id across the registry is still unique", () => {
-    const qualified = V1_LESSONS.flatMap((l) => l.screens.map((s) => `${l.id}/${s.id}`));
+    const qualified = V1_LESSONS.flatMap((l) =>
+      flattenLessonScreens(l).map((s) => `${l.id}/${s.id}`),
+    );
     assertEqual(new Set(qualified).size, qualified.length, "no collision");
   });
 

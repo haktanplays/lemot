@@ -1,7 +1,10 @@
 import type { Lesson, LessonScreen } from "../../lessonTypes";
 import { getItems } from "../../itemRegistry";
+import { activityChain } from "../activityChain";
 
 const screens: LessonScreen[] = [
+
+
   {
     // L2's world is the self: where you are, how you are, whether you are ready.
     // The lesson only makes je suis ici its own; the rest is here so "I am ..."
@@ -51,6 +54,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s00-goal-etre",
     type: "insight-card",
@@ -63,6 +68,8 @@ const screens: LessonScreen[] = [
         "Main pieces: je suis, ici.",
     },
   },
+
+
   {
     id: "s00-meet-je-suis-ici",
     type: "meet-card",
@@ -78,6 +85,8 @@ const screens: LessonScreen[] = [
       tts: true,
     },
   },
+
+
   {
     id: "s01-insight-je-suis-engine",
     type: "insight-card",
@@ -89,83 +98,93 @@ const screens: LessonScreen[] = [
       examples: [{ fr: "Je suis ici.", en: "I am here." }],
     },
   },
-  {
-    id: "s02-meet-bonjour-je-suis-ici",
-    type: "meet-card",
-    targetItemIds: ["chunk-bonjour", "chunk-je-suis-ici"],
-    payload: {
-      fr: "Bonjour, je suis ici.",
-      en: "Hello, I am here.",
-      title: "Greet, then locate.",
-      highlights: [
-        { text: "Bonjour", itemId: "chunk-bonjour" },
-        { text: "je suis", itemId: "chunk-je-suis" },
-        { text: "ici", itemId: "word-ici" },
-      ],
-      tts: true,
-    },
-  },
-  {
-    id: "s03-fill-je-suis-blank",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-je-suis"],
-    payload: {
-      prompt: "You want to tell them you have arrived. Which word fits?",
-      sentenceBefore: "Je ",
-      sentenceAfter: " ici.",
-      blankCount: 1,
-      options: [
-        { id: "opt-suis", text: "suis", isCorrect: true },
-        {
-          id: "opt-voudrais",
-          text: "voudrais",
-          isCorrect: false,
-          trapReason:
-            "You met je voudrais in the last lesson. It asks for something. It does not say where you are.",
+
+  activityChain({
+    id: "s22-chain-saying-where-you-are",
+    intro:
+      "You have arrived somewhere you were expected. Before anything else they need to know it is you, and that you are here.",
+    steps: [
+      {
+        id: "s02-meet-bonjour-je-suis-ici",
+        type: "meet-card",
+        targetItemIds: ["chunk-bonjour", "chunk-je-suis-ici"],
+        payload: {
+          fr: "Bonjour, je suis ici.",
+          en: "Hello, I am here.",
+          title: "Greet, then locate.",
+          highlights: [
+            { text: "Bonjour", itemId: "chunk-bonjour" },
+            { text: "je suis", itemId: "chunk-je-suis" },
+            { text: "ici", itemId: "word-ici" },
+          ],
+          tts: true,
         },
-        {
-          id: "opt-bonjour",
-          text: "bonjour",
-          isCorrect: false,
-          trapReason:
-            "Bonjour is a greeting. It cannot sit between Je and ici.",
+      },
+      {
+        id: "s03-fill-je-suis-blank",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-je-suis"],
+        payload: {
+          prompt: "You want to tell them you have arrived. Which word fits?",
+          sentenceBefore: "Je ",
+          sentenceAfter: " ici.",
+          blankCount: 1,
+          options: [
+            { id: "opt-suis", text: "suis", isCorrect: true },
+            {
+              id: "opt-voudrais",
+              text: "voudrais",
+              isCorrect: false,
+              trapReason:
+                "You met je voudrais in the last lesson. It asks for something. It does not say where you are.",
+            },
+            {
+              id: "opt-bonjour",
+              text: "bonjour",
+              isCorrect: false,
+              trapReason:
+                "Bonjour is a greeting. It cannot sit between Je and ici.",
+            },
+          ],
+          answer: ["opt-suis"],
+          reveal: {
+            short: "suis",
+            explanation:
+              "Je suis = I am. That is the shape that names your location.",
+            natural: "Je suis ici.",
+          },
         },
-      ],
-      answer: ["opt-suis"],
-      reveal: {
-        short: "suis",
-        explanation:
-          "Je suis = I am. That is the shape that names your location.",
-        natural: "Je suis ici.",
       },
-    },
-  },
-  {
-    id: "s04-weave-je-suis-ici",
-    type: "weave",
-    targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis"],
-    payload: {
-      weaveType: "supported",
-      prompt: "Write it in French: I am here.",
-      context: "Someone called your name. Let them know you've arrived.",
-      suggestedPieces: [
-        { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
-        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
-      ],
-      expectedAnswers: ["Je suis ici."],
-      reveal: {
-        modelAnswer: "Je suis ici.",
-        ifCorrect: "Two words. One French engine, running.",
-        ifCorrectButFlat:
-          "Right. The period gives the sentence a small landing.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Two words carry it: je suis ici.",
-        ifMissingTargetPiece:
-          "Start with je suis. That is the shape that does the work.",
+      {
+        id: "s04-weave-je-suis-ici",
+        type: "weave",
+        targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis"],
+        payload: {
+          weaveType: "supported",
+          prompt: "Write it in French: I am here.",
+          context: "Someone called your name. Let them know you've arrived.",
+          suggestedPieces: [
+            { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
+            { text: "ici", itemId: "word-ici", required: true, label: "place word" },
+          ],
+          expectedAnswers: ["Je suis ici."],
+          reveal: {
+            modelAnswer: "Je suis ici.",
+            ifCorrect: "Two words. One French engine, running.",
+            ifCorrectButFlat:
+              "Right. The period gives the sentence a small landing.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Two words carry it: je suis ici.",
+            ifMissingTargetPiece:
+              "Start with je suis. That is the shape that does the work.",
+          },
+          validationMode: "exact-or-alternative",
+        },
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
+    ],
+  }),
+
+
   {
     // s03 proved the learner can complete the shape one word at a time. This is
     // the first screen in L2 that asks them to choose a WHOLE sentence, and it
@@ -209,6 +228,8 @@ const screens: LessonScreen[] = [
       },
     },
   },
+
+
   {
     // Placed BETWEEN the two equivalent productions (F-12): it gives the
     // second one an explained purpose instead of leaving them consecutive.
@@ -225,266 +246,266 @@ const screens: LessonScreen[] = [
       ],
     },
   },
-  {
-    id: "s05-weave-call-and-respond",
-    type: "weave",
-    targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis", "chunk-excusez-moi"],
-    payload: {
-      weaveType: "supported",
-      prompt: "Write it in French: Excuse me, I am here.",
-      // Previously this screen asked for the SAME string as s04, which made the
-      // engine claim ("the shape stays, the moment changes") impossible to feel:
-      // nothing changed. Now the moment genuinely differs — nobody is looking
-      // for you, so you have to interrupt — and the L1 opener is the piece that
-      // carries that difference while je suis stays untouched.
-      context:
-        "Nobody has called for you. The room is busy and you need to announce yourself.",
-      suggestedPieces: [
-        {
-          text: "Excusez-moi",
-          itemId: "chunk-excusez-moi",
-          required: true,
-          label: "reach them first",
+
+  activityChain({
+    id: "s23-chain-the-same-engine-twice",
+    intro:
+      "The engine does not change when the room does. What changes is the words you hang off it.",
+    steps: [
+      {
+        id: "s05-weave-call-and-respond",
+        type: "weave",
+        targetItemIds: ["chunk-je-suis-ici", "chunk-je-suis", "chunk-excusez-moi"],
+        payload: {
+          weaveType: "supported",
+          prompt: "Write it in French: Excuse me, I am here.",
+          // Previously this screen asked for the SAME string as s04, which made the
+          // engine claim ("the shape stays, the moment changes") impossible to feel:
+          // nothing changed. Now the moment genuinely differs — nobody is looking
+          // for you, so you have to interrupt — and the L1 opener is the piece that
+          // carries that difference while je suis stays untouched.
+          context:
+            "Nobody has called for you. The room is busy and you need to announce yourself.",
+          suggestedPieces: [
+            {
+              text: "Excusez-moi",
+              itemId: "chunk-excusez-moi",
+              required: true,
+              label: "reach them first",
+            },
+            { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
+            { text: "ici", itemId: "word-ici", required: true, label: "place word" },
+          ],
+          expectedAnswers: ["Excusez-moi, je suis ici."],
+          acceptedAlternatives: ["Excusez-moi je suis ici."],
+          reveal: {
+            modelAnswer: "Excusez-moi, je suis ici.",
+            ifCorrect: "The opener changed. The engine did not. That is the point.",
+            ifCorrectButFlat:
+              "Right. Excusez-moi does the interrupting; je suis ici does the telling.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The engine stays whole and the opener sits in front of it: Excusez-moi, je suis ici.",
+            ifMissingTargetPiece:
+              "Nobody called you here, so open with excusez-moi, then the same two words as before.",
+          },
+          validationMode: "exact-or-alternative",
         },
-        { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
-        { text: "ici", itemId: "word-ici", required: true, label: "place word" },
-      ],
-      expectedAnswers: ["Excusez-moi, je suis ici."],
-      acceptedAlternatives: ["Excusez-moi je suis ici."],
-      reveal: {
-        modelAnswer: "Excusez-moi, je suis ici.",
-        ifCorrect: "The opener changed. The engine did not. That is the point.",
-        ifCorrectButFlat:
-          "Right. Excusez-moi does the interrupting; je suis ici does the telling.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. The engine stays whole and the opener sits in front of it: Excusez-moi, je suis ici.",
-        ifMissingTargetPiece:
-          "Nobody called you here, so open with excusez-moi, then the same two words as before.",
       },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // s09's natural-reveal CLAIMS the openers are not interchangeable, and until
-    // now nothing in L2 asked the learner to act on that. This does. It is a
-    // register choice, not a vocabulary choice: every option is correct French
-    // the learner owns, and only the room decides which one belongs.
-    id: "s05b-fill-which-opener",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-excusez-moi", "chunk-bonjour", "chunk-je-suis-ici"],
-    evidenceTargetItemIds: ["chunk-excusez-moi"],
-    weakPointTags: ["politeness"],
-    payload: {
-      prompt:
-        "Same two words, a different room: it is busy, and nobody has looked up. How do you open?",
-      sentenceAfter: ", je suis ici.",
-      blankCount: 1,
-      options: [
-        { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
-        {
-          id: "opt-bonjour",
-          text: "Bonjour",
-          isCorrect: false,
-          learningErrorTag: "wrong_register",
-          trapReason:
-            "Correct French, and polite. But a greeting waits to be noticed, and nobody has noticed you yet.",
+      {
+        // s09's natural-reveal CLAIMS the openers are not interchangeable, and until
+        // now nothing in L2 asked the learner to act on that. This does. It is a
+        // register choice, not a vocabulary choice: every option is correct French
+        // the learner owns, and only the room decides which one belongs.
+        id: "s05b-fill-which-opener",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-excusez-moi", "chunk-bonjour", "chunk-je-suis-ici"],
+        evidenceTargetItemIds: ["chunk-excusez-moi"],
+        weakPointTags: ["politeness"],
+        payload: {
+          prompt:
+            "Same two words, a different room: it is busy, and nobody has looked up. How do you open?",
+          sentenceAfter: ", je suis ici.",
+          blankCount: 1,
+          options: [
+            { id: "opt-excusez-moi", text: "Excusez-moi", isCorrect: true },
+            {
+              id: "opt-bonjour",
+              text: "Bonjour",
+              isCorrect: false,
+              learningErrorTag: "wrong_register",
+              trapReason:
+                "Correct French, and polite. But a greeting waits to be noticed, and nobody has noticed you yet.",
+            },
+            {
+              id: "opt-merci",
+              text: "Merci",
+              isCorrect: false,
+              learningErrorTag: "meaning_shift",
+              trapReason:
+                "Merci closes something. Nothing has happened yet for you to thank them for.",
+            },
+          ],
+          answer: ["opt-excusez-moi"],
+          reveal: {
+            short: "Excusez-moi",
+            explanation:
+              "Both openers are good French. The room chooses between them: bonjour greets people who can see you, excusez-moi reaches people who cannot.",
+            natural: "Excusez-moi, je suis ici.",
+          },
         },
-        {
-          id: "opt-merci",
-          text: "Merci",
-          isCorrect: false,
-          learningErrorTag: "meaning_shift",
-          trapReason:
-            "Merci closes something. Nothing has happened yet for you to thank them for.",
-        },
-      ],
-      answer: ["opt-excusez-moi"],
-      reveal: {
-        short: "Excusez-moi",
-        explanation:
-          "Both openers are good French. The room chooses between them: bonjour greets people who can see you, excusez-moi reaches people who cannot.",
-        natural: "Excusez-moi, je suis ici.",
       },
-    },
-  },
-  {
-    // L2's first two-sentence production, and the first time the engine has to
-    // share a moment with the order the learner already carried through L1.
-    // Every piece here was produced in an earlier lesson; only the combination
-    // is new, which is the whole point of calling je suis an engine.
-    id: "s06b-weave-arrive-and-order",
-    type: "weave",
-    targetItemIds: [
-      "chunk-je-suis-ici",
-      "chunk-je-suis",
-      "chunk-bonjour",
-      "chunk-je-voudrais",
+      {
+        // L2's first two-sentence production, and the first time the engine has to
+        // share a moment with the order the learner already carried through L1.
+        // Every piece here was produced in an earlier lesson; only the combination
+        // is new, which is the whole point of calling je suis an engine.
+        id: "s06b-weave-arrive-and-order",
+        type: "weave",
+        targetItemIds: [
+          "chunk-je-suis-ici",
+          "chunk-je-suis",
+          "chunk-bonjour",
+          "chunk-je-voudrais",
+        ],
+        evidenceTargetItemIds: ["chunk-je-suis-ici", "chunk-je-suis"],
+        weakPointTags: ["natural-speech"],
+        payload: {
+          weaveType: "context",
+          prompt: "Write it in French: Hello, I am here. I would like a coffee, please.",
+          context:
+            "You said you would meet them at the counter, and you have just walked up. Greet them, say you have arrived, then order.",
+          suggestedPieces: [
+            { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
+            { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
+            { text: "ici", itemId: "word-ici", label: "place word" },
+            { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
+            { text: "un café", itemId: "noun-cafe", label: "what you want" },
+            { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "please" },
+          ],
+          hintCloze: "Bonjour, je suis ___. Je voudrais un café, s'il vous plaît.",
+          expectedAnswers: ["Bonjour, je suis ici. Je voudrais un café, s'il vous plaît."],
+          acceptedAlternatives: [
+            "Bonjour, je suis ici. Un café, s'il vous plaît.",
+            "Bonjour, je suis ici. Je voudrais un café.",
+          ],
+          reveal: {
+            modelAnswer: "Bonjour, je suis ici. Je voudrais un café, s'il vous plaît.",
+            ifCorrect:
+              "Two French sentences, back to back. You built the second one a lesson ago and it still fits.",
+            ifCorrectButFlat:
+              "Right. The arrival lands first, then the order. Two short sentences, not one long one.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Say where you are, stop, then ask: Bonjour, je suis ici. Je voudrais un café, s'il vous plaît.",
+            ifMissingTargetPiece:
+              "Arrive before you order. Je suis ici comes first, then the request you already know.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
     ],
-    evidenceTargetItemIds: ["chunk-je-suis-ici", "chunk-je-suis"],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      weaveType: "context",
-      prompt: "Write it in French: Hello, I am here. I would like a coffee, please.",
-      context:
-        "You said you would meet them at the counter, and you have just walked up. Greet them, say you have arrived, then order.",
-      suggestedPieces: [
-        { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
-        { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
-        { text: "ici", itemId: "word-ici", label: "place word" },
-        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
-        { text: "un café", itemId: "noun-cafe", label: "what you want" },
-        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "please" },
-      ],
-      hintCloze: "Bonjour, je suis ___. Je voudrais un café, s'il vous plaît.",
-      expectedAnswers: ["Bonjour, je suis ici. Je voudrais un café, s'il vous plaît."],
-      acceptedAlternatives: [
-        "Bonjour, je suis ici. Un café, s'il vous plaît.",
-        "Bonjour, je suis ici. Je voudrais un café.",
-      ],
-      reveal: {
-        modelAnswer: "Bonjour, je suis ici. Je voudrais un café, s'il vous plaît.",
-        ifCorrect:
-          "Two French sentences, back to back. You built the second one a lesson ago and it still fits.",
-        ifCorrectButFlat:
-          "Right. The arrival lands first, then the order. Two short sentences, not one long one.",
-        ifUnderstandableButWrong:
-          "Your meaning lands. Say where you are, stop, then ask: Bonjour, je suis ici. Je voudrais un café, s'il vous plaît.",
-        ifMissingTargetPiece:
-          "Arrive before you order. Je suis ici comes first, then the request you already know.",
-      },
-      validationMode: "exact-or-alternative",
-    },
-  },
-  {
-    // CHAIN: choose, produce, then produce more. L2 owns one engine and one cargo
-    // word, so its only route to depth is recombination -- pick the line the moment
-    // wants, answer with it, then carry it into a full arrival.
+  }),
+
+  activityChain({
     id: "s21-chain-answer-then-arrive",
-    type: "activity-chain",
-    targetItemIds: [
-      "chunk-je-suis-ici",
-      "chunk-un-the",
+    intro:
+      "You are somewhere you are expected, and you will need to say two different things about being there.",
+    steps: [
+        {
+          // Corpus closure. L2 owns one engine and one cargo word, so it can only
+          // widen by RECOMBINATION -- which makes it the lesson most at risk of being
+          // one memorised line. This fill puts the engine beside the two other whole
+          // lines the learner now owns and asks which one the moment wants. It is the
+          // first screen in L2 whose options are complete utterances.
+          id: "s10b-fill-which-line",
+          type: "fill-with-traps",
+          targetItemIds: ["chunk-je-suis-ici"],
+          weakPointTags: ["natural-speech"],
+          payload: {
+            prompt:
+              "Someone is calling for you from the next room. They cannot see you, and they are not offering you anything.",
+            blankCount: 1,
+            options: [
+              { id: "opt-ici", text: "Je suis ici.", isCorrect: true },
+              {
+                id: "opt-the",
+                text: "Je voudrais un thé, s'il vous plaît.",
+                isCorrect: false,
+                trapReason:
+                  "That orders a drink. Nobody asked what you wanted; they asked where you are.",
+              },
+              {
+                id: "opt-repeter",
+                text: "Vous pouvez répéter ?",
+                isCorrect: false,
+                trapReason:
+                  "That asks them to say it again. You heard them perfectly well.",
+              },
+            ],
+            answer: ["opt-ici"],
+            reveal: {
+              short: "Je suis ici.",
+              explanation:
+                "Three lines you own, one job each. This engine is the one that puts you somewhere.",
+              natural: "Je suis ici.",
+            },
+          },
+        },
+        {
+          // The first production in L1-L6 whose SCENE is in French. The learner reads
+          // what was said, not a translation of what to say, and the English helper
+          // states only the situation. Every French word in the context is already
+          // owned, and none of it leaks the answer.
+          id: "s10c-weave-answer-the-call",
+          type: "weave",
+          targetItemIds: ["chunk-je-suis-ici"],
+          weakPointTags: ["natural-speech"],
+          payload: {
+            weaveType: "context",
+            prompt: "Answer so they know where you are.",
+            context: "From the next room, someone calls: « Bonjour ? » They cannot see you.",
+            suggestedPieces: [
+              { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
+              { text: "ici", itemId: "word-ici", label: "here" },
+            ],
+            hintCloze: "Je suis ___.",
+            expectedAnswers: ["Je suis ici."],
+            acceptedAlternatives: ["Bonjour, je suis ici."],
+            reveal: {
+              modelAnswer: "Je suis ici.",
+              ifCorrect: "Two words, and the room knows where you are.",
+              ifCorrectButFlat: "Right. Nothing else is needed to answer that.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. The answer to « Bonjour ? » from an unseen room is where you are.",
+              ifMissingTargetPiece: "Je suis puts you somewhere. Ici says where.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
+        {
+          // The same two-sentence shape the lesson already built, with a different
+          // drink at the end. It exists so the recombination reads as a pattern the
+          // learner can refill rather than one sentence they memorised: the engine
+          // holds, the order changes.
+          id: "s10d-weave-arrive-and-order-tea",
+          type: "weave",
+          targetItemIds: ["chunk-je-suis-ici", "chunk-un-the"],
+          weakPointTags: ["politeness"],
+          payload: {
+            weaveType: "open",
+            prompt: "Say you have arrived, then order the other drink politely.",
+            context:
+              "Same doorway, a different afternoon. You do not feel like coffee today.",
+            suggestedPieces: [
+              { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
+              { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
+              { text: "ici", itemId: "word-ici", label: "here" },
+              { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
+              { text: "un thé", itemId: "chunk-un-the", label: "the other drink" },
+              { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
+            ],
+            hintCloze: "Bonjour, je suis ___. Je voudrais ___, s'il vous plaît.",
+            expectedAnswers: ["Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît."],
+            acceptedAlternatives: [
+              "Bonjour, je suis ici. Je voudrais un thé.",
+              "Bonjour. Je suis ici. Je voudrais un thé, s'il vous plaît.",
+            ],
+            reveal: {
+              modelAnswer: "Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît.",
+              ifCorrect:
+                "Same two moves, different drink. That is a shape you can refill, not a line you memorised.",
+              ifCorrectButFlat: "Right. Arrive first, then ask.",
+              ifUnderstandableButWrong:
+                "Your meaning lands. Say where you are, stop, then order.",
+              ifMissingTargetPiece:
+                "Je suis ici puts you in the room. Je voudrais un thé asks for the drink.",
+            },
+            validationMode: "exact-or-alternative",
+          },
+        },
     ],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      intro:
-        "You are somewhere you are expected, and you will need to say two different things about being there.",
-      steps: [
-    {
-      // Corpus closure. L2 owns one engine and one cargo word, so it can only
-      // widen by RECOMBINATION -- which makes it the lesson most at risk of being
-      // one memorised line. This fill puts the engine beside the two other whole
-      // lines the learner now owns and asks which one the moment wants. It is the
-      // first screen in L2 whose options are complete utterances.
-      id: "s10b-fill-which-line",
-      type: "fill-with-traps",
-      targetItemIds: ["chunk-je-suis-ici"],
-      weakPointTags: ["natural-speech"],
-      payload: {
-        prompt:
-          "Someone is calling for you from the next room. They cannot see you, and they are not offering you anything.",
-        blankCount: 1,
-        options: [
-          { id: "opt-ici", text: "Je suis ici.", isCorrect: true },
-          {
-            id: "opt-the",
-            text: "Je voudrais un thé, s'il vous plaît.",
-            isCorrect: false,
-            trapReason:
-              "That orders a drink. Nobody asked what you wanted; they asked where you are.",
-          },
-          {
-            id: "opt-repeter",
-            text: "Vous pouvez répéter ?",
-            isCorrect: false,
-            trapReason:
-              "That asks them to say it again. You heard them perfectly well.",
-          },
-        ],
-        answer: ["opt-ici"],
-        reveal: {
-          short: "Je suis ici.",
-          explanation:
-            "Three lines you own, one job each. This engine is the one that puts you somewhere.",
-          natural: "Je suis ici.",
-        },
-      },
-    },
-    {
-      // The first production in L1-L6 whose SCENE is in French. The learner reads
-      // what was said, not a translation of what to say, and the English helper
-      // states only the situation. Every French word in the context is already
-      // owned, and none of it leaks the answer.
-      id: "s10c-weave-answer-the-call",
-      type: "weave",
-      targetItemIds: ["chunk-je-suis-ici"],
-      weakPointTags: ["natural-speech"],
-      payload: {
-        weaveType: "context",
-        prompt: "Answer so they know where you are.",
-        context: "From the next room, someone calls: « Bonjour ? » They cannot see you.",
-        suggestedPieces: [
-          { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
-          { text: "ici", itemId: "word-ici", label: "here" },
-        ],
-        hintCloze: "Je suis ___.",
-        expectedAnswers: ["Je suis ici."],
-        acceptedAlternatives: ["Bonjour, je suis ici."],
-        reveal: {
-          modelAnswer: "Je suis ici.",
-          ifCorrect: "Two words, and the room knows where you are.",
-          ifCorrectButFlat: "Right. Nothing else is needed to answer that.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. The answer to « Bonjour ? » from an unseen room is where you are.",
-          ifMissingTargetPiece: "Je suis puts you somewhere. Ici says where.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-    {
-      // The same two-sentence shape the lesson already built, with a different
-      // drink at the end. It exists so the recombination reads as a pattern the
-      // learner can refill rather than one sentence they memorised: the engine
-      // holds, the order changes.
-      id: "s10d-weave-arrive-and-order-tea",
-      type: "weave",
-      targetItemIds: ["chunk-je-suis-ici", "chunk-un-the"],
-      weakPointTags: ["politeness"],
-      payload: {
-        weaveType: "open",
-        prompt: "Say you have arrived, then order the other drink politely.",
-        context:
-          "Same doorway, a different afternoon. You do not feel like coffee today.",
-        suggestedPieces: [
-          { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
-          { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
-          { text: "ici", itemId: "word-ici", label: "here" },
-          { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
-          { text: "un thé", itemId: "chunk-un-the", label: "the other drink" },
-          { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
-        ],
-        hintCloze: "Bonjour, je suis ___. Je voudrais ___, s'il vous plaît.",
-        expectedAnswers: ["Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît."],
-        acceptedAlternatives: [
-          "Bonjour, je suis ici. Je voudrais un thé.",
-          "Bonjour. Je suis ici. Je voudrais un thé, s'il vous plaît.",
-        ],
-        reveal: {
-          modelAnswer: "Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît.",
-          ifCorrect:
-            "Same two moves, different drink. That is a shape you can refill, not a line you memorised.",
-          ifCorrectButFlat: "Right. Arrive first, then ask.",
-          ifUnderstandableButWrong:
-            "Your meaning lands. Say where you are, stop, then order.",
-          ifMissingTargetPiece:
-            "Je suis ici puts you in the room. Je voudrais un thé asks for the drink.",
-        },
-        validationMode: "exact-or-alternative",
-      },
-    },
-      ],
-    },
-  },
+  }),
+
+
   {
     id: "s07-sayit-arrive-locate",
     type: "say-it-your-way",
@@ -510,6 +531,8 @@ const screens: LessonScreen[] = [
       validationMode: "model-answer-only",
     },
   },
+
+
   {
     // New screen family for L2, and the screen that finally makes the "engine"
     // claim visible instead of asserted: one unchanged shape under three
@@ -528,6 +551,8 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+
   {
     id: "s08-recap-first-engine",
     type: "recap",

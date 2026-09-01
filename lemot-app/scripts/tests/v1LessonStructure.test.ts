@@ -17,6 +17,7 @@ import type { Lesson } from "../../content/lessonTypes";
 // The recap chip taxonomy now lives in content/ so the Content Factory can
 // enforce the same rule on a candidate that is not in V1_LESSONS yet.
 import { sentenceChipProblem } from "../../content/lessons/chipTaxonomy";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 // Screen-type legality, canonical item resolution and doubled negation now
 // live in content/ for the same reason: the Content Factory must be able to
 // run them on a candidate that is not in V1_LESSONS yet.
@@ -140,7 +141,7 @@ function registerLessonTests(lesson: Lesson): void {
   test(`${L}: screen ids are present and unique`, () => {
     assert(lesson.screens.length > 0, `${L}: lesson has no screens`);
     const seen = new Set<string>();
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       assert(!!screen.id, `${L}: a screen is missing its id`);
       assert(!seen.has(screen.id), `${L}: duplicate screen id ${screen.id}`);
       seen.add(screen.id);
@@ -160,7 +161,7 @@ function registerLessonTests(lesson: Lesson): void {
   });
 
   test(`${L}: fill-with-traps screens are answerable`, () => {
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       if (screen.type !== "fill-with-traps") continue;
       const where = `${L}/${screen.id}`;
       const p = screen.payload;
@@ -198,7 +199,7 @@ function registerLessonTests(lesson: Lesson): void {
   });
 
   test(`${L}: weave screens have answers and a deterministic reveal`, () => {
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       if (screen.type !== "weave") continue;
       const where = `${L}/${screen.id}`;
       const p = screen.payload;
@@ -224,7 +225,7 @@ function registerLessonTests(lesson: Lesson): void {
   test(`${L}: question-form weave answers carry a no-question-mark alternative`, () => {
     // The v1 normalizer strips trailing periods but NOT "?", so an expected
     // answer ending in "?" must have at least one variant without it.
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       if (screen.type !== "weave") continue;
       const where = `${L}/${screen.id}`;
       const p = screen.payload;
@@ -239,7 +240,7 @@ function registerLessonTests(lesson: Lesson): void {
   });
 
   test(`${L}: model-answer-only say-it screens have a modelAnswer`, () => {
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       if (screen.type !== "say-it-your-way") continue;
       const where = `${L}/${screen.id}`;
       const p = screen.payload;
@@ -253,7 +254,7 @@ function registerLessonTests(lesson: Lesson): void {
   });
 
   test(`${L}: recap screens have lines`, () => {
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       if (screen.type !== "recap") continue;
       const where = `${L}/${screen.id}`;
       assert(
@@ -267,7 +268,7 @@ function registerLessonTests(lesson: Lesson): void {
   });
 
   test(`${L}: recap piecesUsed chips are atomic (no sentence chips)`, () => {
-    for (const screen of lesson.screens) {
+    for (const screen of flattenLessonScreens(lesson)) {
       if (screen.type !== "recap") continue;
       const where = `${L}/${screen.id}`;
       for (const entry of screen.payload.piecesUsed ?? []) {

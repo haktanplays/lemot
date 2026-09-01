@@ -143,7 +143,7 @@ function controllerOn(
  * while the return-leg scenarios below need the produced→Stretch path.
  */
 async function seedLessonHistory(runtime: LearningEngineRuntime) {
-  const weave = lesson001.screens.find(
+  const weave = flattenLessonScreens(lesson001).find(
     (s) => s.id === "s04-weave-cafe-order",
   ) as WeaveScreen;
   const c = controllerOn(runtime, lesson001, LESSON_SURFACE);
@@ -579,7 +579,7 @@ describe("PM-023 connected proof: lesson → hub → same item, same spine", () 
     const kv = makeFakeKv();
     const repo = new LocalRepository(kv);
     const runtime = runtimeWith(repo);
-    const fill = lesson001.screens.find(
+    const fill = flattenLessonScreens(lesson001).find(
       (s) => s.id === "s03-fill-polite-verb",
     ) as FillWithTrapsScreen;
     const hub = controllerOn(runtime, lesson001, HUB_SURFACE);
@@ -598,7 +598,7 @@ describe("hub projection refresh is reducer-owned", () => {
     const kv = makeFakeKv();
     const repo = new LocalRepository(kv);
     const runtime = runtimeWith(repo);
-    const fill = lesson001.screens.find(
+    const fill = flattenLessonScreens(lesson001).find(
       (s) => s.id === "s03-fill-polite-verb",
     ) as FillWithTrapsScreen;
     const c = controllerOn(runtime, lesson001, LESSON_SURFACE);
@@ -658,7 +658,7 @@ describe("hub privacy and reset", () => {
 
       // A stale hub controller's late write cannot recreate the cleared key.
       const staleHub = controllerOn(staleRuntime, lesson001, HUB_SURFACE);
-      const fill = lesson001.screens.find(
+      const fill = flattenLessonScreens(lesson001).find(
         (s) => s.id === "s03-fill-polite-verb",
       ) as FillWithTrapsScreen;
       staleHub.recordGradedAttempt(
@@ -684,7 +684,7 @@ describe("hub privacy and reset", () => {
   test("a hub attempt is included in export and removed by reset (same key)", async () => {
     const kv = makeFakeKv();
     const runtime = runtimeWith(new LocalRepository(kv));
-    const fill = lesson001.screens.find(
+    const fill = flattenLessonScreens(lesson001).find(
       (s) => s.id === "s03-fill-polite-verb",
     ) as FillWithTrapsScreen;
     const hub = controllerOn(runtime, lesson001, HUB_SURFACE);
@@ -847,6 +847,7 @@ describe("PR-08 changed no frozen contract", () => {
 // ── settlement correction: close waits for the queue ────────────────────────
 
 import { createSettledCloseGate } from "../../components/practice-hub/settledClose";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 
 /** A repository whose appendEvent blocks until manually released. */
 function makeBlockedRepository(kv = makeFakeKv()) {
@@ -874,12 +875,12 @@ const microtasks = async (n = 20) => {
 describe("settled-close gate — ordering", () => {
   const attemptOf = (kind: "choice" | "typed") => (c: LearningSessionController) => {
     if (kind === "choice") {
-      const fill = lesson001.screens.find(
+      const fill = flattenLessonScreens(lesson001).find(
         (s) => s.id === "s03-fill-polite-verb",
       ) as FillWithTrapsScreen;
       c.recordGradedAttempt(choiceInteraction(lesson001, fill, { optionId: "opt-voudrais" }));
     } else {
-      const weave = lesson001.screens.find(
+      const weave = flattenLessonScreens(lesson001).find(
         (s) => s.id === "s04-weave-cafe-order",
       ) as WeaveScreen;
       c.recordGradedAttempt(
@@ -963,7 +964,7 @@ describe("settled-close gate — ordering", () => {
         closed += 1;
       },
     });
-    const fill = lesson001.screens.find(
+    const fill = flattenLessonScreens(lesson001).find(
       (s) => s.id === "s03-fill-polite-verb",
     ) as FillWithTrapsScreen;
     controller.recordGradedAttempt(
@@ -992,7 +993,7 @@ describe("settled-close gate — ordering", () => {
         closed += 1;
       },
     });
-    const fill = lesson001.screens.find(
+    const fill = flattenLessonScreens(lesson001).find(
       (s) => s.id === "s03-fill-polite-verb",
     ) as FillWithTrapsScreen;
     controller.recordGradedAttempt(
@@ -1022,7 +1023,7 @@ describe("settled-close gate — ordering", () => {
         closed += 1;
       },
     });
-    const fill = lesson001.screens.find(
+    const fill = flattenLessonScreens(lesson001).find(
       (s) => s.id === "s03-fill-polite-verb",
     ) as FillWithTrapsScreen;
     controller.recordGradedAttempt(
@@ -1056,7 +1057,7 @@ describe("settled-close gate — ordering", () => {
         closed += 1;
       },
     });
-    const fill = lesson001.screens.find(
+    const fill = flattenLessonScreens(lesson001).find(
       (s) => s.id === "s03-fill-polite-verb",
     ) as FillWithTrapsScreen;
     controller.recordGradedAttempt(
@@ -1146,13 +1147,13 @@ describe("L19 W2 — weak-point recovery closes end to end", () => {
       assert(fromChallenge !== null, `${itemId} has SOME authored practice source`);
       const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019");
       assert(l19 !== undefined, "L19 ships");
-      const l19Sources = l19!.screens.filter(
+      const l19Sources = flattenLessonScreens(l19!).filter(
         (sc) =>
           (sc.type === "fill-with-traps" || sc.type === "weave") &&
           (sc.targetItemIds ?? []).includes(itemId),
       );
       assert(l19Sources.length > 0, `${itemId} has an L19 fill/weave source`);
-      const evidence = l19!.screens.filter((sc) =>
+      const evidence = flattenLessonScreens(l19!).filter((sc) =>
         (sc.evidenceTargetItemIds ?? []).includes(itemId),
       );
       assert(evidence.length > 0, `${itemId} is an L19 evidence target`);
@@ -1163,13 +1164,13 @@ describe("L19 W2 — weak-point recovery closes end to end", () => {
     // One genuine wrong answer on L19's own supported weave, recorded through
     // the shipped session controller and scored by the shipped reducer.
     const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019")!;
-    const weave = l19.screens.find(
+    const weave = flattenLessonScreens(l19).find(
       (sc) => sc.id === "s04-weave-answer-for-yourself",
     ) as WeaveScreen;
-    const stateFill = l19.screens.find(
+    const stateFill = flattenLessonScreens(l19).find(
       (sc) => sc.id === "s03-fill-which-state-fits",
     ) as FillWithTrapsScreen;
-    const askThenGo = l19.screens.find(
+    const askThenGo = flattenLessonScreens(l19).find(
       (sc) => sc.id === "s06-weave-ask-then-go",
     ) as WeaveScreen;
     const runtime = runtimeWith(new LocalRepository(makeFakeKv()));
@@ -1216,7 +1217,7 @@ describe("L19 W2 — weak-point recovery closes end to end", () => {
       const owner = V1_LESSONS.find((l) => l.id === entry.source.lesson.id);
       assert(owner !== undefined, `${entry.itemId} came from a registered lesson`);
       assert(
-        owner!.screens.some((sc) => sc === entry.source.screen),
+        flattenLessonScreens(owner!).some((sc) => sc === entry.source.screen),
         `${entry.itemId} screen is the authored object itself, not a copy`,
       );
     }
@@ -1286,7 +1287,7 @@ describe("L19 W2 — weak-point recovery closes end to end", () => {
       );
       const l19 = V1_LESSONS.find((l) => l.id === "v1-lesson-019")!;
       assert(
-        l19.screens.some((sc) => (sc.evidenceTargetItemIds ?? []).includes(itemId as never)),
+        flattenLessonScreens(l19).some((sc) => (sc.evidenceTargetItemIds ?? []).includes(itemId as never)),
         `${itemId} still carries L19 linear evidence`,
       );
     }

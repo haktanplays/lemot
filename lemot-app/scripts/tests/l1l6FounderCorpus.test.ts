@@ -93,8 +93,16 @@ const sentencesOf = (lesson: Lesson): Set<string> =>
   // Chain steps count: they are the same screens, one level down.
   new Set(flattenLessonScreens(lesson).flatMap(visibleSentences));
 
-/** Screen families in play order, for rhythm assertions. */
-const familiesOf = (lesson: Lesson): string[] => lesson.screens.map((s) => s.type);
+/**
+ * Screen families in play order, for rhythm assertions.
+ *
+ * Flattened: the rhythm a learner feels is the sequence of ACTIONS. A chain is
+ * a container they never see named, so counting "activity-chain" as a family
+ * would both hide real repetition inside chains and invent repetition between
+ * two chains that hold completely different sequences.
+ */
+const familiesOf = (lesson: Lesson): string[] =>
+  flattenLessonScreens(lesson).map((s) => s.type);
 
 describe("L1-L6 is a path the founder can actually walk", () => {
   test("the six lessons are present, ordered, and prerequisite-chained", () => {
@@ -191,7 +199,7 @@ describe("L1-L6 lessons do not read as the same template", () => {
     // constitutive. This is the stronger claim the phase actually delivered:
     // somewhere in every lesson the learner produces with no tray at all.
     for (const lesson of PATH) {
-      const unsupplied = lesson.screens.filter((s) => {
+      const unsupplied = flattenLessonScreens(lesson).filter((s) => {
         if (s.type === "say-it-your-way") return true;
         if (s.type !== "weave") return false;
         const pieces = s.payload.suggestedPieces ?? [];
@@ -293,7 +301,7 @@ describe("the screens this phase added are wired, not just present", () => {
 
   test("every fill on the path has exactly one correct option and reasoned traps", () => {
     for (const lesson of PATH) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         if (screen.type !== "fill-with-traps") continue;
         const where = `${lesson.id}/${screen.id}`;
         const correct = screen.payload.options.filter((o) => o.isCorrect);
@@ -322,7 +330,7 @@ describe("the screens this phase added are wired, not just present", () => {
     // A production screen with no model answer renders an empty reveal, which
     // reads to the learner as a broken card rather than as a lesson.
     for (const lesson of PATH) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         const where = `${lesson.id}/${screen.id}`;
         if (screen.type === "weave") {
           assert(
@@ -346,7 +354,7 @@ describe("the screens this phase added are wired, not just present", () => {
 
   test("every natural-reveal on the path actually reveals something", () => {
     for (const lesson of PATH) {
-      for (const screen of lesson.screens) {
+      for (const screen of flattenLessonScreens(lesson)) {
         if (screen.type !== "natural-reveal") continue;
         const p = screen.payload;
         assert(

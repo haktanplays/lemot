@@ -66,6 +66,7 @@ import { selectLearningStats } from "../../content/learning-engine/learning-stat
 import { selectPracticeHubSet } from "../../content/lesson-v1-evidence/practiceHub";
 import { createSettledNavigationGate } from "../../components/lesson-v1/settledNavigation";
 import { createSettledCloseGate } from "../../components/practice-hub/settledClose";
+import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import {
   __resetPrivacyResetEpochForTest,
   bumpPrivacyResetEpoch,
@@ -80,19 +81,19 @@ import type {
 
 const NOW = 1_800_000_000_000;
 const lesson001 = V1_LESSONS.find((l) => l.id === "v1-lesson-001") as Lesson;
-const meetMerci = lesson001.screens.find(
+const meetMerci = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s07-meet-merci",
 ) as MeetCardScreen;
-const fillScreen = lesson001.screens.find(
+const fillScreen = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s03-fill-polite-verb",
 ) as FillWithTrapsScreen;
-const pm009Screen = lesson001.screens.find(
+const pm009Screen = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s10-weave-merci-thanks",
 ) as WeaveScreen;
-const pm011Screen = lesson001.screens.find(
+const pm011Screen = flattenLessonScreens(lesson001).find(
   (s) => s.id === "s11-weave-the-order",
 ) as WeaveScreen;
-const sayItScreen = lesson001.screens.find(
+const sayItScreen = flattenLessonScreens(lesson001).find(
   (s) => s.type === "say-it-your-way",
 ) as SayItYourWayScreen;
 

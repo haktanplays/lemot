@@ -118,19 +118,27 @@ describe("L7-L10 visibility", () => {
 describe("L7-L10 screen structure matches the Content Bible lesson shape", () => {
   for (const l of TARGETS) {
     const types = l.screens.map((s) => s.type);
+    const actions = flattenLessonScreens(l);
 
     // Band widened by the corpus-closure pass (11-14 -> 11-17): L7/L8/L9 each
     // gained an answer-shaped choice and a French-context production, and L8 --
     // the thinnest lesson on the whole path at six sentences -- needed the most.
     // The band still exists so an unbounded lesson fails.
-    test(`${l.id}: 11-20 rendered screens`, () => {
+    // Counted in ACTIONS, not pages, since the chain rebuild: what would make
+    // a lesson unbounded is how much it asks, and chaining changes only how
+    // many pages it asks across. The page floor below is the other half.
+    test(`${l.id}: 11-20 learner actions`, () => {
       // Raised by the Showcase page, and again by L8, which now introduces two
       // architectures (c'est ou and est-ce que) and is legitimately the longest
       // doorway on the path.
       assert(
-        l.screens.length >= 11 && l.screens.length <= 20,
-        `expected 11-20, got ${l.screens.length}`,
+        actions.length >= 11 && actions.length <= 20,
+        `expected 11-20 actions, got ${actions.length}`,
       );
+    });
+
+    test(`${l.id}: still paced across pages`, () => {
+      assert(l.screens.length >= 8, `expected at least 8 pages, got ${l.screens.length}`);
     });
 
     test(`${l.id}: estimatedMinutes inside 7-10`, () => {
@@ -159,8 +167,12 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
     test(`${l.id}: French contact by screen 3, and no lecture opening`, () => {
       // The Showcase is already French contact; this keeps the goal card from
       // being followed by a SECOND explanation before anything is met.
-      assertEqual(types[2], "meet-card", "screen 3 puts French in front of the learner");
-      assert(types[2] !== "insight-card", "Goal must not be followed by another explanation");
+      // The learner's third ACTION, which is what the rule was always about:
+      // after the language world and the goal, the next thing they touch must
+      // be French, not a second explanation. Reading page 3 instead would fail
+      // a lesson merely for opening its first moment as a chain.
+      assertEqual(actions[2].type, "meet-card", "action 3 puts French in front of the learner");
+      assert(actions[2].type !== "insight-card", "Goal must not be followed by another explanation");
     });
 
     // "3-5 production actions" RETIRED — no replacement number. PQ-2 asks the
@@ -175,10 +187,12 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
     });
 
     test(`${l.id}: no three consecutive screens share an archetype`, () => {
-      for (let i = 2; i < types.length; i++) {
+      // On actions: "activity-chain" is a container the learner never feels.
+      const t = actions.map((s) => s.type);
+      for (let i = 2; i < t.length; i++) {
         assert(
-          !(types[i] === types[i - 1] && types[i] === types[i - 2]),
-          `three consecutive ${types[i]} at index ${i - 2}`,
+          !(t[i] === t[i - 1] && t[i] === t[i - 2]),
+          `three consecutive ${t[i]} at index ${i - 2}`,
         );
       }
     });
@@ -292,7 +306,7 @@ describe("hint coverage across L7-L10", () => {
 
   test("every suggested piece resolves to a registered item", () => {
     for (const l of TARGETS) {
-      for (const screen of l.screens) {
+      for (const screen of flattenLessonScreens(l)) {
         const pieces =
           (screen.payload as { suggestedPieces?: { text: string; itemId?: string }[] })
             .suggestedPieces ?? [];
@@ -315,7 +329,7 @@ describe("hint coverage across L7-L10", () => {
       .map((i) => (i as { id: string }).id);
     assert(linked.length > 0, "precondition: at least one linked-only item exists");
     for (const l of TARGETS) {
-      for (const s of l.screens) {
+      for (const s of flattenLessonScreens(l)) {
         const ids = [
           ...((s as { targetItemIds?: string[] }).targetItemIds ?? []),
           ...((s as { evidenceTargetItemIds?: string[] }).evidenceTargetItemIds ?? []),
@@ -332,7 +346,7 @@ describe("hint coverage across L7-L10", () => {
     // a fragment offered as support.
     const PROTECTED = ["je ne suis pas", "ce n'est pas"];
     for (const l of TARGETS) {
-      for (const screen of l.screens) {
+      for (const screen of flattenLessonScreens(l)) {
         const pieces =
           (screen.payload as { suggestedPieces?: { text: string }[] }).suggestedPieces ?? [];
         for (const p of pieces) {
@@ -367,7 +381,7 @@ describe("L7-L10 learner copy carries no implementation language", () => {
 
   test("no bare UI-blank fill prompt", () => {
     for (const l of TARGETS) {
-      for (const s of l.screens) {
+      for (const s of flattenLessonScreens(l)) {
         if (s.type !== "fill-with-traps") continue;
         const prompt = (s.payload as { prompt: string }).prompt;
         assert(
@@ -398,7 +412,7 @@ describe("L7-L10 learner copy carries no implementation language", () => {
   test("recaps carry no formula notation and no retired metaphor", () => {
     const RETIRED = /\b(sibling|cargo|sandwich|wrapper)\b/i;
     for (const l of TARGETS) {
-      const recap = l.screens.find((s) => s.type === "recap");
+      const recap = flattenLessonScreens(l).find((s) => s.type === "recap");
       assert(recap, `${l.id} has a recap`);
       const lines = (recap as { payload: { lines: string[] } }).payload.lines;
       const joined = lines.join(" ");
@@ -424,7 +438,7 @@ describe("L7-L10 learner copy carries no implementation language", () => {
 
 describe("the L10 recognition preview stays non-productive", () => {
   const l10 = byNumber(10);
-  const preview = l10.screens.find((s) => s.id === "s06-meet-preview-help");
+  const preview = flattenLessonScreens(l10).find((s) => s.id === "s06-meet-preview-help");
 
   test("it is still a meet card and opens with the preview convention", () => {
     assert(preview, "the preview screen is present");
@@ -438,7 +452,7 @@ describe("the L10 recognition preview stays non-productive", () => {
 
   test("its pieces are never produced, suggested, or claimed", () => {
     const previewItems = ["chunk-vous-pouvez", "chunk-m-aider"];
-    for (const s of l10.screens) {
+    for (const s of flattenLessonScreens(l10)) {
       if (s.id === "s06-meet-preview-help") continue;
       const ids = [
         ...((s as { targetItemIds?: string[] }).targetItemIds ?? []),
@@ -456,7 +470,7 @@ describe("the L10 recognition preview stays non-productive", () => {
         );
       }
     }
-    const recap = l10.screens.find((s) => s.type === "recap");
+    const recap = flattenLessonScreens(l10).find((s) => s.type === "recap");
     const chips = (recap as { payload: { piecesUsed?: string[] } }).payload.piecesUsed ?? [];
     for (const chip of chips) {
       assert(
@@ -519,7 +533,7 @@ describe("L7-L10 identity is untouched", () => {
   test("every pre-existing screen id is still present", () => {
     for (const [lessonId, screens] of Object.entries(PRESERVED)) {
       const lesson = V1_LESSONS.find((l) => l.id === lessonId)!;
-      const ids = new Set(lesson.screens.map((s) => s.id));
+      const ids = new Set(flattenLessonScreens(lesson).map((s) => s.id));
       for (const id of Object.keys(screens)) {
         assert(ids.has(id), `${lessonId}/${id} was removed or renamed`);
       }
@@ -530,7 +544,7 @@ describe("L7-L10 identity is untouched", () => {
     for (const [lessonId, screens] of Object.entries(PRESERVED)) {
       const lesson = V1_LESSONS.find((l) => l.id === lessonId)!;
       for (const [id, targets] of Object.entries(screens)) {
-        const screen = lesson.screens.find((s) => s.id === id) as LessonScreen & {
+        const screen = flattenLessonScreens(lesson).find((s) => s.id === id) as LessonScreen & {
           targetItemIds?: string[];
         };
         assertEqual(
@@ -544,10 +558,12 @@ describe("L7-L10 identity is untouched", () => {
 
   test("new screen ids are unique across every registered lesson", () => {
     for (const lesson of V1_LESSONS) {
-      const ids = lesson.screens.map((s) => s.id);
+      const ids = flattenLessonScreens(lesson).map((s) => s.id);
       assertEqual(new Set(ids).size, ids.length, `${lesson.id} has a duplicate screen id`);
     }
-    const qualified = V1_LESSONS.flatMap((l) => l.screens.map((s) => `${l.id}/${s.id}`));
+    const qualified = V1_LESSONS.flatMap((l) =>
+      flattenLessonScreens(l).map((s) => `${l.id}/${s.id}`),
+    );
     assertEqual(new Set(qualified).size, qualified.length, "qualified ids collide");
   });
 
