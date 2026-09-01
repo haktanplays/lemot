@@ -124,7 +124,10 @@ export function reviewLessonItemReferences(
     });
   };
 
-  for (const screen of lesson.screens) {
+  // Flattened: a chained weave's `suggestedPieces` and a chained meet-card's
+  // `highlights` are item reference sites like any other, and an unregistered
+  // id there ships silently exactly as it would on a top-level screen.
+  for (const screen of flattenLessonScreens(lesson)) {
     const where = `${lesson.id}/${screen.id}`;
     for (const id of screen.targetItemIds ?? []) {
       check(id, `${where} targetItemIds`, screen.id);
@@ -153,7 +156,8 @@ export function reviewLessonItemReferences(
  */
 export function reviewDoubledNegation(lesson: Lesson): LessonStructureDiagnostic[] {
   const found: LessonStructureDiagnostic[] = [];
-  for (const screen of lesson.screens) {
+  // Flattened: the French inside a chain step is French the learner reads.
+  for (const screen of flattenLessonScreens(lesson)) {
     for (const s of frenchStrings(screen)) {
       if (!REPEATED_NEGATION.test(s)) continue;
       found.push({
@@ -193,13 +197,19 @@ export function reviewLessonStructure(
  * Order is play order: the chain container is dropped and replaced in place by
  * its steps, because the container itself is never an action.
  */
-export function flattenLessonScreens(lesson: {
-  screens?: readonly LessonScreen[];
-}): LessonScreen[] {
-  const out: LessonScreen[] = [];
+export function flattenLessonScreens<S extends { type: string }>(lesson: {
+  screens?: readonly S[];
+}): S[] {
+  const out: S[] = [];
   for (const screen of lesson.screens ?? []) {
     if (screen.type === "activity-chain") {
-      out.push(...screen.payload.steps);
+      // Generic in the screen type so the structural `CanonLesson` view in
+      // scripts/canonRules.ts flattens through this same function rather than
+      // growing a second copy of the rule. The cast is the price of that: a
+      // generic S cannot be narrowed by `.type`, and every step of a chain is
+      // by construction one of the screen shapes S already covers.
+      const steps = (screen as { payload?: { steps?: readonly S[] } }).payload?.steps ?? [];
+      out.push(...steps);
       continue;
     }
     out.push(screen);

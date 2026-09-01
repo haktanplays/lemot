@@ -22,6 +22,7 @@
  */
 import { ITEM_REGISTRY } from "../itemRegistry";
 import type { Lesson, LearningItem, LessonScreen } from "../lessonTypes";
+import { flattenLessonScreens } from "./lessonStructure";
 
 /**
  * Every canonical item id a lesson references through STRUCTURED fields.
@@ -36,7 +37,10 @@ import type { Lesson, LearningItem, LessonScreen } from "../lessonTypes";
 export function collectLessonItemIds(lesson: Lesson): Set<string> {
   const ids = new Set<string>();
   for (const item of lesson.learningItems ?? []) ids.add(item.id);
-  for (const screen of lesson.screens ?? []) {
+  // Flattened: a demand reachable only through a chained screen's chip tray or
+  // card highlights is reachable to the learner, so judging it unreachable here
+  // would report a drift that does not exist.
+  for (const screen of flattenLessonScreens(lesson)) {
     for (const id of screen.targetItemIds ?? []) ids.add(id);
     for (const id of screen.evidenceTargetItemIds ?? []) ids.add(id);
     const payload = (screen as LessonScreen & { payload?: unknown }).payload as

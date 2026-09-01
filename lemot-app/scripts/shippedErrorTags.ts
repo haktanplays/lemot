@@ -25,6 +25,7 @@ import { ERROR_TAG_CODES } from "../content/learning-engine/events";
 import { ERROR_TAXONOMY } from "../content/learning-engine/error-engine";
 import { ITEM_REGISTRY } from "../content/itemRegistry";
 import { V1_LESSONS } from "../content/lessons/v1";
+import { flattenLessonScreens } from "../content/lessons/lessonStructure";
 
 export const TAG_MANIFEST_PATH = join(__dirname, "shipped-error-tags.json");
 
@@ -59,7 +60,11 @@ export function collectUsedTags(): string[] {
     for (const t of item.weakPointTags ?? []) tags.add(t);
   }
   for (const lesson of V1_LESSONS) {
-    for (const screen of lesson.screens as { weakPointTags?: readonly string[] }[]) {
+    // Flattened: a tag used only by a chain step is a tag in use, and the
+    // manifest check runs both directions -- unseen would read as deleted.
+    for (const screen of flattenLessonScreens(lesson) as {
+      weakPointTags?: readonly string[];
+    }[]) {
       for (const t of screen.weakPointTags ?? []) tags.add(t);
     }
   }

@@ -43,6 +43,7 @@ import type {
   Lesson,
   WeaveScreen,
 } from "../lessonTypes";
+import { flattenLessonScreens } from "../lessons/lessonStructure";
 import { resolveEvidenceTargetItemIds } from "./identity";
 import { resolveLessonTreatmentForItem } from "./treatment";
 
@@ -156,7 +157,12 @@ export function resolvePracticeHubSource(
   let bestRank = Number.POSITIVE_INFINITY;
 
   for (const lesson of lessons) {
-    for (const screen of lesson.screens) {
+    // Flattened. A fill or weave that moved inside an activity-chain is still a
+    // real, authored, reusable screen -- the Hub renders it standalone and its
+    // evidence identity is unchanged. Walking `lesson.screens` here would make
+    // chaining silently delete practice sources, which is the exact opposite of
+    // what chaining is for.
+    for (const screen of flattenLessonScreens(lesson)) {
       if (screen.type !== "fill-with-traps" && screen.type !== "weave") continue;
       let targets: ItemId[];
       try {

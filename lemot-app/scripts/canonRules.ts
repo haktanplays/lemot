@@ -28,6 +28,7 @@
  * Pure and deterministic: findings are emitted in lesson/screen order.
  */
 import type { LearningItem } from "../content/lessonTypes";
+import { flattenLessonScreens } from "../content/lessons/lessonStructure";
 
 export type CanonFinding = {
   code: "future_as_answer" | "future_in_forbidden_zone" | "insight_budget";
@@ -85,7 +86,10 @@ export function checkCanonRules(
   for (const lesson of lessons) {
     let insightCount = 0;
 
-    for (const screen of lesson.screens) {
+    // Flattened for the exposure rules: grading French the lesson never taught
+    // is just as wrong one level down. `insightCount` is unaffected because an
+    // insight-card can never be a chain step.
+    for (const screen of flattenLessonScreens(lesson)) {
       const p = screen.payload ?? {};
       if (screen.type === "insight-card") insightCount += 1;
 

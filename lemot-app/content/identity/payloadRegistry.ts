@@ -26,6 +26,7 @@ import {
 import { ITEM_REGISTRY } from "../itemRegistry";
 import type { LearningItem, Lesson } from "../lessonTypes";
 import { qualifyLessonScreenId } from "../lesson-v1-evidence/identity";
+import { flattenLessonScreens } from "../lessons/lessonStructure";
 
 export type RegisteredLessonPayload = {
   /** The qualified lesson-screen identity events already use. */
@@ -153,7 +154,10 @@ export function validateRegisteredPayloads(
     // Resolve the payload id to an actual current screen — never by text.
     let found: { lesson: Lesson; screenId: string } | null = null;
     for (const lesson of lessons) {
-      for (const screen of lesson.screens) {
+      // Flattened: qualified identity is lessonId/screenId whether the screen
+      // sits at the top level or inside a chain, so a registered payload must
+      // keep resolving when its screen is chained.
+      for (const screen of flattenLessonScreens(lesson)) {
         if (qualifyLessonScreenId(lesson.id, screen.id) === payload.payloadId) {
           found = { lesson, screenId: screen.id };
           if (screen.type === "weave") {

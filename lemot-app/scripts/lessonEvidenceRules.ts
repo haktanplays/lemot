@@ -21,6 +21,7 @@ import { qualifyLessonScreenId } from "../content/lesson-v1-evidence/identity";
 import { isCanonicalItemId } from "../content/identity/canonicalItems";
 import { hasFixtureAlias } from "../content/identity/fixtureCompat";
 import type { Lesson, LessonScreen } from "../content/lessonTypes";
+import { flattenLessonScreens } from "../content/lessons/lessonStructure";
 
 export type LessonEvidenceFinding = {
   code:
@@ -203,7 +204,12 @@ export function checkLessonEvidenceRules(
 
   for (const lesson of lessons) {
     const localSeen = new Set<string>();
-    for (const screen of lesson.screens) {
+    // Flattened. Every rule below decides what the append-only event log
+    // records permanently -- which item is credited, which taxonomy code a miss
+    // carries, whether an attempt counts as independent. A chain step records
+    // exactly like a top-level screen, so leaving it unchecked would let the
+    // wrong thing be written forever from inside a chain.
+    for (const screen of flattenLessonScreens(lesson)) {
       if (localSeen.has(screen.id)) {
         out.push({
           severity: "error",
