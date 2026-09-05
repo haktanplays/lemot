@@ -32,6 +32,16 @@ export const WEAVE_HELPER =
  */
 export const WEAVE_INPUT_LABEL = "Your try";
 
+/**
+ * Helper line for a dictation, where the standard one is actively wrong.
+ *
+ * "Leave the rest in English for now" is good advice when the learner is
+ * building a sentence from a meaning, and nonsense when they are writing down
+ * French they just heard — there is no English in the task to leave.
+ */
+export const WEAVE_DICTATION_HELPER =
+  "Play it as many times as you like, then write the French you hear.";
+
 // Authored Round 1 weave prompts use the form "Write it in French: <meaning>".
 // With the new "Say this:" label + helper, that instruction prefix is redundant
 // and would contradict "leave the rest in English", so strip it for DISPLAY and

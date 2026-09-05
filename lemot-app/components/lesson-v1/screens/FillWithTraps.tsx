@@ -48,6 +48,13 @@ export function FillWithTraps({
         {payload.prompt}
       </Text>
 
+      {/*
+        The sentence being completed. Rendered ONLY when there is one: a choice
+        between whole lines ("Which of these has its small word right?") has no
+        frame, and drawing an empty box with a blank in it invited the learner
+        to look for a gap that does not exist.
+      */}
+      {(payload.sentenceBefore !== undefined || payload.sentenceAfter !== undefined) && (
       <View
         className="rounded-xl border"
         style={{
@@ -79,6 +86,7 @@ export function FillWithTraps({
           {payload.sentenceAfter ?? ""}
         </Text>
       </View>
+      )}
 
       <View className="mt-4">
         {payload.options.map((option) => {

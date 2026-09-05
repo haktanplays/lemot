@@ -46,9 +46,15 @@ export function Weave({
   screen,
   onContinue,
   onTypedAttempt,
+  helper = WEAVE_HELPER,
 }: {
   screen: WeaveScreen;
   onContinue: () => void;
+  /**
+   * Overrides the standard helper line. Practice uses it for dictation, where
+   * "leave the rest in English" describes a task the learner is not doing.
+   */
+  helper?: string;
   /**
    * UI FACTS only (PR-06), reported once on Check. The hint rung is the rung the
    * learner ACTUALLY reached, not the rung the payload makes available, and the
@@ -210,7 +216,7 @@ export function Weave({
           className="text-xs"
           style={{ color: P.ink3, lineHeight: 18, marginTop: SPACE.sm }}
         >
-          {WEAVE_HELPER}
+          {helper}
         </Text>
       )}
 

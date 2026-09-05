@@ -11,6 +11,7 @@ import { TODAYS_SET_MAX } from "@/content/learning-engine/practice-selector";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
 import type { PracticeSeed } from "@/content/practice/practiceTypes";
 import type { Lesson } from "@/content/lessonTypes";
+import { WEAVE_DICTATION_HELPER } from "@/components/lesson-v1/screens/weaveCopy";
 import { useSpeech } from "@/hooks/useSpeech";
 import { PracticeBuild } from "./PracticeBuild";
 import { usePracticeSession } from "./usePracticeSession";
@@ -152,6 +153,7 @@ export function PracticeRunner({
         key={action.seed.id}
         screen={screen}
         onContinue={advance}
+        helper={action.seed.audio !== undefined ? WEAVE_DICTATION_HELPER : undefined}
         onTypedAttempt={(facts) => {
           session.recordTyped(action.seed, origin, {
             text: facts.text,
