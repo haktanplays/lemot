@@ -1,0 +1,173 @@
+/**
+ * L3 practice seeds — saying no, and saying not-here.
+ *
+ * The negation architecture is the first place a learner can be confidently
+ * wrong: `je ne suis pas` and `ce n'est pas` are the same move about different
+ * subjects, and choosing between them is the real work. Two seeds here carry
+ * `repairsTag: "negation"` so a miss anywhere on that architecture can pull a
+ * matching repair into the same session.
+ */
+import { fillSeed, weaveSeed } from "./build";
+import type { PracticeSeed } from "../practiceTypes";
+
+const L = "v1-lesson-003";
+
+export const L3_SEEDS: PracticeSeed[] = [
+  weaveSeed({
+    id: "p-l3-retrieve-je-ne-comprends-pas",
+    operation: "retrieve",
+    difficulty: "easy",
+    lesson: L,
+    required: ["chunk-je-ne-comprends-pas"],
+    targets: ["chunk-je-ne-comprends-pas"],
+    weaveType: "mid",
+    prompt: "I don't understand.",
+    answers: ["Je ne comprends pas."],
+    alternatives: ["Je ne comprends pas"],
+    ifCorrect: "The most useful sentence you own.",
+  }),
+  fillSeed({
+    id: "p-l3-repair-verb-in-sandwich",
+    operation: "repair",
+    difficulty: "easy",
+    lesson: L,
+    required: ["chunk-je-ne-suis-pas", "chunk-je-suis"],
+    targets: ["chunk-je-ne-suis-pas"],
+    tags: ["negation", "ne-pas"],
+    repairs: "negation",
+    prompt: "You want to say you are not there. Which word sits between the two pieces?",
+    before: "Je ne ",
+    after: " pas ici.",
+    correct: { id: "o-suis-neg", text: "suis" },
+    traps: [
+      {
+        id: "o-voudrais-neg",
+        text: "voudrais",
+        why: "Je voudrais asks for something. Here you are saying where you are not.",
+        tag: "wrong_item",
+      },
+      {
+        id: "o-comprends-neg",
+        text: "comprends",
+        why: "That says you did not follow, which is a different thing from not being there.",
+        tag: "meaning_shift",
+      },
+    ],
+    short: "Je ne suis pas ici.",
+    explanation: "The verb goes between the two pieces: je ne suis pas.",
+  }),
+  fillSeed({
+    id: "p-l3-repair-which-negation-frame",
+    operation: "repair",
+    difficulty: "medium",
+    lesson: L,
+    required: ["chunk-ce-n-est-pas", "chunk-je-ne-suis-pas"],
+    targets: ["chunk-ce-n-est-pas"],
+    tags: ["negation"],
+    repairs: "negation",
+    prompt: "You are talking about the ROOM, not about yourself. Which opening fits?",
+    after: " ici.",
+    correct: { id: "o-ce-nest-pas", text: "Ce n'est pas" },
+    traps: [
+      {
+        id: "o-je-ne-suis-pas",
+        text: "Je ne suis pas",
+        why: "That says YOU are not here. The room is what is wrong, not you.",
+        tag: "meaning_shift",
+      },
+      {
+        id: "o-non-merci-frame",
+        text: "Non merci",
+        why: "That turns down an offer. Nobody offered you anything.",
+        tag: "wrong_item",
+      },
+    ],
+    short: "Ce n'est pas ici.",
+    explanation: "Ce n'est pas talks about a thing or a place; je ne suis pas talks about you.",
+  }),
+  fillSeed({
+    id: "p-l3-repair-decline-politely",
+    operation: "repair",
+    difficulty: "easy",
+    lesson: L,
+    required: ["chunk-non-merci", "chunk-merci"],
+    targets: ["chunk-non-merci"],
+    tags: ["politeness"],
+    repairs: "politeness",
+    prompt: "Someone offers you something you do not want. Refuse politely.",
+    correct: { id: "o-non-merci", text: "Non merci." },
+    traps: [
+      {
+        id: "o-merci-only",
+        text: "Merci.",
+        why: "On its own that reads as yes, please. You will be handed the thing.",
+        tag: "meaning_shift",
+      },
+      {
+        id: "o-oui-merci",
+        text: "Oui merci.",
+        why: "That accepts it warmly, which is the opposite of what you meant.",
+        tag: "meaning_shift",
+      },
+    ],
+    short: "Non merci.",
+    explanation: "Non does the refusing; merci keeps it warm.",
+  }),
+  weaveSeed({
+    id: "p-l3-produce-not-this-room",
+    operation: "produce",
+    difficulty: "medium",
+    lesson: L,
+    required: ["chunk-ce-n-est-pas"],
+    targets: ["chunk-ce-n-est-pas"],
+    weaveType: "context",
+    prompt: "Tell them this is not the place.",
+    context: "Someone stops in your doorway looking for a meeting. It is not in this room.",
+    answers: ["Ce n'est pas ici."],
+    alternatives: ["Ce n'est pas ici"],
+    ifCorrect: "Short, clear, and it sends them on rather than away.",
+  }),
+  weaveSeed({
+    id: "p-l3-apply-answer-no",
+    operation: "apply",
+    difficulty: "medium",
+    lesson: L,
+    required: ["chunk-non", "chunk-je-ne-suis-pas"],
+    targets: ["chunk-non", "chunk-je-ne-suis-pas"],
+    weaveType: "context",
+    prompt: "Answer them, then say where you are not.",
+    context: "They call through the door to ask whether you are in the meeting room. You are not.",
+    answers: ["Non, je ne suis pas ici."],
+    alternatives: ["Non. Je ne suis pas ici."],
+    ifCorrect: "Answer first, then the detail. That is the shape of a real reply.",
+  }),
+  weaveSeed({
+    id: "p-l3-apply-answer-yes",
+    operation: "apply",
+    difficulty: "medium",
+    lesson: L,
+    required: ["chunk-oui", "chunk-je-suis-ici"],
+    targets: ["chunk-oui", "chunk-je-suis-ici"],
+    weaveType: "context",
+    prompt: "Answer them, then say where you are.",
+    context: "The same voice, the same question, and this time you ARE in the room.",
+    answers: ["Oui, je suis ici."],
+    alternatives: ["Oui. Je suis ici."],
+    ifCorrect: "Same shape, opposite answer. The frame did not move.",
+  }),
+  weaveSeed({
+    id: "p-l3-apply-not-that-place",
+    operation: "apply",
+    difficulty: "hard",
+    lesson: L,
+    required: ["chunk-non", "chunk-ce-n-est-pas"],
+    targets: ["chunk-non", "chunk-ce-n-est-pas"],
+    weaveType: "open",
+    prompt: "Answer them, then correct the place.",
+    context: "They point at the door beside you and ask whether that is the one. It is not.",
+    answers: ["Non, ce n'est pas ici."],
+    alternatives: ["Non. Ce n'est pas ici."],
+    ifCorrect: "You answered the person and fixed the room in one line.",
+    ifWrong: "Your meaning lands. Answer first, then say which place is wrong.",
+  }),
+];

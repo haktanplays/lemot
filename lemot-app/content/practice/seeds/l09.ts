@@ -1,0 +1,138 @@
+/**
+ * L9 practice seeds — asking for something to happen.
+ *
+ * `noun-pause` is VIA_CARRIER: nobody says "pause" on its own, so every seed
+ * targets `chunk-faire-une-pause`, the thing the learner actually asks for.
+ */
+import { fillSeed, weaveSeed } from "./build";
+import type { PracticeSeed } from "../practiceTypes";
+
+const L = "v1-lesson-009";
+
+export const L9_SEEDS: PracticeSeed[] = [
+  weaveSeed({
+    id: "p-l9-retrieve-faire-une-pause",
+    operation: "retrieve",
+    difficulty: "easy",
+    lesson: L,
+    required: ["chunk-je-voudrais", "chunk-faire-une-pause"],
+    targets: ["chunk-faire-une-pause"],
+    weaveType: "mid",
+    prompt: "I would like to take a break.",
+    answers: ["Je voudrais faire une pause."],
+    alternatives: ["Je voudrais faire une pause"],
+    ifCorrect: "Je voudrais carries actions too, not just things.",
+  }),
+  fillSeed({
+    id: "p-l9-repair-softener",
+    operation: "repair",
+    difficulty: "easy",
+    lesson: L,
+    required: ["chunk-je-voudrais", "chunk-faire-une-pause"],
+    targets: ["chunk-je-voudrais"],
+    tags: ["politeness"],
+    repairs: "politeness",
+    prompt: "You are asking for something, not announcing it. Which piece softens the ask?",
+    after: " faire une pause.",
+    correct: { id: "o-je-voudrais-pause", text: "Je voudrais" },
+    traps: [
+      {
+        id: "o-je-vais-pause",
+        text: "Je vais",
+        why: "That tells them you are taking one. You meant to ask, not to inform.",
+        tag: "wrong_register",
+      },
+      {
+        id: "o-jai-pause",
+        text: "J'ai",
+        why: "That says you HAVE a break, which is not the same as wanting one.",
+        tag: "meaning_shift",
+      },
+    ],
+    short: "Je voudrais faire une pause.",
+    explanation: "Je voudrais is what turns a decision into a request.",
+  }),
+  fillSeed({
+    id: "p-l9-retrieve-which-need",
+    operation: "retrieve",
+    difficulty: "medium",
+    lesson: L,
+    required: ["chunk-faire-une-pause", "chunk-j-ai-faim"],
+    targets: ["chunk-faire-une-pause"],
+    prompt: "Two hours in. You are flagging, but you do not want the day to end. What do you ask for?",
+    correct: { id: "o-pause", text: "Je voudrais faire une pause." },
+    traps: [
+      {
+        id: "o-maison-need",
+        text: "Je vais à la maison.",
+        why: "That ends the day. You only wanted a few minutes.",
+        tag: "meaning_shift",
+      },
+      {
+        id: "o-question-need",
+        text: "J'ai une question.",
+        why: "That opens something new. You need to stop, not to ask.",
+        tag: "meaning_shift",
+      },
+    ],
+    short: "Je voudrais faire une pause.",
+    explanation: "A break pauses the day. It does not close it.",
+  }),
+  weaveSeed({
+    id: "p-l9-produce-ask-politely",
+    operation: "produce",
+    difficulty: "medium",
+    lesson: L,
+    required: ["chunk-je-voudrais", "chunk-faire-une-pause", "chunk-sil-vous-plait"],
+    targets: ["chunk-faire-une-pause", "chunk-sil-vous-plait"],
+    weaveType: "context",
+    prompt: "Ask for the break, politely.",
+    context: "The room is busy and you would rather not sound like you are announcing it.",
+    answers: ["Je voudrais faire une pause, s'il vous plaît."],
+    alternatives: ["Je voudrais faire une pause s'il vous plaît."],
+    ifCorrect: "The tail does the work. Same ask, softer landing.",
+  }),
+  weaveSeed({
+    id: "p-l9-apply-cut-in-and-ask",
+    operation: "apply",
+    difficulty: "medium",
+    lesson: L,
+    required: ["chunk-excusez-moi", "chunk-je-voudrais", "chunk-faire-une-pause"],
+    targets: ["chunk-excusez-moi", "chunk-faire-une-pause"],
+    weaveType: "context",
+    prompt: "Reach them, then ask for what you need.",
+    context: "The meeting is running and nobody is looking at you.",
+    answers: ["Excusez-moi, je voudrais faire une pause."],
+    alternatives: ["Excusez-moi. Je voudrais faire une pause."],
+    ifCorrect: "Reaching them is half the request.",
+  }),
+  weaveSeed({
+    id: "p-l9-apply-ask-and-say-why",
+    operation: "apply",
+    difficulty: "hard",
+    lesson: L,
+    required: ["chunk-je-voudrais", "chunk-faire-une-pause", "chunk-j-ai-faim"],
+    targets: ["chunk-faire-une-pause", "chunk-j-ai-faim"],
+    weaveType: "open",
+    prompt: "Ask for the break, then say what is behind it.",
+    context: "Someone asks how you are doing, and it is well past lunch.",
+    answers: ["Je voudrais faire une pause. J'ai faim."],
+    alternatives: ["Je voudrais faire une pause, j'ai faim."],
+    ifCorrect: "The ask, then the reason. That is what makes it easy to say yes to.",
+    ifWrong: "Your meaning lands. Ask first, then say why.",
+  }),
+  weaveSeed({
+    id: "p-l9-apply-break-context-only",
+    operation: "apply",
+    difficulty: "hard",
+    lesson: L,
+    required: ["chunk-je-voudrais", "chunk-faire-une-pause"],
+    targets: ["chunk-faire-une-pause"],
+    weaveType: "open",
+    prompt: "Say what you need.",
+    context: "You have been on your feet since you arrived, and there is a lull.",
+    answers: ["Je voudrais faire une pause."],
+    alternatives: ["Je voudrais faire une pause, s'il vous plaît."],
+    ifCorrect: "No prompt, no translation, and it still came out whole.",
+  }),
+];
