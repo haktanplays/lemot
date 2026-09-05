@@ -150,7 +150,7 @@ export function PracticeRunner({
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
+          gap: SPACE.md,
           paddingHorizontal: SPACE.xl,
           paddingTop: SPACE.md,
           paddingBottom: SPACE.sm,
@@ -158,9 +158,11 @@ export function PracticeRunner({
           borderBottomColor: P.border,
         }}
       >
-        <Text style={{ color: P.ink3, fontSize: 12 }}>
-          {`${index + 1} of ${actions.length}`}
-        </Text>
+        {/*
+          Leave sits on the LEFT. The app's floating settings control is pinned
+          to the top right and covered this button entirely — it was invisible
+          and unreachable for the whole session.
+        */}
         <Pressable
           onPress={onQuit}
           hitSlop={12}
@@ -169,6 +171,9 @@ export function PracticeRunner({
         >
           <X size={18} color={P.ink3} />
         </Pressable>
+        <Text style={{ color: P.ink3, fontSize: 12 }}>
+          {`${index + 1} of ${actions.length}`}
+        </Text>
       </View>
       <View style={{ flex: 1 }}>{body()}</View>
     </View>

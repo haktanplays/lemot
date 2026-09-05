@@ -12,7 +12,7 @@
  * exercise.
  */
 import type { PracticeSessionAction } from "./practicePlanner";
-import { expectedAnswerOf } from "./practicePlanner";
+import { summaryLineOf } from "./practicePlanner";
 
 /**
  * The exact resting-state copy, for a learner with nothing lawful to practise.
@@ -34,11 +34,11 @@ export function previewLine(actions: readonly PracticeSessionAction[]): string {
   return `${actionWord} to bring back, from across what you have learned.`;
 }
 
-/** The French the learner produced or chose, in session order, de-duplicated. */
+/** The French the learner produced or completed, in session order, de-duplicated. */
 export function workedOnLines(actions: readonly PracticeSessionAction[]): string[] {
   const out: string[] = [];
   for (const action of actions) {
-    const line = expectedAnswerOf(action.seed);
+    const line = summaryLineOf(action.seed);
     if (line.length > 0 && !out.includes(line)) out.push(line);
   }
   return out;

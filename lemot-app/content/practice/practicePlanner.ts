@@ -103,6 +103,17 @@ export function expectedAnswerOf(seed: PracticeSeed): string {
   return correct?.text ?? "";
 }
 
+/**
+ * The French to SHOW the learner for a seed, which is not always what was
+ * graded. A choice grades one word — "un", "voudrais" — and listing that under
+ * "You brought back" reads as noise rather than as language. The reveal's short
+ * form is the sentence the word completed, and that is what they actually made.
+ */
+export function summaryLineOf(seed: PracticeSeed): string {
+  if (seed.exercise.type === "weave") return seed.exercise.payload.expectedAnswers[0] ?? "";
+  return seed.exercise.payload.reveal.short ?? "";
+}
+
 /** Every item the snapshot has ANY evidence for. The reach boundary. */
 export function reachedItemIds(snapshot: MasterySnapshot): Set<string> {
   const out = new Set<string>();
