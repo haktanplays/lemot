@@ -88,12 +88,10 @@ describe("the standing surfaces share one frame", () => {
 describe("Practice reads as material returning, not as a queue", () => {
   test("the resting state is the exact canonical line and nothing more", () => {
     const code = codeOf(read(PRACTICE));
-    assert(
-      code.includes(
-        "Nothing needs your attention right now. Pieces return here after you use them in a lesson.",
-      ),
-      "the canonical resting line",
-    );
+    // The line itself now lives in content/practice/practiceCopy.ts, so the
+    // route names it rather than repeating it; navigationStandingSurfaces pins
+    // the wording.
+    assert(code.includes("PRACTICE_EMPTY_LINE"), "the canonical resting line");
     // A resting surface must not grow an action that turns rest into a task.
     for (const banned of ["Start practising", "Find something", "Refresh"]) {
       assert(!code.includes(banned), `the resting state stays calm: ${banned}`);
@@ -115,15 +113,30 @@ describe("Practice reads as material returning, not as a queue", () => {
     }
   });
 
-  test("the row shows the piece, its meaning and the authored scene", () => {
+  test("the entry offers one session and never asks the learner to configure it", () => {
+    // Practice Hub V1 replaced the card list with a single session, so what is
+    // worth pinning changed with it. The old rule was "a row shows French and
+    // no internals"; the new one is stronger and covers the same ground — the
+    // whole surface shows no internals, and the learner is asked for one tap.
     const code = codeOf(read(PRACTICE));
-    for (const shown of ["{entry.fr}", "{entry.en}", "practiceCardLine(entry.source)"]) {
-      assert(code.includes(shown), `the row still shows ${shown}`);
+    assert(code.includes("PracticeStart"), "the entry is the session start");
+    for (const banned of [
+      "practiceEligibility",
+      "weakTags",
+      "wrongCount",
+      "dueAt",
+      "isWeak",
+      "\"build\"",
+      "\"stretch\"",
+      "\"challenge\"",
+    ]) {
+      assert(!code.includes(banned), `Practice must not render ${banned}`);
     }
-    assert(
-      code.includes("accessibilityRole=\"button\""),
-      "the row announces itself as pressable",
-    );
+    const start = codeOf(read("components/practice/PracticeStart.tsx"));
+    assert(start.includes("Start practice"), "one primary action");
+    for (const banned of ["Build", "Stretch", "Challenge", "difficulty", "Choose"]) {
+      assert(!start.includes(banned), `no configuration surface: ${banned}`);
+    }
   });
 
   test("Practice reuses the shipped lesson screens rather than cloning them", () => {

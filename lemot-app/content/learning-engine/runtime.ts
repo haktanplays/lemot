@@ -92,6 +92,24 @@ export type LearningEngineRuntime = {
    * telemetry store (D-3: telemetry is not a learning history).
    */
   readLearningStats(): Promise<LearningStatsProjection>;
+  /**
+   * The two facts Practice needs to plan a lawful session, and nothing else.
+   *
+   * Practice eligibility has a ceiling (which lessons the learner has actually
+   * been inside) and a filler (what the reducer says still needs work). The
+   * second is the snapshot; the first can only come from the log, and the log
+   * does not leave this closure. So it leaves as a set of lesson ids — an
+   * aggregate, in the same spirit as the two projections above, rather than a
+   * hole punched in the boundary for one caller.
+   */
+  readPracticeReach(): Promise<PracticeReachProjection>;
+};
+
+/** Learner reach: the derived snapshot plus the lessons that produced it. */
+export type PracticeReachProjection = {
+  snapshot: MasterySnapshot;
+  /** Lesson ids with real learner evidence. Practice's own events never appear. */
+  reachedLessonIds: string[];
 };
 
 export type LearningRuntimeMetadata = {
@@ -160,6 +178,21 @@ export function createLearningEngineRuntime(
     async readLearningStats(): Promise<LearningStatsProjection> {
       // Same validated read boundary; only the aggregate summary leaves.
       return selectLearningStats(await repository.readAllEvents());
+    },
+    async readPracticeReach(): Promise<PracticeReachProjection> {
+      // Same validated read boundary. The events are folded twice and then
+      // dropped: once into the snapshot, once into the set of lesson ids.
+      const events = await repository.readAllEvents();
+      const reached = new Set<string>();
+      for (const event of events) {
+        if (typeof event.lessonId === "string" && event.lessonId.length > 0) {
+          reached.add(event.lessonId);
+        }
+      }
+      return {
+        snapshot: scoreEvents(events),
+        reachedLessonIds: [...reached].sort(),
+      };
     },
   };
 }

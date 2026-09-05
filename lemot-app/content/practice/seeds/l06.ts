@@ -32,6 +32,7 @@ export const L6_SEEDS: PracticeSeed[] = [
     lesson: L,
     required: ["chunk-je-ne-comprends-pas", "chunk-non-merci"],
     targets: ["chunk-je-ne-comprends-pas"],
+    tags: ["natural-speech"],
     repairs: "natural-speech",
     prompt: "They answer your question quickly and at length. You catch almost none of it.",
     correct: { id: "o-jncp", text: "Je ne comprends pas." },

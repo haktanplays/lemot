@@ -280,17 +280,20 @@ describe("learning runtime factory", () => {
     assertEqual(e.deviceInfo.expoRuntime, "rt-9", "expoRuntime propagated");
   });
 
-  // PR-05 pinned the surface to exactly one factory method. PR-08 deliberately
-  // added ONE read-side projection (`readMasterySnapshot`), and PR-10 added the
-  // second and last planned one (`readLearningStats`), so the enumeration
-  // grew — but the intent is unchanged and still enforced: no raw repository,
-  // no write method, no raw event access is reachable from a runtime.
+  // PR-05 pinned the surface to exactly one factory method. Each read-side
+  // projection since has widened the enumeration deliberately and one at a
+  // time: `readMasterySnapshot` (PR-08), `readLearningStats` (PR-10), and
+  // `readPracticeReach` (Practice Hub V1), which returns the snapshot plus the
+  // set of lesson ids the learner has evidence in. The intent is unchanged and
+  // still enforced by the assertion below: every addition is an AGGREGATE, and
+  // no raw repository, no write method and no raw event access is reachable
+  // from a runtime.
   test("the runtime exposes the factory + read projections and nothing else", () => {
     const runtime: LearningEngineRuntime = runtimeWith(makeCountingRepository());
     assertEqual(
       Object.keys(runtime).sort().join(","),
-      "createSessionController,readLearningStats,readMasterySnapshot",
-      "exactly the controller factory and the two explicit reads",
+      "createSessionController,readLearningStats,readMasterySnapshot,readPracticeReach",
+      "exactly the controller factory and the three explicit reads",
     );
     for (const forbidden of [
       "repository",

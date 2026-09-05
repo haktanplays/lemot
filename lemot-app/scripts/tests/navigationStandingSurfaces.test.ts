@@ -28,10 +28,10 @@ import {
   resolveMonLexiqueBand,
 } from "../../components/learning-engine/monLexiqueCopy";
 import {
-  PRACTICE_EMPTY_LINE,
   PRACTICE_NEUTRAL_LINE,
   practiceCardLine,
 } from "../../components/practice-hub/practiceCardCopy";
+import { PRACTICE_EMPTY_LINE } from "../../content/practice/practiceCopy";
 import { LEARNING_STATS_COPY } from "../../components/learning-stats/learningStatsCopy";
 import type {
   FillWithTrapsScreen,
@@ -207,13 +207,21 @@ describe("standing surfaces are reachable without a lesson or a deep link", () =
     assert(codeOf(read(SUMMARY)).includes("accessibilityLabel=\"Go back\""), "summary back");
   });
 
-  test("closing a Practice exercise returns to the Practice list", () => {
+  test("leaving a Practice session returns to Practice, never out of the tab", () => {
+    // Practice Hub V1 replaced the pick-a-card list with a session, so the
+    // intent moved rather than the rule: leaving mid-session and finishing both
+    // land back on the Practice surface, and neither navigates anywhere.
     const code = codeOf(read(PRACTICE));
-    assert(code.includes("onClose={closePractice}"), "the close handler is wired");
-    assert(code.includes("setActive(null)"), "closing clears the active card");
+    assert(code.includes("onQuit={leaveSession}"), "the mid-session exit is wired");
+    assert(code.includes("onDone={leaveSession}"), "finishing returns the same way");
+    assert(code.includes("setRunning(false)"), "leaving clears the running session");
     assert(
-      code.includes("PracticeHubPractice"),
-      "the exercise renders inside Practice — closing never leaves the tab",
+      code.includes("PracticeRunner") && code.includes("PracticeComplete"),
+      "the session renders inside Practice — leaving never leaves the tab",
+    );
+    assert(
+      !code.includes("router.push") && !code.includes("router.replace"),
+      "Practice never navigates away on its own",
     );
   });
 
@@ -363,10 +371,14 @@ describe("every standing surface has a truthful empty state", () => {
   test("Practice empty-state copy is exact and reads as rest, not backlog", () => {
     assertEqual(
       PRACTICE_EMPTY_LINE,
-      "Nothing needs your attention right now. Pieces return here after you use them in a lesson.",
+      "Finish your first lesson and Practice will build itself from the French you have used.",
       "the canonical Practice resting line",
     );
-    assert(read(PRACTICE).includes(PRACTICE_EMPTY_LINE), "the route renders it");
+    // Practice Hub V1 rewrote this line. The old one reported an absence
+    // ("nothing needs your attention"); the honest reason the surface is empty
+    // is that Practice is built from language the learner has used, and they
+    // have not used any yet — so it points at the lesson instead.
+    assert(read(PRACTICE).includes("PRACTICE_EMPTY_LINE"), "the route renders it");
     const code = codeOf(read(PRACTICE));
     for (const banned of [
       "come back later",
@@ -572,7 +584,9 @@ describe("this PR moved presentation only", () => {
   test("no duplicate standing surface was created", () => {
     for (const [rel, marker] of [
       [LEXIQUE, "selectMonLexiqueEntries"],
-      [PRACTICE, "selectPracticeHubSet"],
+      // Practice Hub V1 plans a session rather than projecting a card list; it
+      // still owns exactly one selector and did not grow a second surface.
+      [PRACTICE, "planPracticeSession"],
       [SUMMARY, "readLearningStats"],
     ] as const) {
       assert(read(rel).includes(marker), `${rel} uses the existing selector`);

@@ -35,16 +35,30 @@ import {
   createSettledCloseGate,
   type SettledCloseGate,
 } from "./settledClose";
+import {
+  PRACTICE_SESSION_LESSON_ID,
+  qualifyPracticeSeedId,
+} from "@/content/practice/practiceIdentity";
 import { FillWithTraps } from "@/components/lesson-v1/screens/FillWithTraps";
 import { Weave } from "@/components/lesson-v1/screens/Weave";
 
 /**
- * Where a Hub attempt happens. Identity is REUSED, placement is not: the
- * qualified payload id and lesson id stay those of the original authored
- * screen, so mastery accumulates on the same item through the same payload —
- * while the event honestly records that it came back through the Hub. Since
- * PR-07 the SAME shared resolver also carries a registered payload's EV and
- * sentence identity into the Hub unchanged; unregistered screens keep nulls.
+ * Where a Hub attempt happens.
+ *
+ * UNMOUNTED since Practice Hub V1: no route renders this component, and the
+ * Practice tab runs its own static seed pool instead. It is kept because its
+ * settled-close gate and reuse discipline are still the reference for how a
+ * shipped screen may be re-rendered outside its lesson.
+ *
+ * IDENTITY WAS THE DEFECT. This component used to reuse the authored screen's
+ * LESSON exercise id, on the reasoning that mastery should accumulate through
+ * the same payload. That reasoning was right about mastery and wrong about
+ * progress: `selectLessonProgress` matches on `exerciseId` and deliberately
+ * ignores `lessonId`, so a single Hub attempt on `s10-weave-merci-thanks`
+ * marked that L1 screen attempted and flipped L1 to `started` — from Practice,
+ * without the learner opening the lesson. Attempts now carry the reserved
+ * `practice/` namespace, which no lesson can ever require. Mastery is
+ * unaffected: it accumulates on `itemIds`, not on the exercise id.
  */
 const PRACTICE_HUB_SURFACE: EventSurfaceResolver =
   makeRegisteredEventSurface("practice_hub");
@@ -59,13 +73,26 @@ function renderReusedScreen(
   onSettledClose: () => void,
 ) {
   const { lesson, screen } = source;
+  // Re-identify into the practice namespace, leaving grading, targets,
+  // treatments and admission exactly as the lesson builders produced them.
+  const asPractice = <T extends { exercise: { id: string; lessonId: string } }>(
+    input: T,
+  ): T => ({
+    ...input,
+    exercise: {
+      ...input.exercise,
+      id: qualifyPracticeSeedId(`${lesson.id}/${screen.id}`),
+      lessonId: PRACTICE_SESSION_LESSON_ID,
+    },
+  });
+
   if (screen.type === "fill-with-traps") {
     return (
       <FillWithTraps
         screen={screen}
         onContinue={onSettledClose}
         onChoice={(facts) =>
-          controller.recordGradedAttempt(choiceInteraction(lesson, screen, facts))
+          controller.recordGradedAttempt(asPractice(choiceInteraction(lesson, screen, facts)))
         }
       />
     );
@@ -76,11 +103,13 @@ function renderReusedScreen(
       onContinue={onSettledClose}
       onTypedAttempt={(facts) =>
         controller.recordGradedAttempt(
-          typedAttemptInteraction(lesson, screen, {
-            text: facts.text,
-            hintRung: facts.hintRung,
-            constitutiveSupportRendered: facts.constitutiveSupportRendered,
-          }),
+          asPractice(
+            typedAttemptInteraction(lesson, screen, {
+              text: facts.text,
+              hintRung: facts.hintRung,
+              constitutiveSupportRendered: facts.constitutiveSupportRendered,
+            }),
+          ),
         )
       }
     />

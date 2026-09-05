@@ -10,6 +10,8 @@
  */
 import { describe, test, assert, assertEqual } from "./harness";
 import { makeFakeKv } from "./helpers";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
 import type { LearningItem } from "../../content/lessonTypes";
@@ -34,6 +36,8 @@ import {
   seedIsLawfulFor,
   expectedAnswerOf,
 } from "../../content/practice/practicePlanner";
+import { selectRepairSeed } from "../../content/practice/practiceRepair";
+import { closingNote, workedOnLines } from "../../content/practice/practiceCopy";
 import {
   PRACTICE_HUB_SURFACE,
   practiceChoiceAttempt,
@@ -525,5 +529,162 @@ describe("the lesson → practice → mastery loop", () => {
       (now?.wrongCount ?? 0) > (before?.wrongCount ?? 0),
       "the miss reached the reducer",
     );
+  });
+});
+
+// ── STATE H + the repair loop ───────────────────────────────────────────────
+
+describe("STATE H — nothing due is still a session, never a dead end", () => {
+  test("a learner with nothing due gets calm reinforcement rather than an empty screen", async () => {
+    const learner = await learnerAfter([1, 2, 3]);
+    // `now` immediately after the lesson: the Leitner intervals have not
+    // elapsed, so nothing is due. The pool orders by due-ness but never filters
+    // on it, which is what keeps this from being a dead end.
+    const session = plan(learner, NOW + 60_000);
+    assert(session.actions.length > 0, "reinforcement is still offered");
+    assert(session.actions.length >= 5, `expected a full set, got ${session.actions.length}`);
+  });
+});
+
+describe("the repair loop", () => {
+  test("a missed choice is answered by different work on the same confusion", async () => {
+    const learner = await learnerAfter([1, 2, 3]);
+    const reached = reachedItemIds(learner.snapshot);
+    // L3's negation contrast is the canonical miss on the early path.
+    const missed = PRACTICE_SEEDS.find((s) => s.id === "p-l3-repair-verb-in-sandwich");
+    assert(missed, "the negation contrast seed exists");
+    const repair = selectRepairSeed({
+      missed: missed!,
+      seeds: PRACTICE_SEEDS,
+      reachedItems: reached,
+      reachedLessons: learner.lessons,
+      usedSeedIds: new Set([missed!.id]),
+    });
+    assert(repair !== null, "the pool offers a repair");
+    assert(
+      repair!.operation !== missed!.operation,
+      "repair changes the cognitive job rather than repeating the question",
+    );
+    assert(repair!.id !== missed!.id, "never the identical exercise again");
+    assert(
+      seedIsLawfulFor(repair!, reached, learner.lessons),
+      "the repair is itself lawful for this learner",
+    );
+  });
+
+  test("a repair is never drawn from language the learner has not reached", async () => {
+    const learner = await learnerAfter([1]);
+    const reached = reachedItemIds(learner.snapshot);
+    for (const missed of PRACTICE_SEEDS.filter((s) =>
+      seedIsLawfulFor(s, reached, learner.lessons),
+    )) {
+      const repair = selectRepairSeed({
+        missed,
+        seeds: PRACTICE_SEEDS,
+        reachedItems: reached,
+        reachedLessons: learner.lessons,
+        usedSeedIds: new Set([missed.id]),
+      });
+      if (repair === null) continue;
+      assert(
+        seedIsLawfulFor(repair, reached, learner.lessons),
+        `${repair.id} is beyond this learner`,
+      );
+    }
+  });
+
+  test("every repair-tagged seed repairs something a seed can actually miss", () => {
+    // A repair tag nothing carries is a repair that can never be triggered.
+    const carried = new Set(
+      PRACTICE_SEEDS.flatMap((s) => s.exercise.weakPointTags ?? []),
+    );
+    for (const seed of PRACTICE_SEEDS) {
+      if (seed.repairsTag === undefined) continue;
+      assert(
+        carried.has(seed.repairsTag),
+        `${seed.id} repairs "${seed.repairsTag}", which no seed carries`,
+      );
+    }
+  });
+});
+
+// ── the learner surface ─────────────────────────────────────────────────────
+
+describe("the Practice surface shows French, never internals", () => {
+  /** Source with comment lines removed — a prose mention is not a render. */
+  const read = (rel: string): string =>
+    readFileSync(join(process.cwd(), rel), "utf8")
+      .split("\n")
+      .filter(
+        (l) =>
+          !l.trim().startsWith("*") &&
+          !l.trim().startsWith("//") &&
+          !l.trim().startsWith("/*"),
+      )
+      .join("\n");
+
+  test("the shipped route plans a session and imports no legacy v7 practice", () => {
+    const route = read("app/(tabs)/practice-hub.tsx");
+    assert(route.includes("planPracticeSession"), "the route plans a session");
+    for (const legacy of [
+      "useSRS",
+      "practiceScenarios",
+      "@/data/flashcards",
+      "LessonPractice",
+      "PracticeHubPractice",
+    ]) {
+      assert(!route.includes(legacy), `the route must not import ${legacy}`);
+    }
+  });
+
+  test("the legacy v7 practice route stays unreachable", () => {
+    const layout = read("app/(tabs)/_layout.tsx");
+    assert(
+      layout.includes('<Tabs.Screen name="practice" options={{ href: null }} />'),
+      "the legacy route is still hidden from the tab bar",
+    );
+  });
+
+  test("no practice component renders a reducer internal", () => {
+    for (const rel of [
+      "app/(tabs)/practice-hub.tsx",
+      "components/practice/PracticeStart.tsx",
+      "components/practice/PracticeRunner.tsx",
+      "components/practice/PracticeComplete.tsx",
+      "content/practice/practiceCopy.ts",
+    ]) {
+      const code = read(rel);
+      for (const banned of [
+        "practiceEligibility",
+        "weakTags",
+        "wrongCount",
+        "precisionCount",
+        "isWeak",
+        "leitnerBox",
+      ]) {
+        assert(!code.includes(banned), `${rel} renders ${banned}`);
+      }
+    }
+  });
+
+  test("completion is capability language, never a score", () => {
+    const code = read("components/practice/PracticeComplete.tsx");
+    assert(code.includes("You brought back"), "the summary names what was practised");
+    for (const banned of ["correct!", "Mastered", "%", "XP", "streak", "score"]) {
+      assert(!code.includes(banned), `completion must not show ${banned}`);
+    }
+  });
+
+  test("the session summary is derived from the session that actually ran", async () => {
+    const learner = await learnerAfter([1, 2, 3]);
+    const session = plan(learner);
+    const lines = workedOnLines(session.actions);
+    assert(lines.length > 0, "there is something to report");
+    const expected = new Set(session.actions.map((a) => expectedAnswerOf(a.seed)));
+    for (const line of lines) {
+      assert(expected.has(line), `"${line}" was not part of this session`);
+    }
+    assertEqual(closingNote(0), null, "a clean session gets no worry note");
+    assert(closingNote(1) !== null, "a real miss is acknowledged");
   });
 });
