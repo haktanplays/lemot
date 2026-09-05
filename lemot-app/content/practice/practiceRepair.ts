@@ -6,10 +6,11 @@
  * works on THAT confusion, which they have not already done today?
  *
  * The rule that makes it worth having is the last filter: a repair must change
- * the cognitive job. Serving the identical question again is not repair, it is
- * a retry, and the learner learns the answer to a screen rather than the
- * language. So a missed choice is followed by production, and a missed
- * production by a contrast — never by itself.
+ * the WORK. Serving the identical question again is not repair, it is a retry,
+ * and the learner learns the answer to a screen rather than the language. So a
+ * repair always changes the cognitive job, and prefers to change the surface
+ * too — a missed typed production is better answered by reassembling the line
+ * from its pieces than by being asked to type it again.
  */
 import type { PracticeSeed } from "./practiceTypes";
 import { seedIsLawfulFor } from "./practicePlanner";
@@ -36,15 +37,22 @@ export function selectRepairSeed(search: RepairSearch): PracticeSeed | null {
       seedIsLawfulFor(seed, reachedItems, reachedLessons),
   );
 
+  // Within each tier, a different surface first — same pedagogy, different
+  // hands. Falling back to the same surface is still a lawful repair when the
+  // pool has nothing else.
+  const surfaceFirst = (candidates: readonly PracticeSeed[]): PracticeSeed | null =>
+    candidates.find((s) => s.surface !== missed.surface) ?? candidates[0] ?? null;
+
   // 1. A seed authored to repair exactly this confusion.
   const byTag = usable.filter(
     (seed) => seed.repairsTag !== undefined && missedTags.has(seed.repairsTag),
   );
-  if (byTag.length > 0) return byTag[0];
+  const tagged = surfaceFirst(byTag);
+  if (tagged !== null) return tagged;
 
   // 2. Otherwise, other work on the same language — a different way in.
   const byItem = usable.filter((seed) =>
     seed.targetItemIds.some((id) => missedTargets.has(id)),
   );
-  return byItem[0] ?? null;
+  return surfaceFirst(byItem);
 }

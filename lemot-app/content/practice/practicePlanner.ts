@@ -72,6 +72,7 @@ export type PlanPracticeSessionInput = {
 };
 
 export const MAX_CONSECUTIVE_SAME_OPERATION = 2;
+export const MAX_CONSECUTIVE_SAME_SURFACE = 2;
 
 /**
  * Per-path seed preference.
@@ -89,6 +90,17 @@ const OPERATION_PREFERENCE: Readonly<Record<PracticePoolPath, readonly PracticeO
     challenge: ["repair", "retrieve", "produce", "apply"],
   });
 
+/**
+ * Surfaces where the learner GENERATES the French rather than selecting it.
+ *
+ * This is the evidence line, not a UI one: typed, context and dictation all
+ * resolve to a production primitive, while choice, fill, build and listen are
+ * capped at recognition. It matters for Stretch — an item the learner has
+ * already produced should not be handed selection work just because the session
+ * wanted variety.
+ */
+const PRODUCTION_SURFACES: ReadonlySet<string> = new Set(["typed", "context", "dictation"]);
+
 const DIFFICULTY_PREFERENCE: Readonly<Record<PracticePoolPath, readonly PracticeDifficulty[]>> =
   Object.freeze({
     build: ["easy", "medium", "hard"],
@@ -99,6 +111,7 @@ const DIFFICULTY_PREFERENCE: Readonly<Record<PracticePoolPath, readonly Practice
 /** The French a seed expects. Used only for the "not twice in a row" guard. */
 export function expectedAnswerOf(seed: PracticeSeed): string {
   if (seed.exercise.type === "weave") return seed.exercise.payload.expectedAnswers[0] ?? "";
+  if (seed.exercise.type === "practice-build") return seed.exercise.payload.targetText;
   const correct = seed.exercise.payload.options.find((o) => o.isCorrect);
   return correct?.text ?? "";
 }
@@ -111,6 +124,7 @@ export function expectedAnswerOf(seed: PracticeSeed): string {
  */
 export function summaryLineOf(seed: PracticeSeed): string {
   if (seed.exercise.type === "weave") return seed.exercise.payload.expectedAnswers[0] ?? "";
+  if (seed.exercise.type === "practice-build") return seed.exercise.payload.targetText;
   return seed.exercise.payload.reveal.short ?? "";
 }
 
@@ -209,7 +223,7 @@ export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSe
     if (!info || !pool) continue;
     const seed = pickSeed(pool, info.path, actions, usedSeedIds);
     if (!seed) continue; // every seed for this item is spent — a shorter set is fine
-    if (breaksRunRule(seed, actions) && !deferred.has(itemId) && queue.length > 0) {
+    if (breaksAnyRunRule(seed, actions) && !deferred.has(itemId) && queue.length > 0) {
       deferred.add(itemId);
       queue.push(itemId);
       continue;
@@ -221,25 +235,37 @@ export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSe
   return { actions, requested: todays.requested };
 }
 
-/** Would appending this seed make three consecutive actions share one job? */
-function breaksRunRule(
+/** Would appending this seed make three consecutive actions share a job or a surface? */
+function breaksAnyRunRule(
   seed: PracticeSeed,
   soFar: readonly PracticeSessionAction[],
 ): boolean {
-  const tail = soFar.slice(-MAX_CONSECUTIVE_SAME_OPERATION);
-  return (
-    tail.length === MAX_CONSECUTIVE_SAME_OPERATION &&
-    tail.every((a) => a.seed.operation === seed.operation)
-  );
+  const opTail = soFar.slice(-MAX_CONSECUTIVE_SAME_OPERATION);
+  const surfaceTail = soFar.slice(-MAX_CONSECUTIVE_SAME_SURFACE);
+  const sameJob =
+    opTail.length === MAX_CONSECUTIVE_SAME_OPERATION &&
+    opTail.every((a) => a.seed.operation === seed.operation);
+  const sameSurface =
+    surfaceTail.length === MAX_CONSECUTIVE_SAME_SURFACE &&
+    surfaceTail.every((a) => a.seed.surface === seed.surface);
+  return sameJob || sameSurface;
 }
 
 /**
  * Choose the seed for one item.
  *
- * Ranked by path preference, then filtered by what the session has already
- * done. The two session rules are hard filters rather than tie-breakers,
- * because "no three identical jobs in a row" and "not the same French twice
- * running" are the difference between a session and a drill.
+ * Two axes are kept apart deliberately. The JOB (retrieve / produce / repair /
+ * apply) is pedagogy and is ranked by the reducer-owned path. The SURFACE
+ * (choice / fill / build / typed / context / listen / dictation) is what the
+ * learner's hands do, and it is a QUALITY constraint — never a reason to pass
+ * over a weak or due item. So surface never changes WHICH item returns, only
+ * which of that item's seeds it returns through.
+ *
+ * The run rules are hard filters rather than tie-breakers, because "no three
+ * identical jobs in a row" and "not the same French twice running" are the
+ * difference between a session and a drill. Preferring an unseen surface is a
+ * soft preference underneath them: it makes a varied session without ever
+ * emptying a thin one.
  */
 function pickSeed(
   pool: readonly PracticeSeed[],
@@ -249,16 +275,55 @@ function pickSeed(
 ): PracticeSeed | null {
   const opPref = OPERATION_PREFERENCE[path];
   const diffPref = DIFFICULTY_PREFERENCE[path];
+  const seenSurfaces = new Set(soFar.map((a) => a.seed.surface));
+  const seenOperations = new Set(soFar.map((a) => a.seed.operation));
+  // The one-per-session allowance that keeps reconstruction and listening
+  // reachable for a learner who has produced everything correctly.
+  const spentStretchSelection = soFar.some(
+    (a) => a.path === "stretch" && !PRODUCTION_SURFACES.has(a.seed.surface),
+  );
   const rank = (seed: PracticeSeed): number => {
     const op = opPref.indexOf(seed.operation);
     const diff = diffPref.indexOf(seed.difficulty);
-    return (op < 0 ? opPref.length : op) * 10 + (diff < 0 ? diffPref.length : diff);
+    const opRank = op < 0 ? opPref.length : op;
+    const diffRank = diff < 0 ? diffPref.length : diff;
+    const freshJob = seenOperations.has(seed.operation) ? 1 : 0;
+    const freshSurface = seenSurfaces.has(seed.surface) ? 1 : 0;
+
+    // CHALLENGE is the weak path, and there variety must not dilute pedagogy:
+    // a weak item needs its repair first, whatever the session has already
+    // done. Surface freshness still breaks ties underneath.
+    if (path === "challenge") return opRank * 1000 + freshSurface * 100 + diffRank;
+
+    // STRETCH is language the learner has already produced, so it keeps
+    // producing — but "keeps producing" is not "never anything else". Banning
+    // selection outright here made a quarter of the pool unreachable: after a
+    // clean run through the lessons THIRTY of thirty-one items sit on Stretch,
+    // so no reconstruction and no listening recognition could ever be offered
+    // to a learner who had simply done well. The rule is therefore a budget,
+    // not a ban: at most ONE selection action per session may come from a
+    // strong item, and a production surface still wins whenever both are
+    // equally fresh.
+    if (path === "stretch") {
+      const selection = PRODUCTION_SURFACES.has(seed.surface) ? 0 : 1;
+      if (selection === 1 && spentStretchSelection) return Number.MAX_SAFE_INTEGER;
+      return freshJob * 1000 + selection * 500 + freshSurface * 100 + opRank * 10 + diffRank;
+    }
+
+    // BUILD is language met but not yet owned, and there every surface is fair.
+    // Leading with work the session has not done yet is what stopped a
+    // clean-run learner receiving four applies out of six.
+    return freshJob * 1000 + freshSurface * 100 + opRank * 10 + diffRank;
   };
 
-  const tail = soFar.slice(-MAX_CONSECUTIVE_SAME_OPERATION);
-  const runWouldRepeat = (op: PracticeOperation): boolean =>
-    tail.length === MAX_CONSECUTIVE_SAME_OPERATION &&
-    tail.every((a) => a.seed.operation === op);
+  const opTail = soFar.slice(-MAX_CONSECUTIVE_SAME_OPERATION);
+  const surfaceTail = soFar.slice(-MAX_CONSECUTIVE_SAME_SURFACE);
+  const opRunWouldRepeat = (seed: PracticeSeed): boolean =>
+    opTail.length === MAX_CONSECUTIVE_SAME_OPERATION &&
+    opTail.every((a) => a.seed.operation === seed.operation);
+  const surfaceRunWouldRepeat = (seed: PracticeSeed): boolean =>
+    surfaceTail.length === MAX_CONSECUTIVE_SAME_SURFACE &&
+    surfaceTail.every((a) => a.seed.surface === seed.surface);
   const lastAnswer = soFar.length > 0 ? expectedAnswerOf(soFar[soFar.length - 1].seed) : null;
 
   // Ties break on pool order, which is authored order — so the same learner
@@ -271,7 +336,9 @@ function pickSeed(
 
   const acceptable = ordered.filter(
     (seed) =>
-      !runWouldRepeat(seed.operation) && expectedAnswerOf(seed) !== lastAnswer,
+      !opRunWouldRepeat(seed) &&
+      !surfaceRunWouldRepeat(seed) &&
+      expectedAnswerOf(seed) !== lastAnswer,
   );
   // Falling back to `ordered` keeps a thin pool usable: a diversity rule that
   // empties the session is worse than a session with one repeated job in it.
