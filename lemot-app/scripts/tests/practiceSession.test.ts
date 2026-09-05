@@ -40,6 +40,7 @@ import { selectRepairSeed } from "../../content/practice/practiceRepair";
 import { closingNote, workedOnLines } from "../../content/practice/practiceCopy";
 import {
   PRACTICE_HUB_SURFACE,
+  practiceBuildAttempt,
   practiceChoiceAttempt,
   practiceTypedAttempt,
 } from "../../content/practice/practiceInteractions";
@@ -251,39 +252,33 @@ describe("STATE D, E, F — what returns, and in what shape", () => {
     assert(families.size >= 2, "the session is not one family end to end");
   });
 
-  test("a strong produced item reaches Stretch rather than endless recognition", async () => {
+  test("a strong produced item keeps producing, and is never drilled on recognition", async () => {
     const learner = await learnerAfter([1]);
     // Everything produced correctly in L1 should be produced-tier, not build.
     const stretched = Object.entries(learner.snapshot.items).filter(
       ([, m]) => m.practiceEligibility === "stretch",
     );
     assert(stretched.length > 0, "clean production reaches stretch");
+
     const session = plan(learner);
     const stretchActions = session.actions.filter((a) => a.path === "stretch");
     assert(stretchActions.length > 0, "the session offers stretch work");
-    // The precise claim: where a produced item HAS lower-scaffold work available,
-    // Stretch takes it. An item whose only lawful seed is a retrieval still gets
-    // that retrieval — a thin pool is a reason for a smaller session, never a
-    // reason to serve nothing.
-    const reached = reachedItemIds(learner.snapshot);
-    // Seeds already spent on an earlier item do not count as available: no seed
-    // repeats inside one session, and an item arriving late can legitimately
-    // find its best work already taken.
-    const spent = new Set(session.actions.map((a) => a.seed.id));
-    for (const action of stretchActions) {
-      const alternatives = PRACTICE_SEEDS.filter(
-        (s) =>
-          s.targetItemIds.includes(action.itemId) &&
-          seedIsLawfulFor(s, reached, learner.lessons) &&
-          !spent.has(s.id) &&
-          (s.operation === "apply" || s.operation === "produce"),
-      );
-      if (alternatives.length === 0) continue;
-      assert(
-        action.seed.operation === "apply" || action.seed.operation === "produce",
-        `stretch served ${action.seed.operation} for ${action.itemId} despite ${alternatives.length} lower-scaffold seed(s)`,
-      );
-    }
+
+    // The honest claim, stated at SESSION level rather than per action: a
+    // strong item may meet one reconstruction or listening exercise in a
+    // sitting, and everything else it does is production. A per-action ban
+    // read well but made a quarter of the pool unreachable for a learner who
+    // had simply done well.
+    const PRODUCES = new Set(["typed", "context", "dictation"]);
+    const selection = stretchActions.filter((a) => !PRODUCES.has(a.seed.surface));
+    assert(
+      selection.length <= 1,
+      `strong items were given ${selection.length} selection actions in one session`,
+    );
+    assert(
+      stretchActions.length - selection.length > 0,
+      "strong items still produce in this session",
+    );
   });
 
   test("sessions stay inside the 5-8 canon band", async () => {
@@ -372,6 +367,20 @@ async function practiceThrough(
       if (chosen) {
         controller.recordGradedAttempt(practiceChoiceAttempt(seed, origin, { optionId: chosen.id }));
       }
+    } else if (seed.exercise.type === "practice-build") {
+      // The answer sequence, or a deliberately scrambled one for a miss.
+      const answerOrder = seed.exercise.payload.tiles
+        .map((tile, index) => ({ tile, index }))
+        .filter((t) => t.tile.answerIndex !== undefined)
+        .sort(
+          (a, b) => (a.tile.answerIndex as number) - (b.tile.answerIndex as number),
+        )
+        .map((t) => t.index);
+      controller.recordGradedAttempt(
+        practiceBuildAttempt(seed, origin, {
+          picked: opts.miss ? [...answerOrder].reverse() : answerOrder,
+        }),
+      );
     } else {
       controller.recordGradedAttempt(
         practiceTypedAttempt(seed, origin, {

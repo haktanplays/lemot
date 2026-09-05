@@ -45,6 +45,7 @@ import "./showcase.test";
 import "./activityChain.test";
 import "./practiceHubReadiness.test";
 import "./practiceSession.test";
+import "./practiceSurfaces.test";
 import "./shippedItemIds.test";
 import "./shippedErrorTags.test";
 import "./canonRules.test";
