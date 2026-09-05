@@ -76,7 +76,7 @@ export const L5_SEEDS: PracticeSeed[] = [
     operation: "repair",
     difficulty: "medium",
     lesson: L,
-    required: ["noun-idee", "chunk-j-ai"],
+    required: ["noun-idee", "chunk-j-ai", "grammar-un-une-package"],
     targets: ["noun-idee"],
     tags: ["articles", "gender"],
     repairs: "articles",
