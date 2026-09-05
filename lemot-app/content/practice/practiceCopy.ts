@@ -15,6 +15,85 @@ import type { PracticeSessionAction } from "./practicePlanner";
 import { summaryLineOf } from "./practicePlanner";
 
 /**
+ * Canonical item → the capability a learner would recognise.
+ *
+ * Curated and stable, never generated. It is the only place practice turns
+ * internals into learner language, and the labels are deliberately things a
+ * person would say about themselves ("asking where something is") rather than
+ * things the system knows ("chunk-c-est-ou", "stretch", "due").
+ *
+ * An unmapped item simply contributes no label. A session preview that is
+ * shorter than it could be is a smaller failure than one naming an item id.
+ */
+const CAPABILITY: Readonly<Record<string, string>> = Object.freeze({
+  "chunk-bonjour": "opening and closing politely",
+  "chunk-excusez-moi": "opening and closing politely",
+  "chunk-merci": "opening and closing politely",
+  "chunk-sil-vous-plait": "opening and closing politely",
+  "chunk-au-revoir": "opening and closing politely",
+
+  "chunk-je-voudrais": "ordering",
+  "noun-cafe": "ordering",
+  "chunk-un-cafe": "ordering",
+  "chunk-un-the": "ordering",
+
+  "chunk-je-suis": "saying where you are",
+  "chunk-je-suis-ici": "saying where you are",
+  "word-ici": "saying where you are",
+
+  "chunk-oui": "answering yes and no",
+  "chunk-non": "answering yes and no",
+  "chunk-non-merci": "answering yes and no",
+  "chunk-je-ne-suis-pas": "answering yes and no",
+  "chunk-ce-n-est-pas": "answering yes and no",
+
+  "chunk-je-ne-comprends-pas": "repairing a missed line",
+  "chunk-vous-pouvez-repeter": "repairing a missed line",
+
+  "chunk-j-ai": "saying what you have",
+  "chunk-j-ai-faim": "saying what you have",
+  "chunk-j-ai-une-question": "saying what you have",
+  "chunk-une-question": "saying what you have",
+  "noun-idee": "saying what you have",
+  "noun-faim": "saying what you have",
+  "noun-question": "saying what you have",
+
+  "grammar-un-une-package": "the small word in front",
+
+  "chunk-c-est": "asking where something is",
+  "chunk-c-est-ou": "asking where something is",
+  "adverb-ou-where": "asking where something is",
+  "chunk-est-ce-que": "asking where something is",
+
+  "chunk-je-vais": "heading home",
+  "chunk-a-la-maison": "heading home",
+
+  "chunk-faire-une-pause": "asking for a break",
+  "noun-pause": "asking for a break",
+});
+
+/**
+ * What a session is about, in the learner's terms.
+ *
+ * Order follows the session, so the first thing they will meet is named first,
+ * and duplicates collapse. Capped because a preview listing six territories is
+ * a syllabus, not a sense of the shape.
+ */
+export function territoryLabels(
+  actions: readonly PracticeSessionAction[],
+  limit = 3,
+): string[] {
+  const out: string[] = [];
+  for (const action of actions) {
+    for (const itemId of action.seed.targetItemIds) {
+      const label = CAPABILITY[itemId];
+      if (label !== undefined && !out.includes(label)) out.push(label);
+    }
+  }
+  return out.slice(0, limit);
+}
+
+/**
  * The exact resting-state copy, for a learner with nothing lawful to practise.
  *
  * It points forward to the lesson rather than reporting an absence, because the
@@ -32,6 +111,29 @@ export function previewLine(actions: readonly PracticeSessionAction[]): string {
   const actionWord = count === 1 ? "1 thing" : `${count} things`;
   if (lessons <= 1) return `${actionWord} to bring back.`;
   return `${actionWord} to bring back, from across what you have learned.`;
+}
+
+/**
+ * The territory line: what this session is about.
+ *
+ * It names capabilities and never French, so the preview cannot become a
+ * reading of the answers the learner is about to be asked for.
+ */
+export function territoryLine(actions: readonly PracticeSessionAction[]): string {
+  return territoryLabels(actions).join("  ·  ");
+}
+
+/**
+ * What the learner worked on, in their own terms.
+ *
+ * Capability rather than sentence: after five minutes the honest thing to
+ * report is "you practised repairing a missed line", not a list of strings and
+ * certainly not a score. The French they produced is still shown beneath.
+ */
+export function workedOnCapabilities(
+  actions: readonly PracticeSessionAction[],
+): string[] {
+  return territoryLabels(actions, 4);
 }
 
 /** The French the learner produced or completed, in session order, de-duplicated. */

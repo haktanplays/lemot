@@ -42,6 +42,10 @@ import {
 } from "../../content/practice/practicePlanner";
 import { selectRepairSeed } from "../../content/practice/practiceRepair";
 import {
+  PRACTICE_MOMENTS,
+  momentSeeds,
+} from "../../content/practice/practiceMoments";
+import {
   PRACTICE_HUB_SURFACE,
   practiceBuildAttempt,
   practiceTypedAttempt,
@@ -490,5 +494,70 @@ describe("a repair changes the work, not just the question", () => {
       withRepair / total >= 0.9,
       `only ${withRepair}/${total} misses have a repair`,
     );
+  });
+});
+
+// ── micro-moments ───────────────────────────────────────────────────────────
+
+describe("a micro-moment is one situation, not a roleplay session", () => {
+  test("every authored moment resolves to real, ordered seeds", () => {
+    for (const moment of PRACTICE_MOMENTS) {
+      const steps = momentSeeds(moment, PRACTICE_SEEDS);
+      assert(steps !== null, `${moment.id} names a seed that does not exist`);
+      if (!steps) continue;
+      assert(steps.length >= 2 && steps.length <= 3, `${moment.id} has ${steps.length} beats`);
+      assert(moment.intro.trim().length > 0, `${moment.id} frames nothing`);
+      // A scene whose beats are all the same interaction is a drill with a
+      // caption on it.
+      const surfaces = new Set(steps.map((s) => s.surface));
+      assert(surfaces.size >= 2, `${moment.id} is ${[...surfaces][0]} three times`);
+    }
+  });
+
+  test("a moment's beats all belong to one learner's reach", async () => {
+    const learner = await learnerAfter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const reached = reachedItemIds(learner.snapshot);
+    for (const moment of PRACTICE_MOMENTS) {
+      const steps = momentSeeds(moment, PRACTICE_SEEDS);
+      if (!steps) continue;
+      for (const step of steps) {
+        assert(
+          seedIsLawfulFor(step, reached, learner.lessons),
+          `${moment.id}: ${step.id} is unreachable even at full reach`,
+        );
+      }
+    }
+  });
+
+  test("at most one moment per session, played whole and in order", async () => {
+    for (const reach of [[1], [1, 2, 3, 4], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]) {
+      const learner = await learnerAfter(reach);
+      const actions = planFor(learner).actions;
+      const moments = new Set(
+        actions.filter((a) => a.moment !== undefined).map((a) => a.moment?.id),
+      );
+      assert(moments.size <= 1, `L${reach.join("")}: ${moments.size} moments in one session`);
+      if (moments.size === 0) continue;
+
+      const steps = actions.filter((a) => a.moment !== undefined);
+      const first = actions.findIndex((a) => a.moment !== undefined);
+      // Contiguous: a scene interrupted by unrelated work is not a scene.
+      for (let i = 0; i < steps.length; i += 1) {
+        assertEqual(
+          actions[first + i]?.seed.id,
+          steps[i].seed.id,
+          `L${reach.join("")}: the moment is not contiguous`,
+        );
+      }
+      const moment = steps[0].moment;
+      assertEqual(
+        steps.map((s) => s.seed.id).join(","),
+        (moment?.seedIds ?? []).join(","),
+        "played whole, in authored order",
+      );
+      assert(actions.length <= 8, `session grew to ${actions.length}`);
+      const ids = actions.map((a) => a.seed.id);
+      assertEqual(new Set(ids).size, ids.length, "a moment duplicated a seed");
+    }
   });
 });

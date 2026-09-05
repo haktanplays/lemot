@@ -36,11 +36,18 @@ import {
 } from "../learning-engine/practice-pool";
 import {
   selectTodaysSet,
+  TODAYS_SET_MAX,
   type PracticeCandidate,
   type WeakTagSignal,
 } from "../learning-engine/practice-selector";
 import type { LearningItem, Lesson } from "../lessonTypes";
 import type { PracticeDifficulty, PracticeOperation, PracticeSeed } from "./practiceTypes";
+import {
+  PRACTICE_MOMENTS,
+  momentContaining,
+  momentSeeds,
+  type PracticeMoment,
+} from "./practiceMoments";
 
 /** One action in a planned session. */
 export type PracticeSessionAction = {
@@ -49,6 +56,8 @@ export type PracticeSessionAction = {
   itemId: string;
   /** @internal reducer-owned coarse path — never rendered raw. */
   path: PracticePoolPath;
+  /** Set on every step of a micro-moment, so the runner can frame the scene. */
+  moment?: PracticeMoment;
 };
 
 export type PracticeSessionPlan = {
@@ -232,7 +241,56 @@ export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSe
     actions.push({ seed, itemId, path: info.path });
   }
 
-  return { actions, requested: todays.requested };
+  return {
+    actions: withMicroMoment(actions, seeds, reached, reachedLessons),
+    requested: todays.requested,
+  };
+}
+
+/**
+ * Turn part of the session into one small connected scene, when the selector
+ * has already chosen to work that language today.
+ *
+ * Emergent rather than forced: no item is selected BECAUSE a moment wanted it.
+ * The trigger is membership, not opening — if any chosen action is a beat in an
+ * authored scene, the scene replaces it and plays from its beginning. Requiring
+ * the opening beat meant moments existed in the pool and never in a session.
+ *
+ * At most one per session, never past the canon ceiling, and only when every
+ * step is lawful for this learner and not already spent elsewhere.
+ */
+function withMicroMoment(
+  actions: readonly PracticeSessionAction[],
+  seeds: readonly PracticeSeed[],
+  reachedItems: ReadonlySet<string>,
+  reachedLessons: ReadonlySet<string>,
+): PracticeSessionAction[] {
+  for (const [index, action] of actions.entries()) {
+    const moment = momentContaining(action.seed.id, PRACTICE_MOMENTS);
+    if (!moment) continue;
+    const steps = momentSeeds(moment, seeds);
+    if (!steps) continue;
+    // Every other action in the session, so a step already being practised
+    // somewhere else does not appear twice.
+    const elsewhere = new Set(
+      actions.filter((_, i) => i !== index).map((a) => a.seed.id),
+    );
+    if (steps.some((s) => elsewhere.has(s.id))) continue;
+    if (!steps.every((s) => seedIsLawfulFor(s, reachedItems, reachedLessons))) continue;
+    if (actions.length - 1 + steps.length > TODAYS_SET_MAX) continue;
+
+    return [
+      ...actions.slice(0, index),
+      ...steps.map((seed) => ({
+        seed,
+        itemId: seed.targetItemIds[0],
+        path: action.path,
+        moment,
+      })),
+      ...actions.slice(index + 1),
+    ];
+  }
+  return [...actions];
 }
 
 /** Would appending this seed make three consecutive actions share a job or a surface? */

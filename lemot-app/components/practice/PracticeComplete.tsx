@@ -1,7 +1,11 @@
 import { View, Text, ScrollView } from "react-native";
 import { P, SPACE } from "@/constants/theme";
 import { PrimaryAction, QuietAction } from "@/components/ui/actions";
-import { closingNote, workedOnLines } from "@/content/practice/practiceCopy";
+import {
+  closingNote,
+  workedOnCapabilities,
+  workedOnLines,
+} from "@/content/practice/practiceCopy";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
 
 /**
@@ -25,6 +29,7 @@ export function PracticeComplete({
   onDone: () => void;
   onAgain: (() => void) | null;
 }) {
+  const capabilities = workedOnCapabilities(actions);
   const lines = workedOnLines(actions);
   const note = closingNote(missCount);
 
@@ -43,7 +48,32 @@ export function PracticeComplete({
         <Text
           style={{ color: P.ink2, fontSize: 15, lineHeight: 23, marginTop: SPACE.md }}
         >
-          You brought back:
+          You worked on:
+        </Text>
+
+        {/*
+          Capability first. After five minutes the honest report is what the
+          learner can now do, rather than a list of strings or a tally.
+        */}
+        <View style={{ marginTop: SPACE.md }}>
+          {capabilities.map((capability) => (
+            <Text
+              key={capability}
+              style={{
+                color: P.ink,
+                fontSize: 17,
+                lineHeight: 27,
+              }}
+            >
+              {capability}
+            </Text>
+          ))}
+        </View>
+
+        <Text
+          style={{ color: P.ink3, fontSize: 13, lineHeight: 20, marginTop: SPACE.xl }}
+        >
+          The French you brought back
         </Text>
 
         <View

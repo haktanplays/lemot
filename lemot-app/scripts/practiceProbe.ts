@@ -17,7 +17,7 @@ import {
 } from "../content/lesson-v1-evidence/interactions";
 import { PRACTICE_SEEDS } from "../content/practice/seeds";
 import { planPracticeSession, reachedLessonIds } from "../content/practice/practicePlanner";
-import { previewLine } from "../content/practice/practiceCopy";
+import { previewLine, territoryLine, workedOnCapabilities } from "../content/practice/practiceCopy";
 import type { Lesson, LearningItem } from "../content/lessonTypes";
 
 const NOW = 1_800_000_000_000;
@@ -94,11 +94,13 @@ async function show(
     budget: 6,
   });
   console.log(`\n=== ${label} — ${plan.actions.length} actions`);
-  console.log(`preview: "${previewLine(plan.actions)}"`);
+  console.log(`preview:   "${previewLine(plan.actions)}"`);
+  console.log(`territory: "${territoryLine(plan.actions)}"`);
+  console.log(`completion:"${workedOnCapabilities(plan.actions).join(" / ")}"`);
   for (const [i, a] of plan.actions.entries()) {
     const family = ITEMS[a.itemId]?.type ?? "?";
     console.log(
-      `  ${i + 1}. ${a.seed.surface.padEnd(10)} ${a.seed.operation.padEnd(9)}` +
+      `  ${i + 1}. ${(a.moment ? "*" : " ")}${a.seed.surface.padEnd(10)} ${a.seed.operation.padEnd(9)}` +
         ` ${a.seed.difficulty.padEnd(7)} ${family.padEnd(8)} L${Number(
           a.seed.originLessonId.slice(-3),
         )}  ${a.seed.id}`,

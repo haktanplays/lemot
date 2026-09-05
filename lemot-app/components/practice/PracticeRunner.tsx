@@ -204,6 +204,26 @@ export function PracticeRunner({
         </Text>
       </View>
       {/*
+        A micro-moment frames its steps as one situation. Shown once above the
+        action, never restating the step below it.
+      */}
+      {action.moment !== undefined && (
+        <View
+          style={{
+            paddingHorizontal: SPACE.xl,
+            paddingTop: SPACE.md,
+            paddingBottom: SPACE.sm,
+            borderBottomWidth: 1,
+            borderBottomColor: P.border,
+          }}
+        >
+          <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
+            {action.moment.intro}
+          </Text>
+        </View>
+      )}
+
+      {/*
         The listening affordance. Its presence is what turns a reused Fill or
         Weave into a listening exercise: those seeds print no French, so the
         control above is the only route to the answer. Replay is unlimited and

@@ -678,7 +678,11 @@ describe("the Practice surface shows French, never internals", () => {
 
   test("completion is capability language, never a score", () => {
     const code = read("components/practice/PracticeComplete.tsx");
-    assert(code.includes("You brought back"), "the summary names what was practised");
+    assert(code.includes("You worked on"), "the summary leads with capability");
+    assert(
+      code.includes("The French you brought back"),
+      "and still shows the French, underneath",
+    );
     for (const banned of ["correct!", "Mastered", "%", "XP", "streak", "score"]) {
       assert(!code.includes(banned), `completion must not show ${banned}`);
     }

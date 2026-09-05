@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
 import { P, SPACE } from "@/constants/theme";
 import { PrimaryAction } from "@/components/ui/actions";
-import { previewLine } from "@/content/practice/practiceCopy";
+import { previewLine, territoryLine } from "@/content/practice/practiceCopy";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
 
 /**
@@ -70,6 +70,23 @@ export function PracticeStart({
           >
             {previewLine(actions)}
           </Text>
+          {/*
+            What the session is ABOUT, in capabilities rather than French — a
+            preview that printed the sentences would make the first half of
+            every session a reading exercise.
+          */}
+          {territoryLine(actions).length > 0 && (
+            <Text
+              style={{
+                color: P.ink2,
+                fontSize: 14,
+                lineHeight: 22,
+                marginTop: SPACE.md,
+              }}
+            >
+              {territoryLine(actions)}
+            </Text>
+          )}
         </View>
       </ScrollView>
 
