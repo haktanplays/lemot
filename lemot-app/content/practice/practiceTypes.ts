@@ -43,8 +43,74 @@ export const PRACTICE_OPERATIONS: readonly PracticeOperation[] = [
 /** Lesson difficulty contract, unchanged: HARD is context-only, no translation. */
 export type PracticeDifficulty = "easy" | "medium" | "hard";
 
-/** A practice exercise is a v1 screen, so shipped renderers and graders apply. */
-export type PracticeExercise = FillWithTrapsScreen | WeaveScreen;
+/**
+ * How the learner physically works, which is NOT the same question as what
+ * cognitive job they are doing. Retrieve can be a fill, a build or a dictation;
+ * repair can be a choice or a production. Keeping the two axes apart is what
+ * lets a session vary the widget without repeating the pedagogy, and vary the
+ * pedagogy without repeating the widget.
+ *
+ * Authored rather than inferred, because the difference between `choice` and
+ * `fill` is whether a French frame is printed around the gap — a real
+ * difference in the task that a renderer check could not see.
+ */
+export type PracticeSurface =
+  | "choice"
+  | "fill"
+  | "build"
+  | "typed"
+  | "context"
+  | "listen"
+  | "dictation";
+
+export const PRACTICE_SURFACES: readonly PracticeSurface[] = [
+  "choice",
+  "fill",
+  "build",
+  "typed",
+  "context",
+  "listen",
+  "dictation",
+];
+
+/** One tile in a reconstruction. Item-backed: tiles are pieces, never letters. */
+export type PracticeBuildTile = {
+  /** The canonical item this piece IS. Grading compares item sequences. */
+  itemId: string;
+  /** The surface as it appears in this sentence (casing differs from the item). */
+  text: string;
+  /** 0-based position in the answer. Omitted marks the tile a distractor. */
+  answerIndex?: number;
+};
+
+/**
+ * Reconstruct an owned sentence from its pieces.
+ *
+ * Practice-only: it is deliberately NOT added to `LessonScreen`, so no lesson
+ * validator, taxonomy or renderer learns about it. Grading is the shipped
+ * `gradeBuildSequence` — an ITEM SEQUENCE comparison, never a string rebuild —
+ * so punctuation can never block a correct answer and tiles stay atomic.
+ */
+export type PracticeBuildScreen = {
+  id: string;
+  type: "practice-build";
+  targetItemIds?: string[];
+  weakPointTags?: WeakPointTag[];
+  payload: {
+    prompt: string;
+    context?: string;
+    tiles: PracticeBuildTile[];
+    /** What the answer tiles spell. Reveal + validation only, never grading. */
+    targetText: string;
+    reveal: { ifCorrect: string; ifWrong?: string };
+  };
+};
+
+/** A practice exercise is a v1 screen, plus the one surface v1 lacks. */
+export type PracticeExercise =
+  | FillWithTrapsScreen
+  | WeaveScreen
+  | PracticeBuildScreen;
 
 export type PracticeSeed = {
   /** Stable and globally unique. Namespaced into an exercise id at record time. */
@@ -65,6 +131,18 @@ export type PracticeSeed = {
   requiredItemIds: string[];
   /** What a correct attempt actually demonstrates. Becomes the evidence targets. */
   targetItemIds: string[];
+  /** The physical interaction. Checked against the exercise shape, not trusted. */
+  surface: PracticeSurface;
+  /**
+   * French to SPEAK before the learner answers, for the two listening surfaces.
+   *
+   * Its presence is what makes an exercise a listening one: the shipped Fill and
+   * Weave components render unchanged, and the runner puts a listen control
+   * above them. That is real reuse rather than a relabel, because the task
+   * genuinely changes — with audio present the exercise prints no French, so the
+   * only way to answer is to have heard it.
+   */
+  audio?: string;
   exercise: PracticeExercise;
   /**
    * Present only on repair seeds: the confusion this seed exists to work on.

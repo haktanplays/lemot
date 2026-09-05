@@ -11,17 +11,26 @@
 import type { ErrorTagCode } from "../../learning-engine/events";
 import type { WeaveType } from "../../lessonTypes";
 import type { WeakPointTag } from "../../weakPointTags";
-import type { PracticeDifficulty, PracticeOperation, PracticeSeed } from "../practiceTypes";
+import type {
+  PracticeBuildTile,
+  PracticeDifficulty,
+  PracticeOperation,
+  PracticeSeed,
+  PracticeSurface,
+} from "../practiceTypes";
 
 type Common = {
   id: string;
   operation: PracticeOperation;
   difficulty: PracticeDifficulty;
+  surface: PracticeSurface;
   lesson: string;
   required: string[];
   targets: string[];
   tags?: WeakPointTag[];
   repairs?: WeakPointTag;
+  /** French to speak first. Its presence makes the exercise a listening one. */
+  audio?: string;
 };
 
 /** A choice with reasoned traps. Recognition work, or a contrast before repair. */
@@ -40,10 +49,12 @@ export function fillSeed(
     id: spec.id,
     operation: spec.operation,
     difficulty: spec.difficulty,
+    surface: spec.surface,
     originLessonId: spec.lesson,
     requiredItemIds: spec.required,
     targetItemIds: spec.targets,
     ...(spec.repairs ? { repairsTag: spec.repairs } : {}),
+    ...(spec.audio ? { audio: spec.audio } : {}),
     exercise: {
       id: spec.id,
       type: "fill-with-traps",
@@ -89,10 +100,12 @@ export function weaveSeed(
     id: spec.id,
     operation: spec.operation,
     difficulty: spec.difficulty,
+    surface: spec.surface,
     originLessonId: spec.lesson,
     requiredItemIds: spec.required,
     targetItemIds: spec.targets,
     ...(spec.repairs ? { repairsTag: spec.repairs } : {}),
+    ...(spec.audio ? { audio: spec.audio } : {}),
     exercise: {
       id: spec.id,
       type: "weave",
@@ -112,6 +125,54 @@ export function weaveSeed(
           ...(spec.ifWrong ? { ifUnderstandableButWrong: spec.ifWrong } : {}),
         },
         validationMode: "exact-or-alternative",
+      },
+    },
+  };
+}
+
+/**
+ * Reconstruct an owned sentence from its pieces.
+ *
+ * Tiles are ITEMS, not words. "Je ne comprends pas." is one canonical chunk and
+ * therefore one tile, so it is never offered as a build — spelling a chunk out
+ * of fragments would teach a decomposition the curriculum does not own. Builds
+ * exist for CUMULATIVE sentences, where the pieces really are separate things
+ * the learner owns and the work is putting a moment back together in order.
+ */
+export function buildSeed(
+  spec: Common & {
+    prompt: string;
+    context?: string;
+    tiles: PracticeBuildTile[];
+    target: string;
+    ifCorrect: string;
+    ifWrong?: string;
+  },
+): PracticeSeed {
+  return {
+    id: spec.id,
+    operation: spec.operation,
+    difficulty: spec.difficulty,
+    surface: spec.surface,
+    originLessonId: spec.lesson,
+    requiredItemIds: spec.required,
+    targetItemIds: spec.targets,
+    ...(spec.repairs ? { repairsTag: spec.repairs } : {}),
+    ...(spec.audio ? { audio: spec.audio } : {}),
+    exercise: {
+      id: spec.id,
+      type: "practice-build",
+      targetItemIds: spec.targets,
+      ...(spec.tags ? { weakPointTags: spec.tags } : {}),
+      payload: {
+        prompt: spec.prompt,
+        ...(spec.context ? { context: spec.context } : {}),
+        tiles: spec.tiles,
+        targetText: spec.target,
+        reveal: {
+          ifCorrect: spec.ifCorrect,
+          ...(spec.ifWrong ? { ifWrong: spec.ifWrong } : {}),
+        },
       },
     },
   };

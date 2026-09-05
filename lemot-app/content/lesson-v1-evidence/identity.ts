@@ -23,6 +23,24 @@ import { isCanonicalItemId } from "../identity/canonicalItems";
 import { hasFixtureAlias } from "../identity/fixtureCompat";
 import type { LessonScreen } from "../lessonTypes";
 
+/**
+ * The only three fields this resolver reads.
+ *
+ * Structural rather than `LessonScreen` so PRACTICE surfaces — which are real
+ * graded exercises but deliberately not lesson screens — go through the same
+ * canonical-id checking instead of growing a parallel, laxer one. Every
+ * `LessonScreen` satisfies it, so no caller changed.
+ */
+export type EvidenceTargetedScreen = {
+  id: string;
+  targetItemIds?: readonly string[];
+  evidenceTargetItemIds?: readonly string[];
+};
+
+/** Compile-time proof that a shipped lesson screen still satisfies the shape. */
+const _lessonScreensQualify: (s: LessonScreen) => EvidenceTargetedScreen = (s) => s;
+void _lessonScreensQualify;
+
 /** Thrown when a shipped screen's evidence targeting cannot be trusted. */
 export class LessonEvidenceTargetError extends Error {
   constructor(message: string) {
@@ -51,7 +69,7 @@ export function qualifyLessonScreenId(lessonId: string, screenId: string): strin
  * trusted: a fixture alias, an unknown id, a duplicate or a non-subset entry
  * throws instead of quietly writing a wrong item id into the append-only log.
  */
-export function resolveEvidenceTargetItemIds(screen: LessonScreen): ItemId[] {
+export function resolveEvidenceTargetItemIds(screen: EvidenceTargetedScreen): ItemId[] {
   const declared = screen.targetItemIds ?? [];
   const narrowed = screen.evidenceTargetItemIds;
   const where = `screen "${screen.id}"`;

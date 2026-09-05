@@ -31,10 +31,13 @@ import type {
 } from "../learning-engine/session-controller";
 import {
   choiceInteraction,
+  cleanGradedAttemptContext,
   typedAttemptInteraction,
   type ChoiceFacts,
   type TypedAttemptFacts,
 } from "../lesson-v1-evidence/interactions";
+import { resolveEvidenceTargetItemIds } from "../lesson-v1-evidence/identity";
+import { gradeBuildSequence } from "../../components/learning-engine/buildSequence";
 import type { Lesson } from "../lessonTypes";
 import { PRACTICE_SESSION_LESSON_ID, qualifyPracticeSeedId } from "./practiceIdentity";
 import type { PracticeSeed } from "./practiceTypes";
@@ -94,4 +97,55 @@ export function practiceTypedAttempt(
     throw new Error(`practice seed "${seed.id}" is not a typed production`);
   }
   return asPracticeOrigin(typedAttemptInteraction(originLesson, seed.exercise, facts), seed);
+}
+
+
+/**
+ * One reconstruction attempt.
+ *
+ * `operation: "build"` is load-bearing, not decorative. The session controller
+ * derives the event PRIMITIVE from the operation, and `build` (like
+ * `recognition`) resolves to `selection` — so a reconstruction is capped at
+ * RECOGNITION evidence and can never be mistaken for independent production.
+ * That is exactly the pedagogy: putting owned pieces back in order is a bridge
+ * toward retrieval, not proof of it. No mastery rule needed changing to get
+ * this; the existing vocabulary already said it.
+ *
+ * Grading is the shipped `gradeBuildSequence`, so "right pieces, wrong order"
+ * stays a distinct outcome and punctuation never blocks a correct answer.
+ */
+export function practiceBuildAttempt(
+  seed: PracticeSeed,
+  originLesson: Lesson,
+  facts: { picked: readonly number[] },
+): RecordGradedAttemptInput {
+  if (seed.exercise.type !== "practice-build") {
+    throw new Error(`practice seed "${seed.id}" is not a reconstruction`);
+  }
+  const { tiles, targetText } = seed.exercise.payload;
+  const chosen = facts.picked.map((i) => tiles[i]?.text).filter((t) => t !== undefined);
+  return {
+    exercise: {
+      id: qualifyPracticeSeedId(seed.id),
+      lessonId: PRACTICE_SESSION_LESSON_ID,
+      targetItemIds: resolveEvidenceTargetItemIds(seed.exercise),
+      operation: "build",
+      tiles: tiles.map((tile) => ({
+        itemId: tile.itemId as never,
+        ...(tile.answerIndex !== undefined ? { answerIndex: tile.answerIndex } : {}),
+      })),
+    },
+    userAnswer: chosen.length > 0 ? chosen.join(" ") : null,
+    expectedAnswer: targetText,
+    gradeResult: gradeBuildSequence({
+      tiles: tiles.map((tile) => ({
+        itemId: tile.itemId as never,
+        ...(tile.answerIndex !== undefined ? { answerIndex: tile.answerIndex } : {}),
+      })),
+      picked: facts.picked,
+      normalizedAnswer: chosen.length > 0 ? chosen.join(" ") : null,
+      expectedAnswer: targetText,
+    }),
+    context: cleanGradedAttemptContext(originLesson),
+  };
 }

@@ -1,15 +1,18 @@
 import { useMemo, useRef, useState } from "react";
 import { View, Text, Pressable } from "react-native";
-import { X } from "lucide-react-native";
+import { X, Volume2 } from "lucide-react-native";
 import { P, SPACE } from "@/constants/theme";
 import { FillWithTraps } from "@/components/lesson-v1/screens/FillWithTraps";
 import { Weave } from "@/components/lesson-v1/screens/Weave";
 import { evaluateTypedAnswer } from "@/content/lesson-v1-evidence/typedEvaluation";
+import { gradeBuildSequence } from "@/components/learning-engine/buildSequence";
 import { selectRepairSeed } from "@/content/practice/practiceRepair";
 import { TODAYS_SET_MAX } from "@/content/learning-engine/practice-selector";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
 import type { PracticeSeed } from "@/content/practice/practiceTypes";
 import type { Lesson } from "@/content/lessonTypes";
+import { useSpeech } from "@/hooks/useSpeech";
+import { PracticeBuild } from "./PracticeBuild";
 import { usePracticeSession } from "./usePracticeSession";
 
 /** At most this many repair opportunities may be added to one session. */
@@ -55,6 +58,7 @@ export function PracticeRunner({
   onQuit: () => void;
 }) {
   const session = usePracticeSession(sessionKey);
+  const { say } = useSpeech();
   const [actions, setActions] = useState<PracticeSessionAction[]>([...plannedActions]);
   const [index, setIndex] = useState(0);
   const missCount = useRef(0);
@@ -100,6 +104,30 @@ export function PracticeRunner({
 
   const body = () => {
     if (!origin) return null; // structurally impossible; a seed names a real lesson
+    if (action.seed.exercise.type === "practice-build") {
+      const screen = action.seed.exercise;
+      return (
+        <PracticeBuild
+          key={action.seed.id}
+          screen={screen}
+          onContinue={advance}
+          onAttempt={({ picked }) => {
+            session.recordBuild(action.seed, origin, { picked });
+            const graded = gradeBuildSequence({
+              tiles: screen.payload.tiles.map((t) => ({
+                itemId: t.itemId as never,
+                ...(t.answerIndex !== undefined ? { answerIndex: t.answerIndex } : {}),
+              })),
+              picked,
+            });
+            if (graded.result !== "correct") {
+              missCount.current += 1;
+              enqueueRepair(action.seed);
+            }
+          }}
+        />
+      );
+    }
     if (action.seed.exercise.type === "fill-with-traps") {
       const screen = action.seed.exercise;
       return (
@@ -175,6 +203,39 @@ export function PracticeRunner({
           {`${index + 1} of ${actions.length}`}
         </Text>
       </View>
+      {/*
+        The listening affordance. Its presence is what turns a reused Fill or
+        Weave into a listening exercise: those seeds print no French, so the
+        control above is the only route to the answer. Replay is unlimited and
+        deliberately never recorded — how many times someone listens is not
+        evidence about what they know.
+      */}
+      {action.seed.audio !== undefined && (
+        <Pressable
+          onPress={() => say(action.seed.audio as string)}
+          accessibilityRole="button"
+          accessibilityLabel="Play the French again"
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: SPACE.sm,
+            marginHorizontal: SPACE.xl,
+            marginTop: SPACE.lg,
+            paddingVertical: SPACE.md,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: P.border,
+            backgroundColor: P.paper,
+          }}
+        >
+          <Volume2 size={18} color={P.ink2} />
+          <Text style={{ color: P.ink, fontSize: 15, fontWeight: "600" }}>
+            Play it again
+          </Text>
+        </Pressable>
+      )}
+
       <View style={{ flex: 1 }}>{body()}</View>
     </View>
   );

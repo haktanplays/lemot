@@ -22,6 +22,7 @@ import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import { PRACTICE_SESSION_LESSON_ID } from "@/content/practice/practiceIdentity";
 import {
   PRACTICE_HUB_SURFACE,
+  practiceBuildAttempt,
   practiceChoiceAttempt,
   practiceTypedAttempt,
 } from "@/content/practice/practiceInteractions";
@@ -48,6 +49,7 @@ export type PracticeEvidenceSession = {
     origin: Lesson,
     facts: { text: string; hintRung: HintRung; constitutiveSupportRendered: boolean },
   ): void;
+  recordBuild(seed: PracticeSeed, origin: Lesson, facts: { picked: readonly number[] }): void;
   whenSettled(): Promise<void>;
 };
 
@@ -90,6 +92,9 @@ export function usePracticeSession(sessionKey: string): PracticeEvidenceSession 
       },
       recordTyped(seed, origin, facts) {
         controller.recordGradedAttempt(practiceTypedAttempt(seed, origin, facts));
+      },
+      recordBuild(seed, origin, facts) {
+        controller.recordGradedAttempt(practiceBuildAttempt(seed, origin, facts));
       },
       whenSettled: () => controller.flush(),
     }),

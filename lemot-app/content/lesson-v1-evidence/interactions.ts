@@ -88,6 +88,22 @@ function opportunity(args: {
   };
 }
 
+/**
+ * The standard clean, unaided graded-attempt context for one lesson's language.
+ *
+ * Exported for PRACTICE, which grades surfaces the lesson path does not have
+ * (tile reconstruction). The assistance snapshot, the authored opportunity and
+ * the treatment resolver are the same decisions whichever surface asked the
+ * question, so practice reuses them rather than restating them and drifting.
+ */
+export function cleanGradedAttemptContext(lesson: Lesson): AttemptEvidenceContext {
+  return context({
+    lesson,
+    assistance: cleanAssistance(),
+    opportunity: opportunity({ graded: true }),
+  });
+}
+
 function context(args: {
   lesson: Lesson;
   assistance: AssistanceSnapshot;
