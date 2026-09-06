@@ -46,6 +46,7 @@ import "./activityChain.test";
 import "./practiceHubReadiness.test";
 import "./practiceSession.test";
 import "./practiceSurfaces.test";
+import "./weaveScaffoldContract.test";
 import "./shippedItemIds.test";
 import "./shippedErrorTags.test";
 import "./canonRules.test";

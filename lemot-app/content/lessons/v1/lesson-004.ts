@@ -243,8 +243,8 @@ const screens: LessonScreen[] = [
         weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
         payload: {
           weaveType: "mid",
-          prompt: "Write it in French: I am hungry.",
-          context: "It is past noon and you have not eaten. Say how you feel, the French way.",
+          prompt: "Say how you feel, the French way.",
+          context: "It is past noon and you have not eaten.",
           suggestedPieces: [
             { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
             { text: "faim", itemId: "noun-faim", required: true, label: "feeling word" },
@@ -273,8 +273,8 @@ const screens: LessonScreen[] = [
         weakPointTags: ["j-ai-vs-je-suis"],
         payload: {
           weaveType: "context",
-          prompt: "Write it in French: Hello, I have a question.",
-          context: "You step up to ask someone something. Greet first, then say you have a question.",
+          prompt: "Greet them, then say you have a question.",
+          context: "You step up to ask someone something. They turn to you: « Oui ? »",
           suggestedPieces: [
             { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
             { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },

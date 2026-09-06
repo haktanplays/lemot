@@ -225,8 +225,8 @@ const screens: LessonScreen[] = [
         weakPointTags: ["negation", "ne-pas"],
         payload: {
           weaveType: "mid",
-          prompt: "Write it in French: I am not here.",
-          context: "Someone is looking for you in the wrong room. Tell them you are not there.",
+          prompt: "Tell them you are not there.",
+          context: "Someone is looking for you in the wrong room. From the doorway: « Bonjour ? »",
           suggestedPieces: [
             { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true, label: "negative frame" },
             { text: "ici", itemId: "word-ici", required: true, label: "place word" },
@@ -267,8 +267,8 @@ const screens: LessonScreen[] = [
         weakPointTags: ["negation", "elision"],
         payload: {
           weaveType: "mid",
-          prompt: "Write it in French: It is not here.",
-          context: "Someone points to the wrong place. Tell them it is not the spot.",
+          prompt: "Tell them it is not the place.",
+          context: "Someone points to the wrong place and checks: « Ici ? »",
           suggestedPieces: [
             { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", required: true, label: "negative frame" },
             { text: "ici", itemId: "word-ici", required: true, label: "place word" },
@@ -331,9 +331,9 @@ const screens: LessonScreen[] = [
         weakPointTags: ["negation", "ne-pas"],
         payload: {
           weaveType: "context",
-          prompt: "Write it in French: I don't understand.",
+          prompt: "Tell them it went past you.",
           context:
-            "They answer you quickly, in a long sentence, and then wait. You caught almost none of it.",
+            "They answer you quickly, in a long sentence, and then wait: « Oui ? » You caught almost none of it.",
           expectedAnswers: ["Je ne comprends pas."],
           acceptedAlternatives: [
             "Je ne comprends pas",
@@ -360,8 +360,9 @@ const screens: LessonScreen[] = [
         weakPointTags: ["negation"],
         payload: {
           weaveType: "mid",
-          prompt: "Write it in French: No, I am not here.",
-          context: "Answer first, then say where you are not.",
+          prompt: "Answer them, then say you are not there.",
+          context:
+            "They ask through the door whether you are the one they are looking for. You are not.",
           suggestedPieces: [
             { text: "Non", itemId: "chunk-non", required: true, label: "no" },
             { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas", required: true, label: "negative frame" },

@@ -351,9 +351,9 @@ const screens: LessonScreen[] = [
         weakPointTags: ["natural-speech"],
         payload: {
           weaveType: "context",
-          prompt: "Write it in French: Hello, I am here. I would like a coffee, please.",
+          prompt: "Greet them, say you have arrived, then order a coffee politely.",
           context:
-            "You said you would meet them at the counter, and you have just walked up. Greet them, say you have arrived, then order.",
+            "You said you would meet them at the counter, and you have just walked up. They look up: « Bonjour ? »",
           suggestedPieces: [
             { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
             { text: "je suis", itemId: "chunk-je-suis", label: "I am" },

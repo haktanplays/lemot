@@ -268,7 +268,7 @@ const screens: LessonScreen[] = [
           weaveType: "open",
           prompt: "Ask for a break politely: say you'd like to take a pause, please.",
           context:
-            "You're working through something together. It's a good moment to ask.",
+            "You're working through something together. They pause: « Oui ? » It's a good moment to ask.",
           suggestedPieces: [
             {
               text: "je voudrais",

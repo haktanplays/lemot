@@ -147,7 +147,7 @@ const screens: LessonScreen[] = [
           weaveType: "context",
           prompt: "Ask where it is.",
           context:
-            "You're looking for the room. Someone friendly is standing nearby.",
+            "You're looking for the room. Someone friendly is standing nearby: « Bonjour ! »",
           suggestedPieces: [
             { text: "c'est", itemId: "chunk-c-est", label: "it is" },
             { text: "où", itemId: "adverb-ou-where", label: "where" },

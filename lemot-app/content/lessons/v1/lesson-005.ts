@@ -251,8 +251,9 @@ const screens: LessonScreen[] = [
         weakPointTags: ["articles", "politeness"],
         payload: {
           weaveType: "context",
-          prompt: "Write it in French: I would like a coffee.",
-          context: "Order at the counter, with the right little word.",
+          prompt: "Ask for a coffee, with the right little word in front of it.",
+          context:
+            "You are at the counter and the server is waiting. Just the request, nothing else.",
           suggestedPieces: [
             { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
             { text: "un café", itemId: "chunk-un-cafe", required: true, label: "noun package" },
@@ -320,8 +321,8 @@ const screens: LessonScreen[] = [
         weakPointTags: ["articles"],
         payload: {
           weaveType: "context",
-          prompt: "Write it in French: I have a question.",
-          context: "You want to ask something. Use the right little word.",
+          prompt: "Say that you have a question, with the right little word in front of it.",
+          context: "You want to ask something. They are already looking at you: « Oui ? »",
           suggestedPieces: [
             { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
             { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },

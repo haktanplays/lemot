@@ -146,8 +146,8 @@ const screens: LessonScreen[] = [
         weakPointTags: ["natural-speech"],
         payload: {
           weaveType: "context",
-          prompt: "Write it in French: Hello. I am here.",
-          context: "You are at the door. Greet, then say you have arrived.",
+          prompt: "Greet them, then say you have arrived.",
+          context: "You are at the door. A voice from inside: « Bonjour ? »",
           suggestedPieces: [
             { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
             { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
@@ -280,8 +280,8 @@ const screens: LessonScreen[] = [
         weakPointTags: ["j-ai-vs-je-suis"],
         payload: {
           weaveType: "context",
-          prompt: "Write it in French: I have a question.",
-          context: "There is one small thing you came to ask. Open it.",
+          prompt: "Say that you have a question.",
+          context: "There is one small thing you came to ask. They wait: « Oui ? »",
           suggestedPieces: [
             { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
             { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
@@ -364,9 +364,9 @@ const screens: LessonScreen[] = [
           weakPointTags: ["politeness", "negation"],
           payload: {
             weaveType: "context",
-            prompt: "Write it in French: Excuse me, I don't understand.",
+            prompt: "Reach them again, then say you did not follow.",
             context:
-              "They have already moved on to the next thing. Reach them again, then say you did not follow.",
+              "They have already moved on to the next thing.",
             suggestedPieces: [
               {
                 text: "Excusez-moi",

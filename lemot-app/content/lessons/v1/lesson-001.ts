@@ -259,7 +259,8 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-merci"],
         weakPointTags: ["politeness"],
         payload: {
-          weaveType: "supported",
+          // Medium, not easy: the prompt names the job, not the sentence.
+          weaveType: "mid",
           prompt: "The coffee arrives. Thank them.",
           // Scene only: it gives the moment a person to react to, so the screen
           // reads as a reaction rather than a translation task. It adds no pieces,
