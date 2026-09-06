@@ -73,6 +73,15 @@ export type PlanPracticeSessionInput = {
    * from the append-only log by `reachedLessonIds`, never guessed.
    */
   reachedLessons: ReadonlySet<string>;
+  /**
+   * When the learner last met each seed, by bare seed id. Absent = never.
+   *
+   * Without it "which exercise have I already done?" was per-session state:
+   * every item returned through its single highest-ranked seed, forever. A
+   * full-reach learner met 34 of 143 seeds across twelve sessions, saw no
+   * listening at all, and met one reconstruction in seventy-two actions.
+   */
+  seedHistory?: ReadonlyMap<string, number>;
   items: Readonly<Record<string, LearningItem>>;
   lessons: readonly Lesson[];
   seeds: readonly PracticeSeed[];
@@ -174,6 +183,7 @@ export function seedIsLawfulFor(
 
 export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSessionPlan {
   const { snapshot, items, seeds, now, budget, reachedLessons } = input;
+  const seedHistory = input.seedHistory ?? new Map<string, number>();
   const reached = reachedItemIds(snapshot);
 
   // Lawful seeds, indexed by the items they can practise.
@@ -214,7 +224,22 @@ export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSe
     for (const tag of candidate.weakPointTags) weakTags.push({ tag, errorCount: wrongCount });
   }
 
-  const todays = selectTodaysSet({ due: candidates, weakTags, budget, now });
+  // ── spacing across sessions ───────────────────────────────────────────
+  //
+  // `selectTodaysSet` orders due items oldest-first, which is right, and has
+  // one consequence it cannot see: an item that never leaves a low Leitner box
+  // is permanently the most overdue thing the learner owns. Six such items were
+  // taking roughly 85% of every session -- `adverb-ou-where` appeared in all
+  // sixty -- while three items were never selected at all and sixty-five seeds
+  // were dead content.
+  //
+  // So when there is more eligible material than the session needs, the items
+  // practised most recently step aside for this sitting. It is spacing, not a
+  // second priority model: due-ness and weakness still order everything that
+  // remains, a WEAK item is never set aside, and enough candidates are always
+  // kept to fill the budget.
+  const spaced = withoutJustPractised(candidates, snapshot, seedsForItem, seedHistory, budget);
+  const todays = selectTodaysSet({ due: spaced, weakTags, budget, now });
 
   // One seed per selected item, varying the cognitive job across the session.
   const actions: PracticeSessionAction[] = [];
@@ -230,7 +255,7 @@ export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSe
     const info = meta.get(itemId);
     const pool = seedsForItem.get(itemId);
     if (!info || !pool) continue;
-    const seed = pickSeed(pool, info.path, actions, usedSeedIds);
+    const seed = pickSeed(pool, info.path, actions, usedSeedIds, seedHistory);
     if (!seed) continue; // every seed for this item is spent — a shorter set is fine
     if (breaksAnyRunRule(seed, actions) && !deferred.has(itemId) && queue.length > 0) {
       deferred.add(itemId);
@@ -293,6 +318,54 @@ function withMicroMoment(
   return [...actions];
 }
 
+/**
+ * Drop the most recently practised items when the pool is bigger than the
+ * session, so a perpetually-overdue few cannot own every sitting.
+ *
+ * Bounded twice over, because both bounds were learned the hard way. Shrinking
+ * the pool toward the budget collapsed sessions to two actions: most items
+ * share the `chunk` family, so the survivors could be family-homogeneous and
+ * the canon diversity pass then had nothing legal left to place. So at most ONE
+ * session's worth of just-practised material steps aside, and never below twice
+ * the budget. A short session is a worse outcome than a repeated one.
+ *
+ * A weak item is never set aside.
+ */
+function withoutJustPractised(
+  candidates: readonly PracticeCandidate[],
+  snapshot: MasterySnapshot,
+  seedsForItem: ReadonlyMap<string, PracticeSeed[]>,
+  seedHistory: ReadonlyMap<string, number>,
+  budget: number,
+): PracticeCandidate[] {
+  const floor = budget * 2;
+  if (candidates.length <= floor) return [...candidates];
+
+  const lastPractised = (itemId: string): number => {
+    let latest = Number.NEGATIVE_INFINITY;
+    for (const seed of seedsForItem.get(itemId) ?? []) {
+      const at = seedHistory.get(seed.id);
+      if (at !== undefined && at > latest) latest = at;
+    }
+    return latest;
+  };
+
+  const weak = (itemId: string): boolean => snapshot.items[itemId]?.isWeak === true;
+  const droppable = candidates
+    .filter((c) => !weak(c.itemId) && lastPractised(c.itemId) > Number.NEGATIVE_INFINITY)
+    .sort(
+      (a, b) =>
+        lastPractised(b.itemId) - lastPractised(a.itemId) ||
+        (a.itemId < b.itemId ? -1 : 1),
+    );
+
+  // At most one session's worth steps aside, so the pool stays varied enough
+  // for the family-diversity pass to actually place a full set.
+  const room = Math.min(candidates.length - floor, budget);
+  const setAside = new Set(droppable.slice(0, room).map((c) => c.itemId));
+  return candidates.filter((c) => !setAside.has(c.itemId));
+}
+
 /** Would appending this seed make three consecutive actions share a job or a surface? */
 function breaksAnyRunRule(
   seed: PracticeSeed,
@@ -330,16 +403,28 @@ function pickSeed(
   path: PracticePoolPath,
   soFar: readonly PracticeSessionAction[],
   usedSeedIds: ReadonlySet<string>,
+  seedHistory: ReadonlyMap<string, number>,
 ): PracticeSeed | null {
   const opPref = OPERATION_PREFERENCE[path];
   const diffPref = DIFFICULTY_PREFERENCE[path];
   const seenSurfaces = new Set(soFar.map((a) => a.seed.surface));
   const seenOperations = new Set(soFar.map((a) => a.seed.operation));
-  // The one-per-session allowance that keeps reconstruction and listening
-  // reachable for a learner who has produced everything correctly.
+  // Two separate allowances, because they ration different things.
+  //
+  // Listening is the INPUT channel, not another recognition widget, so it gets
+  // its own slot. Sharing one selection budget with reconstruction and choice
+  // starved it completely: every item carries a single listen seed against two
+  // to five competing selection seeds, so listening sat at the back of a queue
+  // it never reached — zero listening actions in seventy-two.
   const spentStretchSelection = soFar.some(
-    (a) => a.path === "stretch" && !PRODUCTION_SURFACES.has(a.seed.surface),
+    (a) =>
+      a.path === "stretch" &&
+      !PRODUCTION_SURFACES.has(a.seed.surface) &&
+      a.seed.surface !== "listen",
   );
+  // One listening moment per session, whatever path it came from. Present, and
+  // never the shape of the session.
+  const spentListening = soFar.some((a) => a.seed.surface === "listen");
   const rank = (seed: PracticeSeed): number => {
     const op = opPref.indexOf(seed.operation);
     const diff = diffPref.indexOf(seed.difficulty);
@@ -347,11 +432,21 @@ function pickSeed(
     const diffRank = diff < 0 ? diffPref.length : diff;
     const freshJob = seenOperations.has(seed.operation) ? 1 : 0;
     const freshSurface = seenSurfaces.has(seed.surface) ? 1 : 0;
+    // Work the learner has never met leads everything else. Within one item
+    // that is what makes the pool rotate instead of replaying its favourite.
+    const doneBefore = seedHistory.has(seed.id) ? 1 : 0;
 
     // CHALLENGE is the weak path, and there variety must not dilute pedagogy:
     // a weak item needs its repair first, whatever the session has already
     // done. Surface freshness still breaks ties underneath.
-    if (path === "challenge") return opRank * 1000 + freshSurface * 100 + diffRank;
+    // One listening moment per session, on any path.
+    if (seed.surface === "listen" && spentListening) return Number.MAX_SAFE_INTEGER;
+
+    // CHALLENGE keeps repair first — a weak item needs its repair whatever the
+    // session has done — but prefers a repair the learner has not just seen.
+    if (path === "challenge") {
+      return opRank * 10_000 + doneBefore * 1_000 + freshSurface * 100 + diffRank;
+    }
 
     // STRETCH is language the learner has already produced, so it keeps
     // producing — but "keeps producing" is not "never anything else". Banning
@@ -363,15 +458,32 @@ function pickSeed(
     // strong item, and a production surface still wins whenever both are
     // equally fresh.
     if (path === "stretch") {
-      const selection = PRODUCTION_SURFACES.has(seed.surface) ? 0 : 1;
-      if (selection === 1 && spentStretchSelection) return Number.MAX_SAFE_INTEGER;
-      return freshJob * 1000 + selection * 500 + freshSurface * 100 + opRank * 10 + diffRank;
+      // Listening is NOT penalised here, and that is the point. Choice, fill
+      // and build are lower-scaffold routes to the same retrieval, so a strong
+      // item should not be handed them instead of producing. Listening is a
+      // different CHANNEL: producing "Merci." independently says nothing about
+      // recognising it by ear. Treating it as scaffolding kept it at zero
+      // actions in seventy-two, which is not "distinct", it is absent.
+      const selection =
+        PRODUCTION_SURFACES.has(seed.surface) || seed.surface === "listen" ? 0 : 1;
+      // Listening spends its own allowance, checked above, not this one.
+      if (selection === 1 && seed.surface !== "listen" && spentStretchSelection) {
+        return Number.MAX_SAFE_INTEGER;
+      }
+      return (
+        doneBefore * 100_000 +
+        freshJob * 1000 +
+        selection * 500 +
+        freshSurface * 100 +
+        opRank * 10 +
+        diffRank
+      );
     }
 
     // BUILD is language met but not yet owned, and there every surface is fair.
     // Leading with work the session has not done yet is what stopped a
     // clean-run learner receiving four applies out of six.
-    return freshJob * 1000 + freshSurface * 100 + opRank * 10 + diffRank;
+    return doneBefore * 100_000 + freshJob * 1000 + freshSurface * 100 + opRank * 10 + diffRank;
   };
 
   const opTail = soFar.slice(-MAX_CONSECUTIVE_SAME_OPERATION);
@@ -386,9 +498,17 @@ function pickSeed(
 
   // Ties break on pool order, which is authored order — so the same learner
   // state produces the same session every time it is planned.
+  const lastSeen = (seed: PracticeSeed): number =>
+    seedHistory.get(seed.id) ?? Number.NEGATIVE_INFINITY;
   const ordered = [...pool]
     .map((seed, index) => ({ seed, index }))
-    .sort((a, b) => rank(a.seed) - rank(b.seed) || a.index - b.index)
+    .sort(
+      (a, b) =>
+        rank(a.seed) - rank(b.seed) ||
+        // Equal on every quality term: the one met longest ago returns first.
+        lastSeen(a.seed) - lastSeen(b.seed) ||
+        a.index - b.index,
+    )
     .map((x) => x.seed)
     .filter((seed) => !usedSeedIds.has(seed.id));
 

@@ -72,13 +72,17 @@ export default function PracticeRoute() {
     setState({ phase: "loading" });
     runtime
       .readPracticeReach()
-      .then(({ snapshot, reachedLessonIds }) => {
+      .then(({ snapshot, reachedLessonIds, practiceSeedHistory }) => {
         if (loadToken.current !== token) return;
         const reachedLessons = new Set(reachedLessonIds);
+        // What the learner has already met, so an item returns through work
+        // they have not just done rather than its one favourite exercise.
+        const seedHistory = new Map(Object.entries(practiceSeedHistory));
         // The ONE orchestration-boundary clock read; the planner never reads one.
         const plan = planPracticeSession({
           snapshot,
           reachedLessons,
+          seedHistory,
           items: ITEM_REGISTRY,
           lessons: V1_LESSONS,
           seeds: PRACTICE_SEEDS,

@@ -37,6 +37,7 @@ import {
   planPracticeSession,
   reachedItemIds,
   reachedLessonIds,
+  type PracticeSessionAction,
   seedIsLawfulFor,
   MAX_CONSECUTIVE_SAME_SURFACE,
 } from "../../content/practice/practicePlanner";
@@ -48,6 +49,7 @@ import {
 import {
   PRACTICE_HUB_SURFACE,
   practiceBuildAttempt,
+  practiceChoiceAttempt,
   practiceTypedAttempt,
 } from "../../content/practice/practiceInteractions";
 import { PRACTICE_SESSION_LESSON_ID } from "../../content/practice/practiceIdentity";
@@ -559,5 +561,188 @@ describe("a micro-moment is one situation, not a roleplay session", () => {
       const ids = actions.map((a) => a.seed.id);
       assertEqual(new Set(ids).size, ids.length, "a moment duplicated a seed");
     }
+  });
+});
+
+// ── across sessions ─────────────────────────────────────────────────────────
+
+/** Per-item last-practised times, exactly as the runtime projection derives them. */
+function historyFrom(events: readonly { exerciseId?: string; timestamp?: number }[]) {
+  const out = new Map<string, number>();
+  for (const e of events) {
+    const id = e.exerciseId;
+    if (typeof id !== "string" || !id.startsWith("practice/")) continue;
+    const seedId = id.slice("practice/".length);
+    const at = e.timestamp ?? 0;
+    if (at >= (out.get(seedId) ?? -1)) out.set(seedId, at);
+  }
+  return out;
+}
+
+/**
+ * Run consecutive sessions the way the product does: plan, PLAY, re-read.
+ *
+ * Playing matters and an earlier version of these tests got it wrong. Recording
+ * seed ids without writing real evidence leaves `dueAt` frozen, so the same few
+ * items stay permanently overdue and the run looks far more repetitive than the
+ * product is. Practising has to move mastery for the next plan to be honest.
+ */
+async function runSessions(
+  learner: Awaited<ReturnType<typeof learnerAfter>>,
+  count: number,
+  budget = 6,
+) {
+  const runtime = createLearningEngineRuntime({
+    repository: learner.repo,
+    appBuild: "test",
+    deviceInfo: { platform: "test" },
+    makeSessionId: () => "sess-run",
+  });
+  const sessions: PlannedSession[] = [];
+
+  for (let i = 0; i < count; i += 1) {
+    const now = NOW + DAY * (40 + i);
+    const events = await learner.repo.readAllEvents();
+    const plan = planPracticeSession({
+      snapshot: scoreEvents(events),
+      reachedLessons: reachedLessonIds(events),
+      seedHistory: historyFrom(events),
+      items: ITEMS,
+      lessons: V1_LESSONS,
+      seeds: PRACTICE_SEEDS,
+      now,
+      budget,
+    });
+    sessions.push({ actions: [...plan.actions] });
+
+    let tick = 0;
+    const controller = runtime.createSessionController({
+      lessonId: PRACTICE_SESSION_LESSON_ID,
+      contentVersion: "practice-pool-v1",
+      resolveEventSurface: PRACTICE_HUB_SURFACE,
+      now: () => now + (tick += 1_000),
+      makeClientEventId: () => `evt-run-${i}-${tick}`,
+    });
+    for (const action of plan.actions) {
+      const origin = lessonOf(action.seed.originLessonId);
+      const exercise = action.seed.exercise;
+      if (exercise.type === "fill-with-traps") {
+        const correct = exercise.payload.options.find((o) => o.isCorrect);
+        if (correct) {
+          controller.recordGradedAttempt(
+            practiceChoiceAttempt(action.seed, origin, { optionId: correct.id }),
+          );
+        }
+      } else if (exercise.type === "practice-build") {
+        const order = exercise.payload.tiles
+          .map((tile, index) => ({ tile, index }))
+          .filter((t) => t.tile.answerIndex !== undefined)
+          .sort((a, b) => (a.tile.answerIndex as number) - (b.tile.answerIndex as number))
+          .map((t) => t.index);
+        controller.recordGradedAttempt(
+          practiceBuildAttempt(action.seed, origin, { picked: order }),
+        );
+      } else {
+        controller.recordGradedAttempt(
+          practiceTypedAttempt(action.seed, origin, {
+            text: exercise.payload.expectedAnswers[0],
+            hintRung: 0,
+            constitutiveSupportRendered: false,
+          }),
+        );
+      }
+    }
+    await controller.flush();
+  }
+  return sessions;
+}
+
+type PlannedSession = { actions: PracticeSessionAction[] };
+
+describe("consecutive sessions are not the first one shuffled", () => {
+  test("a repeatedly practising learner keeps meeting new work", async () => {
+    // The defect this protects against was severe and invisible to every other
+    // test: seed choice had no memory across sessions, so each item returned
+    // through its single highest-ranked exercise forever. A full-reach learner
+    // met 34 of 143 seeds in twelve sessions, saw ZERO listening, and met one
+    // reconstruction in seventy-two actions.
+    const learner = await learnerAfter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const sessions = await runSessions(learner, 8);
+
+    const seen = new Set<string>();
+    const surfaces = new Set<string>();
+    for (const [i, session] of sessions.entries()) {
+      assert(
+        session.actions.length >= 5,
+        `session ${i + 1} collapsed to ${session.actions.length} actions`,
+      );
+      for (const a of session.actions) {
+        seen.add(a.seed.id);
+        surfaces.add(a.seed.surface);
+      }
+    }
+    assert(seen.size >= 30, `only ${seen.size} distinct seeds across eight sessions`);
+    assert(
+      surfaces.size >= 5,
+      `only ${surfaces.size} interactions across eight sessions: ${[...surfaces].join(", ")}`,
+    );
+  });
+
+  test("no single item can own every session", async () => {
+    // `selectTodaysSet` orders due-oldest-first, which cannot see that an item
+    // stuck in a low Leitner box is permanently the most overdue thing a
+    // learner owns. Six such items were taking ~85% of every session, and three
+    // items were never selected at all.
+    const learner = await learnerAfter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const sessions = await runSessions(learner, 10);
+
+    const picks = new Map<string, number>();
+    for (const session of sessions) {
+      for (const a of session.actions) picks.set(a.itemId, (picks.get(a.itemId) ?? 0) + 1);
+    }
+    const worst = Math.max(...picks.values());
+    assert(
+      worst < sessions.length,
+      `one item appeared in ${worst} of ${sessions.length} sessions — a monopoly is back`,
+    );
+    assert(
+      picks.size >= 15,
+      `only ${picks.size} distinct items across ${sessions.length} sessions`,
+    );
+  });
+
+  test("listening is present without becoming the session", async () => {
+    // Listening is the input CHANNEL, not a scaffolded route to production, so
+    // it is not penalised on the Stretch path. It is capped at one per session
+    // so it stays a moment rather than a mode.
+    const learner = await learnerAfter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const sessions = await runSessions(learner, 8);
+
+    let listeningSessions = 0;
+    for (const [i, session] of sessions.entries()) {
+      const listens = session.actions.filter((a) => a.seed.surface === "listen");
+      assert(listens.length <= 1, `session ${i + 1} served ${listens.length} listening actions`);
+      if (listens.length === 1) listeningSessions += 1;
+    }
+    assert(listeningSessions > 0, "listening never appeared across eight sessions");
+  });
+
+  test("production stays the centre of gravity across a run of sessions", async () => {
+    const PRODUCES = new Set(["typed", "context", "dictation"]);
+    const learner = await learnerAfter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const sessions = await runSessions(learner, 8);
+
+    let produced = 0;
+    let total = 0;
+    for (const session of sessions) {
+      for (const a of session.actions) {
+        total += 1;
+        if (PRODUCES.has(a.seed.surface)) produced += 1;
+      }
+    }
+    assert(
+      produced / total >= 0.5,
+      `only ${produced}/${total} actions asked the learner to produce`,
+    );
   });
 });

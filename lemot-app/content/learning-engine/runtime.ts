@@ -39,6 +39,8 @@ import {
   type SessionState,
 } from "./session-controller";
 import { subscribePrivacyReset } from "../../lib/privacyResetEpoch";
+// Dependency-free constant module; no cycle back into the engine.
+import { PRACTICE_ID_PREFIX } from "../practice/practiceIdentity";
 
 /**
  * What a caller must state to get a controller. Everything the RUNTIME owns —
@@ -110,6 +112,18 @@ export type PracticeReachProjection = {
   snapshot: MasterySnapshot;
   /** Lesson ids with real learner evidence. Practice's own events never appear. */
   reachedLessonIds: string[];
+  /**
+   * When the learner last met each practice seed, keyed by bare seed id.
+   *
+   * Practice was picking the same seed for an item every session, because
+   * "which exercise did I already do?" was per-session state that died with the
+   * session. Across twelve consecutive sessions a full-reach learner met only
+   * 34 of 143 seeds, never saw a listening exercise, and met one reconstruction
+   * in seventy-two actions. The append-only log already knew better: every
+   * practice attempt carries `practice/<seedId>`. This surfaces that, so the
+   * planner can prefer work the learner has not done lately.
+   */
+  practiceSeedHistory: Record<string, number>;
 };
 
 export type LearningRuntimeMetadata = {
@@ -184,14 +198,22 @@ export function createLearningEngineRuntime(
       // dropped: once into the snapshot, once into the set of lesson ids.
       const events = await repository.readAllEvents();
       const reached = new Set<string>();
+      const seedHistory: Record<string, number> = {};
       for (const event of events) {
         if (typeof event.lessonId === "string" && event.lessonId.length > 0) {
           reached.add(event.lessonId);
+        }
+        const exerciseId = event.exerciseId;
+        if (typeof exerciseId === "string" && exerciseId.startsWith(PRACTICE_ID_PREFIX)) {
+          const seedId = exerciseId.slice(PRACTICE_ID_PREFIX.length);
+          const at = typeof event.timestamp === "number" ? event.timestamp : 0;
+          if (at >= (seedHistory[seedId] ?? -1)) seedHistory[seedId] = at;
         }
       }
       return {
         snapshot: scoreEvents(events),
         reachedLessonIds: [...reached].sort(),
+        practiceSeedHistory: seedHistory,
       };
     },
   };
