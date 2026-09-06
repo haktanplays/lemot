@@ -65,6 +65,60 @@ export const PRACTICE_MOMENTS: readonly PracticeMoment[] = [
       "p-l9-apply-ask-and-say-why",
     ],
   },
+  {
+    id: "moment-arriving-expected",
+    intro: "You are expected, nobody has noticed you yet, and the coffee is already going.",
+    seedIds: [
+      "p-l2-produce-arrive-excuse",
+      "p-l2-apply-called-from-next-room",
+      "p-l2-apply-arrive-and-order",
+    ],
+  },
+  {
+    id: "moment-down-the-corridor",
+    intro: "Someone is working their way down the corridor, asking at every door.",
+    seedIds: [
+      "p-l3-produce-not-this-room",
+      "p-l3-apply-not-that-place",
+      "p-l3-apply-answer-yes",
+    ],
+  },
+  {
+    id: "moment-late-and-hungry",
+    intro: "You arrive late, you have not eaten, and you still have things to say.",
+    seedIds: [
+      "p-l4-apply-here-and-hungry",
+      "p-l4-produce-open-a-question",
+      "p-l4-build-cut-in-with-an-idea",
+    ],
+  },
+  {
+    id: "moment-the-long-meeting",
+    intro: "A meeting, a drink you did not want this morning, and two things worth saying.",
+    seedIds: [
+      "p-l5-apply-two-packages-context",
+      "p-l5-produce-have-with-package",
+      "p-l5-apply-idea-context-only",
+    ],
+  },
+  {
+    id: "moment-in-ask-out",
+    intro: "The whole visit, from the door opening to the door closing, including the part you miss.",
+    seedIds: [
+      "p-l6-apply-step-in-whole",
+      "p-l6-apply-say-so-and-ask-again",
+      "p-l6-build-close-warmly",
+    ],
+  },
+  {
+    id: "moment-finding-your-way",
+    intro: "Your first time in the building, and by the end someone is asking you.",
+    seedIds: [
+      "p-l8-apply-ask-context-only",
+      "p-l8-produce-check-the-door",
+      "p-l8-apply-answer-the-asker",
+    ],
+  },
 ];
 
 /**

@@ -356,6 +356,14 @@ function withScene(
   ];
 }
 
+/** Whether a finished sequence obeys the session run rules end to end. */
+function respectsRunRules(actions: readonly PracticeSessionAction[]): boolean {
+  for (let i = 0; i < actions.length; i += 1) {
+    if (breaksAnyRunRule(actions[i].seed, actions.slice(0, i))) return false;
+  }
+  return true;
+}
+
 /**
  * Does a strong learner still spend this session mostly producing?
  *
@@ -415,7 +423,13 @@ function withMicroMoment(
     // The test is the invariant rather than a fixed count: whatever the scene
     // adds, a learner who produces this language cleanly must still spend more
     // of the session producing it than picking it out of a list.
-    if (!mostlyProductionOnStretch(withScene(actions, covered, steps, moment))) continue;
+    const spliced = withScene(actions, covered, steps, moment);
+    if (!mostlyProductionOnStretch(spliced)) continue;
+    // The scene is authored, the SEAM is not. A scene's last beat landing next
+    // to an unrelated action of the same job is three of that job in a row, and
+    // the learner feels the run even though the scene itself reads as one
+    // event. A scene that cannot be placed cleanly is not placed.
+    if (!respectsRunRules(spliced)) continue;
 
     candidates.push({
       moment,

@@ -48,7 +48,7 @@ export const L5_SEEDS: PracticeSeed[] = [
     difficulty: "easy",
     surface: "fill",
     lesson: L,
-    required: ["chunk-une-question", "noun-question", "grammar-un-une-package"],
+    required: ["chunk-une-question", "grammar-un-une-package"],
     targets: ["chunk-une-question", "grammar-un-une-package"],
     tags: ["articles", "gender"],
     repairs: "articles",

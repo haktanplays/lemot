@@ -5,6 +5,10 @@
  * something a beginner says, so it is practised only inside `chunk-je-suis-ici`.
  * No seed here targets it on its own, which is the matrix honoured in content
  * rather than merely asserted in a test.
+ *
+ * It is also never NAMED in a `required` list, and that is not a style choice.
+ * A carried item is never reached on its own, so requiring it made the seed
+ * unservable forever. Require the carrier.
  */
 import { buildSeed, fillSeed, weaveSeed } from "./build";
 import type { PracticeSeed } from "../practiceTypes";
@@ -239,7 +243,7 @@ export const L2_SEEDS: PracticeSeed[] = [
     difficulty: "easy",
     surface: "fill",
     lesson: L,
-    required: ["chunk-je-suis-ici", "word-ici"],
+    required: ["chunk-je-suis-ici"],
     targets: ["chunk-je-suis-ici"],
     prompt: "Which piece says WHERE you are?",
     before: "Je suis ",
