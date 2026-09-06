@@ -190,3 +190,39 @@ async function run() {
   console.log(`  most-picked: ${top.map(([k, v]) => k + "=" + v).join("  ")}`);
 }
 void run();
+
+// ── micro-moment reliability ────────────────────────────────────────────────
+// Reporting only: how often an eligible session actually receives a scene, and
+// whether one scene dominates a learner who practises every day.
+async function momentReport(lessons: number[], label: string, count: number) {
+  const { repo } = await learner(lessons);
+  const tally: Record<string, number> = {};
+  const without: string[] = [];
+  let carried = 0;
+
+  for (let i = 0; i < count; i += 1) {
+    const now = NOW + DAY * (40 + i);
+    const p = await plan(repo, now);
+    const moment = p.actions.find((a) => a.moment)?.moment;
+    if (moment) {
+      carried += 1;
+      tally[moment.id] = (tally[moment.id] ?? 0) + 1;
+    } else {
+      without.push(p.actions.map((a) => a.itemId).join(" "));
+    }
+    await play(repo, p.actions, now);
+  }
+
+  console.log(`\n-- ${label}: ${carried} of ${count} sessions carried a scene`);
+  console.log(`   which scene: ${JSON.stringify(tally)}`);
+  for (const items of without) console.log(`   none, session worked: ${items}`);
+}
+
+if (process.env.MOMENTS) {
+  void (async () => {
+    console.log("=== MICRO-MOMENT RELIABILITY ===");
+    await momentReport([1], "L1-only learner", 5);
+    await momentReport([1, 2, 3, 4, 5, 6], "mid-path learner", 5);
+    await momentReport([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "rich L1-L10 learner", 8);
+  })();
+}

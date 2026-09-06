@@ -746,3 +746,124 @@ describe("consecutive sessions are not the first one shuffled", () => {
     );
   });
 });
+
+// ── micro-moments ───────────────────────────────────────────────────────────
+
+describe("micro-moments are reliable without being forced", () => {
+  test("a session already working a scene's language receives the scene", async () => {
+    // The trigger is the ITEM, not the seed. A learner can be working
+    // `chunk-je-voudrais` today and have a scene built on it sitting in the
+    // pool, and under seed-level matching still never see it, because the
+    // planner had simply picked that item's dictation instead.
+    const learner = await learnerAfter([1]);
+    let events = [...learner.events];
+    let carried = 0;
+
+    for (let i = 0; i < 5; i += 1) {
+      const plan = planPracticeSession({
+        snapshot: scoreEvents(events),
+        reachedLessons: reachedLessonIds(events),
+        seedHistory: historyFrom(events),
+        items: ITEMS,
+        lessons: V1_LESSONS,
+        seeds: PRACTICE_SEEDS,
+        now: NOW + DAY * (40 + i),
+        budget: 6,
+      });
+      if (plan.actions.some((a) => a.moment)) carried += 1;
+      events = [
+        ...events,
+        ...plan.actions.map((a, n) => ({
+          exerciseId: `practice/${a.seed.id}`,
+          timestamp: NOW + DAY * (40 + i) + n,
+        })),
+      ] as typeof events;
+    }
+    assert(carried > 0, "an L1 learner met no scene in five sessions");
+  });
+
+  test("a scene never introduces language the learner has not reached", async () => {
+    // The reliability work must not have bought frequency with unlawful
+    // language: an L1 learner cannot be handed the L10 corridor scene.
+    const learner = await learnerAfter([1]);
+    const reached = reachedItemIds(learner.snapshot);
+    const plan = planPracticeSession({
+      snapshot: scoreEvents(learner.events),
+      reachedLessons: reachedLessonIds(learner.events),
+      seedHistory: new Map(),
+      items: ITEMS,
+      lessons: V1_LESSONS,
+      seeds: PRACTICE_SEEDS,
+      now: NOW + DAY * 40,
+      budget: 6,
+    });
+    for (const action of plan.actions.filter((a) => a.moment)) {
+      for (const itemId of action.seed.requiredItemIds) {
+        assert(
+          reached.has(itemId),
+          `scene ${action.moment?.id} required unreached ${itemId}`,
+        );
+      }
+    }
+  });
+
+  test("a session that is about none of the scenes is allowed to have none", () => {
+    // Reliability is not a quota. A learner whose session works entirely
+    // different language should not have a scene bolted onto it.
+    const scenes = new Set(PRACTICE_MOMENTS.flatMap((m) => m.seedIds));
+    assert(scenes.size > 0, "there are scenes to avoid");
+    assert(
+      PRACTICE_SEEDS.filter((s) => !scenes.has(s.id)).length > PRACTICE_SEEDS.length / 2,
+      "most of the pool is outside any scene, so empty sessions are normal",
+    );
+  });
+
+  test("the same scene does not run on consecutive sittings", async () => {
+    // A learner practising daily should not walk into the same café every
+    // morning. Where another scene qualifies it takes the slot; where none
+    // does, the session has none.
+    const learner = await learnerAfter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const sessions = await runSessions(learner, 6);
+    const played = sessions.map((s) => s.actions.find((a) => a.moment)?.moment?.id ?? null);
+
+    for (let i = 1; i < played.length; i += 1) {
+      if (played[i] === null) continue;
+      assert(
+        played[i] !== played[i - 1],
+        `scene ${played[i]} ran twice in a row (sessions ${i} and ${i + 1})`,
+      );
+    }
+    assert(
+      played.filter((p) => p !== null).length >= 2,
+      `only ${played.filter((p) => p !== null).length} of six sessions carried a scene`,
+    );
+    assert(
+      new Set(played.filter((p) => p !== null)).size >= 2,
+      "one scene dominated every session that had one",
+    );
+  });
+
+  test("a scene plays its beats in the authored order", async () => {
+    const learner = await learnerAfter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const sessions = await runSessions(learner, 6);
+    for (const session of sessions) {
+      const beats = session.actions.filter((a) => a.moment);
+      if (beats.length === 0) continue;
+      const moment = beats[0].moment;
+      assert(moment !== undefined, "a beat without its scene");
+      assertEqual(
+        beats.map((b) => b.seed.id).join(","),
+        moment.seedIds.join(","),
+        "scene beats were reordered or dropped",
+      );
+      // Contiguous, or it is not a scene.
+      const first = session.actions.findIndex((a) => a.moment);
+      for (let i = 0; i < beats.length; i += 1) {
+        assert(
+          session.actions[first + i]?.moment?.id === moment.id,
+          "another action was spliced into the middle of a scene",
+        );
+      }
+    }
+  });
+});

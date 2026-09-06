@@ -44,7 +44,6 @@ import type { LearningItem, Lesson } from "../lessonTypes";
 import type { PracticeDifficulty, PracticeOperation, PracticeSeed } from "./practiceTypes";
 import {
   PRACTICE_MOMENTS,
-  momentContaining,
   momentSeeds,
   type PracticeMoment,
 } from "./practiceMoments";
@@ -267,7 +266,7 @@ export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSe
   }
 
   return {
-    actions: withMicroMoment(actions, seeds, reached, reachedLessons),
+    actions: withMicroMoment(actions, seeds, reached, reachedLessons, seedHistory),
     requested: todays.requested,
   };
 }
@@ -276,46 +275,178 @@ export function planPracticeSession(input: PlanPracticeSessionInput): PracticeSe
  * Turn part of the session into one small connected scene, when the selector
  * has already chosen to work that language today.
  *
- * Emergent rather than forced: no item is selected BECAUSE a moment wanted it.
- * The trigger is membership, not opening — if any chosen action is a beat in an
- * authored scene, the scene replaces it and plays from its beginning. Requiring
- * the opening beat meant moments existed in the pool and never in a session.
+ * Emergent rather than forced: no item is ever selected BECAUSE a moment wanted
+ * it. The trigger is what the session already contains.
+ *
+ * The trigger is the ITEM, not the seed, and that distinction is the whole
+ * reason moments were unreliable. The selector chooses an item first and only
+ * then an exercise for it, so requiring the exact authored seed to be drawn
+ * meant a learner could be working `chunk-je-voudrais` today, have a scene
+ * built on `chunk-je-voudrais` sitting in the pool, and still never see it —
+ * the planner had simply picked that item's dictation instead. Matching on the
+ * item asks the honest question: is this session already about this language?
+ *
+ * Where several scenes qualify, the one the session covers most is played, so
+ * frequency never comes at the cost of coherence — a scene sharing two of
+ * today's items is more truly today's session than one sharing a single item.
+ * Ties go to the scene least recently played, and a scene the learner has just
+ * been through steps aside if any other qualifies. When none does, the session
+ * has none. That is a real outcome, not a failure to fill a quota.
  *
  * At most one per session, never past the canon ceiling, and only when every
  * step is lawful for this learner and not already spent elsewhere.
  */
+/**
+ * When the learner's most recent practice SITTING began.
+ *
+ * A sitting, not an event: the steps of one session are seconds apart and the
+ * next session is a day later, so anything inside this window was part of the
+ * same visit. Comparing against the single newest event instead was wrong in a
+ * way that quietly halved the effect — a scene is rarely the last thing played
+ * in a sitting, so a scene played moments ago did not look recent.
+ */
+const SITTING_WINDOW_MS = 60 * 60 * 1000;
+
+function lastSittingStart(seedHistory: ReadonlyMap<string, number>): number {
+  let latest = Number.NEGATIVE_INFINITY;
+  for (const at of seedHistory.values()) if (at > latest) latest = at;
+  return latest === Number.NEGATIVE_INFINITY ? latest : latest - SITTING_WINDOW_MS;
+}
+
+/**
+ * When this scene last played AS A SCENE, or -Infinity if it never has.
+ *
+ * Every step within one sitting, not merely each step seen at some point. The
+ * looser reading silenced scenes that had never actually been played: a scene's
+ * exercises are ordinary pool seeds and get drawn individually all the time, so
+ * having met one of them yesterday made the whole scene look freshly played and
+ * a mid-path learner received none at all.
+ */
+function lastPlayedAsScene(
+  steps: readonly PracticeSeed[],
+  seedHistory: ReadonlyMap<string, number>,
+): number {
+  const times = steps.map((s) => seedHistory.get(s.id));
+  if (times.some((t) => t === undefined)) return Number.NEGATIVE_INFINITY;
+  const played = times as number[];
+  const latest = Math.max(...played);
+  const earliest = Math.min(...played);
+  return latest - earliest <= SITTING_WINDOW_MS ? latest : Number.NEGATIVE_INFINITY;
+}
+
+/** The session as it would be with this scene spliced in. */
+function withScene(
+  actions: readonly PracticeSessionAction[],
+  covered: readonly number[],
+  steps: readonly PracticeSeed[],
+  moment: PracticeMoment,
+): PracticeSessionAction[] {
+  const at = covered[0];
+  const replaced = new Set(covered);
+  const path = actions[at].path;
+  return [
+    ...actions.filter((_, i) => i < at && !replaced.has(i)),
+    ...steps.map((seed) => ({
+      seed,
+      itemId: seed.targetItemIds[0],
+      path,
+      moment,
+    })),
+    ...actions.filter((_, i) => i > at && !replaced.has(i)),
+  ];
+}
+
+/**
+ * Does a strong learner still spend this session mostly producing?
+ *
+ * The selector is capped at one recognition action for items the learner
+ * already produces cleanly. A scene cannot honour that number, because almost
+ * every authored scene opens on a beat of understanding before it asks for
+ * language, so a fixed cap of one silenced scenes almost entirely. The number
+ * was never the point: it stood in for "a strong learner should not spend the
+ * sitting being shown answers". That is what is checked here, and a scene may
+ * spend its narrative beat as long as production still outweighs it.
+ */
+function mostlyProductionOnStretch(actions: readonly PracticeSessionAction[]): boolean {
+  const stretch = actions.filter((a) => a.path === "stretch");
+  const produced = stretch.filter((a) => PRODUCTION_SURFACES.has(a.seed.surface)).length;
+  return produced > stretch.length - produced;
+}
+
 function withMicroMoment(
   actions: readonly PracticeSessionAction[],
   seeds: readonly PracticeSeed[],
   reachedItems: ReadonlySet<string>,
   reachedLessons: ReadonlySet<string>,
+  seedHistory: ReadonlyMap<string, number>,
 ): PracticeSessionAction[] {
-  for (const [index, action] of actions.entries()) {
-    const moment = momentContaining(action.seed.id, PRACTICE_MOMENTS);
-    if (!moment) continue;
+  const todaysItems = new Set(actions.map((a) => a.itemId));
+
+  type Candidate = {
+    moment: PracticeMoment;
+    steps: PracticeSeed[];
+    covered: number[];
+    lastPlayed: number;
+  };
+  const candidates: Candidate[] = [];
+
+  for (const moment of PRACTICE_MOMENTS) {
     const steps = momentSeeds(moment, seeds);
     if (!steps) continue;
-    // Every other action in the session, so a step already being practised
-    // somewhere else does not appear twice.
+    if (!steps.every((s) => seedIsLawfulFor(s, reachedItems, reachedLessons))) continue;
+
+    // Which of today's actions this scene is already about.
+    const momentItems = new Set(steps.map((s) => s.targetItemIds[0]));
+    const covered = actions
+      .map((a, i) => (momentItems.has(a.itemId) ? i : -1))
+      .filter((i) => i >= 0);
+    if (covered.length === 0) continue;
+
+    // Those actions give way to the scene; the rest of the session must still fit.
+    if (actions.length - covered.length + steps.length > TODAYS_SET_MAX) continue;
+
+    // A step already being practised elsewhere in the session would appear twice.
     const elsewhere = new Set(
-      actions.filter((_, i) => i !== index).map((a) => a.seed.id),
+      actions.filter((_, i) => !covered.includes(i)).map((a) => a.seed.id),
     );
     if (steps.some((s) => elsewhere.has(s.id))) continue;
-    if (!steps.every((s) => seedIsLawfulFor(s, reachedItems, reachedLessons))) continue;
-    if (actions.length - 1 + steps.length > TODAYS_SET_MAX) continue;
 
-    return [
-      ...actions.slice(0, index),
-      ...steps.map((seed) => ({
-        seed,
-        itemId: seed.targetItemIds[0],
-        path: action.path,
-        moment,
-      })),
-      ...actions.slice(index + 1),
-    ];
+    // A scene may not turn a strong learner's sitting into recognition work.
+    // The test is the invariant rather than a fixed count: whatever the scene
+    // adds, a learner who produces this language cleanly must still spend more
+    // of the session producing it than picking it out of a list.
+    if (!mostlyProductionOnStretch(withScene(actions, covered, steps, moment))) continue;
+
+    candidates.push({
+      moment,
+      steps,
+      covered,
+      lastPlayed: lastPlayedAsScene(steps, seedHistory),
+    });
   }
-  return [...actions];
+
+  if (candidates.length === 0) return [...actions];
+
+  // Most of today's session first, then least recently played.
+  candidates.sort(
+    (a, b) => b.covered.length - a.covered.length || a.lastPlayed - b.lastPlayed,
+  );
+
+  // A scene just played steps aside, so a learner practising daily does not
+  // walk into the same café every morning. Where another scene qualifies it
+  // takes the slot; where none does the session simply has no scene, which is
+  // the right answer for an early learner who has only met one situation. An
+  // L1 learner alternating scene, none, scene reads as a life; the same café
+  // five mornings running reads as a loop.
+  const freshest = candidates[0];
+  const alternatives = candidates.filter((c) => c.lastPlayed < freshest.lastPlayed);
+  const justPlayed =
+    freshest.lastPlayed !== Number.NEGATIVE_INFINITY &&
+    freshest.lastPlayed >= lastSittingStart(seedHistory);
+  if (alternatives.length === 0 && justPlayed) return [...actions];
+  const chosen = alternatives.length > 0 && justPlayed ? alternatives[0] : freshest;
+
+  return withScene(actions, chosen.covered, chosen.steps, chosen.moment);
 }
 
 /**
