@@ -986,6 +986,305 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-c-est", "adverb-comment", "adverb-ou-where", "chunk-un-cafe"],
     frenchQa: "founder_waived_provisional",
   },
+
+  // ── L7 production pass: leaving well ──────────────────────────────────────
+  //
+  // L7 owned two items and taught one destination, so "je vais ..." read as a
+  // single address rather than a shape with somewhere to put a place. This
+  // block is the repertoire that makes leaving a real competence: a handful of
+  // destinations, the closings a French goodbye actually uses, the moves that
+  // soften a departure, and the words for when.
+  //
+  // DESTINATIONS ARE FROZEN, THE RULE IS NOT. `au café` and `à la gare` are
+  // whole chunks. The learner meets the contrast and is told what it is, but no
+  // productive `à + le` contraction is opened: nothing here asks them to build
+  // a destination from a bare noun, and no bare place noun is registered, so
+  // the pattern cannot be half-applied to a word they have never been given.
+  //
+  // FRENCH QA. Authored in this pass, unread by any named human, so every row
+  // carries the founder waiver exactly as PR-07, L17, L18, L21 and L22 do. The
+  // waiver is a risk acceptance, not an attestation.
+
+  "chunk-au-cafe": {
+    id: "chunk-au-cafe",
+    type: "chunk",
+    text: "au café",
+    status: "active",
+    fr: "au café",
+    en: "to the café",
+    meaning:
+      "Frozen destination: to the café. Taken whole after je vais. The au here is the masculine shape; à la is the other one.",
+    exampleFr: "Je vais au café.",
+    exampleEn: "I'm going to the café.",
+    relatedItemIds: ["chunk-je-vais", "noun-cafe", "chunk-a-la-maison"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-au-travail": {
+    id: "chunk-au-travail",
+    type: "chunk",
+    text: "au travail",
+    status: "active",
+    fr: "au travail",
+    en: "to work",
+    meaning:
+      "Frozen destination: to work. The everyday answer when someone asks where you are heading in the morning.",
+    exampleFr: "Je vais au travail.",
+    exampleEn: "I'm going to work.",
+    relatedItemIds: ["chunk-je-vais", "chunk-au-cafe"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-au-restaurant": {
+    id: "chunk-au-restaurant",
+    type: "chunk",
+    text: "au restaurant",
+    status: "active",
+    fr: "au restaurant",
+    en: "to the restaurant",
+    meaning: "Frozen destination: to the restaurant. Same masculine au as au café and au travail.",
+    exampleFr: "Je vais au restaurant.",
+    exampleEn: "I'm going to the restaurant.",
+    relatedItemIds: ["chunk-je-vais", "chunk-au-cafe"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-a-la-gare": {
+    id: "chunk-a-la-gare",
+    type: "chunk",
+    text: "à la gare",
+    status: "active",
+    fr: "à la gare",
+    en: "to the station",
+    meaning:
+      "Frozen destination: to the station. Takes à la, the same shape as à la maison, not au.",
+    exampleFr: "Je vais à la gare.",
+    exampleEn: "I'm going to the station.",
+    relatedItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-a-l-hotel": {
+    id: "chunk-a-l-hotel",
+    type: "chunk",
+    text: "à l'hôtel",
+    status: "active",
+    fr: "à l'hôtel",
+    en: "to the hotel",
+    meaning:
+      "Frozen destination: to the hotel. A third shape: before a vowel sound both au and à la give way to à l'.",
+    exampleFr: "Je vais à l'hôtel.",
+    exampleEn: "I'm going to the hotel.",
+    relatedItemIds: ["chunk-je-vais", "chunk-a-la-gare"],
+    frenchQa: "founder_waived_provisional",
+  },
+
+  "chunk-bonne-soiree": {
+    id: "chunk-bonne-soiree",
+    type: "chunk",
+    text: "bonne soirée",
+    status: "active",
+    fr: "bonne soirée",
+    en: "have a good evening",
+    meaning:
+      "Frozen closing, used when the other person's evening is ahead of them. Said as you part, usually after au revoir.",
+    exampleFr: "Au revoir, bonne soirée !",
+    exampleEn: "Goodbye, have a good evening!",
+    relatedItemIds: ["chunk-au-revoir", "chunk-bonne-journee"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-bonne-journee": {
+    id: "chunk-bonne-journee",
+    type: "chunk",
+    text: "bonne journée",
+    status: "active",
+    fr: "bonne journée",
+    en: "have a good day",
+    meaning:
+      "Frozen closing for daytime, the counterpart of bonne soirée. The one you hear leaving a shop before evening.",
+    exampleFr: "Merci, bonne journée !",
+    exampleEn: "Thanks, have a good day!",
+    relatedItemIds: ["chunk-au-revoir", "chunk-bonne-soiree"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-a-demain": {
+    id: "chunk-a-demain",
+    type: "chunk",
+    text: "à demain",
+    status: "active",
+    fr: "à demain",
+    en: "see you tomorrow",
+    meaning:
+      "Frozen closing that names when you will next meet: tomorrow. Used instead of au revoir when you know you will.",
+    exampleFr: "Au revoir, à demain !",
+    exampleEn: "Goodbye, see you tomorrow!",
+    relatedItemIds: ["chunk-au-revoir", "adverb-demain", "chunk-a-bientot"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-a-bientot": {
+    id: "chunk-a-bientot",
+    type: "chunk",
+    text: "à bientôt",
+    status: "active",
+    fr: "à bientôt",
+    en: "see you soon",
+    meaning:
+      "Frozen closing for a next time you expect but cannot date. Warmer than au revoir on its own.",
+    exampleFr: "Merci beaucoup, à bientôt !",
+    exampleEn: "Thank you very much, see you soon!",
+    relatedItemIds: ["chunk-au-revoir", "chunk-a-demain"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-a-tout-a-l-heure": {
+    id: "chunk-a-tout-a-l-heure",
+    type: "chunk",
+    text: "à tout à l'heure",
+    status: "active",
+    fr: "à tout à l'heure",
+    en: "see you later",
+    meaning:
+      "Frozen closing for later the SAME day. Not interchangeable with à demain or à bientôt: it promises you are coming back today.",
+    exampleFr: "Je vais au café. À tout à l'heure !",
+    exampleEn: "I'm going to the café. See you later!",
+    relatedItemIds: ["chunk-a-bientot", "adverb-plus-tard"],
+    frenchQa: "founder_waived_provisional",
+  },
+
+  "chunk-je-pars": {
+    id: "chunk-je-pars",
+    type: "chunk",
+    text: "je pars",
+    status: "active",
+    fr: "je pars",
+    en: "I'm leaving",
+    meaning:
+      "Frozen chunk: I'm leaving / I'm off. Announces the departure itself, where je vais names where to.",
+    exampleFr: "Je pars maintenant.",
+    exampleEn: "I'm leaving now.",
+    relatedItemIds: ["chunk-je-vais", "chunk-je-dois-partir"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-je-dois-partir": {
+    id: "chunk-je-dois-partir",
+    type: "chunk",
+    text: "je dois partir",
+    status: "active",
+    fr: "je dois partir",
+    en: "I have to go",
+    meaning:
+      "Frozen chunk: I have to go. The polite way to leave something early, because it puts the reason outside your own wish. Taken whole; devoir is not opened.",
+    exampleFr: "Désolé, je dois partir.",
+    exampleEn: "Sorry, I have to go.",
+    relatedItemIds: ["chunk-je-dois", "chunk-je-pars", "chunk-desole"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-merci-beaucoup": {
+    id: "chunk-merci-beaucoup",
+    type: "chunk",
+    text: "merci beaucoup",
+    status: "active",
+    fr: "merci beaucoup",
+    en: "thank you very much",
+    meaning:
+      "Frozen chunk: thank you very much. The warmer merci, used when you are closing something someone did for you.",
+    exampleFr: "Merci beaucoup, au revoir !",
+    exampleEn: "Thank you very much, goodbye!",
+    relatedItemIds: ["chunk-merci", "chunk-au-revoir"],
+    frenchQa: "founder_waived_provisional",
+  },
+
+  "chunk-desole": {
+    id: "chunk-desole",
+    type: "chunk",
+    text: "désolé",
+    status: "active",
+    fr: "désolé",
+    en: "sorry",
+    meaning:
+      "Frozen apology, used to soften something you are about to do: leaving, refusing, interrupting. Written désolée by a woman; the sound is the same.",
+    exampleFr: "Désolé, je dois partir.",
+    exampleEn: "Sorry, I have to go.",
+    relatedItemIds: ["chunk-je-dois-partir", "chunk-une-autre-fois"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-une-autre-fois": {
+    id: "chunk-une-autre-fois",
+    type: "chunk",
+    text: "une autre fois",
+    status: "active",
+    fr: "une autre fois",
+    en: "another time",
+    meaning:
+      "Frozen chunk: another time. Turns a refusal into a postponement, which is what makes non merci sound warm rather than final.",
+    exampleFr: "Non merci, une autre fois !",
+    exampleEn: "No thanks, another time!",
+    relatedItemIds: ["chunk-non-merci", "chunk-peut-etre"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "chunk-peut-etre": {
+    id: "chunk-peut-etre",
+    type: "chunk",
+    text: "peut-être",
+    status: "active",
+    fr: "peut-être",
+    en: "maybe",
+    meaning:
+      "Frozen chunk: maybe. Softens an answer you do not want to make final, and often follows une autre fois.",
+    exampleFr: "Une autre fois, peut-être.",
+    exampleEn: "Another time, maybe.",
+    relatedItemIds: ["chunk-une-autre-fois", "chunk-oui", "chunk-non"],
+    frenchQa: "founder_waived_provisional",
+  },
+
+  "adverb-maintenant": {
+    id: "adverb-maintenant",
+    type: "adverb",
+    text: "maintenant",
+    status: "active",
+    fr: "maintenant",
+    en: "now",
+    meaning:
+      "When: now. Goes at the end of what you are saying, which is where French usually puts a time word in speech.",
+    exampleFr: "Je pars maintenant.",
+    exampleEn: "I'm leaving now.",
+    relatedItemIds: ["chunk-je-pars", "adverb-plus-tard"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "adverb-plus-tard": {
+    id: "adverb-plus-tard",
+    type: "adverb",
+    text: "plus tard",
+    status: "active",
+    fr: "plus tard",
+    en: "later",
+    meaning: "When: later. The answer to maintenant, and the reason à tout à l'heure exists.",
+    exampleFr: "Je vais au café plus tard.",
+    exampleEn: "I'm going to the café later.",
+    relatedItemIds: ["adverb-maintenant", "chunk-a-tout-a-l-heure"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "adverb-ce-soir": {
+    id: "adverb-ce-soir",
+    type: "adverb",
+    text: "ce soir",
+    status: "active",
+    fr: "ce soir",
+    en: "this evening",
+    meaning: "When: this evening. The time word that pairs with bonne soirée.",
+    exampleFr: "Je vais au restaurant ce soir.",
+    exampleEn: "I'm going to the restaurant this evening.",
+    relatedItemIds: ["chunk-bonne-soiree", "adverb-demain"],
+    frenchQa: "founder_waived_provisional",
+  },
+  "adverb-demain": {
+    id: "adverb-demain",
+    type: "adverb",
+    text: "demain",
+    status: "active",
+    fr: "demain",
+    en: "tomorrow",
+    meaning: "When: tomorrow. The word inside à demain, usable on its own to say when you are going.",
+    exampleFr: "Je vais à la gare demain.",
+    exampleEn: "I'm going to the station tomorrow.",
+    relatedItemIds: ["chunk-a-demain", "adverb-ce-soir"],
+    frenchQa: "founder_waived_provisional",
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;

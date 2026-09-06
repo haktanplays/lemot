@@ -216,7 +216,11 @@ describe("five canonical item registrations", () => {
   test("canonical count is 65 and the five new ids exist; the old 54 survive", () => {
     // 54 frozen + PR-07's 5 + L17's 3 (chunk-ca-va, adj-fatigue, adj-content)
     // + L18's 1 (adverb-comment) + L21's 1 (adj-bon) + L22's 1 (adverb-combien).
-    assertEqual(CANONICAL_ITEM_COUNT, 65, "54 frozen + 5 PR-07 + 3 L17 + 1 L18 + 1 L21 + 1 L22");
+    assertEqual(
+      CANONICAL_ITEM_COUNT,
+      85,
+      "54 frozen + 5 PR-07 + 3 L17 + 1 L18 + 1 L21 + 1 L22 + 20 L7 production pass",
+    );
     for (const id of NEW_ITEM_IDS) {
       assert(CANONICAL_ITEM_ID_SET.has(id), `${id} registered`);
     }
@@ -225,11 +229,11 @@ describe("five canonical item registrations", () => {
     }
   });
 
-  test("the manifest froze exactly the same 65 ids (bidirectional)", () => {
+  test("the manifest and the registry stay bidirectional", () => {
     const manifest = JSON.parse(read("scripts/shipped-item-ids.json")) as {
       ids: string[];
     };
-    assertEqual(manifest.ids.length, 65, "manifest count");
+    assertEqual(manifest.ids.length, 85, "manifest count");
     assertEqual(
       manifest.ids.slice().sort().join(","),
       [...CANONICAL_ITEM_ID_SET].sort().join(","),
@@ -809,18 +813,22 @@ describe("PM-011 — Supported tea order (real screen, real spine)", () => {
 // ── Part L: provisional-surface inventory ───────────────────────────────────
 
 describe("QA debt stays queryable", () => {
-  test("the inventory lists 11 items, 2 sentences, 2 payloads — deterministically", () => {
-    // 5 from PR-07 + 3 from L17 + 1 from L18 + 1 from L21 + 1 from L22. The count GROWING is the point:
-    // every surface shipped under a founder waiver stays queryable until a
-    // named human reads it, so this number may only fall when real French QA
-    // lands.
+  test("the inventory lists 31 items, 2 sentences, 2 payloads — deterministically", () => {
+    // 5 from PR-07 + 3 from L17 + 1 from L18 + 1 from L21 + 1 from L22 + 20
+    // from the L7 production pass. The count GROWING is the point: every
+    // surface shipped under a founder waiver stays queryable until a named
+    // human reads it, so this number may only fall when real French QA lands.
     const one = listProvisionalRegisteredSurfaces();
-    assertEqual(one.items.length, 11, "five PR-07 + three L17 + one L18 + one L21 + one L22 provisional items");
+    assertEqual(
+      one.items.length,
+      31,
+      "five PR-07 + three L17 + one L18 + one L21 + one L22 + twenty L7 provisional items",
+    );
     assertEqual(one.sentences.length, 2, "two provisional sentences");
     assertEqual(one.payloads.length, 2, "two registered payloads");
     assertEqual(
       one.items.map((i) => i.itemId).join(","),
-      "adj-bon,adj-content,adj-fatigue,adverb-combien,adverb-comment,chunk-ca-va,chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the",
+      "adj-bon,adj-content,adj-fatigue,adverb-ce-soir,adverb-combien,adverb-comment,adverb-demain,adverb-maintenant,adverb-plus-tard,chunk-a-bientot,chunk-a-demain,chunk-a-l-hotel,chunk-a-la-gare,chunk-a-tout-a-l-heure,chunk-au-cafe,chunk-au-restaurant,chunk-au-travail,chunk-bonne-journee,chunk-bonne-soiree,chunk-ca-va,chunk-desole,chunk-excusez-moi,chunk-je-dois-partir,chunk-je-ne-comprends-pas,chunk-je-pars,chunk-merci-beaucoup,chunk-peut-etre,chunk-un-the,chunk-une-autre-fois,chunk-vous-pouvez-repeter,noun-the",
       "sorted item ordering",
     );
     assertEqual(
