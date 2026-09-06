@@ -37,7 +37,11 @@ import {
   expectedAnswerOf,
 } from "../../content/practice/practicePlanner";
 import { selectRepairSeed } from "../../content/practice/practiceRepair";
-import { closingNote, workedOnLines } from "../../content/practice/practiceCopy";
+import {
+  PRACTICE_UI_COPY,
+  closingNote,
+  workedOnLines,
+} from "../../content/practice/practiceCopy";
 import {
   PRACTICE_HUB_SURFACE,
   practiceBuildAttempt,
@@ -678,11 +682,19 @@ describe("the Practice surface shows French, never internals", () => {
 
   test("completion is capability language, never a score", () => {
     const code = read("components/practice/PracticeComplete.tsx");
-    assert(code.includes("You worked on"), "the summary leads with capability");
-    assert(
-      code.includes("The French you brought back"),
+    // The copy now lives in PRACTICE_UI_COPY so the dev-apk guard can walk it;
+    // assert the VALUES rather than literals in the component.
+    assertEqual(
+      PRACTICE_UI_COPY.completeWorkedOn,
+      "You worked on:",
+      "the summary leads with capability",
+    );
+    assertEqual(
+      PRACTICE_UI_COPY.completeFrench,
+      "The French you brought back",
       "and still shows the French, underneath",
     );
+    assert(code.includes("completeWorkedOn"), "the component renders that line");
     for (const banned of ["correct!", "Mastered", "%", "XP", "streak", "score"]) {
       assert(!code.includes(banned), `completion must not show ${banned}`);
     }

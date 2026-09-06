@@ -203,7 +203,7 @@ export const L10_SEEDS: PracticeSeed[] = [
     correct: { id: "o-repairing", text: "Saying they didn't follow, and asking again." },
     traps: [
       { id: "o-just-lost", text: "Saying they didn't follow, and giving up.", why: "There is a second sentence, and it is a question.", tag: "meaning_shift" },
-      { id: "o-just-asking", text: "Only asking where something is.", why: "Something comes first — the reason they are asking again.", tag: "meaning_shift" },
+      { id: "o-just-asking", text: "Only asking where something is.", why: "Something comes first: the reason they are asking again.", tag: "meaning_shift" },
     ],
     short: "Je ne comprends pas. C'est où ?",
     explanation: "Two sentences you own, doing one job together.",

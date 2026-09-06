@@ -31,7 +31,7 @@ export type PracticeMoment = {
 export const PRACTICE_MOMENTS: readonly PracticeMoment[] = [
   {
     id: "moment-the-counter",
-    intro: "One coffee, from walking up to walking away — including the part that goes wrong.",
+    intro: "One coffee, from walking up to walking away, including the part that goes wrong.",
     seedIds: [
       "p-l1-repair-opener-back-turned",
       "p-l1-produce-order-coffee",
@@ -58,7 +58,7 @@ export const PRACTICE_MOMENTS: readonly PracticeMoment[] = [
   },
   {
     id: "moment-asking-for-a-break",
-    intro: "Two hours in, flagging, and not wanting the day to end — just to pause.",
+    intro: "Two hours in, flagging, and not wanting the day to end. Just a pause.",
     seedIds: [
       "p-l9-choice-pause-or-end",
       "p-l9-build-ask-politely",

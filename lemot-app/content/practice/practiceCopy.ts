@@ -13,6 +13,7 @@
  */
 import type { PracticeSessionAction } from "./practicePlanner";
 import { summaryLineOf } from "./practicePlanner";
+import { collectLearnerStrings } from "../lessons/learnerCopy";
 
 /**
  * Canonical item → the capability a learner would recognise.
@@ -100,6 +101,38 @@ export function territoryLabels(
  * honest reason the surface is empty is that Practice is built from language the
  * learner has used and they have not used any yet.
  */
+/**
+ * Learner-visible strings rendered by the Practice components.
+ *
+ * They live here, beside the seed copy, for one reason: the dev-apk copy guard
+ * can only police what it can WALK. Copy embedded as a literal inside a
+ * component is invisible to it, which is exactly how three em dashes reached
+ * the learner in Practice while the same character was banned in every lesson.
+ * Anything the learner reads is now structured data, so the guard sees all of
+ * it. (`weaveCopy.ts` applies the same pattern on the lesson side.)
+ */
+export const PRACTICE_UI_COPY = Object.freeze({
+  startHeadline: "Keep the French moving.",
+  startBlurb: "This is built from the French you have already used. Nothing here is new.",
+  startTodayLabel: "TODAY",
+  startAction: "Start practice",
+
+  buildEmptyTray: "Tap the pieces in order.",
+  buildStartAgain: "Start again",
+  buildCorrect: "Correct.",
+  buildWrongOrder: "All the right pieces. They go in a different order.",
+  buildWrong: "Not quite.",
+  buildWholeLine: "The whole line",
+
+  listenAgain: "Play it again",
+
+  completeHeadline: "That is enough for now.",
+  completeWorkedOn: "You worked on:",
+  completeFrench: "The French you brought back",
+  completeDone: "Done",
+  completeAgain: "Another set",
+});
+
 export const PRACTICE_EMPTY_LINE =
   "Finish your first lesson and Practice will build itself from the French you have used.";
 
@@ -156,4 +189,24 @@ export function closingNote(missCount: number): string | null {
   if (missCount <= 0) return null;
   if (missCount === 1) return "One of these is worth another look.";
   return "A couple of these are worth another look.";
+}
+
+
+/**
+ * Every learner-facing string Practice can render, for the copy guard.
+ *
+ * Seeds, micro-moment framing, the capability vocabulary and the component
+ * copy above. If a learner can read it in Practice, it is in here.
+ */
+export function practiceLearnerStrings(
+  seeds: readonly { exercise: { payload: unknown } }[],
+  moments: readonly { intro: string }[],
+): string[] {
+  const out: string[] = [];
+  for (const seed of seeds) collectLearnerStrings(seed.exercise.payload, out);
+  for (const moment of moments) out.push(moment.intro);
+  for (const line of Object.values(PRACTICE_UI_COPY)) out.push(line);
+  for (const label of Object.values(CAPABILITY)) out.push(label);
+  out.push(PRACTICE_EMPTY_LINE);
+  return out;
 }

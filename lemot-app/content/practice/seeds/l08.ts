@@ -210,7 +210,7 @@ export const L8_SEEDS: PracticeSeed[] = [
     correct: { id: "o-asking", text: "Where is it?" },
     traps: [
       { id: "o-telling", text: "It's here.", why: "That answers. Listen for the rise at the end.", tag: "meaning_shift" },
-      { id: "o-checking", text: "Is it here?", why: "Close — but that one checks a guess. This asks with no guess at all.", tag: "meaning_shift" },
+      { id: "o-checking", text: "Is it here?", why: "Close, but that one checks a guess. This asks with no guess at all.", tag: "meaning_shift" },
     ],
     short: "C'est où ?",
     explanation: "Où is the whole difference between asking and answering.",

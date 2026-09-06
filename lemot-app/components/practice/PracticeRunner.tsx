@@ -12,6 +12,7 @@ import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
 import type { PracticeSeed } from "@/content/practice/practiceTypes";
 import type { Lesson } from "@/content/lessonTypes";
 import { WEAVE_DICTATION_HELPER } from "@/components/lesson-v1/screens/weaveCopy";
+import { PRACTICE_UI_COPY } from "@/content/practice/practiceCopy";
 import { useSpeech } from "@/hooks/useSpeech";
 import { PracticeBuild } from "./PracticeBuild";
 import { usePracticeSession } from "./usePracticeSession";
@@ -253,7 +254,7 @@ export function PracticeRunner({
         >
           <Volume2 size={18} color={P.ink2} />
           <Text style={{ color: P.ink, fontSize: 15, fontWeight: "600" }}>
-            Play it again
+            {PRACTICE_UI_COPY.listenAgain}
           </Text>
         </Pressable>
       )}

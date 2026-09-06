@@ -212,7 +212,7 @@ export const L4_SEEDS: PracticeSeed[] = [
     correct: { id: "o-hungry", text: "I'm hungry." },
     traps: [
       { id: "o-have-question", text: "I have a question.", why: "Same engine, different thing on the end. Listen past the j'ai.", tag: "meaning_shift" },
-      { id: "o-am-here", text: "I'm here.", why: "That is the other engine entirely — je suis, not j'ai.", tag: "wrong_item" },
+      { id: "o-am-here", text: "I'm here.", why: "That is the other engine entirely: je suis, not j'ai.", tag: "wrong_item" },
     ],
     short: "J'ai faim.",
     explanation: "Everything after j'ai is what changes. That is where to listen.",

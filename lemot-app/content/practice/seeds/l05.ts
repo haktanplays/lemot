@@ -102,7 +102,7 @@ export const L5_SEEDS: PracticeSeed[] = [
       },
     ],
     short: "J'ai une idée.",
-    explanation: "Une again — the same package question travels in.",
+    explanation: "Une again, the same package that question travels in.",
   }),
   weaveSeed({
     id: "p-l5-produce-request-with-package",
@@ -221,7 +221,7 @@ export const L5_SEEDS: PracticeSeed[] = [
     correct: { id: "o-tea", text: "I would like a tea." },
     traps: [
       { id: "o-coffee-l5", text: "I would like a coffee.", why: "Same request, different thing inside it. The last word is the one that changed.", tag: "meaning_shift" },
-      { id: "o-question-l5", text: "I have a question.", why: "That is the other engine — having, not asking for.", tag: "wrong_item" },
+      { id: "o-question-l5", text: "I have a question.", why: "That is the other engine: having, not asking for.", tag: "wrong_item" },
     ],
     short: "Je voudrais un thé.",
     explanation: "The frame is familiar; listen to what is sitting inside it.",

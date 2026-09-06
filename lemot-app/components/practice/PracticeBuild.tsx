@@ -4,6 +4,7 @@ import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction, QuietAction } from "@/components/ui/actions";
 import { P, SPACE } from "@/constants/theme";
 import { gradeBuildSequence } from "@/components/learning-engine/buildSequence";
+import { PRACTICE_UI_COPY } from "@/content/practice/practiceCopy";
 import type { PracticeBuildScreen } from "@/content/practice/practiceTypes";
 
 /**
@@ -105,7 +106,7 @@ export function PracticeBuild({
       >
         {picked.length === 0 ? (
           <Text style={{ color: P.ink3, fontSize: 14, lineHeight: 21 }}>
-            Tap the pieces in order.
+            {PRACTICE_UI_COPY.buildEmptyTray}
           </Text>
         ) : (
           picked.map((tileIndex, slot) => (
@@ -154,7 +155,7 @@ export function PracticeBuild({
 
       {checked === null && picked.length > 0 && (
         <View style={{ marginTop: SPACE.lg }}>
-          <QuietAction label="Start again" onPress={() => setPicked([])} />
+          <QuietAction label={PRACTICE_UI_COPY.buildStartAgain} onPress={() => setPicked([])} />
         </View>
       )}
 
@@ -168,10 +169,10 @@ export function PracticeBuild({
             }}
           >
             {checked.correct
-              ? "Correct."
+              ? PRACTICE_UI_COPY.buildCorrect
               : checked.order
-                ? "All the right pieces — they go in a different order."
-                : "Not quite."}
+                ? PRACTICE_UI_COPY.buildWrongOrder
+                : PRACTICE_UI_COPY.buildWrong}
           </Text>
           <View
             style={{
@@ -183,7 +184,7 @@ export function PracticeBuild({
               backgroundColor: P.paper,
             }}
           >
-            <Text style={{ color: P.ink3, fontSize: 13 }}>The whole line</Text>
+            <Text style={{ color: P.ink3, fontSize: 13 }}>{PRACTICE_UI_COPY.buildWholeLine}</Text>
             <Text
               style={{
                 color: P.ink,

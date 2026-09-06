@@ -2,6 +2,7 @@ import { View, Text, ScrollView } from "react-native";
 import { P, SPACE } from "@/constants/theme";
 import { PrimaryAction, QuietAction } from "@/components/ui/actions";
 import {
+  PRACTICE_UI_COPY,
   closingNote,
   workedOnCapabilities,
   workedOnLines,
@@ -43,12 +44,12 @@ export function PracticeComplete({
         }}
       >
         <Text style={{ color: P.ink, fontFamily: "serif", fontSize: 26, lineHeight: 34 }}>
-          That is enough for now.
+          {PRACTICE_UI_COPY.completeHeadline}
         </Text>
         <Text
           style={{ color: P.ink2, fontSize: 15, lineHeight: 23, marginTop: SPACE.md }}
         >
-          You worked on:
+          {PRACTICE_UI_COPY.completeWorkedOn}
         </Text>
 
         {/*
@@ -73,7 +74,7 @@ export function PracticeComplete({
         <Text
           style={{ color: P.ink3, fontSize: 13, lineHeight: 20, marginTop: SPACE.xl }}
         >
-          The French you brought back
+          {PRACTICE_UI_COPY.completeFrench}
         </Text>
 
         <View
@@ -122,10 +123,10 @@ export function PracticeComplete({
       <View
         style={{ paddingHorizontal: SPACE.xl, paddingBottom: SPACE.xl, paddingTop: SPACE.md }}
       >
-        <PrimaryAction label="Done" onPress={onDone} />
+        <PrimaryAction label={PRACTICE_UI_COPY.completeDone} onPress={onDone} />
         {onAgain !== null && (
           <View style={{ marginTop: SPACE.sm }}>
-            <QuietAction label="Another set" onPress={onAgain} />
+            <QuietAction label={PRACTICE_UI_COPY.completeAgain} onPress={onAgain} />
           </View>
         )}
       </View>

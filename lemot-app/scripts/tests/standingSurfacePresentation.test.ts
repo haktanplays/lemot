@@ -10,7 +10,8 @@
  *
  * Pure Node/tsx — no React Native, no Expo, no device layer.
  */
-import { describe, test, assert } from "./harness";
+import { describe, test, assert, assertEqual } from "./harness";
+import { PRACTICE_UI_COPY } from "../../content/practice/practiceCopy";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -133,7 +134,8 @@ describe("Practice reads as material returning, not as a queue", () => {
       assert(!code.includes(banned), `Practice must not render ${banned}`);
     }
     const start = codeOf(read("components/practice/PracticeStart.tsx"));
-    assert(start.includes("Start practice"), "one primary action");
+    assertEqual(PRACTICE_UI_COPY.startAction, "Start practice", "one primary action");
+    assert(start.includes("startAction"), "and the entry renders it");
     for (const banned of ["Build", "Stretch", "Challenge", "difficulty", "Choose"]) {
       assert(!start.includes(banned), `no configuration surface: ${banned}`);
     }

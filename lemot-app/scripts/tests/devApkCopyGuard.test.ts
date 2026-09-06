@@ -36,6 +36,9 @@ import {
   COPY_DASH,
   lessonLearnerStrings,
 } from "../../content/lessons/learnerCopy";
+import { PRACTICE_SEEDS } from "../../content/practice/seeds";
+import { PRACTICE_MOMENTS } from "../../content/practice/practiceMoments";
+import { practiceLearnerStrings } from "../../content/practice/practiceCopy";
 
 describe("dev-apk v1 copy guard", () => {
   // Covers every registered v1 lesson, so L1-L6 content PRs are born guarded
@@ -94,3 +97,74 @@ describe("dev-apk v1 copy guard", () => {
  * Guarding these safely needs either extracting their copy into importable
  * constants (a runtime change, out of scope here) or a comment-aware scanner.
  */
+
+// ── Practice ────────────────────────────────────────────────────────────────
+
+describe("dev-apk Practice copy guard", () => {
+  // Practice reached the learner outside this guard, and it showed: three
+  // em dashes shipped in Practice copy while the same character was banned in
+  // every lesson. The gap was structural, not careless — the guard can only
+  // police what it can WALK, and copy embedded as a literal inside a component
+  // is invisible to it. Every learner-visible Practice string is now structured
+  // data (`PRACTICE_UI_COPY`, seeds, moments, the capability vocabulary), so
+  // the same drift cannot recur silently.
+  const strings = practiceLearnerStrings(PRACTICE_SEEDS, PRACTICE_MOMENTS);
+
+  test("Practice exposes learner-facing strings to check", () => {
+    assert(
+      strings.length > 100,
+      `only ${strings.length} Practice strings collected — the walk is broken`,
+    );
+  });
+
+  test("Practice learner copy has no em dash or en dash", () => {
+    for (const s of strings) {
+      assert(
+        !COPY_DASH.test(s),
+        `Practice learner string contains an em/en dash: ${JSON.stringify(s)}`,
+      );
+    }
+  });
+
+  test("Practice learner copy has no banned gamification / internal terms", () => {
+    for (const s of strings) {
+      for (const word of COPY_BANNED_WORDS) {
+        const re = new RegExp(`\\b${word}\\b`, "i");
+        assert(
+          !re.test(s),
+          `Practice learner string contains banned term "${word}": ${JSON.stringify(s)}`,
+        );
+      }
+      for (const phrase of COPY_BANNED_PHRASES) {
+        assert(
+          !s.toLowerCase().includes(phrase.toLowerCase()),
+          `Practice learner string contains banned phrase "${phrase}": ${JSON.stringify(s)}`,
+        );
+      }
+    }
+  });
+
+  test("no learner-visible Practice copy is stranded inside a component", () => {
+    // The structural half of the rule. A bare sentence literal in a Practice
+    // component is copy the guard above cannot see, so it is banned outright.
+    const { readFileSync } = require("node:fs") as typeof import("node:fs");
+    const { join } = require("node:path") as typeof import("node:path");
+    for (const rel of [
+      "components/practice/PracticeStart.tsx",
+      "components/practice/PracticeBuild.tsx",
+      "components/practice/PracticeComplete.tsx",
+      "components/practice/PracticeRunner.tsx",
+    ]) {
+      const src = readFileSync(join(process.cwd(), rel), "utf8");
+      // Only PROSE is stranded copy. Shared single-word action verbs
+      // ("Continue", "Check") come from the shipped action components and are
+      // not Practice's copy to own, so the rule requires a multi-word string.
+      for (const match of src.matchAll(/label="([A-Z][^"]*\s+[^"]{3,})"/g)) {
+        assert(
+          false,
+          `${rel} hard-codes learner copy: ${JSON.stringify(match[1])} — move it to PRACTICE_UI_COPY`,
+        );
+      }
+    }
+  });
+});

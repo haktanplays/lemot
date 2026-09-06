@@ -1,7 +1,11 @@
 import { View, Text, ScrollView } from "react-native";
 import { P, SPACE } from "@/constants/theme";
 import { PrimaryAction } from "@/components/ui/actions";
-import { previewLine, territoryLine } from "@/content/practice/practiceCopy";
+import {
+  PRACTICE_UI_COPY,
+  previewLine,
+  territoryLine,
+} from "@/content/practice/practiceCopy";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
 
 /**
@@ -36,7 +40,7 @@ export function PracticeStart({
             lineHeight: 36,
           }}
         >
-          Keep the French moving.
+          {PRACTICE_UI_COPY.startHeadline}
         </Text>
         <Text
           style={{
@@ -46,7 +50,7 @@ export function PracticeStart({
             marginTop: SPACE.md,
           }}
         >
-          This is built from the French you have already used. Nothing here is new.
+          {PRACTICE_UI_COPY.startBlurb}
         </Text>
 
         <View
@@ -58,7 +62,7 @@ export function PracticeStart({
           }}
         >
           <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.3 }}>
-            TODAY
+            {PRACTICE_UI_COPY.startTodayLabel}
           </Text>
           <Text
             style={{
@@ -97,7 +101,7 @@ export function PracticeStart({
           paddingTop: SPACE.md,
         }}
       >
-        <PrimaryAction label="Start practice" onPress={onStart} />
+        <PrimaryAction label={PRACTICE_UI_COPY.startAction} onPress={onStart} />
       </View>
     </View>
   );
