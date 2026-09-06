@@ -115,7 +115,7 @@ export function Weave({
   };
 
   const note = match !== null ? RESULT_NOTES[match] : null;
-  const showTargetLabel = shouldShowWeaveTargetLabel(payload.weaveType);
+  const showTargetLabel = shouldShowWeaveTargetLabel(payload.weaveType, payload.prompt);
   const targetMeaning = weaveTargetMeaning(payload.prompt);
 
   return (

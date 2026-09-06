@@ -95,16 +95,32 @@ describe("weaveTargetMeaning transform (display only)", () => {
   });
 });
 
-describe("shouldShowWeaveTargetLabel (open-weave label suppression)", () => {
-  test("supported / mid / context weaves keep the 'Say this:' label", () => {
+describe("shouldShowWeaveTargetLabel (the label follows the prompt)", () => {
+  test("a stated target meaning keeps the 'Say this:' label", () => {
     for (const t of ["supported", "mid", "context"] as const) {
-      assert(shouldShowWeaveTargetLabel(t), `${t} should show the target label`);
+      assert(
+        shouldShowWeaveTargetLabel(t, "Write it in French: I am not here."),
+        `${t} with a stated meaning should show the target label`,
+      );
     }
   });
 
-  test("open weave suppresses the label (avoids double instruction)", () => {
+  test("a directive prompt suppresses the label, at every tier", () => {
+    // "Say this: Tell them you are not there" asks the learner to say an
+    // instruction. The label promises the line beneath it is a thing to SAY,
+    // and a directive is not one. This used to key off the tier alone, which
+    // held only while every non-open prompt was authored as a translation.
+    for (const t of ["supported", "mid", "context", "open"] as const) {
+      assert(
+        !shouldShowWeaveTargetLabel(t, "Tell them you are not there."),
+        `${t} with a directive prompt must not show 'Say this:'`,
+      );
+    }
+  });
+
+  test("open weave suppresses the label whatever the prompt says", () => {
     assert(
-      !shouldShowWeaveTargetLabel("open"),
+      !shouldShowWeaveTargetLabel("open", "Write it in French: I am not here."),
       "open weave must not show 'Say this:'",
     );
   });

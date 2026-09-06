@@ -61,12 +61,25 @@ export function weaveTargetMeaning(prompt: string): string {
 /**
  * Whether to show the "Say this:" label above the target.
  *
- * Open weaves are freer production (no single fixed phrase to "say"), and their
- * authored prompt is already a directive, e.g. "Close the moment in French:
- * thank them and say goodbye." Pairing that with "Say this:" doubles the
- * instruction, so the label is suppressed for open weaves; the directive is
- * shown prominently on its own. Every other weave type keeps the label.
+ * The label promises that the line beneath it is a thing to SAY, so it belongs
+ * only where that line is a target meaning. It reads wrong the moment the
+ * prompt is a directive: "Say this: Tell them you are not there" asks the
+ * learner to say an instruction.
+ *
+ * This used to key off the tier, suppressing the label for `open` alone, and
+ * that was right while every other tier's prompt was authored as
+ * "Write it in French: <meaning>" and displayed as the bare meaning. Once hard
+ * weaves stopped handing over the English, their prompts became directives too
+ * and the tier stopped predicting the shape. So the PROMPT decides: the label
+ * appears exactly when a target meaning was stated and stripped for display.
+ *
+ * `weaveType` is kept in the signature because a caller that has a tier and no
+ * prompt is a caller that cannot answer this question, and should not compile.
  */
-export function shouldShowWeaveTargetLabel(weaveType: WeaveType): boolean {
-  return weaveType !== "open";
+export function shouldShowWeaveTargetLabel(
+  weaveType: WeaveType,
+  prompt: string,
+): boolean {
+  if (weaveType === "open") return false;
+  return WRITE_IN_FRENCH_PREFIX.test(prompt);
 }
