@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "validate:pools": "tsx scripts/validatePools.ts",
     "validate:content": "tsx scripts/validateContent.ts",
+    "budget:l1l10": "tsx scripts/productionBudget.ts",
     "manifest:add": "tsx scripts/manifestAdd.ts",
     "manifest:add-tag": "tsx scripts/manifestAddTag.ts",
     "telemetry:report": "tsx scripts/telemetryReport.ts",
