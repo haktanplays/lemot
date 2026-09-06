@@ -11,6 +11,7 @@
  * printed its own answers would make the first half of every session a reading
  * exercise.
  */
+import type { PracticeSurface } from "./practiceTypes";
 import type { PracticeSessionAction } from "./practicePlanner";
 import { summaryLineOf } from "./practicePlanner";
 import { collectLearnerStrings } from "../lessons/learnerCopy";
@@ -185,10 +186,66 @@ export function workedOnLines(actions: readonly PracticeSessionAction[]): string
  * Only ever "worth another look", never a count, a score or a verdict, and
  * only when the learner actually missed something in this session.
  */
-export function closingNote(missCount: number): string | null {
-  if (missCount <= 0) return null;
-  if (missCount === 1) return "One of these is worth another look.";
-  return "A couple of these are worth another look.";
+/**
+ * One thing the learner actually struggled with in THIS session.
+ *
+ * Every rule here exists to keep the claim honest.
+ *
+ * Only this session's graded attempts. Never the mastery snapshot: a learner
+ * who missed nothing today would otherwise be shown last week's difficulty and
+ * read it as something they had just done badly.
+ *
+ * Never invented. A clean session gets no line at all, because "nothing to
+ * report" is a real and good outcome, and manufacturing a weak point to fill
+ * the space would teach the learner to distrust the ones that are real.
+ *
+ * A repair does not erase the miss and does not become a failure either. Both
+ * facts are true and the learner is owed both: the thing needed a second pass,
+ * and the second pass worked.
+ *
+ * One thing named, not a log. Several misses in five minutes is a normal
+ * session, not a diagnosis, so the most meaningful is named and the rest are
+ * acknowledged in a single clause. Production is preferred over selection when
+ * choosing which: not recognising a form you were shown is a smaller fact than
+ * not being able to produce it.
+ */
+export type PracticeStruggle = {
+  itemId: string;
+  seedId: string;
+  surface: PracticeSurface;
+  /** A later action on the same item was answered correctly. */
+  repaired: boolean;
+};
+
+const PRODUCTION_SURFACES: ReadonlySet<PracticeSurface> = new Set([
+  "typed",
+  "context",
+  "dictation",
+]);
+
+export function struggleLines(struggles: readonly PracticeStruggle[]): string[] {
+  const named = struggles.filter((s) => CAPABILITY[s.itemId] !== undefined);
+  if (named.length === 0) return [];
+
+  const weight = (s: PracticeStruggle) =>
+    (s.repaired ? 0 : 2) + (PRODUCTION_SURFACES.has(s.surface) ? 1 : 0);
+  const chosen = [...named].sort((a, b) => weight(b) - weight(a))[0];
+  const capability = CAPABILITY[chosen.itemId];
+
+  const lines = [
+    chosen.repaired
+      ? `${capitalise(capability)} did not come back the first time. It did on the second pass.`
+      : `Worth another pass: ${capability}.`,
+  ];
+
+  const others = named.length - 1;
+  if (others === 1) lines.push("One other needed a second look too.");
+  else if (others > 1) lines.push("A couple of others needed a second look too.");
+  return lines;
+}
+
+function capitalise(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 
@@ -198,6 +255,27 @@ export function closingNote(missCount: number): string | null {
  * Seeds, micro-moment framing, the capability vocabulary and the component
  * copy above. If a learner can read it in Practice, it is in here.
  */
+/**
+ * Every shape the struggle note can take, so the guard can walk copy that is
+ * assembled at runtime rather than stored. Generated copy is exactly where the
+ * last drift hid: a string the guard cannot walk is a string nobody checks.
+ */
+export function struggleCopySamples(): string[] {
+  const out: string[] = [];
+  for (const itemId of Object.keys(CAPABILITY)) {
+    for (const repaired of [false, true]) {
+      out.push(
+        ...struggleLines([
+          { itemId, seedId: "sample", surface: "typed", repaired },
+          { itemId, seedId: "sample-2", surface: "choice", repaired },
+          { itemId, seedId: "sample-3", surface: "build", repaired },
+        ]),
+      );
+    }
+  }
+  return out;
+}
+
 export function practiceLearnerStrings(
   seeds: readonly { exercise: { payload: unknown } }[],
   moments: readonly { intro: string }[],
@@ -208,5 +286,7 @@ export function practiceLearnerStrings(
   for (const line of Object.values(PRACTICE_UI_COPY)) out.push(line);
   for (const label of Object.values(CAPABILITY)) out.push(label);
   out.push(PRACTICE_EMPTY_LINE);
+  // Copy the learner sees but the repo never stores as a literal.
+  out.push(...struggleCopySamples());
   return out;
 }

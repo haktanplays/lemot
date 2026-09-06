@@ -149,7 +149,7 @@ export default function PracticeRoute() {
       <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: P.bg }}>
         <PracticeComplete
           actions={finished.worked}
-          missCount={finished.missCount}
+          struggles={finished.struggles}
           onDone={leaveSession}
           onAgain={startAnother}
         />

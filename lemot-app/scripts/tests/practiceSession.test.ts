@@ -37,9 +37,10 @@ import {
   expectedAnswerOf,
 } from "../../content/practice/practicePlanner";
 import { selectRepairSeed } from "../../content/practice/practiceRepair";
+import type { PracticeSurface } from "../../content/practice/practiceTypes";
 import {
   PRACTICE_UI_COPY,
-  closingNote,
+  struggleLines,
   workedOnLines,
 } from "../../content/practice/practiceCopy";
 import {
@@ -269,20 +270,24 @@ describe("STATE D, E, F — what returns, and in what shape", () => {
     assert(stretchActions.length > 0, "the session offers stretch work");
 
     // The honest claim, stated at SESSION level rather than per action: a
-    // strong item may meet one reconstruction or listening exercise in a
-    // sitting, and everything else it does is production. A per-action ban
-    // read well but made a quarter of the pool unreachable for a learner who
-    // had simply done well.
+    // learner who produces this language cleanly spends the sitting mostly
+    // producing it. A per-action ban read well but made a quarter of the pool
+    // unreachable for a learner who had simply done well.
+    //
+    // This began as "at most one selection action", which was the same claim
+    // expressed as a count. The count had to go when micro-moments started
+    // firing reliably: almost every authored scene opens on a beat of
+    // understanding before it asks for language, so a fixed cap of one did not
+    // constrain recognition so much as silence scenes, and a learner met one
+    // in eight sessions. The invariant is what was always meant.
     const PRODUCES = new Set(["typed", "context", "dictation"]);
     const selection = stretchActions.filter((a) => !PRODUCES.has(a.seed.surface));
+    const produced = stretchActions.length - selection.length;
     assert(
-      selection.length <= 1,
-      `strong items were given ${selection.length} selection actions in one session`,
+      produced > selection.length,
+      `strong items got ${selection.length} recognition actions against ${produced} production ones`,
     );
-    assert(
-      stretchActions.length - selection.length > 0,
-      "strong items still produce in this session",
-    );
+    assert(produced > 0, "strong items still produce in this session");
   });
 
   test("sessions stay inside the 5-8 canon band", async () => {
@@ -709,7 +714,88 @@ describe("the Practice surface shows French, never internals", () => {
     for (const line of lines) {
       assert(expected.has(line), `"${line}" was not part of this session`);
     }
-    assertEqual(closingNote(0), null, "a clean session gets no worry note");
-    assert(closingNote(1) !== null, "a real miss is acknowledged");
+    assertEqual(struggleLines([]).length, 0, "a clean session gets no worry note");
+  });
+});
+
+// ── the close tells the truth about struggle ────────────────────────────────
+
+const struggle = (
+  itemId: string,
+  surface: PracticeSurface,
+  repaired = false,
+) => ({ itemId, seedId: `seed-${itemId}`, surface, repaired });
+
+describe("session close, struggle half", () => {
+  test("a clean session claims no struggle", () => {
+    // The rule that matters most. A learner who missed nothing must not be
+    // handed a weak point to make the screen look thorough.
+    assertEqual(struggleLines([]).length, 0, "a clean session invented a struggle");
+  });
+
+  test("a real miss is named", () => {
+    const lines = struggleLines([struggle("chunk-je-voudrais", "typed")]);
+    assertEqual(lines.length, 1, "one miss should produce exactly one line");
+    assert(lines[0].includes("ordering"), `capability not named: "${lines[0]}"`);
+  });
+
+  test("a repaired miss is acknowledged without being called a failure", () => {
+    // Both facts are owed to the learner: it needed a second pass, and the
+    // second pass worked. Neither may erase the other.
+    const lines = struggleLines([struggle("chunk-je-voudrais", "typed", true)]);
+    assertEqual(lines.length, 1, "a repaired miss should still be reported");
+    const line = lines[0].toLowerCase();
+    assert(line.includes("second pass"), `recovery not acknowledged: "${lines[0]}"`);
+    for (const banned of ["fail", "wrong", "error", "weak", "incorrect"]) {
+      assert(!line.includes(banned), `repaired miss called a failure: "${lines[0]}"`);
+    }
+  });
+
+  test("an item with no capability name claims nothing", () => {
+    // Better to say nothing than to name something the learner cannot act on.
+    assertEqual(
+      struggleLines([struggle("item-that-does-not-exist", "typed")]).length,
+      0,
+      "an unnameable item produced a claim",
+    );
+  });
+
+  test("several misses stay bounded and concise", () => {
+    const lines = struggleLines([
+      struggle("chunk-je-voudrais", "typed"),
+      struggle("chunk-bonjour", "choice"),
+      struggle("chunk-j-ai", "dictation"),
+      struggle("chunk-oui", "build"),
+    ]);
+    assert(lines.length <= 2, `close dumped ${lines.length} lines of error log`);
+    assert(
+      lines.join(" ").length < 160,
+      "the struggle note grew into a report",
+    );
+  });
+
+  test("production is named over recognition when both were missed", () => {
+    // Not recognising a form you were just shown is a smaller fact about a
+    // learner than not being able to produce it, so a single low-value
+    // recognition miss never outranks a failed production.
+    const lines = struggleLines([
+      struggle("chunk-bonjour", "choice"),
+      struggle("chunk-je-voudrais", "typed"),
+    ]);
+    assert(
+      lines[0].includes("ordering"),
+      `recognition miss outranked a production miss: "${lines[0]}"`,
+    );
+  });
+
+  test("an unrepaired miss outranks a repaired one", () => {
+    const lines = struggleLines([
+      struggle("chunk-je-voudrais", "typed", true),
+      struggle("chunk-bonjour", "choice", false),
+    ]);
+    assert(
+      lines[0].includes("opening and closing"),
+      `a repaired miss outranked a standing one: "${lines[0]}"`,
+    );
   });
 });

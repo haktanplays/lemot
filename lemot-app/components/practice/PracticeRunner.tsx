@@ -9,6 +9,7 @@ import { gradeBuildSequence } from "@/components/learning-engine/buildSequence";
 import { selectRepairSeed } from "@/content/practice/practiceRepair";
 import { TODAYS_SET_MAX } from "@/content/learning-engine/practice-selector";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
+import type { PracticeStruggle } from "@/content/practice/practiceCopy";
 import type { PracticeSeed } from "@/content/practice/practiceTypes";
 import type { Lesson } from "@/content/lessonTypes";
 import { WEAVE_DICTATION_HELPER } from "@/components/lesson-v1/screens/weaveCopy";
@@ -23,6 +24,7 @@ const MAX_REPAIRS_PER_SESSION = 2;
 export type PracticeRunResult = {
   worked: PracticeSessionAction[];
   missCount: number;
+  struggles: PracticeStruggle[];
 };
 
 /**
@@ -64,6 +66,35 @@ export function PracticeRunner({
   const [actions, setActions] = useState<PracticeSessionAction[]>([...plannedActions]);
   const [index, setIndex] = useState(0);
   const missCount = useRef(0);
+  // What was missed, per item, and whether a later action on the same item
+  // landed. Recorded here rather than derived afterwards from the snapshot,
+  // because the close must describe THIS session and nothing older.
+  const struggles = useRef<PracticeStruggle[]>([]);
+
+  /** A graded outcome on one action, in the terms the close needs. */
+  const noteOutcome = (
+    seed: PracticeSeed,
+    itemId: string,
+    correct: boolean,
+  ) => {
+    const existing = struggles.current.find((s) => s.itemId === itemId);
+    if (correct) {
+      // A repair does not delete the miss; it adds the second fact to it.
+      if (existing) existing.repaired = true;
+      return;
+    }
+    missCount.current += 1;
+    if (!existing) {
+      struggles.current.push({
+        itemId,
+        seedId: seed.id,
+        surface: seed.surface,
+        repaired: false,
+      });
+    } else {
+      existing.repaired = false;
+    }
+  };
   const repairsAdded = useRef(0);
   const lessonById = useMemo(
     () => new Map(lessons.map((l) => [l.id, l])),
@@ -97,7 +128,11 @@ export function PracticeRunner({
   const advance = () => {
     if (isLast) {
       void session.whenSettled().then(() =>
-        onFinish({ worked: actions, missCount: missCount.current }),
+        onFinish({
+          worked: actions,
+          missCount: missCount.current,
+          struggles: [...struggles.current],
+        }),
       );
       return;
     }
@@ -122,8 +157,8 @@ export function PracticeRunner({
               })),
               picked,
             });
+            noteOutcome(action.seed, action.itemId, graded.result === "correct");
             if (graded.result !== "correct") {
-              missCount.current += 1;
               enqueueRepair(action.seed);
             }
           }}
@@ -140,8 +175,8 @@ export function PracticeRunner({
           onChoice={({ optionId }) => {
             session.recordChoice(action.seed, origin, optionId);
             const chosen = screen.payload.options.find((o) => o.id === optionId);
+            noteOutcome(action.seed, action.itemId, chosen?.isCorrect === true);
             if (chosen && !chosen.isCorrect) {
-              missCount.current += 1;
               enqueueRepair(action.seed);
             }
           }}
@@ -166,8 +201,8 @@ export function PracticeRunner({
             expectedAnswers: screen.payload.expectedAnswers,
             acceptedAlternatives: screen.payload.acceptedAlternatives,
           });
+          noteOutcome(action.seed, action.itemId, evaluation.grade.result === "correct");
           if (evaluation.grade.result !== "correct") {
-            missCount.current += 1;
             enqueueRepair(action.seed);
           }
         }}

@@ -3,10 +3,11 @@ import { P, SPACE } from "@/constants/theme";
 import { PrimaryAction, QuietAction } from "@/components/ui/actions";
 import {
   PRACTICE_UI_COPY,
-  closingNote,
+  struggleLines,
   workedOnCapabilities,
   workedOnLines,
 } from "@/content/practice/practiceCopy";
+import type { PracticeStruggle } from "@/content/practice/practiceCopy";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
 
 /**
@@ -15,24 +16,29 @@ import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
  * NOT "6/8 correct". A score is the one thing a learner can read as a verdict,
  * and the honest product claim after five minutes of practice is not a
  * percentage — it is the French that came back. So the summary lists exactly
- * what was worked on, derived from the session that actually ran, and the only
- * closing note is a calm "worth another look" when something was genuinely
- * missed. No mastery claim, no praise the evidence does not support.
+ * what was worked on, derived from the session that actually ran.
+ *
+ * It also says where the learner struggled, which is the half a summary of
+ * "what you worked on" cannot carry on its own. That half is bounded hard: at
+ * most one named thing plus one clause, drawn only from this session's graded
+ * attempts, and absent entirely when the session was clean. No mastery claim,
+ * no tally, no praise the evidence does not support, and nothing that reads as
+ * a verdict on the learner.
  */
 export function PracticeComplete({
   actions,
-  missCount,
+  struggles,
   onDone,
   onAgain,
 }: {
   actions: readonly PracticeSessionAction[];
-  missCount: number;
+  struggles: readonly PracticeStruggle[];
   onDone: () => void;
   onAgain: (() => void) | null;
 }) {
   const capabilities = workedOnCapabilities(actions);
   const lines = workedOnLines(actions);
-  const note = closingNote(missCount);
+  const notes = struggleLines(struggles);
 
   return (
     <View style={{ flex: 1 }}>
@@ -111,13 +117,23 @@ export function PracticeComplete({
           ))}
         </View>
 
-        {note !== null && (
+        {/*
+          Same quiet type as the rest of the close. A struggle note is
+          information, not an alarm, so it never gets a colour of its own.
+        */}
+        {notes.map((note, i) => (
           <Text
-            style={{ color: P.ink3, fontSize: 14, lineHeight: 21, marginTop: SPACE.lg }}
+            key={note}
+            style={{
+              color: P.ink3,
+              fontSize: 14,
+              lineHeight: 21,
+              marginTop: i === 0 ? SPACE.lg : SPACE.xs,
+            }}
           >
             {note}
           </Text>
-        )}
+        ))}
       </ScrollView>
 
       <View
