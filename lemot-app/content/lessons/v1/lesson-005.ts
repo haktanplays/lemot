@@ -250,7 +250,8 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-je-voudrais", "chunk-un-cafe"],
         weakPointTags: ["articles", "politeness"],
         payload: {
-          weaveType: "context",
+          // Medium: the prompt names the communicative job, so the tier says so.
+          weaveType: "mid",
           prompt: "Ask for a coffee, with the right little word in front of it.",
           context:
             "You are at the counter and the server is waiting. Just the request, nothing else.",
@@ -320,7 +321,8 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-j-ai", "chunk-une-question"],
         weakPointTags: ["articles"],
         payload: {
-          weaveType: "context",
+          // Medium: the prompt names the communicative job, so the tier says so.
+          weaveType: "mid",
           prompt: "Say that you have a question, with the right little word in front of it.",
           context: "You want to ask something. They are already looking at you: « Oui ? »",
           suggestedPieces: [

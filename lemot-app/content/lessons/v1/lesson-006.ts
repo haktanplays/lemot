@@ -145,7 +145,8 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-bonjour", "chunk-je-suis-ici", "chunk-je-suis"],
         weakPointTags: ["natural-speech"],
         payload: {
-          weaveType: "context",
+          // Medium: the prompt names the communicative job, so the tier says so.
+          weaveType: "mid",
           prompt: "Greet them, then say you have arrived.",
           context: "You are at the door. A voice from inside: « Bonjour ? »",
           suggestedPieces: [
@@ -279,7 +280,8 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-j-ai", "chunk-j-ai-une-question", "chunk-une-question"],
         weakPointTags: ["j-ai-vs-je-suis"],
         payload: {
-          weaveType: "context",
+          // Medium: the prompt names the communicative job, so the tier says so.
+          weaveType: "mid",
           prompt: "Say that you have a question.",
           context: "There is one small thing you came to ask. They wait: « Oui ? »",
           suggestedPieces: [
