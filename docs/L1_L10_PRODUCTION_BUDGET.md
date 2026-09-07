@@ -1,7 +1,7 @@
 # L1-L10 Production Budget and Gap Matrix
 
 **Status:** live. Regenerate the CURRENT columns with `npm run budget:l1l10` from
-`lemot-app/`. Measured at `66dba7d`, 2026-09-07.
+`lemot-app/`. Measured at `e3e6fe0`, 2026-09-07.
 
 This file is the definition of what "100% complete" means for the first ten
 lessons, and the honest distance between that definition and the product today.
@@ -198,8 +198,8 @@ the four rules that decided them, are the repeatable method.
 | Showcase sentences | 16 | **20** (7 core / 11 supported / 2 exposure) |
 | pages / actions | 10 / 9 | **12 / 13** |
 | weave ladder | mid, context, open, open | **supported, mid, context, mid, mid, open, open** |
-| Practice seeds | 14 | **41** |
-| distinct Practice surfaces | 6 | **26** |
+| Practice seeds | 14 | **78** |
+| distinct Practice surfaces | 6 | **49** |
 | Mon Lexique eligible reachable | 2/2 | **3/3** |
 | unservable seeds | 0 | **0** |
 
@@ -226,18 +226,39 @@ recognition fill — recognition grants no ownership, and that contract holds.
 **3. A lesson is 11-20 screens.** The Content Bible band is a fatigue rule.
 L7 had 16 and took 4 more. Ten were authored first and did not fit.
 
-**4. Practice may only work language the LESSON gave evidence for.** A seed
-requiring an item the learner was never graded on is unservable forever. L7's
-Showcase introduces 14 further items the body has no room to work, so the
-reachable base is 33 items and the pool is built from those.
+**4. Practice gates ITEMS, not sentences.** `seedIsLawfulFor` is exactly
+`seed.requiredItemIds.every((id) => reachedItems.has(id))`. A seed may compose
+ANY utterance from items the learner owns; nothing requires the sentence to be
+one the lesson showed. L7's reachable base is 33 items, and its seeds may
+target the 12 the lesson declares while using the rest as `required` frame.
 
-### Why L7 is 26 Practice surfaces and not 150
+An earlier version of this document read rule 4 as an exact-sentence rule and
+reported 26 surfaces as near L7's ceiling. That was an invented constraint. Re-
+reading the code took the pool from 26 to 49 with no contract change.
 
-Rules 3 and 4 compose: screens cap what a lesson teaches, and what it teaches
-caps what Practice may rehearse. Reaching 150 surfaces for one lesson requires
-either a larger screen budget or a second teaching surface outside the lesson
-body. Padding to the number would mean the same sentence with the destination
-swapped, which is the cosmetic substitution the target explicitly forbids.
+### Why L7 is 49 Practice surfaces and not 150
+
+Not a cap — a distance. The bound is editorial: how many genuinely distinct
+communicative acts "leaving" contains for a beginner with 33 items. 49 are
+authored. More are reachable, and the next tranche is ordinary authoring work
+rather than a blocked target. What would NOT count is the same utterance per
+interaction type, or a word swapped for its own sake.
+
+### The three units that are not interchangeable
+
+Reported separately, because conflating them is how a thin lesson looks
+finished:
+
+| unit | L7 | what it means |
+|---|---|---|
+| declared meaningful items | **25** | the lesson names and works them |
+| items taught in the body | **12** | a screen actually asks for them |
+| available for supported production | **11** | a weave supplies the piece |
+| demonstrated by independent production | **2** | the declared acquisition demands |
+| owned / Lexique-eligible after a clean play | **3 of 3** | measured at runtime |
+
+Showcase exposure is none of these. The remaining 13 declared items are shown
+and not worked, which is exposure and is labelled as such.
 
 ### The authoring method, in order
 
@@ -253,7 +274,18 @@ swapped, which is the cosmetic substitution the target explicitly forbids.
 
 ### Linguistic review status
 
-The 20 items added for L7 carry `frenchQa: "pending"`. No named human has read
-this French, and no founder waiver was recorded for the batch, so neither
-`approved` nor `founder_waived_provisional` would be true. Promoting them is a
-founder action. **L7 is structurally complete and linguistically ungated.**
+The 20 items added for L7 carry `frenchQa: "pending"`. An AGENT reviewed every
+surface and found one defect, since fixed; agent review is provisional evidence
+and is not human review, so nothing was promoted. No named human has read this
+French and no founder waiver was recorded, so neither `approved` nor
+`founder_waived_provisional` would be true.
+
+**What `pending` actually gates, verified in code.** Registered SENTENCES are
+enforced: `payloadRegistry` refuses a payload whose sentence is pending. Registry
+ITEMS are not — no runtime path reads item-level `frenchQa`. So an unreviewed
+item still renders, which is development preview and NOT release clearance.
+`scripts/tests/frenchQaGate.test.ts` pins this boundary so it stops being
+invisible. Turning item QA into a release gate is a founder decision about the
+release path, not an authoring change.
+
+**L7 is structurally complete and linguistically ungated.**
