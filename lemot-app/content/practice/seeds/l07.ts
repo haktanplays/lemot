@@ -1127,11 +1127,12 @@ export const L7_SEEDS: PracticeSeed[] = [
     required: ["chunk-je-ne-suis-pas", "chunk-je-vais", "chunk-a-la-maison"],
     targets: ["chunk-a-la-maison"],
     weaveType: "open",
-    prompt: "Tell them it is not you they want, then say where you are going.",
-    context: "Somebody is looking for whoever is on the late shift. It is not you.",
+    prompt: "Tell them you are not in there, then say where you are going.",
+    context:
+      "They are calling for you from the meeting room, and you are already at the front door.",
     answers: ["Je ne suis pas ici. Je vais à la maison."],
     alternatives: ["Je ne suis pas ici, je vais à la maison."],
-    ifCorrect: "Correcting them first stops the destination sounding like an excuse.",
+    ifCorrect: "Je ne suis pas ici is about the PLACE they think you are in, not about who you are.",
   }),
 
   // ── Announcing, once you are already at the door ──────────────────────────

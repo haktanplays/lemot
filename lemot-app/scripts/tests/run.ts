@@ -47,6 +47,7 @@ import "./practiceHubReadiness.test";
 import "./practiceSession.test";
 import "./practiceSurfaces.test";
 import "./weaveScaffoldContract.test";
+import "./frenchQaGate.test";
 import "./shippedItemIds.test";
 import "./shippedErrorTags.test";
 import "./canonRules.test";
