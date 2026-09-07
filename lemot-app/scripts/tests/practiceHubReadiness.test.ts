@@ -29,11 +29,26 @@
  *                 the ITEM, not about meta items in general: L5's un/une
  *                 package nugget IS practisable, through a recognition fill,
  *                 and is listed as PRACTISABLE below.
+ *
+ *   EXPOSURE      a real surface the lesson SHOWS and never works. The
+ *                 Showcase names it, no screen asks for it, and the Showcase
+ *                 emits no evidence, so the learner never reaches it and no
+ *                 seed may require it. Practising it would be teaching new
+ *                 language in the Hub, which the pool rules forbid.
+ *
+ *                 This category was added when L7 declared the fourteen items
+ *                 its own Showcase introduces. Declaring them is the lesson
+ *                 keeping an honest record of its language; it is NOT a claim
+ *                 that the learner can practise them, and the assertion below
+ *                 is deliberately the negative one. An EXPOSURE item that
+ *                 starts resolving means a screen began asking for something
+ *                 the lesson never taught.
  */
 import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { ITEM_REGISTRY } from "../../content/itemRegistry";
 import { resolvePracticeHubSource } from "../../content/lesson-v1-evidence/practiceHub";
+import { PRACTICE_SEEDS } from "../../content/practice/seeds";
 import type { ItemId } from "../../content/learning-engine/types";
 import type { Lesson } from "../../content/lessonTypes";
 
@@ -101,6 +116,35 @@ const VIA_CARRIER: Readonly<Record<string, string>> = {
   "noun-pause": "chunk-faire-une-pause",
 };
 
+/**
+ * Shown, never worked. Reachable only if a future pass gives them a screen.
+ *
+ * L7 introduces these in its Showcase and has no room in its 20-screen budget
+ * to work them. They are the honest measure of the distance between a lesson's
+ * language WORLD and what it can actually teach in one sitting.
+ */
+const EXPOSURE: readonly string[] = [
+  "chunk-au-travail",
+  "chunk-au-restaurant",
+  "chunk-a-l-hotel",
+  "chunk-bonne-journee",
+  "chunk-a-demain",
+  "chunk-a-bientot",
+  "chunk-a-tout-a-l-heure",
+  "chunk-je-pars",
+  "chunk-une-autre-fois",
+  "chunk-peut-etre",
+  "adverb-maintenant",
+  "adverb-plus-tard",
+  "adverb-ce-soir",
+  "adverb-demain",
+  "chunk-de-rien",
+  "chunk-encore-merci",
+  "chunk-bonne-nuit",
+  "chunk-bon-week-end",
+  "chunk-bon-voyage",
+];
+
 /** Concepts, not surfaces. Nothing to produce. */
 const META: readonly string[] = [
   "grammar-ne-pas-sandwich",
@@ -156,12 +200,34 @@ describe("meta items are concepts, and are not offered as production", () => {
   }
 });
 
+describe("exposure items are shown, and never demanded", () => {
+  for (const itemId of EXPOSURE) {
+    test(`${itemId} is shown but never asked for`, () => {
+      assert(
+        !resolves(itemId),
+        `${itemId} is classified exposure but a screen is demanding it -- either it is taught now, or the screen is asking for something the lesson never gave`,
+      );
+    });
+  }
+
+  test("no seed requires exposure-only language", () => {
+    // The other half, and the one that would bite a learner: a seed requiring
+    // an item nobody ever taught is unservable forever, because the reach check
+    // asks whether they own it and the answer stays no.
+    const exposure = new Set(EXPOSURE);
+    const offenders = PRACTICE_SEEDS.filter((seed) =>
+      seed.requiredItemIds.some((id) => exposure.has(id)),
+    ).map((seed) => seed.id);
+    assertEqual(offenders, [], "seeds requiring language no lesson works");
+  });
+});
+
 describe("the matrix covers the path exhaustively", () => {
   test("every item L1-L10 declares carries a verdict", () => {
     // The self-maintaining half. A new item on the early path cannot ship
     // without someone deciding, in this file, whether the learner can practise
     // it -- which is the decision that would otherwise be made by nobody.
-    const classified = new Set([...PRACTISABLE, ...Object.keys(VIA_CARRIER), ...META]);
+    const classified = new Set([...PRACTISABLE, ...Object.keys(VIA_CARRIER), ...META, ...EXPOSURE]);
     const missing: string[] = [];
     for (const lesson of PATH) {
       for (const item of lesson.learningItems) {
@@ -171,13 +237,13 @@ describe("the matrix covers the path exhaustively", () => {
     assertEqual(
       missing,
       [],
-      "unclassified L1-L10 items -- add each to PRACTISABLE, VIA_CARRIER or META",
+      "unclassified L1-L10 items -- add each to PRACTISABLE, VIA_CARRIER, META or EXPOSURE",
     );
   });
 
   test("the matrix names nothing the path does not declare", () => {
     const declared = new Set(PATH.flatMap((l) => l.learningItems.map((i) => i.id)));
-    const stale = [...PRACTISABLE, ...Object.keys(VIA_CARRIER), ...META].filter(
+    const stale = [...PRACTISABLE, ...Object.keys(VIA_CARRIER), ...META, ...EXPOSURE].filter(
       (id) => !declared.has(id),
     );
     assertEqual(stale, [], "matrix rows for items no L1-L10 lesson declares any more");
@@ -188,6 +254,10 @@ describe("the matrix covers the path exhaustively", () => {
     // report: 33 items resolve directly, 4 through a carrier, 3 need nothing.
     const unreachable = PATH.flatMap((l) => l.learningItems.map((i) => i.id))
       .filter((id) => !META.includes(id))
+      // Exposure items have no practice route BY CLASSIFICATION, which is the
+      // point of the category rather than an exemption from the check: the
+      // assertion that they must not resolve lives in its own block above.
+      .filter((id) => !EXPOSURE.includes(id))
       .filter((id) => !resolves(id) && !resolves(VIA_CARRIER[id] ?? ""));
     assertEqual(unreachable, [], "items with no practice route at all");
   });

@@ -1297,6 +1297,88 @@ export const ITEM_REGISTRY = {
     relatedItemIds: ["chunk-a-demain", "adverb-ce-soir"],
     frenchQa: "pending",
   },
+
+  // ── L7 production pass, second tranche: what they say back ────────────────
+  //
+  // Leaving is two-sided, and L7's Showcase only ever showed the learner's
+  // half. These five are the other half. All are exposure: shown in the
+  // Showcase, worked by no screen, required by no seed.
+  //
+  // `pardon` is NOT among them, though it belongs to this world. The id is
+  // deliberately reserved: bare "Pardon ?" in its repair sense is deferred with
+  // an orphaned repair rail, and minting the id for the apology sense would
+  // half-solve that rail from the wrong end. Same `pending` provenance as the first
+  // tranche — authored by an agent, read by no named human, no founder waiver
+  // recorded.
+
+  "chunk-de-rien": {
+    id: "chunk-de-rien",
+    type: "chunk",
+    text: "de rien",
+    status: "recognition",
+    fr: "de rien",
+    en: "you're welcome",
+    meaning:
+      "The standard answer to merci. Literally \"of nothing\", and used exactly where English says you're welcome or no problem.",
+    exampleFr: "Merci beaucoup ! De rien.",
+    exampleEn: "Thank you very much! You're welcome.",
+    relatedItemIds: ["chunk-merci", "chunk-merci-beaucoup"],
+    frenchQa: "pending",
+  },
+  "chunk-encore-merci": {
+    id: "chunk-encore-merci",
+    type: "chunk",
+    text: "encore merci",
+    status: "recognition",
+    fr: "encore merci",
+    en: "thanks again",
+    meaning:
+      "Thanks a second time, said at the door when you already thanked them inside.",
+    exampleFr: "Pardon, je dois partir. Encore merci !",
+    exampleEn: "Sorry, I have to go. Thanks again!",
+    relatedItemIds: ["chunk-merci-beaucoup", "chunk-au-revoir"],
+    frenchQa: "pending",
+  },
+  "chunk-bonne-nuit": {
+    id: "chunk-bonne-nuit",
+    type: "chunk",
+    text: "bonne nuit",
+    status: "recognition",
+    fr: "bonne nuit",
+    en: "good night",
+    meaning:
+      "For the end of the day, when the other person is going to bed. NOT interchangeable with bonne soirée, which is for an evening still ahead of them.",
+    exampleFr: "Au revoir, bonne nuit !",
+    exampleEn: "Goodbye, good night!",
+    relatedItemIds: ["chunk-bonne-soiree", "chunk-au-revoir"],
+    frenchQa: "pending",
+  },
+  "chunk-bon-week-end": {
+    id: "chunk-bon-week-end",
+    type: "chunk",
+    text: "bon week-end",
+    status: "recognition",
+    fr: "bon week-end",
+    en: "have a good weekend",
+    meaning: "The Friday version of bonne soirée. Written with the hyphen, as French borrowed it whole.",
+    exampleFr: "Au revoir, bon week-end !",
+    exampleEn: "Goodbye, have a good weekend!",
+    relatedItemIds: ["chunk-bonne-soiree", "chunk-bonne-journee"],
+    frenchQa: "pending",
+  },
+  "chunk-bon-voyage": {
+    id: "chunk-bon-voyage",
+    type: "chunk",
+    text: "bon voyage",
+    status: "recognition",
+    fr: "bon voyage",
+    en: "have a good trip",
+    meaning: "Said to somebody who is the one leaving, when they are going further than home.",
+    exampleFr: "À bientôt, bon voyage !",
+    exampleEn: "See you soon, have a good trip!",
+    relatedItemIds: ["chunk-a-la-gare", "chunk-a-bientot"],
+    frenchQa: "pending",
+  },
 } as const satisfies Record<string, LearningItem>;
 
 export type ItemId = keyof typeof ITEM_REGISTRY;

@@ -51,10 +51,12 @@ describe("French QA status means exactly what it says", () => {
   });
 
   test("the L7 production items are pending, and no waiver is claimed for them", () => {
-    // Twenty items authored by an agent with no named-human review and no
-    // recorded founder decision. If this list ever shows a waiver, check that a
+    // Twenty-five items across two tranches, authored by an agent with no
+    // named-human review and no recorded founder decision. If this list ever shows a waiver, check that a
     // decision was actually made rather than assumed from the neighbours.
     const L7_AUTHORED = [
+      "chunk-de-rien", "chunk-encore-merci", "chunk-bonne-nuit",
+      "chunk-bon-week-end", "chunk-bon-voyage",
       "chunk-au-cafe", "chunk-au-travail", "chunk-au-restaurant", "chunk-a-la-gare",
       "chunk-a-l-hotel", "chunk-bonne-soiree", "chunk-bonne-journee", "chunk-a-demain",
       "chunk-a-bientot", "chunk-a-tout-a-l-heure", "chunk-je-pars", "chunk-je-dois-partir",
@@ -83,8 +85,8 @@ describe("French QA status means exactly what it says", () => {
     );
     assertEqual(
       unreachable.length,
-      20,
-      "the L7 production pass is the whole of the currently un-cleared item inventory",
+      25,
+      "both L7 tranches are the whole of the currently un-cleared item inventory",
     );
   });
 });

@@ -218,8 +218,8 @@ describe("five canonical item registrations", () => {
     // + L18's 1 (adverb-comment) + L21's 1 (adj-bon) + L22's 1 (adverb-combien).
     assertEqual(
       CANONICAL_ITEM_COUNT,
-      85,
-      "54 frozen + 5 PR-07 + 3 L17 + 1 L18 + 1 L21 + 1 L22 + 20 L7 production pass",
+      90,
+      "54 frozen + 5 PR-07 + 3 L17 + 1 L18 + 1 L21 + 1 L22 + 25 across the two L7 tranches",
     );
     for (const id of NEW_ITEM_IDS) {
       assert(CANONICAL_ITEM_ID_SET.has(id), `${id} registered`);
@@ -233,7 +233,7 @@ describe("five canonical item registrations", () => {
     const manifest = JSON.parse(read("scripts/shipped-item-ids.json")) as {
       ids: string[];
     };
-    assertEqual(manifest.ids.length, 85, "manifest count");
+    assertEqual(manifest.ids.length, 90, "manifest count");
     assertEqual(
       manifest.ids.slice().sort().join(","),
       [...CANONICAL_ITEM_ID_SET].sort().join(","),

@@ -22,16 +22,13 @@ const screens: LessonScreen[] = [
             { fr: "Je vais au café.", en: "I'm going to the café.", role: "core", itemIds: ["chunk-au-cafe"] },
             { fr: "Je vais à la gare.", en: "I'm going to the station.", role: "core", itemIds: ["chunk-a-la-gare"] },
             { fr: "Je vais au travail.", en: "I'm going to work.", role: "supported", itemIds: ["chunk-au-travail"] },
-            { fr: "Je vais au restaurant.", en: "I'm going to the restaurant.", role: "supported", itemIds: ["chunk-au-restaurant"] },
-            { fr: "Je vais à l'hôtel.", en: "I'm going to the hotel.", role: "supported", itemIds: ["chunk-a-l-hotel"] },
           ],
         },
         {
           label: "Saying when",
           sentences: [
             { fr: "Je pars maintenant.", en: "I'm leaving now.", role: "supported", itemIds: ["chunk-je-pars", "adverb-maintenant"] },
-            { fr: "Je vais au restaurant ce soir.", en: "I'm going to the restaurant this evening.", role: "supported", itemIds: ["adverb-ce-soir"] },
-            { fr: "Plus tard, peut-être.", en: "Later, maybe.", role: "supported", itemIds: ["adverb-plus-tard", "chunk-peut-etre"] },
+            { fr: "Je vais au restaurant ce soir.", en: "I'm going to the restaurant this evening.", role: "supported", itemIds: ["chunk-au-restaurant", "adverb-ce-soir"] },
           ],
         },
         {
@@ -50,14 +47,24 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "Désolé, je dois partir.", en: "Sorry, I have to go.", role: "core", itemIds: ["chunk-desole", "chunk-je-dois-partir"] },
             { fr: "Non merci, une autre fois.", en: "No thanks, another time.", role: "supported", itemIds: ["chunk-une-autre-fois", "chunk-non-merci"] },
-            { fr: "Non merci, ça va.", en: "No thanks, I'm fine.", role: "exposure" },
+            { fr: "Désolé, je dois partir. Encore merci !", en: "Sorry, I have to go. Thanks again!", role: "exposure", itemIds: ["chunk-encore-merci"] },
           ],
         },
         {
           label: "Being asked",
           sentences: [
             { fr: "Oui, je vais à la maison.", en: "Yes, I'm going home.", role: "core", itemIds: ["chunk-oui"] },
-            { fr: "Vous partez ?", en: "Are you leaving?", role: "exposure" },
+          ],
+        },
+        {
+          // Leaving is two-sided, and until now the Showcase only ever showed
+          // the learner's half.
+          label: "What they say back",
+          sentences: [
+            { fr: "De rien.", en: "You're welcome.", role: "exposure", itemIds: ["chunk-de-rien"] },
+            { fr: "Au revoir, bonne nuit !", en: "Goodbye, good night!", role: "exposure", itemIds: ["chunk-bonne-nuit"] },
+            { fr: "Au revoir, bon week-end !", en: "Goodbye, have a good weekend!", role: "exposure", itemIds: ["chunk-bon-week-end"] },
+            { fr: "À bientôt, bon voyage !", en: "See you soon, have a good trip!", role: "exposure", itemIds: ["chunk-bon-voyage"] },
           ],
         },
       ],
@@ -665,6 +672,31 @@ export const lesson007: Lesson = {
     "chunk-bonne-soiree",
     "chunk-desole",
     "chunk-je-dois-partir",
+    // Shown in the Showcase and never asked for. Declared so the lesson can
+    // state a treatment for its OWN language rather than leaving thirteen
+    // items it introduces unaccounted for. Declaring is not teaching: none of
+    // these is a demand, none is practisable, and the Showcase emits no
+    // evidence, so nothing here reaches a learner as owned language.
+    "chunk-au-travail",
+    "chunk-au-restaurant",
+    "chunk-a-l-hotel",
+    "chunk-bonne-journee",
+    "chunk-a-demain",
+    "chunk-a-bientot",
+    "chunk-a-tout-a-l-heure",
+    "chunk-je-pars",
+    "chunk-une-autre-fois",
+    "chunk-peut-etre",
+    "adverb-maintenant",
+    "adverb-plus-tard",
+    "adverb-ce-soir",
+    "adverb-demain",
+    // The reply side of leaving, and the two lighter apologies. Exposure only.
+    "chunk-de-rien",
+    "chunk-encore-merci",
+    "chunk-bonne-nuit",
+    "chunk-bon-week-end",
+    "chunk-bon-voyage",
     "chunk-au-revoir",
     "chunk-merci",
     // Recycled from L3 for the founder-usable pass, never re-taught: the
