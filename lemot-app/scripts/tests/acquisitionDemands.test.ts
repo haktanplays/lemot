@@ -43,7 +43,9 @@ const RATIFIED: Record<string, readonly string[]> = {
   "v1-lesson-004": ["chunk-j-ai"],
   "v1-lesson-005": ["chunk-un-cafe", "chunk-une-question"],
   "v1-lesson-006": ["chunk-au-revoir"],
-  "v1-lesson-007": ["chunk-je-vais"],
+  // Two since the L7 production pass: a doorway's band is 1-2, and the second
+  // demand is the destination the lesson asks for with only an optional hint.
+  "v1-lesson-007": ["chunk-je-vais", "chunk-au-cafe"],
   "v1-lesson-008": ["chunk-c-est-ou", "chunk-est-ce-que"],
   "v1-lesson-009": ["chunk-faire-une-pause"],
   "v1-lesson-010": [],
@@ -110,14 +112,15 @@ describe("acquisitionDemands — shipped L0–L23 map", () => {
     }
   });
 
-  test("total declared demands across v1 is 29", () => {
+  test("total declared demands across v1 is 30", () => {
     // 21 through L16 (Integration contributed 0) + L17's three + L18's one.
     // L19 is Integration and L20 is Milestone; both add none. L21's one
     // evaluative adjective takes it to 26, and L22's one question word to 27.
     // L23 and L24 add none. The L1-L3 content pass then added exactly two:
     // chunk-excusez-moi in L1 and chunk-je-ne-comprends-pas in L3, taking the
-    // total to 29. Both lessons stay inside the standard band of 1-4.
-    assertEqual(totalAcquisitionDemands(V1_LESSONS), 29, "current-v1 regression total");
+    // total to 29, and the L7 production pass took it to 30. Every lesson stays
+    // inside its own band.
+    assertEqual(totalAcquisitionDemands(V1_LESSONS), 30, "current-v1 regression total");
   });
 
   test("migration is complete — all 25 lessons declare the field", () => {
@@ -151,12 +154,26 @@ describe("acquisitionDemands — shipped L0–L23 map", () => {
     assertEqual(l0?.acquisitionDemandItemIds?.length, 4, "and still teaches four things");
   });
 
-  test("L7 declares one demand; à la maison stays supported material", () => {
+  test("L7 declares two demands; à la maison stays supported material", () => {
+    // Was one. The L7 production pass added `chunk-au-cafe` as the second, and
+    // a doorway's band is 1-2, so this is inside the rule rather than an
+    // exception to it. The reason it is a demand and not more supported
+    // material: s31b asks for it with nothing but an optional hint, and without
+    // one destination the learner owns outright, "je vais ..." is a memorised
+    // address rather than a shape with somewhere to put a place.
+    //
+    // `à la maison` is still NOT a demand, which is the half of this test that
+    // has not moved: L7 opened with it, and opening with something is not the
+    // same as asking the learner to own it.
     const l7 = V1_LESSONS.find((l) => l.number === 7);
-    assertEqual(l7?.acquisitionDemandItemIds, ["chunk-je-vais"], "je vais carries the demand");
+    assertEqual(
+      l7?.acquisitionDemandItemIds,
+      ["chunk-je-vais", "chunk-au-cafe"],
+      "je vais and one destination carry the demands",
+    );
     assert(
       !(l7?.acquisitionDemandItemIds ?? []).includes("chunk-a-la-maison"),
-      "the destination is supported, not a second demand",
+      "the opening destination is supported, not a demand",
     );
   });
 });

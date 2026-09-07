@@ -576,7 +576,7 @@ describe("L7-L10 identity is untouched", () => {
     // integration lesson none. Recycled items are free — they were acquired
     // earlier and are declared here only so the lesson can state a treatment.
     const EXPECTED_DEMANDS: Record<string, number> = {
-      "v1-lesson-007": 1,
+      "v1-lesson-007": 2,
       // est-ce que pulled forward from L12; doorway band is 1-2.
       "v1-lesson-008": 2,
       "v1-lesson-009": 1,

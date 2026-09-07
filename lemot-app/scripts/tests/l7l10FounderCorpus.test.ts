@@ -350,7 +350,7 @@ describe("L7-L10 acquisition stays deliberate", () => {
     assertEqual(
       TARGETS.map((l) => (l.acquisitionDemandItemIds ?? []).join(",")),
       [
-        "chunk-je-vais",
+        "chunk-je-vais,chunk-au-cafe",
         "chunk-c-est-ou,chunk-est-ce-que",
         "chunk-faire-une-pause",
         "",

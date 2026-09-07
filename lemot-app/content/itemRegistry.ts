@@ -1009,7 +1009,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-au-cafe",
     type: "chunk",
     text: "au café",
-    status: "supported",
+    status: "active",
     fr: "au café",
     en: "to the café",
     meaning:

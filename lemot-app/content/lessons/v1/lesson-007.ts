@@ -641,7 +641,13 @@ export const lesson007: Lesson = {
   monolingualMode: "english-guided",
   primaryArchetype: "architecture-verb",
   journeyRole: "doorway",
-  acquisitionDemandItemIds: ["chunk-je-vais"],
+  // A doorway may declare at most two new active production demands, and L7
+  // declared one. The second is `chunk-au-cafe`: without a destination the
+  // learner owns outright, "je vais ..." is one memorised address rather than a
+  // shape with somewhere to put a place, and s31b asks for it with nothing but
+  // an optional hint. Everything else this lesson introduces stays supported
+  // material, which the band deliberately excludes.
+  acquisitionDemandItemIds: ["chunk-je-vais", "chunk-au-cafe"],
   estimatedMinutes: 8,
   canDo: "Say you're heading home, and close the moment.",
   whyItExists:

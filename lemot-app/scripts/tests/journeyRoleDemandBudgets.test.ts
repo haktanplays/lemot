@@ -202,7 +202,7 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
         [4, "standard", 1],
         [5, "standard", 2],
         [6, "integration", 1],
-        [7, "doorway", 1],
+        [7, "doorway", 2],
         // est-ce que pulled forward from L12; doorway band is 1-2.
         [8, "doorway", 2],
         [9, "doorway", 1],
