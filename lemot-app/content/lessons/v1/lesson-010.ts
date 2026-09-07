@@ -123,7 +123,9 @@ const screens: LessonScreen[] = [
         type: "weave",
         targetItemIds: ["chunk-c-est-ou", "adverb-ou-where"],
         payload: {
-          weaveType: "context",
+          // Medium on the locked ladder: the prompt names the communicative job,
+          // not the situation, so the tier says mid.
+          weaveType: "mid",
           prompt: "Open politely, then ask where it is.",
           context:
             "Morning. Your first time in this building, and the room you need is not where you expected.",

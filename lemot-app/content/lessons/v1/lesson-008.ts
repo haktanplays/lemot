@@ -144,7 +144,9 @@ const screens: LessonScreen[] = [
         payload: {
           // The scene carries the task. Pieces stay behind the hint button and the
           // cloze holds only the shape, so the question itself is the learner's.
-          weaveType: "context",
+          // Medium on the locked ladder: the prompt names the communicative
+          // job, not the situation, so the tier says mid.
+          weaveType: "mid",
           prompt: "Ask where it is.",
           context:
             "You're looking for the room. Someone friendly is standing nearby: « Bonjour ! »",
@@ -250,7 +252,9 @@ const screens: LessonScreen[] = [
         type: "weave",
         targetItemIds: ["chunk-c-est"],
         payload: {
-          weaveType: "context",
+          // Medium on the locked ladder: the prompt names the communicative
+          // job, not the situation, so the tier says mid.
+          weaveType: "mid",
           prompt: "Tell them: it's here.",
           context:
             "Now you're the local. Someone asks you C'est où ? And you're standing right at the door.",
@@ -421,7 +425,9 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-ce-n-est-pas"],
         weakPointTags: ["negation", "natural-speech"],
         payload: {
-          weaveType: "context",
+          // Medium on the locked ladder: the prompt names the communicative
+          // job, not the situation, so the tier says mid.
+          weaveType: "mid",
           prompt: "Tell them it isn't here.",
           context:
             "They are already reaching for the handle, and this is not their room.",

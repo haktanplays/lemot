@@ -171,8 +171,9 @@ const screens: LessonScreen[] = [
     type: "weave",
     targetItemIds: ["chunk-faire-une-pause", "chunk-je-voudrais"],
     payload: {
-      // The scene carries the task; pieces stay behind the hint button.
-      weaveType: "context",
+      // Medium on the locked ladder: the prompt names the communicative job,
+      // not the situation, so the tier says mid. Pieces stay behind the hint.
+      weaveType: "mid",
       prompt: "Say you'd like to take a break.",
       context: "The afternoon has been long, and your head is getting heavy.",
       suggestedPieces: [
@@ -266,7 +267,7 @@ const screens: LessonScreen[] = [
           // Open: the directive prompt stands alone, no target line is shown, and
           // every piece is opt-in. This is the lesson's independence summit.
           weaveType: "open",
-          prompt: "Ask for a break politely: say you'd like to take a pause, please.",
+          prompt: "Ask for a break, politely.",
           context:
             "You're working through something together. They pause: « Oui ? » It's a good moment to ask.",
           suggestedPieces: [

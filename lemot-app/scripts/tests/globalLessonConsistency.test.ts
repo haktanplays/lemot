@@ -542,9 +542,14 @@ describe("nothing identity-bearing moved", () => {
       // ladder wants a first unsupported production of new material to be
       // given its exact meaning, and L7 had none.
       7: { screens: 12, tiers: "supported,mid,context,mid,mid,open,open" },
-      8: { screens: 12, tiers: "context,context,open,context,open,open" },
-      9: { screens: 12, tiers: "context,open,open,open" },
-      10: { screens: 12, tiers: "context,open,open,open" },
+      // Moved by the authorised weave-contract correction. No screen moved and
+      // no prompt changed except one answer leak in L9; what changed is that
+      // five tiers stopped claiming to withhold something the prompt was
+      // already handing over. "Ask where it is" names a communicative job, not
+      // a situation, and `mid` is the rung for that.
+      8: { screens: 12, tiers: "mid,mid,open,mid,open,open" },
+      9: { screens: 12, tiers: "mid,open,open,open" },
+      10: { screens: 12, tiers: "mid,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;
