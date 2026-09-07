@@ -1,7 +1,7 @@
 # L1-L10 Production Budget and Gap Matrix
 
 **Status:** live. Regenerate the CURRENT columns with `npm run budget:l1l10` from
-`lemot-app/`. Measured at `e3e6fe0`, 2026-09-07.
+`lemot-app/`. Measured at `ed9ef9d`, 2026-09-07.
 
 This file is the definition of what "100% complete" means for the first ten
 lessons, and the honest distance between that definition and the product today.
@@ -193,13 +193,13 @@ the four rules that decided them, are the repeatable method.
 
 | | before | after |
 |---|---|---|
-| declared language items | 9 | **25** |
+| declared language items | 9 | **31** |
 | owned (active, independent-production channel) | 2 | **3** |
 | Showcase sentences | 16 | **20** (7 core / 11 supported / 2 exposure) |
 | pages / actions | 10 / 9 | **12 / 13** |
 | weave ladder | mid, context, open, open | **supported, mid, context, mid, mid, open, open** |
-| Practice seeds | 14 | **78** |
-| distinct Practice surfaces | 6 | **49** |
+| Practice seeds | 14 | **105** |
+| distinct Practice surfaces | 6 | **68** |
 | Mon Lexique eligible reachable | 2/2 | **3/3** |
 | unservable seeds | 0 | **0** |
 
@@ -236,13 +236,13 @@ An earlier version of this document read rule 4 as an exact-sentence rule and
 reported 26 surfaces as near L7's ceiling. That was an invented constraint. Re-
 reading the code took the pool from 26 to 49 with no contract change.
 
-### Why L7 is 49 Practice surfaces and not 150
+### Why L7 is 68 Practice surfaces and not 150
 
 Not a cap — a distance. The bound is editorial: how many genuinely distinct
-communicative acts "leaving" contains for a beginner with 33 items. 49 are
-authored. More are reachable, and the next tranche is ordinary authoring work
-rather than a blocked target. What would NOT count is the same utterance per
-interaction type, or a word swapped for its own sake.
+communicative acts "leaving" contains for a beginner with 33 reachable items.
+68 are authored, up from 6. More are reachable and the next tranche is ordinary
+authoring work rather than a blocked target. What would NOT count is the same
+utterance per interaction type, or a word swapped for its own sake.
 
 ### The three units that are not interchangeable
 
@@ -251,14 +251,35 @@ finished:
 
 | unit | L7 | what it means |
 |---|---|---|
-| declared meaningful items | **25** | the lesson names and works them |
-| items taught in the body | **12** | a screen actually asks for them |
-| available for supported production | **11** | a weave supplies the piece |
+| declared meaningful items | **31** | the lesson names them and can state a treatment |
+| items taught in the body | **10** | a screen actually asks for them |
+| available for supported production | **10** | a weave supplies the piece |
 | demonstrated by independent production | **2** | the declared acquisition demands |
+| registry-active among declared | **5** | the independent-production channel is open |
 | owned / Lexique-eligible after a clean play | **3 of 3** | measured at runtime |
 
-Showcase exposure is none of these. The remaining 13 declared items are shown
-and not worked, which is exposure and is labelled as such.
+Showcase exposure is none of these. Nineteen declared items are shown and never
+worked, which the readiness matrix now records as its fourth verdict,
+**EXPOSURE**: a real surface a lesson shows and does not teach. It asserts the
+negative — an exposure item must not resolve to a production source, and no
+seed may require it — so Practice can never silently demand independent
+production of language that was only ever exposed.
+
+### Why declared stops near 31, verified in code
+
+Not the demand band. The chain is:
+
+1. A Practice seed is lawful only if every `requiredItemIds` entry is REACHED.
+2. Reached means `seenCount > 0` or a claim, i.e. mastery evidence.
+3. Evidence comes from a graded screen, or from `recordExposure` — which is
+   wired for **meet-cards only**.
+4. The Showcase emits no evidence at all.
+5. Both meet-cards and graded screens are SCREENS, and L7 is at 20/20.
+
+So every additional item L7 could teach costs a screen it does not have, and
+every additional item it merely SHOWS costs a Showcase sentence, which is at
+20/20 against the 15-20 target. Declared items are bounded by Showcase capacity
+times item density, currently 1.55 items per sentence.
 
 ### The authoring method, in order
 
