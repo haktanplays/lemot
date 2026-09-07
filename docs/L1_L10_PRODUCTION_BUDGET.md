@@ -1,7 +1,7 @@
 # L1-L10 Production Budget and Gap Matrix
 
 **Status:** live. Regenerate the CURRENT columns with `npm run budget:l1l10` from
-`lemot-app/`. Measured at `e1fa45b`, 2026-09-06.
+`lemot-app/`. Measured at `66dba7d`, 2026-09-07.
 
 This file is the definition of what "100% complete" means for the first ten
 lessons, and the honest distance between that definition and the product today.
@@ -182,3 +182,78 @@ Ordered by production value.
 
 Not debt: Showcase, Mon Lexique, Practice CORE coverage, lesson arc, payoff,
 evidence, Journey integration.
+
+
+---
+
+## 8. L7 production pass — what a completed lesson costs
+
+L7 was the first lesson taken through a full production pass. Its numbers, and
+the four rules that decided them, are the repeatable method.
+
+| | before | after |
+|---|---|---|
+| declared language items | 9 | **25** |
+| owned (active, independent-production channel) | 2 | **3** |
+| Showcase sentences | 16 | **20** (7 core / 11 supported / 2 exposure) |
+| pages / actions | 10 / 9 | **12 / 13** |
+| weave ladder | mid, context, open, open | **supported, mid, context, mid, mid, open, open** |
+| Practice seeds | 14 | **41** |
+| distinct Practice surfaces | 6 | **26** |
+| Mon Lexique eligible reachable | 2/2 | **3/3** |
+| unservable seeds | 0 | **0** |
+
+### The four rules that cap a lesson
+
+These are not obstacles to route around. Each one refused a version of this
+pass, and each was right.
+
+**1. The demand band caps NEW OWNERSHIP, not vocabulary.**
+`acquisitionDemandItemIds` counts "distinct NEW learner-facing active
+production demands" and explicitly excludes supported-only use,
+recognition-only exposure, recycling and carryover. A `doorway` may declare 1-2;
+`standard` 1-4; `integration` 0. L7 declares 2. This is why owned inventory is
+3 and not 25, and it is a cognitive-load rule rather than bookkeeping.
+
+**2. Registry `status` is the evidence gate, and ownership is measured at
+runtime.** An item whose treatment resolves to `supported` records production
+in the SUPPORTED channel however unsupported the learner's attempt was.
+Measured after a clean L1-L7 play with the hint never opened: five of six new
+items reach Mon Lexique with `stretch` eligibility. They are learner-owned in
+the product sense. `chunk-a-la-gare` is `hidden` because it appears only in a
+recognition fill — recognition grants no ownership, and that contract holds.
+
+**3. A lesson is 11-20 screens.** The Content Bible band is a fatigue rule.
+L7 had 16 and took 4 more. Ten were authored first and did not fit.
+
+**4. Practice may only work language the LESSON gave evidence for.** A seed
+requiring an item the learner was never graded on is unservable forever. L7's
+Showcase introduces 14 further items the body has no room to work, so the
+reachable base is 33 items and the pool is built from those.
+
+### Why L7 is 26 Practice surfaces and not 150
+
+Rules 3 and 4 compose: screens cap what a lesson teaches, and what it teaches
+caps what Practice may rehearse. Reaching 150 surfaces for one lesson requires
+either a larger screen budget or a second teaching surface outside the lesson
+body. Padding to the number would mean the same sentence with the destination
+swapped, which is the cosmetic substitution the target explicitly forbids.
+
+### The authoring method, in order
+
+1. Read the demand band for the lesson's `journeyRole`. That is the ownership budget.
+2. Author the Showcase as the language WORLD: 15-20 sentences, roles honest.
+3. Choose what the lesson body can work inside 11-20 screens. Everything else is exposure.
+4. Declare in `learningItems` exactly what the lesson works — an undeclared target throws at runtime.
+5. Give supported material a piece, or the Hub cannot reuse the screen without upgrading it.
+6. Add each new id through `npm run manifest:add`.
+7. Build the Practice corpus only from items the lesson graded.
+8. Keep cumulative language in `required`, never in `targets`.
+9. Measure ownership by playing, not by reading the registry.
+
+### Linguistic review status
+
+The 20 items added for L7 carry `frenchQa: "pending"`. No named human has read
+this French, and no founder waiver was recorded for the batch, so neither
+`approved` nor `founder_waived_provisional` would be true. Promoting them is a
+founder action. **L7 is structurally complete and linguistically ungated.**
