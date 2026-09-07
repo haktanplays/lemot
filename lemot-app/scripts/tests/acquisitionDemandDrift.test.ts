@@ -199,7 +199,7 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
     assertEqual(shipped.filter((d) => d.code === "DD-003"), [], "no declared demand is non-active");
   });
 
-  test("current corpus findings are exactly the 10 recorded supported-vs-demand calls", () => {
+  test("current corpus findings are exactly the 16 recorded supported-vs-demand calls", () => {
     // These are real, deliberate founder decisions ("supported / composed, not a
     // demand") that today live only in each lesson's prose. The detector asking
     // about them is correct behaviour, not a bug — and they are NOT fixed here.
@@ -220,7 +220,13 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
         // Payload Economy v0 §6: the dormant noun-idee, activated as L4's third
         // cargo and reused as L5's second une package. Supported both times.
         "DD-002 v1-lesson-004/noun-idee",
-        "DD-002 v1-lesson-007/chunk-a-la-maison",
+        "DD-002 v1-lesson-007/chunk-a-la-gare",
+      "DD-002 v1-lesson-007/chunk-a-la-maison",
+      "DD-002 v1-lesson-007/chunk-au-cafe",
+      "DD-002 v1-lesson-007/chunk-bonne-soiree",
+      "DD-002 v1-lesson-007/chunk-desole",
+      "DD-002 v1-lesson-007/chunk-je-dois-partir",
+      "DD-002 v1-lesson-007/chunk-merci-beaucoup",
         "DD-002 v1-lesson-008/adverb-ou-where",
         "DD-002 v1-lesson-011/chunk-m-aider",
         "DD-002 v1-lesson-011/chunk-vous-pouvez",
@@ -229,6 +235,6 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
       ],
       "current-v1 advisory baseline",
     );
-    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 10 }, "all advisory");
+    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 16 }, "all advisory");
   });
 });

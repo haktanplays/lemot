@@ -13,34 +13,44 @@ const screens: LessonScreen[] = [
     type: "showcase",
     payload: {
       intro:
-        "Leaving well is its own small skill in French. Say where you are heading, then close the door with a word.",
+        "Leaving well is its own small skill in French. Say where you are heading, say when, and close the door with a word that fits the hour.",
       clusters: [
         {
           label: "Where you are heading",
           sentences: [
             { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais", "chunk-a-la-maison"] },
-            { fr: "Je vais au café.", en: "I'm going to the café.", role: "exposure" },
-            { fr: "Je vais au travail.", en: "I'm going to work.", role: "exposure" },
-            { fr: "Je dois partir.", en: "I have to go.", role: "exposure" },
+            { fr: "Je vais au café.", en: "I'm going to the café.", role: "core", itemIds: ["chunk-au-cafe"] },
+            { fr: "Je vais à la gare.", en: "I'm going to the station.", role: "core", itemIds: ["chunk-a-la-gare"] },
+            { fr: "Je vais au travail.", en: "I'm going to work.", role: "supported", itemIds: ["chunk-au-travail"] },
+            { fr: "Je vais au restaurant.", en: "I'm going to the restaurant.", role: "supported", itemIds: ["chunk-au-restaurant"] },
+            { fr: "Je vais à l'hôtel.", en: "I'm going to the hotel.", role: "supported", itemIds: ["chunk-a-l-hotel"] },
+          ],
+        },
+        {
+          label: "Saying when",
+          sentences: [
+            { fr: "Je pars maintenant.", en: "I'm leaving now.", role: "supported", itemIds: ["chunk-je-pars", "adverb-maintenant"] },
+            { fr: "Je vais au restaurant ce soir.", en: "I'm going to the restaurant this evening.", role: "supported", itemIds: ["adverb-ce-soir"] },
+            { fr: "Plus tard, peut-être.", en: "Later, maybe.", role: "supported", itemIds: ["adverb-plus-tard", "chunk-peut-etre"] },
           ],
         },
         {
           label: "Closing the moment",
           sentences: [
-            { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core" },
-            { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core" },
-            { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "supported" },
-            { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure" },
-            { fr: "À demain !", en: "See you tomorrow!", role: "exposure" },
-            { fr: "À bientôt !", en: "See you soon!", role: "exposure" },
+            { fr: "Merci beaucoup, au revoir !", en: "Thank you very much, goodbye!", role: "core", itemIds: ["chunk-merci-beaucoup", "chunk-au-revoir"] },
+            { fr: "Au revoir, bonne soirée !", en: "Goodbye, have a good evening!", role: "core", itemIds: ["chunk-bonne-soiree"] },
+            { fr: "Merci, bonne journée !", en: "Thanks, have a good day!", role: "supported", itemIds: ["chunk-bonne-journee"] },
+            { fr: "Au revoir, à demain !", en: "Goodbye, see you tomorrow!", role: "supported", itemIds: ["chunk-a-demain", "adverb-demain"] },
+            { fr: "À bientôt !", en: "See you soon!", role: "supported", itemIds: ["chunk-a-bientot"] },
+            { fr: "À tout à l'heure !", en: "See you later!", role: "supported", itemIds: ["chunk-a-tout-a-l-heure"] },
           ],
         },
         {
-          label: "Turning something down on the way out",
+          label: "Leaving early, kindly",
           sentences: [
-            { fr: "Non merci. Je vais à la maison.", en: "No thanks. I'm going home.", role: "core" },
+            { fr: "Désolé, je dois partir.", en: "Sorry, I have to go.", role: "core", itemIds: ["chunk-desole", "chunk-je-dois-partir"] },
+            { fr: "Non merci, une autre fois.", en: "No thanks, another time.", role: "supported", itemIds: ["chunk-une-autre-fois", "chunk-non-merci"] },
             { fr: "Non merci, ça va.", en: "No thanks, I'm fine.", role: "exposure" },
-            { fr: "Une autre fois, peut-être.", en: "Another time, maybe.", role: "exposure" },
           ],
         },
         {
@@ -48,7 +58,6 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "Oui, je vais à la maison.", en: "Yes, I'm going home.", role: "core", itemIds: ["chunk-oui"] },
             { fr: "Vous partez ?", en: "Are you leaving?", role: "exposure" },
-            { fr: "On y va ?", en: "Shall we go?", role: "exposure" },
           ],
         },
       ],
@@ -63,9 +72,9 @@ const screens: LessonScreen[] = [
       insightType: "lesson-goal",
       title: "Heading off",
       body:
-        "Today: one new engine, je vais.\n" +
-        "By the end: you can close a moment and say you're heading home.\n" +
-        "Main pieces: je vais, à la maison.",
+        "Today: where you are going, and how a French goodbye actually closes.\n" +
+        "By the end: you can name a destination and leave a room kindly.\n" +
+        "Main pieces: je vais, au café, bonne soirée, je dois partir.",
     },
   },
 
@@ -95,13 +104,83 @@ const screens: LessonScreen[] = [
       insightType: "grammar-nugget",
       title: "Take it whole.",
       body:
-        "Je vais = I'm going. Like je suis, it is one solid piece. À la maison is one piece too: home. No rules to learn yet. The pieces do the work.",
+        "Je vais = I'm going. Like je suis, it is one solid piece. The destination is one piece too, and French picks one of three shapes to carry it: au for some places, à la for others, à l' before a vowel sound. There is no rule you can hear your way to, so take each destination whole, the way you took un café. The shape belongs to the PLACE and never changes.",
       examples: [
-        { fr: "Je vais.", en: "I'm heading off." },
         { fr: "Je vais à la maison.", en: "I'm going home." },
+        { fr: "Je vais au café.", en: "I'm going to the café." },
+        { fr: "Je vais à l'hôtel.", en: "I'm going to the hotel." },
       ],
     },
   },
+
+  activityChain({
+    id: "s31-chain-where-you-are-going",
+    intro:
+      "Two places, and the shapes they arrived with. You are not choosing the shape; you are learning which one each place already carries.",
+    steps: [
+      {
+        id: "s31a-fill-which-shape",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-a-la-gare"],
+        payload: {
+          prompt: "The station takes one of the three shapes. Which one?",
+          sentenceBefore: "Je vais ",
+          sentenceAfter: " gare.",
+          blankCount: 1,
+          options: [
+            { id: "a", text: "à la", isCorrect: true },
+            {
+              id: "b",
+              text: "au",
+              isCorrect: false,
+              trapReason: "Au is the shape for café, travail and restaurant. Gare does not take it.",
+            },
+            {
+              id: "c",
+              text: "à l'",
+              isCorrect: false,
+              trapReason: "À l' is for places that start with a vowel sound, like hôtel.",
+            },
+          ],
+          answer: ["a"],
+          reveal: {
+            short: "à la",
+            explanation:
+              "Je vais à la gare. The station carries à la, the same shape as à la maison.",
+          },
+        },
+      },
+      {
+        // EASY on the locked ladder: the exact meaning is stated, because this
+        // is the first destination the learner produces that is not the one the
+        // lesson opened with.
+        id: "s31b-weave-going-to-the-cafe",
+        type: "weave",
+        targetItemIds: ["chunk-je-vais", "chunk-au-cafe"],
+        evidenceTargetItemIds: ["chunk-au-cafe"],
+        payload: {
+          weaveType: "supported",
+          prompt: "Write it in French: I'm going to the café.",
+          context: "You are putting your coat on and someone asks what you are up to.",
+          suggestedPieces: [
+            { text: "au café", itemId: "chunk-au-cafe", label: "the place, whole" },
+          ],
+          expectedAnswers: ["Je vais au café."],
+          acceptedAlternatives: ["Je vais au cafe.", "Je vais au café"],
+          hintCloze: "Je vais ___ café.",
+          reveal: {
+            modelAnswer: "Je vais au café.",
+            ifCorrect:
+              "That is the whole move: the engine, then the place with its own shape attached.",
+            ifCorrectButFlat: "Right. Café keeps au wherever it goes: je vais au café.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. Café takes au, so it is je vais au café.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
+    ],
+  }),
 
   activityChain({
     id: "s22-chain-heading-off",
@@ -283,6 +362,75 @@ const screens: LessonScreen[] = [
       ],
     },
   },
+
+  activityChain({
+    id: "s32-chain-closing-well",
+    intro:
+      "A French goodbye usually has two parts: the thanks, and a word about the hours ahead of them. Leaving early has two parts too, and the first one is an apology.",
+    steps: [
+      {
+        // MEDIUM on the locked ladder: the communicative intention is named,
+        // the wording is not.
+        id: "s32a-weave-thanks-and-evening",
+        type: "weave",
+        targetItemIds: ["chunk-merci-beaucoup", "chunk-bonne-soiree"],
+        payload: {
+          weaveType: "mid",
+          prompt: "Thank them warmly, then wish them a good evening.",
+          context: "They stayed late to sort your problem out, and it is nearly dark outside.",
+          suggestedPieces: [
+            { text: "merci beaucoup", itemId: "chunk-merci-beaucoup", label: "warm thanks" },
+            { text: "bonne soirée", itemId: "chunk-bonne-soiree", label: "the evening one" },
+          ],
+          expectedAnswers: ["Merci beaucoup, bonne soirée !"],
+          acceptedAlternatives: [
+            "Merci beaucoup, bonne soirée.",
+            "Merci beaucoup bonne soirée",
+            "Merci beaucoup, bonne soiree !",
+          ],
+          hintCloze: "Merci ___, bonne ___ !",
+          reveal: {
+            modelAnswer: "Merci beaucoup, bonne soirée !",
+            ifCorrect: "That is the warm close: the thanks, then the hours ahead of them.",
+            ifCorrectButFlat:
+              "Right. Bonne soirée is the one for an evening that has not happened yet.",
+            ifUnderstandableButWrong:
+              "Your meaning lands. The evening one is bonne soirée: merci beaucoup, bonne soirée !",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
+      {
+        id: "s32b-weave-sorry-must-go",
+        type: "weave",
+        targetItemIds: ["chunk-desole", "chunk-je-dois-partir"],
+        payload: {
+          weaveType: "mid",
+          prompt: "Apologise, then say you have to go.",
+          context: "The meeting has run long and your train will not wait.",
+          suggestedPieces: [
+            { text: "désolé", itemId: "chunk-desole", label: "the apology" },
+            { text: "je dois partir", itemId: "chunk-je-dois-partir", label: "the reason, whole" },
+          ],
+          expectedAnswers: ["Désolé, je dois partir."],
+          acceptedAlternatives: [
+            "Desole, je dois partir.",
+            "Désolé je dois partir",
+            "Désolée, je dois partir.",
+          ],
+          hintCloze: "___, je dois ___.",
+          reveal: {
+            modelAnswer: "Désolé, je dois partir.",
+            ifCorrect:
+              "Je dois partir puts the reason outside your own wish, which is what makes leaving early polite.",
+            ifCorrectButFlat: "Right. Désolé softens the leaving before it lands.",
+            ifUnderstandableButWrong: "Your meaning lands. The pair is désolé, je dois partir.",
+          },
+          validationMode: "exact-or-alternative",
+        },
+      },
+    ],
+  }),
 
   activityChain({
     id: "s23-chain-caught-in-the-doorway",
@@ -502,6 +650,15 @@ export const lesson007: Lesson = {
   learningItems: getItems([
     "chunk-je-vais",
     "chunk-a-la-maison",
+    // L7 production pass. Declared because the lesson now WORKS these: a target
+    // whose treatment the lesson cannot state throws out of `recordExposure`
+    // and makes the lesson unplayable from that screen on.
+    "chunk-au-cafe",
+    "chunk-a-la-gare",
+    "chunk-merci-beaucoup",
+    "chunk-bonne-soiree",
+    "chunk-desole",
+    "chunk-je-dois-partir",
     "chunk-au-revoir",
     "chunk-merci",
     // Recycled from L3 for the founder-usable pass, never re-taught: the

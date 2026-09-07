@@ -78,6 +78,19 @@ const PRACTISABLE: readonly string[] = [
   "chunk-faire-une-pause",
   "chunk-vous-pouvez",
   "chunk-m-aider",
+  // L7 production pass. Each is produced by the learner inside L7 itself, so
+  // each resolves to an authored source there. The destinations are frozen
+  // chunks rather than a productive contraction, which is why they are listed
+  // separately: `au café` and `à la gare` are two things to own, not one rule
+  // applied twice. L7's wider leaving vocabulary is Showcase material and is
+  // deliberately NOT listed — a lesson may only work about four new actions,
+  // and an item the lesson never asks for is not practisable through it.
+  "chunk-au-cafe",
+  "chunk-a-la-gare",
+  "chunk-bonne-soiree",
+  "chunk-merci-beaucoup",
+  "chunk-je-dois-partir",
+  "chunk-desole",
 ];
 
 /** Sub-lexical pieces, mapped to the chunk that actually carries them. */

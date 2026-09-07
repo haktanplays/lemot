@@ -103,18 +103,28 @@ describe("L1-L10 production is not one prompt shape repeated", () => {
     }
   });
 
-  test("translation lives early and open production lives late", () => {
-    // Direct translation is legitimate beginner material and is not banned; it
-    // simply must not still be how the path asks for French once the learner
-    // owns enough to be given a situation instead.
-    const translationLessons = ALL.filter((a) => a.kind === "translation").map(
-      (a) => a.lesson.number,
-    );
-    assert(translationLessons.length > 0, "beginner translation still exists");
-    assert(
-      Math.max(...translationLessons) <= 6,
-      `translation prompts reach L${Math.max(...translationLessons)}; they belong to the early path`,
-    );
+  test("translation is a scaffold rung, and open production lives late", () => {
+    // Direct translation is legitimate material and is not banned; it simply
+    // must not be how the path asks for French once the learner owns enough to
+    // be given a situation instead.
+    //
+    // This used to say "no translation prompt after L6", which read the rung
+    // off the LESSON NUMBER. That held while lesson number tracked learner
+    // maturity, and stopped holding the moment a later lesson opened a new
+    // system: L7's production pass introduces a set of destinations the learner
+    // has never met, and the founder's locked ladder gives a first unsupported
+    // production of new material its exact meaning. The principle was never
+    // about position in the path — it is that translation is the MOST
+    // SCAFFOLDED rung and may only appear there.
+    const translations = ALL.filter((a) => a.kind === "translation");
+    assert(translations.length > 0, "beginner translation still exists");
+    for (const t of translations) {
+      const tier = (t.screen.payload as { weaveType?: string }).weaveType;
+      assert(
+        tier === "supported",
+        `L${t.lesson.number}/${t.screen.id} states an exact meaning on tier "${tier}" — translation is the supported rung only`,
+      );
+    }
     for (const n of [7, 8, 9, 10]) {
       assert(
         ALL.some((a) => a.lesson.number === n && (a.kind === "open" || a.kind === "french-context")),

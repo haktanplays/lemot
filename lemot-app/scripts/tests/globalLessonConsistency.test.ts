@@ -537,7 +537,11 @@ describe("nothing identity-bearing moved", () => {
       // Page counts fell where single-action screens collapsed into chains;
       // the TIER strings are unchanged, which is the point -- chaining moved
       // pages, not production.
-      7: { screens: 10, tiers: "mid,context,open,open" },
+      // Moved by the L7 production pass, which added a destinations chain and
+      // a closing chain. The tier string GAINED its easy rung: the locked
+      // ladder wants a first unsupported production of new material to be
+      // given its exact meaning, and L7 had none.
+      7: { screens: 12, tiers: "supported,mid,context,mid,mid,open,open" },
       8: { screens: 12, tiers: "context,context,open,context,open,open" },
       9: { screens: 12, tiers: "context,open,open,open" },
       10: { screens: 12, tiers: "context,open,open,open" },

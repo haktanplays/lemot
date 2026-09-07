@@ -267,7 +267,7 @@ describe("productionQuality — shipped v1", () => {
     // forward from L12. No lesson outside L1-L10 has ever moved.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [2, 7, 6, 7, 5, 5, 7, 5, 7, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      [2, 7, 6, 7, 5, 5, 7, 8, 7, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {

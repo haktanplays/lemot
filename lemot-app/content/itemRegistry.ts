@@ -1009,7 +1009,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-au-cafe",
     type: "chunk",
     text: "au café",
-    status: "active",
+    status: "supported",
     fr: "au café",
     en: "to the café",
     meaning:
@@ -1023,7 +1023,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-au-travail",
     type: "chunk",
     text: "au travail",
-    status: "active",
+    status: "supported",
     fr: "au travail",
     en: "to work",
     meaning:
@@ -1037,7 +1037,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-au-restaurant",
     type: "chunk",
     text: "au restaurant",
-    status: "active",
+    status: "supported",
     fr: "au restaurant",
     en: "to the restaurant",
     meaning: "Frozen destination: to the restaurant. Same masculine au as au café and au travail.",
@@ -1050,7 +1050,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-a-la-gare",
     type: "chunk",
     text: "à la gare",
-    status: "active",
+    status: "supported",
     fr: "à la gare",
     en: "to the station",
     meaning:
@@ -1064,7 +1064,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-a-l-hotel",
     type: "chunk",
     text: "à l'hôtel",
-    status: "active",
+    status: "supported",
     fr: "à l'hôtel",
     en: "to the hotel",
     meaning:
@@ -1079,7 +1079,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-bonne-soiree",
     type: "chunk",
     text: "bonne soirée",
-    status: "active",
+    status: "supported",
     fr: "bonne soirée",
     en: "have a good evening",
     meaning:
@@ -1093,7 +1093,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-bonne-journee",
     type: "chunk",
     text: "bonne journée",
-    status: "active",
+    status: "supported",
     fr: "bonne journée",
     en: "have a good day",
     meaning:
@@ -1107,7 +1107,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-a-demain",
     type: "chunk",
     text: "à demain",
-    status: "active",
+    status: "supported",
     fr: "à demain",
     en: "see you tomorrow",
     meaning:
@@ -1121,7 +1121,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-a-bientot",
     type: "chunk",
     text: "à bientôt",
-    status: "active",
+    status: "supported",
     fr: "à bientôt",
     en: "see you soon",
     meaning:
@@ -1135,7 +1135,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-a-tout-a-l-heure",
     type: "chunk",
     text: "à tout à l'heure",
-    status: "active",
+    status: "supported",
     fr: "à tout à l'heure",
     en: "see you later",
     meaning:
@@ -1150,7 +1150,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-je-pars",
     type: "chunk",
     text: "je pars",
-    status: "active",
+    status: "supported",
     fr: "je pars",
     en: "I'm leaving",
     meaning:
@@ -1164,7 +1164,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-je-dois-partir",
     type: "chunk",
     text: "je dois partir",
-    status: "active",
+    status: "supported",
     fr: "je dois partir",
     en: "I have to go",
     meaning:
@@ -1178,7 +1178,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-merci-beaucoup",
     type: "chunk",
     text: "merci beaucoup",
-    status: "active",
+    status: "supported",
     fr: "merci beaucoup",
     en: "thank you very much",
     meaning:
@@ -1193,7 +1193,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-desole",
     type: "chunk",
     text: "désolé",
-    status: "active",
+    status: "supported",
     fr: "désolé",
     en: "sorry",
     meaning:
@@ -1207,7 +1207,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-une-autre-fois",
     type: "chunk",
     text: "une autre fois",
-    status: "active",
+    status: "supported",
     fr: "une autre fois",
     en: "another time",
     meaning:
@@ -1221,7 +1221,7 @@ export const ITEM_REGISTRY = {
     id: "chunk-peut-etre",
     type: "chunk",
     text: "peut-être",
-    status: "active",
+    status: "supported",
     fr: "peut-être",
     en: "maybe",
     meaning:
@@ -1236,7 +1236,7 @@ export const ITEM_REGISTRY = {
     id: "adverb-maintenant",
     type: "adverb",
     text: "maintenant",
-    status: "active",
+    status: "supported",
     fr: "maintenant",
     en: "now",
     meaning:
@@ -1250,7 +1250,7 @@ export const ITEM_REGISTRY = {
     id: "adverb-plus-tard",
     type: "adverb",
     text: "plus tard",
-    status: "active",
+    status: "supported",
     fr: "plus tard",
     en: "later",
     meaning: "When: later. The answer to maintenant, and the reason à tout à l'heure exists.",
@@ -1263,7 +1263,7 @@ export const ITEM_REGISTRY = {
     id: "adverb-ce-soir",
     type: "adverb",
     text: "ce soir",
-    status: "active",
+    status: "supported",
     fr: "ce soir",
     en: "this evening",
     meaning: "When: this evening. The time word that pairs with bonne soirée.",
@@ -1276,7 +1276,7 @@ export const ITEM_REGISTRY = {
     id: "adverb-demain",
     type: "adverb",
     text: "demain",
-    status: "active",
+    status: "supported",
     fr: "demain",
     en: "tomorrow",
     meaning: "When: tomorrow. The word inside à demain, usable on its own to say when you are going.",
