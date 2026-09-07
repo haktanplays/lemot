@@ -821,14 +821,14 @@ describe("QA debt stays queryable", () => {
     const one = listProvisionalRegisteredSurfaces();
     assertEqual(
       one.items.length,
-      31,
-      "five PR-07 + three L17 + one L18 + one L21 + one L22 + twenty L7 provisional items",
+      11,
+      "five PR-07 + three L17 + one L18 + one L21 + one L22 provisional items",
     );
     assertEqual(one.sentences.length, 2, "two provisional sentences");
     assertEqual(one.payloads.length, 2, "two registered payloads");
     assertEqual(
       one.items.map((i) => i.itemId).join(","),
-      "adj-bon,adj-content,adj-fatigue,adverb-ce-soir,adverb-combien,adverb-comment,adverb-demain,adverb-maintenant,adverb-plus-tard,chunk-a-bientot,chunk-a-demain,chunk-a-l-hotel,chunk-a-la-gare,chunk-a-tout-a-l-heure,chunk-au-cafe,chunk-au-restaurant,chunk-au-travail,chunk-bonne-journee,chunk-bonne-soiree,chunk-ca-va,chunk-desole,chunk-excusez-moi,chunk-je-dois-partir,chunk-je-ne-comprends-pas,chunk-je-pars,chunk-merci-beaucoup,chunk-peut-etre,chunk-un-the,chunk-une-autre-fois,chunk-vous-pouvez-repeter,noun-the",
+      "adj-bon,adj-content,adj-fatigue,adverb-combien,adverb-comment,chunk-ca-va,chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the",
       "sorted item ordering",
     );
     assertEqual(

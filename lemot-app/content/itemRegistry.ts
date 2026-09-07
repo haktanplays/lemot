@@ -1001,9 +1001,21 @@ export const ITEM_REGISTRY = {
   // a destination from a bare noun, and no bare place noun is registered, so
   // the pattern cannot be half-applied to a word they have never been given.
   //
-  // FRENCH QA. Authored in this pass, unread by any named human, so every row
-  // carries the founder waiver exactly as PR-07, L17, L18, L21 and L22 do. The
-  // waiver is a risk acceptance, not an attestation.
+  // FRENCH QA — `pending`, and deliberately not the founder waiver.
+  //
+  // These twenty surfaces were authored by an agent in the L7 production pass.
+  // No named human has read them, which rules out `approved`. But
+  // `founder_waived_provisional` is not the fallback: it asserts the founder's
+  // explicit risk acceptance, and PR-07, L17, L18, L21 and L22 each carry it
+  // because such a decision was recorded for that batch. No decision has been
+  // recorded for this one, so claiming it would manufacture an authorisation
+  // that does not exist.
+  //
+  // `pending` says exactly what is true: authored, unreviewed, and not cleared
+  // to reach a learner. Promoting these rows is a founder action, not an
+  // authoring one — one edit, once the risk is actually accepted or a human has
+  // read the French. Until then L7 is content-complete in structure and
+  // ungated only in the repo.
 
   "chunk-au-cafe": {
     id: "chunk-au-cafe",
@@ -1017,7 +1029,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais au café.",
     exampleEn: "I'm going to the café.",
     relatedItemIds: ["chunk-je-vais", "noun-cafe", "chunk-a-la-maison"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-au-travail": {
     id: "chunk-au-travail",
@@ -1031,7 +1043,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais au travail.",
     exampleEn: "I'm going to work.",
     relatedItemIds: ["chunk-je-vais", "chunk-au-cafe"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-au-restaurant": {
     id: "chunk-au-restaurant",
@@ -1044,7 +1056,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais au restaurant.",
     exampleEn: "I'm going to the restaurant.",
     relatedItemIds: ["chunk-je-vais", "chunk-au-cafe"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-a-la-gare": {
     id: "chunk-a-la-gare",
@@ -1058,7 +1070,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais à la gare.",
     exampleEn: "I'm going to the station.",
     relatedItemIds: ["chunk-je-vais", "chunk-a-la-maison"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-a-l-hotel": {
     id: "chunk-a-l-hotel",
@@ -1072,7 +1084,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais à l'hôtel.",
     exampleEn: "I'm going to the hotel.",
     relatedItemIds: ["chunk-je-vais", "chunk-a-la-gare"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
 
   "chunk-bonne-soiree": {
@@ -1087,7 +1099,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Au revoir, bonne soirée !",
     exampleEn: "Goodbye, have a good evening!",
     relatedItemIds: ["chunk-au-revoir", "chunk-bonne-journee"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-bonne-journee": {
     id: "chunk-bonne-journee",
@@ -1101,7 +1113,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Merci, bonne journée !",
     exampleEn: "Thanks, have a good day!",
     relatedItemIds: ["chunk-au-revoir", "chunk-bonne-soiree"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-a-demain": {
     id: "chunk-a-demain",
@@ -1115,7 +1127,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Au revoir, à demain !",
     exampleEn: "Goodbye, see you tomorrow!",
     relatedItemIds: ["chunk-au-revoir", "adverb-demain", "chunk-a-bientot"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-a-bientot": {
     id: "chunk-a-bientot",
@@ -1129,7 +1141,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Merci beaucoup, à bientôt !",
     exampleEn: "Thank you very much, see you soon!",
     relatedItemIds: ["chunk-au-revoir", "chunk-a-demain"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-a-tout-a-l-heure": {
     id: "chunk-a-tout-a-l-heure",
@@ -1143,7 +1155,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais au café. À tout à l'heure !",
     exampleEn: "I'm going to the café. See you later!",
     relatedItemIds: ["chunk-a-bientot", "adverb-plus-tard"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
 
   "chunk-je-pars": {
@@ -1158,7 +1170,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je pars maintenant.",
     exampleEn: "I'm leaving now.",
     relatedItemIds: ["chunk-je-vais", "chunk-je-dois-partir"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-je-dois-partir": {
     id: "chunk-je-dois-partir",
@@ -1172,7 +1184,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Désolé, je dois partir.",
     exampleEn: "Sorry, I have to go.",
     relatedItemIds: ["chunk-je-dois", "chunk-je-pars", "chunk-desole"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-merci-beaucoup": {
     id: "chunk-merci-beaucoup",
@@ -1186,7 +1198,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Merci beaucoup, au revoir !",
     exampleEn: "Thank you very much, goodbye!",
     relatedItemIds: ["chunk-merci", "chunk-au-revoir"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
 
   "chunk-desole": {
@@ -1201,7 +1213,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Désolé, je dois partir.",
     exampleEn: "Sorry, I have to go.",
     relatedItemIds: ["chunk-je-dois-partir", "chunk-une-autre-fois"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-une-autre-fois": {
     id: "chunk-une-autre-fois",
@@ -1215,7 +1227,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Non merci, une autre fois !",
     exampleEn: "No thanks, another time!",
     relatedItemIds: ["chunk-non-merci", "chunk-peut-etre"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "chunk-peut-etre": {
     id: "chunk-peut-etre",
@@ -1229,7 +1241,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Une autre fois, peut-être.",
     exampleEn: "Another time, maybe.",
     relatedItemIds: ["chunk-une-autre-fois", "chunk-oui", "chunk-non"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
 
   "adverb-maintenant": {
@@ -1244,7 +1256,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je pars maintenant.",
     exampleEn: "I'm leaving now.",
     relatedItemIds: ["chunk-je-pars", "adverb-plus-tard"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "adverb-plus-tard": {
     id: "adverb-plus-tard",
@@ -1257,7 +1269,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais au café plus tard.",
     exampleEn: "I'm going to the café later.",
     relatedItemIds: ["adverb-maintenant", "chunk-a-tout-a-l-heure"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "adverb-ce-soir": {
     id: "adverb-ce-soir",
@@ -1270,7 +1282,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais au restaurant ce soir.",
     exampleEn: "I'm going to the restaurant this evening.",
     relatedItemIds: ["chunk-bonne-soiree", "adverb-demain"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
   "adverb-demain": {
     id: "adverb-demain",
@@ -1283,7 +1295,7 @@ export const ITEM_REGISTRY = {
     exampleFr: "Je vais à la gare demain.",
     exampleEn: "I'm going to the station tomorrow.",
     relatedItemIds: ["chunk-a-demain", "adverb-ce-soir"],
-    frenchQa: "founder_waived_provisional",
+    frenchQa: "pending",
   },
 } as const satisfies Record<string, LearningItem>;
 
