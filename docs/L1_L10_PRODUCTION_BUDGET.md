@@ -1,7 +1,7 @@
 # L1-L10 Production Budget and Gap Matrix
 
 **Status:** live. Regenerate the CURRENT columns with `npm run budget:l1l10` from
-`lemot-app/`. Measured at `ed9ef9d`, 2026-09-07.
+`lemot-app/`. Measured at `3aa9697`, 2026-09-07.
 
 This file is the definition of what "100% complete" means for the first ten
 lessons, and the honest distance between that definition and the product today.
@@ -198,8 +198,8 @@ the four rules that decided them, are the repeatable method.
 | Showcase sentences | 16 | **20** (7 core / 11 supported / 2 exposure) |
 | pages / actions | 10 / 9 | **12 / 13** |
 | weave ladder | mid, context, open, open | **supported, mid, context, mid, mid, open, open** |
-| Practice seeds | 14 | **105** |
-| distinct Practice surfaces | 6 | **68** |
+| Practice seeds | 14 | **174** |
+| distinct Practice surfaces | 6 | **108** |
 | Mon Lexique eligible reachable | 2/2 | **3/3** |
 | unservable seeds | 0 | **0** |
 
@@ -236,13 +236,28 @@ An earlier version of this document read rule 4 as an exact-sentence rule and
 reported 26 surfaces as near L7's ceiling. That was an invented constraint. Re-
 reading the code took the pool from 26 to 49 with no contract change.
 
-### Why L7 is 68 Practice surfaces and not 150
+### Why L7 is 108 Practice surfaces
 
-Not a cap — a distance. The bound is editorial: how many genuinely distinct
-communicative acts "leaving" contains for a beginner with 33 reachable items.
-68 are authored, up from 6. More are reachable and the next tranche is ordinary
-authoring work rather than a blocked target. What would NOT count is the same
-utterance per interaction type, or a word swapped for its own sake.
+Three authoring tranches, 6 to 108, with no canon changed and no new registry
+id in the last one. The bound was always editorial rather than structural: how
+many genuinely distinct communicative acts "leaving" contains for a beginner
+with 33 reachable items.
+
+The last tranche was weighted deliberately AGAINST the existing shape, because
+the pool had grown lopsided toward typed production:
+
+| interaction | after tranche 2 | after tranche 3 |
+|---|---|---|
+| listening | 8 | **22** |
+| repair (job) | 23 | **55** |
+| choice | 5 | **12** |
+| retrieve (job) | 12 | **22** |
+| fill | 6 | **12** |
+
+Listening is discrimination rather than transcription: going against ordering,
+being against heading, two places behind one shape, warmth in a close, apology
+against attention-getting. Repair is mostly the learner's own sentence going
+wrong and being put right.
 
 ### The three units that are not interchangeable
 
