@@ -245,3 +245,34 @@ Result (circle one): PASS / PASS WITH NOTES / FAIL
 - Blockers (anything that stops the internal tester wave):
 - Non-blocking notes:
 - Smoke-bucket follow-ups (items needing another device or a later build):
+
+---
+
+## Founder slice fast path — L1-L10 production build (2026-09-08)
+
+Fifteen steps, not the full ceremony above. This path answers ONE question:
+**does the first ten-lesson journey feel like a real product?** Run the long
+checklist only if this one raises something.
+
+| # | Step | Watch for |
+|---|---|---|
+| 1 | Fresh install, no prior data | launches without a crash |
+| 2 | First launch / Lesson Zero bridge | reaches the Journey without a dead end |
+| 3 | Journey / Home | L1 open, later lessons locked in order, no L11+ leakage |
+| 4 | L1 end to end | Showcase scrolls, weave grades, reveal shows, recap lands |
+| 5 | L4 or L5 | the un/une package fill grades; keyboard does not cover the input |
+| 6 | L7 | destinations chain, the Easy rung reads "Say this:", closings chain |
+| 7 | L8 | c'est où vs est-ce que both produce; no `Où` where it is not taught |
+| 8 | L9 | the break request, and the s'il vous plaît tail fill |
+| 9 | L10 | the whole-day Showcase, and a scene built from earlier lessons |
+| 10 | Practice Hub, one session | 5-8 actions, mixed interactions, listening plays |
+| 11 | Practice: miss something on purpose | a repair is appended, close names one struggle |
+| 12 | Mon Lexique | only produced language appears; nothing exposure-only |
+| 13 | Force quit, reopen | progress and Practice state survive |
+| 14 | Read every screen you passed | no streak/XP/level language, no em dash |
+| 15 | Reach the end of L10 | completion state is coherent, nothing dangles |
+
+Known and accepted for this build: 25 registry items carry
+`frenchQa: "pending"`. **Human linguistic review deferred for founder/dev APK;
+still required before public release unless separately waived.** Agent review
+was performed and is not human review.
