@@ -422,13 +422,31 @@ times item density, currently 1.55 items per sentence.
 4. Declare in `learningItems` exactly what the lesson works — an undeclared target throws at runtime.
 5. Give supported material a piece, or the Hub cannot reuse the screen without upgrading it.
 6. Add each new id through `npm run manifest:add`.
-7. Build the Practice corpus only from items the lesson graded.
-8. Keep cumulative language in `required`, never in `targets`.
-9. Measure ownership by playing, not by reading the registry.
+7. Build the Practice corpus only from items the lesson DECLARES. Not "graded" --
+   the validator's rule is `PRACTICE-TARGET-UNDECLARED`, and it reads the
+   lesson's declaration, so a recycled item the lesson names is targetable and
+   one it merely uses is not.
+8. Every `target` must also appear in `required`, or eligibility does not gate
+   it (`PRACTICE-REQUIRED`). Cumulative frame language goes in `required` only.
+9. Annotate reused forms in Showcase `itemIds`. A sentence that says "Merci"
+   without naming `chunk-merci` under-declares the lesson, and rule 7 then
+   refuses seeds the lesson could lawfully carry. Annotation is the cheapest
+   real inventory there is; it is also the only one that cannot pad, because a
+   sentence can only name a form it actually contains.
+10. Count semantically. Punctuation and case variants of one utterance are one
+    surface. The budget script normalises them; content must not be written to
+    beat a counter.
+11. Do not grow a count by re-asking the same sentence on another interaction.
+    A build and a dictation of one sentence are two useful exercises and one
+    surface, and `uniqueSurfaces` will correctly refuse to count them twice.
+12. Measure ownership by playing, not by reading the registry -- and check the
+    session CLOSE by playing too. The summary listing French the learner never
+    got right survived every static check and a full green suite; it was found
+    in one deliberate miss on a simulator.
 
 ### Linguistic review status
 
-The 20 items added for L7 carry `frenchQa: "pending"`. An AGENT reviewed every
+The 25 items added for L7 carry `frenchQa: "pending"`. An AGENT reviewed every
 surface and found one defect, since fixed; agent review is provisional evidence
 and is not human review, so nothing was promoted. No named human has read this
 French and no founder waiver was recorded, so neither `approved` nor
@@ -442,9 +460,13 @@ item still renders, which is development preview and NOT release clearance.
 invisible. Turning item QA into a release gate is a founder decision about the
 release path, not an authoring change.
 
-**L7 is structurally complete and linguistically ungated. It is NOT production
-complete against the original targets:** 31 declared items against 35-40, and
-Practice surfaces still short of 150-160.
+**L7 is structurally complete and linguistically ungated. Against the original
+targets it is one met and one blocked:** Practice reached 152 distinct surfaces
+(128 French sentences, 24 comprehension choices) inside the 150-160 band, while
+declared items stand at 28 against 35-40 and cannot go higher without a canon
+decision -- see 2c for the arithmetic. Whether a comprehension choice counts as
+a surface is the founder's call; both figures are reported rather than the
+flattering one.
 
 ### What `pending` does and does not mean, per stage
 
