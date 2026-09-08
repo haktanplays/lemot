@@ -28,7 +28,8 @@ const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 
 // Mirrors LessonRendererV1's completion marker: a finished v1 lesson writes
 // prog["{number}-read_listen"] = true. Home reads the same key to drive the
-// simple linear unlock of the L1-L24 path (no scoring, no ceremony).
+// simple linear unlock of the v1 path (no scoring, no ceremony). The visible
+// range is the stage's slice; see V1_PATH_MAX_LESSON_BY_STAGE.
 const V1_COMPLETION_SECTION_KEY = "read_listen";
 
 // Time-aware Home greeting from device local time:
@@ -147,7 +148,7 @@ export default function HomeScreen() {
   // no paywall, no locks, no banners.
   const visibleLessons = PRODUCT_STAGE === "dev-apk" ? [] : LESSONS;
 
-  // v1 lesson path (L1-L24). Surfaced for internal (sandbox) and the
+  // v1 lesson path. Surfaced for internal (sandbox) and the
   // dev-apk tester wave only; public-beta keeps it hidden. Home-only
   // condition; does NOT flip the v1LessonEngine feature flag.
   const showV1Path =
@@ -385,10 +386,12 @@ export default function HomeScreen() {
           );
         })}
 
-        {/* The Journey path (L1-L24) — the full authored lesson surface, shaped
-            as a calm path rather than 24 equal-weight rows. One dominant next
-            step anchors the screen; the road ahead and the ground already
-            walked stay quiet and compact but every lesson remains reachable.
+        {/* The Journey path — the lesson surface for this stage's slice, shaped
+            as a calm path rather than a column of equal-weight rows. One
+            dominant next step anchors the screen; the road ahead and the ground
+            already walked stay quiet and compact, and every lesson INSIDE THE
+            SLICE stays reachable. dev-apk stops at L10; sandbox and public-beta
+            show the full authored L1-L24.
             Surfaced in sandbox (internal comparison) and dev-apk (tester wave);
             public-beta keeps it hidden. No reward / unlock ceremony language. */}
         {showV1Path && v1PathState.length > 0 && (

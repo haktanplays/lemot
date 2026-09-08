@@ -70,7 +70,7 @@ describe("a lesson can state a treatment for every target it names", () => {
   });
 
   test("the whole learner-visible L0-L10 path resolves every target", () => {
-    // The Home path opens L1-L24 under a linear unlock, so this is not the only
+    // The Home path opens the stage's slice under a linear unlock, so this is not the only
     // reachable range; it is the founder-usable range, asserted separately so a
     // regression in it is named for what it is rather than folded into the pin
     // above. Extended from L6 to L10 by the L7-L10 pass.

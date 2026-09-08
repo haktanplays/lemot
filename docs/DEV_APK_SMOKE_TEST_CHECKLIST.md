@@ -8,8 +8,11 @@ extend this file; if the two diverge, this repo copy wins.
 Build policy (ratified pre-APK scope decisions): Android internal APK,
 **dev-apk stage only**, **no Supabase env**, **AI closed** (deterministic
 fallback only), **accountless local-first**. The smoke surface is Lesson Zero
-plus the full v1 Journey L1–L24 under the linear unlock, with the three
-permanent tabs: **Journey / Mon Lexique / Practice**.
+plus the v1 Journey **L1–L10** under the linear unlock, with the three
+permanent tabs: **Journey / Mon Lexique / Practice**. L1–L10 is the slice that
+went through the production budget; `V1_PATH_MAX_LESSON_BY_STAGE` caps the
+dev-apk path there. L11–L24 stay authored and registered but are not reachable
+in this build — a build slice boundary, not a paywall and not a course ending.
 
 Physical smoke is operator-only. Cloud sessions may run the pre-build
 commands, but must not claim a smoke pass from this file alone.
@@ -107,28 +110,34 @@ what that build must verify.)
       may exist; nothing links to it — not required in normal flow)
 - [ ] Home is reached after Lesson 1 (via "Back to Home"), not directly after L0
 
-## 6. Journey (L1–L24)
+## 6. Journey (L1–L10, founder slice)
 
-- [ ] Home shows the v1 Journey path with **all 24 rows, L1 through L24**
+- [ ] Home shows the v1 Journey path with **exactly 10 rows, L1 through L10**
 - [ ] Progression is linear: exactly one row shows "Start"; rows after it read
       "Not yet"; the lock reason appears once, under the first locked row
 - [ ] Completing L(n) unlocks L(n+1); completed lessons stay "Done" and remain
       open for replay
-- [ ] After finishing L10, **L11 unlocks and opens** (the old L10 cap is gone)
-- [ ] A representative middle lesson (suggest L16 or L17) opens and renders
-- [ ] **L20 (first milestone)** is reachable and renders
-- [ ] **L24 (final milestone)** is the last row; no L25 / Campfire / "coming
-      soon" row appears after it
+- [ ] **No L11 row appears, before or after L10 is finished.** This is the
+      boundary's whole purpose: L11–L24 have not been through the production
+      budget, and a tester who finished L10 previously walked from the densest
+      content in the build straight into the thinnest
+- [ ] After finishing L10 the path shows its bounded completion state,
+      **"You have walked the whole path for now."** No XP, no streak, no score,
+      no ceremony, no premium or subscription language
+- [ ] A direct link to an L11+ lesson does **not** open it; it falls into the
+      route's ordinary "not ready yet" state
 - [ ] No legacy lesson card and no legacy 24-lesson list appears anywhere
 - [ ] Progression works with no account and no network
 
-Operator note: manually completing all 24 lessons is NOT required for smoke.
-Verify L1 end-to-end (§7), the unlock mechanics on 2–3 consecutive lessons,
-and representative reachability (middle lesson + L20 + L24 via progressed
-state). If a safe operator mechanism exists to pre-seed progress (e.g. a
-progressed emulator image carried forward from an earlier pass), targeted
-smoke of L11+, L20 and L24 from that state is acceptable; note how the state
-was produced.
+Operator note: manually completing all ten lessons is NOT required for smoke.
+Verify L1 end-to-end (§7), the unlock mechanics on 2–3 consecutive lessons, and
+one later lesson (L7 or L10) from a progressed state. If a safe operator
+mechanism exists to pre-seed progress (e.g. a progressed emulator image carried
+forward from an earlier pass), targeted smoke of L7–L10 and the bounded
+completion state from that state is acceptable; note how the state was produced.
+
+Do NOT smoke L11+ against this build. They are deliberately unreachable, and
+their absence is a pass rather than a defect.
 
 ## 7. Lesson rendering (representative screen families)
 
