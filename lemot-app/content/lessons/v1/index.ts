@@ -33,18 +33,21 @@ export const V1_LESSONS: Lesson[] = [
   lesson004,
   lesson005,
   lesson006,
-  // Unit 2 pilot (L7-L9): registered for validation; NOT learner-visible —
-  // the Home path caps the dev-apk scope at L6 (separate unlock decision).
+  // Unit 2 pilot (L7-L9). These comments used to say the Home path capped
+  // dev-apk at L6 and that these lessons were not learner-visible. That stopped
+  // being true when the Journey moved to the full L1-L24 linear unlock, and a
+  // stale comment about scope is worse than none: it is the first thing read
+  // when somebody asks what a build actually ships. Every lesson below is
+  // learner-visible, reachable in order, and gated only by finishing the one
+  // before it.
   lesson007,
   lesson008,
   lesson009,
-  // Unit 2 continuation (L10-L12): registered for validation; NOT
-  // learner-visible — the Home path caps the dev-apk scope at L6.
+  // Unit 2 continuation (L10-L12).
   lesson010,
   lesson011,
   lesson012,
-  // Unit 3 continuation (L13-L15): registered for validation; NOT
-  // learner-visible — the Home path caps the dev-apk scope at L6.
+  // Unit 3 continuation (L13-L15).
   lesson013,
   lesson014,
   lesson015,
