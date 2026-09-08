@@ -1,7 +1,7 @@
 # L1-L10 Production Budget and Gap Matrix
 
 **Status:** live. Regenerate the CURRENT columns with `npm run budget:l1l10` from
-`lemot-app/`. Measured at `3aa9697`, 2026-09-07.
+`lemot-app/`. Measured at `cc4a723`, 2026-09-07.
 
 This file is the definition of what "100% complete" means for the first ten
 lessons, and the honest distance between that definition and the product today.
@@ -64,6 +64,26 @@ note and a contrast. Faux amis are written only where a real high-value false
 friend meets the lesson's language. Zero is a valid answer. Filler is not.
 
 ---
+
+## 2b. Two different questions, deliberately kept apart
+
+The old brainstorming numbers (35-40 items, ~150 Practice surfaces per lesson)
+were repeatedly read as release gates and repeatedly blocked reporting. They
+are reference points for MATURITY, not conditions for COMPLETION. Two separate
+questions:
+
+**LESSON PRODUCTION COMPLETION** — can this lesson be shipped to a learner?
+Answered by the thirteen critical gates in §3. Binary, and the only thing that
+gates a build.
+
+**PRACTICE HUB CORPUS MATURITY** — is the pool deep enough that a learner
+cannot finish by memorising one sentence? A judgement, informed by distinct
+surfaces, architecture spread and modality mix, and bounded by how much
+language the lesson can lawfully reach. L7 at 108 surfaces is mature; L2 at 11
+is credible for a lesson with ten reachable items and is not "incomplete".
+
+A lesson may be COMPLETE and still be maturing. Neither number may be used to
+block a founder build, and neither may be used to justify filler.
 
 ## 3. Definition of 100%
 
