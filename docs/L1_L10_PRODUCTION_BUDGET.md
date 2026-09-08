@@ -91,6 +91,56 @@ Superseded, not erased: the founder-slice milestone was genuinely reached and
 the APK is a genuine artifact. The PRODUCTION milestone below is a different,
 larger thing and remains open.
 
+## 2c. Demonstrated: the item target and the shape caps cannot both hold
+
+This is the thing earlier reports asserted without arithmetic. L7 now supplies
+the arithmetic.
+
+An item counts as declared only where the lesson names it: in a screen's
+`targetItemIds`, or in a Showcase sentence's `itemIds`. There is no third
+naming site. So the declarable inventory of a lesson is bounded by how many
+naming sites it is allowed to have.
+
+L7's two naming budgets are both full:
+
+| budget | rule | L7 | source |
+|---|---|---|---|
+| learner actions | 11-20, test-enforced | **20** | `scripts/tests/l7l10Progression.test.ts:135` |
+| Showcase sentences | 15-20 | **20** | §2, founder target |
+
+With annotation now complete — zero Showcase sentences reuse a registered form
+without naming it — L7 declares **28** items. Every further item needs a naming
+site that does not exist, because an item can only be named by a sentence that
+actually contains its form, and no remaining L7 sentence contains an
+unannotated one.
+
+So 28 is not L7's current position. It is L7's **ceiling under the present
+caps**, and the target is 35-40. The gap of 7-12 items cannot be closed by more
+authoring. It can only be closed by one of:
+
+1. **Raise the Showcase sentence budget** above 20 for doorway lessons. Cheapest
+   in engineering terms, and Showcase is comprehension rather than demand, so it
+   does not raise acquisition load. It does lengthen the lesson's opening.
+2. **Raise the learner-action cap** above 20. This one has a real cost: the cap
+   exists as a fatigue ceiling for one sitting, and 20 is already the top of it.
+3. **Lower the item target** for doorway lessons, on the grounds that a doorway
+   deliberately carries a narrow inventory worked deeply, and that 35-40 was set
+   with denser lesson types in mind.
+4. **Accept 28** and record that 35-40 describes mature standard lessons, not
+   every lesson.
+
+This is a canon question about lesson shape, not an authoring question, so it is
+not decided here. Recommendation: option 3 or 4. L7 is a doorway with a demand
+band of 1-2; an inventory of 28 items around two acquisitions is already dense,
+and the tension is a sign that one number was set without the other two in view.
+
+**What is not blocked.** The Practice target has no such ceiling. L7 moved from
+107 to 152 distinct surfaces in this run without touching either cap, because
+Practice surfaces are not naming sites. Where a target is unreachable it is said
+so here with the arithmetic; where it is merely unfinished, it is finished.
+
+---
+
 ## 2b. Two different questions, deliberately kept apart
 
 The old brainstorming numbers (35-40 items, ~150 Practice surfaces per lesson)
