@@ -89,11 +89,11 @@ function learnerStrings(node: unknown, out: string[]): void {
 // ── Visibility ─────────────────────────────────────────────────────────────
 
 describe("L7-L10 visibility", () => {
-  test("the Journey path includes L7-L10 inside the full L1-L24 range", () => {
+  test("the Journey path includes L7-L10 inside the stage's slice", () => {
     const home = readFileSync(join(APP_ROOT, "app/(tabs)/index.tsx"), "utf8");
     assert(
-      home.includes("l.number >= 1 && l.number <= 24"),
-      "L1-L24 is the visible range, so L7-L10 are inside it",
+      home.includes("isV1LessonInStageScope"),
+      "the visible range is the stage's slice, and L7-L10 sit at the top of it",
     );
     assert(
       !home.includes("l.number <= 6") && !home.includes("l.number <= 10"),

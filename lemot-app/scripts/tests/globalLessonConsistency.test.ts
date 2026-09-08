@@ -585,10 +585,17 @@ describe("nothing identity-bearing moved", () => {
     assertEqual(new Set(qualified).size, qualified.length, "no collision");
   });
 
-  test("the Journey visibility cap is L1-L24", () => {
+  test("the Journey visibility cap is the stage's slice, not a hardcoded range", () => {
+    // The authored path is still L1-L24 and the sandbox ceiling still says so.
+    // What changed is where the number lives: the founder APK stops at the end
+    // of the finished slice, so the screen asks the stage instead of deciding.
     assert(
-      src("app/(tabs)/index.tsx").includes("l.number >= 1 && l.number <= 24"),
-      "the full authored path is the visible range",
+      src("app/(tabs)/index.tsx").includes("isV1LessonInStageScope"),
+      "the path screen must filter through the stage-scope predicate",
+    );
+    assert(
+      !src("app/(tabs)/index.tsx").includes("l.number <= 24"),
+      "a hardcoded range beside the predicate would be a second source of truth",
     );
   });
 });

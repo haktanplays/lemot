@@ -266,18 +266,21 @@ describe("standing surfaces are reachable without a lesson or a deep link", () =
 
 // ── Part B: Journey visibility ──────────────────────────────────────────────
 
-describe("Journey shows the full authored path L1-L24", () => {
+describe("Journey shows the authored path up to the stage's slice", () => {
   const journey = () => read(JOURNEY);
 
-  test("the visible range is L1-L24", () => {
+  test("the visible range comes from the stage, and the corpus is still whole", () => {
+    // Two separate claims, and keeping them separate is the point. The corpus
+    // is L1-L24 and every one of those lessons is still registered; what the
+    // founder APK shows is a slice of it. Hiding is not deleting.
     assert(
-      journey().includes("l.number >= 1 && l.number <= 24"),
-      "the cap is exactly L1-L24",
+      journey().includes("isV1LessonInStageScope"),
+      "the visible range must be the stage's, not a literal in the screen",
     );
     for (const n of Array.from({ length: 24 }, (_, i) => i + 1)) {
       assert(
         V1_LESSONS.some((l) => l.number === n),
-        `L${n} must be registered to be visible`,
+        `L${n} must stay registered even when a stage does not show it`,
       );
     }
   });
@@ -297,7 +300,12 @@ describe("Journey shows the full authored path L1-L24", () => {
   test("L0 stays the bespoke first-run lesson, never a numbered row", () => {
     const src = journey();
     assert(src.includes('router.replace("/lesson-zero" as never)'), "L0 routing intact");
-    assert(src.includes("l.number >= 1"), "L0 is excluded from the numbered path");
+    // The exclusion moved into the shared predicate with the rest of the range,
+    // so the screen delegates rather than restating it.
+    assert(
+      src.includes("isV1LessonInStageScope"),
+      "L0 exclusion now lives in the stage-scope predicate the screen calls",
+    );
   });
 
   test("exactly one lesson is presented as the recommended next step", () => {

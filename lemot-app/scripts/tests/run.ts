@@ -26,6 +26,7 @@ import "./buildSequence.test";
 import "./lessonProgress.test";
 import "./ttsPlaceholder.test";
 import "./devApkScope.test";
+import "./founderSliceBoundary.test";
 import "./devApkCopyGuard.test";
 import "./componentCopyGuard.test";
 import "./productStageResolution.test";

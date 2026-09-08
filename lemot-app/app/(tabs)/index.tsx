@@ -9,7 +9,7 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { LESSONS } from "@/data/lessons";
 import { V1_LESSONS } from "@/content/lessons/v1";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
-import { FEATURES, PRODUCT_STAGE } from "@/config/productStage";
+import { FEATURES, PRODUCT_STAGE, V1_PATH_MAX_LESSON, isV1LessonInStageScope } from "@/config/productStage";
 import { supabaseReady } from "@/lib/supabase";
 import { kvStorage } from "@/lib/storage";
 import { MOTIV, P } from "@/constants/theme";
@@ -153,11 +153,16 @@ export default function HomeScreen() {
   const showV1Path =
     PRODUCT_STAGE === "sandbox" || PRODUCT_STAGE === "dev-apk";
 
-  // The full authored path is L0-L24. The bridge (L0 / number 0) is excluded
-  // so it never appears as a normal lesson card; L1-L24 are all visible under
-  // the same linear unlock, with L24 as the final currently authored row.
+  // The full authored path is L0-L24. The bridge (L0 / number 0) is excluded so
+  // it never appears as a normal lesson card. Everything from L1 up to the
+  // stage's slice ceiling is visible under the same linear unlock — the unlock
+  // rule below is untouched, only the range it runs over.
+  //
+  // In dev-apk that ceiling is L10, the end of the slice that went through the
+  // production budget. See V1_PATH_MAX_LESSON_BY_STAGE: it is a build boundary,
+  // not a paywall and not a course ending.
   const v1PathLessons = V1_LESSONS.filter(
-    (l) => l.number >= 1 && l.number <= 24
+    (l) => isV1LessonInStageScope(l.number)
   ).sort((a, b) => a.number - b.number);
   const v1Done = (n: number) =>
     prog[`${n}-${V1_COMPLETION_SECTION_KEY}`] === true;

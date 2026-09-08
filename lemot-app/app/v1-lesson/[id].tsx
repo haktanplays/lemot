@@ -3,10 +3,17 @@ import { useLocalSearchParams } from "expo-router";
 import { P } from "@/constants/theme";
 import { LessonRendererV1 } from "@/components/lesson-v1/LessonRendererV1";
 import { getV1LessonById } from "@/content/lessons/v1";
+import { isV1LessonInStageScope } from "@/config/productStage";
 
 export default function V1LessonRoute() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const lesson = id ? getV1LessonById(id) : undefined;
+  const found = id ? getV1LessonById(id) : undefined;
+  // A deep link must not reach past the boundary the Journey draws. A lesson
+  // outside this stage's slice is treated exactly like one that does not exist:
+  // same state, same copy, no new screen — which is also what is true from the
+  // tester's side, since the content behind the boundary is not ready for them.
+  const lesson =
+    found !== undefined && isV1LessonInStageScope(found.number) ? found : undefined;
 
   if (!lesson) {
     return (

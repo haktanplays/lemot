@@ -130,6 +130,46 @@ export const FEATURES_BY_STAGE = {
 
 export const FEATURES = FEATURES_BY_STAGE[PRODUCT_STAGE];
 
+/**
+ * Highest v1 lesson the ordinary Journey exposes, per stage.
+ *
+ * This is a BUILD SLICE BOUNDARY, not a course ending and not a paywall.
+ *
+ * The v1 path runs L1-L24 under one linear unlock, so finishing L10 opened L11
+ * exactly as finishing L6 opened L7. That is correct for the product and wrong
+ * for the founder APK: L1-L10 is the slice that went through the production
+ * budget, and a diligent tester who finished it walked straight out of the
+ * densest content in the build into L11-L24 at the old density. The sharpest
+ * quality drop sat exactly where the most careful tester would reach it.
+ *
+ * So dev-apk stops at the end of the finished slice. Nothing is deleted, no
+ * entitlement system exists, and no lesson is marked premium or locked-forever:
+ * the ceiling moves when the content behind it is ready. Sandbox and public-beta
+ * keep the full authored path, so this changes one stage and no semantics.
+ *
+ * Finishing L10 in dev-apk lands on the path's existing "walked the whole path
+ * for now" state. That copy is deliberate: for now, not for good.
+ */
+export const V1_PATH_MAX_LESSON_BY_STAGE: Record<ProductStage, number> = {
+  sandbox: 24,
+  "dev-apk": 10,
+  "public-beta": 24,
+};
+
+export const V1_PATH_MAX_LESSON = V1_PATH_MAX_LESSON_BY_STAGE[PRODUCT_STAGE];
+
+/**
+ * Whether a v1 lesson number is inside the current stage's slice.
+ *
+ * Used by the path AND by the direct route, so a deep link cannot reach past
+ * the boundary the Journey draws. Out of scope fails into the route's existing
+ * "not ready yet" state rather than a new screen, because from the tester's
+ * side that is exactly what is true.
+ */
+export function isV1LessonInStageScope(lessonNumber: number): boolean {
+  return lessonNumber >= 1 && lessonNumber <= V1_PATH_MAX_LESSON;
+}
+
 // LEGACY TEST BUILD — frozen for Dev APK (Tier B locked 2026-05-16).
 // Filter assumes 24-lesson syllabus (L1-L24, L1=Survival Kit). v1 Canon §5 has
 // a different L1-L150 syllabus (L1=Je suis, paywall L24+Campfire, 150 core).
