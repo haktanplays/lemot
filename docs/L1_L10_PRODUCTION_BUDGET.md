@@ -91,6 +91,28 @@ Superseded, not erased: the founder-slice milestone was genuinely reached and
 the APK is a genuine artifact. The PRODUCTION milestone below is a different,
 larger thing and remains open.
 
+## 2b-bis. The APK is not an L1-L10 artifact, and the path does not stop at L10
+
+Verified, because it was described wrongly once. `app/(tabs)/index.tsx:159`
+filters `V1_LESSONS` to `number >= 1 && number <= 24` and applies a single
+linear unlock: L1 is open, and lesson n+1 opens when lesson n is finished.
+
+Two consequences, both load-bearing:
+
+- **L1-L10 is a production programme, not a slice boundary.** Nothing in the
+  app draws a line at L10. Finishing L10 is a progression condition that opens
+  L11, exactly as finishing L6 opens L7.
+- **A tester who finishes L10 walks straight into L11-L24 at the old density.**
+  Those lessons are authored, typechecked and validated, but they have not been
+  through this budget. They will feel thinner than L1-L10 immediately after the
+  point where L1-L10 feels thickest.
+
+Neither is a defect to fix in this document. Both are facts any report about
+the APK has to carry, and the second is a real testing risk: the sharpest
+quality drop in the build sits exactly where a diligent tester will reach it.
+
+---
+
 ## 2c. Demonstrated: the item target and the shape caps cannot both hold
 
 This is the thing earlier reports asserted without arithmetic. L7 now supplies
