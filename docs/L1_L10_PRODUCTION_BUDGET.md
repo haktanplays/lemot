@@ -179,64 +179,63 @@ achievable at L1-L2 by any authoring, and IS achievable at L8-L10.
 
 Reported in the units Ruling 1 requires. Never summed.
 
-| L | seeds | distinct FRENCH surfaces | comprehension choices | declared items | Showcase |
+| L | declared items | distinct FRENCH surfaces | comprehension choices | seeds | pool a learner holds here |
 |---|---|---|---|---|---|
-| 1 | 44 | 34 | 3 | 9 | 17 |
-| 2 | 32 | 18 | 2 | 6 | 16 |
-| 3 | 38 | 28 | 2 | 10 | 15 |
-| 4 | 42 | 23 | 4 | 10 | 17 |
-| 5 | 34 | 18 | 1 | 10 | 16 |
-| 6 | 40 | 30 | 2 | 16 | 19 |
-| 7 | 230 | **128** | 24 | 28 | 20 |
-| 8 | 48 | 30 | 4 | 8 | 16 |
-| 9 | 50 | 22 | 5 | 5 | 15 |
-| 10 | 41 | 29 | 3 | 19 | 19 |
+| 1 | 8 | 34 | 3 | 44 | 34 |
+| 2 | 10 | 25 | 2 | 40 | 59 |
+| 3 | 10 | 28 | 2 | 38 | 87 |
+| 4 | 13 | 36 | 4 | 55 | 123 |
+| 5 | 9 | 24 | 1 | 40 | 140 |
+| 6 | 15 | 30 | 2 | 40 | **166** |
+| 7 | 31 | 128 | 24 | 230 | 283 |
+| 8 | 9 | 30 | 4 | 48 | 309 |
+| 9 | 6 | 32 | 5 | 60 | 337 |
+| 10 | 13 | 29 | 3 | 41 | **355** |
+
+636 seeds; 355 distinct French surfaces across the slice.
 
 ### The per-lesson number is the wrong unit, and here is why
 
 The Practice pool is CUMULATIVE. A learner at L6 draws on every lawful seed from
 L1-L6, not only L6's. So the honest measure of communicative breadth -- which is
-what the ~150 reference is for -- is the pool a learner actually has in hand at
-each point:
+what the ~150 reference is for -- is the pool a learner actually holds:
 
-| at the end of | pool before this pass | pool now |
+| at the end of | before this work | now |
 |---|---|---|
 | L1 | 12 | 34 |
-| L2 | 20 | 52 |
-| L3 | 33 | 80 |
-| L4 | 42 | 103 |
-| L5 | 49 | 114 |
-| **L6** | **60** | **140** |
-| L7 | 183 | 258 |
-| L8 | 210 | 284 |
-| L9 | 230 | 302 |
-| **L10** | **250** | **320** |
+| L3 | 33 | 87 |
+| **L6** | **60** | **166** |
+| L7 | 183 | 283 |
+| **L10** | **250** | **355** |
 
-L1-L6 was the real anti-memorisation risk: a learner spent six lessons with 60
-distinct French surfaces, which is a corpus a person can memorise. It is now 140.
-By L10 the learner has 320.
+L1-L6 was the real anti-memorisation risk. A learner spent six lessons -- more
+time than anywhere else in the slice -- with 60 distinct French surfaces, which
+is a corpus a person can simply memorise. It is now 166, past the ~150 guardrail
+before L7 even begins, and 355 by L10.
 
-This is not a claim that every lesson hit ~150 on its own. Only L7 does, and
-only because L7 declares 28 items where most lessons declare 6-16. Per declared
-learningItem the slice now runs 1.8-4.4 against L7's 4.1, and the lessons at the
-low end are the ones whose own items overlap almost entirely with earlier
-lessons -- L2 adds `je suis ici` to a frame L1 already covers, L5 adds the
-un/une contrast to words already in play. Sentences those items could form are
-mostly already in the pool, and authoring them a second time under a later
-lesson id grows no learner's breadth by one sentence.
+Only L7 reaches ~150 on its own, and only because it declares 31 items where
+most lessons declare 6-15. The per-lesson figure measures how much a lesson
+OWNS, not what a learner HAS, and for every lesson after L1 those are different
+numbers.
 
-**That was measured, not assumed.** 41 seeds written in this pass into L8-L10
-turned out to duplicate surfaces later authored into L1-L6. They were deleted,
-and the cumulative pool did not move: 320 before and 320 after. Interaction
-multiplication and cross-lesson restatement are both invisible to the learner
-and both were removed rather than reported.
+### Padding was measured and deleted, not reported
 
-### Still owed
+42 seeds written during this pass turned out to restate surfaces reachable
+earlier in the pool -- 41 in L8-L10 duplicating acts later authored into L1-L6,
+and one in L9. A later duplicate grows no learner's breadth by one sentence,
+because the earlier seed is already in their pool. All were deleted, and the
+cumulative pool did not move: 320 before, 320 after. That is the proof they were
+padding rather than an argument that they were not.
 
-L2, L4, L5 and L9 remain the thinnest own-contributions in the slice. Each is
-constrained by overlap rather than by effort, but none of them has a
-DEMONSTRATED ceiling of the kind L7's 28 items has, so none of them may be
-closed off on that basis. They are the next production target.
+### Honest limits of this pass
+
+L2, L5 and L10 have the smallest own-contributions (25, 24, 29). Each was worked
+through act by act against the existing pool rather than dismissed, and what
+remains uncovered is genuinely thin: their declared items overlap almost
+entirely with earlier lessons, so most sentences they could form are already
+reachable. This is an observation about where the good sentences already live,
+NOT a demonstrated ceiling of the kind L7's 28 items has, and it must not be
+cited as one later.
 
 ## 2b-bis. The APK is not an L1-L10 artifact, and the path does not stop at L10
 
