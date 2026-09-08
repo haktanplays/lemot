@@ -751,6 +751,35 @@ describe("session close, struggle half", () => {
     }
   });
 
+  test("French the learner never got right is not listed as brought back", async () => {
+    // The heading over that list says the learner brought this French back. A
+    // sentence they missed and never recovered is the one thing that must not
+    // appear under it: the struggle note one paragraph below would be telling
+    // the truth while the list above it told the learner they had succeeded.
+    const learner = await learnerAfter([1, 2, 3]);
+    const session = plan(learner);
+    const missed = session.actions[0];
+    const lines = workedOnLines(session.actions, [
+      { itemId: missed.itemId, seedId: missed.seed.id, surface: missed.seed.surface, repaired: false },
+    ]);
+    assert(
+      !lines.includes(expectedAnswerOf(missed.seed)),
+      "a sentence the learner never got right was listed as brought back",
+    );
+  });
+
+  test("a miss the learner repaired is still theirs", () => {
+    // They did bring it back. It took two passes, and the struggle note is
+    // what carries that; dropping the line would erase the recovery.
+    const seeds = PRACTICE_SEEDS.filter((s) => s.originLessonId === "v1-lesson-001");
+    const seed = seeds[0];
+    const actions = [{ seed, itemId: seed.targetItemIds[0], path: "build" as const }];
+    const lines = workedOnLines(actions, [
+      { itemId: seed.targetItemIds[0], seedId: seed.id, surface: seed.surface, repaired: true },
+    ]);
+    assertEqual(lines.length, 1, "a repaired line was dropped from the summary");
+  });
+
   test("an item with no capability name claims nothing", () => {
     // Better to say nothing than to name something the learner cannot act on.
     assertEqual(

@@ -37,7 +37,7 @@ export function PracticeComplete({
   onAgain: (() => void) | null;
 }) {
   const capabilities = workedOnCapabilities(actions);
-  const lines = workedOnLines(actions);
+  const lines = workedOnLines(actions, struggles);
   const notes = struggleLines(struggles);
 
   return (
@@ -77,12 +77,20 @@ export function PracticeComplete({
           ))}
         </View>
 
+        {/*
+          Heading and list travel together. A session where nothing was brought
+          back cleanly leaves the list empty, and an empty box under "the French
+          you brought back" is a claim about nothing.
+        */}
+        {lines.length > 0 && (
         <Text
           style={{ color: P.ink3, fontSize: 13, lineHeight: 20, marginTop: SPACE.xl }}
         >
           {PRACTICE_UI_COPY.completeFrench}
         </Text>
+        )}
 
+        {lines.length > 0 && (
         <View
           style={{
             marginTop: SPACE.lg,
@@ -116,6 +124,7 @@ export function PracticeComplete({
             </View>
           ))}
         </View>
+        )}
 
         {/*
           Same quiet type as the rest of the close. A struggle note is

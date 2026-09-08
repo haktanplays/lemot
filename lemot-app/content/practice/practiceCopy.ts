@@ -170,10 +170,28 @@ export function workedOnCapabilities(
   return territoryLabels(actions, 4);
 }
 
-/** The French the learner produced or completed, in session order, de-duplicated. */
-export function workedOnLines(actions: readonly PracticeSessionAction[]): string[] {
+/**
+ * The French the learner produced or completed, in session order, de-duplicated.
+ *
+ * Outcome-gated, because the heading above this list claims the learner brought
+ * this French back. A sentence they missed and never got right is not French
+ * they brought back, and printing the model answer under that heading tells
+ * them they did something they did not do -- the same dishonesty the struggle
+ * note below was written to avoid, one paragraph higher up the screen.
+ *
+ * A miss that was later repaired stays in. The learner did bring it back; it
+ * took them two passes, and the struggle note is what carries that fact.
+ */
+export function workedOnLines(
+  actions: readonly PracticeSessionAction[],
+  struggles: readonly PracticeStruggle[] = [],
+): string[] {
+  const unresolved = new Set(
+    struggles.filter((s) => !s.repaired).map((s) => s.seedId),
+  );
   const out: string[] = [];
   for (const action of actions) {
+    if (unresolved.has(action.seed.id)) continue;
     const line = summaryLineOf(action.seed);
     if (line.length > 0 && !out.includes(line)) out.push(line);
   }
