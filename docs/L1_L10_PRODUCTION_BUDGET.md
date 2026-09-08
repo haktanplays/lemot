@@ -91,6 +91,90 @@ Superseded, not erased: the founder-slice milestone was genuinely reached and
 the APK is a genuine artifact. The PRODUCTION milestone below is a different,
 larger thing and remains open.
 
+## 2z. Founder rulings, 2026-09-08
+
+Three rulings, applied. Recorded here because two of them change what this
+document is allowed to claim.
+
+### Ruling 1 — comprehension choices are not French surfaces
+
+The ~150-160 reference exists for French communicative breadth and
+anti-memorisation. A comprehension option ("To the station.") is a real
+exercise and not a French utterance, so counting it beside "Je vais a la gare."
+inflates the one number the reference is about.
+
+Reported separately from now on, never summed into a headline: distinct French
+surfaces, comprehension-choice exercises, total Practice seeds. `uniqueSurfaces`
+is kept in the budget output for continuity and is explicitly NOT the reference
+figure. A choice contributes a French surface only when it carries a genuinely
+distinct French utterance that qualifies on its own.
+
+The ~150 figure is a soft ambition guardrail, not a binary gate. Filler to close
+a numeric distance is forbidden, and so is dismissing a large undershoot with
+"feels sufficient", "early lesson", "tests pass" or "gates are green".
+
+### Ruling 2 — L7's 28-item ceiling is accepted
+
+Evidence accepted: declaration comes only from screen `targetItemIds` and
+Showcase `itemIds`; L7 is at the enforced screen/action ceiling; Showcase is at
+its allowed ceiling; annotation is complete; no undeclared form remains
+recoverable from an existing sentence. The gap cannot be closed by ordinary
+authoring under the current contracts.
+
+> **L7: founder-approved structural undershoot. The global 35-40 breadth
+> reference remains, but the demonstrated 28-item ceiling is accepted for this
+> lesson under its current screen and Showcase contracts.**
+
+This is lesson-specific. The global 35-40 reference is unchanged, and there is
+NO new rule that doorway lessons need only 28. L7 is no longer called
+content-incomplete on the strength of 28 < 35.
+
+### Ruling 3 — the founder APK ends at L10
+
+Implemented in `config/productStage.ts` as `V1_PATH_MAX_LESSON_BY_STAGE`; see
+that file and `scripts/tests/founderSliceBoundary.test.ts`. A build slice
+boundary, not a paywall, not a course ending, not a permanent L10 ending.
+
+---
+
+## 2y. What the density evidence says about the remaining nine lessons
+
+Measured, because Ruling 1 forbids dismissing an undershoot without evidence,
+and because "the language runs out" is the only honest defence available.
+
+| L | declared | cumulative reachable | producible | FR surfaces | per producible item |
+|---|---|---|---|---|---|
+| 1 | 9 | 9 | 9 | 12 | 1.3 |
+| 2 | 6 | 11 | 11 | 8 | 0.7 |
+| 3 | 10 | 19 | 18 | 13 | 0.7 |
+| 4 | 10 | 25 | 22 | 9 | 0.4 |
+| 5 | 10 | 29 | 25 | 12 | 0.5 |
+| 6 | 16 | 29 | 25 | 14 | 0.6 |
+| **7** | 28 | 53 | 44 | **128** | **2.9** |
+| 8 | 8 | 56 | 47 | 14 | 0.3 |
+| 9 | 5 | 57 | 48 | 14 | 0.3 |
+| 10 | 19 | 59 | 50 | 17 | 0.3 |
+
+L7 demonstrates that 44 producible items sustain 128 distinct French surfaces
+without filler. Every other lesson sits between 0.3 and 1.3. **There is no
+reachable-language ceiling defending L3-L6 or L8-L10** — L10 has MORE producible
+language than L7 and one eighth of the surfaces. Those lessons are unfinished,
+not constrained, and the guardrail applies to them in full.
+
+Where a real ceiling does exist, it is small and early. At L7's demonstrated
+density the space available to each lesson is roughly:
+
+| L | producible | space at L7 density | verdict |
+|---|---|---|---|
+| 1 | 9 | ~26 | structurally capped far below 150 |
+| 2 | 11 | ~32 | structurally capped far below 150 |
+| 3-6 | 18-25 | ~52-73 | capped below 150, large expansion still owed |
+| 8-10 | 47-50 | ~136-145 | the guardrail is reachable; expansion owed in full |
+
+Cumulative language is what makes the guardrail reachable, so the guardrail is
+reachable late and not early. A per-lesson ~150 target is therefore not
+achievable at L1-L2 by any authoring, and IS achievable at L8-L10.
+
 ## 2b-bis. The APK is not an L1-L10 artifact, and the path does not stop at L10
 
 Verified, because it was described wrongly once. `app/(tabs)/index.tsx:159`

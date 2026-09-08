@@ -218,9 +218,19 @@ function practiceSurfaceOf(seed: (typeof PRACTICE_SEEDS)[number]): string {
   return `${before}${correct?.text ?? ""}${after}`.trim();
 }
 
+// A comprehension option is a real exercise and NOT a French surface. The
+// ~150 reference exists for French communicative breadth and anti-memorisation,
+// so counting "To the station." beside "Je vais à la gare." would inflate the
+// one number the reference is about. Founder ruling, 2026-09-08: report them
+// separately and never as a single headline.
+const LOOKS_FRENCH =
+  /[àâçéèêëîïôùûü]|\b(je|tu|vous|le|la|les|un|une|au|à|merci|non|oui|bonjour|désolé|pas|est|suis|vais|dois|c|ce|s|il)\b/i;
+
 function measurePractice(lesson: Lesson, coreIds: string[]): Row {
   const seeds = PRACTICE_SEEDS.filter((s) => s.originLessonId === lesson.id);
   const surfaces = new Set(seeds.map((s) => norm(practiceSurfaceOf(s))).filter(Boolean));
+  const frenchSurfaces = new Set([...surfaces].filter((t) => LOOKS_FRENCH.test(t)));
+  const comprehensionOptions = new Set([...surfaces].filter((t) => !LOOKS_FRENCH.test(t)));
   const architectures = new Set([...surfaces].map(architectureOf));
   const bySurface: Record<string, number> = {};
   const byOp: Record<string, number> = {};
@@ -234,6 +244,11 @@ function measurePractice(lesson: Lesson, coreIds: string[]): Row {
   );
   return {
     seeds: seeds.length,
+    // The founder reference number. French only.
+    frenchSurfaces: frenchSurfaces.size,
+    comprehensionOptions: comprehensionOptions.size,
+    // Kept for continuity, but it is NOT the reference figure and must not be
+    // reported as one: it is french + comprehension.
     uniqueSurfaces: surfaces.size,
     architectures: architectures.size,
     versionsPerArchitecture:
