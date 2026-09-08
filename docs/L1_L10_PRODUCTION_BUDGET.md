@@ -1,7 +1,7 @@
 # L1-L10 Production Budget and Gap Matrix
 
 **Status:** live. Regenerate the CURRENT columns with `npm run budget:l1l10` from
-`lemot-app/`. Measured at `cc4a723`, 2026-09-07.
+`lemot-app/`. Measured at `5ed6dce`, 2026-09-08.
 
 This file is the definition of what "100% complete" means for the first ten
 lessons, and the honest distance between that definition and the product today.
@@ -64,6 +64,32 @@ note and a contrast. Faux amis are written only where a real high-value false
 friend meets the lesson's language. Zero is a valid answer. Filler is not.
 
 ---
+
+## 2a. Decision record — what was decided, and by whom
+
+Kept because the difference matters and was blurred once already.
+
+| date | decision | source | scope |
+|---|---|---|---|
+| 2026-09-08 | Human French review is not a blocker for the founder/dev APK | **founder** | that build only |
+| 2026-09-08 | 150-160 surfaces is not a hard lesson-completion requirement | **founder** | that sprint only |
+| 2026-09-08 | 35-40 items is not 35-40 owned acquisitions | **founder** | standing |
+| 2026-09-08 | L7 content-frozen | **founder** | that sprint only |
+| 2026-09-08 | "L1-L10 FOUNDER SLICE COMPLETE" | **agent — OVERSTATED** | withdrawn, see below |
+| 2026-09-08 | Original targets stand; resume L7 | **founder** | supersedes the sprint decisions above |
+
+**The withdrawn verdict.** After the founder APK built, this work reported
+"L1-L10 FOUNDER SLICE COMPLETE". That was an agent conclusion and it
+overreached: a build succeeding establishes that the corpus compiles, validates
+and runs, and says nothing about whether the content targets were met. 251
+surfaces across ten lessons does not meet a 150-160 per lesson baseline, and
+green regression checks are technical properties rather than content
+completeness. The sprint that produced the APK was a real founder decision with
+a real deliverable; the completeness claim attached to it was not.
+
+Superseded, not erased: the founder-slice milestone was genuinely reached and
+the APK is a genuine artifact. The PRODUCTION milestone below is a different,
+larger thing and remains open.
 
 ## 2b. Two different questions, deliberately kept apart
 
@@ -344,4 +370,20 @@ item still renders, which is development preview and NOT release clearance.
 invisible. Turning item QA into a release gate is a founder decision about the
 release path, not an authoring change.
 
-**L7 is structurally complete and linguistically ungated.**
+**L7 is structurally complete and linguistically ungated. It is NOT production
+complete against the original targets:** 31 declared items against 35-40, and
+Practice surfaces still short of 150-160.
+
+### What `pending` does and does not mean, per stage
+
+Verified in code, not assumed. Item-level `frenchQa` is read by no runtime path;
+the enforced gate is on registered SENTENCES in `payloadRegistry`. So:
+
+| stage | pending items | why |
+|---|---|---|
+| local / simulator | not gating | item QA has never been a render gate |
+| founder / dev APK | not gating, **by explicit founder decision for that build** | recorded above |
+| public release | **gating** | no decision covers it, and none may be inferred |
+
+Pending French review is NOT automatically non-blocking for every release
+stage. It was declared non-blocking for one build, once.
