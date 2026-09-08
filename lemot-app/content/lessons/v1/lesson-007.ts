@@ -35,9 +35,9 @@ const screens: LessonScreen[] = [
           label: "Closing the moment",
           sentences: [
             { fr: "Merci beaucoup, au revoir !", en: "Thank you very much, goodbye!", role: "core", itemIds: ["chunk-merci-beaucoup", "chunk-au-revoir"] },
-            { fr: "Au revoir, bonne soirée !", en: "Goodbye, have a good evening!", role: "core", itemIds: ["chunk-bonne-soiree"] },
-            { fr: "Merci, bonne journée !", en: "Thanks, have a good day!", role: "supported", itemIds: ["chunk-bonne-journee"] },
-            { fr: "Au revoir, à demain !", en: "Goodbye, see you tomorrow!", role: "supported", itemIds: ["chunk-a-demain", "adverb-demain"] },
+            { fr: "Au revoir, bonne soirée !", en: "Goodbye, have a good evening!", role: "core", itemIds: ["chunk-bonne-soiree", "chunk-au-revoir"] },
+            { fr: "Merci, bonne journée !", en: "Thanks, have a good day!", role: "supported", itemIds: ["chunk-bonne-journee", "chunk-merci"] },
+            { fr: "Au revoir, à demain !", en: "Goodbye, see you tomorrow!", role: "supported", itemIds: ["chunk-a-demain", "adverb-demain", "chunk-au-revoir"] },
             { fr: "À bientôt !", en: "See you soon!", role: "supported", itemIds: ["chunk-a-bientot"] },
             { fr: "À tout à l'heure !", en: "See you later!", role: "supported", itemIds: ["chunk-a-tout-a-l-heure"] },
           ],
@@ -46,8 +46,8 @@ const screens: LessonScreen[] = [
           label: "Leaving early, kindly",
           sentences: [
             { fr: "Désolé, je dois partir.", en: "Sorry, I have to go.", role: "core", itemIds: ["chunk-desole", "chunk-je-dois-partir"] },
-            { fr: "Non merci, une autre fois.", en: "No thanks, another time.", role: "supported", itemIds: ["chunk-une-autre-fois", "chunk-non-merci"] },
-            { fr: "Désolé, je dois partir. Encore merci !", en: "Sorry, I have to go. Thanks again!", role: "exposure", itemIds: ["chunk-encore-merci"] },
+            { fr: "Non merci, une autre fois.", en: "No thanks, another time.", role: "supported", itemIds: ["chunk-une-autre-fois", "chunk-non-merci", "chunk-merci"] },
+            { fr: "Désolé, je dois partir. Encore merci !", en: "Sorry, I have to go. Thanks again!", role: "exposure", itemIds: ["chunk-encore-merci", "chunk-merci"] },
           ],
         },
         {
@@ -62,8 +62,8 @@ const screens: LessonScreen[] = [
           label: "What they say back",
           sentences: [
             { fr: "De rien.", en: "You're welcome.", role: "exposure", itemIds: ["chunk-de-rien"] },
-            { fr: "Au revoir, bonne nuit !", en: "Goodbye, good night!", role: "exposure", itemIds: ["chunk-bonne-nuit"] },
-            { fr: "Au revoir, bon week-end !", en: "Goodbye, have a good weekend!", role: "exposure", itemIds: ["chunk-bon-week-end"] },
+            { fr: "Au revoir, bonne nuit !", en: "Goodbye, good night!", role: "exposure", itemIds: ["chunk-bonne-nuit", "chunk-au-revoir"] },
+            { fr: "Au revoir, bon week-end !", en: "Goodbye, have a good weekend!", role: "exposure", itemIds: ["chunk-bon-week-end", "chunk-au-revoir"] },
             { fr: "À bientôt, bon voyage !", en: "See you soon, have a good trip!", role: "exposure", itemIds: ["chunk-bon-voyage"] },
           ],
         },

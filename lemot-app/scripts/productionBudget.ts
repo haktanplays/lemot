@@ -50,7 +50,16 @@ const LEXICAL_PAYLOAD = new Set([
   "madame", "monsieur",
 ]);
 
-const norm = (s: string) => s.trim().toLowerCase().replace(/\s+/g, " ");
+// Distinctness is semantic, not typographic. Two surfaces that differ only by
+// punctuation or case are the same thing to say, and must not inflate a count
+// this document treats as a production target.
+const norm = (s: string) =>
+  s
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/[.!?,;:\u2019']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
 // ── per-lesson measurement ──────────────────────────────────────────────────
 
