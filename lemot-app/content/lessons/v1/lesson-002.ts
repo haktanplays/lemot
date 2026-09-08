@@ -402,31 +402,35 @@ const screens: LessonScreen[] = [
           weakPointTags: ["natural-speech"],
           payload: {
             prompt:
-              "Someone is calling for you from the next room. They cannot see you, and they are not offering you anything.",
+              "You arrive somewhere you are expected. The room is calm, nobody has said anything yet, and they look up as you come in.",
             blankCount: 1,
             options: [
-              { id: "opt-ici", text: "Je suis ici.", isCorrect: true },
+              {
+                id: "opt-bonjour-ici",
+                text: "Bonjour, je suis ici.",
+                isCorrect: true,
+              },
               {
                 id: "opt-the",
                 text: "Je voudrais un thé, s'il vous plaît.",
                 isCorrect: false,
                 trapReason:
-                  "That orders a drink. Nobody asked what you wanted; they asked where you are.",
+                  "That orders a drink. You have just walked in, and nobody has asked you what you want.",
               },
               {
                 id: "opt-repeter",
                 text: "Vous pouvez répéter ?",
                 isCorrect: false,
                 trapReason:
-                  "That asks them to say it again. You heard them perfectly well.",
+                  "That asks them to say something again. Nothing has been said for you to miss.",
               },
             ],
-            answer: ["opt-ici"],
+            answer: ["opt-bonjour-ici"],
             reveal: {
-              short: "Je suis ici.",
+              short: "Bonjour, je suis ici.",
               explanation:
-                "Three lines you own, one job each. This engine is the one that puts you somewhere.",
-              natural: "Je suis ici.",
+                "Arriving takes the greeting in front of it. Being called across a room does not, which is why the same two words come out differently each time.",
+              natural: "Bonjour, je suis ici.",
             },
           },
         },

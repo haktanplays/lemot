@@ -620,18 +620,6 @@ export const L9_SEEDS: PracticeSeed[] = [
 
   // ── Cold retrieval ────────────────────────────────────────────────────────
   weaveSeed({
-    id: "p-l9-retrieve-plain-request",
-    operation: "retrieve", difficulty: "easy", surface: "typed", lesson: L,
-    required: ["chunk-je-voudrais", "chunk-faire-une-pause"],
-    targets: ["chunk-faire-une-pause"],
-    weaveType: "mid",
-    prompt: "Ask for a break.",
-    context: "Informal, people you know, and you simply need ten minutes.",
-    answers: ["Je voudrais faire une pause."],
-    alternatives: ["Je voudrais faire une pause", "Je voudrais faire une pause !"],
-    ifCorrect: "The plain version. The tail is for rooms that need it.",
-  }),
-  weaveSeed({
     id: "p-l9-retrieve-say-hungry",
     operation: "retrieve", difficulty: "easy", surface: "typed", lesson: L,
     required: ["chunk-j-ai-faim"],
