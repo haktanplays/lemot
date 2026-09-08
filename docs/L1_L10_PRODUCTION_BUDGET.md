@@ -91,6 +91,23 @@ Superseded, not erased: the founder-slice milestone was genuinely reached and
 the APK is a genuine artifact. The PRODUCTION milestone below is a different,
 larger thing and remains open.
 
+## 2w. Build record
+
+| build | commit | profile | stage | scope |
+|---|---|---|---|---|
+| `b5654989-00cf-47f0-9fdc-a6438f88e6ae` | `8ccb5f6` | preview | `dev-apk` | L1-L10, boundary active |
+| `6c44400d` (superseded) | `c87036a` | preview | `dev-apk` | L1-L24 reachable, no boundary |
+
+The stage matters: the preview profile sets `EXPO_PUBLIC_PRODUCT_STAGE=dev-apk`,
+which is the one stage `V1_PATH_MAX_LESSON_BY_STAGE` caps at L10. The previous
+build predates the boundary and let a tester walk from finished L10 content into
+L11-L24 at the old density.
+
+Preconditions verified green before building, per the founder's instruction:
+typecheck, 2132/2132 learning-engine tests, pool validation, content validation
+with 0 hard errors, and the boundary confirmed live on a simulator showing
+exactly ten rows on the path.
+
 ## 2z. Founder rulings, 2026-09-08
 
 Three rulings, applied. Recorded here because two of them change what this
