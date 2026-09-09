@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "Things that take un",
           sentences: [
-            { fr: "Je voudrais un café.", en: "I would like a coffee.", role: "core", itemIds: ["chunk-un-cafe"] },
+            { fr: "Je voudrais un café.", en: "I would like a coffee.", role: "core", itemIds: ["chunk-un-cafe"], depth: { structure: "un café is one package, not two words to assemble. The little word comes attached to the noun and stays with it.", compare: "un café but une question. Nothing about the meaning decides it; the word carries its own package and you learn them together." } },
             { fr: "Je voudrais un thé.", en: "I would like a tea.", role: "core", itemIds: ["chunk-un-the"] },
             { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure" },
             { fr: "Un verre d'eau, s'il vous plaît.", en: "A glass of water, please.", role: "exposure" },

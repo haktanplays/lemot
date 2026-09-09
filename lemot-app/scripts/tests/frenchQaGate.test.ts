@@ -85,8 +85,9 @@ describe("French QA status means exactly what it says", () => {
     );
     assertEqual(
       unreachable.length,
-      25,
-      "both L7 tranches are the whole of the currently un-cleared item inventory",
+      36,
+      "the two L7 tranches plus the L1-L10 breadth pass are the whole of the " +
+        "currently un-cleared item inventory; no human has reviewed any of it",
     );
   });
 });

@@ -148,10 +148,46 @@ export type NaturalRevealPayload = {
  */
 export type ShowcaseRole = "core" | "supported" | "exposure";
 
+/**
+ * Optional deeper layer for one Showcase line. Every field is optional and most
+ * sentences carry none: the default screen stays calm, and depth is something
+ * the learner asks for. Filling every category for every sentence would turn a
+ * language world into a textbook page, so a line gets a card only when there is
+ * something specific worth saying about THAT line.
+ */
+export type ShowcaseDepth = {
+  /**
+   * Written pronunciation aid for English speakers. House convention, taken
+   * from the one the registry already uses in `sound-liaison`: lowercase,
+   * hyphen-separated syllables, read as English. Audio remains the authority;
+   * this is a cue, not a transcription, and must not pretend to IPA precision.
+   */
+  sound?: string;
+  /** One concise high-value observation. Not a grammar lecture. */
+  notice?: string;
+  /** How the meaningful pieces fit together. */
+  structure?: string;
+  /** Register, naturalness, when a French speaker would actually say it. */
+  usage?: string;
+  /** A useful contrast with another form the learner has already reached. */
+  compare?: string;
+  /** A deeper explanation for learners who want or need one. */
+  inDepth?: string;
+};
+
 export type ShowcaseSentence = {
   fr: string;
   en: string;
   role: ShowcaseRole;
+  /**
+   * Optional hand-authored piece breakdown. Normally omitted: pieces are
+   * derived from the canonical registry by `showcasePieces`, so the breakdown
+   * cannot drift from what the learner actually owns. Author this only to
+   * correct a segmentation the registry cannot get right on its own.
+   */
+  pieces?: string[];
+  /** Optional depth layer. Absent means this line needs none. */
+  depth?: ShowcaseDepth;
   /**
    * Registry ids this line exercises. Authoring metadata used by the corpus
    * guards; every id must resolve against the canonical registry. Absent means

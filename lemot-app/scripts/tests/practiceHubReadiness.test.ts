@@ -114,6 +114,18 @@ const VIA_CARRIER: Readonly<Record<string, string>> = {
   "noun-faim": "chunk-j-ai-faim",
   "noun-question": "chunk-j-ai-une-question",
   "noun-pause": "chunk-faire-une-pause",
+  // The pronoun L2 breaks "je suis" open to show. Practised every time the
+  // carrier is, never on its own.
+  "pronoun-je": "chunk-je-suis",
+  // The two destination shapes. They are carried by the destinations L7 already
+  // works, and deliberately NOT treated as a productive contraction: L7 teaches
+  // "au café" and "à la maison" whole, and these identities exist so the depth
+  // layer can say why the two shapes differ, not to license composing them.
+  "prep-au": "chunk-au-cafe",
+  "prep-a-la": "chunk-a-la-maison",
+  // être is a surface type, so it cannot be META. L1-L10 never conjugates it;
+  // the learner meets it entirely inside "je suis", which is its carrier.
+  "verb-etre": "chunk-je-suis",
 };
 
 /**
@@ -150,6 +162,11 @@ const META: readonly string[] = [
   "grammar-ne-pas-sandwich",
   "micro-je-suis-vs-j-ai",
   "sound-elision",
+  // The note that frames L2's engine. A concept, not a surface.
+  "grammar-etre-identity",
+  // Demonstrated by "Vous êtes prêt ?" on L2's Showcase. A pronunciation
+  // pattern, not a thing to say.
+  "sound-liaison",
 ];
 
 describe("Practice Hub can offer something real for every practisable item", () => {

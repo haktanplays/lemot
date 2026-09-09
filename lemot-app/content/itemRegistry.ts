@@ -1311,6 +1311,168 @@ export const ITEM_REGISTRY = {
   // tranche — authored by an agent, read by no named human, no founder waiver
   // recorded.
 
+  // ── Destination shapes (L7). Registered as identities in their own right so
+  // the depth layer can explain WHY "au café" and "à la maison" differ, without
+  // rewriting how the destinations are owned. Per the acquisitionComponents
+  // contract these are NOT retroactively added as components of
+  // chunk-au-cafe / chunk-a-la-maison: L7 owns those whole, deliberately, and a
+  // component identity created later does not rewrite authored history.
+  "prep-au": {
+    id: "prep-au",
+    type: "preposition",
+    text: "au",
+    // Supported, not recognition: L7/s31a asks the learner to CHOOSE this shape,
+    // and an exposure-tier surface may not be a correct answer (canon V3).
+    status: "supported",
+    fr: "au",
+    en: "to the / at the",
+    meaning:
+      "The shape 'à' takes in front of some places: au café, au travail, au restaurant. It is one piece, said 'oh'.",
+    exampleFr: "Je vais au café.",
+    exampleEn: "I'm going to the café.",
+    relatedItemIds: ["prep-a-la", "chunk-au-cafe", "chunk-a-la-maison"],
+    frenchQa: "pending",
+  },
+  "prep-a-la": {
+    id: "prep-a-la",
+    type: "preposition",
+    text: "à la",
+    status: "supported",
+    fr: "à la",
+    en: "to the / at the",
+    meaning:
+      "The shape 'à' takes in front of other places: à la maison, à la gare. Same job as 'au', different places.",
+    exampleFr: "Je vais à la maison.",
+    exampleEn: "I'm going home.",
+    relatedItemIds: ["prep-au", "chunk-a-la-maison", "chunk-au-cafe"],
+    frenchQa: "pending",
+  },
+
+  // ── Already on screen in L1-L4, never modelled until now ──────────────────
+  "chunk-je-suis-pret": {
+    id: "chunk-je-suis-pret",
+    type: "chunk",
+    text: "je suis prêt",
+    status: "recognition",
+    fr: "je suis prêt",
+    en: "I'm ready",
+    meaning:
+      "The same je suis engine with a state hung off it. The partner of the vous êtes prêt the lesson already shows.",
+    exampleFr: "Je suis prêt.",
+    exampleEn: "I'm ready.",
+    relatedItemIds: ["chunk-je-suis", "chunk-vous-etes-pret"],
+    frenchQa: "pending",
+  },
+  "chunk-j-ai-soif": {
+    id: "chunk-j-ai-soif",
+    type: "chunk",
+    text: "j'ai soif",
+    status: "recognition",
+    fr: "j'ai soif",
+    en: "I'm thirsty",
+    meaning:
+      "Thirst goes on 'have' in French, exactly like hunger: j'ai faim, j'ai soif.",
+    exampleFr: "J'ai soif.",
+    exampleEn: "I'm thirsty.",
+    relatedItemIds: ["chunk-j-ai", "chunk-j-ai-faim", "micro-je-suis-vs-j-ai"],
+    frenchQa: "pending",
+  },
+  "chunk-j-ai-froid": {
+    id: "chunk-j-ai-froid",
+    type: "chunk",
+    text: "j'ai froid",
+    status: "recognition",
+    fr: "j'ai froid",
+    en: "I'm cold",
+    meaning: "Cold goes on 'have' too. English puts these on 'be'; French does not.",
+    exampleFr: "J'ai froid.",
+    exampleEn: "I'm cold.",
+    relatedItemIds: ["chunk-j-ai", "micro-je-suis-vs-j-ai"],
+    frenchQa: "pending",
+  },
+  "chunk-j-ai-chaud": {
+    id: "chunk-j-ai-chaud",
+    type: "chunk",
+    text: "j'ai chaud",
+    status: "recognition",
+    fr: "j'ai chaud",
+    en: "I'm hot",
+    meaning: "The other half of the pair with j'ai froid, and the same shape.",
+    exampleFr: "J'ai chaud.",
+    exampleEn: "I'm hot.",
+    relatedItemIds: ["chunk-j-ai", "chunk-j-ai-froid", "micro-je-suis-vs-j-ai"],
+    frenchQa: "pending",
+  },
+  "chunk-vous-avez": {
+    id: "chunk-vous-avez",
+    type: "chunk",
+    text: "vous avez",
+    status: "recognition",
+    fr: "vous avez",
+    en: "you have",
+    meaning:
+      "The have-engine pointed at the other person. What a waiter says to you: Vous avez faim ?",
+    exampleFr: "Vous avez faim ?",
+    exampleEn: "Are you hungry?",
+    relatedItemIds: ["chunk-j-ai", "chunk-vous-etes"],
+    frenchQa: "pending",
+  },
+  "chunk-je-ne-sais-pas": {
+    id: "chunk-je-ne-sais-pas",
+    type: "chunk",
+    text: "je ne sais pas",
+    status: "recognition",
+    fr: "je ne sais pas",
+    en: "I don't know",
+    meaning:
+      "One of the most-used sentences in French, and the same ne...pas sandwich the lesson already teaches.",
+    exampleFr: "Je ne sais pas.",
+    exampleEn: "I don't know.",
+    relatedItemIds: ["grammar-ne-pas-sandwich", "chunk-je-ne-comprends-pas"],
+    frenchQa: "pending",
+  },
+  "chunk-ce-n-est-pas-grave": {
+    id: "chunk-ce-n-est-pas-grave",
+    type: "chunk",
+    text: "ce n'est pas grave",
+    status: "recognition",
+    fr: "ce n'est pas grave",
+    en: "it's not a problem / never mind",
+    meaning:
+      "What a French speaker says to put you at ease after a small mistake. Worth recognising long before you say it.",
+    exampleFr: "Ce n'est pas grave.",
+    exampleEn: "It's not a problem.",
+    relatedItemIds: ["chunk-ce-n-est-pas", "grammar-ne-pas-sandwich"],
+    frenchQa: "pending",
+  },
+  "chunk-pas-de-probleme": {
+    id: "chunk-pas-de-probleme",
+    type: "chunk",
+    text: "pas de problème",
+    status: "recognition",
+    fr: "pas de problème",
+    en: "no problem",
+    meaning: "The short, everyday version of ce n'est pas grave.",
+    exampleFr: "Pas de problème.",
+    exampleEn: "No problem.",
+    relatedItemIds: ["chunk-ce-n-est-pas-grave"],
+    frenchQa: "pending",
+  },
+  "chunk-une-minute": {
+    id: "chunk-une-minute",
+    type: "chunk",
+    text: "une minute",
+    status: "recognition",
+    fr: "une minute",
+    en: "one minute / just a moment",
+    meaning:
+      "How you ask someone to wait without a whole sentence. Carries the same une the lesson teaches.",
+    exampleFr: "Une minute, s'il vous plaît.",
+    exampleEn: "One moment, please.",
+    relatedItemIds: ["grammar-un-une-package", "chunk-sil-vous-plait"],
+    frenchQa: "pending",
+  },
+
   "chunk-de-rien": {
     id: "chunk-de-rien",
     type: "chunk",

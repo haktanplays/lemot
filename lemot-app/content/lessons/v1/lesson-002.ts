@@ -18,37 +18,37 @@ const screens: LessonScreen[] = [
         {
           label: "Where you are",
           sentences: [
-            { fr: "Je suis ici.", en: "I'm here.", role: "core", itemIds: ["chunk-je-suis-ici"] },
-            { fr: "Bonjour, je suis ici.", en: "Hello, I'm here.", role: "core" },
-            { fr: "Excusez-moi, je suis ici.", en: "Excuse me, I'm here.", role: "core" },
+            { fr: "Je suis ici.", en: "I'm here.", role: "core", itemIds: ["chunk-je-suis-ici"], depth: { sound: "zhuh swee ee-SEE", structure: "je suis is the engine, ici is what you hang off it. The engine does not change when the room does.", compare: "French puts states on je suis but hunger and thirst on j'ai. That split is the single most useful thing to notice early." } },
+            { fr: "Bonjour, je suis ici.", en: "Hello, I'm here.", role: "core", itemIds: ["chunk-bonjour", "chunk-je-suis-ici"] },
+            { fr: "Excusez-moi, je suis ici.", en: "Excuse me, I'm here.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-je-suis-ici"] },
             { fr: "Je suis là.", en: "I'm here. (right here)", role: "exposure" },
           ],
         },
         {
           label: "How you are",
           sentences: [
-            { fr: "Ça va.", en: "I'm fine.", role: "supported" },
-            { fr: "Ça va bien, merci.", en: "I'm well, thank you.", role: "supported" },
-            { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure" },
-            { fr: "Je suis content.", en: "I'm glad.", role: "exposure" },
+            { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "sa-VA", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." } },
+            { fr: "Ça va bien, merci.", en: "I'm well, thank you.", role: "supported", itemIds: ["chunk-ca-va", "chunk-merci"] },
+            { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure", itemIds: ["chunk-je-suis", "adj-fatigue"] },
+            { fr: "Je suis content.", en: "I'm glad.", role: "exposure", itemIds: ["chunk-je-suis", "adj-content"] },
             { fr: "Je suis désolé.", en: "I'm sorry.", role: "exposure" },
           ],
         },
         {
           label: "Ready, or not yet",
           sentences: [
-            { fr: "Je suis prêt.", en: "I'm ready.", role: "supported" },
+            { fr: "Je suis prêt.", en: "I'm ready.", role: "supported", itemIds: ["chunk-je-suis-pret"] },
             { fr: "Je ne suis pas prêt.", en: "I'm not ready.", role: "exposure" },
             { fr: "Je suis en retard.", en: "I'm late.", role: "exposure" },
-            { fr: "Une minute, s'il vous plaît.", en: "One minute, please.", role: "exposure" },
+            { fr: "Une minute, s'il vous plaît.", en: "One minute, please.", role: "exposure", itemIds: ["chunk-une-minute", "chunk-sil-vous-plait"] },
           ],
         },
         {
           label: "What people say to you",
           sentences: [
-            { fr: "Comment ça va ?", en: "How are you doing?", role: "exposure" },
-            { fr: "Vous êtes prêt ?", en: "Are you ready?", role: "exposure" },
-            { fr: "Vous êtes là ?", en: "Are you there?", role: "exposure" },
+            { fr: "Comment ça va ?", en: "How are you doing?", role: "exposure", itemIds: ["adverb-comment", "chunk-ca-va"] },
+            { fr: "Vous êtes prêt ?", en: "Are you ready?", role: "exposure", itemIds: ["chunk-vous-etes-pret", "chunk-vous-etes", "pronoun-vous"], depth: { sound: "voo-z-ET preh", notice: "The silent s in vous wakes up before a vowel and links the words: vou-z-êtes, not vou / êtes." } },
+            { fr: "Vous êtes là ?", en: "Are you there?", role: "exposure", itemIds: ["chunk-vous-etes"] },
           ],
         },
       ],
@@ -597,6 +597,19 @@ export const lesson002: Lesson = {
     "L1 gave the survival kit of polite chunks. L2 gives one reusable architecture shape: je suis. The shape stays the same across every future lesson. L2's only job is to make that shape feel solid in one calm location. This is the Être seed; c'est and the wider identity work arrive in a later pass.",
   prerequisites: ["v1-lesson-001"],
   learningItems: getItems([
+    // The verb behind the lesson's title, and the note that explains it. Both
+    // were registered and then never reached by any lesson, so L2 was teaching
+    // "je suis" while the identity for être itself sat orphaned in the
+    // registry. Recognition only: the learner meets the engine, and is not
+    // asked to conjugate anything.
+    "verb-etre",
+    "grammar-etre-identity",
+    // The pronoun the whole lesson turns on. Reached here because this is where
+    // "je suis" is first broken into its two pieces.
+    "pronoun-je",
+    // "Vous êtes prêt ?" is already on this lesson's Showcase, so the liaison it
+    // demonstrates is language the learner meets here rather than later.
+    "sound-liaison",
     "chunk-je-suis",
     "chunk-je-suis-ici",
     "word-ici",

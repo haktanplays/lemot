@@ -18,10 +18,10 @@ const screens: LessonScreen[] = [
         {
           label: "What your body is telling you",
           sentences: [
-            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"] },
-            { fr: "J'ai soif.", en: "I'm thirsty.", role: "supported" },
-            { fr: "J'ai froid.", en: "I'm cold.", role: "exposure" },
-            { fr: "J'ai chaud.", en: "I'm hot.", role: "exposure" },
+            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"], depth: { sound: "zhay FAN", compare: "Je suis for who and where you are; j'ai for hunger, thirst, cold. English uses to be for all of them, which is why this one has to be learned rather than translated.", notice: "Literally I have hunger." } },
+            { fr: "J'ai soif.", en: "I'm thirsty.", role: "supported", itemIds: ["chunk-j-ai-soif"] },
+            { fr: "J'ai froid.", en: "I'm cold.", role: "exposure", itemIds: ["chunk-j-ai-froid"] },
+            { fr: "J'ai chaud.", en: "I'm hot.", role: "exposure", itemIds: ["chunk-j-ai-chaud"] },
           ],
         },
         {
@@ -32,9 +32,10 @@ const screens: LessonScreen[] = [
               en: "I have a question.",
               role: "core",
               itemIds: ["chunk-j-ai-une-question"],
+              depth: { sound: "zhay oon kess-tee-ON", structure: "j'ai plus a package. The package is une here, and that choice belongs to the word question, not to you." },
             },
             { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"] },
-            { fr: "Excusez-moi, j'ai une question.", en: "Excuse me, I have a question.", role: "core" },
+            { fr: "Excusez-moi, j'ai une question.", en: "Excuse me, I have a question.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-j-ai-une-question"] },
             { fr: "J'ai un problème.", en: "I have a problem.", role: "exposure" },
           ],
         },
@@ -51,15 +52,15 @@ const screens: LessonScreen[] = [
           label: "Putting it with where you are",
           sentences: [
             { fr: "Je suis ici. J'ai faim.", en: "I'm here. I'm hungry.", role: "core" },
-            { fr: "Bonjour, j'ai une question.", en: "Hello, I have a question.", role: "core" },
+            { fr: "Bonjour, j'ai une question.", en: "Hello, I have a question.", role: "core", itemIds: ["chunk-bonjour", "chunk-j-ai-une-question"] },
             { fr: "Je ne comprends pas. J'ai une question.", en: "I don't understand. I have a question.", role: "supported" },
           ],
         },
         {
           label: "What people ask you",
           sentences: [
-            { fr: "Vous avez faim ?", en: "Are you hungry?", role: "exposure" },
-            { fr: "Vous avez une question ?", en: "Do you have a question?", role: "exposure" },
+            { fr: "Vous avez faim ?", en: "Are you hungry?", role: "exposure", itemIds: ["chunk-vous-avez"] },
+            { fr: "Vous avez une question ?", en: "Do you have a question?", role: "exposure", itemIds: ["chunk-vous-avez", "chunk-une-question"] },
           ],
         },
       ],

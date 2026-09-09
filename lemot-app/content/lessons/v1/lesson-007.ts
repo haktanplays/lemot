@@ -18,8 +18,8 @@ const screens: LessonScreen[] = [
         {
           label: "Where you are heading",
           sentences: [
-            { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais", "chunk-a-la-maison"] },
-            { fr: "Je vais au café.", en: "I'm going to the café.", role: "core", itemIds: ["chunk-au-cafe"] },
+            { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais", "chunk-a-la-maison"], depth: { sound: "zhuh vay a la may-ZON", compare: "à la stays two audible pieces where au fuses into one. If you can hear a la, it is this shape." } },
+            { fr: "Je vais au café.", en: "I'm going to the café.", role: "core", itemIds: ["chunk-au-cafe"], depth: { sound: "zhuh vay oh ka-FAY", structure: "au is one piece, said oh. It is the shape café carries whenever you go there.", compare: "au café but à la maison. Same job, two shapes, and the place decides which.", inDepth: "au is what happens when à meets the little word French uses in front of café. The two fuse into one sound, which is why you never hear à le. Places that take the other little word keep both parts audible: à la maison, à la gare. Learn the destination whole and the pattern arrives on its own later." } },
             { fr: "Je vais à la gare.", en: "I'm going to the station.", role: "core", itemIds: ["chunk-a-la-gare"] },
             { fr: "Je vais au travail.", en: "I'm going to work.", role: "supported", itemIds: ["chunk-au-travail"] },
           ],
@@ -661,6 +661,14 @@ export const lesson007: Lesson = {
     "L6 closed the arrival arc at au revoir. L7 is the frozen-chunk doorway that adds the leaving direction: je vais + à la maison, taken whole. Per the accepted compact doorway spec, this is deliberately NOT the aller/movement lesson: no paradigm, no à/au/à la system, no futur proche. It exists so leaving feels as natural as arriving did.",
   prerequisites: ["v1-lesson-006"],
   learningItems: getItems([
+    // The two destination shapes, as identities the learner can be told about.
+    // Recognition only, and deliberately NOT listed as acquisitionComponents of
+    // chunk-au-cafe / chunk-a-la-maison: L7 owns those destinations whole and
+    // says so on s04, and the registry's own rule is that a component identity
+    // created later does not rewrite authored ownership. These exist so the
+    // Showcase depth layer can explain why the two shapes differ.
+    "prep-au",
+    "prep-a-la",
     "chunk-je-vais",
     "chunk-a-la-maison",
     // L7 production pass. Declared because the lesson now WORKS these: a target

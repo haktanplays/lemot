@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "Opening a moment",
           sentences: [
-            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"] },
+            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], depth: { sound: "bon-ZHOOR", usage: "Not optional. Walking into a French shop without it reads as rude in a way English speakers rarely intend." } },
             { fr: "Excusez-moi.", en: "Excuse me.", role: "core", itemIds: ["chunk-excusez-moi"] },
             { fr: "Bonjour, madame.", en: "Hello, madam.", role: "exposure" },
             { fr: "Bonjour, monsieur.", en: "Hello, sir.", role: "exposure" },
@@ -32,14 +32,15 @@ const screens: LessonScreen[] = [
               en: "I would like a coffee, please.",
               role: "core",
               itemIds: ["chunk-je-voudrais", "noun-cafe", "chunk-sil-vous-plait"],
+              depth: { sound: "zhuh voo-DREH un ka-FAY, seel voo PLEH", structure: "Three pieces, each reusable: the polite ask, the thing, the softener. Swap the middle piece and you have ordered something else.", usage: "The safe register with anyone you do not know. Je veux (I want) is what a child says, and lands badly at a counter." },
             },
             {
               fr: "Je voudrais un thé.",
               en: "I would like a tea.",
               role: "core",
-              itemIds: ["chunk-un-the"],
+              itemIds: ["chunk-je-voudrais", "chunk-un-the", "noun-the"],
             },
-            { fr: "Un café, s'il vous plaît.", en: "A coffee, please.", role: "supported" },
+            { fr: "Un café, s'il vous plaît.", en: "A coffee, please.", role: "supported", itemIds: ["noun-cafe", "chunk-sil-vous-plait"] },
             { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure" },
           ],
         },
@@ -56,6 +57,7 @@ const screens: LessonScreen[] = [
               fr: "Excusez-moi, vous pouvez répéter ?",
               en: "Excuse me, can you say that again?",
               role: "supported",
+              itemIds: ["chunk-excusez-moi", "chunk-vous-pouvez-repeter"],
             },
             { fr: "Pardon ?", en: "Sorry?", role: "exposure" },
             { fr: "Je ne parle pas très bien français.", en: "I don't speak French very well.", role: "exposure" },
@@ -65,7 +67,7 @@ const screens: LessonScreen[] = [
           label: "Closing it well",
           sentences: [
             { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"] },
-            { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported" },
+            { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported", itemIds: ["chunk-merci-beaucoup"], depth: { sound: "mair-SEE bo-KOO", compare: "Merci closes an ordinary exchange. Merci beaucoup says they went out of their way." } },
             { fr: "Voilà.", en: "There you go.", role: "exposure" },
             { fr: "Bonne journée !", en: "Have a good day!", role: "exposure" },
             { fr: "Au revoir.", en: "Goodbye.", role: "exposure", itemIds: ["chunk-au-revoir"] },
