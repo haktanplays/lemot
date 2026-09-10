@@ -59,6 +59,7 @@ const screens: LessonScreen[] = [
               en: "Excuse me, can you say that again?",
               role: "supported",
               itemIds: ["chunk-excusez-moi", "chunk-vous-pouvez-repeter"],
+              pieces: ["Excusez-moi", "vous pouvez", "répéter"],
             },
             { fr: "Pardon ?", en: "Sorry?", role: "exposure", flat: "formula" },
             { fr: "Je ne parle pas très bien français.", en: "I don't speak French very well.", role: "exposure", flat: "exposure" },

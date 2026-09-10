@@ -34,7 +34,7 @@ const screens: LessonScreen[] = [
         {
           label: "Closing the moment",
           sentences: [
-            { fr: "Merci beaucoup, au revoir !", en: "Thank you very much, goodbye!", role: "core", itemIds: ["chunk-merci-beaucoup", "chunk-au-revoir"] },
+            { fr: "Merci beaucoup, au revoir !", en: "Thank you very much, goodbye!", role: "core", itemIds: ["chunk-merci-beaucoup", "chunk-au-revoir"], pieces: ["Merci", "beaucoup", "au revoir"] },
             { fr: "Au revoir, bonne soirée !", en: "Goodbye, have a good evening!", role: "core", itemIds: ["chunk-bonne-soiree", "chunk-au-revoir"] },
             { fr: "Merci, bonne journée !", en: "Thanks, have a good day!", role: "supported", itemIds: ["chunk-bonne-journee", "chunk-merci"] },
             { fr: "Au revoir, à demain !", en: "Goodbye, see you tomorrow!", role: "supported", itemIds: ["chunk-a-demain", "adverb-demain", "chunk-au-revoir"] },

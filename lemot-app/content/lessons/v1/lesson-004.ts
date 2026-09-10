@@ -34,7 +34,7 @@ const screens: LessonScreen[] = [
               itemIds: ["chunk-j-ai-une-question"],
               depth: { sound: "zhay oon kess-tee-ON", structure: "j'ai plus a package. The package is une here, and that choice belongs to the word question, not to you." },
             },
-            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"] },
+            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"], pieces: ["J'ai", "une idée"] },
             { fr: "Excusez-moi, j'ai une question.", en: "Excuse me, I have a question.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-j-ai-une-question"] },
             { fr: "J'ai un problème.", en: "I have a problem.", role: "exposure", pieces: ["J'ai", "un problème"] },
           ],

@@ -33,7 +33,7 @@ const screens: LessonScreen[] = [
               role: "core",
               itemIds: ["chunk-une-question"],
             },
-            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"] },
+            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"], pieces: ["J'ai", "une idée"] },
             { fr: "Je voudrais une table.", en: "I would like a table.", role: "exposure", pieces: ["Je voudrais", "une table"] },
             { fr: "Une baguette, s'il vous plaît.", en: "A baguette, please.", role: "exposure", pieces: ["Une baguette", "s'il vous plaît"] },
           ],
@@ -42,7 +42,7 @@ const screens: LessonScreen[] = [
           label: "Asking for two things",
           sentences: [
             { fr: "Je voudrais un café. J'ai une question.", en: "I would like a coffee. I have a question.", role: "core" },
-            { fr: "Un café et un thé, s'il vous plaît.", en: "A coffee and a tea, please.", role: "supported" },
+            { fr: "Un café et un thé, s'il vous plaît.", en: "A coffee and a tea, please.", role: "supported", pieces: ["Un café", "et", "un thé", "s'il vous plaît"] },
             { fr: "Deux cafés, s'il vous plaît.", en: "Two coffees, please.", role: "exposure", pieces: ["Deux cafés", "s'il vous plaît"] },
           ],
         },
@@ -61,7 +61,7 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "L'addition, s'il vous plaît.", en: "The bill, please.", role: "exposure", pieces: ["L'addition", "s'il vous plaît"] },
             { fr: "C'est combien ?", en: "How much is it?", role: "exposure" },
-            { fr: "Vous avez du thé ?", en: "Do you have tea?", role: "exposure" },
+            { fr: "Vous avez du thé ?", en: "Do you have tea?", role: "exposure", pieces: ["Vous avez", "du thé"] },
           ],
         },
       ],

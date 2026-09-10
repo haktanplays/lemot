@@ -59,6 +59,7 @@ const screens: LessonScreen[] = [
               fr: "Je ne comprends pas. Vous pouvez répéter ?",
               en: "I don't understand. Can you say that again?",
               role: "supported",
+              pieces: ["Je ne comprends pas", "vous pouvez", "répéter"],
             },
             { fr: "Je ne sais pas.", en: "I don't know.", role: "exposure", itemIds: ["chunk-je-ne-sais-pas"], flat: "formula" },
             { fr: "Un peu, seulement.", en: "Only a little.", role: "exposure", flat: "exposure" },

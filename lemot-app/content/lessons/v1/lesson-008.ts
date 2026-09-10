@@ -22,7 +22,7 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "say-OO", compare: "où is one long oo. Not oh, and not ow." } },
             { fr: "Excusez-moi, c'est où ?", en: "Excuse me, where is it?", role: "core" },
-            { fr: "Le café, c'est où ?", en: "The café, where is it?", role: "supported" },
+            { fr: "Le café, c'est où ?", en: "The café, where is it?", role: "supported", pieces: ["Le café", "c'est", "où"] },
             { fr: "C'est loin ?", en: "Is it far?", role: "exposure", pieces: ["C'est", "loin"] },
           ],
         },
@@ -41,7 +41,7 @@ const screens: LessonScreen[] = [
             // The one wrap L8 can legitimately demand is the one above it.
             { fr: "Est-ce que vous avez un café ?", en: "Do you have a coffee?", role: "exposure" },
             { fr: "Est-ce que vous comprenez ?", en: "Do you understand?", role: "exposure", pieces: ["Est-ce que", "vous comprenez"] },
-            { fr: "Est-ce que c'est loin ?", en: "Is it far?", role: "exposure" },
+            { fr: "Est-ce que c'est loin ?", en: "Is it far?", role: "exposure", pieces: ["Est-ce que", "c'est", "loin"] },
           ],
         },
         {

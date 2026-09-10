@@ -28,7 +28,7 @@ const screens: LessonScreen[] = [
           label: "How you are",
           sentences: [
             { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "sa-VA", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." }, flat: "formula" },
-            { fr: "Ça va bien, merci.", en: "I'm well, thank you.", role: "supported", itemIds: ["chunk-ca-va", "chunk-merci"] },
+            { fr: "Ça va bien, merci.", en: "I'm well, thank you.", role: "supported", itemIds: ["chunk-ca-va", "chunk-merci"], pieces: ["Ça va", "bien", "merci"] },
             { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure", itemIds: ["chunk-je-suis", "adj-fatigue"] },
             { fr: "Je suis content.", en: "I'm glad.", role: "exposure", itemIds: ["chunk-je-suis", "adj-content"] },
             { fr: "Je suis désolé.", en: "I'm sorry.", role: "exposure" },

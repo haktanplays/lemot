@@ -71,7 +71,7 @@ const screens: LessonScreen[] = [
           label: "Being answered",
           sentences: [
             { fr: "Oui, bien sûr.", en: "Yes, of course.", role: "exposure", pieces: ["Oui", "bien sûr"] },
-            { fr: "Pas maintenant, désolé.", en: "Not now, sorry.", role: "exposure" },
+            { fr: "Pas maintenant, désolé.", en: "Not now, sorry.", role: "exposure", pieces: ["Pas maintenant", "désolé"] },
           ],
         },
       ],
