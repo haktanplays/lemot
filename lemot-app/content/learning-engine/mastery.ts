@@ -41,6 +41,25 @@ export const MASTERY_SNAPSHOT_VERSION = "mastery-v0.3";
 /** An item is "weak" at this many production fails, or this many of one error tag. */
 export const WEAK_THRESHOLD = 3;
 
+/**
+ * The box an item has to climb back to before weakness lets go of it.
+ *
+ * Weakness used to LATCH. `wrongCount` and `weakTags` only ever increment, so
+ * once an item crossed the threshold it was weak for the life of the profile,
+ * however well the learner went on to use it. A learner who fumbled "je vais"
+ * three times in L7 and has produced it correctly a dozen times since was still
+ * being shown it under "Things to look at again", which is both wrong and
+ * discouraging, and it is the pool that Practice's error mode draws from.
+ *
+ * The recovery signal is the Leitner box, which already exists and already
+ * means the right thing: it climbs on success, falls on failure, and is capped.
+ * Box 2 is the three-day interval, so reaching it means the item has been
+ * produced correctly at least twice since the trouble. A later failure knocks
+ * the box back down and the item is weak again immediately -- recovery is a
+ * current state, not a pardon.
+ */
+export const RECOVERY_BOX = 2;
+
 /** Leitner box → days until next due. Box 0 = due immediately. */
 export const LEITNER_INTERVAL_DAYS = [0, 1, 3, 7, 30] as const;
 
@@ -552,9 +571,14 @@ export function scoreEvent(
       ? event.timestamp
       : event.timestamp + LEITNER_INTERVAL_DAYS[box] * DAY_MS;
 
-    m.isWeak =
+    // Has this item ever been trouble? Monotonic, and deliberately so: the
+    // history of failures is a fact about the log and must not be rewritten.
+    const troubled =
       m.wrongCount >= WEAK_THRESHOLD ||
       Object.values(m.weakTags).some((c) => (c ?? 0) >= WEAK_THRESHOLD);
+    // Is it trouble NOW? That is a different question, and the one every
+    // learner-facing surface is actually asking. See RECOVERY_BOX.
+    m.isWeak = troubled && box < RECOVERY_BOX;
 
     // The scoped claim — NOT the aggregate — drives both surfaces below. The
     // aggregate includes self-correction successes, which establish neither

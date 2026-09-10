@@ -33,6 +33,7 @@ import "./chunkBoundaries.test";
 import "./chainPedagogy.test";
 import "./teachBeforeAsk.test";
 import "./curiosityLayer.test";
+import "./errorRecovery.test";
 import "./gradingTrust.test";
 import "./chainStepIsolation.test";
 import "./lessonContinuity.test";
