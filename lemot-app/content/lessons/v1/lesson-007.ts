@@ -346,9 +346,14 @@ const screens: LessonScreen[] = [
     type: "natural-reveal",
     payload: {
       modelAnswer: "Je vais à la maison. Au revoir.",
-      naturalAlternatives: ["Je vais à la maison, au revoir."],
+      // A comma in place of a full stop is not a second way to say this. It is
+      // the same sentence, and offering it as an alternative taught the learner
+      // that punctuation is where naturalness lives. The real alternative is a
+      // different REASON for leaving, which L7 also owns: destination or
+      // obligation. The rhythm point is true and now sits in the Sound layer.
+      naturalAlternatives: ["Désolé, je dois partir. Au revoir."],
       explanation:
-        "Both are natural. Two short sentences sound calm and finished; the comma version runs them together as one easy breath.",
+        "Both are natural, and they say different things. Je vais à la maison tells them where you are going. Désolé, je dois partir tells them you have no choice, which is the kinder one when you are leaving early.",
     },
   },
 

@@ -498,12 +498,14 @@ const screens: LessonScreen[] = [
           answerBands: {
             minimalAcceptable: ["Bonjour. J'ai une question."],
             good: ["Bonjour. Je suis ici. J'ai une question."],
-            // The natural tier must SAY something the good tier does not, or the
-            // ladder shows one sentence under two labels. The lift is the one L2
-            // already ships as its own meet card ("Bonjour, je suis ici."): the
-            // greeting runs into the locating clause as a single breath instead of
-            // stopping dead after Bonjour. Same owned pieces, no new grammar.
-            natural: ["Bonjour, je suis ici. J'ai une question."],
+            // The natural tier must SAY something the good tier does not. Moving
+            // a full stop to a comma is not that: it is one sentence under two
+            // labels, and the learner reads a ladder where there is none. What
+            // actually separates correct French from natural French here is
+            // register, so the lift is the opener that turns an announcement
+            // into a request. The rhythm point it used to make is real and now
+            // lives where rhythm belongs, on the Showcase depth card.
+            natural: ["Bonjour. Je suis ici. Excusez-moi, j'ai une question."],
           },
           modelAnswer: "Bonjour. Je suis ici. J'ai une question.",
           reveal: {
@@ -565,11 +567,12 @@ const screens: LessonScreen[] = [
       answerBands: {
         minimalAcceptable: ["Bonjour. J'ai une question. Merci. Au revoir."],
         good: ["Bonjour. Je suis ici. J'ai une question. Merci. Au revoir."],
-        // Same repair as s07. The natural tier takes the close this lesson
-        // already authored one screen earlier (s08 expects "Merci, au revoir.")
-        // and is already listed below as a natural alternative: the thanks and
-        // the goodbye land as one closing breath rather than two full stops.
-        natural: ["Bonjour. Je suis ici. J'ai une question. Merci, au revoir."],
+        // Same repair as s07: the tier now differs in register rather than in
+        // punctuation. The opener softens the ask and the thanks is sized to
+        // what was actually given. Every piece is already owned.
+        natural: [
+          "Bonjour. Je suis ici. Excusez-moi, j'ai une question. Merci beaucoup. Au revoir.",
+        ],
       },
       modelAnswer: "Bonjour. Je suis ici. J'ai une question. Merci. Au revoir.",
       reveal: {
@@ -579,7 +582,7 @@ const screens: LessonScreen[] = [
           "You used more than the minimum. That is a real first exchange, start to finish.",
         naturalAlternatives: [
           "Bonjour. J'ai une question. Merci. Au revoir.",
-          "Bonjour. Je suis ici. J'ai une question. Merci, au revoir.",
+          "Bonjour. Je suis ici. Excusez-moi, j'ai une question. Merci beaucoup. Au revoir.",
         ],
         explanation:
           "Every piece here is one you already built. Put together, they make a small French moment.",

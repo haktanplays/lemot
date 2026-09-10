@@ -29,7 +29,7 @@ const screens: LessonScreen[] = [
           label: "When it goes wrong",
           sentences: [
             { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"], flat: "formula" },
-            { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core", depth: { sound: "zhuh nuh kom-PRAHN pah. say-OO", structure: "Admit it, then ask again. Two short sentences do more than one long apology." }, },
+            { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core", depth: { sound: "zhuh nuh kom-PRAHN pah. say-OO", structure: "Admit it, then ask again. Two short sentences do more than one long apology." } },
             {
               fr: "Je ne comprends pas. Vous pouvez répéter ?",
               en: "I don't understand. Can you say that again?",
@@ -59,8 +59,8 @@ const screens: LessonScreen[] = [
           label: "Going home",
           sentences: [
             { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais"] },
-            { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core" },
-            { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core", depth: { usage: "The merci is not padding. In French it is how you signal that the visit is ending, before you say where you are going." }, },
+            { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core", depth: { sound: "zhuh vay a la may-ZON. oh ruh-VWAR", notice: "Two closings or one is a real choice, and it is made with the voice rather than with punctuation. Stopping fully after maison sounds calm and finished. Running straight on into au revoir sounds warm and quick, the way people leave when they are already halfway out. Neither is more correct." } },
+            { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core", depth: { usage: "The merci is not padding. In French it is how you signal that the visit is ending, before you say where you are going." } },
             { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure", flat: "formula" },
           ],
         },
@@ -500,11 +500,14 @@ const screens: LessonScreen[] = [
         good: [
           "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
         ],
-        // The lift is rhythm, not vocabulary: the greeting runs into the
-        // question and the leaving runs into the goodbye, exactly the joins
-        // L7 and L8 already ship as accepted forms.
+        // Moving two full stops to commas is not a tier. What separates a
+        // correct day from a natural one is the politeness the learner has been
+        // carrying since L1 and tends to drop the moment the sentence gets
+        // long: the opener on the question, the softener on the request, the
+        // thanks before the goodbye. Nothing new, and it is the difference a
+        // French speaker would actually hear.
         natural: [
-          "Bonjour, c'est où ? Je voudrais faire une pause. Je vais à la maison, au revoir.",
+          "Bonjour. Excusez-moi, c'est où ? Je voudrais faire une pause, s'il vous plaît. Merci. Je vais à la maison. Au revoir.",
         ],
       },
       modelAnswer:
@@ -517,8 +520,8 @@ const screens: LessonScreen[] = [
         ifBetterThanExpected:
           "You went past the minimum. What you just wrote is a day someone could actually have.",
         naturalAlternatives: [
-          "Bonjour, c'est où ? Je voudrais faire une pause. Je vais à la maison, au revoir.",
-          "Bonjour. C'est où ? Je voudrais faire une pause. Merci, au revoir.",
+          "Bonjour. Excusez-moi, c'est où ? Je voudrais faire une pause, s'il vous plaît. Merci. Je vais à la maison. Au revoir.",
+          "Bonjour. C'est où ? Je voudrais faire une pause. Merci. Au revoir.",
         ],
         explanation:
           "Ten lessons, and every piece of this came from one of them. The only thing that is new is how many of them you held at once.",
