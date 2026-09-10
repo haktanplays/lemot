@@ -20,7 +20,7 @@ const screens: LessonScreen[] = [
         {
           label: "Asking where",
           sentences: [
-            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "say-OO", compare: "où is one long oo. Not oh, and not ow." } },
+            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "say-OO", structure: "Two pieces, and you already own one of them. c'est is the same c'est you use to answer; où is the part that turns it into a question about place. Swap où for something else and c'est goes on working.", compare: "où is one long oo. Not oh, and not ow." } },
             { fr: "Excusez-moi, c'est où ?", en: "Excuse me, where is it?", role: "core" },
             { fr: "Le café, c'est où ?", en: "The café, where is it?", role: "supported", pieces: ["Le café", "c'est", "où"] },
             { fr: "C'est loin ?", en: "Is it far?", role: "exposure", pieces: ["C'est", "loin"] },
@@ -430,24 +430,34 @@ const screens: LessonScreen[] = [
           // Medium on the locked ladder: the prompt names the communicative
           // job, not the situation, so the tier says mid.
           weaveType: "mid",
-          prompt: "Tell them it isn't here.",
+          // L3 already produces "Ce n'est pas ici." twice, once under a supplied
+          // tray and once as "Non, ce n'est pas ici." in a doorway scene almost
+          // identical to the one this screen used to describe. Repeating it here
+          // taught nothing new. L8's own contribution is the question, so the
+          // old sentence comes back as the first half of something the learner
+          // could not say a lesson ago: correct the place, then ask for it.
+          prompt: "Say it isn't here, then ask where it is.",
           context:
-            "They are already reaching for the handle, and this is not their room.",
+            "You were sent to this door. It is the wrong room, and the person who sent you is still standing there.",
           suggestedPieces: [
             { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas", label: "it isn't" },
             { text: "ici", itemId: "word-ici", label: "here" },
+            { text: "c'est où ?", itemId: "chunk-c-est-ou", label: "where is it?" },
           ],
-          hintCloze: "Ce n'est pas ___.",
-          expectedAnswers: ["Ce n'est pas ici."],
-          acceptedAlternatives: ["Ce n'est pas ici"],
+          hintCloze: "Ce n'est pas ici. ___ ?",
+          expectedAnswers: ["Ce n'est pas ici. C'est où ?"],
+          acceptedAlternatives: [
+            "Ce n'est pas ici, c'est où ?",
+            "Ce n'est pas ici. C'est où",
+          ],
           reveal: {
-            modelAnswer: "Ce n'est pas ici.",
-            ifCorrect: "Three answers now: here, not here, and the question itself.",
-            ifCorrectButFlat: "Right. Short and clear, which is kinder than vague.",
+            modelAnswer: "Ce n'est pas ici. C'est où ?",
+            ifCorrect: "You corrected the place and took the next turn yourself.",
+            ifCorrectButFlat: "Right. Correct the place, then ask. Two short turns beat one long apology.",
             ifUnderstandableButWrong:
-              "Your meaning lands. French wraps the no around the middle: ce n'est pas ici.",
+              "Your meaning lands. Say which place it is not, then ask for the right one: Ce n'est pas ici. C'est où ?",
             ifMissingTargetPiece:
-              "Ce n'est pas carries the no. Ici says which place it is not.",
+              "Ce n'est pas ici says which place it is not. C'est où ? asks for the one you want.",
           },
           validationMode: "exact-or-alternative",
         },

@@ -221,10 +221,15 @@ const screens: LessonScreen[] = [
       // Open: nothing here is new, so the directive stands alone and every
       // piece is opt-in.
       weaveType: "open",
-      prompt: "Say you'd like to take a break.",
+      // L9 already asked for "Je voudrais faire une pause." on its own. Asking
+      // again with a new backdrop would still be the same act. Someone has
+      // asked how you are, so the answer carries its own reason: L4's j'ai
+      // faim, then yesterday's request. Both pieces are already owned.
+      prompt: "Say why you're flagging, then ask for the break.",
       context:
         "Midday. You've been on your feet since you arrived, and someone asks how you're doing.",
       suggestedPieces: [
+        { text: "j'ai faim", itemId: "chunk-j-ai-faim", label: "I'm hungry" },
         {
           text: "je voudrais",
           itemId: "chunk-je-voudrais",
@@ -236,11 +241,14 @@ const screens: LessonScreen[] = [
           label: "to take a break",
         },
       ],
-      hintCloze: "Je voudrais ___.",
-      expectedAnswers: ["Je voudrais faire une pause."],
-      acceptedAlternatives: ["Je voudrais faire une pause, s'il vous plaît."],
+      hintCloze: "J'ai faim. Je voudrais ___.",
+      expectedAnswers: ["J'ai faim. Je voudrais faire une pause."],
+      acceptedAlternatives: [
+        "J'ai faim, je voudrais faire une pause.",
+        "J ai faim. Je voudrais faire une pause.",
+      ],
       reveal: {
-        modelAnswer: "Je voudrais faire une pause.",
+        modelAnswer: "J'ai faim. Je voudrais faire une pause.",
         ifCorrect: "Yesterday's sentence, back when you actually need it.",
         ifCorrectButFlat: "Right. The same ask, in a new moment.",
         ifUnderstandableButWrong:
@@ -399,6 +407,11 @@ const screens: LessonScreen[] = [
         // The day's summit: open production, no more scaffolded than L6's own
         // closing weave.
         weaveType: "open",
+        // The day's summit: open production, no more scaffolded than L6's own
+        // closing weave. L10 says the same closing again as an open say-it-your-
+        // way further down, with merci added; making this rung produce that
+        // longer form too would ask for one sentence twice and hand the
+        // scaffolded rung the harder job.
         prompt: "Evening. Say you're going home, then say goodbye.",
         context:
           "The day at the new place is done. People are still talking, but you're finished.",

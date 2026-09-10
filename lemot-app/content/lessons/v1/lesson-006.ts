@@ -283,24 +283,30 @@ const screens: LessonScreen[] = [
         payload: {
           // Medium: the prompt names the communicative job, so the tier says so.
           weaveType: "mid",
-          prompt: "Say that you have a question.",
-          context: "There is one small thing you came to ask. They wait: « Oui ? »",
+          // L5 already asked for "J'ai une question." on its own. Asking for it
+          // again a lesson later would be the same act twice; the step above
+          // has just handed the learner the refusal, so the job here is to put
+          // both beats together, which is what a person actually says.
+          prompt: "Turn the coffee down and say what you came for, in one go.",
+          context: "The cup is still in the air: « Un café ? » The thing you came to ask is still unsaid.",
           suggestedPieces: [
+            { text: "non merci", itemId: "chunk-non-merci", required: true, label: "polite refusal" },
             { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
             { text: "une question", itemId: "chunk-une-question", required: true, label: "noun package" },
           ],
-          expectedAnswers: ["J'ai une question."],
+          expectedAnswers: ["Non merci. J'ai une question."],
           acceptedAlternatives: [
-            "J ai une question.",
-            "J ai une question",
+            "Non merci, j'ai une question.",
+            "Non merci. J ai une question.",
+            "Non merci, j ai une question.",
           ],
           reveal: {
-            modelAnswer: "J'ai une question.",
-            ifCorrect: "You opened your reason for being there.",
-            ifCorrectButFlat: "Right. j'ai carries the question, as one package.",
+            modelAnswer: "Non merci. J'ai une question.",
+            ifCorrect: "Both beats in one breath: the offer answered, the reason given.",
+            ifCorrectButFlat: "Right. The refusal clears the way, then j'ai carries the question.",
             ifUnderstandableButWrong:
-              "Your meaning lands. The question rides on have: j'ai une question.",
-            ifMissingTargetPiece: "Use j'ai, then une question.",
+              "Your meaning lands. Answer the offer first, then say what you came for: Non merci. J'ai une question.",
+            ifMissingTargetPiece: "Start with non merci, then j'ai une question.",
           },
           validationMode: "exact-or-alternative",
         },
