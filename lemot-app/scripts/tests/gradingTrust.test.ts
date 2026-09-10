@@ -85,12 +85,40 @@ describe("the reveal only claims understanding when it has been checked", () => 
     );
   });
 
-  test("partial is the only branch allowed to claim understanding", () => {
-    const branch = reveal.slice(reveal.indexOf('case "partial":'), reveal.indexOf('case "mismatch":'));
+  test("only the fully-evidenced branch may claim understanding", () => {
+    // `understood` means every component of the model is present and the whole
+    // still did not match. `partial` means something is MISSING, so a note
+    // saying the meaning landed would contradict the verdict line above it.
+    const understood = reveal.slice(reveal.indexOf('case "understood":'), reveal.indexOf('case "partial":'));
     assert(
-      branch.includes("ifUnderstandableButWrong"),
-      "partial should carry the authored understandable-but-wrong note",
+      understood.includes("ifUnderstandableButWrong"),
+      "the fully-evidenced branch should carry the understandable-but-wrong note",
     );
+    const partial = reveal.slice(reveal.indexOf('case "partial":'), reveal.indexOf('case "mismatch":'));
+    assert(
+      !partial.includes("ifUnderstandableButWrong"),
+      "a partial answer must not be told its meaning landed",
+    );
+  });
+
+  test("no branch outside `understood` reaches for a positive claim", () => {
+    for (const m of ["exact", "alternative", "partial", "mismatch", "no-match", "general"]) {
+      const start = reveal.indexOf(`case "${m}":`);
+      if (start === -1) continue;
+      const end = reveal.indexOf("case ", start + 6);
+      const body = reveal.slice(start, end === -1 ? start + 400 : end);
+      if (m === "general") {
+        assert(
+          body.includes('k !== "ifUnderstandableButWrong"'),
+          "authoring preview must exclude notes that claim an attempt landed",
+        );
+        continue;
+      }
+      assert(
+        !body.includes("ifUnderstandableButWrong"),
+        `${m} must not print a note that asserts the meaning landed`,
+      );
+    }
   });
 
   test("Weave keys its verdict copy on evidence, not on match alone", () => {

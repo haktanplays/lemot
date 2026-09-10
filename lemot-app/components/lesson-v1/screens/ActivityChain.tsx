@@ -37,13 +37,23 @@ export function ActivityChain({
   screen,
   onContinue,
   session,
+  initialStep = 0,
+  onStepChange,
 }: {
   screen: ActivityChainScreen;
   onContinue: () => void;
   session: LessonV1LearningSession;
+  /**
+   * Where to resume inside the chain. The lesson player owns the stored cursor;
+   * the chain only reports where it is, so persistence lives in one place.
+   */
+  initialStep?: number;
+  onStepChange?: (stepIndex: number) => void;
 }) {
   const steps = screen.payload.steps;
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(() =>
+    initialStep > 0 && initialStep < steps.length ? initialStep : 0,
+  );
   const step = steps[Math.min(index, steps.length - 1)];
   const isLast = index >= steps.length - 1;
 
@@ -54,7 +64,11 @@ export function ActivityChain({
       onContinue();
       return;
     }
-    setIndex((i) => Math.min(i + 1, steps.length - 1));
+    setIndex((i) => {
+      const next = Math.min(i + 1, steps.length - 1);
+      onStepChange?.(next);
+      return next;
+    });
   };
 
   return (

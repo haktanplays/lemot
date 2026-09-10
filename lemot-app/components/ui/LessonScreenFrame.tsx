@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Dimensions,
   Keyboard,
@@ -49,6 +49,7 @@ export function LessonScreenFrame({
 }) {
   const insets = useSafeAreaInsets();
   const [keyboardOverlap, setKeyboardOverlap] = useState(0);
+  const scrollRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     // Occlusion is measured from where the IME actually starts on the SCREEN,
@@ -59,7 +60,16 @@ export function LessonScreenFrame({
     // window height that excludes the system bars yields zero.
     const apply = (e: KeyboardEvent) => {
       const screenHeight = Dimensions.get("screen").height;
-      setKeyboardOverlap(Math.max(0, screenHeight - e.endCoordinates.screenY));
+      const overlap = Math.max(0, screenHeight - e.endCoordinates.screenY);
+      setKeyboardOverlap(overlap);
+      // Bring the field the learner just focused back into view. Pinning the
+      // action and the task anchor above the IME is not enough on its own: the
+      // input itself can end up above the viewport, and the learner types
+      // blind until they scroll. The typed screens put the field last in the
+      // scroll content, so reaching the end is what reveals it.
+      if (overlap > 0 && taskAnchor != null) {
+        requestAnimationFrame(() => scrollRef.current?.scrollToEnd({ animated: true }));
+      }
     };
     const show = Keyboard.addListener("keyboardDidShow", apply);
     // The IME can grow or shrink while already open (Android's suggestion strip
@@ -73,7 +83,7 @@ export function LessonScreenFrame({
       change.remove();
       hide.remove();
     };
-  }, []);
+  }, [taskAnchor]);
 
   // With the keyboard up the inset is already spent above; with it down the
   // footer sits above the gesture bar.
@@ -85,6 +95,7 @@ export function LessonScreenFrame({
       style={{ flex: 1, backgroundColor: P.bg, paddingBottom: keyboardOverlap }}
     >
       <ScrollView
+        ref={scrollRef}
         style={{ flex: 1 }}
         contentContainerStyle={{
           padding: SPACE.xl,

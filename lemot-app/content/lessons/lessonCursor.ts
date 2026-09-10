@@ -17,12 +17,29 @@ export type LessonCursor = {
   lessonId: string;
   /** Authored page index, 0-based. */
   screenIndex: number;
+  /**
+   * Position inside a multi-step chain on that page.
+   *
+   * Only the INDEX is kept, never an answer. Reopening at step 2 mounts a
+   * clean step 2: the learner is put back where they were without the runtime
+   * inheriting a stale attempt, which is the failure the chain key exists to
+   * prevent. Scoped by the chain's screen id so a cursor cannot apply a step
+   * number to the wrong chain.
+   */
+  chainScreenId?: string;
+  stepIndex?: number;
 };
 
 export const LESSON_CURSOR_KEY = "lm.lessonCursor.v1";
 
 export function serializeCursor(cursor: LessonCursor): string {
-  return JSON.stringify({ lessonId: cursor.lessonId, screenIndex: cursor.screenIndex });
+  return JSON.stringify({
+    lessonId: cursor.lessonId,
+    screenIndex: cursor.screenIndex,
+    ...(cursor.chainScreenId !== undefined && cursor.stepIndex !== undefined
+      ? { chainScreenId: cursor.chainScreenId, stepIndex: cursor.stepIndex }
+      : {}),
+  });
 }
 
 /**
@@ -42,7 +59,16 @@ export function parseCursor(raw: string | null | undefined): LessonCursor | null
     if (typeof screenIndex !== "number" || !Number.isInteger(screenIndex) || screenIndex < 0) {
       return null;
     }
-    return { lessonId, screenIndex };
+    const { chainScreenId, stepIndex } = v as Record<string, unknown>;
+    const step =
+      typeof chainScreenId === "string" &&
+      chainScreenId.length > 0 &&
+      typeof stepIndex === "number" &&
+      Number.isInteger(stepIndex) &&
+      stepIndex >= 0
+        ? { chainScreenId, stepIndex }
+        : {};
+    return { lessonId, screenIndex, ...step };
   } catch {
     return null;
   }
@@ -72,4 +98,23 @@ export function resumeIndexFor(
 export function backTarget(screenIndex: number): { kind: "page"; index: number } | { kind: "exit" } {
   if (screenIndex > 0) return { kind: "page", index: screenIndex - 1 };
   return { kind: "exit" };
+}
+
+/**
+ * The step to open a chain at.
+ *
+ * Only a cursor recorded for THIS chain counts. A stored step belonging to a
+ * different chain, or one past the end after content changed, starts at the
+ * beginning rather than at a step that no longer exists.
+ */
+export function resumeStepFor(
+  chainScreenId: string,
+  stepCount: number,
+  cursor: LessonCursor | null,
+): number {
+  if (cursor === null) return 0;
+  if (cursor.chainScreenId !== chainScreenId) return 0;
+  const step = cursor.stepIndex ?? 0;
+  if (step <= 0 || step >= stepCount) return 0;
+  return step;
 }

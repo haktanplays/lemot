@@ -5,6 +5,7 @@ import {
   backTarget,
   parseCursor,
   resumeIndexFor,
+  resumeStepFor,
   serializeCursor,
 } from "@/content/lessons/lessonCursor";
 import { View, Text, Pressable } from "react-native";
@@ -70,10 +71,21 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
     resumeIndexFor(lesson.id, lesson.screens.length, parseCursor(kvStorage.getItem(LESSON_CURSOR_KEY))),
   );
   const screen = lesson.screens[screenIndex];
-  const goNext = () => setScreenIndex((n) => n + 1);
+  // Chain step, read once on mount from the same stored cursor.
+  const [chainStep, setChainStep] = useState(() => {
+    const c = parseCursor(kvStorage.getItem(LESSON_CURSOR_KEY));
+    const s = lesson.screens[resumeIndexFor(lesson.id, lesson.screens.length, c)];
+    if (!s || s.type !== "activity-chain") return 0;
+    return resumeStepFor(s.id, s.payload.steps.length, c);
+  });
+  const goNext = () => {
+    setChainStep(0);
+    setScreenIndex((n) => n + 1);
+  };
   const goBack = () => {
     const target = backTarget(screenIndex);
     if (target.kind === "page") {
+      setChainStep(0);
       setScreenIndex(target.index);
       return;
     }
@@ -85,9 +97,17 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
   // survives them.
   useEffect(() => {
     if (screenIndex < lesson.screens.length) {
-      kvStorage.setItem(LESSON_CURSOR_KEY, serializeCursor({ lessonId: lesson.id, screenIndex }));
+      const current = lesson.screens[screenIndex];
+      const chain =
+        current?.type === "activity-chain" && chainStep > 0
+          ? { chainScreenId: current.id, stepIndex: chainStep }
+          : {};
+      kvStorage.setItem(
+        LESSON_CURSOR_KEY,
+        serializeCursor({ lessonId: lesson.id, screenIndex, ...chain }),
+      );
     }
-  }, [lesson.id, screenIndex, lesson.screens.length]);
+  }, [lesson.id, screenIndex, chainStep, lesson.screens]);
 
   // Persist exactly once when the learner reaches the end of the flow.
   // The ref guard prevents re-writes if mk's identity changes on re-render.
@@ -123,7 +143,7 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
               The key only changes on step advance, so typing within a screen
               (screenIndex unchanged) preserves state. */}
           <View key={screenIndex} style={{ flex: 1 }}>
-            {pickScreen(screen, goNext, session)}
+            {pickScreen(screen, goNext, session, chainStep, setChainStep)}
           </View>
         </View>
       ) : (
@@ -215,12 +235,22 @@ function pickScreen(
   screen: LessonScreen,
   onContinue: () => void,
   session: LessonV1LearningSession,
+  chainStep: number,
+  onChainStep: (step: number) => void,
 ) {
   switch (screen.type) {
     // Orchestration only: it grades nothing and records nothing itself. Every
     // event comes from a step, through the same session methods used below.
     case "activity-chain":
-      return <ActivityChain screen={screen} onContinue={onContinue} session={session} />;
+      return (
+        <ActivityChain
+          screen={screen}
+          onContinue={onContinue}
+          session={session}
+          initialStep={chainStep}
+          onStepChange={onChainStep}
+        />
+      );
     // Breadth surface: no evidence callback by design. See Showcase.tsx.
     case "showcase":
       return <Showcase screen={screen} onContinue={onContinue} />;

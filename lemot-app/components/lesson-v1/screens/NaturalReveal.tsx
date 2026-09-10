@@ -30,6 +30,7 @@ export type NaturalRevealMode =
   | "general"
   | "exact"
   | "alternative"
+  | "understood"
   | "partial"
   | "mismatch"
   | "no-match";
@@ -58,12 +59,23 @@ export function NaturalRevealView({
       showIfCorrect = false;
       showCompareFallback = false;
       break;
-    case "partial":
-      // The pieces are demonstrably there, so the authored "understandable but
-      // wrong" note is a true statement about THIS attempt.
+    case "understood":
+      // EVERY component of the model is present and the whole still did not
+      // match -- word order, an extra word, a missing apostrophe. Only here is
+      // "your meaning lands" a true statement about the attempt.
       notices = reveal.ifUnderstandableButWrong
         ? [reveal.ifUnderstandableButWrong]
         : [];
+      showIfCorrect = false;
+      showCompareFallback = !reveal.modelAnswer;
+      break;
+    case "partial":
+      // SOME components are present and some are missing. The verdict line
+      // already says "part of it is there"; printing a note that says the
+      // meaning landed would contradict it on the same screen, which is what
+      // the founder saw on "Say you're going home, then say goodbye" answered
+      // with the destination and no goodbye.
+      notices = [];
       showIfCorrect = false;
       showCompareFallback = !reveal.modelAnswer;
       break;
@@ -77,7 +89,11 @@ export function NaturalRevealView({
       break;
     case "general":
     default:
-      notices = NOTICE_KEYS.map((k) => reveal[k]).filter(
+      // Authoring/preview only: no attempt exists, so notes that make a claim
+      // ABOUT an attempt are excluded here too.
+      notices = NOTICE_KEYS.filter((k) => k !== "ifUnderstandableButWrong")
+        .map((k) => reveal[k])
+        .filter(
         (v): v is string => typeof v === "string" && v.length > 0
       );
       showIfCorrect = !!reveal.ifCorrect;

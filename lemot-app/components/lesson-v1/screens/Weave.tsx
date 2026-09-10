@@ -83,6 +83,9 @@ export function Weave({
   const [phase, setPhase] = useState<"input" | "revealed">("input");
   const [match, setMatch] = useState<MatchResult | null>(null);
   const [verdict, setVerdict] = useState<AnswerVerdict | null>(null);
+  // Whether the system can positively vouch for the meaning. Decides which
+  // notes may claim the answer landed.
+  const [evidenced, setEvidenced] = useState(false);
   // Presentation only: a warm focus accent so the working surface feels owned.
   // Does not touch TextInput behaviour, submission, or normalization.
   const [focused, setFocused] = useState(false);
@@ -118,6 +121,7 @@ export function Weave({
     const evaluation = evaluateWeaveAnswer(screen, text);
     setMatch(evaluation.match);
     setVerdict(evaluation.evidence.verdict);
+    setEvidenced(evaluation.evidence.meaningEvidenced);
     setPhase("revealed");
     onTypedAttempt?.({
       text,
@@ -413,7 +417,9 @@ export function Weave({
                 : match === "alternative"
                   ? "alternative"
                   : verdict === "partial"
-                    ? "partial"
+                    ? evidenced
+                      ? "understood"
+                      : "partial"
                     : "mismatch"
             }
           />

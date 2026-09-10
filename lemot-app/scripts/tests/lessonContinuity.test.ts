@@ -13,6 +13,7 @@ import {
   backTarget,
   parseCursor,
   resumeIndexFor,
+  resumeStepFor,
   serializeCursor,
   LESSON_CURSOR_KEY,
 } from "../../content/lessons/lessonCursor";
@@ -56,6 +57,64 @@ describe("resume opens the right page", () => {
 
   test("no cursor is simply page one", () => {
     assertEqual(resumeIndexFor("v1-lesson-007", N, null), 0, "no cursor means page one");
+  });
+});
+
+describe("a chain resumes at the step the learner was on", () => {
+  test("the step survives the round trip", () => {
+    const c = { lessonId: "v1-lesson-007", screenIndex: 4, chainScreenId: "s31", stepIndex: 1 };
+    const back = parseCursor(serializeCursor(c));
+    assertEqual(back?.chainScreenId, "s31", "the chain id must survive");
+    assertEqual(back?.stepIndex, 1, "the step must survive");
+  });
+
+  test("a cursor with no step is still valid", () => {
+    const back = parseCursor(serializeCursor({ lessonId: "v1-lesson-007", screenIndex: 4 }));
+    assertEqual(back?.screenIndex, 4, "a page-only cursor must still parse");
+    assertEqual(back?.stepIndex, undefined, "no step means no step");
+  });
+
+  test("resumes the step for this chain", () => {
+    assertEqual(
+      resumeStepFor("s31", 2, { lessonId: "l", screenIndex: 4, chainScreenId: "s31", stepIndex: 1 }),
+      1,
+      "step 2 of 2 must reopen at step 2",
+    );
+  });
+
+  test("a step recorded for another chain never leaks", () => {
+    assertEqual(
+      resumeStepFor("s32", 2, { lessonId: "l", screenIndex: 4, chainScreenId: "s31", stepIndex: 1 }),
+      0,
+      "another chain's step must not apply here",
+    );
+  });
+
+  test("a step past the end starts the chain over", () => {
+    // Content can change under a stored cursor.
+    assertEqual(
+      resumeStepFor("s31", 2, { lessonId: "l", screenIndex: 4, chainScreenId: "s31", stepIndex: 9 }),
+      0,
+      "a step that no longer exists must not be opened",
+    );
+  });
+
+  test("no answer is ever persisted, only the position", () => {
+    // Restoring an attempt would hand the next mount a stale answer, which is
+    // exactly what the chain key exists to prevent.
+    const raw = serializeCursor({
+      lessonId: "l", screenIndex: 4, chainScreenId: "s31", stepIndex: 1,
+    });
+    for (const forbidden of ["answer", "text", "selected", "input", "attempt"]) {
+      assert(!raw.includes(forbidden), `the cursor must not carry "${forbidden}"`);
+    }
+  });
+
+  test("the player threads the step through the chain", () => {
+    const src = readFileSync(join(process.cwd(), "components/lesson-v1/LessonRendererV1.tsx"), "utf8");
+    assert(src.includes("resumeStepFor("), "the player must resume the chain step");
+    assert(src.includes("initialStep={chainStep}"), "the chain must receive the resumed step");
+    assert(src.includes("onStepChange={onChainStep}"), "the chain must report step changes");
   });
 });
 

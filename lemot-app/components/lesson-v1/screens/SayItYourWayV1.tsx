@@ -316,15 +316,15 @@ export function SayItYourWayV1({
               path uses decides here too: notes that assert understanding are
               shown only when the pieces are actually present.
             */
-            mode={
-              componentEvidence(
+            mode={(() => {
+              const e = componentEvidence(
                 text,
                 [payload.modelAnswer ?? payload.reveal.modelAnswer ?? ""].filter(Boolean),
                 false,
-              ).verdict === "partial"
-                ? "partial"
-                : "mismatch"
-            }
+              );
+              if (e.verdict !== "partial") return "mismatch";
+              return e.meaningEvidenced ? "understood" : "partial";
+            })()}
           />
         </View>
       )}
