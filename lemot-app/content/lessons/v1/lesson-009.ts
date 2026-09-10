@@ -23,7 +23,7 @@ const screens: LessonScreen[] = [
               en: "I would like to take a break.",
               role: "core",
               itemIds: ["chunk-faire-une-pause"],
-              depth: { usage: "This is the sayable version at work or with people you do not know well. Je fais une pause announces that you are taking one. Je voudrais asks." },
+              depth: { cognate: "Direct cognate. Pause is the same word in both languages, with the same meaning. English took it from French, which is why nothing about it needs learning except the sound: pohz.", usage: "This is the sayable version at work or with people you do not know well. Je fais une pause announces that you are taking one. Je voudrais asks." },
             },
             {
               fr: "Je voudrais faire une pause, s'il vous plaît.",

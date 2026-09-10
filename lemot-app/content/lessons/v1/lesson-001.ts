@@ -53,6 +53,7 @@ const screens: LessonScreen[] = [
               role: "core",
               itemIds: ["chunk-vous-pouvez-repeter"],
               pieces: ["Vous pouvez", "répéter"],
+              depth: { cognate: "Word-family bridge. Répéter and repeat are the same word wearing different endings. Once you see it, most French verbs ending in -er have an English relative like this." },
             },
             {
               fr: "Excusez-moi, vous pouvez répéter ?",
@@ -68,10 +69,10 @@ const screens: LessonScreen[] = [
         {
           label: "Closing it well",
           sentences: [
-            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"], flat: "formula" },
+            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"], flat: "formula", depth: { cognate: "Meaning drift. Merci and mercy share one Latin ancestor meaning payment or favour. English kept the sense of showing pity; French kept the sense of thanking someone for a favour." } },
             { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported", itemIds: ["chunk-merci-beaucoup"], depth: { sound: "mair-SEE bo-KOO", compare: "Merci closes an ordinary exchange. Merci beaucoup says they went out of their way." }, pieces: ["Merci", "beaucoup"] },
             { fr: "Voilà.", en: "There you go.", role: "exposure", flat: "formula" },
-            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure", flat: "formula" },
+            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure", flat: "formula", depth: { cognate: "Faux ami. Journée looks like journey and is not: it means a day. Both come from the same old French word for a day's worth of travel or work, and the two languages kept different halves of it." } },
             { fr: "Au revoir.", en: "Goodbye.", role: "exposure", itemIds: ["chunk-au-revoir"], flat: "formula" },
           ],
         },

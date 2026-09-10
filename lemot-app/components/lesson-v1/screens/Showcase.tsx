@@ -180,15 +180,31 @@ function Line({
   );
 }
 
-/** Only the cards this sentence actually has. Absent categories render nothing. */
+/**
+ * Look Closer, in three weights rather than one.
+ *
+ * Every category used to render as an identical paragraph, so a card with six
+ * of them was a wall the learner had to read in order to find out whether any
+ * of it mattered. The point of depth is that the important part lands in
+ * seconds.
+ *
+ *   short points   Sound, Cognate, Notice, Structure, Usage. One line each.
+ *   Compare        set in its own inset, because a contrast the learner has to
+ *                  find inside a paragraph is not a contrast.
+ *   In depth       collapsed. It is the long one, it is optional by design, and
+ *                  open by default it swamped everything above it.
+ *
+ * Absent categories render nothing, which is the normal case: most lines carry
+ * one or two.
+ */
 function Depth({ depth }: { depth: ShowcaseDepth }) {
-  const cards: [string, string | undefined][] = [
+  const [deepOpen, setDeepOpen] = useState(false);
+  const shortPoints: [string, string | undefined][] = [
     ["Sound", depth.sound],
+    ["Cognate", depth.cognate],
     ["Notice", depth.notice],
     ["Structure", depth.structure],
     ["Usage", depth.usage],
-    ["Compare", depth.compare],
-    ["In depth", depth.inDepth],
   ];
   return (
     <View
@@ -200,7 +216,7 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
         gap: SPACE.sm,
       }}
     >
-      {cards
+      {shortPoints
         .filter(([, body]) => Boolean(body))
         .map(([label, body]) => (
           <View key={label}>
@@ -210,6 +226,47 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
             </Text>
           </View>
         ))}
+
+      {Boolean(depth.compare) && (
+        <View
+          style={{
+            backgroundColor: P.bg,
+            borderRadius: 8,
+            paddingHorizontal: SPACE.sm,
+            paddingVertical: SPACE.sm - 2,
+          }}
+        >
+          <Text style={{ fontSize: 11, lineHeight: 16, color: P.ink3, letterSpacing: 0.3 }}>
+            Compare
+          </Text>
+          <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: 1 }}>
+            {depth.compare}
+          </Text>
+        </View>
+      )}
+
+      {Boolean(depth.inDepth) && (
+        <View>
+          <Pressable
+            onPress={() => setDeepOpen((v) => !v)}
+            hitSlop={6}
+            accessibilityRole="button"
+            accessibilityState={{ expanded: deepOpen }}
+            accessibilityLabel={deepOpen ? "Hide the longer explanation" : "Read the longer explanation"}
+            style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+          >
+            {deepOpen ? <Minus size={11} color={P.ink3} /> : <Plus size={11} color={P.ink3} />}
+            <Text style={{ fontSize: 11, lineHeight: 16, color: P.ink3, letterSpacing: 0.3 }}>
+              In depth
+            </Text>
+          </Pressable>
+          {deepOpen && (
+            <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: SPACE.sm - 2 }}>
+              {depth.inDepth}
+            </Text>
+          )}
+        </View>
+      )}
     </View>
   );
 }

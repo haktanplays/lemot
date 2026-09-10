@@ -171,6 +171,25 @@ export type ShowcaseDepth = {
   usage?: string;
   /** A useful contrast with another form the learner has already reached. */
   compare?: string;
+  /**
+   * The English word hiding inside the French one.
+   *
+   * Founder note: cognates were barely visible, and they are the cheapest
+   * confidence a beginner can be given. Four different relationships live here
+   * and the copy must say WHICH, because treating them alike is how a learner
+   * ends up confidently wrong:
+   *
+   *   direct cognate      same word, same job. question / question.
+   *   word-family bridge  visibly related through a shared root, different
+   *                       shape. comprends / comprehend.
+   *   meaning drift       shared ancestor, the senses have moved apart.
+   *                       merci / mercy.
+   *   faux ami            looks like a translation and is not.
+   *                       journée / journey.
+   *
+   * Only claims that are actually true. No invented etymology, however tidy.
+   */
+  cognate?: string;
   /** A deeper explanation for learners who want or need one. */
   inDepth?: string;
 };

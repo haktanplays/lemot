@@ -52,7 +52,7 @@ const screens: LessonScreen[] = [
               en: "I don't understand.",
               role: "core",
               itemIds: ["chunk-je-ne-comprends-pas"],
-              depth: { sound: "zhuh nuh kom-PRON pah", usage: "The single most useful sentence you own. Say it early rather than nodding along." },
+              depth: { cognate: "Word-family bridge. Comprends and comprehend come from the same Latin verb meaning to grasp. English keeps comprehend for the formal register and uses understand daily; French uses this one for both.", sound: "zhuh nuh kom-PRON pah", usage: "The single most useful sentence you own. Say it early rather than nodding along." },
               flat: "formula",
             },
             {
