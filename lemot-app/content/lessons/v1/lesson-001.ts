@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "Opening a moment",
           sentences: [
-            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], depth: { sound: "bon-ZHOOR", usage: "Not optional. Walking into a French shop without it reads as rude in a way English speakers rarely intend." }, flat: "formula" },
+            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], depth: { sound: "bon-ZHOOR", notice: "The weight lands at the end: bon-ZHOOR, not BON-zhoor. French does not stress a chosen syllable inside a word the way English does. It leans on the end of the group, which is why every sound cue in this app puts its capitals last.", usage: "Not optional. Walking into a French shop without it reads as rude in a way English speakers rarely intend." }, flat: "formula" },
             { fr: "Excusez-moi.", en: "Excuse me.", role: "core", itemIds: ["chunk-excusez-moi"], flat: "formula" },
             { fr: "Bonjour, madame.", en: "Hello, madam.", role: "exposure", pieces: ["Bonjour", "madame"] },
             { fr: "Bonjour, monsieur.", en: "Hello, sir.", role: "exposure", pieces: ["Bonjour", "monsieur"] },
@@ -32,7 +32,7 @@ const screens: LessonScreen[] = [
               en: "I would like a coffee, please.",
               role: "core",
               itemIds: ["chunk-je-voudrais", "noun-cafe", "chunk-sil-vous-plait"],
-              depth: { sound: "zhuh voo-DREH un ka-FAY, seel voo PLEH", structure: "Three pieces, each reusable: the polite ask, the thing, the softener. Swap the middle piece and you have ordered something else.", usage: "The safe register with anyone you do not know. Je veux (I want) is what a child says, and lands badly at a counter." },
+              depth: { sound: "zhuh voo-DREH un ka-FAY, seel voo PLEH", structure: "Three pieces, each reusable: the polite ask, the thing, the softener. Swap the middle piece and you have ordered something else.", usage: "The safe register with anyone you do not know. Je veux (I want) is what a child says, and lands badly at a counter.", inDepth: "This line holds two different e sounds and it is worth knowing which is which. The é in café is the closed one: roughly the ay in day, but short, with none of the glide English puts on the end. The one you will meet later in très and problème is written è and opens the mouth again, closer to the e in bed. Then there is plain e, the unreliable one. It has no single sound: in je it is a soft uh that often disappears entirely in normal speech, which is why zhuh voo-DREH gets you closer than jeh voo-DRAY. The accent is not decoration. It is the only thing telling you which of the three you are looking at." },
             },
             {
               fr: "Je voudrais un thé.",

@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "Where you are heading",
           sentences: [
-            { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais", "chunk-a-la-maison"], depth: { sound: "zhuh vay a la may-ZON", compare: "à la stays two audible pieces where au fuses into one. If you can hear a la, it is this shape." } },
+            { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais", "chunk-a-la-maison"], depth: { sound: "zhuh vay a la may-ZON", notice: "The accent on à changes nothing you can hear. It is there to keep this à, meaning to or at, apart from a, which is a form of have. Same sound, different job, and French uses the mark instead of a different word.", compare: "à la stays two audible pieces where au fuses into one. If you can hear a la, it is this shape." } },
             { fr: "Je vais au café.", en: "I'm going to the café.", role: "core", itemIds: ["chunk-au-cafe"], depth: { sound: "zhuh vay oh ka-FAY", structure: "au is one piece, said oh. It is the shape café carries whenever you go there.", compare: "au café but à la maison. Same job, two shapes, and the place decides which.", inDepth: "au is what happens when à meets the little word French uses in front of café. The two fuse into one sound, which is why you never hear à le. Places that take the other little word keep both parts audible: à la maison, à la gare. Learn the destination whole and the pattern arrives on its own later." } },
             { fr: "Je vais à la gare.", en: "I'm going to the station.", role: "core", itemIds: ["chunk-a-la-gare"] },
             { fr: "Je vais au travail.", en: "I'm going to work.", role: "supported", itemIds: ["chunk-au-travail"] },

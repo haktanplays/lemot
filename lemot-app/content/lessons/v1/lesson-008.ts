@@ -39,7 +39,7 @@ const screens: LessonScreen[] = [
             // These three wrap SECOND-PERSON verbs the path does not own, so
             // they are exposure: heard and understood, never a graded answer.
             // The one wrap L8 can legitimately demand is the one above it.
-            { fr: "Est-ce que vous avez un café ?", en: "Do you have a coffee?", role: "exposure" },
+            { fr: "Est-ce que vous avez un café ?", en: "Do you have a coffee?", role: "exposure", depth: { sound: "ess-kuh voo-za-VAY un ka-FAY", notice: "Vous avez is where you hear a z that nobody wrote. The silent s at the end of vous wakes up in front of a vowel and links the two words into one run: voo-za-VAY.", inDepth: "This is liaison proper, and it has a rule: the sleeping consonant only wakes up before a vowel. Vous avez links because avez starts with one. Vous pouvez does not, because pouvez starts with p, and the s stays silent. Not every two words that run together are doing this. Most of the time French is simply not leaving gaps." } },
             { fr: "Est-ce que vous comprenez ?", en: "Do you understand?", role: "exposure", pieces: ["Est-ce que", "vous comprenez"] },
             { fr: "Est-ce que c'est loin ?", en: "Is it far?", role: "exposure", pieces: ["Est-ce que", "c'est", "loin"] },
           ],
