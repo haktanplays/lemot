@@ -99,6 +99,10 @@ export function Weave({
   const constitutivePieces = allPieces.filter((p) => p.supportRole === "constitutive");
   const pieces = allPieces.filter((p) => p.supportRole !== "constitutive");
   const hintPieces = orderHintPieces(pieces);
+  // Rung 1 gives about half, never fewer than one and never the whole set when
+  // more than one exists; rung 2 gives everything.
+  const firstRungCount = Math.max(1, Math.floor(hintPieces.length / 2));
+  const shownHintPieces = hintLevel >= 2 ? hintPieces : hintPieces.slice(0, firstRungCount);
   const hasPieces = pieces.length > 0;
   const hasConstitutive = constitutivePieces.length > 0;
   const hasCloze =
@@ -137,6 +141,36 @@ export function Weave({
 
   return (
     <LessonScreenFrame
+      /*
+        While the learner types, the ask stays in view. Badge plus the one line
+        that says what to produce — never the long helper paragraph, which may
+        scroll away without cost. Suppressed once revealed: the model is on
+        screen by then and the anchor would only crowd it.
+      */
+      taskAnchor={
+        !isRevealed ? (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: SPACE.sm }}>
+            <View
+              style={{
+                backgroundColor: P.ink,
+                borderRadius: 9999,
+                paddingHorizontal: 8,
+                paddingVertical: 2,
+              }}
+            >
+              <Text style={{ color: P.bg, fontSize: 10, fontWeight: "700" }}>
+                {WEAVE_BADGE}
+              </Text>
+            </View>
+            <Text
+              numberOfLines={2}
+              style={{ flex: 1, color: P.ink, fontSize: 14, lineHeight: 20 }}
+            >
+              {targetMeaning}
+            </Text>
+          </View>
+        ) : undefined
+      }
       footer={
         !isRevealed ? (
           <PrimaryAction
@@ -267,17 +301,33 @@ export function Weave({
 
           {/* Pieces are the terminal support when there is no cloze. When an
               authored cloze exists, the second hint step collapses the pieces
-              and shows the cloze alone, so only one support layer shows. */}
+              and shows the cloze alone, so only one support layer shows.
+
+              The first rung deliberately shows only PART of the set. Handing
+              over every piece of a two-piece answer is handing over the answer,
+              which made the first tap the last one and left the ladder with a
+              rung nobody needed. A learner who wants the rest asks again. */}
           {hintLevel >= 1 && hasPieces && !(hasCloze && hintLevel >= 2) && (
             <View>
               <Text className="text-xs" style={{ color: P.ink3, marginBottom: SPACE.sm }}>
-                Pieces you can use here:
+                {shownHintPieces.length < hintPieces.length
+                  ? "A piece to start with:"
+                  : "Pieces you can use here:"}
               </Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}>
-                {hintPieces.map((p, i) => (
+                {shownHintPieces.map((p, i) => (
                   <PieceChip key={`${p.text}-${i}`} text={p.text} label={p.label} />
                 ))}
               </View>
+              {shownHintPieces.length < hintPieces.length && (
+                <View style={{ marginTop: SPACE.sm }}>
+                  <LinkAction
+                    label="Show the rest"
+                    align="left"
+                    onPress={() => setHintLevel(2)}
+                  />
+                </View>
+              )}
             </View>
           )}
 

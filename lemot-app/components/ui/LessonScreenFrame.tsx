@@ -32,9 +32,20 @@ import { P, SPACE } from "@/constants/theme";
 export function LessonScreenFrame({
   children,
   footer,
+  taskAnchor,
 }: {
   children: ReactNode;
   footer?: ReactNode;
+  /**
+   * A compact restatement of the task, shown ONLY while the keyboard is open.
+   *
+   * With the IME up, the instruction the learner is answering can sit above the
+   * viewport, so they end up typing while trying to remember what was asked.
+   * This keeps the ask in view without duplicating the header: it appears when
+   * the keyboard does and disappears with it, so a screen with no keyboard is
+   * unchanged.
+   */
+  taskAnchor?: ReactNode;
 }) {
   const insets = useSafeAreaInsets();
   const [keyboardOverlap, setKeyboardOverlap] = useState(0);
@@ -83,6 +94,19 @@ export function LessonScreenFrame({
       >
         {children}
       </ScrollView>
+      {taskAnchor != null && keyboardOverlap > 0 && (
+        <View
+          style={{
+            paddingHorizontal: SPACE.xl,
+            paddingVertical: SPACE.sm,
+            borderTopWidth: 1,
+            borderTopColor: P.border,
+            backgroundColor: P.paper,
+          }}
+        >
+          {taskAnchor}
+        </View>
+      )}
       {footer != null && (
         <View
           style={{

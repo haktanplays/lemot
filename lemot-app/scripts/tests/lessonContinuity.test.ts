@@ -36,22 +36,26 @@ describe("lesson cursor survives the round trip", () => {
 describe("resume opens the right page", () => {
   const N = 12;
   test("resumes this lesson at its stored page", () => {
-    assertEqual(resumeIndexFor("v1-lesson-007", N, { lessonId: "v1-lesson-007", screenIndex: 9 }), 9);
+    assertEqual(resumeIndexFor("v1-lesson-007", N, { lessonId: "v1-lesson-007", screenIndex: 9 }), 9,
+      "a stored page for this lesson must be reopened");
   });
 
   test("a cursor for another lesson never leaks into this one", () => {
-    assertEqual(resumeIndexFor("v1-lesson-008", N, { lessonId: "v1-lesson-007", screenIndex: 9 }), 0);
+    assertEqual(resumeIndexFor("v1-lesson-008", N, { lessonId: "v1-lesson-007", screenIndex: 9 }), 0,
+      "another lesson's cursor must not open this one mid-way");
   });
 
   test("a finished or out-of-range cursor starts the lesson over", () => {
     // Landing on a completion screen you cannot move forward from is worse than
     // starting again.
-    assertEqual(resumeIndexFor("v1-lesson-007", N, { lessonId: "v1-lesson-007", screenIndex: 12 }), 0);
-    assertEqual(resumeIndexFor("v1-lesson-007", N, { lessonId: "v1-lesson-007", screenIndex: 99 }), 0);
+    assertEqual(resumeIndexFor("v1-lesson-007", N, { lessonId: "v1-lesson-007", screenIndex: 12 }), 0,
+      "a cursor at the end means finished, so start again");
+    assertEqual(resumeIndexFor("v1-lesson-007", N, { lessonId: "v1-lesson-007", screenIndex: 99 }), 0,
+      "an out-of-range cursor must not open a page that does not exist");
   });
 
   test("no cursor is simply page one", () => {
-    assertEqual(resumeIndexFor("v1-lesson-007", N, null), 0);
+    assertEqual(resumeIndexFor("v1-lesson-007", N, null), 0, "no cursor means page one");
   });
 });
 
