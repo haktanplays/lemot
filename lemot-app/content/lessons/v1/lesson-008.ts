@@ -402,14 +402,14 @@ const screens: LessonScreen[] = [
             { id: "opt-not-here", text: "Ce n'est pas ici.", isCorrect: true },
             {
               id: "opt-here",
-              text: "C'est ici.",
+              text: "Oui, c'est ici, merci.",
               isCorrect: false,
               trapReason:
                 "That says yes, this is the place. They would walk into the wrong room believing you.",
             },
             {
               id: "opt-ask-back",
-              text: "C'est où ?",
+              text: "Excusez-moi, c'est où ?",
               isCorrect: false,
               trapReason:
                 "That hands the question straight back. They asked you first.",

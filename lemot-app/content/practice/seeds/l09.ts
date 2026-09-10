@@ -67,13 +67,13 @@ export const L9_SEEDS: PracticeSeed[] = [
     traps: [
       {
         id: "o-maison-need",
-        text: "Je vais à la maison.",
+        text: "Je vais à la maison, merci.",
         why: "That ends the day. You only wanted a few minutes.",
         tag: "meaning_shift",
       },
       {
         id: "o-question-need",
-        text: "J'ai une question.",
+        text: "Excusez-moi, j'ai une question.",
         why: "That opens something new. You need to stop, not to ask.",
         tag: "meaning_shift",
       },
@@ -216,8 +216,8 @@ export const L9_SEEDS: PracticeSeed[] = [
     prompt: "Listen. What are they asking for?",
     correct: { id: "o-break", text: "I would like to take a break." },
     traps: [
-      { id: "o-go-home-l9", text: "I would like to go home.", why: "That ends the day. A break only pauses it.", tag: "meaning_shift" },
-      { id: "o-coffee-l9", text: "I would like a coffee.", why: "That asks for a thing. This one asks for an action.", tag: "meaning_shift" },
+      { id: "o-go-home-l9", text: "I would like to go home now.", why: "That ends the day. A break only pauses it.", tag: "meaning_shift" },
+      { id: "o-coffee-l9", text: "I would like a coffee, please.", why: "That asks for a thing. This one asks for an action.", tag: "meaning_shift" },
     ],
     short: "Je voudrais faire une pause.",
     explanation: "Je voudrais carries actions too, not only things.",
@@ -264,8 +264,8 @@ export const L9_SEEDS: PracticeSeed[] = [
     prompt: "You need ten minutes, not the rest of the day. What do you ask for?",
     correct: { id: "o-pause-only", text: "Je voudrais faire une pause." },
     traps: [
-      { id: "o-hungry-only", text: "J'ai faim.", why: "That says why, without ever asking for anything.", tag: "meaning_shift" },
-      { id: "o-question-only", text: "J'ai une question.", why: "That opens something new. You want to stop, not to ask.", tag: "meaning_shift" },
+      { id: "o-hungry-only", text: "J'ai faim. Je voudrais un café.", why: "That names the reason and then asks for the wrong thing. A coffee is not ten minutes off your feet.", tag: "meaning_shift" },
+      { id: "o-question-only", text: "Excusez-moi, j'ai une question.", why: "That opens something new. You want to stop, not to ask.", tag: "meaning_shift" },
     ],
     short: "Je voudrais faire une pause.",
     explanation: "A break pauses the day. It does not close it.",
@@ -402,8 +402,8 @@ export const L9_SEEDS: PracticeSeed[] = [
     prompt: "You are asking permission, not announcing a decision. Which one?",
     correct: { id: "o-ask", text: "Je voudrais faire une pause." },
     traps: [
-      { id: "o-go", text: "Je vais à la maison.", why: "That announces a departure and asks nobody anything.", tag: "meaning_shift" },
-      { id: "o-here", text: "Je suis ici.", why: "That places you here. It makes no request at all.", tag: "meaning_shift" },
+      { id: "o-go", text: "Je vais à la maison. Au revoir.", why: "That announces a departure and asks nobody anything.", tag: "meaning_shift" },
+      { id: "o-here", text: "Je suis ici, merci beaucoup.", why: "That places you here. It makes no request at all.", tag: "meaning_shift" },
     ],
     short: "Je voudrais faire une pause.",
     explanation: "Je voudrais is what makes it a request rather than a statement.",

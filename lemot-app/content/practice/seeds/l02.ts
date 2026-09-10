@@ -303,8 +303,8 @@ export const L2_SEEDS: PracticeSeed[] = [
     prompt: "Listen. Are they placing themselves, or asking for something?",
     correct: { id: "o-place", text: "Placing themselves. They are here." },
     traps: [
-      { id: "o-want", text: "Asking for something.", why: "That would be je voudrais. Je suis places rather than requests.", tag: "meaning_shift" },
-      { id: "o-greet", text: "Greeting you.", why: "A greeting is bonjour. This one carries information.", tag: "meaning_shift" },
+      { id: "o-want", text: "Ordering something. They want a coffee.", why: "That would be je voudrais. Je suis places rather than requests.", tag: "meaning_shift" },
+      { id: "o-greet", text: "Greeting you. They have just walked in.", why: "A greeting is bonjour. This one carries information.", tag: "meaning_shift" },
     ],
     short: "Je suis ici.",
     explanation: "Je suis is the engine that puts you somewhere.",

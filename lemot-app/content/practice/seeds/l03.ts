@@ -235,7 +235,7 @@ export const L3_SEEDS: PracticeSeed[] = [
     correct: { id: "o-dont-understand", text: "I don't understand." },
     traps: [
       { id: "o-not-here-l3", text: "It's not here.", why: "That is about a place. This one is about following what was said.", tag: "meaning_shift" },
-      { id: "o-no-thanks-l3", text: "No thanks.", why: "That turns something down. Nothing was offered.", tag: "meaning_shift" },
+      { id: "o-no-thanks-l3", text: "I don't know.", why: "That turns something down. Nothing was offered.", tag: "meaning_shift" },
     ],
     short: "Je ne comprends pas.",
     explanation: "The most useful sentence you own, heard rather than read.",

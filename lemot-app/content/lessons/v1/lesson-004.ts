@@ -192,13 +192,13 @@ const screens: LessonScreen[] = [
         { id: "opt-question", text: "J'ai une question.", isCorrect: true },
         {
           id: "opt-ici",
-          text: "Je suis ici.",
+          text: "Je suis ici, merci.",
           isCorrect: false,
           trapReason: "That says where you are, not what you have to ask.",
         },
         {
           id: "opt-faim",
-          text: "J'ai faim.",
+          text: "J'ai faim, merci.",
           isCorrect: false,
           trapReason: "That says how you feel, not that you have a question.",
         },

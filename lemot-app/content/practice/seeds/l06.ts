@@ -41,13 +41,13 @@ export const L6_SEEDS: PracticeSeed[] = [
     traps: [
       {
         id: "o-non-merci-catch",
-        text: "Non merci.",
+        text: "Non merci, au revoir.",
         why: "That turns something down. They were answering you, not offering you anything.",
         tag: "meaning_shift",
       },
       {
         id: "o-merci-catch",
-        text: "Merci.",
+        text: "Merci beaucoup, au revoir.",
         why: "Polite, and it ends the exchange with you still lost.",
         tag: "meaning_shift",
       },
@@ -350,8 +350,8 @@ export const L6_SEEDS: PracticeSeed[] = [
     prompt: "Listen. How much of the visit did they do?",
     correct: { id: "o-all", text: "All of it: arrived, announced and left." },
     traps: [
-      { id: "o-arrive", text: "Only arrived.", why: "It ends with au revoir, so they closed it too.", tag: "meaning_shift" },
-      { id: "o-ask", text: "They asked where something was.", why: "Nothing here is a question.", tag: "meaning_shift" },
+      { id: "o-arrive", text: "Two of the three: arrived, announced.", why: "It ends with au revoir, so they closed it too.", tag: "meaning_shift" },
+      { id: "o-ask", text: "All of it: arrived, asked and left.", why: "Nothing here is a question.", tag: "meaning_shift" },
     ],
     short: "Bonjour. Je suis ici. Au revoir.",
     explanation: "A visit has two ends, and both of them are yours to say.",

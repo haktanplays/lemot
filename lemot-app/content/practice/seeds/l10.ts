@@ -43,13 +43,13 @@ export const L10_SEEDS: PracticeSeed[] = [
     traps: [
       {
         id: "o-merci-day",
-        text: "Merci.",
+        text: "Merci beaucoup, au revoir.",
         why: "That closes it politely and leaves you exactly as lost.",
         tag: "meaning_shift",
       },
       {
         id: "o-cest-ici-day",
-        text: "C'est ici.",
+        text: "Oui, c'est ici, merci.",
         why: "That answers the question you asked, as if you were the one who knew.",
         tag: "meaning_shift",
       },
@@ -375,8 +375,8 @@ export const L10_SEEDS: PracticeSeed[] = [
     prompt: "Listen. Where in the day are they?",
     correct: { id: "o-end", text: "At the end of it, on their way out." },
     traps: [
-      { id: "o-start", text: "At the start, just arriving.", why: "Au revoir closes. Bonjour would open.", tag: "meaning_shift" },
-      { id: "o-mid", text: "In the middle, taking a break.", why: "A break is faire une pause, and they would be coming back.", tag: "meaning_shift" },
+      { id: "o-start", text: "At the start of it, just arriving.", why: "Au revoir closes. Bonjour would open.", tag: "meaning_shift" },
+      { id: "o-mid", text: "In the middle of it, taking a break.", why: "A break is faire une pause, and they would be coming back.", tag: "meaning_shift" },
     ],
     short: "Je vais à la maison. Au revoir.",
     explanation: "Destination plus closing is the shape a departure always takes.",
@@ -390,8 +390,8 @@ export const L10_SEEDS: PracticeSeed[] = [
     prompt: "Listen. Are they announcing themselves, or asking for something?",
     correct: { id: "o-arrive", text: "Announcing that they have arrived." },
     traps: [
-      { id: "o-ask", text: "Asking where something is.", why: "That would end in où. This one places them.", tag: "meaning_shift" },
-      { id: "o-leave", text: "Saying they are leaving.", why: "Nothing here names a departure.", tag: "meaning_shift" },
+      { id: "o-ask", text: "Asking where they are supposed to go.", why: "That would end in où. This one places them.", tag: "meaning_shift" },
+      { id: "o-leave", text: "Announcing that they are leaving now.", why: "Nothing here names a departure.", tag: "meaning_shift" },
     ],
     short: "Bonjour. Je suis ici.",
     explanation: "Je suis ici is the arrival sentence, and it opens rather than closes.",

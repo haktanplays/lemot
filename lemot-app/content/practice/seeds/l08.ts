@@ -85,13 +85,13 @@ export const L8_SEEDS: PracticeSeed[] = [
     traps: [
       {
         id: "o-cest-ou-check",
-        text: "C'est où ?",
+        text: "Excusez-moi, c'est où ?",
         why: "That asks WHERE, as if you had no idea. You have a guess and want it confirmed.",
         tag: "meaning_shift",
       },
       {
         id: "o-cest-ici-check",
-        text: "C'est ici.",
+        text: "Oui, c'est ici, merci.",
         why: "That tells them it is here. You are asking, not announcing.",
         tag: "meaning_shift",
       },
@@ -385,8 +385,8 @@ export const L8_SEEDS: PracticeSeed[] = [
     prompt: "You think you have found it and want to check before going in. Which one?",
     correct: { id: "o-est", text: "Est-ce que c'est ici ?" },
     traps: [
-      { id: "o-ou", text: "C'est où ?", why: "That asks where it is, as if you had no idea. You have a guess to check.", tag: "meaning_shift" },
-      { id: "o-ici", text: "C'est ici.", why: "That tells them. You are the one who needs telling.", tag: "meaning_shift" },
+      { id: "o-ou", text: "Excusez-moi, c'est où ?", why: "That asks where it is, as if you had no idea. You have a guess to check.", tag: "meaning_shift" },
+      { id: "o-ici", text: "Oui, c'est ici, merci.", why: "That tells them. You are the one who needs telling.", tag: "meaning_shift" },
     ],
     short: "Est-ce que c'est ici ?",
     explanation: "Où asks an open question. Est-ce que checks a guess you already have.",
@@ -400,7 +400,7 @@ export const L8_SEEDS: PracticeSeed[] = [
     correct: { id: "o-neg", text: "Non, ce n'est pas ici." },
     traps: [
       { id: "o-pos", text: "Oui, c'est ici.", why: "That confirms it, which is the opposite of what is true.", tag: "meaning_shift" },
-      { id: "o-ou", text: "C'est où ?", why: "That asks them, and they were asking you.", tag: "meaning_shift" },
+      { id: "o-ou", text: "Excusez-moi, c'est où ?", why: "That asks them, and they were asking you.", tag: "meaning_shift" },
     ],
     short: "Non, ce n'est pas ici.",
     explanation: "The answer word first, then the correction.",

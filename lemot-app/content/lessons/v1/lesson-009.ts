@@ -448,7 +448,7 @@ const screens: LessonScreen[] = [
               },
               {
                 id: "opt-non-merci",
-                text: "Non merci.",
+                text: "Non merci, je vais à la maison.",
                 isCorrect: false,
                 trapReason:
                   "That refuses something. You are asking for something instead.",
