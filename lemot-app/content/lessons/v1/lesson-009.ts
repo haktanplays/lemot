@@ -23,6 +23,7 @@ const screens: LessonScreen[] = [
               en: "I would like to take a break.",
               role: "core",
               itemIds: ["chunk-faire-une-pause"],
+              depth: { usage: "This is the sayable version at work or with people you do not know well. Je fais une pause announces that you are taking one. Je voudrais asks." },
             },
             {
               fr: "Je voudrais faire une pause, s'il vous plaît.",
@@ -41,6 +42,7 @@ const screens: LessonScreen[] = [
               en: "Excuse me, I would like to take a break.",
               role: "core",
               itemIds: ["chunk-excusez-moi"],
+              depth: { structure: "The opener is doing real work. Without it the sentence is an announcement. With it, it is a request someone can say yes to." },
             },
             { fr: "Excusez-moi, une question.", en: "Excuse me, one question.", role: "supported" },
             { fr: "Je peux vous demander quelque chose ?", en: "Can I ask you something?", role: "exposure", flat: "exposure" },
@@ -54,6 +56,7 @@ const screens: LessonScreen[] = [
               en: "I would like to take a break. I'm hungry.",
               role: "core",
               itemIds: ["chunk-j-ai-faim"],
+              depth: { structure: "Ask first, reason second. French is comfortable putting the request up front and letting the why follow it." },
             },
             { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure" },
             { fr: "J'ai besoin de cinq minutes.", en: "I need five minutes.", role: "exposure", pieces: ["J'ai besoin de", "cinq minutes"] },

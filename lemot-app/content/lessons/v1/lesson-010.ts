@@ -29,7 +29,7 @@ const screens: LessonScreen[] = [
           label: "When it goes wrong",
           sentences: [
             { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"], flat: "formula" },
-            { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core" },
+            { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core", depth: { sound: "zhuh nuh kom-PRAHN pah. say-OO", structure: "Admit it, then ask again. Two short sentences do more than one long apology." }, },
             {
               fr: "Je ne comprends pas. Vous pouvez répéter ?",
               en: "I don't understand. Can you say that again?",
@@ -60,7 +60,7 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais"] },
             { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core" },
-            { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core" },
+            { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core", depth: { usage: "The merci is not padding. In French it is how you signal that the visit is ending, before you say where you are going." }, },
             { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure", flat: "formula" },
           ],
         },
@@ -71,6 +71,7 @@ const screens: LessonScreen[] = [
               fr: "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
               en: "Hello. Where is it? I would like to take a break. I'm going home. Goodbye.",
               role: "core",
+              depth: { structure: "A whole day in five sentences, and not one of them is new. The greeting came from your first lesson, the question from your eighth, the break from your ninth.", usage: "Nobody says all five in a row. They are the five moments a day actually has." },
             },
             { fr: "Vous pouvez m'aider ?", en: "Can you help me?", role: "exposure", itemIds: ["chunk-vous-pouvez", "chunk-m-aider"] },
           ],

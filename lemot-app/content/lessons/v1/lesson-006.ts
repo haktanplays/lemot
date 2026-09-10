@@ -31,7 +31,7 @@ const screens: LessonScreen[] = [
             { fr: "J'ai une question.", en: "I have a question.", role: "core", itemIds: ["chunk-j-ai-une-question"] },
             { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"] },
             { fr: "Je voudrais un café, s'il vous plaît.", en: "I would like a coffee, please.", role: "core" },
-            { fr: "Non merci.", en: "No thanks.", role: "core", itemIds: ["chunk-non-merci"] },
+            { fr: "Non merci.", en: "No thanks.", role: "core", itemIds: ["chunk-non-merci"], depth: { usage: "Merci on its own, with a nod, can read as yes please at a counter. Non merci removes the doubt without sounding cold.", compare: "Non merci turns the offer down. Oui merci takes it. The merci does not change; the word in front of it decides." }, },
           ],
         },
         {
@@ -53,7 +53,7 @@ const screens: LessonScreen[] = [
           label: "Leaving well",
           sentences: [
             { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"], flat: "formula" },
-            { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "core", itemIds: ["chunk-au-revoir"] },
+            { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "core", itemIds: ["chunk-au-revoir"], depth: { sound: "mair-SEE, oh ruh-VWAR", usage: "Said as one gesture on the way out, not as two separate remarks. The thanks and the goodbye travel together." }, },
             { fr: "Bonne journée !", en: "Have a good day!", role: "exposure", flat: "formula" },
             { fr: "À bientôt !", en: "See you soon!", role: "exposure", flat: "formula" },
           ],
@@ -65,6 +65,7 @@ const screens: LessonScreen[] = [
               fr: "Bonjour. Je suis ici. J'ai une question.",
               en: "Hello. I'm here. I have a question.",
               role: "core",
+              depth: { structure: "Three short sentences, not one long one. A French arrival is built in beats: greet, place yourself, then say what you came for.", usage: "The bonjour is the one that gets noticed if it is missing. The other two can wait; that one cannot." },
             },
             {
               fr: "Bonjour. Je suis ici. J'ai une question. Merci. Au revoir.",
