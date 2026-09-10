@@ -182,7 +182,7 @@ describe("first use reaches L0, and only first use does", () => {
 
   test("a clean install is sent to the first taste", () => {
     assert(home.includes('router.replace("/lesson-zero"'), "first use redirects");
-    assert(home.includes("lm7_seen_lesson_zero"), "gated on the first-use flag");
+    assert(home.includes("hasFinishedFirstTaste"), "gated on the first-use flag");
   });
 
   test("the first taste is played by the ordinary engine", () => {
@@ -216,14 +216,53 @@ describe("first use reaches L0, and only first use does", () => {
 describe("first use happens once", () => {
   const route = src("app/lesson-zero.tsx");
 
-  test("the flag is written on entry, so an interrupted first run does not repeat", () => {
-    // Deferring the flag to completion is exactly what makes a learner who put
-    // the phone down mid-sentence get onboarding again from the top.
-    assert(route.includes("markFirstUseSeen"), "there is one place that writes it");
+  test("the flag means finished, and only the last screen writes it", () => {
+    // Device smoke, 2026-09-10: written on ENTRY instead, a learner who met
+    // Bonjour and put the phone down came back to the Journey with the first
+    // taste gone — L0 is not a step on the path, so gone for good. Written on
+    // completion, the redirect keeps sending them back and the ordinary cursor
+    // resumes them at the beat they left.
+    const flag = src("lib/firstUse.ts");
+    assert(flag.includes("lm7_seen_lesson_zero"), "one flag, in one place");
     assert(
-      route.includes("useEffect(() => {\n    markFirstUseSeen();\n  }, []);"),
-      "written on mount, not on completion",
+      !route.includes("markFirstTasteFinished") && !route.includes("useEffect"),
+      "the route does not write it on mount",
     );
+    const renderer = src("components/lesson-v1/LessonRendererV1.tsx");
+    const completion = renderer.slice(renderer.indexOf("const isComplete"));
+    assert(
+      completion.includes("markFirstTasteFinished()"),
+      "the completion effect is what writes it",
+    );
+    assert(
+      completion.indexOf('lesson.phase === "first-step"') <
+        completion.indexOf("markFirstTasteFinished()"),
+      "and only for the first taste",
+    );
+  });
+
+  test("an interrupted first run is resumed, not replayed and not lost", () => {
+    const home = src("app/(tabs)/index.tsx");
+    assert(
+      home.includes("!hasFinishedFirstTaste()"),
+      "home redirects while the first taste is unfinished",
+    );
+    const renderer = src("components/lesson-v1/LessonRendererV1.tsx");
+    assert(
+      renderer.includes("resumeIndexFor"),
+      "and the cursor puts them back on the beat they left",
+    );
+  });
+
+  test("the opening beat offers no way out of the only entry point", () => {
+    // Confirmed on device before the fix: one tap on the chevron at beat 1
+    // landed on a Journey the learner had never met.
+    const renderer = src("components/lesson-v1/LessonRendererV1.tsx");
+    assert(
+      renderer.includes('lesson.phase !== "first-step" || screenIndex > 0'),
+      "no back affordance on the first taste's first screen",
+    );
+    assert(renderer.includes("{onBack ? ("), "the chevron is not drawn when there is no target");
   });
 
   test("where the learner was inside L0 is remembered by the ordinary cursor", () => {
@@ -346,5 +385,92 @@ describe("the slice boundary still holds", () => {
       (s) => s.originLessonId === "v1-lesson-000",
     );
     assertEqual(fromL0.length, 0, "L0 seeds nothing: Practice outputs what the Journey taught");
+  });
+});
+
+// ── H. WHAT THE DEVICE SHOWED ───────────────────────────────────────────────
+//
+// Everything below was found by playing L0 from a wiped store on an iPhone 17
+// Pro, not by reading the code. Each one is here so it cannot come back.
+
+describe("the first taste never claims something the learner did not do", () => {
+  const renderer = src("components/lesson-v1/LessonRendererV1.tsx");
+
+  test("the closing line checks whether the order actually landed", () => {
+    // It read "You just ordered a coffee in French." unconditionally. Typing
+    // Aaa, being told to compare with the model, and then being congratulated
+    // for ordering a coffee is the same untruth the answer verdict was fixed
+    // to stop telling, moved one screen later.
+    const closing = renderer.slice(renderer.indexOf("function CompletionView"));
+    assert(closing.includes("orderLanded"), "the completion view knows the outcome");
+    const claimAt = closing.indexOf("You just ordered a coffee in French.");
+    assert(claimAt > 0, "the earned line still exists");
+    assert(
+      closing.lastIndexOf("orderLanded", claimAt) > closing.indexOf("isFirstTaste", 0),
+      "and it sits behind the check, not beside it",
+    );
+  });
+
+  test("only a full verdict earns it — an evidenced near-miss does not", () => {
+    assert(
+      renderer.includes('facts.evaluation.evidence.verdict === "full"'),
+      "the renderer reads the verdict the Weave already produced",
+    );
+    assert(
+      !renderer.includes("meaningEvidenced"),
+      "meaning evidenced is enough to be understood, not enough to have ordered",
+    );
+    // The contract behind that choice, exercised directly.
+    const full = componentEvidence(ORDER, [ORDER], true);
+    assertEqual(full.verdict, "full", "the model answer is full");
+    const nonsense = componentEvidence("Aaa", [ORDER], false);
+    assert(nonsense.verdict !== "full", "nonsense is never full");
+    assert(!nonsense.meaningEvidenced, "and evidences nothing");
+  });
+
+  test("the recap names what the lesson showed, not what the learner produced", () => {
+    const recap = lesson000.screens.find((s) => s.type === "recap");
+    assert(recap !== undefined && recap.type === "recap", "L0 ends on a recap");
+    const lines = recap.type === "recap" ? recap.payload.lines : [];
+    assert(
+      lines.some((l) => l.includes("saw three pieces become one real sentence")),
+      "the assembly line is bound to the Showcase, which happened for everyone",
+    );
+    assert(
+      !lines.some((l) => /you put .* together/i.test(l)),
+      "no recap line may assert the one production that may have missed",
+    );
+  });
+
+  test("the last two screens do not both say Begin", () => {
+    const recap = lesson000.screens.find((s) => s.type === "recap");
+    const label = recap?.type === "recap" ? recap.payload.nextLabel : undefined;
+    assert(label !== "Begin", "the closing screen is the one that begins the path");
+    assert(renderer.includes('label="Begin"'), "and it still does");
+  });
+});
+
+describe("the blank reads as a blank, not as a typo", () => {
+  test("no gap is left in front of a comma or a full stop", () => {
+    // Rendered "Bonjour, je voudrais ____ ." on the first taste's only
+    // recognition beat, because the blank carried its own padding spaces.
+    const fill = src("components/lesson-v1/screens/FillWithTraps.tsx");
+    assert(fill.includes("function blankRun("), "spacing is decided, not hardcoded");
+    assert(!fill.includes('{"  ____  "}'), "the padded literal is gone from the render");
+  });
+
+  test("a blank followed by a word keeps its room", () => {
+    // Half the corpus writes the tail as "un café." with no leading space and
+    // relies on the blank for it, so the room may only be dropped before
+    // punctuation.
+    const tails = V1_LESSONS.flatMap((l) => flattenLessonScreens(l))
+      .filter((s) => s.type === "fill-with-traps")
+      .map((s) => (s.type === "fill-with-traps" ? s.payload.sentenceAfter : undefined))
+      .filter((t): t is string => typeof t === "string" && t !== "");
+    assert(tails.length > 0, "there are fills to check");
+    assert(
+      tails.some((t) => /^[a-zà-ÿ]/i.test(t)),
+      "at least one tail starts with a word and needs the room kept",
+    );
   });
 });

@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 import { PrimaryAction, LinkAction } from "@/components/ui/actions";
 import { P, SPACE } from "@/constants/theme";
+import { markFirstTasteFinished } from "@/lib/firstUse";
 import { useApp } from "@/providers/AppProvider";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { ActivityChain } from "@/components/lesson-v1/screens/ActivityChain";
@@ -83,15 +84,33 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
     setChainStep(0);
     setScreenIndex((n) => n + 1);
   };
-  const goBack = () => {
-    const target = backTarget(screenIndex);
-    if (target.kind === "page") {
-      setChainStep(0);
-      setScreenIndex(target.index);
-      return;
-    }
-    exitToPrevious();
-  };
+  // Did the first taste's one production actually land?
+  //
+  // The closing screen claims a specific act -- "you just ordered a coffee in
+  // French" -- and a claim that specific has to be a fact. A learner who typed
+  // nonsense saw the model and moved on; telling them they ordered a coffee is
+  // the same untruth the answer verdict was fixed to stop telling, moved one
+  // screen later. The Weave already grades itself, so the renderer only has to
+  // remember the answer. Nothing else reads this, and no other lesson sets it.
+  const [orderLanded, setOrderLanded] = useState(false);
+  // The first taste's opening beat has nothing behind it. Home is not a place
+  // the learner has been yet — it is the screen that sent them here, and it
+  // will send them straight back while first use is unfinished. A chevron
+  // there is either a bounce or, if first use were ever marked done on entry,
+  // a one-way door out of a lesson that is not on the path. So it is simply
+  // not drawn. Every later beat keeps its ordinary one-page-back.
+  const canLeaveFromHere = lesson.phase !== "first-step" || screenIndex > 0;
+  const goBack = !canLeaveFromHere
+    ? null
+    : () => {
+        const target = backTarget(screenIndex);
+        if (target.kind === "page") {
+          setChainStep(0);
+          setScreenIndex(target.index);
+          return;
+        }
+        exitToPrevious();
+      };
 
   // Keep the stored position in step with the visible one. Backgrounding, a
   // tab, or a push and pop all unmount this component; the record is what
@@ -121,8 +140,15 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
       // Finished: there is no position left to hold. Reopening should start the
       // lesson, not drop the learner back on the completion screen.
       kvStorage.removeItem(LESSON_CURSOR_KEY);
+      // The first taste is over only once it is reached. Until then the home
+      // redirect keeps sending the learner back here, and the cursor above
+      // resumes them at the beat they left — an interrupted first run is
+      // continued, never repeated and never lost.
+      if (lesson.phase === "first-step") {
+        markFirstTasteFinished();
+      }
     }
-  }, [isComplete, mk, lesson.number]);
+  }, [isComplete, mk, lesson.number, lesson.phase]);
 
   return (
     <SafeAreaView
@@ -144,11 +170,13 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
               The key only changes on step advance, so typing within a screen
               (screenIndex unchanged) preserves state. */}
           <View key={screenIndex} style={{ flex: 1 }}>
-            {pickScreen(screen, goNext, session, chainStep, setChainStep)}
+            {pickScreen(screen, goNext, session, chainStep, setChainStep, () =>
+              setOrderLanded(true),
+            )}
           </View>
         </View>
       ) : (
-        <CompletionView lesson={lesson} />
+        <CompletionView lesson={lesson} orderLanded={orderLanded} />
       )}
     </SafeAreaView>
   );
@@ -175,8 +203,13 @@ function LessonHeader({
   title: string;
   current: number;
   total: number;
-  /** One authored page back, or out of the lesson when already at the first. */
-  onBack: () => void;
+  /**
+   * One authored page back, or out of the lesson when already at the first.
+   * `null` when there is genuinely nowhere behind this screen, in which case
+   * no back affordance is drawn rather than one that leads out of the app's
+   * only entry point.
+   */
+  onBack: (() => void) | null;
 }) {
   return (
     <View
@@ -192,15 +225,17 @@ function LessonHeader({
         backgroundColor: P.bg,
       }}
     >
-      <Pressable
-        onPress={onBack}
-        hitSlop={10}
-        accessibilityRole="button"
-        accessibilityLabel="Go back"
-        style={{ padding: SPACE.xs }}
-      >
-        <ChevronLeft size={22} color={P.ink2} />
-      </Pressable>
+      {onBack ? (
+        <Pressable
+          onPress={onBack}
+          hitSlop={10}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          style={{ padding: SPACE.xs }}
+        >
+          <ChevronLeft size={22} color={P.ink2} />
+        </Pressable>
+      ) : null}
       <View style={{ flex: 1 }}>
         <Text
           className="text-xs"
@@ -238,6 +273,8 @@ function pickScreen(
   session: LessonV1LearningSession,
   chainStep: number,
   onChainStep: (step: number) => void,
+  /** Called when a typed production is graded as landing. Weave only. */
+  onProductionLanded: () => void,
 ) {
   switch (screen.type) {
     // Orchestration only: it grades nothing and records nothing itself. Every
@@ -278,13 +315,20 @@ function pickScreen(
         <Weave
           screen={screen}
           onContinue={onContinue}
-          onTypedAttempt={(facts) =>
+          onTypedAttempt={(facts) => {
+            // `full` is exact OR an authored accepted alternative, and nothing
+            // less. A partial answer evidences meaning, which is enough to be
+            // told the meaning landed -- not enough to be told the coffee was
+            // ordered.
+            if (facts.evaluation.evidence.verdict === "full") {
+              onProductionLanded();
+            }
             session.recordTypedAttempt(screen, {
               text: facts.text,
               hintRung: facts.hintRung,
               constitutiveSupportRendered: facts.constitutiveSupportRendered,
-            })
-          }
+            });
+          }}
         />
       );
     case "say-it-your-way":
@@ -322,7 +366,14 @@ function pickScreen(
 // destination reads a settled log. Opening it is navigation only: not learning
 // evidence, no event. Back to Home stays direct and unchanged — it reads no
 // projection.
-function CompletionView({ lesson }: { lesson: Lesson }) {
+function CompletionView({
+  lesson,
+  orderLanded,
+}: {
+  lesson: Lesson;
+  /** First taste only: whether the one production was produced. */
+  orderLanded: boolean;
+}) {
   const session = useLessonV1LearningSession();
   // Latest-session ref: the gate is created once per completion view, but must
   // always settle the CURRENT session (a privacy reset swaps the controller).
@@ -393,7 +444,9 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
         }}
       >
         {isFirstTaste
-          ? "You just ordered a coffee in French."
+          ? orderLanded
+            ? "You just ordered a coffee in French."
+            : "Bonjour, je voudrais un café."
           : `You reached the end of Lesson ${lesson.number}.`}
       </Text>
       <Text
@@ -405,7 +458,9 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
         }}
       >
         {isFirstTaste
-          ? "Three pieces, and they will keep coming back. The path starts here."
+          ? orderLanded
+            ? "Three pieces, and they will keep coming back. The path starts here."
+            : "That is the sentence. You have met all three pieces of it, and they will keep coming back. The path starts here."
           : "A small French shape is now familiar."}
       </Text>
       <View style={{ marginTop: isMilestone ? 44 : 36 }}>

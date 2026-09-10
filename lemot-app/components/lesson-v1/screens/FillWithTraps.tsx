@@ -6,6 +6,19 @@ import { P } from "@/constants/theme";
 import type { FillWithTrapsScreen } from "@/content/lessonTypes";
 import { AnswerReveal } from "./AnswerReveal";
 
+/**
+ * The blank, with the breathing room it needs on either side.
+ *
+ * That room has to be part of the text, because the blank is text. It reads as
+ * room to think when a word follows it, and as a typo when a comma or a full
+ * stop follows it — so the trailing half is dropped there, and only there.
+ * `?` and `!` keep the space French gives them; the corpus writes that space
+ * into the tail itself.
+ */
+function blankRun(after: string | undefined): string {
+  return /^[.,;:]/.test(after ?? "") ? "  ____" : "  ____  ";
+}
+
 export function FillWithTraps({
   screen,
   onContinue,
@@ -81,7 +94,7 @@ export function FillWithTraps({
               color: P.ink3,
             }}
           >
-            {"  ____  "}
+            {blankRun(payload.sentenceAfter)}
           </Text>
           {payload.sentenceAfter ?? ""}
         </Text>

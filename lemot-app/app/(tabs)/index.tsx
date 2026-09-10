@@ -11,7 +11,7 @@ import { V1_LESSONS } from "@/content/lessons/v1";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { FEATURES, PRODUCT_STAGE, V1_PATH_MAX_LESSON, isV1LessonInStageScope } from "@/config/productStage";
 import { supabaseReady } from "@/lib/supabase";
-import { kvStorage } from "@/lib/storage";
+import { hasFinishedFirstTaste } from "@/lib/firstUse";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
 import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
@@ -23,8 +23,6 @@ import {
   DailyReviewOverlay,
   genReviewItems,
 } from "@/components/DailyReviewOverlay";
-
-const SEEN_LESSON_ZERO_KEY = "lm7_seen_lesson_zero";
 
 // Mirrors LessonRendererV1's completion marker: a finished v1 lesson writes
 // prog["{number}-read_listen"] = true. Home reads the same key to drive the
@@ -49,7 +47,7 @@ export default function HomeScreen() {
   // avoiding a flash of the Home UI before the redirect lands.
   const [needsLessonZero] = useState(() => {
     try {
-      return kvStorage.getItem(SEEN_LESSON_ZERO_KEY) !== "true";
+      return !hasFinishedFirstTaste();
     } catch {
       return false;
     }

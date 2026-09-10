@@ -155,7 +155,11 @@ const screens: LessonScreen[] = [
       reveal: {
         short: "un café",
         explanation: "Je voudrais needs a thing after it. Here the thing is un café.",
-        natural: "un café",
+        // No natural line. It would say the whole sentence, and the whole
+        // sentence is what the Weave two beats from here asks the learner to
+        // produce -- so printing it would be a spoiler. Saying "un café" a
+        // second time instead is just an echo. Nothing extra to say is a
+        // legitimate answer.
       },
     },
   },
@@ -241,13 +245,22 @@ const screens: LessonScreen[] = [
     type: "recap",
     payload: {
       title: "You have three pieces of French.",
+      // Recap voice across the corpus is "what this lesson did with you", and
+      // that holds here -- except for the assembly line, which used to say the
+      // learner PUT the sentence together. This lesson has exactly one
+      // production, and a learner who missed it reads that line seconds after
+      // being told to compare with the model. So it names what the Showcase
+      // showed, which happened for everyone. The closing screen is where a
+      // landed order is claimed, and it checks first.
       lines: [
         "You greeted someone.",
         "You asked for something, politely.",
-        "You put three pieces together into one real sentence.",
+        "You saw three pieces become one real sentence.",
       ],
       piecesUsed: ["Bonjour", "je voudrais", "un café"],
-      nextLabel: "Begin",
+      // Not "Begin". The closing screen is the one that begins the path, and
+      // two consecutive Begins read as a button that did not work.
+      nextLabel: "Continue",
     },
   },
 ];

@@ -32,6 +32,12 @@ function countWord(n: number): string {
   return ["zero", "one", "two", "three", "four", "five"][n] ?? String(n);
 }
 
+/** Same word, starting a line. */
+function countWordCapitalized(n: number): string {
+  const w = countWord(n);
+  return w.charAt(0).toUpperCase() + w.slice(1);
+}
+
 // Deterministic, stable hint order: reverse the authored (answer) order so hint
 // pieces are never shown in copy-ready sequence, while staying identical across
 // renders and remounts. No randomness, so the learner experience is repeatable.
@@ -370,7 +376,12 @@ export function Weave({
             <View>
               <Text className="text-xs" style={{ color: P.ink3, marginBottom: SPACE.sm }}>
                 {shownHintPieces.length < hintPieces.length
-                  ? "A piece to start with:"
+                  ? // Not "a piece to start with": the order above is
+                    // deliberately NOT the answer's order, so the first chip
+                    // is usually the sentence's tail. Promising a starting
+                    // point and handing over the ending is a small lie the
+                    // learner notices immediately.
+                    `${countWordCapitalized(shownHintPieces.length)} of the pieces you need:`
                   : "Pieces you can use here:"}
               </Text>
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}>

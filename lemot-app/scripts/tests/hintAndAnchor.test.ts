@@ -81,3 +81,27 @@ describe("the task stays visible while the learner types", () => {
     assert(anchor.includes("!isRevealed"), "the anchor is for the input phase only");
   });
 });
+
+describe("rung 2 does not promise a starting point it deliberately withholds", () => {
+  // Found on device, 2026-09-10: rung 2 said "A piece to start with:" and then
+  // showed s'il vous plaît -- the sentence's tail. The order is reversed ON
+  // PURPOSE so the hint is never copy-ready, so the label was promising the one
+  // thing the design refuses to give.
+  test("the hint order stays deliberately not the answer's order", () => {
+    assert(
+      WEAVE.includes("return [...input].reverse();"),
+      "hint pieces must not be shown in copy-ready sequence",
+    );
+  });
+
+  test("the label counts the pieces instead of claiming a first one", () => {
+    assert(
+      !WEAVE.includes("A piece to start with"),
+      "no label may imply the first chip is where the sentence starts",
+    );
+    assert(
+      WEAVE.includes("of the pieces you need:"),
+      "the partial rung says how many were shown, not which came first",
+    );
+  });
+});
