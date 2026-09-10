@@ -1,4 +1,5 @@
 import { Tabs } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Mountain, BookMarked, Layers, Compass } from "lucide-react-native";
 import { P } from "@/constants/theme";
 
@@ -33,6 +34,13 @@ import { P } from "@/constants/theme";
  * never renders the bar.
  */
 export default function TabLayout() {
+  // Android gesture navigation draws its handle OVER the bottom of the app, and
+  // the fixed 8px padding put it straight through the "Mon Lexique" and
+  // "Practice" labels -- legible on iOS, struck through on a Pixel. The bar now
+  // grows by whatever the platform actually reserves, which is 0 on a device
+  // with hardware keys and the handle height where there is a handle.
+  const insets = useSafeAreaInsets();
+  const bottomInset = Math.max(insets.bottom, 8);
   return (
     <Tabs
       screenOptions={{
@@ -42,8 +50,8 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: P.paper,
           borderTopColor: P.border,
-          height: 60,
-          paddingBottom: 8,
+          height: 60 + (bottomInset - 8),
+          paddingBottom: bottomInset,
           paddingTop: 4,
         },
         tabBarLabelStyle: {
