@@ -475,6 +475,33 @@ export default function HomeScreen() {
               </View>
             )}
 
+            {/* CONTEXT CARDS — the input arm, reached from here rather than
+                from a fifth tab. It sits after the next step and before the
+                road ahead, because it is something to do WITH what you can
+                already say, not a competing path. One entry, in one place: the
+                brief is explicit that these must not be scattered as redundant
+                buttons around the app. */}
+            <Pressable
+              onPress={() => router.push("/context-cards" as never)}
+              accessibilityRole="button"
+              accessibilityLabel="Context Cards. Explore a little more French."
+              className="mb-6 border"
+              style={{
+                borderColor: P.border,
+                backgroundColor: P.paper,
+                borderRadius: 12,
+                paddingHorizontal: 14,
+                paddingVertical: 12,
+              }}
+            >
+              <Text className="text-sm" style={{ color: P.ink }}>
+                Context Cards
+              </Text>
+              <Text className="text-xs mt-0.5" style={{ color: P.ink3, lineHeight: 18 }}>
+                Explore a little more French. Nothing is tested.
+              </Text>
+            </Pressable>
+
             {/* THE ROAD AHEAD — restrained. The path clearly continues, order
                 stays legible, locked rows cannot open, but future work does not
                 demand equal attention. Rendered compact and dimmed. */}
