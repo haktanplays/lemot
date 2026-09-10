@@ -18,10 +18,10 @@ const screens: LessonScreen[] = [
         {
           label: "Opening a moment",
           sentences: [
-            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], depth: { sound: "bon-ZHOOR", usage: "Not optional. Walking into a French shop without it reads as rude in a way English speakers rarely intend." } },
-            { fr: "Excusez-moi.", en: "Excuse me.", role: "core", itemIds: ["chunk-excusez-moi"] },
-            { fr: "Bonjour, madame.", en: "Hello, madam.", role: "exposure" },
-            { fr: "Bonjour, monsieur.", en: "Hello, sir.", role: "exposure" },
+            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], depth: { sound: "bon-ZHOOR", usage: "Not optional. Walking into a French shop without it reads as rude in a way English speakers rarely intend." }, flat: "formula" },
+            { fr: "Excusez-moi.", en: "Excuse me.", role: "core", itemIds: ["chunk-excusez-moi"], flat: "formula" },
+            { fr: "Bonjour, madame.", en: "Hello, madam.", role: "exposure", pieces: ["Bonjour", "madame"] },
+            { fr: "Bonjour, monsieur.", en: "Hello, sir.", role: "exposure", pieces: ["Bonjour", "monsieur"] },
           ],
         },
         {
@@ -41,7 +41,7 @@ const screens: LessonScreen[] = [
               itemIds: ["chunk-je-voudrais", "chunk-un-the", "noun-the"],
             },
             { fr: "Un café, s'il vous plaît.", en: "A coffee, please.", role: "supported", itemIds: ["noun-cafe", "chunk-sil-vous-plait"] },
-            { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure" },
+            { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure", pieces: ["Un croissant", "s'il vous plaît"] },
           ],
         },
         {
@@ -52,6 +52,7 @@ const screens: LessonScreen[] = [
               en: "Can you say that again?",
               role: "core",
               itemIds: ["chunk-vous-pouvez-repeter"],
+              pieces: ["Vous pouvez", "répéter"],
             },
             {
               fr: "Excusez-moi, vous pouvez répéter ?",
@@ -59,18 +60,18 @@ const screens: LessonScreen[] = [
               role: "supported",
               itemIds: ["chunk-excusez-moi", "chunk-vous-pouvez-repeter"],
             },
-            { fr: "Pardon ?", en: "Sorry?", role: "exposure" },
-            { fr: "Je ne parle pas très bien français.", en: "I don't speak French very well.", role: "exposure" },
+            { fr: "Pardon ?", en: "Sorry?", role: "exposure", flat: "formula" },
+            { fr: "Je ne parle pas très bien français.", en: "I don't speak French very well.", role: "exposure", flat: "exposure" },
           ],
         },
         {
           label: "Closing it well",
           sentences: [
-            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"] },
-            { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported", itemIds: ["chunk-merci-beaucoup"], depth: { sound: "mair-SEE bo-KOO", compare: "Merci closes an ordinary exchange. Merci beaucoup says they went out of their way." } },
-            { fr: "Voilà.", en: "There you go.", role: "exposure" },
-            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure" },
-            { fr: "Au revoir.", en: "Goodbye.", role: "exposure", itemIds: ["chunk-au-revoir"] },
+            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"], flat: "formula" },
+            { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported", itemIds: ["chunk-merci-beaucoup"], depth: { sound: "mair-SEE bo-KOO", compare: "Merci closes an ordinary exchange. Merci beaucoup says they went out of their way." }, pieces: ["Merci", "beaucoup"] },
+            { fr: "Voilà.", en: "There you go.", role: "exposure", flat: "formula" },
+            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure", flat: "formula" },
+            { fr: "Au revoir.", en: "Goodbye.", role: "exposure", itemIds: ["chunk-au-revoir"], flat: "formula" },
           ],
         },
       ],

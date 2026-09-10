@@ -19,9 +19,9 @@ const screens: LessonScreen[] = [
           label: "What your body is telling you",
           sentences: [
             { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"], depth: { sound: "zhay FAN", compare: "Je suis for who and where you are; j'ai for hunger, thirst, cold. English uses to be for all of them, which is why this one has to be learned rather than translated.", notice: "Literally I have hunger." } },
-            { fr: "J'ai soif.", en: "I'm thirsty.", role: "supported", itemIds: ["chunk-j-ai-soif"] },
-            { fr: "J'ai froid.", en: "I'm cold.", role: "exposure", itemIds: ["chunk-j-ai-froid"] },
-            { fr: "J'ai chaud.", en: "I'm hot.", role: "exposure", itemIds: ["chunk-j-ai-chaud"] },
+            { fr: "J'ai soif.", en: "I'm thirsty.", role: "supported", itemIds: ["chunk-j-ai-soif"], pieces: ["J'ai", "soif"] },
+            { fr: "J'ai froid.", en: "I'm cold.", role: "exposure", itemIds: ["chunk-j-ai-froid"], pieces: ["J'ai", "froid"] },
+            { fr: "J'ai chaud.", en: "I'm hot.", role: "exposure", itemIds: ["chunk-j-ai-chaud"], pieces: ["J'ai", "chaud"] },
           ],
         },
         {
@@ -36,16 +36,16 @@ const screens: LessonScreen[] = [
             },
             { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"] },
             { fr: "Excusez-moi, j'ai une question.", en: "Excuse me, I have a question.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-j-ai-une-question"] },
-            { fr: "J'ai un problème.", en: "I have a problem.", role: "exposure" },
+            { fr: "J'ai un problème.", en: "I have a problem.", role: "exposure", pieces: ["J'ai", "un problème"] },
           ],
         },
         {
           label: "Time and help",
           sentences: [
-            { fr: "J'ai le temps.", en: "I have time.", role: "supported" },
-            { fr: "Je n'ai pas le temps.", en: "I don't have time.", role: "exposure" },
-            { fr: "J'ai besoin d'aide.", en: "I need help.", role: "exposure" },
-            { fr: "J'ai fini.", en: "I'm done.", role: "exposure" },
+            { fr: "J'ai le temps.", en: "I have time.", role: "supported", pieces: ["J'ai", "le temps"] },
+            { fr: "Je n'ai pas le temps.", en: "I don't have time.", role: "exposure", pieces: ["Je n'ai pas", "le temps"] },
+            { fr: "J'ai besoin d'aide.", en: "I need help.", role: "exposure", pieces: ["J'ai", "besoin d'aide"] },
+            { fr: "J'ai fini.", en: "I'm done.", role: "exposure", pieces: ["J'ai", "fini"] },
           ],
         },
         {

@@ -5,7 +5,7 @@ import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import { useSpeech } from "@/hooks/useSpeech";
-import { showcasePieces } from "@/content/lessons/showcasePieces";
+import { pieceLabel, showcasePieces } from "@/content/lessons/showcasePieces";
 import type { ShowcaseScreen, ShowcaseSentence, ShowcaseDepth } from "@/content/lessonTypes";
 
 /**
@@ -130,7 +130,7 @@ function Line({
                   }}
                 >
                   <Text style={{ fontSize: 12, lineHeight: frenchLineHeight(12), color: P.ink2 }}>
-                    {piece}
+                    {pieceLabel(piece)}
                   </Text>
                 </View>
               ))}

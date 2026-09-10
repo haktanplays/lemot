@@ -175,6 +175,29 @@ export type ShowcaseDepth = {
   inDepth?: string;
 };
 
+/**
+ * Why a Showcase line shows no piece breakdown.
+ *
+ * A sentence with no breakdown is either a deliberate teaching choice or an
+ * accident, and from the screen they look identical: a flat line the learner is
+ * implicitly told to swallow whole. This field is what separates them, and it
+ * is REQUIRED on every line the registry cannot break into two or more owned
+ * pieces — `validateContent` fails on a flat line that declares nothing.
+ *
+ * - `formula`     the line IS one thing. "Merci." "Au revoir." "Peut-etre."
+ *                 Splitting it would invent a seam that French does not have.
+ * - `exposure`    the line reaches past what the learner owns. A partial
+ *                 breakdown would claim the unowned half is already theirs, so
+ *                 the line is met whole and taught later, or never.
+ * - `unsegmented` the seam is real and the line is still shown whole, on
+ *                 purpose, because THIS lesson wants the whole first.
+ *
+ * There is deliberately no "none" or "todo" member. An author who cannot pick
+ * one of these three has found a line that should decompose, and the fix is the
+ * breakdown, not a label.
+ */
+export type ShowcaseFlatReason = "formula" | "exposure" | "unsegmented";
+
 export type ShowcaseSentence = {
   fr: string;
   en: string;
@@ -184,8 +207,21 @@ export type ShowcaseSentence = {
    * derived from the canonical registry by `showcasePieces`, so the breakdown
    * cannot drift from what the learner actually owns. Author this only to
    * correct a segmentation the registry cannot get right on its own.
+   *
+   * The common legitimate case is a frame the learner owns around a filler that
+   * is not a registry item and should not become one: "J'ai" + "soif",
+   * "Un croissant" + "s'il vous plait". The registry sees one chunk and stops;
+   * the lesson is teaching the seam. Authored pieces must still reconstruct the
+   * sentence exactly, which `validateContent` checks.
    */
   pieces?: string[];
+  /**
+   * Required when the line has no breakdown. See `ShowcaseFlatReason`.
+   *
+   * Must be ABSENT when a breakdown exists, so a stale label cannot outlive the
+   * reason it was written for.
+   */
+  flat?: ShowcaseFlatReason;
   /** Optional depth layer. Absent means this line needs none. */
   depth?: ShowcaseDepth;
   /**

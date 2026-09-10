@@ -21,13 +21,13 @@ const screens: LessonScreen[] = [
             { fr: "Je suis ici.", en: "I'm here.", role: "core", itemIds: ["chunk-je-suis-ici"], depth: { sound: "zhuh swee ee-SEE", structure: "je suis is the engine, ici is what you hang off it. The engine does not change when the room does.", compare: "French puts states on je suis but hunger and thirst on j'ai. That split is the single most useful thing to notice early." } },
             { fr: "Bonjour, je suis ici.", en: "Hello, I'm here.", role: "core", itemIds: ["chunk-bonjour", "chunk-je-suis-ici"] },
             { fr: "Excusez-moi, je suis ici.", en: "Excuse me, I'm here.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-je-suis-ici"] },
-            { fr: "Je suis là.", en: "I'm here. (right here)", role: "exposure" },
+            { fr: "Je suis là.", en: "I'm here. (right here)", role: "exposure", pieces: ["Je suis", "là"] },
           ],
         },
         {
           label: "How you are",
           sentences: [
-            { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "sa-VA", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." } },
+            { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "sa-VA", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." }, flat: "formula" },
             { fr: "Ça va bien, merci.", en: "I'm well, thank you.", role: "supported", itemIds: ["chunk-ca-va", "chunk-merci"] },
             { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure", itemIds: ["chunk-je-suis", "adj-fatigue"] },
             { fr: "Je suis content.", en: "I'm glad.", role: "exposure", itemIds: ["chunk-je-suis", "adj-content"] },
@@ -37,9 +37,9 @@ const screens: LessonScreen[] = [
         {
           label: "Ready, or not yet",
           sentences: [
-            { fr: "Je suis prêt.", en: "I'm ready.", role: "supported", itemIds: ["chunk-je-suis-pret"] },
-            { fr: "Je ne suis pas prêt.", en: "I'm not ready.", role: "exposure" },
-            { fr: "Je suis en retard.", en: "I'm late.", role: "exposure" },
+            { fr: "Je suis prêt.", en: "I'm ready.", role: "supported", itemIds: ["chunk-je-suis-pret"], pieces: ["Je suis", "prêt"] },
+            { fr: "Je ne suis pas prêt.", en: "I'm not ready.", role: "exposure", pieces: ["Je ne suis pas", "prêt"] },
+            { fr: "Je suis en retard.", en: "I'm late.", role: "exposure", pieces: ["Je suis", "en retard"] },
             { fr: "Une minute, s'il vous plaît.", en: "One minute, please.", role: "exposure", itemIds: ["chunk-une-minute", "chunk-sil-vous-plait"] },
           ],
         },
@@ -47,8 +47,8 @@ const screens: LessonScreen[] = [
           label: "What people say to you",
           sentences: [
             { fr: "Comment ça va ?", en: "How are you doing?", role: "exposure", itemIds: ["adverb-comment", "chunk-ca-va"] },
-            { fr: "Vous êtes prêt ?", en: "Are you ready?", role: "exposure", itemIds: ["chunk-vous-etes-pret", "chunk-vous-etes", "pronoun-vous"], depth: { sound: "voo-z-ET preh", notice: "The silent s in vous wakes up before a vowel and links the words: vou-z-êtes, not vou / êtes." } },
-            { fr: "Vous êtes là ?", en: "Are you there?", role: "exposure", itemIds: ["chunk-vous-etes"] },
+            { fr: "Vous êtes prêt ?", en: "Are you ready?", role: "exposure", itemIds: ["chunk-vous-etes-pret", "chunk-vous-etes", "pronoun-vous"], depth: { sound: "voo-z-ET preh", notice: "The silent s in vous wakes up before a vowel and links the words: vou-z-êtes, not vou / êtes." }, pieces: ["Vous êtes", "prêt"] },
+            { fr: "Vous êtes là ?", en: "Are you there?", role: "exposure", itemIds: ["chunk-vous-etes"], pieces: ["Vous êtes", "là"] },
           ],
         },
       ],

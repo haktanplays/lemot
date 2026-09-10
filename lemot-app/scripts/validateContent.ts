@@ -49,6 +49,10 @@ import {
   summarizeDrift,
 } from "../content/lessons/acquisitionDemandDrift";
 import { reviewProductionQuality } from "../content/lessons/productionQuality";
+import {
+  reviewShowcaseClassification,
+  summarizeShowcaseClassification,
+} from "../content/lessons/showcaseClassification";
 import { SENTENCE_REGISTRY } from "../content/identity/sentenceRegistry";
 import { validateRegisteredPayloads } from "../content/identity/payloadRegistry";
 
@@ -188,6 +192,25 @@ for (const d of pq) {
   console.log(`  ${d.severity.toUpperCase()} ${d.code} ${d.lessonId}: ${d.message}`);
 }
 
+// SC-001..SC-005: every Showcase line either shows its seams or says why not.
+// A line with no breakdown and no declaration is the accidentally flat line,
+// and it is a hard error rather than a warning: from the learner's side it is
+// indistinguishable from a deliberate whole, so nothing downstream can catch it.
+const showcaseFindings = reviewShowcaseClassification(V1_LESSONS);
+const showcaseCounts = summarizeShowcaseClassification(V1_LESSONS);
+console.log(
+  `Showcase classification (SC-001..SC-005): ` +
+    `${showcaseCounts.BREAKDOWN_PRESENT} breakdown, ` +
+    `${showcaseCounts.WHOLE_FIRST_FORMULA} formula, ` +
+    `${showcaseCounts.INPUT_EXPOSURE} exposure, ` +
+    `${showcaseCounts.INTENTIONALLY_UNSEGMENTED} unsegmented, ` +
+    `${showcaseCounts.UNCLASSIFIED} UNCLASSIFIED [hard error if > 0], ` +
+    `${showcaseFindings.length} hard error(s)`,
+);
+for (const f of showcaseFindings) {
+  console.log(`  ERROR ${f.code} ${f.lessonId} "${f.fr}": ${f.message}`);
+}
+
 const hardErrors = findings.filter((f) => f.severity === "error");
 if (
   hardErrors.length > 0 ||
@@ -201,7 +224,8 @@ if (
   journeyRoleErrors.length > 0 ||
   demandErrors.length > 0 ||
   budget.errors.length > 0 ||
-  pqErrors.length > 0
+  pqErrors.length > 0 ||
+  showcaseFindings.length > 0
 ) {
   process.exit(1);
 }

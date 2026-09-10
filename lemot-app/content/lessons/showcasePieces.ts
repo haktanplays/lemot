@@ -44,6 +44,23 @@ const LEXICON: Entry[] = Object.entries(ITEM_REGISTRY)
 export type ShowcasePiece = { text: string; itemId: string };
 
 /**
+ * How a piece is written on a chip.
+ *
+ * A chip is a FRAGMENT, not a sentence, so it carries no sentence-initial
+ * capital. Ninety-four of the ninety-five surface items are already stored
+ * lowercase; "Bonjour" is the lone exception, and authored pieces inherit
+ * whatever case the sentence gave them. Left alone, one screen showed
+ * "je suis" and "Je suis" as chips two lines apart, which reads as two
+ * different pieces rather than one piece written twice.
+ *
+ * Only the first character is touched: an interior capital would be there for
+ * a reason (a name), and lowercasing it would be a spelling error.
+ */
+export function pieceLabel(text: string): string {
+  return text.length === 0 ? text : text[0].toLowerCase() + text.slice(1);
+}
+
+/**
  * Every known piece in a French string, ungated.
  *
  * `showcasePieces` hides breakdowns that would teach nothing; grading needs the

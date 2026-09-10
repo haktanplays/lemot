@@ -38,8 +38,8 @@ const screens: LessonScreen[] = [
             { fr: "Au revoir, bonne soirée !", en: "Goodbye, have a good evening!", role: "core", itemIds: ["chunk-bonne-soiree", "chunk-au-revoir"] },
             { fr: "Merci, bonne journée !", en: "Thanks, have a good day!", role: "supported", itemIds: ["chunk-bonne-journee", "chunk-merci"] },
             { fr: "Au revoir, à demain !", en: "Goodbye, see you tomorrow!", role: "supported", itemIds: ["chunk-a-demain", "adverb-demain", "chunk-au-revoir"] },
-            { fr: "À bientôt !", en: "See you soon!", role: "supported", itemIds: ["chunk-a-bientot"] },
-            { fr: "À tout à l'heure !", en: "See you later!", role: "supported", itemIds: ["chunk-a-tout-a-l-heure"] },
+            { fr: "À bientôt !", en: "See you soon!", role: "supported", itemIds: ["chunk-a-bientot"], flat: "formula" },
+            { fr: "À tout à l'heure !", en: "See you later!", role: "supported", itemIds: ["chunk-a-tout-a-l-heure"], flat: "formula" },
           ],
         },
         {
@@ -61,7 +61,7 @@ const screens: LessonScreen[] = [
           // the learner's half.
           label: "What they say back",
           sentences: [
-            { fr: "De rien.", en: "You're welcome.", role: "exposure", itemIds: ["chunk-de-rien"] },
+            { fr: "De rien.", en: "You're welcome.", role: "exposure", itemIds: ["chunk-de-rien"], flat: "formula" },
             { fr: "Au revoir, bonne nuit !", en: "Goodbye, good night!", role: "exposure", itemIds: ["chunk-bonne-nuit", "chunk-au-revoir"] },
             { fr: "Au revoir, bon week-end !", en: "Goodbye, have a good weekend!", role: "exposure", itemIds: ["chunk-bon-week-end", "chunk-au-revoir"] },
             { fr: "À bientôt, bon voyage !", en: "See you soon, have a good trip!", role: "exposure", itemIds: ["chunk-bon-voyage"] },

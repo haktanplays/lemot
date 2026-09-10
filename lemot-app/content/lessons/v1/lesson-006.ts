@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "Arriving",
           sentences: [
-            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"] },
+            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], flat: "formula" },
             { fr: "Bonjour, je suis ici.", en: "Hello, I'm here.", role: "core" },
             { fr: "Excusez-moi, je suis ici.", en: "Excuse me, I'm here.", role: "core" },
             { fr: "C'est ici.", en: "It's here.", role: "core", itemIds: ["chunk-c-est"] },
@@ -37,7 +37,7 @@ const screens: LessonScreen[] = [
         {
           label: "When it goes wrong",
           sentences: [
-            { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"] },
+            { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"], flat: "formula" },
             { fr: "Excusez-moi, je ne comprends pas.", en: "Excuse me, I don't understand.", role: "core" },
             {
               fr: "Je ne comprends pas. Vous pouvez répéter ?",
@@ -45,16 +45,16 @@ const screens: LessonScreen[] = [
               role: "core",
               itemIds: ["chunk-vous-pouvez-repeter"],
             },
-            { fr: "Pardon, je n'ai pas compris.", en: "Sorry, I didn't catch that.", role: "exposure" },
+            { fr: "Pardon, je n'ai pas compris.", en: "Sorry, I didn't catch that.", role: "exposure", flat: "exposure" },
           ],
         },
         {
           label: "Leaving well",
           sentences: [
-            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"] },
+            { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"], flat: "formula" },
             { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "core", itemIds: ["chunk-au-revoir"] },
-            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure" },
-            { fr: "À bientôt !", en: "See you soon!", role: "exposure" },
+            { fr: "Bonne journée !", en: "Have a good day!", role: "exposure", flat: "formula" },
+            { fr: "À bientôt !", en: "See you soon!", role: "exposure", flat: "formula" },
           ],
         },
         {

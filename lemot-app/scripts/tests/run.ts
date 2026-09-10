@@ -28,6 +28,7 @@ import "./ttsPlaceholder.test";
 import "./devApkScope.test";
 import "./founderSliceBoundary.test";
 import "./showcaseDepth.test";
+import "./showcaseClassification.test";
 import "./gradingTrust.test";
 import "./chainStepIsolation.test";
 import "./lessonContinuity.test";

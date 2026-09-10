@@ -28,7 +28,7 @@ const screens: LessonScreen[] = [
         {
           label: "When it goes wrong",
           sentences: [
-            { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"] },
+            { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"], flat: "formula" },
             { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core" },
             {
               fr: "Je ne comprends pas. Vous pouvez répéter ?",
@@ -60,7 +60,7 @@ const screens: LessonScreen[] = [
             { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais"] },
             { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core" },
             { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core" },
-            { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure" },
+            { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure", flat: "formula" },
           ],
         },
         {

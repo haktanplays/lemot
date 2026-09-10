@@ -20,8 +20,8 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "Je voudrais un café.", en: "I would like a coffee.", role: "core", itemIds: ["chunk-un-cafe"], depth: { structure: "un café is one package, not two words to assemble. The little word comes attached to the noun and stays with it.", compare: "un café but une question. Nothing about the meaning decides it; the word carries its own package and you learn them together." } },
             { fr: "Je voudrais un thé.", en: "I would like a tea.", role: "core", itemIds: ["chunk-un-the"] },
-            { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure" },
-            { fr: "Un verre d'eau, s'il vous plaît.", en: "A glass of water, please.", role: "exposure" },
+            { fr: "Un croissant, s'il vous plaît.", en: "A croissant, please.", role: "exposure", pieces: ["Un croissant", "s'il vous plaît"] },
+            { fr: "Un verre d'eau, s'il vous plaît.", en: "A glass of water, please.", role: "exposure", pieces: ["Un verre d'eau", "s'il vous plaît"] },
           ],
         },
         {
@@ -34,8 +34,8 @@ const screens: LessonScreen[] = [
               itemIds: ["chunk-une-question"],
             },
             { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"] },
-            { fr: "Je voudrais une table.", en: "I would like a table.", role: "exposure" },
-            { fr: "Une baguette, s'il vous plaît.", en: "A baguette, please.", role: "exposure" },
+            { fr: "Je voudrais une table.", en: "I would like a table.", role: "exposure", pieces: ["Je voudrais", "une table"] },
+            { fr: "Une baguette, s'il vous plaît.", en: "A baguette, please.", role: "exposure", pieces: ["Une baguette", "s'il vous plaît"] },
           ],
         },
         {
@@ -43,7 +43,7 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "Je voudrais un café. J'ai une question.", en: "I would like a coffee. I have a question.", role: "core" },
             { fr: "Un café et un thé, s'il vous plaît.", en: "A coffee and a tea, please.", role: "supported" },
-            { fr: "Deux cafés, s'il vous plaît.", en: "Two coffees, please.", role: "exposure" },
+            { fr: "Deux cafés, s'il vous plaît.", en: "Two coffees, please.", role: "exposure", pieces: ["Deux cafés", "s'il vous plaît"] },
           ],
         },
         {
@@ -53,13 +53,13 @@ const screens: LessonScreen[] = [
             // package, which is a different communicative job (identifying)
             // from asking for one.
             { fr: "C'est un café.", en: "It's a coffee.", role: "supported", itemIds: ["chunk-c-est"] },
-            { fr: "C'est une bonne idée.", en: "That's a good idea.", role: "exposure" },
+            { fr: "C'est une bonne idée.", en: "That's a good idea.", role: "exposure", pieces: ["C'est", "une bonne idée"] },
           ],
         },
         {
           label: "At the end of the table",
           sentences: [
-            { fr: "L'addition, s'il vous plaît.", en: "The bill, please.", role: "exposure" },
+            { fr: "L'addition, s'il vous plaît.", en: "The bill, please.", role: "exposure", pieces: ["L'addition", "s'il vous plaît"] },
             { fr: "C'est combien ?", en: "How much is it?", role: "exposure" },
             { fr: "Vous avez du thé ?", en: "Do you have tea?", role: "exposure" },
           ],

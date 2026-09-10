@@ -29,8 +29,8 @@ const screens: LessonScreen[] = [
               en: "I would like to take a break, please.",
               role: "core",
             },
-            { fr: "On fait une pause ?", en: "Shall we take a break?", role: "exposure" },
-            { fr: "Cinq minutes, s'il vous plaît.", en: "Five minutes, please.", role: "exposure" },
+            { fr: "On fait une pause ?", en: "Shall we take a break?", role: "exposure", pieces: ["On fait", "une pause"] },
+            { fr: "Cinq minutes, s'il vous plaît.", en: "Five minutes, please.", role: "exposure", pieces: ["Cinq minutes", "s'il vous plaît"] },
           ],
         },
         {
@@ -43,7 +43,7 @@ const screens: LessonScreen[] = [
               itemIds: ["chunk-excusez-moi"],
             },
             { fr: "Excusez-moi, une question.", en: "Excuse me, one question.", role: "supported" },
-            { fr: "Je peux vous demander quelque chose ?", en: "Can I ask you something?", role: "exposure" },
+            { fr: "Je peux vous demander quelque chose ?", en: "Can I ask you something?", role: "exposure", flat: "exposure" },
           ],
         },
         {
@@ -56,21 +56,21 @@ const screens: LessonScreen[] = [
               itemIds: ["chunk-j-ai-faim"],
             },
             { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure" },
-            { fr: "J'ai besoin de cinq minutes.", en: "I need five minutes.", role: "exposure" },
+            { fr: "J'ai besoin de cinq minutes.", en: "I need five minutes.", role: "exposure", pieces: ["J'ai besoin de", "cinq minutes"] },
           ],
         },
         {
           label: "Other things you can ask for",
           sentences: [
             { fr: "Je voudrais un café.", en: "I would like a coffee.", role: "core" },
-            { fr: "Je voudrais un verre d'eau.", en: "I would like a glass of water.", role: "exposure" },
-            { fr: "Je voudrais rentrer.", en: "I would like to go home.", role: "exposure" },
+            { fr: "Je voudrais un verre d'eau.", en: "I would like a glass of water.", role: "exposure", pieces: ["Je voudrais", "un verre d'eau"] },
+            { fr: "Je voudrais rentrer.", en: "I would like to go home.", role: "exposure", pieces: ["Je voudrais", "rentrer"] },
           ],
         },
         {
           label: "Being answered",
           sentences: [
-            { fr: "Oui, bien sûr.", en: "Yes, of course.", role: "exposure" },
+            { fr: "Oui, bien sûr.", en: "Yes, of course.", role: "exposure", pieces: ["Oui", "bien sûr"] },
             { fr: "Pas maintenant, désolé.", en: "Not now, sorry.", role: "exposure" },
           ],
         },
