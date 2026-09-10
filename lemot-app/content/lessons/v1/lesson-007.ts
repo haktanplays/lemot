@@ -463,17 +463,17 @@ const screens: LessonScreen[] = [
             { id: "opt-decline-go", text: "Non merci. Je vais à la maison.", isCorrect: true },
             {
               id: "opt-accept",
-              text: "Je voudrais un café.",
+              text: "Oui merci. Je vais à la maison.",
               isCorrect: false,
               trapReason:
-                "That asks for the coffee. Polite, but now you are staying for it.",
+                "Oui merci accepts the coffee. You have just agreed to stay and announced you are leaving.",
             },
             {
               id: "opt-not-followed",
-              text: "Je ne comprends pas.",
+              text: "Non merci. Je suis à la maison.",
               isCorrect: false,
               trapReason:
-                "You understood perfectly. That line says the opposite, and the offer just stays open.",
+                "Je suis is where you ARE, and you are standing right here. Going somewhere takes je vais.",
             },
           ],
           answer: ["opt-decline-go"],
@@ -540,14 +540,14 @@ const screens: LessonScreen[] = [
               { id: "opt-oui-maison", text: "Oui, je vais à la maison.", isCorrect: true },
               {
                 id: "opt-non-merci",
-                text: "Non merci.",
+                text: "Non, je vais à la maison.",
                 isCorrect: false,
                 trapReason:
                   "That turns down an offer. They did not offer you anything; they asked a question.",
               },
               {
                 id: "opt-suis-ici",
-                text: "Je suis ici.",
+                text: "Oui, je suis à la maison.",
                 isCorrect: false,
                 trapReason:
                   "That says where you are. They can see where you are; they asked where you are going.",

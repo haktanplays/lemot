@@ -555,17 +555,17 @@ const screens: LessonScreen[] = [
             { id: "opt-repeter", text: "Vous pouvez répéter ?", isCorrect: true },
             {
               id: "opt-ici",
-              text: "C'est ici.",
+              text: "Je ne comprends pas.",
               isCorrect: false,
               trapReason:
-                "That answers the question you asked, as if you were the one who knew.",
+                "True, and it stops there. It names the problem without asking them to fix it.",
             },
             {
               id: "opt-merci",
-              text: "Merci.",
+              text: "C'est où ?",
               isCorrect: false,
               trapReason:
-                "Polite, and it ends the exchange with you still lost.",
+                "That asks the same question again from the top, as if they had said nothing.",
             },
           ],
           answer: ["opt-repeter"],
