@@ -26,12 +26,21 @@ import {
   matchExpected,
   type MatchResult,
 } from "../../components/lesson-v1/screens/normalizeAnswer";
+import { componentEvidence, type ComponentEvidence } from "./answerComponents";
 
 export type TypedEvaluation = {
   /** What the SCREEN shows. Unchanged from the pre-PR-06 behaviour. */
   match: MatchResult;
   /** What the EVENT records. Derived from the same decision. */
   grade: GradeResultLike;
+  /**
+   * Whether the attempt shows checkable evidence of the intended meaning.
+   *
+   * `match` alone cannot answer this: it has one failure state for "wrong word
+   * order" and for "Aaa", and copy that assumes understanding was being shown
+   * to both. This carries the fact that decides which.
+   */
+  evidence: ComponentEvidence;
 };
 
 export type TypedEvaluationInput = {
@@ -61,10 +70,13 @@ export function evaluateTypedAnswer(input: TypedEvaluationInput): TypedEvaluatio
   const normalizedAnswer = normalizeAnswer(userAnswer);
   const expectedAnswer = expectedAnswers[0] ?? null;
 
+  const evidence = componentEvidence(userAnswer, expectedAnswers, match !== "none");
+
   if (match === "exact") {
     return {
       match,
       grade: { result: "correct", errorTags: ["correct"], normalizedAnswer },
+      evidence,
     };
   }
   if (match === "alternative") {
@@ -75,6 +87,7 @@ export function evaluateTypedAnswer(input: TypedEvaluationInput): TypedEvaluatio
         errorTags: ["accepted_variant"],
         normalizedAnswer,
       },
+      evidence,
     };
   }
 
@@ -91,5 +104,6 @@ export function evaluateTypedAnswer(input: TypedEvaluationInput): TypedEvaluatio
       errorTags: [...diagnosed.errorTags],
       normalizedAnswer: diagnosed.normalizedAnswer,
     },
+    evidence,
   };
 }

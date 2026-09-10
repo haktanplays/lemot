@@ -9,6 +9,7 @@ import { FEATURES } from "@/config/productStage";
 import { evaluateSayIt } from "@/lib/ai";
 import type { SayItYourWayScreen } from "@/content/lessonTypes";
 import { NaturalRevealView } from "./NaturalReveal";
+import { componentEvidence } from "@/content/lesson-v1-evidence/answerComponents";
 
 type AiState =
   | { status: "idle" }
@@ -306,6 +307,23 @@ export function SayItYourWayV1({
               payload.modelAnswer && !payload.reveal.modelAnswer
                 ? { ...payload.reveal, modelAnswer: payload.modelAnswer }
                 : payload.reveal
+            }
+            /*
+              Say It is free production and grades nothing, but the reveal's
+              notes still make claims about the attempt. Default `general` mode
+              printed every authored note — including "your meaning lands" —
+              whatever the learner wrote. The same component check the graded
+              path uses decides here too: notes that assert understanding are
+              shown only when the pieces are actually present.
+            */
+            mode={
+              componentEvidence(
+                text,
+                [payload.modelAnswer ?? payload.reveal.modelAnswer ?? ""].filter(Boolean),
+                false,
+              ).verdict === "partial"
+                ? "partial"
+                : "mismatch"
             }
           />
         </View>

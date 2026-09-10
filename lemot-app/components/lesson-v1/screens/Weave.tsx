@@ -12,6 +12,7 @@ import {
   type TypedEvaluation,
 } from "@/content/lesson-v1-evidence/interactions";
 import { NaturalRevealView } from "./NaturalReveal";
+import type { AnswerVerdict } from "@/content/lesson-v1-evidence/answerComponents";
 import {
   WEAVE_BADGE,
   WEAVE_TARGET_LABEL,
@@ -33,14 +34,23 @@ function orderHintPieces(input: WeavePiece[]): WeavePiece[] {
 // Verdict copy is unchanged (canonical strings, pinned). The `band` field maps
 // each match to a presentation-only FeedbackBand tone; the text is what the
 // learner reads and what the append-only log's UI mirror shows.
-const RESULT_NOTES: Record<
-  MatchResult,
+// Keyed by VERDICT, not by match, because "wrong word order" and "Aaa" are the
+// same MatchResult and must never read the same to the learner. Only `full`
+// carries semantic approval; `partial` names what was found without claiming
+// the answer landed; `mismatch` and `unknown` assert nothing at all.
+const VERDICT_NOTES: Record<
+  AnswerVerdict,
   { text: string; tone: "ok" | "warm" | "soft"; band: FeedbackTone }
 > = {
-  exact: { text: "Correct.", tone: "ok", band: "confirmed" },
-  alternative: { text: "Accepted.", tone: "warm", band: "accepted" },
-  none: { text: "Compare with the model.", tone: "soft", band: "compare" },
+  full: { text: "Correct.", tone: "ok", band: "confirmed" },
+  partial: { text: "Part of it is there. Compare with the model.", tone: "warm", band: "compare" },
+  mismatch: { text: "Compare with the model.", tone: "soft", band: "compare" },
+  unknown: { text: "Compare with the model.", tone: "soft", band: "compare" },
+  empty: { text: "Compare with the model.", tone: "soft", band: "compare" },
 };
+
+/** `Accepted.` is still the right word for an authored accepted variant. */
+const ACCEPTED_NOTE = { text: "Accepted.", tone: "warm" as const, band: "accepted" as FeedbackTone };
 
 export function Weave({
   screen,
@@ -72,6 +82,7 @@ export function Weave({
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"input" | "revealed">("input");
   const [match, setMatch] = useState<MatchResult | null>(null);
+  const [verdict, setVerdict] = useState<AnswerVerdict | null>(null);
   // Presentation only: a warm focus accent so the working surface feels owned.
   // Does not touch TextInput behaviour, submission, or normalization.
   const [focused, setFocused] = useState(false);
@@ -102,6 +113,7 @@ export function Weave({
     // "Correct." while the append-only log recorded a miss.
     const evaluation = evaluateWeaveAnswer(screen, text);
     setMatch(evaluation.match);
+    setVerdict(evaluation.evidence.verdict);
     setPhase("revealed");
     onTypedAttempt?.({
       text,
@@ -114,7 +126,12 @@ export function Weave({
     });
   };
 
-  const note = match !== null ? RESULT_NOTES[match] : null;
+  const note =
+    match === "alternative"
+      ? ACCEPTED_NOTE
+      : verdict !== null
+        ? VERDICT_NOTES[verdict]
+        : null;
   const showTargetLabel = shouldShowWeaveTargetLabel(payload.weaveType, payload.prompt);
   const targetMeaning = weaveTargetMeaning(payload.prompt);
 
@@ -345,7 +362,9 @@ export function Weave({
                 ? "exact"
                 : match === "alternative"
                   ? "alternative"
-                  : "no-match"
+                  : verdict === "partial"
+                    ? "partial"
+                    : "mismatch"
             }
           />
         </View>

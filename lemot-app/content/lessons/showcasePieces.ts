@@ -44,6 +44,17 @@ const LEXICON: Entry[] = Object.entries(ITEM_REGISTRY)
 export type ShowcasePiece = { text: string; itemId: string };
 
 /**
+ * Every known piece in a French string, ungated.
+ *
+ * `showcasePieces` hides breakdowns that would teach nothing; grading needs the
+ * raw facts, including the single-piece case. Shared so the pieces a learner is
+ * SHOWN and the pieces a learner is CREDITED for can never drift apart.
+ */
+export function knownPieces(fr: string): ShowcasePiece[] {
+  return segment(fr, new Set()).pieces;
+}
+
+/**
  * Segment a French sentence into known pieces.
  *
  * Returns [] when the sentence does not break into at least two known pieces.

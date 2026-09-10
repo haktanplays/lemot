@@ -17,7 +17,22 @@ const NOTICE_KEYS = [
   "ifBetterThanExpected",
 ] as const;
 
-export type NaturalRevealMode = "general" | "exact" | "alternative" | "no-match";
+/**
+ * `partial` and `mismatch` replace what used to be one `no-match` branch.
+ *
+ * That branch rendered `ifUnderstandableButWrong` — a note that asserts the
+ * learner's meaning came through — for every non-empty answer that failed to
+ * match, including a keyboard mash. Understanding is now a checked fact, and
+ * only `partial` is allowed to claim it. `no-match` is kept as the honest,
+ * assert-nothing mode.
+ */
+export type NaturalRevealMode =
+  | "general"
+  | "exact"
+  | "alternative"
+  | "partial"
+  | "mismatch"
+  | "no-match";
 
 export function NaturalRevealView({
   reveal,
@@ -43,10 +58,20 @@ export function NaturalRevealView({
       showIfCorrect = false;
       showCompareFallback = false;
       break;
-    case "no-match":
+    case "partial":
+      // The pieces are demonstrably there, so the authored "understandable but
+      // wrong" note is a true statement about THIS attempt.
       notices = reveal.ifUnderstandableButWrong
         ? [reveal.ifUnderstandableButWrong]
         : [];
+      showIfCorrect = false;
+      showCompareFallback = !reveal.modelAnswer;
+      break;
+    case "mismatch":
+    case "no-match":
+      // Nothing about the attempt evidences the meaning. Show the model and say
+      // nothing about what the learner did or did not convey.
+      notices = [];
       showIfCorrect = false;
       showCompareFallback = !reveal.modelAnswer;
       break;
