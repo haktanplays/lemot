@@ -117,6 +117,16 @@ export const PRACTICE_UI_COPY = Object.freeze({
   startBlurb: "This is built from the French you have already used. Nothing here is new.",
   startTodayLabel: "TODAY",
   startAction: "Start practice",
+  // The two secondary entries. Freestyle stays the default action; these are
+  // for a learner who arrived knowing what they want to work on.
+  modesLabel: "Or work on something particular",
+  modeErrors: "Things to look at again",
+  modeErrorsDetail: "French that has not settled yet.",
+  modeErrorsEmpty: "Nothing needs another look right now.",
+  modeLesson: "A lesson you have done",
+  modeLessonEmpty: "Finish a lesson first.",
+  modeFreestyle: "Anything and everything",
+  modeFreestyleDetail: "A mixed set from all the French you have reached.",
 
   buildEmptyTray: "Tap the pieces in order.",
   buildStartAgain: "Start again",

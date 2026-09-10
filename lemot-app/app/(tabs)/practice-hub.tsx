@@ -38,6 +38,11 @@ import {
 import { PRACTICE_EMPTY_LINE } from "@/content/practice/practiceCopy";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import { PracticeStart } from "@/components/practice/PracticeStart";
+import {
+  hasErrorsToPractise,
+  seedsForMode,
+  type PracticeMode,
+} from "@/content/practice/practiceModes";
 import { PracticeRunner, type PracticeRunResult } from "@/components/practice/PracticeRunner";
 import { PracticeComplete } from "@/components/practice/PracticeComplete";
 
@@ -49,6 +54,10 @@ type Ready = {
   actions: PracticeSessionAction[];
   reachedItems: Set<string>;
   reachedLessons: Set<string>;
+  /** Whether Errors has real material, so the entry can be honest about it. */
+  errorsAvailable: boolean;
+  /** Lessons the learner has reached, for the By lesson entry. */
+  reachedLessonNumbers: number[];
 };
 
 type HubState =
@@ -67,6 +76,11 @@ export default function PracticeRoute() {
   // generation's screen, and an unmounted screen must not set state.
   const loadToken = useRef(0);
 
+  // Freestyle is the default: choosing what to practise is the selector's job.
+  // The other modes are for a learner who arrives with an intention.
+  const [mode, setMode] = useState<PracticeMode>("freestyle");
+  const [lessonId, setLessonId] = useState<string | null>(null);
+
   const load = useCallback(() => {
     const token = ++loadToken.current;
     setState({ phase: "loading" });
@@ -79,13 +93,16 @@ export default function PracticeRoute() {
         // they have not just done rather than its one favourite exercise.
         const seedHistory = new Map(Object.entries(practiceSeedHistory));
         // The ONE orchestration-boundary clock read; the planner never reads one.
+        // One pool, narrowed. The planner still decides lawfulness, so a mode
+        // can only ever offer LESS than freestyle, never something untaught.
+        const pool = seedsForMode(mode, { seeds: PRACTICE_SEEDS, snapshot, lessonId });
         const plan = planPracticeSession({
           snapshot,
           reachedLessons,
           seedHistory,
           items: ITEM_REGISTRY,
           lessons: V1_LESSONS,
-          seeds: PRACTICE_SEEDS,
+          seeds: pool,
           now: Date.now(),
           budget: PRACTICE_BUDGET,
         });
@@ -94,12 +111,17 @@ export default function PracticeRoute() {
           actions: plan.actions,
           reachedItems: reachedItemIds(snapshot),
           reachedLessons,
+          errorsAvailable: hasErrorsToPractise(snapshot, PRACTICE_SEEDS),
+          reachedLessonNumbers: (V1_LESSONS as { id: string; number: number }[])
+            .filter((l) => reachedLessons.has(l.id) && l.number >= 1 && l.number <= 10)
+            .map((l) => l.number)
+            .sort((a, b) => a - b),
         });
       })
       .catch(() => {
         if (loadToken.current === token) setState({ phase: "error" });
       });
-  }, [runtime]);
+  }, [runtime, mode, lessonId]);
 
   useEffect(() => {
     setRunning(false);
@@ -182,7 +204,17 @@ export default function PracticeRoute() {
         )}
 
         {state.phase === "ready" && state.actions.length > 0 && (
-          <PracticeStart actions={state.actions} onStart={() => setRunning(true)} />
+          <PracticeStart
+            actions={state.actions}
+            onStart={() => setRunning(true)}
+            mode={mode}
+            onModeChange={(next, lesson) => {
+              setLessonId(lesson ?? null);
+              setMode(next);
+            }}
+            errorsAvailable={state.errorsAvailable}
+            reachedLessonNumbers={state.reachedLessonNumbers}
+          />
         )}
       </View>
     </SafeAreaView>
