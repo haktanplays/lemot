@@ -61,7 +61,20 @@ const screens: LessonScreen[] = [
           sentences: [
             { fr: "L'addition, s'il vous plaît.", en: "The bill, please.", role: "exposure", pieces: ["L'addition", "s'il vous plaît"] },
             { fr: "C'est combien ?", en: "How much is it?", role: "exposure" },
-            { fr: "Vous avez du thé ?", en: "Do you have tea?", role: "exposure", pieces: ["Vous avez", "du thé"] },
+            {
+              fr: "Vous avez du thé ?",
+              en: "Do you have tea?",
+              role: "exposure",
+              pieces: ["Vous avez", "du thé"],
+              // The lesson has just spent four screens insisting that the little
+              // word is part of the package and cannot be dropped: un thé. Then
+              // this line shows a different little word on the same page, with
+              // nothing said about it. A learner who notices is right to.
+              depth: {
+                notice: "Not un thé this time. Asking whether a place has tea at all is a question about the stuff, not about one cup, and French changes the small word to say so.",
+                compare: "un thé is the cup you order. du thé is the tea they either have or do not.",
+              },
+            },
           ],
         },
       ],
