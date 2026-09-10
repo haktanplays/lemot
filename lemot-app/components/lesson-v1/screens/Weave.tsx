@@ -24,6 +24,14 @@ import {
 
 type WeavePiece = NonNullable<WeavePayload["suggestedPieces"]>[number];
 
+/**
+ * Small counts read better as words in a calm sentence. Beyond five, the digit
+ * is clearer than the word, and no line in the corpus gets close.
+ */
+function countWord(n: number): string {
+  return ["zero", "one", "two", "three", "four", "five"][n] ?? String(n);
+}
+
 // Deterministic, stable hint order: reverse the authored (answer) order so hint
 // pieces are never shown in copy-ready sequence, while staying identical across
 // renders and remounts. No randomness, so the learner experience is repeatable.
@@ -102,14 +110,41 @@ export function Weave({
   const constitutivePieces = allPieces.filter((p) => p.supportRole === "constitutive");
   const pieces = allPieces.filter((p) => p.supportRole !== "constitutive");
   const hintPieces = orderHintPieces(pieces);
-  // Rung 1 gives about half, never fewer than one and never the whole set when
-  // more than one exists; rung 2 gives everything.
+  // Rung 2 gives about half, never fewer than one and never the whole set when
+  // more than one exists; rung 3 gives everything.
   const firstRungCount = Math.max(1, Math.floor(hintPieces.length / 2));
-  const shownHintPieces = hintLevel >= 2 ? hintPieces : hintPieces.slice(0, firstRungCount);
+  const shownHintPieces = hintLevel >= 3 ? hintPieces : hintPieces.slice(0, firstRungCount);
   const hasPieces = pieces.length > 0;
   const hasConstitutive = constitutivePieces.length > 0;
   const hasCloze =
     typeof payload.hintCloze === "string" && payload.hintCloze.length > 0;
+
+  /**
+   * THE LADDER, and why rung 1 exists.
+   *
+   * The first tap used to hand over French. For a two-piece answer that is most
+   * of the answer, so the smallest help available was already large, and a
+   * learner who only wanted a nudge had to take a shove.
+   *
+   * Rung 1 is now a SHAPE cue and leaks nothing: how many pieces the line comes
+   * apart into, and that the learner already owns them. It is deliberately not
+   * built from the piece LABELS, which look like a safe hint and are not --
+   * many of them are English glosses of the French ("I'm going", "home"), so a
+   * label rung would translate the answer while pretending to be a nudge.
+   *
+   *   1  how many pieces, and that they are yours
+   *   2  some of the pieces, in French
+   *   3  all of them, or the authored shape to fill in
+   */
+  const topRung = hasCloze ? 3 : hintPieces.length > 1 ? 3 : hasPieces ? 2 : 1;
+  /**
+   * What the EVIDENCE layer records, which is a different question: how much
+   * support was on screen when the learner checked. 0 none, 1 partial, 2 all
+   * there was. The envelope allows exactly those three and says so ("there is
+   * no copy-ready rung"), so adding a UI rung must not widen it.
+   */
+  const reportedRung: 0 | 1 | 2 =
+    hintLevel === 0 ? 0 : hintLevel >= topRung ? 2 : 1;
 
   const canCheck = text.trim().length > 0;
   const isRevealed = phase === "revealed";
@@ -126,7 +161,7 @@ export function Weave({
     onTypedAttempt?.({
       text,
       evaluation,
-      hintRung: hintLevel as 0 | 1 | 2,
+      hintRung: reportedRung,
       // Declared constitutive pieces ARE rendered by this screen (below), from
       // first paint. Reporting the real render state is what lets the admission
       // resolver quarantine a payload whose required support never appeared.
@@ -311,7 +346,27 @@ export function Weave({
               over every piece of a two-piece answer is handing over the answer,
               which made the first tap the last one and left the ladder with a
               rung nobody needed. A learner who wants the rest asks again. */}
-          {hintLevel >= 1 && hasPieces && !(hasCloze && hintLevel >= 2) && (
+          {/* RUNG 1: the shape, and nothing else. */}
+          {hintLevel === 1 && (
+            <View>
+              <Text className="text-xs" style={{ color: P.ink3 }}>
+                {hintPieces.length > 1
+                  ? `This one comes apart into ${countWord(hintPieces.length)} pieces, and you already own them.`
+                  : "This one is a single piece you already own."}
+              </Text>
+              {topRung > 1 && (
+                <View style={{ marginTop: SPACE.sm }}>
+                  <LinkAction
+                    label="Show me a piece"
+                    align="left"
+                    onPress={() => setHintLevel(2)}
+                  />
+                </View>
+              )}
+            </View>
+          )}
+
+          {hintLevel >= 2 && hasPieces && !(hasCloze && hintLevel >= 3) && (
             <View>
               <Text className="text-xs" style={{ color: P.ink3, marginBottom: SPACE.sm }}>
                 {shownHintPieces.length < hintPieces.length
@@ -328,24 +383,24 @@ export function Weave({
                   <LinkAction
                     label="Show the rest"
                     align="left"
-                    onPress={() => setHintLevel(2)}
+                    onPress={() => setHintLevel(3)}
                   />
                 </View>
               )}
             </View>
           )}
 
-          {hintLevel === 1 && hasCloze && (
+          {hintLevel === 2 && hasCloze && (
             <View style={{ marginTop: SPACE.sm }}>
               <LinkAction
                 label="Need more help?"
                 align="left"
-                onPress={() => setHintLevel(2)}
+                onPress={() => setHintLevel(3)}
               />
             </View>
           )}
 
-          {hintLevel >= 2 && hasCloze && (
+          {hintLevel >= 3 && hasCloze && (
             <View
               className="border"
               style={{

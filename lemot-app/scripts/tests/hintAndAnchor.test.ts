@@ -9,27 +9,55 @@ const WEAVE = readFileSync(join(process.cwd(), "components/lesson-v1/screens/Wea
 const FRAME = readFileSync(join(process.cwd(), "components/ui/LessonScreenFrame.tsx"), "utf8");
 
 describe("the hint ladder has rungs worth climbing", () => {
-  test("the first rung shows part of the set, not all of it", () => {
-    // Handing over both pieces of a two-piece answer made the first tap the
-    // last one.
-    assert(WEAVE.includes("firstRungCount"), "rung 1 must show a bounded subset");
+  test("the smallest help available does not contain French", () => {
+    // The first tap used to hand over pieces. For a two-piece answer that is
+    // most of the answer, so the smallest help was already large and a learner
+    // who wanted a nudge had to take a shove. Rung 1 is a shape cue: how many
+    // pieces, and that they are already the learner's.
     assert(
-      /Math\.max\(1, Math\.floor\(hintPieces\.length \/ 2\)\)/.test(WEAVE),
-      "rung 1 should be about half, and never fewer than one",
+      WEAVE.includes("comes apart into"),
+      "rung 1 must describe the shape rather than show the words",
     );
     assert(
-      WEAVE.includes("hintLevel >= 2 ? hintPieces"),
-      "the full set belongs to a later rung",
+      WEAVE.includes("hintLevel === 1 &&"),
+      "rung 1 must be its own rung, not folded into the pieces rung",
+    );
+  });
+
+  test("the pieces rung shows part of the set, not all of it", () => {
+    assert(WEAVE.includes("firstRungCount"), "the pieces rung must show a bounded subset");
+    assert(
+      /Math\.max\(1, Math\.floor\(hintPieces\.length \/ 2\)\)/.test(WEAVE),
+      "it should be about half, and never fewer than one",
+    );
+    assert(
+      WEAVE.includes("hintLevel >= 3 ? hintPieces"),
+      "the full set belongs to the last rung",
     );
   });
 
   test("there is a way to ask for the rest", () => {
+    assert(WEAVE.includes('label="Show me a piece"'), "the shape cue needs a next rung");
     assert(WEAVE.includes('label="Show the rest"'), "a partial hint needs a next rung");
   });
 
   test("the recorded rung stays inside the existing evidence schema", () => {
-    // Widening 0|1|2 would change what every past attempt means.
-    assert(WEAVE.includes("hintRung: hintLevel as 0 | 1 | 2"), "the rung schema must not widen");
+    // Widening 0|1|2 would change what every past attempt means, and the
+    // envelope rejects anything else ("there is no copy-ready rung"). A third
+    // UI rung therefore MAPS onto the schema rather than extending it: none,
+    // partial, or everything this screen had to give.
+    assert(
+      WEAVE.includes("const reportedRung: 0 | 1 | 2 ="),
+      "the rung schema must not widen",
+    );
+    assert(
+      WEAVE.includes("hintLevel >= topRung ? 2 : 1"),
+      "full support must report 2 whatever the screen's top rung happens to be",
+    );
+    assert(
+      WEAVE.includes("hintRung: reportedRung"),
+      "the reported rung must be the mapped one, not the raw UI level",
+    );
   });
 });
 
