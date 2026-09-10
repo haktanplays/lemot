@@ -270,19 +270,6 @@ export const L9_SEEDS: PracticeSeed[] = [
     short: "Je voudrais faire une pause.",
     explanation: "A break pauses the day. It does not close it.",
   }),
-  // ── Asking, and giving the reason ─────────────────────────────────────────
-  weaveSeed({
-    id: "p-l9-apply-break-because-hungry",
-    operation: "apply", difficulty: "medium", surface: "context", lesson: L,
-    required: ["chunk-faire-une-pause", "chunk-je-voudrais", "chunk-j-ai-faim"],
-    targets: ["chunk-j-ai-faim"],
-    weaveType: "open",
-    prompt: "Ask for the break, then say what is behind it.",
-    context: "Nobody has stopped since nine and it is nearly two.",
-    answers: ["Je voudrais faire une pause. J'ai faim."],
-    alternatives: ["Je voudrais faire une pause, j'ai faim."],
-    ifCorrect: "The reason is what turns a request into something easy to say yes to.",
-  }),
   weaveSeed({
     id: "p-l9-apply-break-then-coffee",
     operation: "apply", difficulty: "hard", surface: "context", lesson: L,
@@ -318,18 +305,6 @@ export const L9_SEEDS: PracticeSeed[] = [
     answers: ["Je voudrais faire une pause. J'ai une question."],
     alternatives: ["Je voudrais faire une pause, j'ai une question."],
     ifCorrect: "Flagging it now means the break does not look like an escape.",
-  }),
-  weaveSeed({
-    id: "p-l9-apply-cut-in-and-ask-break",
-    operation: "apply", difficulty: "medium", surface: "typed", lesson: L,
-    required: ["chunk-excusez-moi", "chunk-faire-une-pause", "chunk-je-voudrais"],
-    targets: ["chunk-excusez-moi"],
-    weaveType: "open",
-    prompt: "Reach them, then ask.",
-    context: "They are in full swing and nobody has looked up in twenty minutes.",
-    answers: ["Excusez-moi, je voudrais faire une pause."],
-    alternatives: ["Excusez-moi. Je voudrais faire une pause."],
-    ifCorrect: "Interrupting well is what makes the request land instead of the interruption.",
   }),
   weaveSeed({
     id: "p-l9-apply-polite-full-request",
@@ -605,17 +580,21 @@ export const L9_SEEDS: PracticeSeed[] = [
     alternatives: ["Excusez-moi. Je voudrais faire une pause.", "Excusez moi, je voudrais faire une pause."],
     ifCorrect: "The hyphen in excusez-moi is the easy thing to lose.",
   }),
+  // Was a second dictation of the polite form, which
+  // p-l9-dictation-break-politely already covers. The refusal-plus-reason pair
+  // had no listening at all, and j'ai faim is the one L9 sentence whose sound
+  // does not match its spelling.
   weaveSeed({
-    id: "p-l9-dictation-polite-request",
-    operation: "produce", difficulty: "hard", surface: "dictation", lesson: L,
-    required: ["chunk-faire-une-pause", "chunk-sil-vous-plait"],
-    targets: ["chunk-sil-vous-plait"],
-    audio: "Je voudrais faire une pause, s'il vous plaît.",
+    id: "p-l9-dictation-decline-with-reason",
+    operation: "produce", difficulty: "medium", surface: "dictation", lesson: L,
+    required: ["chunk-j-ai-faim", "chunk-non-merci"],
+    targets: ["chunk-j-ai-faim"],
+    audio: "Non merci. J'ai faim.",
     weaveType: "open",
     prompt: "Write what you hear.",
-    answers: ["Je voudrais faire une pause, s'il vous plaît."],
-    alternatives: ["Je voudrais faire une pause s'il vous plaît."],
-    ifCorrect: "Three words in the tail, and every one of them is heard.",
+    answers: ["Non merci. J'ai faim."],
+    alternatives: ["Non merci, j'ai faim.", "Non merci. J ai faim."],
+    ifCorrect: "Four syllables that do not look like four syllables.",
   }),
 
   // ── Cold retrieval ────────────────────────────────────────────────────────

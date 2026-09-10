@@ -363,18 +363,6 @@ export const L1_SEEDS: PracticeSeed[] = [
     alternatives: ["Vous pouvez répéter s'il vous plaît ?"],
     ifCorrect: "The tail is what keeps a second ask from sounding like a complaint.",
   }),
-  weaveSeed({
-    id: "p-l1-apply-reach-and-ask-again",
-    operation: "apply", difficulty: "hard", surface: "context", lesson: L,
-    required: ["chunk-excusez-moi", "chunk-vous-pouvez-repeter"],
-    targets: ["chunk-vous-pouvez-repeter"],
-    weaveType: "open",
-    prompt: "Get their attention back, then ask them to repeat it.",
-    context: "They have already turned to the next customer and you still do not have your answer.",
-    answers: ["Excusez-moi, vous pouvez répéter ?"],
-    alternatives: ["Excusez-moi. Vous pouvez répéter ?"],
-    ifCorrect: "Reaching them first is what makes the second ask land.",
-  }),
   fillSeed({
     id: "p-l1-choice-greet-or-reach",
     operation: "repair", difficulty: "medium", surface: "choice", lesson: L,

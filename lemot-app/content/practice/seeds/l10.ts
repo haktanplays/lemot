@@ -611,4 +611,36 @@ export const L10_SEEDS: PracticeSeed[] = [
     alternatives: ["Je voudrais un thé, je voudrais faire une pause."],
     ifCorrect: "The same opener twice, doing two different jobs.",
   }),
+  // L10 had no slot-level question. The day's most-used destination hides a
+  // small word the learner has produced many times and never been asked about.
+  fillSeed({
+    id: "p-l10-retrieve-a-la-maison",
+    operation: "retrieve",
+    difficulty: "medium",
+    surface: "fill",
+    lesson: L,
+    required: ["chunk-je-vais", "chunk-a-la-maison"],
+    targets: ["chunk-a-la-maison"],
+    tags: ["articles"],
+    prompt: "Which small word does maison travel with?",
+    before: "Je vais à ",
+    after: " maison.",
+    correct: { id: "o-la-maison", text: "la" },
+    traps: [
+      {
+        id: "o-le-maison",
+        text: "le",
+        why: "Maison takes la. You have been saying à la maison since you learned to leave.",
+        tag: "wrong_item",
+      },
+      {
+        id: "o-un-maison",
+        text: "un",
+        why: "That would be a house, any house. You are going to yours.",
+        tag: "wrong_item",
+      },
+    ],
+    short: "Je vais à la maison.",
+    explanation: "A la is one piece, and it is the piece that makes it home rather than a building.",
+  }),
 ];

@@ -452,17 +452,21 @@ export const L8_SEEDS: PracticeSeed[] = [
     ifCorrect: "Reach, ask, thank. Three beats and you have your answer.",
     ifWrong: "Right pieces. Get their attention before the question.",
   }),
+  // Was a second dictation of "Est-ce que c'est ici ?", which
+  // p-l8-dictation-is-it-here already covers. The answering side of the same
+  // exchange had no listening, and it is the harder one to hear: oui runs
+  // straight into c'est.
   weaveSeed({
-    id: "p-l8-dictation-check-the-door",
+    id: "p-l8-dictation-yes-its-here",
     operation: "produce", difficulty: "hard", surface: "dictation", lesson: L,
-    required: ["chunk-est-ce-que", "chunk-c-est"],
-    targets: ["chunk-est-ce-que"],
-    audio: "Est-ce que c'est ici ?",
+    required: ["chunk-oui", "chunk-c-est"],
+    targets: ["chunk-c-est"],
+    audio: "Oui, c'est ici.",
     weaveType: "open",
     prompt: "Write what you hear.",
-    answers: ["Est-ce que c'est ici ?"],
-    alternatives: ["Est ce que c'est ici ?", "Est-ce que c est ici ?"],
-    ifCorrect: "Two hyphens and an apostrophe, all of them audible if you know they are there.",
+    answers: ["Oui, c'est ici."],
+    alternatives: ["Oui. C'est ici.", "Oui, c est ici."],
+    ifCorrect: "Three short words that arrive as one. The comma is yours to add.",
   }),
   weaveSeed({
     id: "p-l8-dictation-not-this-one",
@@ -691,5 +695,37 @@ export const L8_SEEDS: PracticeSeed[] = [
     answers: ["Bonjour. C'est où ? Merci beaucoup !"],
     alternatives: ["Bonjour, c'est où ? Merci beaucoup !"],
     ifCorrect: "The whole exchange, and not one new word in it.",
+  }),
+  // L8 had no slot-level question either. The est-ce que frame is the lesson's
+  // whole point, and what goes after it is the thing learners get wrong.
+  fillSeed({
+    id: "p-l8-retrieve-what-follows-est-ce-que",
+    operation: "retrieve",
+    difficulty: "medium",
+    surface: "fill",
+    lesson: L,
+    required: ["chunk-est-ce-que", "chunk-c-est"],
+    targets: ["chunk-c-est"],
+    tags: ["natural-speech"],
+    prompt: "Est-ce que goes in front of a statement. Which statement?",
+    before: "Est-ce que ",
+    after: " ici ?",
+    correct: { id: "o-cest-here", text: "c'est" },
+    traps: [
+      {
+        id: "o-ou-here",
+        text: "où",
+        why: "That asks where twice over. Est-ce que has already made it a question.",
+        tag: "wrong_item",
+      },
+      {
+        id: "o-oui-here",
+        text: "oui",
+        why: "Oui answers a question. It cannot be inside the one being asked.",
+        tag: "wrong_item",
+      },
+    ],
+    short: "Est-ce que c'est ici ?",
+    explanation: "Est-ce que does the asking. Everything after it stays in the shape you already own: c'est ici.",
   }),
 ];

@@ -1807,18 +1807,6 @@ export const L7_SEEDS: PracticeSeed[] = [
     ifCorrect: "It costs nothing and it is the difference between leaving and vanishing.",
   }),
   weaveSeed({
-    id: "p-l7-retrieve-going-to-cafe",
-    operation: "retrieve", difficulty: "easy", surface: "typed", lesson: L,
-    required: ["chunk-je-vais", "chunk-au-cafe"],
-    targets: ["chunk-au-cafe"],
-    weaveType: "mid",
-    prompt: "Say where you are heading.",
-    context: "Somebody asks, and the answer is the place round the corner.",
-    answers: ["Je vais au café."],
-    alternatives: ["Je vais au cafe.", "Je vais au café"],
-    ifCorrect: "Engine, then place. The place brought its own small word with it.",
-  }),
-  weaveSeed({
     id: "p-l7-retrieve-yes",
     operation: "retrieve", difficulty: "easy", surface: "typed", lesson: L,
     required: ["chunk-oui", "chunk-je-dois-partir"],

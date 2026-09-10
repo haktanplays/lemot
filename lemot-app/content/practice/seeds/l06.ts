@@ -292,18 +292,6 @@ export const L6_SEEDS: PracticeSeed[] = [
     ifCorrect: "The whole visit, opened and closed by you.",
   }),
   weaveSeed({
-    id: "p-l6-apply-thanks-and-close-warm",
-    operation: "apply", difficulty: "medium", surface: "typed", lesson: L,
-    required: ["chunk-merci", "chunk-au-revoir"],
-    targets: ["chunk-au-revoir"],
-    weaveType: "open",
-    prompt: "Thank them and close.",
-    context: "They found what you needed and are already turning back to their work.",
-    answers: ["Merci, au revoir."],
-    alternatives: ["Merci, au revoir !", "Merci. Au revoir."],
-    ifCorrect: "The commonest close in France, and the one to have automatic.",
-  }),
-  weaveSeed({
     id: "p-l6-apply-decline-and-close",
     operation: "apply", difficulty: "medium", surface: "context", lesson: L,
     required: ["chunk-non-merci", "chunk-au-revoir"],
@@ -589,5 +577,37 @@ export const L6_SEEDS: PracticeSeed[] = [
     answers: ["Bonjour. C'est ici."],
     alternatives: ["Bonjour, c'est ici."],
     ifCorrect: "Sometimes the answer arrives before the question.",
+  }),
+  // L6 had no slot-level question at all: every seed asked for a whole
+  // utterance, so the one distinction the lesson keeps flagging -- j'ai for
+  // what you have, je suis for what you are -- was never asked directly.
+  fillSeed({
+    id: "p-l6-retrieve-have-not-be",
+    operation: "retrieve",
+    difficulty: "easy",
+    surface: "fill",
+    lesson: L,
+    required: ["chunk-j-ai", "chunk-une-question"],
+    targets: ["chunk-j-ai"],
+    tags: ["j-ai-vs-je-suis"],
+    prompt: "Which engine carries a question?",
+    after: " une question.",
+    correct: { id: "o-jai-q", text: "J'ai" },
+    traps: [
+      {
+        id: "o-jesuis-q",
+        text: "Je suis",
+        why: "Je suis says what you are. A question is something you have, not something you are.",
+        tag: "wrong_item",
+      },
+      {
+        id: "o-jevais-q",
+        text: "Je vais",
+        why: "Je vais takes you somewhere. It cannot hold a question for you.",
+        tag: "wrong_item",
+      },
+    ],
+    short: "J'ai une question.",
+    explanation: "French hands questions, hunger and ideas to j'ai. Je suis is for who and where you are.",
   }),
 ];
