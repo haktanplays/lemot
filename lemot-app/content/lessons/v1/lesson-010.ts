@@ -127,22 +127,31 @@ const screens: LessonScreen[] = [
         payload: {
           // Medium on the locked ladder: the prompt names the communicative job,
           // not the situation, so the tier says mid.
+          // L8 already asked for "Bonjour. C'est où ?" at OPEN support, so this
+          // would be the same act with a chip tray added. What L10 can ask for
+          // that L8 could not is the register: the opener that cuts in without
+          // cutting across, which the learner has owned since L1 and drops the
+          // moment the sentence gets long.
           weaveType: "mid",
-          prompt: "Open politely, then ask where it is.",
+          prompt: "Open politely, reach them, then ask where it is.",
           context:
-            "Morning. Your first time in this building, and the room you need is not where you expected.",
+            "Morning. Your first time in this building, the room you need is not where you expected, and nobody is looking at you.",
           suggestedPieces: [
             { text: "bonjour", itemId: "chunk-bonjour", label: "hello" },
+            { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "reaching them" },
             { text: "c'est", itemId: "chunk-c-est", label: "it is" },
             { text: "où", itemId: "adverb-ou-where", label: "where" },
           ],
-          hintCloze: "Bonjour. ___ ?",
-          expectedAnswers: ["Bonjour. C'est où ?"],
-          acceptedAlternatives: ["Bonjour, c'est où ?", "Bonjour, c'est où"],
+          hintCloze: "Bonjour. Excusez-moi, ___ ?",
+          expectedAnswers: ["Bonjour. Excusez-moi, c'est où ?"],
+          acceptedAlternatives: [
+            "Bonjour, excusez-moi, c'est où ?",
+            "Bonjour. Excusez-moi, c'est où",
+          ],
           reveal: {
-            modelAnswer: "Bonjour. C'est où ?",
-            ifCorrect: "The opener and the question, working as one move.",
-            ifCorrectButFlat: "Right. Bonjour first buys you the answer.",
+            modelAnswer: "Bonjour. Excusez-moi, c'est où ?",
+            ifCorrect: "Greeted, reached them, then asked. Nobody had to guess you were talking to them.",
+            ifCorrectButFlat: "Right. Bonjour opens the room; excusez-moi picks the person.",
             ifUnderstandableButWrong:
               "Your meaning lands. A native opens the moment first: Bonjour. C'est où ?",
             ifMissingTargetPiece: "Start with bonjour, then let c'est où do the asking.",
@@ -452,16 +461,20 @@ const screens: LessonScreen[] = [
       payload: {
         situation:
           "The end of your first full day at the new place. Someone walks you to the door.",
-        communicativeGoal: "Take your leave warmly: thanks, direction, goodbye.",
+        // L7's closing say-it already asked for "Merci. Je vais à la maison. Au
+        // revoir." at the same open support. A whole day is worth more thanks
+        // than a single errand, so the one difference is the one a French
+        // speaker would actually make.
+        communicativeGoal: "Take your leave warmly: thanks the size of the day, direction, goodbye.",
         suggestedPieces: [
-          { text: "merci", itemId: "chunk-merci" },
+          { text: "merci beaucoup", itemId: "chunk-merci-beaucoup" },
           { text: "je vais", itemId: "chunk-je-vais" },
           { text: "à la maison", itemId: "chunk-a-la-maison" },
           { text: "au revoir", itemId: "chunk-au-revoir" },
         ],
-        modelAnswer: "Merci. Je vais à la maison. Au revoir.",
+        modelAnswer: "Merci beaucoup. Je vais à la maison. Au revoir.",
         reveal: {
-          modelAnswer: "Merci. Je vais à la maison. Au revoir.",
+          modelAnswer: "Merci beaucoup. Je vais à la maison. Au revoir.",
           naturalAlternatives: ["Je vais à la maison. Au revoir."],
           explanation:
             "Both are natural. Merci thanks the day; je vais à la maison says where you're off to; au revoir closes it gently.",

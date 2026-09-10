@@ -147,21 +147,30 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-bonjour", "chunk-je-suis-ici", "chunk-je-suis"],
         weakPointTags: ["natural-speech"],
         payload: {
-          // Medium: the prompt names the communicative job, so the tier says so.
+          // L2 already asked for "Bonjour, je suis ici." at OPEN support, so
+          // asking for it here behind a chip tray would be the same act with
+          // more help -- the ladder running backwards. L6's claim is the whole
+          // moment, so the arrival now carries the reason with it. Both halves
+          // are owned, and the closing still belongs to s09.
           weaveType: "mid",
-          prompt: "Greet them, then say you have arrived.",
+          prompt: "Greet them, say you have arrived, and say what you came for.",
           context: "You are at the door. A voice from inside: « Bonjour ? »",
           suggestedPieces: [
             { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
             { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
             { text: "ici", itemId: "word-ici", required: true, label: "place word" },
+            { text: "j'ai une question", itemId: "chunk-j-ai-une-question", label: "the reason" },
           ],
-          hintCloze: "Bonjour, je suis ___.",
-          expectedAnswers: ["Bonjour, je suis ici."],
+          hintCloze: "Bonjour. Je suis ___. J'ai ___.",
+          expectedAnswers: ["Bonjour. Je suis ici. J'ai une question."],
+          acceptedAlternatives: [
+            "Bonjour, je suis ici. J'ai une question.",
+            "Bonjour. Je suis ici. J ai une question.",
+          ],
           reveal: {
-            modelAnswer: "Bonjour, je suis ici.",
-            ifCorrect: "You opened the moment and said where you are.",
-            ifCorrectButFlat: "Right. The greeting and the arrival, in one line.",
+            modelAnswer: "Bonjour. Je suis ici. J'ai une question.",
+            ifCorrect: "Three short moves, and the whole arrival is done.",
+            ifCorrectButFlat: "Right. Greet, place yourself, then say why you came.",
             ifUnderstandableButWrong:
               "Your meaning lands. A native opens first, then lands: Bonjour. Je suis ici.",
             ifMissingTargetPiece: "Start with bonjour, then je suis ici.",

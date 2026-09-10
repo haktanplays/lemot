@@ -14,7 +14,8 @@
     "manifest:add": "tsx scripts/manifestAdd.ts",
     "manifest:add-tag": "tsx scripts/manifestAddTag.ts",
     "telemetry:report": "tsx scripts/telemetryReport.ts",
-    "test:learning-engine": "tsx scripts/tests/run.ts"
+    "test:learning-engine": "tsx scripts/tests/run.ts",
+    "gates:closure": "tsx scripts/acceptanceGates.ts"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
