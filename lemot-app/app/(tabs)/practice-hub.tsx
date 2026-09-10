@@ -23,6 +23,7 @@
  * `usePracticeSession`, with `placement: "practice_hub"`.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { P } from "@/constants/theme";
@@ -78,8 +79,17 @@ export default function PracticeRoute() {
 
   // Freestyle is the default: choosing what to practise is the selector's job.
   // The other modes are for a learner who arrives with an intention.
-  const [mode, setMode] = useState<PracticeMode>("freestyle");
-  const [lessonId, setLessonId] = useState<string | null>(null);
+  //
+  // A learner arriving from Mon Lexique's "Practise this" has already stated
+  // one, so the route honours it: By lesson, opened on the lesson where they
+  // met that word. It is the same picker, arriving pre-answered rather than a
+  // second way in.
+  const { lesson: lessonParam } = useLocalSearchParams<{ lesson?: string }>();
+  const arrivedWithLesson = typeof lessonParam === "string" && lessonParam.length > 0;
+  const [mode, setMode] = useState<PracticeMode>(arrivedWithLesson ? "byLesson" : "freestyle");
+  const [lessonId, setLessonId] = useState<string | null>(
+    arrivedWithLesson ? lessonParam : null,
+  );
 
   const load = useCallback(() => {
     const token = ++loadToken.current;

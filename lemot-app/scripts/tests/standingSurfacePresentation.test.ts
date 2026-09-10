@@ -240,23 +240,35 @@ describe("Mon Lexique groups by band without re-deriving anything", () => {
     );
   });
 
-  test("the surface stays read-only and renders no count", () => {
+  test("the surface writes nothing and renders no count", () => {
+    // This used to ban every onPress that set state, which was a fair proxy for
+    // "read-only" while the surface had nothing to press. Mon Lexique now has
+    // filters and opens one word at a time, and neither of those writes
+    // anything: they are view state, and the invariant worth protecting was
+    // always that the LEARNER'S DATA is not touched here.
     const code = codeOf(read(LEXIQUE));
     for (const banned of [
-      "TextInput",
+      "TextInput", // no search box, no editing a word
       "onChangeText",
-      "onLongPress",
+      "onLongPress", // no destructive gestures on a memory surface
       "Swipeable",
-      "onPress={() => set",
+      "recordEvent", // and nothing that writes to the log
+      "appendEvent",
+      "LocalRepository",
+      "scoreEvents",
     ]) {
-      assert(!code.includes(banned), `read-only surface: no ${banned}`);
+      assert(!code.includes(banned), `Mon Lexique must not ${banned}`);
     }
     assert(
-      !code.includes("entries.length}") && !code.includes("inBand.length}"),
+      !code.includes("entries.length}") &&
+        !code.includes("inBand.length}") &&
+        !code.includes("visible.length}"),
       "no counter is rendered beside a band",
     );
+    // The card itself is still inert. The route decides whether a row opens;
+    // a card that owned a press action would carry it into every consumer.
     const card = codeOf(read(CARD));
-    assert(!card.includes("onPress"), "an entry is not an action");
+    assert(!card.includes("onPress"), "the shared card is not itself an action");
   });
 
   test("French leads the entry and English stays support", () => {
