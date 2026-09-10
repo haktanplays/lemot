@@ -103,3 +103,56 @@ describe("Look Closer is not a wall of equal paragraphs", () => {
     }
   });
 });
+
+/**
+ * The chips are round, raised and sized like buttons. Until this pass they were
+ * inert, which is an affordance writing a cheque the screen does not honour:
+ * the learner taps the piece they do not recognise and nothing happens.
+ *
+ * The founder's split is what keeps the answer small. Chunk tap is "understand
+ * this piece"; Look Closer is "understand this sentence". So the reveal holds
+ * the English, a way to hear the fragment alone, and one example, and it stays
+ * inside the lesson.
+ */
+describe("tapping a piece answers the question the chip raises", () => {
+  test("the chips are actually pressable", () => {
+    const chipBlock = SHOWCASE.slice(
+      SHOWCASE.indexOf("{pieces.length >= 2 &&"),
+      SHOWCASE.indexOf("openPiece !== null"),
+    );
+    assert(chipBlock.includes("<Pressable"), "a chip that looks like a button must behave as one");
+    assert(
+      chipBlock.includes('accessibilityRole="button"'),
+      "the affordance must reach assistive technology too",
+    );
+  });
+
+  test("one piece is open at a time", () => {
+    assert(
+      SHOWCASE.includes("setOpenPiece(active ? null : i)"),
+      "tapping a second chip should move the reveal, not stack another one",
+    );
+  });
+
+  test("the reveal is inline: no modal, no navigation away", () => {
+    assert(!/\bModal\b/.test(SHOWCASE), "no giant modal");
+    assert(!/useRouter|router\.push|expo-router/.test(SHOWCASE), "no navigation hijack");
+  });
+
+  test("it stays a micro-reveal rather than a grammar dump", () => {
+    const reveal = SHOWCASE.slice(
+      SHOWCASE.indexOf("function PieceReveal"),
+      SHOWCASE.indexOf("Look Closer, in three weights"),
+    );
+    assert(reveal.includes("item?.en"), "the English is the point of the tap");
+    assert(reveal.includes("exampleFr"), "one example, so the piece is seen working");
+    assert(
+      !reveal.includes("item?.meaning"),
+      "the registry's long meaning field is internal prose, not a learner card",
+    );
+    assert(
+      !reveal.includes("relatedItemIds") && !reveal.includes("weakPointTags"),
+      "no grammar dump",
+    );
+  });
+});

@@ -82,6 +82,20 @@ export function pieceLabel(text: string): string {
 }
 
 /**
+ * The registry item a piece of text IS, if any.
+ *
+ * Authored pieces are plain strings, so a chip built from one carries no id.
+ * Most of them still resolve -- "J'ai" is chunk-j-ai -- and the ones that do
+ * not are the deliberate fillers ("soif", "madame", "croissant") that the
+ * registry does not model and should not. Returns undefined for those rather
+ * than guessing, and the chip simply has less to say when tapped.
+ */
+export function pieceItemId(text: string): string | undefined {
+  const key = fold(text);
+  return LEXICON.find((e) => e.key === key)?.itemId;
+}
+
+/**
  * Every known piece in a French string, ungated — the GRADING view.
  *
  * Deliberately the COARSE segmentation: longest match, never decomposed. The

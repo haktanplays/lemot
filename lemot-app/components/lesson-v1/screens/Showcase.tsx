@@ -5,7 +5,8 @@ import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import { useSpeech } from "@/hooks/useSpeech";
-import { pieceLabel, showcasePieces } from "@/content/lessons/showcasePieces";
+import { pieceItemId, pieceLabel, showcasePieces } from "@/content/lessons/showcasePieces";
+import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import type { ShowcaseScreen, ShowcaseSentence, ShowcaseDepth } from "@/content/lessonTypes";
 
 /**
@@ -70,6 +71,7 @@ export function Showcase({
                 sentence={sentence}
                 first={si === 0}
                 onSay={() => say(sentence.fr)}
+                onSayPiece={(text) => say(text)}
               />
             ))}
           </View>
@@ -83,15 +85,24 @@ function Line({
   sentence,
   first,
   onSay,
+  onSayPiece,
 }: {
   sentence: ShowcaseSentence;
   first: boolean;
   onSay: () => void;
+  onSayPiece: (text: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  // Which chip the learner tapped, if any. One at a time: the reveal is a small
+  // answer to "what is this piece", not a panel that accumulates.
+  const [openPiece, setOpenPiece] = useState<number | null>(null);
   // Authored pieces win, but they are rarely authored: deriving from the
   // canonical registry is what keeps the breakdown honest as items change.
-  const pieces = sentence.pieces ?? showcasePieces(sentence.fr).map((p) => p.text);
+  // Either way the chip keeps the item id where there is one, because that is
+  // what it has to say when the learner taps it.
+  const pieces: { text: string; itemId?: string }[] = sentence.pieces
+    ? sentence.pieces.map((text) => ({ text, itemId: pieceItemId(text) }))
+    : showcasePieces(sentence.fr);
   const depth = sentence.depth;
   const hasDepth = depth !== undefined && Object.values(depth).some(Boolean);
 
@@ -113,27 +124,47 @@ function Line({
             {sentence.en}
           </Text>
 
+          {/* The chips look tappable because they are round, raised and sized
+              like buttons. Until now they were not, which is an affordance
+              writing a cheque the screen does not honour: a learner taps the
+              piece they do not recognise and nothing happens. Tapping now
+              answers the small question the chip raises -- what is this piece,
+              and what does it sound like -- and nothing bigger. Look Closer
+              still owns the sentence; this owns the piece. */}
           {pieces.length >= 2 && (
-            <View
-              style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: SPACE.sm }}
-            >
-              {pieces.map((piece, i) => (
-                <View
-                  key={`${piece}-${i}`}
-                  style={{
-                    backgroundColor: P.rl,
-                    borderWidth: 1,
-                    borderColor: P.rb,
-                    borderRadius: 9999,
-                    paddingHorizontal: 9,
-                    paddingVertical: 4,
-                  }}
-                >
-                  <Text style={{ fontSize: 12, lineHeight: frenchLineHeight(12), color: P.ink2 }}>
-                    {pieceLabel(piece)}
-                  </Text>
-                </View>
-              ))}
+            <View style={{ marginTop: SPACE.sm }}>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+                {pieces.map((piece, i) => {
+                  const active = openPiece === i;
+                  return (
+                    <Pressable
+                      key={`${piece.text}-${i}`}
+                      onPress={() => setOpenPiece(active ? null : i)}
+                      accessibilityRole="button"
+                      accessibilityState={{ expanded: active }}
+                      accessibilityLabel={`What is ${pieceLabel(piece.text)}`}
+                      hitSlop={4}
+                      style={{
+                        backgroundColor: active ? P.rb : P.rl,
+                        borderWidth: 1,
+                        borderColor: P.rb,
+                        borderRadius: 9999,
+                        paddingHorizontal: 9,
+                        paddingVertical: 4,
+                      }}
+                    >
+                      <Text
+                        style={{ fontSize: 12, lineHeight: frenchLineHeight(12), color: P.ink2 }}
+                      >
+                        {pieceLabel(piece.text)}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+              {openPiece !== null && pieces[openPiece] !== undefined && (
+                <PieceReveal piece={pieces[openPiece]} onSay={onSayPiece} />
+              )}
             </View>
           )}
         </View>
@@ -176,6 +207,75 @@ function Line({
       )}
 
       {hasDepth && open && <Depth depth={depth as ShowcaseDepth} />}
+    </View>
+  );
+}
+
+/**
+ * What one piece is, and nothing more.
+ *
+ * The founder's line: chunk tap is "understand this piece", Look Closer is
+ * "understand this sentence". So this stays small on purpose -- the English,
+ * a way to hear it alone, and one example if the registry has one. No grammar
+ * dump, no modal, and no navigation away from the lesson.
+ *
+ * A piece the registry does not model (the deliberate fillers: soif, madame,
+ * croissant) still answers the other half of the question, because hearing a
+ * fragment on its own is exactly what a learner taps a chip for.
+ */
+function PieceReveal({
+  piece,
+  onSay,
+}: {
+  piece: { text: string; itemId?: string };
+  onSay: (text: string) => void;
+}) {
+  const item = piece.itemId
+    ? (ITEM_REGISTRY as Record<string, { en?: string; exampleFr?: string; exampleEn?: string }>)[
+        piece.itemId
+      ]
+    : undefined;
+  return (
+    <View
+      style={{
+        marginTop: SPACE.sm,
+        backgroundColor: P.bg,
+        borderRadius: 8,
+        paddingHorizontal: SPACE.sm,
+        paddingVertical: SPACE.sm - 2,
+      }}
+    >
+      <View style={{ flexDirection: "row", alignItems: "center", gap: SPACE.sm }}>
+        <Text
+          style={{
+            color: P.ink,
+            fontFamily: "serif",
+            fontSize: 14,
+            lineHeight: frenchLineHeight(14),
+          }}
+        >
+          {pieceLabel(piece.text)}
+        </Text>
+        <Pressable
+          onPress={() => onSay(piece.text)}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel={`Listen to ${pieceLabel(piece.text)}`}
+        >
+          <Volume2 size={14} color={P.ink3} />
+        </Pressable>
+      </View>
+      {Boolean(item?.en) && (
+        <Text style={{ color: P.ink2, fontSize: 13, lineHeight: 20, marginTop: 1 }}>
+          {item?.en}
+        </Text>
+      )}
+      {Boolean(item?.exampleFr) && (
+        <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 19, marginTop: SPACE.sm - 4 }}>
+          {item?.exampleFr}
+          {item?.exampleEn ? `  ${item.exampleEn}` : ""}
+        </Text>
+      )}
     </View>
   );
 }
