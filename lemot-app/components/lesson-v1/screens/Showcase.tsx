@@ -3,7 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import { Volume2, Plus, Minus } from "lucide-react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P, SPACE } from "@/constants/theme";
+import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import { useSpeech } from "@/hooks/useSpeech";
 import { showcasePieces } from "@/content/lessons/showcasePieces";
 import type { ShowcaseScreen, ShowcaseSentence, ShowcaseDepth } from "@/content/lessonTypes";
@@ -50,7 +50,7 @@ export function Showcase({
       {clusters.map((cluster, ci) => (
         <View key={cluster.label} style={{ marginTop: ci === 0 ? 0 : SPACE.lg }}>
           <Text
-            style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.3, marginBottom: SPACE.sm }}
+            style={{ color: P.ink3, fontSize: 12, lineHeight: 17, letterSpacing: 0.3, marginBottom: SPACE.sm }}
           >
             {cluster.label}
           </Text>
@@ -126,10 +126,12 @@ function Line({
                     borderColor: P.rb,
                     borderRadius: 9999,
                     paddingHorizontal: 9,
-                    paddingVertical: 3,
+                    paddingVertical: 4,
                   }}
                 >
-                  <Text style={{ fontSize: 12, color: P.ink2 }}>{piece}</Text>
+                  <Text style={{ fontSize: 12, lineHeight: frenchLineHeight(12), color: P.ink2 }}>
+                    {piece}
+                  </Text>
                 </View>
               ))}
             </View>
@@ -167,7 +169,7 @@ function Line({
           style={{ flexDirection: "row", alignItems: "center", gap: 5, marginTop: SPACE.sm }}
         >
           {open ? <Minus size={12} color={P.ink3} /> : <Plus size={12} color={P.ink3} />}
-          <Text style={{ fontSize: 12, color: P.ink3 }}>
+          <Text style={{ fontSize: 12, lineHeight: 17, color: P.ink3 }}>
             {open ? "Close" : "Look closer"}
           </Text>
         </Pressable>
@@ -202,7 +204,7 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
         .filter(([, body]) => Boolean(body))
         .map(([label, body]) => (
           <View key={label}>
-            <Text style={{ fontSize: 11, color: P.ink3, letterSpacing: 0.3 }}>{label}</Text>
+            <Text style={{ fontSize: 11, lineHeight: 16, color: P.ink3, letterSpacing: 0.3 }}>{label}</Text>
             <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: 1 }}>
               {body}
             </Text>

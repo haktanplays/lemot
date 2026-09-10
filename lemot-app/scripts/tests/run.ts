@@ -32,6 +32,7 @@ import "./gradingTrust.test";
 import "./chainStepIsolation.test";
 import "./lessonContinuity.test";
 import "./hintAndAnchor.test";
+import "./frenchTypography.test";
 import "./devApkCopyGuard.test";
 import "./componentCopyGuard.test";
 import "./productStageResolution.test";

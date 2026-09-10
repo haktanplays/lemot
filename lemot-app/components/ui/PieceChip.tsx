@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { P, RADIUS, SPACE } from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchLineHeight } from "@/constants/theme";
 
 /**
  * PieceChip - a single French support piece within reach (UI Slice 3).
@@ -20,7 +20,7 @@ export function PieceChip({ text, label }: { text: string; label?: string }) {
         borderColor: P.border,
         borderRadius: RADIUS.pill,
         paddingHorizontal: SPACE.md,
-        paddingVertical: SPACE.sm - 1,
+        paddingVertical: SPACE.sm,
         alignSelf: "flex-start",
       }}
     >
@@ -30,12 +30,13 @@ export function PieceChip({ text, label }: { text: string; label?: string }) {
           fontFamily: "serif",
           fontStyle: "italic",
           fontSize: 14,
+          lineHeight: frenchLineHeight(14),
         }}
       >
         {text}
       </Text>
       {label && (
-        <Text style={{ color: P.ink3, fontSize: 11, marginTop: 1 }}>
+        <Text style={{ color: P.ink3, fontSize: 11, lineHeight: 16, marginTop: 1 }}>
           {label}
         </Text>
       )}

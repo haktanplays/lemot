@@ -67,3 +67,19 @@ export const MOTIV = MOTIV_PROVERBS.flatMap((p, i) => [
   MOTIV_SOFT_REFLECTIONS[i],
   MOTIV_PATH_REFLECTIONS[i],
 ]);
+
+/**
+ * Vertical room for a line of French.
+ *
+ * French carries accents above (é, è, ê, à, ç) and descenders below (j, g, p,
+ * q, y), and the product sets French in italic serif, which swings furthest of
+ * all. A Text with no lineHeight inherits a default sized for Latin text
+ * without accents, and inside a pill with tight vertical padding the tops of
+ * accents and the tails of J and j get shaved. The founder saw it first on
+ * "J'ai"; it was never a J problem.
+ *
+ * 1.45x is enough for an italic serif accent stack without making chips loose.
+ */
+export function frenchLineHeight(fontSize: number): number {
+  return Math.round(fontSize * 1.45);
+}
