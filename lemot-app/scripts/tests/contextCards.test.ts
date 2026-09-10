@@ -189,3 +189,41 @@ describe("meeting a card is recorded honestly", () => {
     assertEqual(Object.keys(parsed).sort().join(","), "a,d", "junk values are dropped");
   });
 });
+
+/**
+ * The lifecycle the brief draws ends in Mon Lexique: "remembers exposure state
+ * honestly". Honestly is the load-bearing word. A word met on a card must be
+ * visible there -- otherwise the learner met it and the app forgot -- and it
+ * must NOT be inside the ownership bands, because every band is a statement
+ * about what is becoming theirs and this is only a statement about having seen
+ * something once.
+ */
+describe("Mon Lexique remembers exposure without promoting it", () => {
+  const route = readFileSync(join(process.cwd(), "app/(tabs)/mon-lexique.tsx"), "utf8");
+
+  test("what was met in Context Cards is shown", () => {
+    assert(route.includes("Met in Context Cards"), "exposure the learner had must not vanish");
+    assert(
+      route.includes("readContextCardExposure"),
+      "and it must come from the exposure store, not the mastery projection",
+    );
+  });
+
+  test("it is not folded into the ownership bands", () => {
+    const banded = route.slice(route.indexOf("MON_LEXIQUE_BANDS.map"));
+    assert(
+      !banded.includes("metCards"),
+      "a met word inside a band would read as a claim about owning it",
+    );
+    assert(
+      route.includes("Seen, not learned"),
+      "the difference has to be said, not implied by layout",
+    );
+  });
+
+  test("the section reads the separate store and nothing else", () => {
+    // If this ever started deriving from the snapshot, exposure and production
+    // would have quietly merged in the one surface that must keep them apart.
+    assert(!route.includes("contextCardMastery"), "no bridge into mastery");
+  });
+});

@@ -63,6 +63,8 @@ import {
 import { SurfaceHeader, QuietState } from "@/components/ui/StandingSurface";
 import { SPACE } from "@/constants/theme";
 import { V1_LESSONS } from "@/content/lessons/v1";
+import { allContextCards } from "@/content/context-cards/cards";
+import { readContextCardExposure } from "@/lib/contextCardExposure";
 import { useSpeech } from "@/hooks/useSpeech";
 import { MonLexiqueEntryDetail } from "@/components/learning-engine/MonLexiqueEntryDetail";
 import {
@@ -111,6 +113,10 @@ export default function MonLexiqueRoute() {
   // One word open at a time: the detail answers a question about THAT word, and
   // a column of open panels is the list again, only longer.
   const [openItemId, setOpenItemId] = useState<string | null>(null);
+  // Context Card exposure, read from ITS OWN store. Kept as a separate list
+  // rather than folded into the bands, because the bands are about ownership
+  // and this is about having seen something once.
+  const [metCards, setMetCards] = useState<string[]>([]);
   // Stale-read guard: a slow pre-reset read must never populate the new
   // generation's screen, and an unmounted screen must not set state.
   const loadToken = useRef(0);
@@ -130,6 +136,8 @@ export default function MonLexiqueRoute() {
           snapshot,
         }).map((entry) => ({ entry, band: resolveMonLexiqueBand(entry, now) }));
         setState({ phase: "ready", entries, now });
+        const met = readContextCardExposure();
+        setMetCards(allContextCards().filter((c) => met[c.id] !== undefined).map((c) => c.fr));
       })
       .catch(() => {
         if (loadToken.current === token) setState({ phase: "error" });
@@ -309,6 +317,44 @@ export default function MonLexiqueRoute() {
             <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
               {monLexiqueEmptyLine(filter, lessonId !== null)}
             </Text>
+          )}
+
+          {/*
+            MET, not owned. Context Card words live in their own store and are
+            not registry items, so they can never be a Practice target or a
+            production claim -- and they must not sit inside the bands either,
+            because every band is a statement about ownership and this is only
+            a statement about having seen something. Separate section, plainer
+            type, and the difference said out loud.
+          */}
+          {filter === "all" && metCards.length > 0 && (
+            <View style={{ marginBottom: SPACE.xxl }}>
+              <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.4, marginBottom: 2 }}>
+                Met in Context Cards
+              </Text>
+              <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 18, marginBottom: SPACE.sm }}>
+                Seen, not learned. These become yours through the lessons that teach them.
+              </Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+                {metCards.map((fr) => (
+                  <View
+                    key={fr}
+                    style={{
+                      backgroundColor: P.paper,
+                      borderWidth: 1,
+                      borderColor: P.border,
+                      borderRadius: 9999,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                    }}
+                  >
+                    <Text style={{ fontSize: 13, lineHeight: 20, color: P.ink3, fontFamily: "Newsreader" }}>
+                      {fr}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
           )}
 
           {MON_LEXIQUE_BANDS.map((band) => {
