@@ -463,16 +463,20 @@ describe("recaps name capabilities, not structure", () => {
 
 describe("hint and header labels are consistent", () => {
   test("'Need a hint?' is the entry hint label on every surface that offers one", () => {
+    // app/lesson-zero.tsx is no longer in this list: first use renders the
+    // lesson engine now and offers no hint of its own, so requiring the label
+    // there would require it to grow a second hint system to satisfy a test
+    // about not having two of them.
     for (const rel of [
       "components/lesson-v1/screens/Weave.tsx",
       "components/lesson-v1/screens/SayItYourWayV1.tsx",
-      "app/lesson-zero.tsx",
     ]) {
       assert(src(rel).includes("Need a hint?"), `${rel} uses the canonical hint label`);
     }
   });
 
   test("no synonym of the entry hint label survives", () => {
+    // The synonym ban still covers first use: it must not reintroduce one.
     for (const rel of [
       "components/lesson-v1/screens/Weave.tsx",
       "components/lesson-v1/screens/SayItYourWayV1.tsx",

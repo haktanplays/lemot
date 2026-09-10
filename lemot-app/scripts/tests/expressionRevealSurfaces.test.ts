@@ -294,11 +294,22 @@ describe("reflection and close stay calm", () => {
   test("completion is a quiet landing with one continuation action", () => {
     const src = read(RENDERER);
     const completion = codeOf(src.slice(src.indexOf("function CompletionView")));
-    assert(completion.includes("Back to Home"), "the single primary action");
+    assert(completion.includes("Back to Home"), "the ordinary primary action");
     assert(completion.includes("Open Mon Lexique"), "the one quiet shortcut");
+    // The first taste closes differently -- "Begin", into Lesson 1, with no Mon
+    // Lexique shortcut, because a learner one lesson in has no lexique and has
+    // never heard the name. So the source now holds TWO primary actions and
+    // still renders exactly one: they are the arms of a single ternary inside
+    // the single primary slot. Counting the slot is the assertion that survives
+    // presentation branching; counting the tag was only ever a proxy for it.
+    assert(completion.includes("Begin"), "the first taste continues into the path");
     assert(
-      (completion.match(/<PrimaryAction/g) ?? []).length === 1,
-      "exactly one primary action on the landing",
+      (completion.match(/isFirstTaste \? \(/g) ?? []).length === 1,
+      "exactly one primary slot, branched once",
+    );
+    assert(
+      (completion.match(/<PrimaryAction/g) ?? []).length === 2,
+      "and exactly two arms in it, never a third action",
     );
     for (const ceremony of [
       "confetti",

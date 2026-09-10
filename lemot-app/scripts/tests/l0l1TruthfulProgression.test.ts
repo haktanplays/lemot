@@ -22,6 +22,7 @@
 import { describe, test, assert, assertEqual } from "./harness";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { isFirstTasteLesson, isV1LessonInStageScope } from "../../config/productStage";
 import { lesson000 } from "../../content/lessons/v1/lesson-000";
 import { lesson001 } from "../../content/lessons/v1/lesson-001";
 import type {
@@ -292,43 +293,68 @@ describe("Weave support boundary is labelled by availability, not ownership", ()
 });
 
 describe("Lesson Zero interaction truthfulness", () => {
+  // These three guarantees were originally written against the bespoke
+  // first-use screen: the primary control must not look available when it
+  // cannot proceed, the requirement must be visible before a failed tap, and a
+  // chip that looks tappable must be tappable.
+  //
+  // First use now plays L0 through the ordinary lesson engine, so all three are
+  // inherited rather than re-implemented -- which is the point of the change,
+  // and is why the assertions moved from the screen's internals to the fact
+  // that the screen HAS no internals of its own any more.
   const source = readSource("app/lesson-zero.tsx");
+  const weave = readSource("components/lesson-v1/screens/Weave.tsx");
 
-  test("Continue is gated on what the step actually needs", () => {
+  test("first use renders the real lesson engine, not a second one", () => {
+    assert(source.includes("LessonRendererV1"), "the engine renders the first taste");
     assert(
-      source.includes("const canContinue = bothInserted && remainderOk;"),
-      "the gate combines both pieces AND an accepted remainder",
+      source.includes("getV1LessonByNumber(0)"),
+      "and it renders L0, the authored first taste, rather than inline content",
     );
+    for (const bespoke of ["TextInput", "acceptsRebuild", "acceptsCoffeeRemainder", "setStep"]) {
+      assert(
+        !source.includes(bespoke),
+        `first use must not carry its own ${bespoke}: that is how a second system starts`,
+      );
+    }
+  });
+
+  test("the primary control is gated on what the step actually needs", () => {
+    assert(weave.includes("disabled={!canCheck}"), "Check is disabled until there is an attempt");
     assert(
-      source.includes("disabled={!canContinue}"),
-      "the primary control is disabled until it can actually proceed",
-    );
-    assert(
-      !source.includes("disabled={!bothInserted}"),
-      "the old gate let Continue look available with no remainder typed",
+      weave.includes("const canCheck = text.trim().length > 0"),
+      "and the gate is real input, not a tap count",
     );
   });
 
-  test("the missing requirement is shown before any tap, not after a failed one", () => {
+  test("support is available before a failed attempt, not only after one", () => {
     assert(
-      source.includes("const showRequirement = bothInserted && !remainderOk;"),
-      "the requirement line is derived from state",
+      weave.includes('label="Need a hint?"') && weave.includes("hintLevel === 0"),
+      "the hint entry is offered from first render",
     );
     assert(
-      !source.includes("setNudge"),
+      !weave.includes("setNudge"),
       "no post-tap-only explanation path remains",
     );
   });
 
-  test("no chip is inert: either piece may be placed first", () => {
-    assert(
-      !source.includes("disabled={!tappable}"),
-      "chips must not render tappable-looking but inert",
+  test("no chip is inert: a piece that looks tappable is tappable", () => {
+    const showcase = readSource("components/lesson-v1/screens/Showcase.tsx");
+    const chips = showcase.slice(
+      showcase.indexOf("{pieces.length >= 2 &&"),
+      showcase.indexOf("openPiece !== null"),
     );
+    assert(chips.includes("<Pressable"), "the Showcase chips respond");
     assert(
-      source.includes(".sort((a, b) => a - b)"),
-      "the composed line orders pieces canonically regardless of tap order",
+      chips.includes('accessibilityRole="button"'),
+      "and they say so to assistive technology",
     );
+  });
+
+  test("L0 is playable but is not a step on the path", () => {
+    assert(!isV1LessonInStageScope(0), "L0 never appears in the Journey or the picker");
+    assert(isFirstTasteLesson(0), "but the lesson route admits it");
+    assert(!isFirstTasteLesson(1), "and nothing else is the first taste");
   });
 });
 

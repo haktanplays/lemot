@@ -660,11 +660,15 @@ describe("D-6 — typed recall reuses Weave", () => {
 // ── open production ─────────────────────────────────────────────────────────
 
 describe("open production: attempt then reveal, never a grade", () => {
-  const sayIt = screenOf<SayItYourWayScreen>(lesson000, flattenLessonScreens(lesson000).filter((s) => s.type === "say-it-your-way")[0].id);
+  // Fixture repointed to L1 when the L0 first-taste rebuild removed L0's open
+  // production. L0 now has exactly one production screen, a supported Weave: a
+  // first taste that tests twice is a test. This block is about the OPEN
+  // production contract, which starts in L1, so that is where its fixture is.
+  const sayIt = screenOf<SayItYourWayScreen>(lesson001, "s08-sayit-cafe-order");
 
   const run = async () => {
     const { repo, controller } = makeSession();
-    const { attempt, reveal } = openAttemptInteraction(lesson000, sayIt, {
+    const { attempt, reveal } = openAttemptInteraction(lesson001, sayIt, {
       text: "Bonjour, je voudrais un café.",
       ideaPiecesShown: false,
       revisionCount: 0,
@@ -732,7 +736,7 @@ describe("open production: attempt then reveal, never a grade", () => {
   });
 
   test("PM-014 is never marked as self-correction (that is PM-015)", () => {
-    const { attempt } = openAttemptInteraction(lesson000, sayIt, {
+    const { attempt } = openAttemptInteraction(lesson001, sayIt, {
       text: "x",
       ideaPiecesShown: true,
       revisionCount: 2,
@@ -984,7 +988,10 @@ describe("lesson evidence metadata validation", () => {
   });
 
   test("open production may not be routed through deterministic grading", () => {
-    const bad = structuredClone(lesson000) as Lesson;
+    // Hosted on L1 since the L0 first-taste rebuild: L0 now has exactly one
+    // production screen, a supported Weave, so open production starts in L1.
+    // The rule under test is not about which lesson hosts it.
+    const bad = structuredClone(lesson001) as Lesson;
     const sayIt = flattenLessonScreens(bad).find((s) => s.type === "say-it-your-way") as SayItYourWayScreen;
     sayIt.payload.validationMode = "exact-or-alternative";
     assert(

@@ -170,6 +170,23 @@ export function isV1LessonInStageScope(lessonNumber: number): boolean {
   return lessonNumber >= 1 && lessonNumber <= V1_PATH_MAX_LESSON;
 }
 
+/**
+ * L0, the first taste, which is deliberately NOT in the stage slice.
+ *
+ * The slice above is the JOURNEY: the lessons that appear as steps, feed the
+ * Practice By-lesson picker, and count as reached. L0 is none of those things.
+ * It is the one lesson a learner meets before the path exists, reached from
+ * first use, and it must never appear as a step or replay once finished.
+ *
+ * So it gets a route allowance rather than a slice extension: the lesson route
+ * may render it, and nothing that walks the path picks it up. Keeping these two
+ * questions separate is what stops "L0 should be playable" from silently
+ * becoming "L0 is Lesson 1", which is the thing it is not.
+ */
+export function isFirstTasteLesson(lessonNumber: number): boolean {
+  return lessonNumber === 0;
+}
+
 // LEGACY TEST BUILD — frozen for Dev APK (Tier B locked 2026-05-16).
 // Filter assumes 24-lesson syllabus (L1-L24, L1=Survival Kit). v1 Canon §5 has
 // a different L1-L150 syllabus (L1=Je suis, paywall L24+Campfire, 150 core).

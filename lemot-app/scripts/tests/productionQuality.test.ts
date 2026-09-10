@@ -265,9 +265,14 @@ describe("productionQuality — shipped v1", () => {
     // them: L1 6 -> 7, L2 4 -> 6, L3 5 -> 7, L4 4 -> 5, L5 4 -> 5.
     // Language-world rebuild: L8 6 -> 7, the est-ce que production pulled
     // forward from L12. No lesson outside L1-L10 has ever moved.
+    // L0 first-taste rebuild: 2 -> 1. L0 used to ask twice, a supported Weave
+    // and then an open Say It on the same sentence. A first taste that tests
+    // twice is a test, so the open one is gone and open production now begins
+    // where it should, in L1. This row is a characterisation of the corpus,
+    // not a floor: L0's single action is deliberate and PQ-2 still passes.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [2, 7, 6, 7, 5, 5, 7, 8, 7, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      [1, 7, 6, 7, 5, 5, 7, 8, 7, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {

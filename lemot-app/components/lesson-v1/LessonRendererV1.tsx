@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { getV1LessonByNumber } from "@/content/lessons/v1";
 import { kvStorage } from "@/lib/storage";
 import {
   LESSON_CURSOR_KEY,
@@ -349,6 +350,14 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
   // and the role changes presentation only: same view, same actions, same
   // settlement. Currently L20 and L24 carry it.
   const isMilestone = lesson.journeyRole === "milestone";
+  // The first taste closes differently, and reads that from the phase the
+  // content already declares rather than from a sixth journey role -- L0's
+  // status is absence of a role, which is ratified (JR-004). It is the only
+  // lesson finished before the Journey exists, so "Lesson 0" is a number that
+  // means nothing to the learner and "Back to Home" points at a screen they
+  // have never seen. It closes on what they can now say, and on Lesson 1.
+  const isFirstTaste = lesson.phase === "first-step";
+  const lessonOne = getV1LessonByNumber(1);
 
   return (
     <View
@@ -383,7 +392,9 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
           lineHeight: isMilestone ? 36 : 31,
         }}
       >
-        {`You reached the end of Lesson ${lesson.number}.`}
+        {isFirstTaste
+          ? "You just ordered a coffee in French."
+          : `You reached the end of Lesson ${lesson.number}.`}
       </Text>
       <Text
         style={{
@@ -393,22 +404,43 @@ function CompletionView({ lesson }: { lesson: Lesson }) {
           marginTop: SPACE.md,
         }}
       >
-        A small French shape is now familiar.
+        {isFirstTaste
+          ? "Three pieces, and they will keep coming back. The path starts here."
+          : "A small French shape is now familiar."}
       </Text>
       <View style={{ marginTop: isMilestone ? 44 : 36 }}>
-        <PrimaryAction label="Back to Home" onPress={exitToPrevious} />
+        {isFirstTaste ? (
+          <PrimaryAction
+            label="Begin"
+            onPress={() =>
+              openProjection(() =>
+                lessonOne
+                  ? router.replace(`/v1-lesson/${lessonOne.id}` as never)
+                  : router.replace("/(tabs)" as never),
+              )
+            }
+          />
+        ) : (
+          <PrimaryAction label="Back to Home" onPress={exitToPrevious} />
+        )}
       </View>
       {/* The one secondary shortcut. Typed-route casts are the narrow bridge
           the house rules allow for routes Metro has not regenerated types
-          for yet. */}
-      <View style={{ marginTop: SPACE.sm }}>
-        <LinkAction
-          label="Open Mon Lexique"
-          onPress={() =>
-            openProjection(() => router.push("/mon-lexique" as never))
-          }
-        />
-      </View>
+          for yet.
+
+          Absent on the first taste: a learner who has finished one lesson has
+          no lexique worth opening and has never heard the name, so offering it
+          here would be the product explaining itself. */}
+      {!isFirstTaste && (
+        <View style={{ marginTop: SPACE.sm }}>
+          <LinkAction
+            label="Open Mon Lexique"
+            onPress={() =>
+              openProjection(() => router.push("/mon-lexique" as never))
+            }
+          />
+        </View>
+      )}
     </View>
   );
 }
