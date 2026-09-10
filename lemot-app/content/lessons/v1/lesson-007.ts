@@ -359,7 +359,14 @@ const screens: LessonScreen[] = [
 
 
   {
-    // Reflection, not new material: names what the learner just did.
+    // Reflection on what the learner just did, and the last encounter before
+    // the closing chain, which asks them to PRODUCE "Merci beaucoup, bonne
+    // soirée !" and "Désolé, je dois partir." Until now beaucoup and désolé
+    // appeared only as lines in the Showcase, which is a breadth surface: it
+    // grades nothing and teaches nothing, so neither word had had a fair
+    // encounter before it was required output. They get one here, attached to
+    // things already owned, without costing the lesson a screen -- L7 is at the
+    // top of its action budget and a sixteenth screen would break it.
     id: "s10-insight-leaving-two-moves",
     type: "insight-card",
     targetItemIds: ["chunk-je-vais"],
@@ -367,10 +374,20 @@ const screens: LessonScreen[] = [
       insightType: "culture-bite",
       title: "Leaving is two small moves.",
       body:
-        "Say where you're heading, then close the door with a word. That is all a French goodbye needs. The same two moves work whether you are leaving a room, a shop, or a long afternoon.",
+        "Say where you're heading, then close the door with a word. That is all a French goodbye needs. The same two moves work whether you are leaving a room, a shop, or a long afternoon. Two small words size the moment: beaucoup makes the thanks bigger, and désolé opens an exit that comes earlier than people hoped.",
       examples: [
         { fr: "Je vais à la maison.", en: "I'm going home." },
         { fr: "Au revoir.", en: "Goodbye." },
+        {
+          fr: "Merci beaucoup.",
+          en: "Thank you very much.",
+          note: "Beaucoup is for when they actually did something. Merci on its own is for the small courtesies.",
+        },
+        {
+          fr: "Désolé, je dois partir.",
+          en: "Sorry, I have to go.",
+          note: "Désolé is the apology that goes in front of an early exit. Without it, leaving first can read as leaving in a mood.",
+        },
       ],
     },
   },

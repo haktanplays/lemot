@@ -31,6 +31,7 @@ import "./showcaseDepth.test";
 import "./showcaseClassification.test";
 import "./chunkBoundaries.test";
 import "./chainPedagogy.test";
+import "./teachBeforeAsk.test";
 import "./gradingTrust.test";
 import "./chainStepIsolation.test";
 import "./lessonContinuity.test";
