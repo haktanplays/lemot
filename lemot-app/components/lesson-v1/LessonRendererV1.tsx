@@ -1,4 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { kvStorage } from "@/lib/storage";
+import {
+  LESSON_CURSOR_KEY,
+  backTarget,
+  parseCursor,
+  resumeIndexFor,
+  serializeCursor,
+} from "@/content/lessons/lessonCursor";
 import { View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -56,9 +64,30 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
 function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
   const { mk } = useApp();
   const session = useLessonV1LearningSession();
-  const [screenIndex, setScreenIndex] = useState(0);
+  // Resume where the learner left off. Read once, on mount: a lesson that
+  // re-read the cursor on every render would fight the learner's own paging.
+  const [screenIndex, setScreenIndex] = useState(() =>
+    resumeIndexFor(lesson.id, lesson.screens.length, parseCursor(kvStorage.getItem(LESSON_CURSOR_KEY))),
+  );
   const screen = lesson.screens[screenIndex];
   const goNext = () => setScreenIndex((n) => n + 1);
+  const goBack = () => {
+    const target = backTarget(screenIndex);
+    if (target.kind === "page") {
+      setScreenIndex(target.index);
+      return;
+    }
+    exitToPrevious();
+  };
+
+  // Keep the stored position in step with the visible one. Backgrounding, a
+  // tab, or a push and pop all unmount this component; the record is what
+  // survives them.
+  useEffect(() => {
+    if (screenIndex < lesson.screens.length) {
+      kvStorage.setItem(LESSON_CURSOR_KEY, serializeCursor({ lessonId: lesson.id, screenIndex }));
+    }
+  }, [lesson.id, screenIndex, lesson.screens.length]);
 
   // Persist exactly once when the learner reaches the end of the flow.
   // The ref guard prevents re-writes if mk's identity changes on re-render.
@@ -68,6 +97,9 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
     if (isComplete && !persisted.current) {
       persisted.current = true;
       mk(lesson.number, V1_COMPLETION_SECTION_KEY);
+      // Finished: there is no position left to hold. Reopening should start the
+      // lesson, not drop the learner back on the completion screen.
+      kvStorage.removeItem(LESSON_CURSOR_KEY);
     }
   }, [isComplete, mk, lesson.number]);
 
@@ -82,6 +114,7 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
             title={lesson.title}
             current={screenIndex + 1}
             total={lesson.screens.length}
+            onBack={goBack}
           />
           {/* Key the active screen by screenIndex so each step mounts a fresh
               instance. Without this, two consecutive same-type screens (e.g.
@@ -116,10 +149,13 @@ function LessonHeader({
   title,
   current,
   total,
+  onBack,
 }: {
   title: string;
   current: number;
   total: number;
+  /** One authored page back, or out of the lesson when already at the first. */
+  onBack: () => void;
 }) {
   return (
     <View
@@ -136,7 +172,7 @@ function LessonHeader({
       }}
     >
       <Pressable
-        onPress={exitToPrevious}
+        onPress={onBack}
         hitSlop={10}
         accessibilityRole="button"
         accessibilityLabel="Go back"

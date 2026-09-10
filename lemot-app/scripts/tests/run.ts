@@ -30,6 +30,7 @@ import "./founderSliceBoundary.test";
 import "./showcaseDepth.test";
 import "./gradingTrust.test";
 import "./chainStepIsolation.test";
+import "./lessonContinuity.test";
 import "./devApkCopyGuard.test";
 import "./componentCopyGuard.test";
 import "./productStageResolution.test";
