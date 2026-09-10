@@ -76,7 +76,19 @@ export function ActivityChain({
         </Text>
       </View>
 
-      <View style={{ flex: 1 }}>{renderStep(step, advance, session)}</View>
+      {/*
+        Keyed by step id, and it must stay that way.
+
+        Without a key React reconciles consecutive steps of the SAME type at the
+        same position and keeps the child's state. A chain of fill -> fill then
+        mounts step 2 already holding step 1's answer, and FillWithTraps refuses
+        events once answered, so the options render and nothing can be tapped:
+        no selection, no CTA, no way to reach step 3. Seven L1-L10 chains have
+        adjacent same-type steps, so this was never one sentence's bug.
+      */}
+      <View key={step.id} style={{ flex: 1 }}>
+        {renderStep(step, advance, session)}
+      </View>
     </View>
   );
 }
