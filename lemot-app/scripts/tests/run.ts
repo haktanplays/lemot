@@ -36,6 +36,7 @@ import "./curiosityLayer.test";
 import "./errorRecovery.test";
 import "./monLexiqueFilters.test";
 import "./contextCards.test";
+import "./myFrench.test";
 import "./gradingTrust.test";
 import "./chainStepIsolation.test";
 import "./lessonContinuity.test";

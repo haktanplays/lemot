@@ -1,13 +1,22 @@
 import { Tabs } from "expo-router";
-import { Mountain, BookMarked, Layers } from "lucide-react-native";
+import { Mountain, BookMarked, Layers, Compass } from "lucide-react-native";
 import { P } from "@/constants/theme";
 
 /**
- * The three permanent learner-facing surfaces.
+ * The four permanent learner-facing surfaces.
  *
- * Journey, Mon Lexique and Practice are always reachable — nothing the learner
- * has built is allowed to live behind a one-time completion screen. There is no
- * fourth tab: the learning summary is a header action inside Mon Lexique.
+ * Journey, Mon Lexique, Practice and My French are always reachable — nothing
+ * the learner has built is allowed to live behind a one-time completion screen.
+ *
+ * My French is the personal learning layer, and it is a TAB rather than a
+ * header action because it is where the data controls now live: export and
+ * delete are rights, and a right you have to go looking for is one most people
+ * never find. The learning summary stays a header action inside Mon Lexique,
+ * where it belongs.
+ *
+ * Context Cards is deliberately NOT a fifth tab. It is input, reached from
+ * Journey, because it is something to do with what you can already say rather
+ * than a standing place of its own.
  *
  * Route files keep their engineering names (`mon-lexique`, `practice-hub`);
  * only the `title` is learner-facing, so no route rename risk is taken here.
@@ -70,6 +79,14 @@ export default function TabLayout() {
       />
 
       {/* Frozen legacy routes — mounted, never in the bar. */}
+      <Tabs.Screen
+        name="my-french"
+        options={{
+          title: "My French",
+          tabBarIcon: ({ color, size }) => <Compass color={color} size={size} />,
+        }}
+      />
+
       <Tabs.Screen name="chat" options={{ href: null }} />
       <Tabs.Screen name="practice" options={{ href: null }} />
       <Tabs.Screen name="stats" options={{ href: null }} />

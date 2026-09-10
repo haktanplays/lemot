@@ -29,6 +29,8 @@ import {
   type ContextCard,
   type ContextCardSet,
 } from "@/content/context-cards/cards";
+import { orderByContexts } from "@/content/my-french/prefs";
+import { readMyFrenchPrefs } from "@/lib/myFrenchPrefs";
 import {
   privacyResetEpoch,
   readContextCardExposure,
@@ -59,7 +61,14 @@ export default function ContextCardsRoute() {
       .readPracticeReach()
       .then(({ snapshot }) => {
         if (loadToken.current !== token) return;
-        setState({ phase: "ready", sets: availableContextCardSets(reachedItemIds(snapshot)) });
+        // My French's chosen situations decide ORDER and nothing else: no set
+        // is hidden, none is unlocked, and a learner who has set no
+        // preferences sees the authored order.
+        const available = availableContextCardSets(reachedItemIds(snapshot));
+        setState({
+          phase: "ready",
+          sets: orderByContexts(available, readMyFrenchPrefs().contexts),
+        });
         setMet(readContextCardExposure());
       })
       .catch(() => {

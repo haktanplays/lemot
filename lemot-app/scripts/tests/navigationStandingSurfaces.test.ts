@@ -83,17 +83,25 @@ function visibleTabs(): { name: string; title: string }[] {
 // ── Part A: the three permanent tabs ────────────────────────────────────────
 
 describe("root navigation is exactly three learner-facing tabs", () => {
-  test("three tabs, in order, with sentence-case learner labels", () => {
+  test("four tabs, in order, with sentence-case learner labels", () => {
+    // My French joined the shell in the closure batch, LAST, because that is
+    // the order the founder specified. It is a tab rather than a header action
+    // because the data controls now live there: export and delete are rights,
+    // and a right you have to go looking for is one most people never find.
+    //
+    // Context Cards is deliberately not here. It is input, reached from
+    // Journey, not a standing place of its own -- the brief rules out a fifth
+    // tab explicitly.
     const tabs = visibleTabs();
-    assertEqual(tabs.length, 3, "exactly three tabs are shown");
+    assertEqual(tabs.length, 4, "exactly four tabs are shown");
     assertEqual(
       tabs.map((t) => t.title).join(","),
-      "Journey,Mon Lexique,Practice",
+      "Journey,Mon Lexique,Practice,My French",
       "the learner-facing labels, in order",
     );
     assertEqual(
       tabs.map((t) => t.name).join(","),
-      "index,mon-lexique,practice-hub",
+      "index,mon-lexique,practice-hub,my-french",
       "each label maps to its route file",
     );
   });

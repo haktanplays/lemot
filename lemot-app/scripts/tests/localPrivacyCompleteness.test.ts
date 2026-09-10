@@ -25,6 +25,8 @@ import { LM_LE_PRIVACY_STATE_KEY } from "../../content/learning-engine/privacy-l
 import {
   LM7_PROGRESS_KEY,
   LM7_SRS_KEY,
+  LM_CONTEXT_CARDS_KEY,
+  LM_MY_FRENCH_KEY,
   ALL_LOCAL_PRIVACY_KEYS,
   LOCAL_PRIVACY_CORRUPT_KEYS,
   resetAllLocalPrivacyData,
@@ -47,6 +49,12 @@ function seed() {
   return makeFakeKv({
     [LM7_PROGRESS_KEY]: JSON.stringify({ p: { "1-x": true }, err: [{ g: "bonjour" }], dr: { date: "", count: 0 } }),
     [LM7_SRS_KEY]: JSON.stringify({ box: { "1-x": 2 } }),
+    // Context Cards and My French joined the inventory in the closure batch.
+    // Neither is the mastery projection, and both are still a record of what
+    // this person looked at and said about themselves, so a local delete has to
+    // take them: a store a reset forgets is a store the learner cannot delete.
+    [LM_CONTEXT_CARDS_KEY]: JSON.stringify({ "cc-la-gare": 1 }),
+    [LM_MY_FRENCH_KEY]: JSON.stringify({ focus: "travel", contexts: ["cafes"] }),
     [LM_LE_EVENTS_KEY]: JSON.stringify(SAMPLE_EVENTS),
     [LM_LE_SNAPSHOT_KEY]: "{}",
     [LM_LE_TELEMETRY_KEY]: "[]",

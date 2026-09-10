@@ -28,6 +28,8 @@
  * cards of scattered nouns.
  */
 
+import type { FrenchContext } from "@/content/my-french/prefs";
+
 /** One piece of French met, not taught. */
 export type ContextCard = {
   id: string;
@@ -54,6 +56,14 @@ export type ContextCard = {
 /** A handful of cards that make ONE owned engine reach further. */
 export type ContextCardSet = {
   id: string;
+  /**
+   * Which of My French's situations this set belongs to.
+   *
+   * Used for ORDER and nothing else: a learner who says they care about cafés
+   * sees the café set first. Nothing is hidden, nothing is unlocked, and a
+   * learner with no preferences set sees the authored order.
+   */
+  contextTags?: readonly FrenchContext[];
   /** Learner-facing name for the situation, not for the grammar. */
   label: string;
   /** The registry item the learner must already own for this set to appear. */
@@ -69,6 +79,7 @@ export const CONTEXT_CARD_SETS: readonly ContextCardSet[] = Object.freeze([
     id: "cc-getting-around",
     label: "Finding your way",
     engineItemId: "chunk-c-est-ou",
+    contextTags: ["getting-around", "travel", "hotels"],
     engine: "C'est où ?",
     intro:
       "You can already ask where something is. These are the somethings, for the places a first week actually needs.",
@@ -131,6 +142,7 @@ export const CONTEXT_CARD_SETS: readonly ContextCardSet[] = Object.freeze([
     id: "cc-at-the-counter",
     label: "At the counter",
     engineItemId: "chunk-je-voudrais",
+    contextTags: ["cafes", "errands"],
     engine: "Je voudrais…",
     intro:
       "The polite ask is already yours. Swap what comes after it and the same sentence orders anything.",
@@ -182,6 +194,7 @@ export const CONTEXT_CARD_SETS: readonly ContextCardSet[] = Object.freeze([
     id: "cc-where-youre-going",
     label: "Where you're going",
     engineItemId: "chunk-je-vais",
+    contextTags: ["getting-around", "work", "errands"],
     engine: "Je vais…",
     intro:
       "You can say you are going home. These are the other places, and the small word in front is the whole trick.",
@@ -231,6 +244,7 @@ export const CONTEXT_CARD_SETS: readonly ContextCardSet[] = Object.freeze([
     id: "cc-when",
     label: "When",
     engineItemId: "chunk-faire-une-pause",
+    contextTags: ["work"],
     engine: "Je voudrais faire une pause.",
     intro:
       "Asking for a break is yours. These say when, which is usually the next thing anyone wants to know.",

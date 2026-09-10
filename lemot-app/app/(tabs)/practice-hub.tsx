@@ -84,9 +84,16 @@ export default function PracticeRoute() {
   // one, so the route honours it: By lesson, opened on the lesson where they
   // met that word. It is the same picker, arriving pre-answered rather than a
   // second way in.
-  const { lesson: lessonParam } = useLocalSearchParams<{ lesson?: string }>();
+  const { lesson: lessonParam, mode: modeParam } = useLocalSearchParams<{
+    lesson?: string;
+    mode?: string;
+  }>();
   const arrivedWithLesson = typeof lessonParam === "string" && lessonParam.length > 0;
-  const [mode, setMode] = useState<PracticeMode>(arrivedWithLesson ? "byLesson" : "freestyle");
+  // My French's "Work on these" arrives here asking for the error pool by name.
+  const arrivedForErrors = modeParam === "errors";
+  const [mode, setMode] = useState<PracticeMode>(
+    arrivedWithLesson ? "byLesson" : arrivedForErrors ? "errors" : "freestyle",
+  );
   const [lessonId, setLessonId] = useState<string | null>(
     arrivedWithLesson ? lessonParam : null,
   );

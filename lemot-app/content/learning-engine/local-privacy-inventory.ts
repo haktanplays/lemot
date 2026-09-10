@@ -37,6 +37,17 @@ import {
 
 /** Live v7 progress blob. Mirrors `STORAGE_KEY` in `hooks/useStorage.ts`. */
 export const LM7_PROGRESS_KEY = "lm7";
+/**
+ * Context Card exposure. Mirrors `CONTEXT_CARD_EXPOSURE_KEY`.
+ *
+ * It holds only card ids and when they were met, and it is deliberately not the
+ * mastery projection -- but it is still a record of what this person looked at,
+ * so a local delete has to take it. A store that a reset forgets is a store the
+ * learner cannot actually delete.
+ */
+export const LM_CONTEXT_CARDS_KEY = "lm_context_cards_met";
+/** My French preferences. Mirrors `MY_FRENCH_PREFS_KEY`. */
+export const LM_MY_FRENCH_KEY = "lm_my_french";
 /** Leitner SRS / mastery blob. Mirrors `SRS_KEY` in `hooks/useSRS.ts`. */
 export const LM7_SRS_KEY = "lm7_srs";
 
@@ -47,6 +58,8 @@ export const LM7_SRS_KEY = "lm7_srs";
 export const LOCAL_PRIVACY_PRIMARY_KEYS = [
   LM7_PROGRESS_KEY,
   LM7_SRS_KEY,
+  LM_CONTEXT_CARDS_KEY,
+  LM_MY_FRENCH_KEY,
   LM_LE_EVENTS_KEY,
   LM_LE_SNAPSHOT_KEY,
   LM_LE_TELEMETRY_KEY,
