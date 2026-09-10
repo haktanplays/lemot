@@ -3,6 +3,7 @@ import { P, SPACE } from "@/constants/theme";
 import { PrimaryAction } from "@/components/ui/actions";
 import {
   PRACTICE_UI_COPY,
+  narrowedEmptyLine,
   previewLine,
   territoryLine,
 } from "@/content/practice/practiceCopy";
@@ -32,6 +33,7 @@ export function PracticeStart({
   onModeChange,
   errorsAvailable,
   reachedLessonNumbers,
+  selectedLessonId,
 }: {
   actions: readonly PracticeSessionAction[];
   onStart: () => void;
@@ -39,7 +41,12 @@ export function PracticeStart({
   onModeChange: (mode: PracticeMode, lessonId?: string) => void;
   errorsAvailable: boolean;
   reachedLessonNumbers: readonly number[];
+  /** Which lesson By-lesson is currently drawing from, if any. */
+  selectedLessonId: string | null;
 }) {
+  const reachedLessons = (V1_LESSONS as { id: string; number: number; title: string }[])
+    .filter((l) => reachedLessonNumbers.includes(l.number))
+    .sort((a, b) => a.number - b.number);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -78,18 +85,20 @@ export function PracticeStart({
             borderTopColor: P.border,
           }}
         >
-          <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.3 }}>
-            {PRACTICE_UI_COPY.startTodayLabel}
-          </Text>
+          {actions.length > 0 && (
+            <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.3 }}>
+              {PRACTICE_UI_COPY.startTodayLabel}
+            </Text>
+          )}
           <Text
             style={{
-              color: P.ink,
-              fontSize: 17,
-              lineHeight: 25,
-              marginTop: SPACE.sm,
+              color: actions.length > 0 ? P.ink : P.ink2,
+              fontSize: actions.length > 0 ? 17 : 15,
+              lineHeight: actions.length > 0 ? 25 : 23,
+              marginTop: actions.length > 0 ? SPACE.sm : 0,
             }}
           >
-            {previewLine(actions)}
+            {actions.length > 0 ? previewLine(actions) : narrowedEmptyLine(mode, selectedLessonId)}
           </Text>
           {/*
             What the session is ABOUT, in capabilities rather than French — a
@@ -142,20 +151,55 @@ export function PracticeStart({
           <ModeRow
             label={PRACTICE_UI_COPY.modeLesson}
             detail={
-              reachedLessonNumbers.length > 0
-                ? `${reachedLessonNumbers.length} to choose from.`
+              reachedLessons.length > 0
+                ? PRACTICE_UI_COPY.modeLessonPrompt
                 : PRACTICE_UI_COPY.modeLessonEmpty
             }
             selected={mode === "byLesson"}
-            disabled={reachedLessonNumbers.length === 0}
+            disabled={reachedLessons.length === 0}
             onPress={() => {
-              const last = reachedLessonNumbers[reachedLessonNumbers.length - 1];
-              const lesson = (V1_LESSONS as { id: string; number: number }[]).find(
-                (l) => l.number === last,
-              );
-              if (lesson) onModeChange("byLesson", lesson.id);
+              // Opening the mode does NOT pick for the learner. Until they
+              // choose, By lesson has no lesson, which is why the copy asks
+              // rather than announcing a count nobody can act on.
+              onModeChange("byLesson", selectedLessonId ?? undefined);
             }}
           />
+
+          {mode === "byLesson" && reachedLessons.length > 0 && (
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm, marginTop: SPACE.sm }}>
+              {reachedLessons.map((l) => {
+                const active = l.id === selectedLessonId;
+                return (
+                  <Pressable
+                    key={l.id}
+                    onPress={() => onModeChange("byLesson", l.id)}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: active }}
+                    accessibilityLabel={`Practise ${l.title}`}
+                    style={{
+                      backgroundColor: active ? P.rl : P.paper,
+                      borderWidth: 1,
+                      borderColor: active ? P.rb : P.border,
+                      borderRadius: 9999,
+                      paddingHorizontal: 12,
+                      paddingVertical: 6,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        lineHeight: 19,
+                        color: active ? P.ink : P.ink2,
+                        fontWeight: active ? "600" : "400",
+                      }}
+                    >
+                      {l.title}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          )}
 
           {mode !== "freestyle" && (
             <ModeRow

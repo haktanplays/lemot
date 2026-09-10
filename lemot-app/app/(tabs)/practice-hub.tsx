@@ -196,24 +196,33 @@ export default function PracticeRoute() {
           </>
         )}
 
-        {state.phase === "ready" && state.actions.length === 0 && (
+        {/*
+          The cold start, and ONLY the cold start. Freestyle draws on everything
+          reached, so freestyle-with-nothing is the one case where "finish your
+          first lesson" is true. A narrowed mode that comes back empty is not
+          that case, and swapping the screen for it used to strand the learner:
+          the mode rows went with it, so the choice the copy asked for had no
+          control left to make it.
+        */}
+        {state.phase === "ready" && state.actions.length === 0 && mode === "freestyle" && (
           <>
             <SurfaceHeader title="Practice" />
             <QuietState text={PRACTICE_EMPTY_LINE} />
           </>
         )}
 
-        {state.phase === "ready" && state.actions.length > 0 && (
+        {state.phase === "ready" && (state.actions.length > 0 || mode !== "freestyle") && (
           <PracticeStart
             actions={state.actions}
             onStart={() => setRunning(true)}
             mode={mode}
             onModeChange={(next, lesson) => {
-              setLessonId(lesson ?? null);
+              setLessonId(next === "byLesson" ? (lesson ?? null) : null);
               setMode(next);
             }}
             errorsAvailable={state.errorsAvailable}
             reachedLessonNumbers={state.reachedLessonNumbers}
+            selectedLessonId={lessonId}
           />
         )}
       </View>

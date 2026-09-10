@@ -12,6 +12,7 @@
  * exercise.
  */
 import type { PracticeSurface } from "./practiceTypes";
+import type { PracticeMode } from "./practiceModes";
 import type { PracticeSessionAction } from "./practicePlanner";
 import { summaryLineOf } from "./practicePlanner";
 import { collectLearnerStrings } from "../lessons/learnerCopy";
@@ -125,8 +126,16 @@ export const PRACTICE_UI_COPY = Object.freeze({
   modeErrorsEmpty: "Nothing needs another look right now.",
   modeLesson: "A lesson you have done",
   modeLessonEmpty: "Finish a lesson first.",
+  modeLessonPrompt: "Which one?",
   modeFreestyle: "Anything and everything",
   modeFreestyleDetail: "A mixed set from all the French you have reached.",
+  // A narrowed mode can legitimately come back with nothing. That is not the
+  // cold start, and it must never be described as one: the learner has done
+  // the work, so the line says what THIS choice holds and leaves every other
+  // choice on screen.
+  narrowedNoLessonYet: "Pick a lesson below and Practice will draw from it.",
+  narrowedLessonEmpty: "Nothing from this lesson is waiting right now. Try another, or anything and everything.",
+  narrowedErrorsEmpty: "Nothing needs another look right now. Anything and everything still has plenty.",
 
   buildEmptyTray: "Tap the pieces in order.",
   buildStartAgain: "Start again",
@@ -146,6 +155,27 @@ export const PRACTICE_UI_COPY = Object.freeze({
 
 export const PRACTICE_EMPTY_LINE =
   "Finish your first lesson and Practice will build itself from the French you have used.";
+
+/**
+ * What to say when the CURRENT narrowing has nothing in it.
+ *
+ * Never the cold-start line. A learner who has finished ten lessons and taps
+ * "A lesson you have done" has not failed to start the app; they have simply
+ * not chosen a lesson yet. Saying "finish your first lesson" there is false,
+ * and it used to replace the whole screen, so the choice it asked for was
+ * unreachable.
+ */
+export function narrowedEmptyLine(mode: PracticeMode, selectedLessonId: string | null): string {
+  if (mode === "errors") return PRACTICE_UI_COPY.narrowedErrorsEmpty;
+  if (mode === "byLesson") {
+    return selectedLessonId === null
+      ? PRACTICE_UI_COPY.narrowedNoLessonYet
+      : PRACTICE_UI_COPY.narrowedLessonEmpty;
+  }
+  // Freestyle draws from everything reached, so empty here really is the cold
+  // start. The hub keeps that case on its own quiet screen; this is the guard.
+  return PRACTICE_EMPTY_LINE;
+}
 
 /** A calm, leak-free sense of the session about to start. */
 export function previewLine(actions: readonly PracticeSessionAction[]): string {

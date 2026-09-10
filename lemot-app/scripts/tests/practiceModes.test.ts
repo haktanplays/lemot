@@ -9,6 +9,7 @@ import { describe, test, assert, assertEqual } from "./harness";
 import { PRACTICE_SEEDS } from "../../content/practice/seeds";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { seedsForMode, weakItemIds, hasErrorsToPractise } from "../../content/practice/practiceModes";
+import { PRACTICE_EMPTY_LINE, narrowedEmptyLine } from "../../content/practice/practiceCopy";
 import type { MasterySnapshot } from "../../content/learning-engine/mastery";
 
 const snapshot = (weak: string[]): MasterySnapshot =>
@@ -86,5 +87,42 @@ describe("modes narrow one pool and never widen it", () => {
     const w = weakItemIds(snapshot(["chunk-merci", "chunk-je-vais"]));
     assertEqual(w.size, 2, "both weak items should be read");
     assert(w.has("chunk-merci") && w.has("chunk-je-vais"), "weak ids must come through");
+  });
+});
+
+/**
+ * An empty NARROWING is not an empty app.
+ *
+ * The device pass found the real cost of confusing the two: tapping "A lesson
+ * you have done" planned zero actions, the hub swapped the whole screen for the
+ * cold-start line, and the mode rows went with it. A learner ten lessons in was
+ * told to finish their first lesson, with no control left to answer the
+ * question the mode had just asked them.
+ */
+describe("a narrowed mode that comes back empty is not the cold start", () => {
+  test("by lesson, before a lesson is chosen, asks for the choice", () => {
+    const line = narrowedEmptyLine("byLesson", null);
+    assert(line !== PRACTICE_EMPTY_LINE, "the cold-start line must not be reused here");
+    assert(!/first lesson/i.test(line), "a learner with lessons behind them is not at the start");
+  });
+
+  test("by lesson, with a lesson chosen and nothing waiting, points elsewhere", () => {
+    const line = narrowedEmptyLine("byLesson", "v1-lesson-7");
+    assert(line !== PRACTICE_EMPTY_LINE, "the cold-start line must not be reused here");
+    assert(!/first lesson/i.test(line), "a learner with lessons behind them is not at the start");
+  });
+
+  test("errors, with nothing weak, does not claim the app is empty", () => {
+    const line = narrowedEmptyLine("errors", null);
+    assert(line !== PRACTICE_EMPTY_LINE, "the cold-start line must not be reused here");
+    assert(!/first lesson/i.test(line), "a learner with lessons behind them is not at the start");
+  });
+
+  test("freestyle empty really is the cold start", () => {
+    assertEqual(
+      narrowedEmptyLine("freestyle", null),
+      PRACTICE_EMPTY_LINE,
+      "freestyle draws on everything reached, so empty means nothing reached",
+    );
   });
 });
