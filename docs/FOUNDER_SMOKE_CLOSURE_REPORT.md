@@ -41,7 +41,7 @@ BLOCKED. Nothing is deferred.
 | 24 | Context Cards as INPUT | 4 sets, 19 cards, exposure in its own store | `content/context-cards/` | `contextCards.test.ts` | VERIFIED |
 | 25 | Placement, no fifth tab | one entry on Journey | `app/(tabs)/index.tsx` | device | VERIFIED |
 | 26 | My French | fourth tab; focus, contexts, sounds, needs-another-pass, journey, data controls | `app/(tabs)/my-french.tsx` | device: prefs persist; "Work on these" → Practice errors | VERIFIED |
-| 27 | Four-system integration | lesson teaches → cards input → practice outputs → lexique remembers, with exposure never becoming production | across | gate CONTEXT CARDS | FIXED |
+| 27 | Four-system integration | the full lifecycle: lesson teaches → cards input → **Mon Lexique shows what was met, outside the ownership bands** → practice outputs, with exposure never becoming production | across | `contextCards.test.ts`; device: `la gare` under "Met in Context Cards" | VERIFIED |
 | 28 | Do not change First Cairn timing | untouched | — | no diff | FIXED |
 | 29 | Typography / glyph clipping | preserved; re-verified on Android font scaling | `theme.ts`, chip renderers | device (both platforms) | VERIFIED |
 | 30 | Android smoke | run; found and fixed the gesture-bar overlap | `app/(tabs)/_layout.tsx` | device | VERIFIED |
@@ -119,6 +119,7 @@ count.
 | New Sound moments | 19 sound cues | est-ce, é·è·e, a·à, liaison, stress |
 | New Prosody moments | 3 | contour, closing rhythm, stress |
 | Curiosity nuggets added | 32 depth cards | including 7 cognate notes and 5 In-depth cards |
+| Context Card sets / cards | 4 / 19 | exposure in its own store, surfaced in Mon Lexique outside the bands |
 
 ---
 
@@ -127,7 +128,7 @@ count.
 | check | result |
 |---|---|
 | `npx tsc --noEmit` | clean |
-| `npm run test:learning-engine` | **2288 passed, 0 failed** |
+| `npm run test:learning-engine` | **2291 passed, 0 failed** |
 | `npm run validate:content` | exit 0 |
 | `npm run validate:pools` | exit 0, **6 pre-existing warnings** |
 | `npm run gates:closure` | **49/49** |
