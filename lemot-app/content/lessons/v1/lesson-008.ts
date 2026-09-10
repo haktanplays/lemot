@@ -311,21 +311,26 @@ const screens: LessonScreen[] = [
           evidenceTargetItemIds: ["chunk-est-ce-que"],
           weakPointTags: ["natural-speech"],
           payload: {
+            // This offered the finished question as a clickable option and the
+            // next step asked the learner to type it. The distinction worth
+            // testing is not which sentence looks right, it is which OPENER
+            // does the job you need: find it for me, tell them, or ask for a
+            // yes or a no. The sentence stays the learner's to build.
             prompt:
-              "You are standing at a door and you think this is the room, but you would rather check than walk in on strangers.",
+              "You are standing at a door and you think this is the room, but you would rather check than walk in on strangers. You want a yes or a no, not directions. Which opener does that?",
             blankCount: 1,
             options: [
-              { id: "opt-est-ce-que", text: "Est-ce que c'est ici ?", isCorrect: true },
+              { id: "opt-est-ce-que", text: "Est-ce que", isCorrect: true },
               {
                 id: "opt-ou",
-                text: "C'est où ?",
+                text: "C'est où",
                 isCorrect: false,
                 trapReason:
                   "That asks them to find it for you. You already think you have found it; you want a yes or a no.",
               },
               {
                 id: "opt-statement",
-                text: "C'est ici.",
+                text: "C'est",
                 isCorrect: false,
                 trapReason:
                   "That tells them it is the place. You are the one who does not know yet.",
@@ -333,10 +338,10 @@ const screens: LessonScreen[] = [
             ],
             answer: ["opt-est-ce-que"],
             reveal: {
-              short: "Est-ce que c'est ici ?",
+              short: "Est-ce que",
               explanation:
                 "Put est-ce que in front of a sentence you own and it becomes a question. The sentence itself does not change at all.",
-              natural: "Est-ce que c'est ici ?",
+              natural: "Est-ce que",
             },
           },
         },

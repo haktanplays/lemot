@@ -495,36 +495,41 @@ const screens: LessonScreen[] = [
         // required, the cloze holds only the join, and the learner supplies both
         // halves. This is where L7 stops being one engine drilled and becomes a
         // small decision made out loud.
+        // The step before this one hands over "Non merci. Je vais à la maison."
+        // as a clickable option. Asking for that same sentence here would
+        // measure copying and call it the lesson's summit. The MOVE is what was
+        // taught, so the move is what is asked for, with the destination
+        // changed: the learner has to run the shape rather than repeat the line.
         id: "s12-weave-decline-and-go",
         type: "weave",
-        targetItemIds: ["chunk-non-merci", "chunk-je-vais", "chunk-a-la-maison"],
+        targetItemIds: ["chunk-non-merci", "chunk-je-vais", "chunk-au-cafe"],
         weakPointTags: ["politeness", "natural-speech"],
         payload: {
           weaveType: "open",
-          prompt: "Turn the offer down, then say where you're heading.",
+          prompt: "Turn the offer down, then say where you are actually going.",
           context:
-            "They are still holding the pot, waiting for an answer. Be kind about it and go.",
+            "They are still holding the pot. You are meeting someone in twenty minutes, and not here.",
           suggestedPieces: [
             { text: "non merci", itemId: "chunk-non-merci", label: "turning it down" },
             { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-            { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
+            { text: "au café", itemId: "chunk-au-cafe", label: "to the café" },
           ],
           hintCloze: "Non merci. ___.",
-          expectedAnswers: ["Non merci. Je vais à la maison."],
+          expectedAnswers: ["Non merci. Je vais au café."],
           acceptedAlternatives: [
-            "Non merci, je vais à la maison.",
-            "Non merci. Je vais à la maison",
+            "Non merci, je vais au café.",
+            "Non merci. Je vais au café",
           ],
           reveal: {
-            modelAnswer: "Non merci. Je vais à la maison.",
+            modelAnswer: "Non merci. Je vais au café.",
             ifCorrect:
-              "Two moves, and neither one is rude. That is a whole refusal in French.",
+              "Two moves, and neither one is rude. The destination is yours to change.",
             ifCorrectButFlat:
               "Right. Non merci softens it; the direction explains it.",
             ifUnderstandableButWrong:
               "Your meaning lands. Refuse first, then give the reason you are leaving.",
             ifMissingTargetPiece:
-              "Non merci turns the offer down. Je vais à la maison says why.",
+              "Non merci turns the offer down. Je vais au café says where instead.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -570,29 +575,32 @@ const screens: LessonScreen[] = [
         {
           // FRENCH-CONTEXT production. The scene is a line the learner owns, said to
           // them, and the English helper states only their intention.
+          // Same repair as s12: the step before hands over "Oui, je vais a la
+          // maison." as an option, so asking for it here would be copying. The
+          // learner answers yes and gives the OTHER reason L7 owns, which is
+          // also the kinder one when you are leaving before the end.
           id: "s14-weave-answer-and-leave",
           type: "weave",
-          targetItemIds: ["chunk-oui", "chunk-je-vais", "chunk-a-la-maison"],
+          targetItemIds: ["chunk-oui", "chunk-je-dois-partir"],
           weakPointTags: ["natural-speech"],
           payload: {
             weaveType: "open",
-            prompt: "Answer them, then say where you are going.",
-            context: "Someone catches your eye on the way out: « Au revoir ? » You are leaving.",
+            prompt: "Answer them, and say it is not your choice.",
+            context: "Someone catches your eye on the way out: « Au revoir ? » You are leaving, and earlier than you wanted to.",
             suggestedPieces: [
               { text: "oui", itemId: "chunk-oui", label: "the answer" },
-              { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-              { text: "à la maison", itemId: "chunk-a-la-maison", label: "home" },
+              { text: "je dois partir", itemId: "chunk-je-dois-partir", label: "I have to go" },
             ],
-            hintCloze: "Oui, je vais ___.",
-            expectedAnswers: ["Oui, je vais à la maison."],
-            acceptedAlternatives: ["Oui. Je vais à la maison.", "Oui, je vais à la maison"],
+            hintCloze: "Oui, ___.",
+            expectedAnswers: ["Oui, je dois partir."],
+            acceptedAlternatives: ["Oui. Je dois partir.", "Oui, je dois partir"],
             reveal: {
-              modelAnswer: "Oui, je vais à la maison.",
-              ifCorrect: "Asked in French, answered in French, with the direction attached.",
+              modelAnswer: "Oui, je dois partir.",
+              ifCorrect: "Asked in French, answered in French, with the reason attached.",
               ifCorrectButFlat: "Right. The yes alone would have been thinner.",
               ifUnderstandableButWrong:
-                "Your meaning lands. Answer, then give the direction.",
-              ifMissingTargetPiece: "Oui answers. Je vais à la maison says where.",
+                "Your meaning lands. Answer, then say that you have to go.",
+              ifMissingTargetPiece: "Oui answers. Je dois partir says it is not your choice.",
             },
             validationMode: "exact-or-alternative",
           },

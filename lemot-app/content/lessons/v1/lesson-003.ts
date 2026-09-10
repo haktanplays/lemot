@@ -407,29 +407,34 @@ const screens: LessonScreen[] = [
             prompt:
               "They cannot see the room you are standing in, so they ask whether you have arrived. You have.",
             blankCount: 1,
+            // This used to offer the whole sentence, which the very next step
+            // then asked the learner to type. Choosing a sentence and then
+            // copying it is not retrieval. The choice here is the one that
+            // actually needs making -- which answer is TRUE -- and the sentence
+            // that carries it is the learner's to supply next.
             options: [
-              { id: "opt-oui-ici", text: "Oui, je suis ici.", isCorrect: true },
+              { id: "opt-oui", text: "Oui", isCorrect: true },
               {
-                id: "opt-non-pas-ici",
-                text: "Non, je ne suis pas ici.",
+                id: "opt-non",
+                text: "Non",
                 isCorrect: false,
                 trapReason:
                   "That is the honest answer to the opposite situation. You are there, so this one sends them away.",
               },
               {
                 id: "opt-pas-compris",
-                text: "Je ne comprends pas.",
+                text: "Je ne comprends pas",
                 isCorrect: false,
                 trapReason:
                   "You understood the question perfectly. This answers a different problem.",
               },
             ],
-            answer: ["opt-oui-ici"],
+            answer: ["opt-oui"],
             reveal: {
-              short: "Oui, je suis ici.",
+              short: "Oui",
               explanation:
-                "Oui answers. Then the sentence you already own says the rest. Yes on its own is thinner than yes plus where you are.",
-              natural: "Oui, je suis ici.",
+                "Oui is the answer. On its own it is thinner than it needs to be: French expects the yes and then the thing you are saying yes about.",
+              natural: "Oui",
             },
           },
         },

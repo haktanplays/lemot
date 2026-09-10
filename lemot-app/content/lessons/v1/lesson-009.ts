@@ -258,7 +258,11 @@ const screens: LessonScreen[] = [
             short: "s'il vous plaît",
             explanation:
               "S'il vous plaît softens a request. It costs nothing and changes the tone.",
-            natural: "Je voudrais faire une pause, s'il vous plaît.",
+            // Was the whole polite line, which the very next step -- an OPEN
+            // production, the least-scaffolded rung there is -- then asked the
+            // learner to type. This screen teaches the softener; assembling the
+            // request around it is the next screen's job.
+            natural: "s'il vous plaît",
           },
         },
       },
@@ -469,7 +473,13 @@ const screens: LessonScreen[] = [
           weakPointTags: ["politeness", "natural-speech"],
           payload: {
             weaveType: "open",
-            prompt: "Cut in, and ask for what you need.",
+            // The step before this one is a genuinely good pragmatics test and
+            // is worth keeping: a bare request against an opened one, in a room
+            // that is not listening. But it hands over the exact sentence, so
+            // this step asks for MORE than was shown. Both halves come from
+            // earlier steps in this chain -- the opener from s13, the softener
+            // from s08 -- which makes this a combination rather than a copy.
+            prompt: "Cut in, ask for what you need, and soften it.",
             context:
               "The room is mid-sentence and someone says: « Bonjour ? » You have been at this for three hours.",
             suggestedPieces: [
@@ -480,18 +490,19 @@ const screens: LessonScreen[] = [
                 itemId: "chunk-faire-une-pause",
                 label: "to take a break",
               },
+              { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softening it" },
             ],
-            hintCloze: "Excusez-moi, je voudrais ___.",
-            expectedAnswers: ["Excusez-moi, je voudrais faire une pause."],
+            hintCloze: "Excusez-moi, je voudrais ___, s'il vous plaît.",
+            expectedAnswers: ["Excusez-moi, je voudrais faire une pause, s'il vous plaît."],
             acceptedAlternatives: [
-              "Excusez-moi. Je voudrais faire une pause.",
-              "Excusez-moi, je voudrais faire une pause, s'il vous plaît.",
+              "Excusez-moi. Je voudrais faire une pause, s'il vous plaît.",
+              "Excusez-moi, je voudrais faire une pause s'il vous plaît.",
             ],
             reveal: {
-              modelAnswer: "Excusez-moi, je voudrais faire une pause.",
+              modelAnswer: "Excusez-moi, je voudrais faire une pause, s'il vous plaît.",
               ifCorrect:
-                "Opened a room that was not open, then asked. That is the whole social move.",
-              ifCorrectButFlat: "Right. Excusez-moi first, then the request.",
+                "Opened a room that was not open, asked, and softened it. That is the whole social move.",
+              ifCorrectButFlat: "Right. Excusez-moi first, then the request, then the softener.",
               ifUnderstandableButWrong:
                 "Your meaning lands. Reach them first; the ask you already own does the rest.",
               ifMissingTargetPiece:

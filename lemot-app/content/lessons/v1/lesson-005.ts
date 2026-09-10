@@ -448,7 +448,10 @@ const screens: LessonScreen[] = [
               short: "une idée",
               explanation:
                 "Two in the un family, two in the une family. Un café and un thé; une question and une idée. The little word belongs to the word.",
-              natural: "J'ai une idée.",
+              // Was "J'ai une idée." -- the exact sentence the next step asks
+              // the learner to produce. The package is what this screen teaches;
+              // the sentence is the next screen's to earn.
+              natural: "une idée",
             },
           },
         },
