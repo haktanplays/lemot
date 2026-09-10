@@ -20,7 +20,7 @@ const screens: LessonScreen[] = [
         {
           label: "Asking where",
           sentences: [
-            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"] },
+            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "say-OO", compare: "où is one long oo. Not oh, and not ow." } },
             { fr: "Excusez-moi, c'est où ?", en: "Excuse me, where is it?", role: "core" },
             { fr: "Le café, c'est où ?", en: "The café, where is it?", role: "supported" },
             { fr: "C'est loin ?", en: "Is it far?", role: "exposure" },
@@ -34,6 +34,7 @@ const screens: LessonScreen[] = [
               en: "Is it here?",
               role: "core",
               itemIds: ["chunk-est-ce-que"],
+              depth: { sound: "ess-kuh say-t-ee-SEE", notice: "Four written letters in est-ce, one small sound: ess. Nobody pronounces the t or the e.", structure: "est-ce que is a ready-made opener. Put it in front of a statement and the statement becomes a question, with nothing else moved.", inDepth: "The spelling looks like it should be spelled out because it was once three separate words. In speech it has worn down to ess-kuh and runs straight into whatever follows. Hearing it as one lump is closer to the truth than reading it as three." },
             },
             // These three wrap SECOND-PERSON verbs the path does not own, so
             // they are exposure: heard and understood, never a graded answer.
@@ -46,7 +47,7 @@ const screens: LessonScreen[] = [
         {
           label: "Answering someone else",
           sentences: [
-            { fr: "C'est ici.", en: "It's here.", role: "core", itemIds: ["chunk-c-est"] },
+            { fr: "C'est ici.", en: "It's here.", role: "core", itemIds: ["chunk-c-est"], depth: { sound: "say-t-ee-SEE", notice: "The t in c'est is silent on its own, and wakes up before a vowel: say-t-ici, not say / ici.", compare: "C'est ici. ↓ settles and closes. C'est ici ? ↑ lifts at the end and asks. Same three words; the voice does the work." } },
             { fr: "Oui, c'est ici.", en: "Yes, it's here.", role: "core" },
             { fr: "Non, ce n'est pas ici.", en: "No, it's not here.", role: "core", itemIds: ["chunk-ce-n-est-pas"] },
             { fr: "C'est par là.", en: "It's that way.", role: "exposure" },
