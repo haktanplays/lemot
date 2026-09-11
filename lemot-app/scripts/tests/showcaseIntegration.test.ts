@@ -10,9 +10,19 @@
  * to enlarge the French world and may never be a graded answer, and several
  * L1/L2 lines are forward seeds a later lesson owns as an acquisition demand —
  * Ça va is L17's, Comment ça va is L18's, ne ... pas is L3's. Wiring those into
- * L1/L2 would empty the lesson that teaches them. What is guarded instead is
- * the class the founder actually pointed at: a line the lesson calls its own
- * (core or supported) that no screen anywhere ever works.
+ * L1/L2 as PRODUCTION would empty the lesson that teaches them.
+ *
+ * But the founder's follow-up corrected the lens this file first used, and the
+ * correction is the important part: future ownership justifies not demanding
+ * production yet. It does not justify pure display. A forward seed may still be
+ * recognised, chosen, contrasted or read inside the lesson that shows it, and
+ * "L17 owns it" is not on its own a reason for a sentence to sit in a gallery.
+ *
+ * So there are two rules here, not one. A line a lesson calls its OWN must be
+ * worked somewhere in the corpus. And a lesson's Showcase as a whole must
+ * participate in its own lesson: the count of lines that never appear on any
+ * screen of the lesson that shows them is capped, per lesson, at a number
+ * recorded below with the reason each survivor is still display-only.
  */
 import { describe, test, assert } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
@@ -27,6 +37,26 @@ function strings(v: unknown, key = "", out: [string, string][] = []): [string, s
   if (typeof v === "string") { out.push([key, v]); return out; }
   if (Array.isArray(v)) { for (const x of v) strings(x, key, out); return out; }
   if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) strings(x, k, out);
+  return out;
+}
+
+/**
+ * What a screen puts in front of the learner, INCLUDING what it composes.
+ *
+ * A pattern reel stores its stem once and its complements as bare rows, so a
+ * plain string walk sees "Je suis" and "fatigué" and never the sentence the
+ * learner actually reads. That made the participation scan report two lines as
+ * untouched gallery pieces when the reel shows both. Reassembling here is the
+ * difference between measuring the data and measuring the screen.
+ */
+function rendered(screen: { type: string; payload: unknown }): string[] {
+  const out = strings(screen.payload).map(([, v]) => v);
+  const p = screen.payload as { stem?: string; rows?: { fr?: string }[] };
+  if (screen.type === "pattern-reel" && typeof p.stem === "string") {
+    for (const row of p.rows ?? []) {
+      if (typeof row.fr === "string") out.push(`${p.stem} ${row.fr}`);
+    }
+  }
   return out;
 }
 
@@ -271,5 +301,100 @@ describe("ça va is one reusable piece, shown as one", () => {
       /one piece|whole/i.test(structure),
       "the bare line must name ça va as a reusable whole",
     );
+  });
+});
+
+// ── WITHIN-LESSON PARTICIPATION ─────────────────────────────────────────────
+
+/**
+ * How many Showcase lines a lesson is allowed to show and never touch, and why
+ * each survivor is display-only.
+ *
+ * This is a ratchet, not a budget to spend. It exists so the next pass has to
+ * look at the list rather than quietly adding a tenth gallery line, and every
+ * number here should only ever go down.
+ */
+const DISPLAY_ONLY_ALLOWANCE: Readonly<Record<number, { max: number; why: string }>> = {
+  // Bonjour madame / Bonjour monsieur: the addressed greeting. L1 teaches the
+  // bare Bonjour and the choice between openers; adding a third variable
+  // (whom you are addressing) to that choice would blur the one it makes.
+  // Pardon ?: a correct repair that is never WRONG beside "Vous pouvez
+  // répéter ?", so it cannot be a trap, and a screen where every option is
+  // right teaches nothing.
+  // Je ne parle pas très bien français: negation plus a verb, both beyond L1.
+  // It is on the Showcase because it is the one sentence that buys a beginner
+  // patience from a stranger, and recognising it is the whole point.
+  // Au revoir: leaving is L6's lesson, whose own insight card is called
+  // "bonjour to au revoir". L1 is the arriving half of that arc on purpose.
+  1: { max: 5, why: "addressed greetings, an un-trappable repair, one sentence two lessons out of reach, and the goodbye L6 is built around" },
+  // Je suis là: a near-synonym of the anchor sentence. Teaching the là/ici
+  // distinction is a real lesson and it is not this one.
+  // Vous êtes là ?: the same distinction, incoming.
+  // Une minute, s'il vous plaît: not a je suis sentence at all; it belongs to
+  // the lesson that teaches asking someone to wait.
+  // Je suis fatigué / Je suis content: L17 demands both and meets them together
+  // as a pair. They ride the reel here, which is a real appearance, but the
+  // reel holds stem and complement separately so this scan cannot see them.
+  2: { max: 3, why: "the là/ici distinction and one line that is not a je suis sentence at all" },
+};
+
+describe("a Showcase participates in its own lesson", () => {
+  for (const number of [1, 2]) {
+    test(`L${number} keeps its gallery inside the recorded allowance`, () => {
+      const lesson = V1_LESSONS.find((l) => l.number === number)!;
+      const own = flattenLessonScreens(lesson);
+      const untouched = showcaseOf(lesson).filter((line) => {
+        const key = fold(line.fr);
+        return !own.some(
+          (screen) =>
+            screen.type !== "showcase" &&
+            rendered(screen).some((v) => fold(v).includes(key)),
+        );
+      });
+      const { max, why } = DISPLAY_ONLY_ALLOWANCE[number];
+      assert(
+        untouched.length <= max,
+        `L${number} shows ${untouched.length} lines it never touches (allowed ${max}: ${why}):\n${untouched
+          .map((l) => `  "${l.fr}"`)
+          .join("\n")}`,
+      );
+    });
+  }
+});
+
+describe("the anchor sentence is not the wallpaper", () => {
+  // L2's whole risk is that one sentence IS the lesson. It was on 17 of 20
+  // screens; the founder read that as monotony even where the operations
+  // differed, and he is right that a learner experiences the surface before
+  // they experience the taxonomy.
+  //
+  // Deliberately a ratio and not an exact count, so a future pass can add or
+  // move screens without editing this, and deliberately not zero-tolerance:
+  // je suis ici is the anchor and every appearance left has a job named in the
+  // batch report.
+  test("Je suis ici carries at most three quarters of L2's screens", () => {
+    const L2 = V1_LESSONS.find((l) => l.number === 2)!;
+    const screens = flattenLessonScreens(L2);
+    const key = fold("je suis ici");
+    const carrying = screens.filter((s) =>
+      strings(s.payload).some(([, v]) => fold(v).includes(key)),
+    );
+    const ratio = carrying.length / screens.length;
+    assert(
+      ratio <= 0.75,
+      `Je suis ici is on ${carrying.length} of ${screens.length} L2 screens:\n${carrying
+        .map((s) => `  ${s.id}`)
+        .join("\n")}`,
+    );
+  });
+
+  test("L2 asks for more than one thing", () => {
+    // The other half: reducing the surface must not come from deleting
+    // productions. L2 still has to make the learner produce.
+    const L2 = V1_LESSONS.find((l) => l.number === 2)!;
+    const productions = flattenLessonScreens(L2).filter(
+      (s) => s.type === "weave" || s.type === "say-it-your-way",
+    );
+    assert(productions.length >= 4, `L2 produces only ${productions.length} times`);
   });
 });

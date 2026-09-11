@@ -938,6 +938,11 @@ describe("PR-07 changed no frozen contract", () => {
         "s06-weave-cafe-order-please",
         "s07-meet-merci",
         "s10-weave-merci-thanks",
+        // Inserted by the Showcase-integration follow-up, directly after the
+        // chain that ends on "Merci." — the closing exchange that gives
+        // Voilà, Bonne journée and Merci beaucoup their first use anywhere in
+        // the corpus. Insertion, not substitution: every id below is untouched.
+        "s18-fill-how-much-thanks",
         // These three are now the steps of s21-chain-second-opener. The property
         // this assertion protects is that no pre-existing id was DELETED, so it
         // walks the flattened list; the chain is checked separately.

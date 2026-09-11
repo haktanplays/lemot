@@ -297,6 +297,63 @@ const screens: LessonScreen[] = [
     ],
   }),
 
+
+  {
+    // THE EXCHANGE AROUND THE LEARNER'S LINE.
+    //
+    // Four Showcase lines had never been touched by any screen in any lesson:
+    // Voilà, Bonne journée, and -- despite being marked supported, which is L1
+    // calling it its own -- Merci beaucoup. They were frequent French parked in
+    // a gallery. Two of them come back here as the OTHER person's lines, which
+    // is how a learner meets them in life: read, understood, never produced.
+    // That is the cheapest honest reuse there is, and it costs the lesson no
+    // new production target.
+    //
+    // The operation is new for L1. Every other choice here is between two
+    // different moves -- which opener reaches them, which line the room wants.
+    // This one is between two sizes of the SAME move, so the learner has to
+    // read the weight of a moment rather than its shape. Merci is never wrong
+    // and would be right ninety times out of a hundred; this is the hundredth.
+    //
+    // The target stays chunk-merci. L7 teaches and works merci beaucoup, and
+    // nothing here claims it: it is offered, chosen, and left recognition.
+    id: "s18-fill-how-much-thanks",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-merci"],
+    evidenceTargetItemIds: ["chunk-merci"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "They had sold the last one. Someone went into the back, found one, boxed it: « Voilà. » You answer, and they smile and add « Bonne journée ! » What did you say in between?",
+      blankCount: 1,
+      options: [
+        { id: "opt-merci-beaucoup", text: "Merci beaucoup.", isCorrect: true },
+        {
+          id: "opt-merci-plain",
+          text: "Merci.",
+          isCorrect: false,
+          learningErrorTag: "wrong_register",
+          trapReason:
+            "Never wrong, and you will say it far more often than the longer one. But they went into the back for you, and the short thanks does not say that you noticed.",
+        },
+        {
+          id: "opt-sil-vous-plait",
+          text: "S'il vous plaît, un croissant.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason: "That asks for it. You are already holding it.",
+        },
+      ],
+      answer: ["opt-merci-beaucoup"],
+      reveal: {
+        short: "Merci beaucoup.",
+        explanation:
+          "Merci closes an ordinary exchange. Merci beaucoup says they went out of their way, and people hear the difference. Voilà is what they say handing something over, and bonne journée is how the whole thing ends.",
+        natural: "Merci beaucoup.",
+      },
+    },
+  },
+
   activityChain({
     id: "s21-chain-second-opener",
     intro:

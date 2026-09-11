@@ -72,22 +72,54 @@ describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () =>
   // for. Worth stating why this is not the band quietly eroding: what the band
   // protects is how much the lesson ASKS, and the reveal asks nothing. It is
   // watched, like the Showcase beside it — no grading, no evidence, no target.
-  // The number of things L1 asks the learner to do did not move.
-  test("action count stays inside the authored 11-20 band", () => {
+  //
+  // SUPERSEDED IN PART, 2026-09, by an explicit founder decision: "Screen count
+  // may increase in L1/L2 ... do not preserve an outdated guard simply because
+  // it exists." The ceiling moves to 21 for the closing exchange, which is the
+  // first L1 screen to read the WEIGHT of a moment rather than its shape, and
+  // which brings three Showcase lines back that no screen in the corpus had
+  // ever touched.
+  //
+  // The band stays because an unbounded lesson should still fail. What changed
+  // is what the guard on it protects — see below.
+  test("action count stays inside the authored 11-21 band", () => {
     assert(
-      screens.length >= 11 && screens.length <= 20,
-      `expected 11-20 learner actions, got ${screens.length}`,
+      screens.length >= 11 && screens.length <= 21,
+      `expected 11-21 learner actions, got ${screens.length}`,
     );
   });
 
-  test("the added beats are watched, not asked", () => {
-    // The guard on the guard. If a future pass widens the band again, this is
-    // what stops it being widened for another ASK: the count of screens that
-    // actually demand something is pinned on its own.
-    const asks = screens.filter(
-      (s) => s.type === "weave" || s.type === "say-it-your-way" || s.type === "fill-with-traps",
+  test("the lesson never asks for the same French twice", () => {
+    // REPLACES the pinned ask count, which said L1 asks exactly nine times.
+    //
+    // That pin existed to stop the band being widened for another ask, and it
+    // did its job: it caught this very screen on the previous pass and the
+    // screen was withdrawn. The founder has since decided the opposite, so
+    // keeping it would be preserving an old product assumption rather than
+    // current intent.
+    //
+    // What survives is the thing the pin was really protecting. The risk was
+    // never the tenth ask; it was the tenth ask being the ninth one again. So
+    // this asserts the rule directly: no two screens in L1 may require the same
+    // French answer. A count can be bumped by anyone in a hurry. This cannot be
+    // satisfied except by asking something new.
+    const answers = new Map<string, string[]>();
+    for (const s of screens) {
+      const p = s.payload as { expectedAnswers?: string[]; modelAnswer?: string };
+      const required = p.expectedAnswers ?? (p.modelAnswer ? [p.modelAnswer] : []);
+      for (const raw of required) {
+        const key = raw.normalize("NFC").toLowerCase().replace(/[.!?,;:]/g, "").replace(/\s+/g, " ").trim();
+        answers.set(key, [...(answers.get(key) ?? []), s.id]);
+      }
+    }
+    const repeats = [...answers.entries()].filter(([, where]) => where.length > 1);
+    assertEqual(
+      repeats.length,
+      0,
+      `L1 asks for the same sentence more than once: ${repeats
+        .map(([fr, where]) => `"${fr}" at ${where.join(", ")}`)
+        .join("; ")}`,
     );
-    assertEqual(asks.length, 9, "L1 asks nine times; the reveal and showcase add none");
   });
 
   test("the lesson is still paced across pages, not collapsed into a few", () => {

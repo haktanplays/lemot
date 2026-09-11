@@ -82,8 +82,8 @@ const screens: LessonScreen[] = [
       title: "A second shape you can reuse",
       body:
         "Je voudrais asks for things. Today: je suis, which says how things are.\n" +
-        "By the end: you can say where you are.\n" +
-        "Main pieces: je suis, ici.",
+        "By the end: you can say where you are, and recognise the same shape saying several other things about you.\n" +
+        "Main piece: je suis.",
     },
   },
 
@@ -110,22 +110,6 @@ const screens: LessonScreen[] = [
     intro:
       "You have arrived somewhere you were expected. Before anything else they need to know it is you, and that you are here.",
     steps: [
-      {
-        id: "s02-meet-bonjour-je-suis-ici",
-        type: "meet-card",
-        targetItemIds: ["chunk-bonjour", "chunk-je-suis-ici"],
-        payload: {
-          fr: "Bonjour, je suis ici.",
-          en: "Hello, I am here.",
-          title: "Greet, then locate.",
-          highlights: [
-            { text: "Bonjour", itemId: "chunk-bonjour" },
-            { text: "je suis", itemId: "chunk-je-suis" },
-            { text: "ici", itemId: "word-ici" },
-          ],
-          tts: true,
-        },
-      },
       {
         id: "s03-fill-je-suis-blank",
         type: "fill-with-traps",
@@ -235,23 +219,6 @@ const screens: LessonScreen[] = [
     },
   },
 
-
-  {
-    // Placed BETWEEN the two equivalent productions (F-12): it gives the
-    // second one an explained purpose instead of leaving them consecutive.
-    id: "s06-insight-shape-noticed",
-    type: "insight-card",
-    targetItemIds: ["chunk-je-suis"],
-    payload: {
-      insightType: "grammar-nugget",
-      title: "Notice the shape.",
-      body: "You just wrote Je suis ici. The moment is about to change; the shape will not. That is what an engine does, and the same shape can say how you are, not just where.",
-      examples: [
-        { fr: "Je suis ici.", en: "I am here." },
-        { fr: "Je suis prêt.", en: "I am ready." },
-      ],
-    },
-  },
 
   activityChain({
     id: "s23-chain-the-same-engine-twice",
@@ -514,52 +481,120 @@ const screens: LessonScreen[] = [
     },
   },
 
+  {
+    // THE OTHER THING THE SHAPE DOES: apologise for a state.
+    //
+    // Three of this lesson's Showcase lines had never been touched by any
+    // screen in any lesson -- désolé on its own, en retard, and the readiness
+    // pair's negative. They are frequent beginner survival language and they
+    // were being shown in a gallery.
+    //
+    // The operation is new for L2 and it is not "which line fits": it is
+    // reading what a moment NEEDS. The learner is late, and the true sentence
+    // (they are here) is the useless one, which is why it is the trap. Saying
+    // where you are does not repair anything.
+    //
+    // Recognition only, and the target stays chunk-je-suis. désolé is L7's and
+    // en retard has no registry identity at all, so nothing here is typed,
+    // claimed or put in a tray -- the learner meets a whole line and judges the
+    // moment.
+    id: "s28-fill-arriving-late",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-je-suis"],
+    evidenceTargetItemIds: ["chunk-je-suis"],
+    weakPointTags: ["politeness"],
+    payload: {
+      prompt:
+        "They have been waiting twenty minutes and you have only just got there. Everyone looks up. What do you lead with?",
+      blankCount: 1,
+      options: [
+        { id: "opt-desole-retard", text: "Désolé, je suis en retard.", isCorrect: true },
+        {
+          // Longer than the right answer on purpose: the length tell is the one
+          // way a three-option screen grades itself, and this lesson's traps
+          // have to compete on meaning.
+          id: "opt-je-voudrais-un-cafe",
+          text: "Je voudrais un café, s'il vous plaît.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "You have kept people waiting. Ordering a coffee is not the first thing out of your mouth.",
+        },
+        {
+          id: "opt-je-suis-pret",
+          text: "Je suis prêt.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "That answers a question nobody asked. Say sorry first; ready comes after.",
+        },
+      ],
+      answer: ["opt-desole-retard"],
+      reveal: {
+        short: "Désolé, je suis en retard.",
+        explanation:
+          "The same two words again, carrying something else: not where you are, but why you are late. Désolé goes in front the way Bonjour and Excusez-moi did.",
+        natural: "Désolé, je suis en retard.",
+      },
+    },
+  },
+
   activityChain({
     id: "s21-chain-answer-then-arrive",
     intro:
       "You are somewhere you are expected, and you will need to say two different things about being there.",
     steps: [
         {
-          // Corpus closure. L2 owns one engine and one cargo word, so it can only
-          // widen by RECOMBINATION -- which makes it the lesson most at risk of being
-          // one memorised line. This fill puts the engine beside the two other whole
-          // lines the learner now owns and asks which one the moment wants. It is the
-          // first screen in L2 whose options are complete utterances.
+          // REPURPOSED. This used to be a third "which whole line fits this
+          // moment?", after s04b had already asked it and s05b had already made
+          // the opener a decision. Three screens, one operation, and its answer
+          // was a fourth appearance of the sentence the lesson is drowning in.
+          //
+          // The operation it does now is the one L2 actually owns and had never
+          // extended: sorting French by what a sentence DOES. s04b sorted
+          // locating from asking-for-something. This adds the third family the
+          // learner has been shown and never touched -- saying how you are --
+          // and it arrives the way it will in life, as a question aimed at them.
+          //
+          // LIGHT REUSE, not annexation. Comment ça va is L18's demand and Ça va
+          // is L17's; both keep every screen of their arcs. Nothing here is
+          // typed, no target names them, and the learner is asked to recognise
+          // which answer is even in the right territory -- not to produce it, and
+          // not to hear the rising and falling tone that is L17's whole lesson.
           id: "s10b-fill-which-line",
           type: "fill-with-traps",
-          targetItemIds: ["chunk-je-suis-ici"],
+          targetItemIds: ["chunk-je-suis"],
+          evidenceTargetItemIds: ["chunk-je-suis"],
           weakPointTags: ["natural-speech"],
           payload: {
             prompt:
-              "You arrive somewhere you are expected. The room is calm, nobody has said anything yet, and they look up as you come in.",
+              "You have arrived, they know who you are, and they ask you something else: « Comment ça va ? ». You will learn to answer this properly later. Which one is even about the same thing?",
             blankCount: 1,
             options: [
-              {
-                id: "opt-bonjour-ici",
-                text: "Bonjour, je suis ici.",
-                isCorrect: true,
-              },
+              { id: "opt-ca-va", text: "Ça va.", isCorrect: true },
               {
                 id: "opt-the",
                 text: "Je voudrais un thé, s'il vous plaît.",
                 isCorrect: false,
+                learningErrorTag: "meaning_shift",
                 trapReason:
-                  "That orders a drink. You have just walked in, and nobody has asked you what you want.",
+                  "That asks for something. They asked how you are, not what you want.",
               },
               {
                 id: "opt-repeter",
                 text: "Vous pouvez répéter ?",
                 isCorrect: false,
+                learningErrorTag: "meaning_shift",
                 trapReason:
-                  "That asks them to say something again. Nothing has been said for you to miss.",
+                  "That is for when you missed what they said. You heard this one.",
               },
             ],
-            answer: ["opt-bonjour-ici"],
+            answer: ["opt-ca-va"],
             reveal: {
-              short: "Bonjour, je suis ici.",
+              short: "Ça va.",
               explanation:
-                "Arriving takes the greeting in front of it. Being called across a room does not, which is why the same two words come out differently each time.",
-              natural: "Bonjour, je suis ici.",
+                "Three things you can now recognise by what they do: je suis says where or how you are, je voudrais asks for something, and ça va is the small exchange about how you are. Ça va travels whole, and it is both the question and the answer. Ça va bien. is the same answer with a little more warmth in it.",
+              natural: "Ça va.",
             },
           },
         },
@@ -590,47 +625,6 @@ const screens: LessonScreen[] = [
               ifUnderstandableButWrong:
                 "Your meaning lands. The answer to « Bonjour ? » from an unseen room is where you are.",
               ifMissingTargetPiece: "Je suis puts you somewhere. Ici says where.",
-            },
-            validationMode: "exact-or-alternative",
-          },
-        },
-        {
-          // The same two-sentence shape the lesson already built, with a different
-          // drink at the end. It exists so the recombination reads as a pattern the
-          // learner can refill rather than one sentence they memorised: the engine
-          // holds, the order changes.
-          id: "s10d-weave-arrive-and-order-tea",
-          type: "weave",
-          targetItemIds: ["chunk-je-suis-ici", "chunk-un-the"],
-          weakPointTags: ["politeness"],
-          payload: {
-            weaveType: "open",
-            prompt: "Say you have arrived, then order the other drink politely.",
-            context:
-              "Same doorway, a different afternoon. You do not feel like coffee today.",
-            suggestedPieces: [
-              { text: "Bonjour", itemId: "chunk-bonjour", label: "greeting" },
-              { text: "je suis", itemId: "chunk-je-suis", label: "I am" },
-              { text: "ici", itemId: "word-ici", label: "here" },
-              { text: "je voudrais", itemId: "chunk-je-voudrais", label: "polite request" },
-              { text: "un thé", itemId: "chunk-un-the", label: "the other drink" },
-              { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
-            ],
-            hintCloze: "Bonjour, je suis ___. Je voudrais ___, s'il vous plaît.",
-            expectedAnswers: ["Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît."],
-            acceptedAlternatives: [
-              "Bonjour, je suis ici. Je voudrais un thé.",
-              "Bonjour. Je suis ici. Je voudrais un thé, s'il vous plaît.",
-            ],
-            reveal: {
-              modelAnswer: "Bonjour, je suis ici. Je voudrais un thé, s'il vous plaît.",
-              ifCorrect:
-                "Same two moves, different drink. That is a shape you can refill, not a line you memorised.",
-              ifCorrectButFlat: "Right. Arrive first, then ask.",
-              ifUnderstandableButWrong:
-                "Your meaning lands. Say where you are, stop, then order.",
-              ifMissingTargetPiece:
-                "Je suis ici puts you in the room. Je voudrais un thé asks for the drink.",
             },
             validationMode: "exact-or-alternative",
           },
@@ -775,6 +769,8 @@ export const lesson002: Lesson = {
   designNotes: [
     "Je suis is the L2 architecture target. No broader conjugation table appears.",
     "Showcase-integration pass: ici is still the only completion L2 PRODUCES, and the opener is still what varies in every typed answer. What changed is that the lesson stopped pretending the rest of the Showcase was not there. s25 shows five further completions and grades none of them; s26 lets the learner choose one against the sentence they have been drilling. Neither adds a production target, a demand or a chip-tray piece.",
+    "Follow-up pass: Je suis ici went from 17 of 20 screens to 12 of 18. Three screens repeated an operation rather than adding one and are gone or changed — s02 met a line composed entirely of owned pieces, s10d asked for the two-sentence arrival a second time with a different drink, and s06 explained in prose what s25 now shows. s10b was a third 'which whole line fits', and now sorts French by what a sentence DOES, extending that discrimination to the check-in family. s28 is new: reading what a moment needs, where the true sentence is the useless one.",
+    "Every remaining Je suis ici appearance has a distinct job: Showcase anchor, first encounter, word-level completion, first production, whole-sentence retrieval, opener production, opener choice frame, two-sentence recombination, a trap in s26, a French-scene production, free production, and the three-opener reveal.",
     "L2 does not teach the check-in exchange. Ça va, Comment ça va, fatigué and content stay on the Showcase as forward exposure because L17 and L18 own them as acquisition demands, and pulling them forward would empty those lessons. Same for ne ... pas: s27 shows the frame and L3 still teaches it.",
     "Finishing pass (L1-L6 founder-usable phase): L2 was the thinnest early lesson at four sentences and three productions, and every screen worked the engine in isolation. The three screens added are recombination, not new scope. s04b makes the learner choose the whole sentence against je voudrais and bonjour, so je suis is retrieved by meaning rather than completed by position. s05b makes the opener a decision the room forces, which is what s09 had only asserted. s06b is L2's first two-sentence production and its first recombination with the L1 order. No new item, no second completion, and the demand list is untouched at one.",
     "The finishing pass deliberately adds no fourth insight card: L2 is at the canon §11 V5 budget of three, so the added screens are two fills and a weave.",
@@ -804,5 +800,7 @@ export const lesson002: Lesson = {
     "s25 rotates full complements (Je suis + ici / prêt / fatigué / content / désolé / en retard), never bare adjectives, and grades nothing.",
     "s26 fires the meaning trap on Je suis ici, which is the sentence the lesson has been drilling.",
     "s27 shows ne and pas on either side of suis and never as one chip.",
+    "s10b fires both meaning traps and its reveal names the three sentence families by what they do.",
+    "s28 fires the meaning trap on Je suis prêt and its correct answer is not the longest option.",
   ],
 };

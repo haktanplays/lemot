@@ -270,9 +270,16 @@ describe("productionQuality — shipped v1", () => {
     // twice is a test, so the open one is gone and open production now begins
     // where it should, in L1. This row is a characterisation of the corpus,
     // not a floor: L0's single action is deliberate and PQ-2 still passes.
+    // Showcase-integration follow-up: L2 6 -> 5. s10d asked for the two-sentence
+    // arrival-and-order a second time with a different drink. The reel added
+    // last batch now SHOWS the shape refilling, which is the claim s10d existed
+    // to make, so the second production was the same operation told twice. What
+    // replaced it is not another production -- L2 may only produce je suis ici
+    // and its recombinations -- but two recognitions of frequent lines the
+    // lesson had only ever displayed.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [3, 7, 6, 7, 5, 5, 7, 8, 7, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      [3, 7, 5, 7, 5, 5, 7, 8, 7, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {
