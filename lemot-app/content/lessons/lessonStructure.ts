@@ -19,7 +19,14 @@
  * checked against the real registry, never against TypeScript string typing.
  */
 import { ITEM_REGISTRY } from "../itemRegistry";
-import type { LearningItem, Lesson, LessonScreen, ScreenType } from "../lessonTypes";
+import type {
+  LearningItem,
+  Lesson,
+  LessonScreen,
+  NaturalAlternative,
+  ScreenType,
+} from "../lessonTypes";
+import { alternativeStrings } from "./naturalAlternatives";
 
 /**
  * Runtime enumeration of the screen types the v1 renderer can render, derived
@@ -70,8 +77,12 @@ export function frenchStrings(screen: LessonScreen): string[] {
       if (typeof reveal[key] === "string") out.push(reveal[key] as string);
     }
     if (Array.isArray(reveal.naturalAlternatives)) {
-      for (const s of reveal.naturalAlternatives) {
-        if (typeof s === "string") out.push(s);
+      // An alternative may be a bare string or a labelled variant. The scanner
+      // wants the French either way; `when` is English and never scanned.
+      for (const s of alternativeStrings(
+        reveal.naturalAlternatives as (string | NaturalAlternative)[],
+      )) {
+        out.push(s);
       }
     }
   }

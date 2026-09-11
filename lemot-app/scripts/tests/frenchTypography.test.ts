@@ -129,13 +129,39 @@ describe("a line height that exists is not yet a line height that fits", () => {
     assert(tight.length === 0, `accents and J tails get shaved here:\n${tight.join("\n")}`);
   });
 
-  test("it is a floor, so a looser surface keeps its own rhythm", () => {
-    // Guard on the guard. As an equality check this would force every French
-    // surface to one rhythm, which is a design decision a typography floor does
-    // not get to make on its own.
+  test("the scanner finds a tight literal, and steps over a computed one", () => {
+    // Guard on the guard, against a fixture rather than against the corpus.
+    // It used to assert that some real block sat above the floor, which held
+    // only while literal line heights still existed — and the point of this
+    // work was to remove them. A guard whose sentinel dies when the defect is
+    // fixed stops watching at exactly the wrong moment.
+    const tight = `<Text style={{ fontStyle: "italic", fontSize: 20, lineHeight: 28 }}>`;
+    const computed = `<Text style={{ fontStyle: "italic", fontSize: 20, lineHeight: frenchLineHeight(20) }}>`;
+    const found = literalItalicBlocks("fixture.tsx", tight);
+    assertEqual(found.length, 1, "a literal line height must be visible to the scan");
+    assertEqual(found[0].size, 20, "the size beside it must be read, not guessed");
+    assert(found[0].lineHeight < frenchLineHeight(found[0].size), "28 is under the floor for 20px");
+    assertEqual(
+      literalItalicBlocks("fixture.tsx", computed).length,
+      0,
+      "a block that follows the rule is not the scan's business",
+    );
+  });
+
+  test("no French surface is left setting its own line height by hand", () => {
+    // Stronger than the floor, and the state this batch actually reached: a
+    // literal that is correct today still does not move when frenchLineHeight
+    // does. The floor test above remains the net for whatever is added next.
+    assertEqual(
+      blocks.length,
+      0,
+      `these still copy a number instead of the rule:\n${blocks
+        .map((b) => `${b.file}: ${b.size}px on ${b.lineHeight}`)
+        .join("\n")}`,
+    );
     assert(
-      blocks.some((b) => b.lineHeight > frenchLineHeight(b.size)),
-      "no surface is looser than the floor — check this still reads real blocks",
+      FRENCH_RENDERERS.some((f) => read(f).includes("frenchLineHeight(")),
+      "no renderer calls the shared rule — check the list still names real files",
     );
   });
 

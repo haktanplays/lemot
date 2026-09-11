@@ -15,7 +15,12 @@ import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
 import { productionActions } from "../../content/lessons/productionQuality";
-import type { Lesson, LessonScreen } from "../../content/lessonTypes";
+import type {
+  Lesson,
+  LessonScreen,
+  NaturalAlternative,
+} from "../../content/lessonTypes";
+import { alternativeStrings } from "../../content/lessons/naturalAlternatives";
 
 const PATH: readonly Lesson[] = V1_LESSONS.filter(
   (l) => l.number >= 1 && l.number <= 6,
@@ -76,12 +81,18 @@ function visibleSentences(screen: LessonScreen): string[] {
       break;
     case "say-it-your-way":
       push(p.modelAnswer);
-      for (const a of ((p.reveal as { naturalAlternatives?: string[] })?.naturalAlternatives) ?? [])
+      for (const a of alternativeStrings(
+        (p.reveal as { naturalAlternatives?: (string | NaturalAlternative)[] })
+          ?.naturalAlternatives,
+      ))
         push(a);
       break;
     case "natural-reveal":
       push(p.modelAnswer);
-      for (const a of (p.naturalAlternatives as string[]) ?? []) push(a);
+      for (const a of alternativeStrings(
+        p.naturalAlternatives as (string | NaturalAlternative)[] | undefined,
+      ))
+        push(a);
       break;
     default:
       break;
@@ -363,7 +374,11 @@ describe("the screens this phase added are wired, not just present", () => {
           `${lesson.id}/${screen.id} renders an empty reveal`,
         );
         assert(
-          (p.naturalAlternatives ?? []).every((a) => a.trim().length > 0),
+          alternativeStrings(p.naturalAlternatives).every(
+            (a) => a.trim().length > 0,
+          ) &&
+            alternativeStrings(p.naturalAlternatives).length ===
+              (p.naturalAlternatives ?? []).length,
           `${lesson.id}/${screen.id} lists an empty alternative`,
         );
       }

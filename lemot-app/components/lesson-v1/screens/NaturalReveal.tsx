@@ -7,6 +7,10 @@ import type {
   NaturalRevealPayload,
   NaturalRevealScreen,
 } from "@/content/lessonTypes";
+import {
+  alternativeFrench,
+  alternativeLabel,
+} from "@/content/lessons/naturalAlternatives";
 
 const NOTICE_KEYS = [
   "ifCorrectButFlat",
@@ -216,19 +220,12 @@ export function NaturalRevealView({
           kicker={alternatives.length === 1 ? "Another way" : "Other ways"}
         >
           {alternatives.map((alt, i) => (
-            <Text
+            <VariantLine
               key={i}
-              style={{
-                color: P.ink2,
-                fontFamily: "serif",
-                fontStyle: "italic",
-                fontSize: 15,
-                lineHeight: 23,
-                marginTop: i === 0 ? 0 : SPACE.xs,
-              }}
-            >
-              {alt}
-            </Text>
+              label={alternativeLabel(alt)}
+              fr={alternativeFrench(alt)}
+              first={i === 0}
+            />
           ))}
         </RevealNote>
       )}
@@ -240,6 +237,68 @@ export function NaturalRevealView({
           </Text>
         </RevealNote>
       )}
+    </View>
+  );
+}
+
+/**
+ * One alternative, with the situation it belongs to above it when the content
+ * names one.
+ *
+ * The founder read the old block as "a stack of text": three French sentences
+ * in a row under one heading, identical in weight, with nothing saying why a
+ * learner would reach for the second. The label is the answer, so it sits ON
+ * the variant rather than in the group kicker, and a hairline rule separates
+ * one variant from the next — otherwise two labelled blocks read as one
+ * four-line paragraph.
+ *
+ * An unlabelled alternative keeps exactly the old line. Most of the corpus is
+ * still bare strings, and giving them a heading would mean inventing a reason
+ * each exists, which is the one thing the founder ruled out: a label that is
+ * not true costs more than no label.
+ */
+function VariantLine({
+  label,
+  fr,
+  first,
+}: {
+  label: string | null;
+  fr: string;
+  first: boolean;
+}) {
+  const spaced = first ? 0 : label ? SPACE.sm : SPACE.xs;
+  return (
+    <View
+      style={{
+        marginTop: spaced,
+        ...(label && !first
+          ? { paddingTop: SPACE.sm, borderTopWidth: 1, borderTopColor: P.border }
+          : null),
+      }}
+    >
+      {label && (
+        <Text
+          style={{
+            color: P.ink3,
+            fontSize: 12,
+            lineHeight: 16,
+            marginBottom: 2,
+          }}
+        >
+          {label}
+        </Text>
+      )}
+      <Text
+        style={{
+          color: P.ink2,
+          fontFamily: "serif",
+          fontStyle: "italic",
+          fontSize: 15,
+          lineHeight: frenchLineHeight(15),
+        }}
+      >
+        {fr}
+      </Text>
     </View>
   );
 }

@@ -124,6 +124,22 @@ export type AnswerRevealPayload = {
   natural?: string;
 };
 
+/**
+ * One "other way" to say the same thing, and the situation it belongs to.
+ *
+ * A bare string is still valid and still renders. The founder's objection was
+ * not that alternatives existed but that they arrived as an undifferentiated
+ * stack: three French sentences under one heading, with nothing saying why a
+ * learner would ever reach for the second rather than the first. A labelled
+ * variant answers that question in the label.
+ *
+ * `when` names the SITUATION, not a register, unless the register is really
+ * what differs. "Quick at the counter" and "Polite full form" are true of the
+ * café pair; calling the same pair "Street" and "Formal" would not be, and a
+ * label a learner later discovers to be false costs more than no label.
+ */
+export type NaturalAlternative = { fr: string; when: string };
+
 export type NaturalRevealPayload = {
   modelAnswer?: string;
   ifCorrect?: string;
@@ -133,7 +149,7 @@ export type NaturalRevealPayload = {
   ifTooDirect?: string;
   ifMissingTargetPiece?: string;
   ifBetterThanExpected?: string;
-  naturalAlternatives?: string[];
+  naturalAlternatives?: (string | NaturalAlternative)[];
   explanation?: string;
 };
 
@@ -359,7 +375,7 @@ export type WeavePayload = {
   }[];
   expectedAnswers: string[];
   acceptedAlternatives?: string[];
-  naturalAlternatives?: string[];
+  naturalAlternatives?: (string | NaturalAlternative)[];
   // Optional second hint rung: a cloze shape (e.g. "Bonjour, je voudrais ___,
   // s'il vous plaît.") shown only after the learner asks for more help.
   hintCloze?: string;

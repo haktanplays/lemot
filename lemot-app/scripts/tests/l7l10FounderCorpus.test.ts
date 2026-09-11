@@ -11,7 +11,12 @@
 import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
-import type { Lesson, LessonScreen } from "../../content/lessonTypes";
+import type {
+  Lesson,
+  LessonScreen,
+  NaturalAlternative,
+} from "../../content/lessonTypes";
+import { alternativeStrings } from "../../content/lessons/naturalAlternatives";
 
 const byNumber = (n: number): Lesson => {
   const l = V1_LESSONS.find((x) => x.number === n);
@@ -75,8 +80,12 @@ function visibleSentences(lesson: Lesson): Set<string> {
     }
     for (const e of (p.examples as Array<{ fr?: string }> | undefined) ?? []) add(e.fr);
     const reveal = p.reveal as Record<string, unknown> | undefined;
-    ((reveal?.naturalAlternatives as string[]) ?? []).forEach(add);
-    ((p.naturalAlternatives as string[]) ?? []).forEach(add);
+    alternativeStrings(
+      reveal?.naturalAlternatives as (string | NaturalAlternative)[] | undefined,
+    ).forEach(add);
+    alternativeStrings(
+      p.naturalAlternatives as (string | NaturalAlternative)[] | undefined,
+    ).forEach(add);
   }
   return out;
 }

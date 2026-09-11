@@ -601,9 +601,19 @@ const screens: LessonScreen[] = [
       explanation:
         "The request never changed. Only the way you opened it did.\n" +
         "Bonjour when they can already see you. Excusez-moi when you have to reach them first. Everything after the opener stays exactly where you left it, which is why swapping the drink costs you nothing.",
+      // Labelled, because the whole screen is the claim that these two differ
+      // by SITUATION and nothing else: same request, same politeness, same
+      // length. A register label here ("Polite" / "Formal") would be false —
+      // both are the polite full form.
       naturalAlternatives: [
-        "Bonjour, je voudrais un café, s'il vous plaît.",
-        "Excusez-moi, je voudrais un thé, s'il vous plaît.",
+        {
+          when: "When they can see you",
+          fr: "Bonjour, je voudrais un café, s'il vous plaît.",
+        },
+        {
+          when: "Getting their attention",
+          fr: "Excusez-moi, je voudrais un thé, s'il vous plaît.",
+        },
       ],
     },
   },
@@ -639,12 +649,22 @@ const screens: LessonScreen[] = [
       modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît. Merci !",
       reveal: {
         modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît. Merci !",
+        // Dropping je voudrais for a bare un café is a real shortening at a
+        // counter, so "Quick" is a true label rather than a neat one. The
+        // model above is the long form; these two say what you would trade it
+        // for and when.
         naturalAlternatives: [
-          "Bonjour, un café s'il vous plaît. Merci !",
-          "Excusez-moi, je voudrais un thé, s'il vous plaît. Merci !",
+          {
+            when: "Quick at the counter",
+            fr: "Bonjour, un café s'il vous plaît. Merci !",
+          },
+          {
+            when: "Getting their attention",
+            fr: "Excusez-moi, je voudrais un thé, s'il vous plaît. Merci !",
+          },
         ],
         explanation:
-          "All three are natural. The longer form leans formal, the shorter leans casual, and the third opens with excusez-moi because you had to reach them first. The drink is yours to choose.",
+          "All three are natural, and the drink is yours to choose. What changes between them is how much of the sentence the moment needs.",
       },
       validationMode: "model-answer-only",
     },

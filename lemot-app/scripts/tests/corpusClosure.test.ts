@@ -15,7 +15,12 @@
 import { describe, test, assert, assertEqual } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
-import type { Lesson, LessonScreen } from "../../content/lessonTypes";
+import type {
+  Lesson,
+  LessonScreen,
+  NaturalAlternative,
+} from "../../content/lessonTypes";
+import { alternativeStrings } from "../../content/lessons/naturalAlternatives";
 
 const PATH: readonly Lesson[] = V1_LESSONS.filter(
   (l) => l.number >= 1 && l.number <= 10,
@@ -358,11 +363,17 @@ const SHIPPED: ReadonlySet<string> = (() => {
       for (const e of (p.examples as Array<{ fr?: string }> | undefined) ?? []) add(e.fr);
       for (const o of (p.options as Array<{ text?: string }> | undefined) ?? []) add(o.text);
       for (const a of (p.expectedAnswers as string[] | undefined) ?? []) add(a);
-      for (const a of (p.naturalAlternatives as string[] | undefined) ?? []) add(a);
+      for (const a of alternativeStrings(
+        p.naturalAlternatives as (string | NaturalAlternative)[] | undefined,
+      ))
+        add(a);
       const reveal = p.reveal as Record<string, unknown> | undefined;
       add(reveal?.modelAnswer);
       add(reveal?.natural);
-      for (const a of (reveal?.naturalAlternatives as string[] | undefined) ?? []) add(a);
+      for (const a of alternativeStrings(
+        reveal?.naturalAlternatives as (string | NaturalAlternative)[] | undefined,
+      ))
+        add(a);
     }
   }
   return out;
