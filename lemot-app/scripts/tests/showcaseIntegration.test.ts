@@ -231,3 +231,45 @@ describe("the je suis reveal shows whole complements", () => {
     );
   });
 });
+
+describe("ça va is one reusable piece, shown as one", () => {
+  const L2 = V1_LESSONS.find((l) => l.number === 2)!;
+  const lines = showcaseOf(L2);
+  const bare = lines.find((l) => l.fr === "Ça va.");
+  const longer = lines.find((l) => l.fr.startsWith("Ça va bien"));
+
+  test("both lines are present, so the learner meets the piece twice", () => {
+    assert(bare !== undefined, "L2 must show the bare check-in");
+    assert(longer !== undefined, "L2 must show it inside a longer sentence");
+  });
+
+  test("the longer line shows Ça va as its own piece", () => {
+    const pieces = longer!.pieces ?? [];
+    assert(pieces.includes("Ça va"), `Ça va must be a visible piece, got ${JSON.stringify(pieces)}`);
+  });
+
+  test("nothing splits the inside of ça va", () => {
+    // The founder's constraint: show it as a reusable chunk, and do not invent
+    // a seam between ça and va. The pieces of the longer line must never name
+    // either half on its own.
+    for (const line of lines) {
+      for (const piece of line.pieces ?? []) {
+        const f = fold(piece);
+        assert(f !== "ça" && f !== "va", `"${line.fr}" splits ça va into "${piece}"`);
+      }
+    }
+  });
+
+  test("the bare line says in words what it cannot show in chips", () => {
+    // A one-unit sentence has no breakdown to render — showcasePieces refuses a
+    // single-piece list on purpose, because a lone chip under its own sentence
+    // is noise. So the gap the founder saw (a piece here, nothing there) closes
+    // in the depth note rather than by faking a split.
+    assert(bare!.flat === "formula", "ça va is one thing; the flat reason must say so");
+    const structure = bare!.depth?.structure ?? "";
+    assert(
+      /one piece|whole/i.test(structure),
+      "the bare line must name ça va as a reusable whole",
+    );
+  });
+});
