@@ -944,6 +944,10 @@ describe("PR-07 changed no frozen contract", () => {
         "s13-meet-excusez-moi",
         "s14-fill-opener-choice",
         "s15-weave-excusez-moi-cafe",
+        // The pattern reveal, inserted by the L0-L1 founder batch. This
+        // assertion protects DELETION, not insertion: it lands after the
+        // transfer it reflects on, and every pre-existing id below is untouched.
+        "s24-reel-je-voudrais-pattern",
         "s12-meet-un-the",
         "s11-weave-the-order",
         "s17-meet-vous-pouvez-repeter",

@@ -414,6 +414,47 @@ const screens: LessonScreen[] = [
     ],
   }),
 
+  // ── THE PATTERN, AFTER THEY HAVE USED IT ─────────────────────────────────
+  // Placed here on purpose, and the placement is the pedagogy. The learner has
+  // now ordered a coffee twice and just carried the same request into a bakery
+  // for something L1 never taught them. THEN they are shown what they have been
+  // holding. Before the transfer this screen is a promise; after it, it is an
+  // observation about something they did.
+  //
+  // Full noun phrases rotate, never bare nouns. Showing "café" and "pizza"
+  // against a fixed stem would teach a plug-and-play grammar French does not
+  // have; "un café" and "une pizza" travel whole, which is also how the learner
+  // will meet every one of them later.
+  //
+  // un café and un thé are owned; un croissant is the word they reached for one
+  // screen ago; the rest are exposure, in the same sense a Showcase is. The
+  // surface grades nothing and claims no target, so nothing here says taught.
+  {
+    id: "s24-reel-je-voudrais-pattern",
+    type: "pattern-reel",
+    payload: {
+      title: "One shape, many requests.",
+      body:
+        "You have used this twice now, and once for something nobody taught you. Here is what you were actually holding.",
+      stem: "Je voudrais",
+      rows: [
+        { fr: "un café", en: "a coffee" },
+        { fr: "un thé", en: "a tea" },
+        { fr: "un croissant", en: "a croissant" },
+        // Not "un sandwich", however transparent it is: "sandwich" is a retired
+        // metaphor in this codebase (the old negation sandwich) and is banned
+        // from learner copy, which is exactly the kind of collision the guard
+        // exists to catch.
+        { fr: "une baguette", en: "a baguette" },
+        { fr: "une pizza", en: "a pizza" },
+        { fr: "un taxi", en: "a taxi" },
+        { fr: "une salade", en: "a salad" },
+      ],
+      note:
+        "Je voudrais carries the request. Change what comes after it and you change what you are asking for. It works the way I would like works in English: polite enough for anyone, in any shop, without learning a new sentence each time.",
+    },
+  },
+
   activityChain({
     id: "s23-chain-ordering-and-losing-it",
     intro:

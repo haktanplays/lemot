@@ -68,11 +68,26 @@ describe("L1 sequence — Content Bible rhythm after the truthful re-cut", () =>
   // fails, and what would make a lesson unbounded is how much it asks -- which
   // is exactly what chaining does not change. Measuring pages here would have
   // made grouping four actions onto one page look like deleting three of them.
-  test("action count stays inside the authored 11-19 band", () => {
+  // Widened once more, by exactly one, for the pattern reveal the founder asked
+  // for. Worth stating why this is not the band quietly eroding: what the band
+  // protects is how much the lesson ASKS, and the reveal asks nothing. It is
+  // watched, like the Showcase beside it — no grading, no evidence, no target.
+  // The number of things L1 asks the learner to do did not move.
+  test("action count stays inside the authored 11-20 band", () => {
     assert(
-      screens.length >= 11 && screens.length <= 19,
-      `expected 11-19 learner actions, got ${screens.length}`,
+      screens.length >= 11 && screens.length <= 20,
+      `expected 11-20 learner actions, got ${screens.length}`,
     );
+  });
+
+  test("the added beats are watched, not asked", () => {
+    // The guard on the guard. If a future pass widens the band again, this is
+    // what stops it being widened for another ASK: the count of screens that
+    // actually demand something is pinned on its own.
+    const asks = screens.filter(
+      (s) => s.type === "weave" || s.type === "say-it-your-way" || s.type === "fill-with-traps",
+    );
+    assertEqual(asks.length, 9, "L1 asks nine times; the reveal and showcase add none");
   });
 
   test("the lesson is still paced across pages, not collapsed into a few", () => {
