@@ -28,11 +28,22 @@ describe("weave copy (Round 1.2 UX)", () => {
     assertEqual(WEAVE_TARGET_LABEL, "Say this:", "target label");
   });
 
-  test("helper keeps the mixed-language + compare framing", () => {
+  test("helper keeps the mixed-language permission", () => {
     assertEqual(
       WEAVE_HELPER,
-      "Use the French pieces you know. Leave the rest in English for now. Then compare with the model.",
+      "Use the French pieces you know. Leave the rest in English for now.",
       "helper copy",
+    );
+  });
+
+  test("the helper does not narrate the button underneath it", () => {
+    // The line used to end "Then compare with the model." — which is what the
+    // Check button does, and what every verdict note says afterwards. Three
+    // statements of one action, stacked, on the screen the founder called
+    // duplicated.
+    assert(
+      !WEAVE_HELPER.toLowerCase().includes("compare"),
+      "the helper must not restate the action its own footer performs",
     );
   });
 

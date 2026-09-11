@@ -18,13 +18,22 @@ export const WEAVE_BADGE = "Weave";
 export const WEAVE_TARGET_LABEL = "Say this:";
 
 /**
- * Compact action/helper line. Restores the Weave mixed-language framing and
- * stays consistent with the one-time "How Weave works" interstitial. Mixed or
- * partial attempts still route to neutral compare (no red, never auto-correct);
- * this copy does not touch the evaluator.
+ * Compact helper line: the mixed-language permission, and nothing else.
+ *
+ * It used to close with "Then compare with the model.", which narrated the
+ * button directly beneath it — and every verdict note after the tap says
+ * "Compare with the model." too, so the same sentence arrived three times
+ * around one action. The founder read the screen as telling him the same job
+ * twice in competing blocks. What stays is the half of the line no other
+ * element says: French where you have it, English where you do not.
+ *
+ * Stays consistent with the one-time "How Weave works" interstitial, which
+ * carries the fuller explanation. Mixed or partial attempts still route to
+ * neutral compare (no red, never auto-correct); this copy does not touch the
+ * evaluator.
  */
 export const WEAVE_HELPER =
-  "Use the French pieces you know. Leave the rest in English for now. Then compare with the model.";
+  "Use the French pieces you know. Leave the rest in English for now.";
 
 /**
  * Label above the answer field. "Your try" (not "Your answer") keeps the Weave

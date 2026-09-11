@@ -187,33 +187,22 @@ export function Weave({
   return (
     <LessonScreenFrame
       /*
-        While the learner types, the ask stays in view. Badge plus the one line
-        that says what to produce — never the long helper paragraph, which may
-        scroll away without cost. Suppressed once revealed: the model is on
-        screen by then and the anchor would only crowd it.
+        While the learner types, the ask stays in view: the one line that says
+        what to produce, and nothing else — never the helper, which may scroll
+        away without cost. The Weave badge used to ride here too, which put a
+        second identical ink pill on screen beside the body's, and spent width
+        on a name the learner already has on the strip where width is scarcest.
+        Suppressed once revealed: the model is on screen by then and the anchor
+        would only crowd it.
       */
       taskAnchor={
         !isRevealed ? (
-          <View style={{ flexDirection: "row", alignItems: "center", gap: SPACE.sm }}>
-            <View
-              style={{
-                backgroundColor: P.ink,
-                borderRadius: 9999,
-                paddingHorizontal: 8,
-                paddingVertical: 2,
-              }}
-            >
-              <Text style={{ color: P.bg, fontSize: 10, fontWeight: "700" }}>
-                {WEAVE_BADGE}
-              </Text>
-            </View>
-            <Text
-              numberOfLines={2}
-              style={{ flex: 1, color: P.ink, fontSize: 14, lineHeight: 20 }}
-            >
-              {targetMeaning}
-            </Text>
-          </View>
+          <Text
+            numberOfLines={2}
+            style={{ color: P.ink, fontSize: 14, lineHeight: 20 }}
+          >
+            {targetMeaning}
+          </Text>
         ) : undefined
       }
       footer={

@@ -79,6 +79,13 @@ describe("the task stays visible while the learner types", () => {
       "the long helper paragraph may scroll away; it must not be pinned",
     );
     assert(anchor.includes("!isRevealed"), "the anchor is for the input phase only");
+    // The badge rode here too, so a second identical ink pill could sit on
+    // screen beside the body's, on the strip where width is scarcest. The
+    // anchor keeps the ASK in view; the mechanic's name is not the ask.
+    assert(
+      !anchor.includes("WEAVE_BADGE"),
+      "the anchor must not repeat the badge the body already shows",
+    );
   });
 });
 
