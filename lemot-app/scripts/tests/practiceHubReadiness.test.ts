@@ -159,6 +159,14 @@ const EXPOSURE: readonly string[] = [
   "chunk-bonne-nuit",
   "chunk-bon-week-end",
   "chunk-bon-voyage",
+  // L2's readiness pair, declared when the Showcase's "Vous êtes prêt ?"
+  // finally got a job. The lesson SHOWS both and works neither: s26 quotes the
+  // question and offers the answer as a whole-sentence choice, and its target
+  // is chunk-je-suis, the engine underneath. States are L17's to demand, so
+  // neither of these may start resolving here — if one does, a screen has begun
+  // asking L2 for language L2 does not teach.
+  "chunk-vous-etes-pret",
+  "chunk-je-suis-pret",
 ];
 
 /** Concepts, not surfaces. Nothing to produce. */

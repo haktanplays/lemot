@@ -27,8 +27,21 @@ const screens: LessonScreen[] = [
         {
           label: "How you are",
           sentences: [
-            { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "sa-VA", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." }, flat: "formula" },
-            { fr: "Ça va bien, merci.", en: "I'm well, thank you.", role: "supported", itemIds: ["chunk-ca-va", "chunk-merci"], pieces: ["Ça va", "bien", "merci"] },
+            // The breakdown stays absent and that is correct: ça va IS one unit, and
+            // splitting it would invent a seam French does not have. But the line
+            // below shows Ça va inside a longer sentence with its own chip, so the
+            // learner met the same two words twice and saw them look like a piece
+            // once and like nothing the other time. The structure note is what
+            // closes that gap honestly — it names ça va as the reusable whole
+            // rather than faking a split inside it.
+            { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "sa-VA", structure: "Ça va is one piece, not two words you assemble. It travels whole, which is why it can be the entire answer here and still slot into a longer sentence underneath.", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." }, flat: "formula" },
+            // Was "Ça va bien, merci." — a line L2 called its own and that no
+            // screen in the corpus ever worked, in any lesson. L17 teaches the
+            // positive answer and the string it actually uses is this one, so
+            // the seed now points at the sentence the learner will really
+            // produce instead of at a near-miss of it. The trailing merci was
+            // the only thing lost, and merci is the most-worked chunk in L1.
+            { fr: "Ça va bien.", en: "I'm well.", role: "supported", itemIds: ["chunk-ca-va"], pieces: ["Ça va", "bien"] },
             { fr: "Je suis fatigué.", en: "I'm tired.", role: "exposure", itemIds: ["chunk-je-suis", "adj-fatigue"] },
             { fr: "Je suis content.", en: "I'm glad.", role: "exposure", itemIds: ["chunk-je-suis", "adj-content"] },
             { fr: "Je suis désolé.", en: "I'm sorry.", role: "exposure" },
@@ -57,13 +70,18 @@ const screens: LessonScreen[] = [
 
 
   {
+    // "Your first engine" was not true and the learner knows it: je voudrais
+    // was a reusable shape they carried through two lessons and refilled with a
+    // different drink and a word nobody taught them. Claiming a first here
+    // makes the product look like it has forgotten what the learner did, which
+    // costs more than the small lift the word "first" was buying.
     id: "s00-goal-etre",
     type: "insight-card",
     payload: {
       insightType: "lesson-goal",
-      title: "Your first engine",
+      title: "A second shape you can reuse",
       body:
-        "Today: your first French sentence engine, je suis.\n" +
+        "Je voudrais asks for things. Today: je suis, which says how things are.\n" +
         "By the end: you can say where you are.\n" +
         "Main pieces: je suis, ici.",
     },
@@ -86,18 +104,6 @@ const screens: LessonScreen[] = [
     },
   },
 
-
-  {
-    id: "s01-insight-je-suis-engine",
-    type: "insight-card",
-    targetItemIds: ["chunk-je-suis"],
-    payload: {
-      insightType: "grammar-nugget",
-      title: "Your first French sentence engine.",
-      body: "Je suis = I am. This shape is small. You will use it again and again.",
-      examples: [{ fr: "Je suis ici.", en: "I am here." }],
-    },
-  },
 
   activityChain({
     id: "s22-chain-saying-where-you-are",
@@ -385,6 +391,129 @@ const screens: LessonScreen[] = [
     ],
   }),
 
+  // ── THE SHAPE, SHOWN ───────────────────────────────────────────────────────
+  //
+  // Placed here and not earlier on purpose. By this point the learner has
+  // written je suis ici from a call, chosen it against two other whole lines,
+  // swapped the opener because the room changed, and put it in front of an
+  // order they carried from L1. The reel is the moment that says what all of
+  // that was: one shape, and the things you can hang off it. Before the
+  // transfer it would have been the answer handed over early.
+  //
+  // Full complements, never bare adjectives. "Je suis" + "prêt" is the true
+  // seam; teaching "prêt" alone would model a plug-and-play grammar French does
+  // not have, and the reel is the one surface where a false model would be
+  // learned as a picture rather than argued with.
+  //
+  // Grades nothing, targets nothing. Every complement here is already on this
+  // lesson's Showcase, so the reel re-presents what L2 displays instead of
+  // reaching for material the later lessons teach: fatigué and content are
+  // L17's to demand, and they stay exposure here.
+  {
+    id: "s25-reel-je-suis-pattern",
+    type: "pattern-reel",
+    payload: {
+      title: "One shape, many states.",
+      body:
+        "You have used these two words four times now, and the room was different every time. Here is the rest of what they carry.",
+      stem: "Je suis",
+      rows: [
+        { fr: "ici", en: "here" },
+        { fr: "prêt", en: "ready" },
+        { fr: "fatigué", en: "tired" },
+        { fr: "content", en: "glad" },
+        { fr: "désolé", en: "sorry" },
+        { fr: "en retard", en: "late" },
+      ],
+      note:
+        "Je suis says how things are with you. Change what comes after it and you change what you are saying about yourself, without learning a new sentence. It is the same move as je voudrais: keep the shape, swap what it carries.",
+    },
+  },
+
+  {
+    // RECOGNITION UNDER A NEW COMPLEMENT, and deliberately not a production.
+    //
+    // "Vous êtes prêt ?" has sat on this lesson's Showcase since it was written
+    // and was never once used -- display content, exactly as the founder read
+    // it. It gets a job here, and the job is the one L2 is allowed to give it:
+    // the guards are right that L2 may not PRODUCE prêt. chunk-je-suis-pret is
+    // exposure tier and L17 is where states are demanded, so a chip tray
+    // holding prêt would be canon §2.2's forbidden zone and would quietly annex
+    // a later lesson's teaching.
+    //
+    // A whole-sentence choice takes none of that. It is also the sharper
+    // exercise: the third option is the one line this lesson has drilled six
+    // times, so the learner has to notice that the question changed rather than
+    // reach for the sentence they are holding.
+    id: "s26-fill-answer-are-you-ready",
+    type: "fill-with-traps",
+    targetItemIds: ["chunk-je-suis"],
+    evidenceTargetItemIds: ["chunk-je-suis"],
+    weakPointTags: ["natural-speech"],
+    payload: {
+      prompt:
+        "Your bags are by the door and the taxi is waiting. From the hallway comes « Vous êtes prêt ? ». What do you call back?",
+      blankCount: 1,
+      options: [
+        { id: "opt-je-suis-pret", text: "Je suis prêt.", isCorrect: true },
+        {
+          id: "opt-je-suis-ici",
+          text: "Je suis ici.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "The sentence you have been building all lesson, and they can already see where you are. They asked whether you are ready.",
+        },
+        {
+          id: "opt-je-voudrais-un-cafe",
+          text: "Je voudrais un café.",
+          isCorrect: false,
+          learningErrorTag: "meaning_shift",
+          trapReason:
+            "That asks for something. Nobody is offering you a drink on the way out of the door.",
+        },
+      ],
+      answer: ["opt-je-suis-pret"],
+      reveal: {
+        short: "Je suis prêt.",
+        explanation:
+          "The engine did not move. Only the word after it did, which is what the reel just showed you: ici says where, prêt says how you are.",
+        natural: "Je suis prêt.",
+      },
+    },
+  },
+
+  {
+    // NOT A CHUNK, on purpose. ne ... pas is a frame that opens around the
+    // verb, and the one way to teach it wrongly is to show "je ne suis pas"
+    // as a single pill the way this lesson shows "je suis" -- which would
+    // have the learner storing a fourth memorised block instead of seeing
+    // that something wraps something else.
+    //
+    // Recognition only. L3 is the negation lesson: it demands
+    // chunk-je-ne-suis-pas, meets it, fills it, weaves it twice and reveals
+    // it. This card takes none of that. It shows the learner the shape of
+    // the answer they will need the moment somebody asks the question the
+    // screen above just asked, and hands the teaching to L3 intact. No
+    // targetItemIds for the same reason: nothing here is being claimed.
+    id: "s27-insight-not-yet",
+    type: "insight-card",
+    payload: {
+      insightType: "grammar-nugget",
+      title: "And when the answer is no.",
+      body:
+        "French says no to a sentence by putting two small words around the verb: ne in front of it, pas behind it. They are one move in two halves, and they never sit next to each other. You will build these yourself in the next lesson. For now, recognise the shape when it comes at you.",
+      examples: [
+        { fr: "Je suis prêt.", en: "I'm ready." },
+        {
+          fr: "Je ne suis pas prêt.",
+          en: "I'm not ready.",
+          note: "ne [ suis ] pas. The verb sits inside, and prêt stays exactly where it was.",
+        },
+      ],
+    },
+  },
+
   activityChain({
     id: "s21-chain-answer-then-arrive",
     intro:
@@ -566,6 +695,7 @@ const screens: LessonScreen[] = [
         "You said where you are.",
         "You greeted a room, and you interrupted a busy one, with the same two words underneath.",
         "You also chose it over the two sentences you already knew, and put it in front of an order.",
+        "Then someone asked if you were ready, and the same shape answered that too.",
         "Je suis stayed the same every time. That is the shape you'll use again.",
       ],
       piecesUsed: [
@@ -610,6 +740,14 @@ export const lesson002: Lesson = {
     // "Vous êtes prêt ?" is already on this lesson's Showcase, so the liaison it
     // demonstrates is language the learner meets here rather than later.
     "sound-liaison",
+    // Declared because the lesson now USES it, not only displays it: s26 quotes
+    // « Vous êtes prêt ? » as the incoming question. Recognition only — the
+    // learner answers it and never asks it, and no production target moves.
+    "chunk-vous-etes-pret",
+    // Shown by the reel and offered as the right answer to that question. Also
+    // recognition: states are L17's to demand, and nothing here puts prêt in a
+    // chip tray or asks the learner to type it.
+    "chunk-je-suis-pret",
     "chunk-je-suis",
     "chunk-je-suis-ici",
     "word-ici",
@@ -636,7 +774,8 @@ export const lesson002: Lesson = {
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "Je suis is the L2 architecture target. No broader conjugation table appears.",
-    "Only one completion, ici, is used in L2. Wider use of the shape is deferred to later lessons; L2 varies the OPENER instead of the completion, which adds no new grammar.",
+    "Showcase-integration pass: ici is still the only completion L2 PRODUCES, and the opener is still what varies in every typed answer. What changed is that the lesson stopped pretending the rest of the Showcase was not there. s25 shows five further completions and grades none of them; s26 lets the learner choose one against the sentence they have been drilling. Neither adds a production target, a demand or a chip-tray piece.",
+    "L2 does not teach the check-in exchange. Ça va, Comment ça va, fatigué and content stay on the Showcase as forward exposure because L17 and L18 own them as acquisition demands, and pulling them forward would empty those lessons. Same for ne ... pas: s27 shows the frame and L3 still teaches it.",
     "Finishing pass (L1-L6 founder-usable phase): L2 was the thinnest early lesson at four sentences and three productions, and every screen worked the engine in isolation. The three screens added are recombination, not new scope. s04b makes the learner choose the whole sentence against je voudrais and bonjour, so je suis is retrieved by meaning rather than completed by position. s05b makes the opener a decision the room forces, which is what s09 had only asserted. s06b is L2's first two-sentence production and its first recombination with the L1 order. No new item, no second completion, and the demand list is untouched at one.",
     "The finishing pass deliberately adds no fourth insight card: L2 is at the canon §11 V5 budget of three, so the added screens are two fills and a weave.",
     "s04 and s05 used to ask for the identical string, which is why the engine claim never landed and why validate:content flagged a duplicate production demand. s05 now recycles L1's excusez-moi so the moment differs while je suis ici stays untouched.",
@@ -662,5 +801,8 @@ export const lesson002: Lesson = {
     "s04b offers three full sentences and fires the meaning traps on Je voudrais un café and Bonjour.",
     "s05b renders the trailing frame , je suis ici and fires the register trap on Bonjour.",
     "s06b accepts the two-sentence answer with or without the internal comma and period, and its hint ladder stays optional (no piece is required).",
+    "s25 rotates full complements (Je suis + ici / prêt / fatigué / content / désolé / en retard), never bare adjectives, and grades nothing.",
+    "s26 fires the meaning trap on Je suis ici, which is the sentence the lesson has been drilling.",
+    "s27 shows ne and pas on either side of suis and never as one chip.",
   ],
 };
