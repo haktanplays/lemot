@@ -563,8 +563,8 @@ const screens: LessonScreen[] = [
             "They have already turned to the next customer, and you still do not have your answer.",
           suggestedPieces: [
             { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
-            { text: "vous pouvez", itemId: "chunk-vous-pouvez", label: "asking someone" },
-            { text: "répéter", itemId: "verb-repeter", label: "what you want them to do" },
+            { text: "vous pouvez", itemId: "chunk-vous-pouvez", label: "the request" },
+            { text: "répéter", itemId: "verb-repeter", label: "the action" },
           ],
           hintCloze: "Excusez-moi, ___ ?",
           expectedAnswers: ["Excusez-moi, vous pouvez répéter ?"],

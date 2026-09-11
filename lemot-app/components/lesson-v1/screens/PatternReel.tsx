@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { View, Text, Animated, Easing, AccessibilityInfo } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P, SPACE } from "@/constants/theme";
+import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import type { PatternReelRow, PatternReelScreen } from "@/content/lessonTypes";
 
 /**
@@ -88,12 +88,17 @@ function useReduceMotion(): boolean {
   return reduceMotion;
 }
 
+// Both carry a line height on purpose. French runs accents above and
+// descenders below, and a Text with none inherits a default sized for
+// unaccented Latin — which shaves é, à and the tail of j. The reel's rows are a
+// fixed height, so a clipped glyph here would be silent.
 const frenchStyle = {
   color: P.ink,
   fontFamily: "serif" as const,
   fontSize: 17,
+  lineHeight: frenchLineHeight(17),
 };
-const meaningStyle = { color: P.ink3, fontSize: 15 };
+const meaningStyle = { color: P.ink3, fontSize: 15, lineHeight: frenchLineHeight(15) };
 
 /** The whole set at rest: what a learner with reduce-motion on reads instead. */
 function StaticRows({ rows, stem }: { rows: readonly PatternReelRow[]; stem?: string }) {
@@ -192,6 +197,7 @@ export function PatternReel({
         style={{
           color: P.ink3,
           fontSize: 12,
+          lineHeight: 16,
           letterSpacing: 0.4,
           marginBottom: SPACE.sm,
         }}
@@ -199,7 +205,16 @@ export function PatternReel({
         See the pattern
       </Text>
 
-      <Text style={{ color: P.ink, fontFamily: "serif", fontSize: 21, lineHeight: 29 }}>
+      {/* Serif, and a title may carry French, so it takes the French floor
+          rather than a number that happens to look right in English. */}
+      <Text
+        style={{
+          color: P.ink,
+          fontFamily: "serif",
+          fontSize: 21,
+          lineHeight: frenchLineHeight(21),
+        }}
+      >
         {payload.title}
       </Text>
 
@@ -263,7 +278,9 @@ export function PatternReel({
             borderTopColor: P.border,
           }}
         >
-          <Text style={{ color: P.ink3, fontSize: 12, marginBottom: 4 }}>Why it works</Text>
+          <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 16, marginBottom: 4 }}>
+            Why it works
+          </Text>
           <Text style={{ color: P.ink2, fontSize: 15, lineHeight: 23 }}>{payload.note}</Text>
         </View>
       ) : null}

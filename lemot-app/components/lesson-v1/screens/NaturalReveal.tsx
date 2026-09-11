@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P, RADIUS, SPACE } from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchLineHeight} from "@/constants/theme";
 import type {
   NaturalRevealPayload,
   NaturalRevealScreen,
@@ -131,6 +131,7 @@ export function NaturalRevealView({
             style={{
               color: P.ink3,
               fontSize: 12,
+              lineHeight: 16,
               letterSpacing: 0.4,
               marginBottom: SPACE.sm,
             }}
@@ -143,8 +144,14 @@ export function NaturalRevealView({
               fontFamily: "serif",
               fontStyle: "italic",
               fontSize: 19,
-              lineHeight: 28,
+              lineHeight: frenchLineHeight(19),
             }}
+            // French breaks at spaces. Android's default high-quality strategy
+            // hyphenates and reflows to balance lines, which on a short italic
+            // French sentence produces ragged breaks mid-phrase; the model
+            // answer is the most-read line on the screen and should break where
+            // the sentence does.
+            textBreakStrategy="simple"
           >
             {reveal.modelAnswer}
           </Text>
@@ -256,6 +263,7 @@ function RevealNote({
           style={{
             color: P.ink3,
             fontSize: 12,
+            lineHeight: 16,
             letterSpacing: 0.4,
             marginBottom: SPACE.xs,
           }}

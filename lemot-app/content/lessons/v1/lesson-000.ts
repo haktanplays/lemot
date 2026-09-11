@@ -97,7 +97,7 @@ const screens: LessonScreen[] = [
         "The person at the counter looks up. You want a coffee, and you have two French pieces.",
       suggestedPieces: [
         { text: "Bonjour", itemId: "chunk-bonjour", label: "the greeting" },
-        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "asking for something" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "the ask" },
       ],
       expectedAnswers: ["Bonjour, je voudrais a coffee."],
       acceptedAlternatives: [
