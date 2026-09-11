@@ -139,3 +139,88 @@ describe("grading is never finer than the screen", () => {
     );
   });
 });
+
+describe("the rescue formula breaks the same way on every surface", () => {
+  // Founder report: the UI treated "Vous pouvez répéter" as ONE chunk. The
+  // canonical segmentation is vous pouvez | répéter, because vous pouvez is a
+  // reusable request engine and répéter is the action it carries. L1's own
+  // Showcase already listed the pieces that way; the meet-card highlight and
+  // the weave chip tray did not, so the same French broke two ways inside one
+  // lesson. These pin all three surfaces to one answer.
+  const L1 = V1_LESSONS.find((l) => l.id === "v1-lesson-001");
+
+  /** Every screen in L1, chain steps included. */
+  type AnyScreen = {
+    id: string;
+    type: string;
+    targetItemIds?: readonly string[];
+    payload: Record<string, unknown>;
+  };
+  const screensOf = (lesson: typeof L1): AnyScreen[] =>
+    ((lesson?.screens ?? []) as unknown as AnyScreen[]).flatMap((s) =>
+      s.type === "activity-chain"
+        ? [s, ...((s.payload.steps as AnyScreen[]) ?? [])]
+        : [s],
+    );
+
+  test("the meet-card shows two pieces, not one pill", () => {
+    const meet = screensOf(L1).find((s) => s.id === "s17-meet-vous-pouvez-repeter");
+    assert(meet !== undefined && meet.type === "meet-card", "the meet screen is authored");
+    const highlights =
+      (meet.payload.highlights as { text: string; itemId?: string }[]) ?? [];
+    assertEqual(
+      highlights.map((h) => h.text),
+      ["Vous pouvez", "répéter"],
+      "the engine and the action are separate pieces",
+    );
+    assertEqual(
+      highlights.map((h) => h.itemId),
+      ["chunk-vous-pouvez", "verb-repeter"],
+      "each piece carries its own identity, so both are tappable",
+    );
+  });
+
+  test("the weave tray offers the engine and the action separately", () => {
+    const weave = screensOf(L1).find((s) => s.id === "s19-weave-excuse-and-repeat");
+    assert(weave !== undefined && weave.type === "weave", "the weave screen is authored");
+    const pieces =
+      (weave.payload.suggestedPieces as { text: string; itemId?: string }[]) ?? [];
+    assert(
+      !pieces.some((p) => fold(p.text) === fold("vous pouvez répéter")),
+      "the whole formula must not come back as one chip",
+    );
+    assertEqual(
+      pieces.map((p) => p.itemId),
+      ["chunk-excusez-moi", "chunk-vous-pouvez", "verb-repeter"],
+      "three pieces, each with an identity",
+    );
+  });
+
+  test("no L1 surface shows the formula as a single piece", () => {
+    for (const s of screensOf(L1)) {
+      const p = s.payload ?? {};
+      const texts = [
+        ...(((p.highlights as { text: string }[]) ?? []).map((h) => h.text)),
+        ...(((p.suggestedPieces as { text: string }[]) ?? []).map((x) => x.text)),
+      ];
+      for (const t of texts) {
+        assert(
+          fold(t) !== fold("vous pouvez répéter"),
+          `${s.id} shows the formula as one piece: "${t}"`,
+        );
+      }
+    }
+  });
+
+  test("the whole formula keeps its identity for ownership and evidence", () => {
+    // The split is a SEGMENTATION fix, not a re-ownership. The registered
+    // formula is frozen, L10 uses it, and it remains what the screens target —
+    // so nothing about acquisition or evidence moved.
+    const meet = screensOf(L1).find((s) => s.id === "s17-meet-vous-pouvez-repeter");
+    assertEqual(
+      meet?.targetItemIds,
+      ["chunk-vous-pouvez-repeter"],
+      "the formula is still the acquisition identity",
+    );
+  });
+});

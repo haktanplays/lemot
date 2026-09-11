@@ -218,8 +218,8 @@ describe("five canonical item registrations", () => {
     // + L18's 1 (adverb-comment) + L21's 1 (adj-bon) + L22's 1 (adverb-combien).
     assertEqual(
       CANONICAL_ITEM_COUNT,
-      101,
-      "54 frozen + 5 PR-07 + 3 L17 + 1 L18 + 1 L21 + 1 L22 + 25 across the two L7 tranches + 11 in the L1-L10 breadth pass",
+      102,
+      "54 frozen + 5 PR-07 + 3 L17 + 1 L18 + 1 L21 + 1 L22 + 25 across the two L7 tranches + 11 in the L1-L10 breadth pass + 1 (verb-repeter) in the L0-L1 founder batch",
     );
     for (const id of NEW_ITEM_IDS) {
       assert(CANONICAL_ITEM_ID_SET.has(id), `${id} registered`);
@@ -233,7 +233,7 @@ describe("five canonical item registrations", () => {
     const manifest = JSON.parse(read("scripts/shipped-item-ids.json")) as {
       ids: string[];
     };
-    assertEqual(manifest.ids.length, 101, "manifest count");
+    assertEqual(manifest.ids.length, 102, "manifest count");
     assertEqual(
       manifest.ids.slice().sort().join(","),
       [...CANONICAL_ITEM_ID_SET].sort().join(","),
@@ -815,20 +815,23 @@ describe("PM-011 — Supported tea order (real screen, real spine)", () => {
 describe("QA debt stays queryable", () => {
   test("the inventory lists 31 items, 2 sentences, 2 payloads — deterministically", () => {
     // 5 from PR-07 + 3 from L17 + 1 from L18 + 1 from L21 + 1 from L22 + 20
-    // from the L7 production pass. The count GROWING is the point: every
-    // surface shipped under a founder waiver stays queryable until a named
-    // human reads it, so this number may only fall when real French QA lands.
+    // from the L7 production pass + verb-repeter from the L0-L1 founder batch.
+    // The count GROWING is the point: every surface shipped under a founder
+    // waiver stays queryable until a named human reads it, so this number may
+    // only fall when real French QA lands. verb-repeter is stamped rather than
+    // left unmarked precisely so splitting "vous pouvez répéter" into pieces
+    // cannot smuggle a new registered French surface past this inventory.
     const one = listProvisionalRegisteredSurfaces();
     assertEqual(
       one.items.length,
-      11,
-      "five PR-07 + three L17 + one L18 + one L21 + one L22 provisional items",
+      12,
+      "five PR-07 + three L17 + one L18 + one L21 + one L22 + one L0-L1 batch item",
     );
     assertEqual(one.sentences.length, 2, "two provisional sentences");
     assertEqual(one.payloads.length, 2, "two registered payloads");
     assertEqual(
       one.items.map((i) => i.itemId).join(","),
-      "adj-bon,adj-content,adj-fatigue,adverb-combien,adverb-comment,chunk-ca-va,chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the",
+      "adj-bon,adj-content,adj-fatigue,adverb-combien,adverb-comment,chunk-ca-va,chunk-excusez-moi,chunk-je-ne-comprends-pas,chunk-un-the,chunk-vous-pouvez-repeter,noun-the,verb-repeter",
       "sorted item ordering",
     );
     assertEqual(

@@ -126,6 +126,10 @@ const VIA_CARRIER: Readonly<Record<string, string>> = {
   // être is a surface type, so it cannot be META. L1-L10 never conjugates it;
   // the learner meets it entirely inside "je suis", which is its carrier.
   "verb-etre": "chunk-je-suis",
+  // The action half L1 breaks "vous pouvez répéter ?" open to show, exactly as
+  // pronoun-je is broken out of "je suis". Nobody asks for "répéter" on its
+  // own, so it is practised whenever the whole formula is and never alone.
+  "verb-repeter": "chunk-vous-pouvez-repeter",
 };
 
 /**

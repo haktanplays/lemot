@@ -461,9 +461,15 @@ const screens: LessonScreen[] = [
         // Payload Economy v0 §4.1/§6: the second survival formula, activated here
         // for the first time. It was registered and frozen with the original L1
         // ledger and its own registry meaning already names L1 as its home, but no
-        // payload had ever reached it. Learned WHOLE, in the locked non-inverted
-        // shape: nothing about vous, pouvez or inversion is taught, and the lesson
-        // never decomposes it.
+        // payload had ever reached it. Kept in the locked non-inverted shape:
+        // no inversion, no pouvoir paradigm.
+        //
+        // It is no longer shown as ONE pill, though. The registry already held
+        // vous pouvez as a reusable request engine and already models aider as
+        // the action after it, and this lesson's own Showcase already lists the
+        // pieces as ["Vous pouvez", "répéter"] -- only the meet and the weave
+        // disagreed. Segmentation is vous pouvez | répéter, so the engine reads
+        // as something reusable and répéter as the thing it acts on.
         id: "s17-meet-vous-pouvez-repeter",
         type: "meet-card",
         targetItemIds: ["chunk-vous-pouvez-repeter"],
@@ -473,7 +479,8 @@ const screens: LessonScreen[] = [
           en: "Can you say that again?",
           title: "When it goes past you.",
           highlights: [
-            { text: "Vous pouvez répéter", itemId: "chunk-vous-pouvez-repeter" },
+            { text: "Vous pouvez", itemId: "chunk-vous-pouvez" },
+            { text: "répéter", itemId: "verb-repeter" },
           ],
           tts: true,
         },
@@ -494,11 +501,8 @@ const screens: LessonScreen[] = [
             "They have already turned to the next customer, and you still do not have your answer.",
           suggestedPieces: [
             { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
-            {
-              text: "vous pouvez répéter",
-              itemId: "chunk-vous-pouvez-repeter",
-              label: "asking again",
-            },
+            { text: "vous pouvez", itemId: "chunk-vous-pouvez", label: "asking someone" },
+            { text: "répéter", itemId: "verb-repeter", label: "what you want them to do" },
           ],
           hintCloze: "Excusez-moi, ___ ?",
           expectedAnswers: ["Excusez-moi, vous pouvez répéter ?"],
@@ -647,6 +651,13 @@ export const lesson001: Lesson = {
     // ledger and never reached by a payload until now. Supported, not a demand:
     // acquisitionDemandItemIds stays ["chunk-merci", "chunk-excusez-moi"].
     "chunk-vous-pouvez-repeter",
+    // The two halves the rescue formula is now SHOWN as. The whole formula
+    // stays the acquisition identity and the screens' target, so ownership and
+    // evidence are unchanged and L10's use of it is untouched; these two carry
+    // the segmentation the learner sees. Both Supported, neither a demand:
+    // acquisitionDemandItemIds stays ["chunk-merci", "chunk-excusez-moi"].
+    "chunk-vous-pouvez",
+    "verb-repeter",
   ]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },

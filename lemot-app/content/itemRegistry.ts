@@ -597,6 +597,25 @@ export const ITEM_REGISTRY = {
     exampleEn: "Can you help?",
     relatedItemIds: ["chunk-vous-pouvez", "chunk-m-aider"],
   },
+  "verb-repeter": {
+    // The action half of the rescue request. L1 used to show "vous pouvez
+    // répéter" as a single pill, which taught the learner a line where the
+    // registry already had a reusable piece: vous pouvez is the engine, and
+    // this is what it acts on. Exactly the shape verb-aider already has, so
+    // the two halves of "vous pouvez ___" are now modelled the same way.
+    id: "verb-repeter",
+    type: "verb",
+    text: "répéter",
+    status: "supported",
+    fr: "répéter",
+    en: "to repeat",
+    meaning:
+      "To repeat, in its dictionary shape. Reusable after vous pouvez. No pouvoir paradigm and no inversion is taught with it.",
+    exampleFr: "Vous pouvez répéter ?",
+    exampleEn: "Can you say that again?",
+    relatedItemIds: ["chunk-vous-pouvez", "chunk-vous-pouvez-repeter"],
+    frenchQa: "founder_waived_provisional",
+  },
   "chunk-m-aider": {
     id: "chunk-m-aider",
     type: "chunk",
