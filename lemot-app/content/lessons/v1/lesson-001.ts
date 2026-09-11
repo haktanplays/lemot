@@ -221,7 +221,14 @@ const screens: LessonScreen[] = [
         payload: {
           weaveType: "supported",
           prompt: "Write it in French: Hello, I would like a coffee, please.",
-          context: "Add the soft close to your order.",
+          // A scene, not a restatement of the prompt. "Add the soft close to
+          // your order" said the same job the prompt says, one line above it,
+          // which is the duplication the founder flagged on this screen family.
+          // The order itself stays identical to s04's on purpose: s'il vous
+          // plaît is learned here as a tail you hang on a sentence you already
+          // own, and swapping the drink at the same time would hide that.
+          context:
+            "The same counter, a busier moment. Two people are waiting behind you.",
           suggestedPieces: [
             { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
             { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "polite request" },
@@ -559,8 +566,15 @@ const screens: LessonScreen[] = [
         payload: {
           weaveType: "context",
           prompt: "Cut in politely, then ask for it again.",
+          // OFF THE COUNTER, on purpose. Six of L1's seven production moments
+          // stood at the same café, so the lesson read as one scene with a
+          // rotating drink and je voudrais read as the coffee sentence rather
+          // than a request you can take anywhere. The engine repeats; the room
+          // does not. This is also where the situation, not the screen, has to
+          // pick the engine: nothing at a ticket window can be ordered, so the
+          // only move that fits is the one the learner just met.
           context:
-            "They have already turned to the next customer, and you still do not have your answer.",
+            "A ticket window at the station. The clerk answers quickly, half of it goes past you, and they are already looking at the person behind you.",
           suggestedPieces: [
             { text: "excusez-moi", itemId: "chunk-excusez-moi", label: "cutting in" },
             { text: "vous pouvez", itemId: "chunk-vous-pouvez", label: "the request" },

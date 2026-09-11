@@ -43,6 +43,7 @@ import "./lessonContinuity.test";
 import "./hintAndAnchor.test";
 import "./frenchTypography.test";
 import "./naturalAlternatives.test";
+import "./l1SceneVariety.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";
 import "./devApkCopyGuard.test";
