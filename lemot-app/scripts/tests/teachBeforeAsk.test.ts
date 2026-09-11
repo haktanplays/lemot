@@ -123,6 +123,18 @@ describe("teach the pieces before asking for them", () => {
         // Shown in the reveal once the learner has committed, so it is unknown
         // during the task and met from here on.
         for (const w of allowed) met.add(w);
+        // A REVEAL is a teaching encounter, for everything after it.
+        //
+        // This is how the first taste has always taught "un café": the learner
+        // orders with their own English, and the model answer beside their line
+        // is where the French arrives. The screen is checked against `met` BEFORE
+        // this runs, so a weave still cannot teach itself its own answer — it can
+        // only teach the screens that follow, which is what actually happened on
+        // the learner's side.
+        const revealed = (s.payload as { reveal?: { modelAnswer?: string } }).reveal?.modelAnswer;
+        if (typeof revealed === "string") {
+          for (const w of norm(revealed).split(" ")) if (w) met.add(w);
+        }
       }
     }
 

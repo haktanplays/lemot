@@ -193,7 +193,7 @@ describe("journeyRoleDemandBudgets — shipped v1", () => {
     assertEqual(
       matrix,
       [
-        [0, "unset", 4],
+        [0, "unset", 3],
         // L1-L3 content pass: L1 1 -> 2, L3 3 -> 4. Both stay inside the
         // standard band (1-4).
         [1, "standard", 2],

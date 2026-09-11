@@ -162,10 +162,17 @@ describe("L1 no longer replays L0's first contact", () => {
         .filter((s) => s.type === "meet-card")
         .flatMap((s) => (s as MeetCardScreen).targetItemIds ?? []),
     );
-    // L0's rendered first-run flow owns bonjour, je voudrais and un café.
-    for (const item of ["chunk-bonjour", "chunk-je-voudrais", "noun-cafe"]) {
+    // L0's rendered first-run flow owns bonjour and je voudrais on meet cards.
+    // `noun-cafe` is L0's too, but it arrives in the BRIDGE'S REVEAL rather than
+    // on a card — that is the restored cognate-first mechanism, and teaching it
+    // on a card first is exactly what the bridge cannot survive.
+    for (const item of ["chunk-bonjour", "chunk-je-voudrais"]) {
       assert(l0MeetItems.has(item), `precondition: L0 meets ${item}`);
     }
+    assert(
+      (lesson000.acquisitionDemandItemIds ?? []).includes("noun-cafe"),
+      "precondition: un café is still L0's, even though no card introduces it",
+    );
     for (const screen of screens) {
       if (screen.type !== "meet-card") continue;
       for (const item of (screen as MeetCardScreen).targetItemIds ?? []) {

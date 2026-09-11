@@ -362,12 +362,16 @@ describe("reusable authored source resolution", () => {
   });
 
   test("evidenceTargetItemIds takes precedence — a printed frame word is not matched", () => {
-    // L0's choice screen prints chunk-je-voudrais around the blank but assesses
-    // only noun-cafe. It must never be selected FOR chunk-je-voudrais.
-    const source = resolvePracticeHubSource("chunk-je-voudrais" as ItemId, "build", [lesson000]);
+    // L2's whole-sentence choice INVOLVES chunk-je-voudrais — it is one of the
+    // three options — but assesses only chunk-je-suis-ici. It must never be
+    // selected as practice FOR chunk-je-voudrais. (This was L0's recognition
+    // beat until the first taste went back to the cognate-first arc, which has
+    // no fill; the rule under test is unchanged.)
+    const lesson002 = V1_LESSONS.find((l) => l.id === "v1-lesson-002")!;
+    const source = resolvePracticeHubSource("chunk-je-voudrais" as ItemId, "build", [lesson002]);
     if (source !== null) {
       assert(
-        source.screen.id !== "s03-fill-je-voudrais-blank",
+        source.screen.id !== "s04b-fill-which-engine",
         "the narrowed choice screen is not a je-voudrais opportunity",
       );
     }

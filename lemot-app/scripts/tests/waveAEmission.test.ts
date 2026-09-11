@@ -86,6 +86,11 @@ const codeOf = (src: string): string =>
 
 const lesson000 = V1_LESSONS.find((l) => l.id === "v1-lesson-000") as Lesson;
 const lesson001 = V1_LESSONS.find((l) => l.id === "v1-lesson-001") as Lesson;
+// The narrowing-fill fixture. It was L0's recognition beat until the first
+// taste was trimmed back to the cognate-first arc, which has no fill; L2's
+// whole-sentence choice has the same shape — three targets involved, one
+// assessed — so these evidence rules are checked on a real screen as before.
+const lesson002 = V1_LESSONS.find((l) => l.id === "v1-lesson-002") as Lesson;
 
 const LESSON_SURFACE: EventSurfaceResolver = (exercise) => ({
   placement: "lesson_path",
@@ -223,17 +228,17 @@ describe("canonical evidence targeting", () => {
     );
   });
 
-  test("the L0 choice screen scopes evidence to the assessed slot only", () => {
-    const fill = screenOf<FillWithTrapsScreen>(lesson000, "s03-fill-je-voudrais-blank");
+  test("a choice screen scopes evidence to the assessed slot only", () => {
+    const fill = screenOf<FillWithTrapsScreen>(lesson002, "s04b-fill-which-engine");
     assertEqual(
       (fill.targetItemIds ?? []).join(","),
-      "chunk-je-voudrais,noun-cafe",
-      "the screen still INVOLVES the frame",
+      "chunk-je-suis-ici,chunk-je-suis,chunk-je-voudrais",
+      "the screen still INVOLVES all three engines",
     );
     assertEqual(
       resolveEvidenceTargetItemIds(fill).join(","),
-      "noun-cafe",
-      "but only the chosen noun receives evidence",
+      "chunk-je-suis-ici",
+      "but only the chosen sentence receives evidence",
     );
   });
 
@@ -423,17 +428,19 @@ describe("choice and register-trap grading", () => {
   });
 
   test("only the scoped evidence target receives counters", async () => {
-    const fillL0 = screenOf<FillWithTrapsScreen>(lesson000, "s03-fill-je-voudrais-blank");
+    const fill = screenOf<FillWithTrapsScreen>(lesson002, "s04b-fill-which-engine");
     const { repo, controller } = makeSession();
-    controller.recordGradedAttempt(choiceInteraction(lesson000, fillL0, { optionId: "opt-cafe" }));
+    controller.recordGradedAttempt(
+      choiceInteraction(lesson002, fill, { optionId: "opt-je-suis-ici" }),
+    );
     await controller.flush();
     const snap = scoreEvents(await repo.readAllEvents());
-    assertEqual(Object.keys(snap.items).join(","), "noun-cafe", "only the chosen noun");
-    assertEqual(snap.items["noun-cafe"].recognitionSuccess, 1, "recognition success");
+    assertEqual(Object.keys(snap.items).join(","), "chunk-je-suis-ici", "only the chosen sentence");
+    assertEqual(snap.items["chunk-je-suis-ici"].recognitionSuccess, 1, "recognition success");
     assertEqual(
       snap.items["chunk-je-voudrais"],
       undefined,
-      "the printed frame gets no credit for a word the learner never chose",
+      "the contrasted engine gets no credit for an option the learner did not choose",
     );
   });
 
@@ -1001,9 +1008,9 @@ describe("lesson evidence metadata validation", () => {
   });
 
   test("a non-subset or non-canonical evidence target is rejected", () => {
-    const bad = structuredClone(lesson000) as Lesson;
+    const bad = structuredClone(lesson002) as Lesson;
     const fill = flattenLessonScreens(bad).find(
-      (s) => s.id === "s03-fill-je-voudrais-blank",
+      (s) => s.id === "s04b-fill-which-engine",
     ) as FillWithTrapsScreen;
     fill.evidenceTargetItemIds = ["chunk-merci"];
     const codes = checkLessonEvidenceRules([bad]).map((f) => f.code);

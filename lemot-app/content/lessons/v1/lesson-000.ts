@@ -5,32 +5,37 @@ import { getItems } from "../../itemRegistry";
  * L0 — the first taste.
  *
  * NOT Lesson 1, and not a step on the Journey. Its job is to get a learner to
- * one real French success before anything is asked of them, and to let them
- * discover how Cairn teaches by using it rather than by being told.
+ * one real French success before anything is asked of them.
  *
- * The arc is seven beats: meet a word, meet a piece, meet a thing, watch the
- * three become a sentence, look closer at ONE thing worth knowing, produce it
- * once with plenty of support, and see what they now own.
+ * THE ARC IS THE OLD ONE, recovered from `app/lesson-zero.tsx` as it stood
+ * before first use moved onto the lesson engine. That move was right and is
+ * kept — shared grading, the persisted cursor, first-use semantics, the real
+ * renderer — but it had carried the beats across and lost the experience. This
+ * file is the old learner-facing sequence, played by the current engine:
  *
- * Two structural decisions carry most of the weight.
+ *   meet Bonjour          two pieces, before any framing
+ *   meet je voudrais      on its own; it used to arrive fused to "un café"
+ *   THE BRIDGE            order a coffee with two French pieces and one English
+ *                         word, then see your own line with the last piece in
+ *                         French. "Only the part you did not have yet changed."
+ *   ask for tea           the same handle turned once more. The ONE addition
+ *                         to the old arc.
+ *   THE REEL              "You were not starting from zero." The main event.
+ *   the rebuild           the whole sentence, in French, from memory
+ *   the payoff            used, not memorised
  *
- * THE ASSEMBLY BEAT IS A SHOWCASE, not a fourth meet card. Showcase is the
- * screen that renders reusable pieces as chips, makes each chip tappable, and
- * carries the Look Closer layer. Putting the combined sentence there is what
- * lets a first-time learner SEE that "Bonjour, je voudrais un café." is three
- * things they already have rather than one line to memorise, and lets them
- * discover chunk tap and depth-on-demand by curiosity instead of instruction.
- * It grades nothing and emits no evidence, which is correct for a beat whose
- * only job is "look how this fits together".
+ * WHAT IS DELIBERATELY ABSENT, because the old arc did not have it: a separate
+ * meet card for `un café`, the assembly Showcase, the recognition fill, and
+ * s'il vous plaît. The first three were beats the engine rebuild added; the
+ * fourth was a fourth declared piece that made the target sentence longer than
+ * the old one. L1 teaches s'il vous plaît properly, and L1's Showcase is where
+ * chip tap and Look Closer are met.
  *
- * THERE IS EXACTLY ONE PRODUCTION SCREEN. L0 used to ask twice -- a supported
- * Weave and then an open Say It. A first taste that tests twice is a test. The
- * Weave stays, at `supported`, with every piece on the tray; the open one is
- * gone, and open production begins where it should, in L1.
- *
- * The vocabulary world is deliberately tiny: three required pieces, one
- * sentence, and one softener met just before the ask and offered rather than
- * demanded.
+ * THE ORDER OF TWO THINGS CARRIES THE WHOLE LESSON. `un café` is introduced by
+ * the BRIDGE'S REVEAL and nowhere earlier: teaching it first leaves the bridge
+ * nothing to reveal, and "only the part you did not have yet changed" stops
+ * being true. And the reel follows the first production rather than preceding
+ * it — in front of the first ask, "look what you already know" is a promise.
  */
 const screens: LessonScreen[] = [
   // ── A. IMMEDIATE CONTACT ─────────────────────────────────────────────────
@@ -115,26 +120,6 @@ const screens: LessonScreen[] = [
     },
   },
 
-  // ── C1b. THE PIECE THE BRIDGE JUST REVEALED ──────────────────────────────
-  // Deliberately AFTER the bridge, not before it. Teaching "un café" first is
-  // what made the old bridge impossible: there is no "only the part you did not
-  // have yet changed" if the learner already had it. Here the reveal creates
-  // the need and this card answers it, with the audio and the highlight a meet
-  // card gives and a reveal cannot.
-  {
-    id: "s01b-meet-un-cafe",
-    type: "meet-card",
-    targetItemIds: ["noun-cafe"],
-    weakPointTags: ["articles"],
-    payload: {
-      fr: "un café",
-      en: "a coffee",
-      title: "The piece you were missing.",
-      highlights: [{ text: "un café", itemId: "noun-cafe" }],
-      tts: true,
-    },
-  },
-
   // ── C2. THE SAME SHAPE, A DIFFERENT THING ────────────────────────────────
   // One more turn of the same handle, which is what makes it a shape rather
   // than a sentence. The hybrid is expected here too: the learner has never
@@ -191,110 +176,6 @@ const screens: LessonScreen[] = [
     },
   },
 
-  // ── D. ASSEMBLY + E. CURIOSITY ───────────────────────────────────────────
-  // The chips are derived from the registry, so the learner sees exactly the
-  // three pieces they just met and can tap any of them. The depth card is the
-  // single curiosity moment: sound, because that is the thing about this
-  // sentence a reader cannot guess, and one usage note about register.
-  {
-    id: "s02-showcase-first-order",
-    type: "showcase",
-    payload: {
-      intro:
-        "Three pieces, and you have met all three. Put them in a row and you have ordered a coffee.",
-      clusters: [
-        {
-          label: "Your first sentence",
-          sentences: [
-            {
-              fr: "Bonjour, je voudrais un café.",
-              en: "Hello, I would like a coffee.",
-              role: "core",
-              itemIds: ["chunk-bonjour", "chunk-je-voudrais", "noun-cafe"],
-              depth: {
-                sound: "bon-ZHOOR, zhuh voo-DREH un ka-FAY",
-                notice:
-                  "The weight lands at the end of each piece, not inside it: bon-ZHOOR, not BON-zhoor. French leans on the end of a group, which is why the capitals in these cues always come last.",
-                usage:
-                  "Je voudrais is the version you can say to anyone. Je veux means the same thing and lands like a child asking, so it is worth having only this one for now.",
-              },
-            },
-          ],
-        },
-      ],
-    },
-  },
-
-  // ── E2. ONE LIGHT RECOGNITION BEAT ───────────────────────────────────────
-  // Between seeing the sentence and writing it: which piece is the thing you
-  // want? The frame is printed around the blank, so the learner reads
-  // "je voudrais" and chooses only the noun -- which is why the evidence target
-  // is narrowed to the noun. Crediting the frame would count a word they were
-  // simply shown.
-  //
-  // The reveal deliberately stops at the piece. It used to print the whole
-  // sentence, which is the sentence the very next screen asks them to write,
-  // and a screen that hands over the next screen's answer measures copying.
-  {
-    id: "s03-fill-je-voudrais-blank",
-    type: "fill-with-traps",
-    targetItemIds: ["chunk-je-voudrais", "noun-cafe"],
-    evidenceTargetItemIds: ["noun-cafe"],
-    weakPointTags: ["articles"],
-    payload: {
-      prompt: "Which piece is the thing you want?",
-      sentenceBefore: "Bonjour, je voudrais",
-      sentenceAfter: ".",
-      blankCount: 1,
-      options: [
-        { id: "opt-cafe", text: "un café", isCorrect: true },
-        {
-          id: "opt-merci",
-          text: "merci",
-          isCorrect: false,
-          trapReason: "Merci closes a moment. It does not name what you want.",
-        },
-        {
-          id: "opt-bonjour",
-          text: "bonjour",
-          isCorrect: false,
-          trapReason:
-            "You already greeted at the start. A second bonjour would feel doubled.",
-        },
-      ],
-      answer: ["opt-cafe"],
-      reveal: {
-        short: "un café",
-        explanation: "Je voudrais needs a thing after it. Here the thing is un café.",
-        // No natural line. It would say the whole sentence, and the whole
-        // sentence is what the Weave two beats from here asks the learner to
-        // produce -- so printing it would be a spoiler. Saying "un café" a
-        // second time instead is just an echo. Nothing extra to say is a
-        // legitimate answer.
-      },
-    },
-  },
-
-  // ── E3. THE SOFTENER, AS A GIFT ──────────────────────────────────────────
-  // Met, never required. It is L0's fourth declared piece, so it gets a real
-  // teaching encounter -- asking for language nobody taught is the one thing
-  // the path is not allowed to do -- but the Weave below does not mark it
-  // required and accepts the order with or without it. A learner who picks it
-  // up sounds warmer; a learner who does not is never corrected for it.
-  {
-    id: "s04-meet-sil-vous-plait",
-    type: "meet-card",
-    targetItemIds: ["chunk-sil-vous-plait"],
-    weakPointTags: ["politeness", "elision"],
-    payload: {
-      fr: "S'il vous plaît.",
-      en: "Please.",
-      title: "The quiet tail of a request.",
-      highlights: [{ text: "s'il vous plaît", itemId: "chunk-sil-vous-plait" }],
-      tts: true,
-    },
-  },
-
   // ── F. FIRST RETRIEVAL ───────────────────────────────────────────────────
   // One task, heavily supported: every piece is on the tray, the cloze holds
   // the shape, and the hint ladder is there for anyone who wants it. Grading
@@ -302,16 +183,11 @@ const screens: LessonScreen[] = [
   {
     id: "s05-weave-cafe-order",
     type: "weave",
-    // All four declared pieces are targets here: this is the screen that WORKS
+    // The three declared pieces are targets here: this is the screen that WORKS
     // them. A demand that only ever appears on a card is exactly the drift the
     // corpus guard reports, and it would be true -- the learner would have been
     // shown a word and never asked to use it.
-    targetItemIds: [
-      "chunk-bonjour",
-      "chunk-je-voudrais",
-      "noun-cafe",
-      "chunk-sil-vous-plait",
-    ],
+    targetItemIds: ["chunk-bonjour", "chunk-je-voudrais", "noun-cafe"],
     weakPointTags: ["politeness"],
     payload: {
       weaveType: "supported",
@@ -321,36 +197,33 @@ const screens: LessonScreen[] = [
         { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
         { text: "je voudrais", itemId: "chunk-je-voudrais", required: true, label: "the ask" },
         { text: "un café", itemId: "noun-cafe", required: true, label: "the thing" },
-        { text: "s'il vous plaît", itemId: "chunk-sil-vous-plait", label: "softener" },
       ],
-      hintCloze: "Bonjour, je voudrais ___, s'il vous plaît.",
-      // The model is the full polite order, because s'il vous plaît is one of
-      // L0's four declared pieces and a declared piece has to be WORKED
-      // somewhere -- meeting it on a card and never using it is the drift the
-      // corpus guard exists to catch. The shorter order is accepted in full,
-      // so a learner who stops at "un café" has still succeeded and is told so.
-      expectedAnswers: ["Bonjour, je voudrais un café, s'il vous plaît."],
+      hintCloze: "Bonjour, je voudrais ___.",
+      // The old arc's target sentence, exactly: "Bonjour, je voudrais un café."
+      // s'il vous plaît is NOT part of the first taste and never was. It is
+      // taught properly in L1, where it gets a meet and two real uses; adding it
+      // here cost a fourth declared piece, a fifth beat and a longer sentence,
+      // for a softener the learner does not need to order a coffee.
+      expectedAnswers: ["Bonjour, je voudrais un café."],
       acceptedAlternatives: [
-        "Bonjour, je voudrais un café.",
         "Bonjour. Je voudrais un café.",
-        "Bonjour. Je voudrais un café, s'il vous plaît.",
+        "Je voudrais un café.",
       ],
       reveal: {
-        modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
+        modelAnswer: "Bonjour, je voudrais un café.",
         ifCorrect: "That is a real café order. Nothing about it is beginner French.",
         ifCorrectButFlat: "Right. Greeting first, then the ask. That order matters more than the words.",
         ifUnderstandableButWrong:
           "Your meaning lands. The pieces go greeting, then ask, then thing: Bonjour, je voudrais un café.",
         ifMissingTargetPiece: "Start with Bonjour, then je voudrais, then what you want.",
-        // No note scolds a missing s'il vous plaît: the short order is accepted.
       },
       validationMode: "exact-or-alternative",
     },
   },
 
   // ── G. OWNERSHIP ─────────────────────────────────────────────────────────
-  // What they have, in their own hands. The softener arrives here as something
-  // extra rather than as a fourth thing they were required to learn.
+  // The old arc's payoff beat: "Used. Not memorized." What they have, in their
+  // own hands, and the sentence they rebuilt rather than repeated.
   {
     id: "s07-recap-first-step",
     type: "recap",
@@ -384,38 +257,29 @@ export const lesson000: Lesson = {
   phase: "first-step",
   monolingualMode: "english-guided",
   primaryArchetype: "chunk-natural-speech",
-  acquisitionDemandItemIds: [
-    "chunk-bonjour",
-    "chunk-je-voudrais",
-    "noun-cafe",
-    "chunk-sil-vous-plait",
-  ],
+  acquisitionDemandItemIds: ["chunk-bonjour", "chunk-je-voudrais", "noun-cafe"],
   estimatedMinutes: 3,
   canDo: "Order a coffee politely in a French café.",
   whyItExists:
     "First real French moment. One complete natural sentence, built from three pieces the learner has just met, before any grammar architecture exists.",
   prerequisites: [],
-  learningItems: getItems([
-    "chunk-bonjour",
-    "chunk-je-voudrais",
-    "noun-cafe",
-    "chunk-sil-vous-plait",
-  ]),
+  learningItems: getItems(["chunk-bonjour", "chunk-je-voudrais", "noun-cafe"]),
   screens,
   offlineBehavior: { canRunOffline: true, fallbackMode: "model-answer-only" },
   designNotes: [
     "L0 is reached from first use, never from the Journey list: `isV1LessonInStageScope` starts at 1 and `phase: first-step` is what the route and the completion view key on.",
     "The L1 architecture chunk is intentionally absent from L0. L1 introduces it as the active target.",
-    "One PRODUCTION screen only. The open Say It that used to follow the Weave is gone: a first taste that tests twice is a test, and open production starts in L1. The recognition fill before it is a ramp, not a second test, and its reveal stops at the piece so it cannot hand over the Weave's answer.",
-    "s'il vous plaît stays L0's fourth declared piece and keeps its own meet card, because a declared demand with no teaching encounter would ask for language nobody taught. It is NOT marked required on the Weave, which accepts the order with or without it: met as a gift, never as a hurdle.",
+    "THREE productions, which is the old arc: the hybrid bridge, one more turn of the same handle for tea, and the full-French rebuild. The first two are not tests -- they EXPECT the learner's own English for the piece they do not have, so nothing in them can be got wrong. Open production still starts in L1.",
+    "s'il vous plaît is NOT in the first taste, and was not in the old one. Adding it cost a fourth declared piece, its own beat and a longer target sentence; L1 teaches it properly with a meet and two real uses. L0's target sentence is the old arc's exact one: Bonjour, je voudrais un café.",
+    "The recognition fill, the assembly Showcase and the separate un café meet card are all gone. None was part of the cognate-first arc, and none is needed for the bridge: the bridge's own reveal introduces un café, which is how the old lesson taught it. Chip tap and Look Closer are met in L1's Showcase instead, one lesson later, where there is room for them.",
     "No XP / streak / level-up / mission complete copy.",
     "Vous register throughout — informal tu is L1+ territory.",
   ],
   qaChecks: [
-    "TTS reads Bonjour, je voudrais, un café and the full sentence cleanly.",
-    "The Showcase chips read bonjour / je voudrais / un café, and each opens its own micro-reveal.",
-    "Look Closer opens with Sound, Notice and Usage, and In depth is absent rather than empty.",
+    "TTS reads Bonjour, je voudrais and the full sentence cleanly.",
+    "The reel turns slowly, the centred pair always matches, and reduce-motion shows the static list instead.",
+    "The bridge accepts \"Bonjour, je voudrais a coffee.\" without marking it wrong, and its reveal shows the French.",
     "No theatrical positivity tokens (Amazing/Perfect/Crushed).",
-    "Apostrophe normalization handles curly quotes in s'il vous plaît; the unaccented cafe variant passes Weave.",
+    "The unaccented cafe variant passes the Weave, and the hybrid a coffee / a tea answers are accepted rather than corrected.",
   ],
 };

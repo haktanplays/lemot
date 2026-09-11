@@ -199,7 +199,7 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
     assertEqual(shipped.filter((d) => d.code === "DD-003"), [], "no declared demand is non-active");
   });
 
-  test("current corpus findings are exactly the 15 recorded supported-vs-demand calls", () => {
+  test("current corpus findings are exactly the 16 recorded supported-vs-demand calls", () => {
     // These are real, deliberate founder decisions ("supported / composed, not a
     // demand") that today live only in each lesson's prose. The detector asking
     // about them is correct behaviour, not a bug — and they are NOT fixed here.
@@ -210,7 +210,11 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
         // SUPPORTED cargo in L1, not a third L1 demand (Payload Economy v0
         // §4.1/§6). It is worked there first because that is where it is
         // activated, so the detector asking about it is correct behaviour.
-        "DD-002 v1-lesson-001/chunk-vous-pouvez-repeter",
+        // s'il vous plaît's first WORKING moved from L0 to L1 when the first taste was
+    // trimmed back to the old cognate-first arc. The advisory is correct and is
+    // the same call as the rest of this list: supported material, not a demand.
+    "DD-002 v1-lesson-001/chunk-sil-vous-plait",
+    "DD-002 v1-lesson-001/chunk-vous-pouvez-repeter",
         "DD-002 v1-lesson-003/chunk-c-est",
         // Payload Economy v0 §4.2: oui is rehabilitated as a producible ANSWER
         // (s14/s15). It is registry-active, but L3's standard-role demand
@@ -234,6 +238,6 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
       ],
       "current-v1 advisory baseline",
     );
-    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 15 }, "all advisory");
+    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 16 }, "all advisory");
   });
 });

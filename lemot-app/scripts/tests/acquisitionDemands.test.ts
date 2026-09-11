@@ -24,12 +24,10 @@ import type { Lesson } from "../../content/lessonTypes";
 
 /** The ratified L0–L17 declaration map. */
 const RATIFIED: Record<string, readonly string[]> = {
-  "v1-lesson-000": [
-    "chunk-bonjour",
-    "chunk-je-voudrais",
-    "noun-cafe",
-    "chunk-sil-vous-plait",
-  ],
+  // L0-L1 founder batch: s'il vous plaît left the first taste with the beat
+  // that taught it. The old cognate-first arc never contained it, and its
+  // target sentence was "Bonjour, je voudrais un café." L1 owns it now.
+  "v1-lesson-000": ["chunk-bonjour", "chunk-je-voudrais", "noun-cafe"],
   // L1-L3 content pass: L1 gained the second opener, L3 gained the only
   // non-locational negation in the lesson.
   "v1-lesson-001": ["chunk-merci", "chunk-excusez-moi"],
@@ -118,9 +116,11 @@ describe("acquisitionDemands — shipped L0–L23 map", () => {
     // evaluative adjective takes it to 26, and L22's one question word to 27.
     // L23 and L24 add none. The L1-L3 content pass then added exactly two:
     // chunk-excusez-moi in L1 and chunk-je-ne-comprends-pas in L3, taking the
-    // total to 29, and the L7 production pass took it to 30. Every lesson stays
-    // inside its own band.
-    assertEqual(totalAcquisitionDemands(V1_LESSONS), 30, "current-v1 regression total");
+    // total to 29, and the L7 production pass took it to 30. The L0-L1 founder
+    // batch then removed one: s'il vous plaît is no longer an L0 demand, which
+    // is a demand LEAVING rather than a lesson quietly dropping one. Every
+    // lesson stays inside its own band.
+    assertEqual(totalAcquisitionDemands(V1_LESSONS), 29, "current-v1 regression total");
   });
 
   test("migration is complete — all 25 lessons declare the field", () => {
@@ -146,12 +146,15 @@ describe("acquisitionDemands — shipped L0–L23 map", () => {
     }
   });
 
-  test("L0 carries four demands despite having no journey role", () => {
+  test("L0 carries three demands despite having no journey role", () => {
     // Two independent axes. Acquisition demand is never inferred from the
     // absence of a journey role: L0 is pre-curriculum, not empty.
+    //
+    // Three, not four: the restored cognate-first arc teaches the two pieces and
+    // the thing, and its sentence ends there, exactly as the old first taste did.
     const l0 = V1_LESSONS.find((l) => l.number === 0);
     assertEqual(l0?.journeyRole, undefined, "L0 sits outside the five roles");
-    assertEqual(l0?.acquisitionDemandItemIds?.length, 4, "and still teaches four things");
+    assertEqual(l0?.acquisitionDemandItemIds?.length, 3, "and still teaches three things");
   });
 
   test("L7 declares two demands; à la maison stays supported material", () => {
