@@ -352,36 +352,57 @@ const screens: LessonScreen[] = [
           },
         },
         {
-          // L1's first OPEN weave: no piece tray, no cloze, no model in front of the
-          // learner. Every word in the answer is already owned — the only genuinely
-          // new decision is which opener the moment needs, which s14 just taught. The
-          // prompt is a directive, so the "Say this:" label is correctly suppressed.
+          // L1's TRANSFER weave: no piece tray, no cloze, no model in front of the
+          // learner, and — unlike every weave before it — one word in the answer
+          // that L1 never taught.
+          //
+          // It used to order a third coffee. Every word was already owned, so
+          // the only decision left was which opener the moment needs, and the
+          // lesson's low-support screen still asked for a sentence the learner
+          // had produced twice. The request shape is theirs by now; what is
+          // worth asking is whether they can carry it somewhere new.
+          //
+          // `croissant` is the deliberate recoverable unknown: a near-transparent
+          // word an English speaker can reach for, a lexical slot swap, never a
+          // new grammar engine. It carries no itemId on purpose — L1 does not own
+          // it, so nothing here claims it as taught, and no chip offers it.
+          //
+          // The hybrid "je voudrais a croissant" is an ACCEPTED alternative, not
+          // a miss: it demonstrates the engine transferring, which is the whole
+          // point of the screen. Acceptance is not endorsement, so it grades as
+          // an alternative rather than exact, and `ifCorrectButFlat` — the line
+          // the reveal shows for an alternative — names the one piece that
+          // changes in French instead of calling the hybrid correct French.
+          // Only the designed hybrid is accepted; this is not a general licence
+          // for English nouns inside French sentences.
           id: "s15-weave-excusez-moi-cafe",
           type: "weave",
           targetItemIds: [
             "chunk-excusez-moi",
             "chunk-je-voudrais",
-            "noun-cafe",
             "chunk-sil-vous-plait",
           ],
           evidenceTargetItemIds: ["chunk-excusez-moi"],
           weakPointTags: ["politeness"],
           payload: {
             weaveType: "open",
-            prompt: "Get their attention, then order a coffee politely.",
+            prompt: "Get their attention, then ask for a croissant politely.",
             context:
-              "The server is turned away, wiping down the machine. Nobody has looked up yet.",
-            expectedAnswers: ["Excusez-moi, je voudrais un café, s'il vous plaît."],
+              "A bakery, mid-morning. The counter staff is turned away, boxing an order. Nobody has looked up yet.",
+            // Both fully-French forms are correct French and grade as exact.
+            expectedAnswers: [
+              "Excusez-moi, je voudrais un croissant, s'il vous plaît.",
+              "Excusez-moi, un croissant, s'il vous plaît.",
+            ],
             acceptedAlternatives: [
-              "Excusez-moi, je voudrais un café s'il vous plaît.",
-              "Excusez-moi, un café s'il vous plaît.",
-              "Excusez-moi, je voudrais un café.",
+              "Excusez-moi, je voudrais a croissant, s'il vous plaît.",
             ],
             reveal: {
-              modelAnswer: "Excusez-moi, je voudrais un café, s'il vous plaît.",
-              ifCorrect: "You reached them first, then asked. That is the whole move.",
+              modelAnswer: "Excusez-moi, je voudrais un croissant, s'il vous plaît.",
+              ifCorrect:
+                "You reached them first, then asked, in a shop this lesson never took you to.",
               ifCorrectButFlat:
-                "Right. The opener does its work before the request arrives.",
+                "Right. You carried your own request to a new counter. One piece changes in French, and it is the one you had not met yet.",
               ifUnderstandableButWrong:
                 "Your meaning lands. Excusez-moi goes first here, because it is what makes them turn around.",
               ifMissingTargetPiece:

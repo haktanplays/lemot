@@ -62,6 +62,35 @@ function requiredFrench(screen: { type: string; payload: Record<string, never> }
   return "";
 }
 
+/**
+ * Deliberate recoverable unknowns: `lessonId/screenId` -> the exact words.
+ *
+ * The founder asked Cairn to cultivate one specific move: a weave that contains
+ * ONE unknown but recoverable lexical piece, so the learner discovers their own
+ * shape reaching past what they were handed. That is the opposite of the defect
+ * this file exists to catch, and the two are told apart by declaration.
+ *
+ * Narrow on purpose, and narrow in three ways at once. It names the screen, it
+ * names the word, and the test below caps it at ONE word per screen. So a
+ * second unseen word on the same screen still fails, an unseen word on any
+ * other screen still fails, and quietly requiring untaught French is exactly as
+ * impossible as it was before.
+ *
+ * A word allowed here is added to the taught set afterwards, because the
+ * screen's reveal does show its French form: it is unknown while the learner
+ * works, not unknown forever.
+ *
+ * ONLY object nouns belong here. A new grammar engine, tense, pronoun system or
+ * function word is never "recoverable" — the learner cannot reach it from what
+ * they own, and no entry may be added for one.
+ */
+const RECOVERABLE_UNKNOWNS: Readonly<Record<string, readonly string[]>> = {
+  // L1's transfer weave. The request shape is owned; "croissant" is the lexical
+  // edge, near-transparent for an English speaker, and the screen accepts the
+  // hybrid "je voudrais a croissant" so reaching for it is never punished.
+  "v1-lesson-001/s15-weave-excusez-moi-cafe": ["croissant"],
+};
+
 describe("teach the pieces before asking for them", () => {
   test("no required production contains French the learner has never met", () => {
     const met = new Set<string>();
@@ -76,10 +105,12 @@ describe("teach the pieces before asking for them", () => {
       for (const screen of flattenLessonScreens(lesson)) {
         const s = screen as unknown as { type: string; payload: Record<string, never> };
         const fr = requiredFrench(s);
+        const allowed =
+          RECOVERABLE_UNKNOWNS[`${lesson.id}/${(screen as { id: string }).id}`] ?? [];
         if (fr) {
           const missing = norm(fr)
             .split(" ")
-            .filter((w) => w && !met.has(w));
+            .filter((w) => w && !met.has(w) && !allowed.includes(w));
           if (missing.length > 0) {
             offences.push(
               `${lesson.id}/${(screen as { id: string }).id} requires "${fr}" but never taught: ${missing.join(", ")}`,
@@ -87,10 +118,39 @@ describe("teach the pieces before asking for them", () => {
           }
         }
         for (const w of taughtWords(s)) met.add(w);
+        // Shown in the reveal once the learner has committed, so it is unknown
+        // during the task and met from here on.
+        for (const w of allowed) met.add(w);
       }
     }
 
     assert(offences.length === 0, offences.join("\n"));
+  });
+
+  test("a recoverable unknown is one word, on a screen that accepts reaching for it", () => {
+    // The exception cannot become a loophole. One word per screen, the screen
+    // must exist, and it must actually accept the hybrid attempt — otherwise it
+    // is not a recoverable unknown, it is just untaught French with a note.
+    for (const [key, words] of Object.entries(RECOVERABLE_UNKNOWNS)) {
+      assert(words.length === 1, `${key} declares ${words.length} unknowns; the budget is one`);
+      const [lessonId, screenId] = key.split("/");
+      const lesson = V1_LESSONS.find((l) => l.id === lessonId);
+      assert(lesson !== undefined, `${key} names a lesson that does not exist`);
+      const screen = flattenLessonScreens(lesson!).find(
+        (sc) => (sc as { id: string }).id === screenId,
+      ) as unknown as { type: string; payload: Record<string, string[]> } | undefined;
+      assert(screen !== undefined, `${key} names a screen that does not exist`);
+      assert(screen!.type === "weave", `${key} is not a weave`);
+      const alternatives = (screen!.payload.acceptedAlternatives ?? []) as string[];
+      assert(
+        alternatives.length > 0,
+        `${key} offers no accepted alternative, so reaching for the unknown can only be a miss`,
+      );
+      assert(
+        alternatives.some((a) => norm(a).split(" ").includes(words[0])),
+        `${key} accepts no alternative containing "${words[0]}"`,
+      );
+    }
   });
 
   test("the rule is about pieces, not about drilling whole sentences", () => {
