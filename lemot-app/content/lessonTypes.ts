@@ -94,6 +94,7 @@ export type LearningItem = {
 export type ScreenType =
   | "activity-chain"
   | "showcase"
+  | "pattern-reel"
   | "meet-card"
   | "insight-card"
   | "fill-with-traps"
@@ -448,6 +449,60 @@ export type ShowcaseScreen = {
   payload: ShowcasePayload;
 };
 
+/**
+ * One row of a pattern reel: a French surface and what it means.
+ *
+ * Both sides are authored. Nothing here is derived from the registry, because
+ * the reel's job is to be READ, and a row the learner cannot read is worse than
+ * a shorter reel.
+ */
+export type PatternReelRow = {
+  fr: string;
+  en: string;
+};
+
+/**
+ * A slow reel of French that shows a pattern instead of asserting one.
+ *
+ * TWO MODES, one surface, because they are the same idea seen from either end:
+ *
+ *   no `stem`   the familiar-words reel. Two columns drift past each other and
+ *               the learner recognises French they already understand. This is
+ *               the first taste's oldest and best beat.
+ *   with `stem` the pattern reveal. The stem holds still while the phrase
+ *               beside it changes, so the learner SEES that one shape they own
+ *               carries many different requests.
+ *
+ * `rows` carry FULL phrases, never bare nouns, in the stem mode. "un café" and
+ * "une pizza" rotate whole; showing "café" and "pizza" against a fixed stem
+ * would teach a plug-and-play grammar that French does not have.
+ *
+ * Grades nothing, emits no evidence, has no targets — the same contract as a
+ * showcase, and for the same reason: watching is not producing.
+ */
+export type PatternReelPayload = {
+  /** The short line above the reel. */
+  title: string;
+  /** Optional framing under the title, before the reel starts. */
+  body?: string;
+  /** Held still beside the rotating column. Omit for a plain two-column reel. */
+  stem?: string;
+  /** At least three rows, or there is no pattern to see. */
+  rows: readonly PatternReelRow[];
+  /** The short "why it works" note under the reel. */
+  note?: string;
+};
+
+export type PatternReelScreen = {
+  id: string;
+  type: "pattern-reel";
+  /** Never set, for the same reason a showcase never sets them. */
+  targetItemIds?: undefined;
+  evidenceTargetItemIds?: undefined;
+  weakPointTags?: WeakPointTag[];
+  payload: PatternReelPayload;
+};
+
 export type MeetCardScreen = {
   id: string;
   type: "meet-card";
@@ -619,6 +674,7 @@ export type RecapScreen = {
 export type LessonScreen =
   | ActivityChainScreen
   | ShowcaseScreen
+  | PatternReelScreen
   | MeetCardScreen
   | InsightCardScreen
   | FillWithTrapsScreen

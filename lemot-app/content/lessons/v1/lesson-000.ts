@@ -65,7 +65,62 @@ const screens: LessonScreen[] = [
     },
   },
 
-  // ── C. USEFUL OBJECT ─────────────────────────────────────────────────────
+  // ── C. THE BRIDGE ────────────────────────────────────────────────────────
+  // The oldest and best thing the first taste ever did, recovered.
+  //
+  // The learner orders a coffee with TWO French pieces and one English word,
+  // and is then shown their own line with the last piece in French. Nothing is
+  // marked wrong, because nothing was: they communicated. That is the whole
+  // argument of the product, made in one screen instead of claimed in a
+  // paragraph, and it only works if `un café` has NOT been taught first —
+  // which is why the meet card that used to sit here is gone. Its reveal
+  // introduces the package, and the Showcase two beats later makes it a
+  // tappable chip with its depth card.
+  //
+  // The hybrid is the EXPECTED answer, not a tolerated one. Full French is
+  // accepted too, for the learner who reaches further than they were asked to.
+  {
+    id: "s08-weave-hybrid-order",
+    type: "weave",
+    targetItemIds: ["chunk-bonjour", "chunk-je-voudrais"],
+    evidenceTargetItemIds: ["chunk-je-voudrais"],
+    weakPointTags: ["politeness"],
+    payload: {
+      weaveType: "supported",
+      prompt: "Greet them, then ask for a coffee. Use English for anything you do not have yet.",
+      context:
+        "The person at the counter looks up. You want a coffee, and you have two French pieces.",
+      suggestedPieces: [
+        { text: "Bonjour", itemId: "chunk-bonjour", label: "the greeting" },
+        { text: "je voudrais", itemId: "chunk-je-voudrais", label: "asking for something" },
+      ],
+      expectedAnswers: ["Bonjour, je voudrais a coffee."],
+      acceptedAlternatives: [
+        "Je voudrais a coffee.",
+        "Bonjour, je voudrais un café.",
+        "Je voudrais un café.",
+      ],
+      reveal: {
+        modelAnswer: "Bonjour, je voudrais un café.",
+        ifCorrect:
+          "That is a real order. Look at what changed: only the part you did not have yet.",
+        ifCorrectButFlat:
+          "Right. Only the part you did not have yet changed. Everything else was already yours.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Keep your two French pieces at the front and let English carry the rest.",
+        ifMissingTargetPiece:
+          "Open with bonjour, then je voudrais, then name what you want in whatever language you have.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+
+  // ── C1b. THE PIECE THE BRIDGE JUST REVEALED ──────────────────────────────
+  // Deliberately AFTER the bridge, not before it. Teaching "un café" first is
+  // what made the old bridge impossible: there is no "only the part you did not
+  // have yet changed" if the learner already had it. Here the reveal creates
+  // the need and this card answers it, with the audio and the highlight a meet
+  // card gives and a reveal cannot.
   {
     id: "s01b-meet-un-cafe",
     type: "meet-card",
@@ -74,9 +129,65 @@ const screens: LessonScreen[] = [
     payload: {
       fr: "un café",
       en: "a coffee",
-      title: "And the thing you want.",
+      title: "The piece you were missing.",
       highlights: [{ text: "un café", itemId: "noun-cafe" }],
       tts: true,
+    },
+  },
+
+  // ── C2. THE SAME SHAPE, A DIFFERENT THING ────────────────────────────────
+  // One more turn of the same handle, which is what makes it a shape rather
+  // than a sentence. The hybrid is expected here too: the learner has never
+  // seen "un thé" and is not being asked to guess it.
+  {
+    id: "s09-weave-hybrid-tea",
+    type: "weave",
+    targetItemIds: ["chunk-je-voudrais"],
+    evidenceTargetItemIds: ["chunk-je-voudrais"],
+    payload: {
+      weaveType: "mid",
+      prompt: "Now ask for tea, the same way.",
+      context: "Same counter, a different drink.",
+      expectedAnswers: ["Je voudrais a tea."],
+      acceptedAlternatives: [
+        "Je voudrais un thé.",
+        "Bonjour, je voudrais a tea.",
+        "Bonjour, je voudrais un thé.",
+      ],
+      reveal: {
+        modelAnswer: "Je voudrais un thé.",
+        ifCorrect: "The shape did not move. Only the thing you wanted did.",
+        ifCorrectButFlat:
+          "Right. The shape did not move; only the thing you wanted did.",
+        ifUnderstandableButWrong:
+          "Your meaning lands. Je voudrais does the asking, whatever comes after it.",
+        ifMissingTargetPiece: "Start with je voudrais, then name the drink.",
+      },
+      validationMode: "exact-or-alternative",
+    },
+  },
+
+  // ── C3. NOT STARTING FROM ZERO ───────────────────────────────────────────
+  // The familiar-words reel, restored. It sits exactly where it always sat:
+  // after the learner has produced something, so it reads as an explanation of
+  // what just happened rather than a promise made before anything did. No note
+  // under it — the old beat had none, and the reel makes its own point.
+  {
+    id: "s10-reel-familiar",
+    type: "pattern-reel",
+    payload: {
+      title: "You were not starting from zero.",
+      body: "Some French is already familiar.",
+      rows: [
+        { fr: "restaurant", en: "restaurant" },
+        { fr: "important", en: "important" },
+        { fr: "possible", en: "possible" },
+        { fr: "moment", en: "moment" },
+        { fr: "musique", en: "music" },
+        { fr: "cinéma", en: "cinema" },
+        { fr: "café", en: "coffee" },
+        { fr: "chocolat", en: "chocolate" },
+      ],
     },
   },
 

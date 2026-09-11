@@ -31,6 +31,7 @@ import type { LearningItem, Lesson, LessonScreen, ScreenType } from "../lessonTy
  * pull React Native into a pure-tsx path.
  */
 const SUPPORTED_SCREEN_TYPE_MAP: Record<ScreenType, true> = {
+  "pattern-reel": true,
   "activity-chain": true,
   showcase: true,
   "meet-card": true,

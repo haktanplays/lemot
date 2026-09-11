@@ -21,6 +21,7 @@
 import { describe, test, assert } from "./harness";
 import { V1_LESSONS } from "../../content/lessons/v1";
 import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
+import { L0_ENGLISH_SCAFFOLD } from "./l0HybridScaffold";
 
 const norm = (s: string) =>
   s
@@ -105,12 +106,13 @@ describe("teach the pieces before asking for them", () => {
       for (const screen of flattenLessonScreens(lesson)) {
         const s = screen as unknown as { type: string; payload: Record<string, never> };
         const fr = requiredFrench(s);
-        const allowed =
-          RECOVERABLE_UNKNOWNS[`${lesson.id}/${(screen as { id: string }).id}`] ?? [];
+        const key = `${lesson.id}/${(screen as { id: string }).id}`;
+        const allowed = RECOVERABLE_UNKNOWNS[key] ?? [];
+        const english = L0_ENGLISH_SCAFFOLD[key] ?? [];
         if (fr) {
           const missing = norm(fr)
             .split(" ")
-            .filter((w) => w && !met.has(w) && !allowed.includes(w));
+            .filter((w) => w && !met.has(w) && !allowed.includes(w) && !english.includes(w));
           if (missing.length > 0) {
             offences.push(
               `${lesson.id}/${(screen as { id: string }).id} requires "${fr}" but never taught: ${missing.join(", ")}`,
@@ -125,6 +127,25 @@ describe("teach the pieces before asking for them", () => {
     }
 
     assert(offences.length === 0, offences.join("\n"));
+  });
+
+  test("the English scaffold belongs to the first taste and nowhere else", () => {
+    // The scaffold exists because L0 teaches with the learner's own language.
+    // Any other lesson using it would be hiding untaught French behind a list
+    // that was never meant to carry French at all.
+    for (const [key, words] of Object.entries(L0_ENGLISH_SCAFFOLD)) {
+      assert(
+        key.startsWith("v1-lesson-000/"),
+        `${key} is not the first taste; only L0 may scaffold in English`,
+      );
+      assert(words.length > 0, `${key} declares an empty scaffold`);
+      for (const w of words) {
+        assert(
+          /^[a-z]+$/.test(w),
+          `${key} scaffolds "${w}", which is not a plain English word`,
+        );
+      }
+    }
   });
 
   test("a recoverable unknown is one word, on a screen that accepts reaching for it", () => {

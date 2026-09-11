@@ -889,6 +889,10 @@ describe("PR-07 changed no frozen contract", () => {
       // and records nothing; its STEPS are ordinary screens and are walked below.
       "activity-chain",
       "showcase",
+      // The familiar-words reel, restored to the first taste and reused by L1's
+      // pattern reveal. Same contract as a showcase: watched, never answered,
+      // so it adds nothing to the evidence taxonomy.
+      "pattern-reel",
       "meet-card",
       "insight-card",
       "fill-with-traps",

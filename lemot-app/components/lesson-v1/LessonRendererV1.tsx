@@ -21,6 +21,7 @@ import { useApp } from "@/providers/AppProvider";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { ActivityChain } from "@/components/lesson-v1/screens/ActivityChain";
 import { Showcase } from "@/components/lesson-v1/screens/Showcase";
+import { PatternReel } from "@/components/lesson-v1/screens/PatternReel";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
 import { FillWithTraps } from "./screens/FillWithTraps";
@@ -310,6 +311,10 @@ function pickScreen(
     // Breadth surface: no evidence callback by design. See Showcase.tsx.
     case "showcase":
       return <Showcase screen={screen} onContinue={onContinue} />;
+    // Same contract as a showcase: it is watched, not answered, so it takes no
+    // evidence callback and claims no target.
+    case "pattern-reel":
+      return <PatternReel screen={screen} onContinue={onContinue} />;
     case "meet-card":
       return (
         <MeetCard

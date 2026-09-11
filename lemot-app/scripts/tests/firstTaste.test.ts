@@ -17,6 +17,7 @@
  * engine, reachable from first use and from nowhere else.
  */
 import { describe, test, assert, assertEqual } from "./harness";
+import { scaffoldWordsForScreen } from "./l0HybridScaffold";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { lesson000 } from "../../content/lessons/v1/lesson-000";
@@ -30,7 +31,9 @@ import {
   showcaseSentencesOf,
 } from "../../content/lessons/showcaseClassification";
 import { PRACTICE_SEEDS } from "../../content/practice/seeds";
-import type { ShowcaseScreen, WeaveScreen } from "../../content/lessonTypes";
+import type { ShowcaseScreen, WeaveScreen,
+  PatternReelScreen,
+} from "../../content/lessonTypes";
 
 const src = (rel: string) => readFileSync(join(process.cwd(), rel), "utf8");
 const screens = flattenLessonScreens(lesson000);
@@ -87,30 +90,50 @@ describe("the first taste teaches three pieces and one sentence", () => {
     );
   });
 
-  test("there is exactly one production screen", () => {
-    // A first taste that tests twice is a test. Open production starts in L1.
+  test("the productions are a bridge, a turn of the same handle, and a rebuild", () => {
+    // This used to assert ONE production, on the reasoning that a first taste
+    // which tests twice is a test. The founder restored the older arc, where
+    // the first two asks are not tests at all: they EXPECT the learner's own
+    // English for the piece they do not have, so nothing can be got wrong. The
+    // rule that matters is the one kept below — only the last ask is in French
+    // the learner has been shown.
     const production = screens.filter(
       (s) => s.type === "weave" || s.type === "say-it-your-way",
     );
-    assertEqual(production.length, 1, "one ask, heavily supported");
-    assertEqual(production[0].type, "weave", "and it is the scaffolded one");
+    assertEqual(production.length, 3, "bridge, tea, rebuild");
+    for (const p of production) {
+      assertEqual(p.type, "weave", "no open production in the first taste; that starts in L1");
+    }
+    const [bridge, tea, rebuild] = production as WeaveScreen[];
+    for (const hybrid of [bridge, tea]) {
+      assert(
+        scaffoldWordsForScreen(hybrid.id).length > 0,
+        `${hybrid.id} must be a declared hybrid, or it is asking for untaught French`,
+      );
+    }
     assertEqual(
-      (production[0] as WeaveScreen).payload.weaveType,
-      "supported",
-      "at the most supported tier there is",
+      scaffoldWordsForScreen(rebuild.id).length,
+      0,
+      "the last ask is the real one: full French, no scaffold",
     );
+    assertEqual(rebuild.payload.weaveType, "supported", "and it stays heavily supported");
   });
 
   test("the arc is short enough to be a taste", () => {
+    // Widened from eight when the founder restored three beats the current L0
+    // had dropped: the hybrid bridge, the tea ask and the familiar-words reel.
+    // The ceiling still exists, and it is still what stops a first taste
+    // turning into a small lesson — but eleven is long for a taste, and the
+    // honest place to shorten it is the two separate opening meet cards, which
+    // the older arc showed on ONE screen. That is a founder call, not a test's.
     assert(
-      screens.length >= 5 && screens.length <= 8,
-      `${screens.length} beats: a first taste is roughly five to eight`,
+      screens.length >= 5 && screens.length <= 11,
+      `${screens.length} beats: a first taste is roughly five to eleven`,
     );
   });
 
   test("nothing in L0 asks for French it has not taught", () => {
-    const weave = screens.find((s) => s.type === "weave") as WeaveScreen;
-    const asked = String(weave.payload.expectedAnswers?.[0] ?? "");
+    const asks = screens.filter((s) => s.type === "weave") as WeaveScreen[];
     // A teaching encounter, not a registry lookup: "un" belongs to the package
     // "un café" the learner meets on a card, and the registry stores the noun
     // as "café". What matters is whether the word was put in front of them.
@@ -128,8 +151,16 @@ describe("the first taste teaches three pieces and one sentence", () => {
         for (const w of b.toLowerCase().replace(/[.,!?]/g, " ").split(/\s+/)) if (w) met.add(w);
       }
     }
-    for (const word of asked.toLowerCase().replace(/[.,!?]/g, " ").split(/\s+/).filter(Boolean)) {
-      assert(met.has(word), `the first production asks for "${word}", which L0 never showed`);
+    for (const ask of asks) {
+      const asked = String(ask.payload.expectedAnswers?.[0] ?? "");
+      // The bridge screens deliberately expect the learner's own English for
+      // the piece they do not have yet. Those words are declared, and they are
+      // the only ones exempt: every French word is still checked.
+      const scaffold = scaffoldWordsForScreen(ask.id);
+      for (const word of asked.toLowerCase().replace(/[.,!?]/g, " ").split(/\s+/).filter(Boolean)) {
+        if (scaffold.includes(word)) continue;
+        assert(met.has(word), `${ask.id} asks for "${word}", which L0 never showed`);
+      }
     }
   });
 
@@ -138,7 +169,10 @@ describe("the first taste teaches three pieces and one sentence", () => {
       (s) => s.type === "meet-card" && (s.targetItemIds ?? []).includes("chunk-sil-vous-plait"),
     );
     assert(met, "a declared piece needs a teaching encounter");
-    const weave = screens.find((s) => s.type === "weave") as WeaveScreen;
+    // The LAST weave: the rebuild. The two bridge screens in front of it expect
+    // English for the missing piece, so the softener has no business on them.
+    const weaves = screens.filter((s) => s.type === "weave") as WeaveScreen[];
+    const weave = weaves[weaves.length - 1];
     const svp = (weave.payload.suggestedPieces ?? []).find(
       (p) => p.itemId === "chunk-sil-vous-plait",
     );
@@ -472,5 +506,74 @@ describe("the blank reads as a blank, not as a typo", () => {
       tails.some((t) => /^[a-zà-ÿ]/i.test(t)),
       "at least one tail starts with a word and needs the room kept",
     );
+  });
+});
+
+describe("the first taste is the cognate-first one again", () => {
+  // The founder's report: the newer L0 was worse than the older cognate-first
+  // L0. It was — the rebuild onto the lesson engine kept the arc and lost the
+  // two beats that made it land. These pin the restored ones.
+
+  test("the familiar-words reel is back, and it is the old one", () => {
+    const reel = screens.find((s) => s.type === "pattern-reel");
+    assert(reel !== undefined, "the reel is the beat that says you are not starting from zero");
+    const payload = (reel as PatternReelScreen).payload;
+    assert(payload.stem === undefined, "L0's reel is the two-column one, not a pattern reveal");
+    assert(payload.rows.length >= 6, "a reel of three words is a list, not a reel");
+    // The exact pairs the old lesson-zero carried, café included: it echoes the
+    // word the bridge has just taught, which is why it was chosen.
+    const fr = payload.rows.map((r) => r.fr);
+    for (const word of ["restaurant", "important", "possible", "café"]) {
+      assert(fr.includes(word), `the reel lost "${word}"`);
+    }
+  });
+
+  test("the reel lands after the learner has produced something, never before", () => {
+    // "Look what you already know" is an observation about what just happened.
+    // In front of the first production it is a promise, and a promise is the
+    // thing the old arc deliberately did not make.
+    const reelAt = screens.findIndex((s) => s.type === "pattern-reel");
+    const firstProduction = screens.findIndex((s) => s.type === "weave");
+    assert(reelAt > firstProduction, "the reel must follow the first ask");
+  });
+
+  test("the bridge reveals the missing piece rather than pre-teaching it", () => {
+    // The whole mechanism: if "un café" is taught before the bridge, there is
+    // no "only the part you did not have yet changed" left to show.
+    const bridgeAt = screens.findIndex((s) => s.id === "s08-weave-hybrid-order");
+    const cafeMeetAt = screens.findIndex(
+      (s) => s.type === "meet-card" && (s.targetItemIds ?? []).includes("noun-cafe"),
+    );
+    assert(bridgeAt >= 0, "the bridge is authored");
+    assert(cafeMeetAt >= 0, "un café still gets a real teaching encounter");
+    assert(
+      cafeMeetAt > bridgeAt,
+      "un café is met AFTER the bridge asked for it, or the bridge has nothing to reveal",
+    );
+    const bridge = screens[bridgeAt] as WeaveScreen;
+    assertEqual(
+      bridge.payload.reveal.modelAnswer,
+      "Bonjour, je voudrais un café.",
+      "and the reveal is where the French arrives",
+    );
+  });
+
+  test("both bridges accept the learner's own language and the full French", () => {
+    for (const id of ["s08-weave-hybrid-order", "s09-weave-hybrid-tea"]) {
+      const w = screens.find((s) => s.id === id) as WeaveScreen;
+      assert(w !== undefined, `${id} is authored`);
+      const expected = String(w.payload.expectedAnswers?.[0] ?? "");
+      const scaffold = scaffoldWordsForScreen(id);
+      assert(
+        scaffold.some((word) => expected.toLowerCase().includes(word)),
+        `${id} should EXPECT the hybrid, not merely tolerate it`,
+      );
+      // A learner who reaches further than asked is never marked wrong for it.
+      const alts = w.payload.acceptedAlternatives ?? [];
+      assert(
+        alts.some((a) => /café|thé/.test(a)),
+        `${id} must also accept the full French`,
+      );
+    }
   });
 });
