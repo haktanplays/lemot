@@ -11,6 +11,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   backTarget,
+  backwardEntryStep,
   parseCursor,
   resumeIndexFor,
   resumeStepFor,
@@ -113,8 +114,25 @@ describe("a chain resumes at the step the learner was on", () => {
   test("the player threads the step through the chain", () => {
     const src = readFileSync(join(process.cwd(), "components/lesson-v1/LessonRendererV1.tsx"), "utf8");
     assert(src.includes("resumeStepFor("), "the player must resume the chain step");
-    assert(src.includes("initialStep={chainStep}"), "the chain must receive the resumed step");
+    // Re-pointed, not dropped: the prop became CONTROLLED. `initialStep` only
+    // seeded the chain's own state once, which is exactly why Back could compute
+    // the right step and the chain would ignore it.
+    assert(src.includes("stepIndex={chainStep}"), "the chain must render the player's step");
     assert(src.includes("onStepChange={onChainStep}"), "the chain must report step changes");
+    assert(
+      !src.includes("initialStep={"),
+      "the chain step must not go back to being seeded once",
+    );
+  });
+
+  test("the chain no longer owns where it is", () => {
+    const src = readFileSync(join(process.cwd(), "components/lesson-v1/screens/ActivityChain.tsx"), "utf8");
+    // A CALL, not the word: the file explains in prose why the old useState was
+    // the bug, and a test that cannot tell code from commentary is not a test.
+    assert(
+      !/\buseState\s*[(<]/.test(src),
+      "a chain holding its own step index is the bug: two owners, and the player loses",
+    );
   });
 });
 
@@ -134,6 +152,69 @@ describe("back moves one authored page", () => {
 
   test("back on the first page leaves the lesson", () => {
     assertEqual(backTarget(0).kind, "exit", "there is no page before the first");
+  });
+});
+
+describe("back inside a chain moves one STEP, not one page", () => {
+  test("step 3 goes back to step 2, not to the start of the exercise", () => {
+    // The reported regression, stated as the founder saw it. A chain is several
+    // actions wearing one page number, so back measured in pages walked out of
+    // the exercise and lost every step at once.
+    const t = backTarget(5, 2); // page 6, chain step 3 (0-based: 2)
+    assert(t.kind === "step", "back inside a chain must stay inside the chain");
+    assertEqual(t.kind === "step" ? t.stepIndex : -1, 1, "one step back");
+  });
+
+  test("back steps down the chain one at a time", () => {
+    for (let step = 3; step > 0; step -= 1) {
+      const t = backTarget(5, step);
+      assertEqual(
+        t.kind === "step" ? t.stepIndex : -1,
+        step - 1,
+        `step ${step + 1} should go back to ${step}`,
+      );
+    }
+  });
+
+  test("back from the chain's first step leaves the page", () => {
+    const t = backTarget(5, 0);
+    assert(t.kind === "page", "step 1 is the page, so back is a page move");
+    assertEqual(t.kind === "page" ? t.index : -1, 4, "one page back");
+  });
+
+  test("an ordinary page is unaffected by the new rung", () => {
+    // Every pre-existing one-argument call site must behave exactly as before.
+    for (let i = 11; i > 0; i -= 1) {
+      assertEqual(backTarget(i, 0).kind === "page" ? (backTarget(i, 0) as { index: number }).index : -1, i - 1, `page ${i}`);
+    }
+    assertEqual(backTarget(0, 0).kind, "exit", "first page still exits");
+  });
+
+  test("entering a chain backwards opens its LAST step, not its first", () => {
+    // The other half of the same symptom: stepping back onto a previous chain
+    // used to reset the step to 0, so the learner landed on step 1 of an
+    // exercise they had already finished.
+    assertEqual(backwardEntryStep(4), 3, "a four-step chain opens at step 4");
+    assertEqual(backwardEntryStep(2), 1, "a two-step chain opens at step 2");
+  });
+
+  test("a page that is not a chain opens at step zero", () => {
+    assertEqual(backwardEntryStep(null), 0, "ordinary pages have no steps");
+    assertEqual(backwardEntryStep(1), 0, "a one-step chain has nowhere to land but the start");
+    assertEqual(backwardEntryStep(0), 0, "an empty chain cannot open past its end");
+  });
+
+  test("the player asks for the step rung only when it is on a chain", () => {
+    const src = readFileSync(join(process.cwd(), "components/lesson-v1/LessonRendererV1.tsx"), "utf8");
+    assert(
+      src.includes('screen?.type === "activity-chain" ? chainStep : 0'),
+      "an ordinary page must pass step 0 so its back behaviour is unchanged",
+    );
+    assert(src.includes("backwardEntryStep("), "stepping back onto a chain must land on its last step");
+    assert(
+      !src.includes("setChainStep(0);\n          setScreenIndex(target.index)"),
+      "the unconditional step reset is what opened previous chains at step 1",
+    );
   });
 });
 

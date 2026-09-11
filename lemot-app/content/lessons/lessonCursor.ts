@@ -94,10 +94,42 @@ export function resumeIndexFor(
   return cursor.screenIndex;
 }
 
-/** Back inside a lesson: one authored page, or out of the lesson at the top. */
-export function backTarget(screenIndex: number): { kind: "page"; index: number } | { kind: "exit" } {
+export type LessonBackTarget =
+  | { kind: "step"; stepIndex: number }
+  | { kind: "page"; index: number }
+  | { kind: "exit" };
+
+/**
+ * Back inside a lesson: one STEP, else one authored page, else out of the top.
+ *
+ * The step rung is the whole point. A chain is several actions wearing one page
+ * number, so "back" measured in pages skips every step the learner just did —
+ * from step 3 they left the exercise entirely instead of returning to step 2.
+ * Back has to undo what the learner last saw, and inside a chain that is a step.
+ *
+ * `stepIndex` is 0 for an ordinary page, which is why the old one-argument
+ * call sites keep their exact behaviour.
+ */
+export function backTarget(screenIndex: number, stepIndex = 0): LessonBackTarget {
+  if (stepIndex > 0) return { kind: "step", stepIndex: stepIndex - 1 };
   if (screenIndex > 0) return { kind: "page", index: screenIndex - 1 };
   return { kind: "exit" };
+}
+
+/**
+ * Which step a page opens at when it is entered BACKWARDS.
+ *
+ * Entering forwards means starting at step 1; entering backwards means arriving
+ * at the step the learner last saw, which is the chain's final one. Opening a
+ * chain at step 1 on the way back is the reported symptom — "Back returns to
+ * the first step of the exercise" — and it is this rule that was missing, not
+ * the page arithmetic.
+ *
+ * `stepCount` is null for any page that is not a chain, which opens at 0.
+ */
+export function backwardEntryStep(stepCount: number | null): number {
+  if (stepCount === null || !Number.isInteger(stepCount) || stepCount <= 1) return 0;
+  return stepCount - 1;
 }
 
 /**

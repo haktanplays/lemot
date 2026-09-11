@@ -4,6 +4,7 @@ import { kvStorage } from "@/lib/storage";
 import {
   LESSON_CURSOR_KEY,
   backTarget,
+  backwardEntryStep,
   parseCursor,
   resumeIndexFor,
   resumeStepFor,
@@ -103,9 +104,26 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
   const goBack = !canLeaveFromHere
     ? null
     : () => {
-        const target = backTarget(screenIndex);
+        // Back undoes the last thing the learner SAW, and inside a chain that
+        // is a step, not a page. Measured in pages it skipped every step of the
+        // exercise at once; and because it also reset the step to 0, arriving
+        // on a previous chain opened it at step 1 rather than where the learner
+        // actually left it. Both came from this one call site.
+        const target = backTarget(
+          screenIndex,
+          screen?.type === "activity-chain" ? chainStep : 0,
+        );
+        if (target.kind === "step") {
+          setChainStep(target.stepIndex);
+          return;
+        }
         if (target.kind === "page") {
-          setChainStep(0);
+          const previous = lesson.screens[target.index];
+          setChainStep(
+            backwardEntryStep(
+              previous?.type === "activity-chain" ? previous.payload.steps.length : null,
+            ),
+          );
           setScreenIndex(target.index);
           return;
         }
@@ -285,7 +303,7 @@ function pickScreen(
           screen={screen}
           onContinue={onContinue}
           session={session}
-          initialStep={chainStep}
+          stepIndex={chainStep}
           onStepChange={onChainStep}
         />
       );

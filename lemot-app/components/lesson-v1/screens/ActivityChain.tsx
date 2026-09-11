@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { View, Text } from "react-native";
 import { P, SPACE } from "@/constants/theme";
 import type { ActivityChainScreen, ActivityChainStep } from "@/content/lessonTypes";
@@ -28,8 +27,8 @@ import { SayItYourWayV1 } from "@/components/lesson-v1/screens/SayItYourWayV1";
  *
  * EVIDENCE. Each step is a real screen with its own id, so
  * `qualifyLessonScreenId(lesson.id, step.id)` is unique per action and every
- * event is attributed exactly as it would be standing alone. Advancing is local
- * state; it emits nothing. Re-rendering emits nothing. The components' own
+ * event is attributed exactly as it would be standing alone. Advancing only
+ * moves an index in the player; it emits nothing. Re-rendering emits nothing. The components' own
  * once-only guards (Fill reports at selection, Weave at Check, Say It at "Keep
  * and compare") are untouched, so a chain cannot double-count.
  */
@@ -37,24 +36,28 @@ export function ActivityChain({
   screen,
   onContinue,
   session,
-  initialStep = 0,
+  stepIndex = 0,
   onStepChange,
 }: {
   screen: ActivityChainScreen;
   onContinue: () => void;
   session: LessonV1LearningSession;
   /**
-   * Where to resume inside the chain. The lesson player owns the stored cursor;
-   * the chain only reports where it is, so persistence lives in one place.
+   * Which step is showing. CONTROLLED by the lesson player, which already owns
+   * the persisted cursor.
+   *
+   * It used to seed local state once, which made the chain the authority on
+   * where it was and the player merely the thing that remembered. Back could
+   * then compute the right step and the chain would ignore it, because its own
+   * `useState` had already decided. One owner removes that whole class: the
+   * player moves the step, the chain renders it.
    */
-  initialStep?: number;
+  stepIndex?: number;
   onStepChange?: (stepIndex: number) => void;
 }) {
   const steps = screen.payload.steps;
-  const [index, setIndex] = useState(() =>
-    initialStep > 0 && initialStep < steps.length ? initialStep : 0,
-  );
-  const step = steps[Math.min(index, steps.length - 1)];
+  const index = Math.min(Math.max(Math.trunc(stepIndex) || 0, 0), steps.length - 1);
+  const step = steps[index];
   const isLast = index >= steps.length - 1;
 
   // The one behaviour the chain owns. Guarded so a double-tap on a child's
@@ -64,11 +67,7 @@ export function ActivityChain({
       onContinue();
       return;
     }
-    setIndex((i) => {
-      const next = Math.min(i + 1, steps.length - 1);
-      onStepChange?.(next);
-      return next;
-    });
+    onStepChange?.(index + 1);
   };
 
   return (
