@@ -7,6 +7,7 @@ import { showcasePieces } from "@/content/lessons/showcasePieces";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
+import { Kicker } from "@/components/ui/editorial";
 import type {
   NaturalRevealPayload,
   NaturalRevealScreen,
@@ -138,17 +139,7 @@ export function NaturalRevealView({
             paddingVertical: SPACE.lg,
           }}
         >
-          <Text
-            style={{
-              color: P.ink3,
-              fontSize: 12,
-              lineHeight: 16,
-              letterSpacing: 0.4,
-              marginBottom: SPACE.sm,
-            }}
-          >
-            A natural version
-          </Text>
+          <Kicker text="A natural version" gap="sm" />
           <View style={{ flexDirection: "row", alignItems: "flex-start", gap: SPACE.sm }}>
             <Text
               style={{
@@ -386,17 +377,7 @@ function RevealNote({
   return (
     <View style={{ marginTop: SPACE.lg }}>
       {kicker && (
-        <Text
-          style={{
-            color: P.ink3,
-            fontSize: 12,
-            lineHeight: 16,
-            letterSpacing: 0.4,
-            marginBottom: SPACE.xs,
-          }}
-        >
-          {kicker}
-        </Text>
+        <Kicker text={kicker} gap="xs" />
       )}
       {children}
     </View>

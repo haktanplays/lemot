@@ -21,6 +21,7 @@ import { LessonCard } from "@/components/LessonCard";
 import { MilestoneCard } from "@/components/MilestoneCard";
 import { Btn } from "@/components/Btn";
 import type { ReviewQuestion } from "@/components/DailyReviewOverlay";
+import { AnchorBlock, Kicker } from "@/components/ui/editorial";
 import {
   DailyReviewOverlay,
   genReviewItems,
@@ -441,35 +442,30 @@ export default function HomeScreen() {
                 the silence it replaces. */}
             {resumePoint !== null && (
               <View className="mb-6">
-                <Text
-                  className="text-xs mb-2"
-                  style={{ color: P.ink3, letterSpacing: 0.4 }}
-                >
-                  Where you left off
-                </Text>
+                <Kicker text="Where you left off" tone="active" gap="sm" />
                 <Pressable
                   onPress={() =>
                     router.push(`/v1-lesson/${resumePoint.lessonId}` as never)
                   }
                   accessibilityRole="button"
                   accessibilityLabel={`Continue ${resumeTitle}, part ${resumePoint.part} of ${resumePoint.partCount}`}
-                  className="bg-lm-paper rounded-2xl border"
-                  style={{ borderColor: P.red + "55", borderWidth: 1.5, padding: 18 }}
                 >
-                  <Text
-                    className="text-lg"
-                    style={{
-                      color: P.ink,
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                      lineHeight: 26,
-                    }}
-                  >
-                    {resumeTitle}
-                  </Text>
-                  <Text className="text-sm mt-1" style={{ color: P.ink3 }}>
-                    {`Continue · part ${resumePoint.part} of ${resumePoint.partCount}`}
-                  </Text>
+                  <AnchorBlock>
+                    <Text
+                      className="text-lg"
+                      style={{
+                        color: P.ink,
+                        fontFamily: "serif",
+                        fontStyle: "italic",
+                        lineHeight: 26,
+                      }}
+                    >
+                      {resumeTitle}
+                    </Text>
+                    <Text className="text-sm mt-1" style={{ color: P.ink3 }}>
+                      {`Continue · part ${resumePoint.part} of ${resumePoint.partCount}`}
+                    </Text>
+                  </AnchorBlock>
                 </Pressable>
               </View>
             )}
@@ -478,50 +474,46 @@ export default function HomeScreen() {
                 from the same lesson the linear logic already flags as next. */}
             {nextState && (
               <View className="mb-6">
-                <Text
-                  className="text-xs mb-2"
-                  style={{ color: P.ink3, letterSpacing: 0.4 }}
-                >
-                  Your next step
-                </Text>
+                <Kicker
+                  text="Your next step"
+                  tone={resumePoint === null ? "active" : "quiet"}
+                  gap="sm"
+                />
                 <Pressable
                   onPress={() =>
                     router.push(`/v1-lesson/${nextState.lesson.id}` as never)
                   }
-                  className="bg-lm-paper rounded-2xl border"
-                  style={{
-                    borderColor: P.red + "55",
-                    borderWidth: 1.5,
-                    padding: 18,
-                  }}
+                  accessibilityRole="button"
                 >
-                  <Text
-                    className="text-lg"
-                    style={{
-                      color: P.ink,
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                      lineHeight: 26,
-                    }}
-                  >
-                    {nextState.lesson.title}
-                  </Text>
-                  <Text
-                    className="text-sm mt-1.5"
-                    style={{ color: P.ink2, lineHeight: 20 }}
-                  >
-                    {nextState.lesson.canDo}
-                  </Text>
-                  <View
-                    className="rounded-xl items-center mt-4"
-                    style={{ backgroundColor: P.red, paddingVertical: 12 }}
-                  >
+                  <AnchorBlock>
                     <Text
-                      style={{ color: P.paper, fontSize: 15, fontWeight: "600" }}
+                      className="text-lg"
+                      style={{
+                        color: P.ink,
+                        fontFamily: "serif",
+                        fontStyle: "italic",
+                        lineHeight: 26,
+                      }}
                     >
-                      {crossedStates.length === 0 ? "Begin" : "Start"}
+                      {nextState.lesson.title}
                     </Text>
-                  </View>
+                    <Text
+                      className="text-sm mt-1.5"
+                      style={{ color: P.ink2, lineHeight: 20 }}
+                    >
+                      {nextState.lesson.canDo}
+                    </Text>
+                    <View
+                      className="rounded-xl items-center mt-4"
+                      style={{ backgroundColor: P.red, paddingVertical: 12 }}
+                    >
+                      <Text
+                        style={{ color: P.paper, fontSize: 15, fontWeight: "600" }}
+                      >
+                        {crossedStates.length === 0 ? "Begin" : "Start"}
+                      </Text>
+                    </View>
+                  </AnchorBlock>
                 </Pressable>
               </View>
             )}
@@ -585,12 +577,7 @@ export default function HomeScreen() {
                 demand equal attention. Rendered compact and dimmed. */}
             {aheadStates.length > 0 && (
               <View className="mb-6">
-                <Text
-                  className="text-xs mb-2"
-                  style={{ color: P.ink3, letterSpacing: 0.4 }}
-                >
-                  The road ahead
-                </Text>
+                <Kicker text="The road ahead" gap="sm" />
                 {aheadStates.map(({ lesson, done, available }) => {
                   const locked = !available && !done;
                   return (
@@ -639,12 +626,7 @@ export default function HomeScreen() {
                 step. Kept in authored order for a legible trail. */}
             {crossedStates.length > 0 && (
               <View>
-                <Text
-                  className="text-xs mb-2"
-                  style={{ color: P.ink3, letterSpacing: 0.4 }}
-                >
-                  Behind you
-                </Text>
+                <Kicker text="Behind you" gap="sm" />
                 {crossedStates.map(({ lesson }) => (
                   <Pressable
                     key={lesson.id}

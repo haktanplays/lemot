@@ -69,6 +69,7 @@ import { useSpeech } from "@/hooks/useSpeech";
 import { MonLexiqueEntryDetail } from "@/components/learning-engine/MonLexiqueEntryDetail";
 import { sentencesForPiece } from "@/content/learning-engine/pieceSentences";
 import { hasSeenLexiqueIntro, markLexiqueIntroSeen } from "@/lib/firstUse";
+import { Kicker } from "@/components/ui/editorial";
 import {
   MON_LEXIQUE_FILTERS,
   MON_LEXIQUE_FILTER_COPY,
@@ -417,9 +418,7 @@ export default function MonLexiqueRoute() {
           */}
           {filter === "all" && metCards.length > 0 && (
             <View style={{ marginBottom: SPACE.xxl }}>
-              <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.4, marginBottom: 2 }}>
-                Met in Context Cards
-              </Text>
+              <Kicker text="Met in Context Cards" gap="xs" />
               <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 18, marginBottom: SPACE.sm }}>
                 Seen, not learned. These become yours through the lessons that teach them.
               </Text>
@@ -455,16 +454,7 @@ export default function MonLexiqueRoute() {
             if (inBand.length === 0) return null;
             return (
               <View key={band} style={{ marginBottom: SPACE.xxl }}>
-                <Text
-                  style={{
-                    color: P.ink3,
-                    fontSize: 12,
-                    letterSpacing: 0.4,
-                    marginBottom: SPACE.sm,
-                  }}
-                >
-                  {MON_LEXIQUE_BAND_COPY[band]}
-                </Text>
+                <Kicker text={MON_LEXIQUE_BAND_COPY[band]} gap="sm" />
                 {inBand.map(({ entry }, i) => {
                   const open = openItemId === entry.itemId;
                   const met = LESSON_OF_ITEM.get(entry.itemId);

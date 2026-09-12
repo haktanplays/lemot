@@ -11,6 +11,7 @@ import { LocalRepository } from "@/content/learning-engine/repository/local";
 import { exportAllLocalPrivacyData } from "@/content/learning-engine/local-privacy-inventory";
 import { TelemetryStore } from "@/content/learning-engine/telemetry";
 import { useApp } from "@/providers/AppProvider";
+import { Kicker } from "@/components/ui/editorial";
 
 /**
  * Local privacy & data controls (P5.4C) — calm, learner-safe, local-only.
@@ -103,7 +104,7 @@ export function PrivacyDataControls() {
 
   return (
     <View style={section}>
-      <Text style={title}>Privacy &amp; data</Text>
+      <Kicker text="Privacy & data" />
       <Text style={body}>
         Your learning data is stored on this device. Export and reset act only on
         this device&rsquo;s data &mdash; they don&rsquo;t change anything in the
@@ -174,13 +175,6 @@ const section: ViewStyle = {
   borderTopWidth: 1,
   borderTopColor: P.border,
   paddingTop: 14,
-};
-const title: TextStyle = {
-  color: P.ink3,
-  fontSize: 12,
-  letterSpacing: 1,
-  fontFamily: "Outfit",
-  textTransform: "uppercase",
 };
 const body: TextStyle = {
   color: P.ink2,

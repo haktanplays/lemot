@@ -4,6 +4,7 @@ import { PrimaryAction } from "@/components/ui/actions";
 import { PieceChip } from "@/components/ui/PieceChip";
 import { P, SPACE } from "@/constants/theme";
 import type { RecapScreen } from "@/content/lessonTypes";
+import { Kicker } from "@/components/ui/editorial";
 
 
 export function RecapCard({
@@ -55,16 +56,7 @@ export function RecapCard({
           the pieces themselves laid out with room to breathe. The chips are the
           same PieceChip the lesson used to hand them out, so seeing them again
           reads as recognition rather than as a score. */}
-      <Text
-        style={{
-          color: P.ink3,
-          fontSize: 12,
-          letterSpacing: 0.4,
-          marginBottom: SPACE.sm,
-        }}
-      >
-        A small recap
-      </Text>
+      <Kicker text="A small recap" gap="sm" />
 
       {payload.title && (
         <Text

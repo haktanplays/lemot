@@ -28,6 +28,7 @@ import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { ActivityChain } from "@/components/lesson-v1/screens/ActivityChain";
 import { Showcase } from "@/components/lesson-v1/screens/Showcase";
 import { PatternReel } from "@/components/lesson-v1/screens/PatternReel";
+import { Kicker } from "@/components/ui/editorial";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
 import { FillWithTraps } from "./screens/FillWithTraps";
@@ -292,12 +293,7 @@ function LessonHeader({
         </Pressable>
       ) : null}
       <View style={{ flex: 1 }}>
-        <Text
-          className="text-xs"
-          style={{ color: P.ink3, marginBottom: 3, letterSpacing: 0.4 }}
-        >
-          {`part ${current} of ${total}`}
-        </Text>
+        <Kicker text={`part ${current} of ${total}`} gap="xs" />
         <Text
           className="text-lg"
           style={{

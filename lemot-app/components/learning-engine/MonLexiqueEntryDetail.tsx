@@ -20,6 +20,7 @@ import { Volume2 } from "lucide-react-native";
 import { P, SPACE, frenchLineHeight, frenchSerif } from "@/constants/theme";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import type { MonLexiqueEntry } from "@/content/learning-engine/mon-lexique";
+import { Kicker } from "@/components/ui/editorial";
 
 type RegistryRow = {
   en?: string;
@@ -104,7 +105,7 @@ export function MonLexiqueEntryDetail({
 
       {Boolean(item.exampleFr) && (
         <View>
-          <Text style={{ color: P.ink3, fontSize: 11, letterSpacing: 0.3 }}>In use</Text>
+          <Kicker text="In use" />
           <Text
             style={{
               color: P.ink,
@@ -124,7 +125,7 @@ export function MonLexiqueEntryDetail({
 
       {Boolean(metIn) && (
         <View>
-          <Text style={{ color: P.ink3, fontSize: 11, letterSpacing: 0.3 }}>Where you met it</Text>
+          <Kicker text="Where you met it" />
           <Text style={{ color: P.ink2, fontSize: 13, lineHeight: 19, marginTop: 1 }}>{metIn}</Text>
         </View>
       )}
@@ -136,9 +137,7 @@ export function MonLexiqueEntryDetail({
           is the half that makes a piece feel met rather than listed. */}
       {(sentences ?? []).length > 0 && (
         <View>
-          <Text style={{ color: P.ink3, fontSize: 11, letterSpacing: 0.3 }}>
-            You have seen it here
-          </Text>
+          <Kicker text="You have seen it here" />
           <View style={{ marginTop: 6, gap: SPACE.sm }}>
             {(sentences ?? []).map((s, i) => (
               <View key={`${s.fr}-${i}`}>
@@ -154,7 +153,7 @@ export function MonLexiqueEntryDetail({
 
       {related.length > 0 && (
         <View>
-          <Text style={{ color: P.ink3, fontSize: 11, letterSpacing: 0.3 }}>Travels with</Text>
+          <Kicker text="Travels with" />
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 4 }}>
             {related.map((r, i) => (
               <View

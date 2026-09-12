@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
+import { Kicker } from "@/components/ui/editorial";
 
 /**
  * SceneCard - the moment the learner has stepped into (UI Slice 4).
@@ -34,17 +35,7 @@ export function SceneCard({ kicker, text }: { kicker?: string; text: string }) {
       }}
     >
       {kicker && (
-        <Text
-          style={{
-            color: P.ink3,
-            fontSize: 12,
-            lineHeight: 16,
-            letterSpacing: 0.4,
-            marginBottom: SPACE.xs,
-          }}
-        >
-          {kicker}
-        </Text>
+        <Kicker text={kicker} gap="xs" />
       )}
       <Text
         style={{

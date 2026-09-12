@@ -3,6 +3,7 @@ import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { PieceChip } from "@/components/ui/PieceChip";
 import { P, RADIUS, SPACE, frenchLineHeight, frenchSerif } from "@/constants/theme";
+import { Kicker } from "@/components/ui/editorial";
 import type {
   InsightCardScreen,
   InsightType,
@@ -37,17 +38,7 @@ export function InsightCard({
           The card-inside-a-card stack is gone: a kicker, an editorial title, a
           hairline and quiet body carry the whole screen, and the examples sit
           as flat rows so the French in them stays the thing you look at. */}
-      <Text
-        style={{
-          color: P.ink3,
-          fontSize: 12,
-          lineHeight: 16,
-          letterSpacing: 0.4,
-          marginBottom: SPACE.sm,
-        }}
-      >
-        {INSIGHT_LABELS[payload.insightType]}
-      </Text>
+      <Kicker text={INSIGHT_LABELS[payload.insightType]} gap="sm" />
 
       <Text
         style={{

@@ -14,6 +14,7 @@ import {
 } from "@/content/lessons/showcasePieces";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import type { ShowcaseScreen, ShowcaseSentence, ShowcaseDepth } from "@/content/lessonTypes";
+import { Kicker } from "@/components/ui/editorial";
 
 /**
  * The lesson's opening language world.
@@ -66,11 +67,7 @@ export function Showcase({
 
       {clusters.map((cluster, ci) => (
         <View key={cluster.label} style={{ marginTop: ci === 0 ? 0 : SPACE.lg }}>
-          <Text
-            style={{ color: P.ink3, fontSize: 12, lineHeight: 17, letterSpacing: 0.3, marginBottom: SPACE.sm }}
-          >
-            {cluster.label}
-          </Text>
+          <Kicker text={cluster.label} gap="sm" />
 
           <View
             style={{
@@ -139,11 +136,7 @@ function ExposureBoundary({ first }: { first: boolean }) {
         borderTopColor: P.border,
       }}
     >
-      <Text
-        style={{ color: P.ink3, fontSize: 11, lineHeight: 16, letterSpacing: 0.4 }}
-      >
-        Worth noticing
-      </Text>
+      <Kicker text="Worth noticing" />
       <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 18, marginTop: 1 }}>
         Nothing here is asked of you. Read them and move on.
       </Text>
@@ -482,17 +475,7 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
         .filter(([, body]) => Boolean(body))
         .map(([label, body]) => (
           <View key={label}>
-            <Text
-              style={{
-                fontSize: 11,
-                lineHeight: 16,
-                color: P.ink3,
-                letterSpacing: 0.3,
-                marginBottom: 3,
-              }}
-            >
-              {label}
-            </Text>
+            <Kicker text={label} gap="xs" />
             <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20 }}>
               {body}
             </Text>
@@ -508,17 +491,7 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
             paddingVertical: SPACE.sm - 2,
           }}
         >
-          <Text
-            style={{
-              fontSize: 11,
-              lineHeight: 16,
-              color: P.ink3,
-              letterSpacing: 0.3,
-              marginBottom: 3,
-            }}
-          >
-            Compare
-          </Text>
+          <Kicker text="Compare" gap="xs" />
           <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20 }}>
             {depth.compare}
           </Text>
@@ -536,9 +509,7 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
             style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
           >
             {deepOpen ? <Minus size={11} color={P.ink3} /> : <Plus size={11} color={P.ink3} />}
-            <Text style={{ fontSize: 11, lineHeight: 16, color: P.ink3, letterSpacing: 0.3 }}>
-              In depth
-            </Text>
+            <Kicker text="In depth" />
           </Pressable>
           {deepOpen && (
             <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: SPACE.sm }}>

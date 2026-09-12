@@ -25,6 +25,7 @@ import { PrivacyDataControls } from "@/components/learning-engine/PrivacyDataCon
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import { V1_LESSONS } from "@/content/lessons/v1";
+import { Kicker } from "@/components/ui/editorial";
 import {
   FRENCH_CONTEXTS,
   FRENCH_CONTEXT_COPY,
@@ -290,7 +291,7 @@ function Section({
 }) {
   return (
     <View style={{ marginBottom: SPACE.xxl }}>
-      <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.4 }}>{label}</Text>
+      <Kicker text={label} />
       <Text style={{ color: P.ink2, fontSize: 13, lineHeight: 20, marginTop: 2, marginBottom: SPACE.sm }}>
         {hint}
       </Text>

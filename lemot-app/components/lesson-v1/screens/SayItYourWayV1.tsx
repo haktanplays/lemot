@@ -10,6 +10,7 @@ import { evaluateSayIt } from "@/lib/ai";
 import type { SayItYourWayScreen } from "@/content/lessonTypes";
 import { NaturalRevealView, type NaturalRevealMode } from "./NaturalReveal";
 import { componentEvidence } from "@/content/lesson-v1-evidence/answerComponents";
+import { Kicker } from "@/components/ui/editorial";
 
 type AiState =
   | { status: "idle" }
@@ -173,16 +174,7 @@ export function SayItYourWayV1({
         )
       }
     >
-      <Text
-        style={{
-          color: P.ink3,
-          fontSize: 12,
-          letterSpacing: 0.4,
-          marginBottom: SPACE.md,
-        }}
-      >
-        Say It Your Way
-      </Text>
+      <Kicker text="Say It Your Way" gap="md" />
 
       {/* SCENE. The situation used to share one flat card with the goal, which
           made the moment and the task read as a single block of instructions.

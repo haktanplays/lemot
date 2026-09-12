@@ -7,6 +7,7 @@ import { PieceChip } from "@/components/ui/PieceChip";
 import { P, SPACE, frenchSerif } from "@/constants/theme";
 import { markOrientationSeen, markPieceTapped } from "@/lib/firstUse";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
+import { Kicker } from "@/components/ui/editorial";
 
 /**
  * What this app is, in four cards, once.
@@ -217,17 +218,7 @@ export default function OrientationScreen() {
         style={{ flex: 1 }}
         contentContainerStyle={{ padding: SPACE.xl, paddingBottom: SPACE.xxl }}
       >
-        <Text
-          style={{
-            color: P.ink3,
-            fontSize: 12,
-            lineHeight: 16,
-            letterSpacing: 0.4,
-            marginBottom: SPACE.sm,
-          }}
-        >
-          {beat.kicker}
-        </Text>
+        <Kicker text={beat.kicker} gap="sm" />
 
         <Text
           style={{

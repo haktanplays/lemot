@@ -13,6 +13,7 @@ import {
 } from "@/content/lesson-v1-evidence/interactions";
 import { NaturalRevealView } from "./NaturalReveal";
 import type { AnswerVerdict } from "@/content/lesson-v1-evidence/answerComponents";
+import { Kicker } from "@/components/ui/editorial";
 import {
   WEAVE_BADGE,
   WEAVE_TARGET_LABEL,
@@ -312,12 +313,7 @@ export function Weave({
       ) : (
         <View>
           {showTargetLabel && (
-            <Text
-              className="text-xs"
-              style={{ color: P.ink3, marginBottom: SPACE.xs, letterSpacing: 0.4 }}
-            >
-              {WEAVE_TARGET_LABEL}
-            </Text>
+            <Kicker text={WEAVE_TARGET_LABEL} gap="sm" />
           )}
           {/* The intent is the hero: large, strong, hard to skim past. */}
           <Text

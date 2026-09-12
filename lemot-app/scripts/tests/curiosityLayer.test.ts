@@ -179,11 +179,24 @@ describe("Look Closer reads as a list, not a wall", () => {
   });
 
   test("a label sits above its body with room to be a label", () => {
+    // Repointed at the phenomenon when the labels moved to the shared <Kicker>.
+    // The pin used to name a literal `marginBottom: 3` inside this function,
+    // which stopped existing the moment the spacing became the primitive's
+    // `gap` — while the breath itself got slightly larger, not smaller. A pin
+    // that fails when the thing it protects IMPROVES is measuring the
+    // transcription, not the property.
+    for (const m of depth.matchAll(/<Kicker text=\{?"?[^/]*?\/>/g)) {
+      assert(
+        /gap="(xs|sm|md)"/.test(m[0]) || m[0].includes('text="In depth"'),
+        `a label with nothing under it is crushed against its body: ${m[0]}`,
+      );
+    }
+    // And the body it names is still directly beneath it, so the gap is doing
+    // the separating rather than an intervening element.
     assert(
-      !/letterSpacing: 0\.3 \}\}>\{label\}/.test(depth),
-      "the label must not be crushed against the text it names",
+      /<Kicker text=\{label\} gap="xs" \/>\s*\n\s*<Text/.test(depth),
+      "the label must sit immediately above the text it names",
     );
-    assert(/marginBottom: 3/.test(depth), "labels need a breath under them");
   });
 
   test("In depth is a different tier, not a sixth paragraph", () => {

@@ -31,6 +31,7 @@ import {
 } from "@/content/context-cards/cards";
 import { orderByContexts } from "@/content/my-french/prefs";
 import { readMyFrenchPrefs } from "@/lib/myFrenchPrefs";
+import { Kicker } from "@/components/ui/editorial";
 import {
   privacyResetEpoch,
   readContextCardExposure,
@@ -155,7 +156,7 @@ export default function ContextCardsRoute() {
 
           {sets.map((set) => (
             <View key={set.id} style={{ marginBottom: SPACE.xxl }}>
-              <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.3 }}>{set.label}</Text>
+              <Kicker text={set.label} />
               <Text
                 style={{
                   color: P.ink,

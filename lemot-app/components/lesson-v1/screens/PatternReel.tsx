@@ -5,6 +5,7 @@ import { useReduceMotion } from "@/hooks/useReduceMotion";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import type { PatternReelRow, PatternReelScreen } from "@/content/lessonTypes";
+import { Kicker } from "@/components/ui/editorial";
 
 /**
  * French that drifts past, slowly, so a pattern is SEEN rather than asserted.
@@ -176,17 +177,7 @@ export function PatternReel({
     <LessonScreenFrame
       footer={<PrimaryAction label="Continue" onPress={onContinue} />}
     >
-      <Text
-        style={{
-          color: P.ink3,
-          fontSize: 12,
-          lineHeight: 16,
-          letterSpacing: 0.4,
-          marginBottom: SPACE.sm,
-        }}
-      >
-        See the pattern
-      </Text>
+      <Kicker text="See the pattern" gap="sm" />
 
       {/* Serif, and a title may carry French, so it takes the French floor
           rather than a number that happens to look right in English. */}

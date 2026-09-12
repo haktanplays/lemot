@@ -36,7 +36,7 @@ function ActionShell({
       disabled={disabled}
       style={{
         width: "100%",
-        borderRadius: RADIUS.card,
+        borderRadius: RADIUS.action,
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",

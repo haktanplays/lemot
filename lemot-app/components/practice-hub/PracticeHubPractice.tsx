@@ -41,6 +41,7 @@ import {
 } from "@/content/practice/practiceIdentity";
 import { FillWithTraps } from "@/components/lesson-v1/screens/FillWithTraps";
 import { Weave } from "@/components/lesson-v1/screens/Weave";
+import { Kicker } from "@/components/ui/editorial";
 
 /**
  * Where a Hub attempt happens.
@@ -203,15 +204,7 @@ export function PracticeHubPractice({
           borderBottomColor: P.border,
         }}
       >
-        <Text
-          style={{
-            color: P.ink3,
-            fontSize: 12,
-            letterSpacing: 0.4,
-          }}
-        >
-          Practice this piece
-        </Text>
+        <Kicker text="Practice this piece" />
         <Pressable
           onPress={requestSettledClose}
           hitSlop={12}

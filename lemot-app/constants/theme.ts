@@ -1,9 +1,45 @@
+/**
+ * The palette — V4-B values, under the names the product already reads.
+ *
+ * ── WHY THE NAMES DID NOT CHANGE ───────────────────────────────────────────
+ *
+ * V4-B is the chosen direction for how Cairn should look. The tempting way to
+ * adopt it is a second token set (`V4B.ink` beside `P.ink`) and a screen-by-
+ * screen migration; that produces two palettes living at once, a long tail of
+ * half-migrated surfaces, and a product that looks like two products for as
+ * long as the migration takes.
+ *
+ * So the VALUES moved and the NAMES stayed. Every surface in the app already
+ * reads P.bg / P.ink / P.ink2 / P.ink3 / P.border, which means the whole
+ * product moves together, in one reviewable diff, with no screen re-skinned
+ * individually. That is what "migrate through shared primitives" buys.
+ *
+ * What actually changed: a warm grey scale became a cool one, and the
+ * secondary ink got darker. Concretely —
+ *
+ *   bg     #FAF9F7 → #FAFAF7   (a hair cooler)
+ *   ink    #2C2825 → #0E1116   (warm near-black → cool near-black)
+ *   ink2   #6B6560 → #494E58   (darker AND cooler; contrast on bg rises
+ *                               from about 5.1:1 to about 8:1)
+ *   ink3   #A39E99 → #9CA0A8   (the V4-B "mute"; contrast is unchanged)
+ *   border #E8E5E1 → #EDEEEF   (V4-B's rgba(14,17,22,0.07) resolved against
+ *                               the new bg — flattened because React Native
+ *                               composites a translucent border against
+ *                               whatever is behind it, and these hairlines sit
+ *                               over both bg and paper)
+ *
+ * DELIBERATELY UNCHANGED: `red`. V4-B's accent is navy #2E4A7A, and swapping
+ * it here would silently restyle every primary action, the feedback bands and
+ * the piece chips in a commit whose subject is tokens. The navy is named below
+ * as `accent` and used by the new editorial primitives where V4-B uses it; the
+ * progression action stays brick red until that is its own decision.
+ */
 export const P = {
-  bg: "#FAF9F7",
+  bg: "#FAFAF7",
   paper: "#FFFFFF",
-  ink: "#2C2825",
-  ink2: "#6B6560",
-  ink3: "#A39E99",
+  ink: "#0E1116",
+  ink2: "#494E58",
+  ink3: "#9CA0A8",
   red: "#C0392B",
   rl: "#FBEAE8",
   rb: "#F0C9C4",
@@ -13,8 +49,16 @@ export const P = {
   al: "#FFF8E1",
   purple: "#7C3AED",
   pl: "#F3E5F5",
-  border: "#E8E5E1",
-  sh: "0 1px 4px rgba(44,40,37,0.06)",
+  border: "#EDEEEF",
+  /**
+   * V4-B's accent. Navy, used sparingly and only where the design uses it:
+   * the label on a live block, the marker on the step you are on, the fill of
+   * a progress rule. It is NOT the progression button — see the note above.
+   */
+  accent: "#2E4A7A",
+  /** The soft ground V4-B pools behind the hero. */
+  halo: "#F0EEE7",
+  sh: "0 1px 4px rgba(14,17,22,0.06)",
 } as const;
 
 // UI Slice 1 foundation tokens - additive, consumed by components/ui and the
@@ -37,6 +81,13 @@ export const RADIUS = {
   inner: 8,
   // Chips, pills, round affordances.
   pill: 999,
+  /**
+   * Buttons. V4-B sets these two points softer than its cards, which is small
+   * enough to be invisible on its own and is exactly why it works: the action
+   * reads as slightly more approachable than the surfaces around it without
+   * announcing itself.
+   */
+  action: 14,
 } as const;
 
 // Home motivation rotation — 3 layers interleaved so the daily index
