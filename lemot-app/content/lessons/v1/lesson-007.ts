@@ -111,7 +111,11 @@ const screens: LessonScreen[] = [
       insightType: "grammar-nugget",
       title: "Take it whole.",
       body:
-        "Je vais = I'm going. Like je suis, it is one solid piece. The destination is one piece too, and French picks one of three shapes to carry it: au for some places, à la for others, à l' before a vowel sound. There is no rule you can hear your way to, so take each destination whole, the way you took un café. The shape belongs to the PLACE and never changes.",
+        // Trimmed by one sentence in the curiosity pass. It used to close with
+        // both "take each destination whole, the way you took un café" AND
+        // "the shape belongs to the PLACE and never changes", which say the
+        // same thing twice at the end of an already dense card.
+        "Je vais = I'm going. Like je suis, it is one solid piece. The destination is one piece too, and French picks one of three shapes to carry it: au for some places, à la for others, à l' before a vowel sound. There is no rule you can hear your way to, so take each destination whole the way you took un café: the shape belongs to the place, not to you.",
       examples: [
         { fr: "Je vais à la maison.", en: "I'm going home." },
         { fr: "Je vais au café.", en: "I'm going to the café." },
@@ -372,9 +376,14 @@ const screens: LessonScreen[] = [
     targetItemIds: ["chunk-je-vais"],
     payload: {
       insightType: "culture-bite",
-      title: "Leaving is two small moves.",
+      title: "A French goodbye says where you are going.",
+      // Sharpened rather than replaced: the examples here were already real
+      // usage, but the body opened by describing the lesson ("the same two
+      // moves work whether you are leaving a room, a shop, or a long
+      // afternoon") instead of stating the norm the learner can act on.
       body:
-        "Say where you're heading, then close the door with a word. That is all a French goodbye needs. The same two moves work whether you are leaving a room, a shop, or a long afternoon. Two small words size the moment: beaucoup makes the thanks bigger, and désolé opens an exit that comes earlier than people hoped.",
+        "Leaving without a word reads as walking out. Announcing where you are heading is what makes it a goodbye rather than a disappearance, and it is why je vais and au revoir travel together. " +
+        "Two small words size the moment: beaucoup makes the thanks bigger, and désolé opens an exit that comes earlier than people hoped.",
       examples: [
         { fr: "Je vais à la maison.", en: "I'm going home." },
         { fr: "Au revoir.", en: "Goodbye." },

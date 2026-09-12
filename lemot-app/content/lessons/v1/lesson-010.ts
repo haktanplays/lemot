@@ -404,6 +404,40 @@ const screens: LessonScreen[] = [
   },
 
 
+  {
+    // CULTURE that changes what the learner does, not trivia about France.
+    //
+    // A beginner reads merci as politeness padding and drops it when they are
+    // in a hurry. In a French exchange it is doing structural work: it is the
+    // signal that the thing is ending. Saying where you are going without it
+    // can read as breaking off rather than leaving.
+    //
+    // L10 is the right place because it is the only lesson where the learner
+    // closes a whole day, and the note was collapsed on its own Showcase.
+    id: "s26-insight-merci-closes",
+    type: "insight-card",
+    // NO TARGETS, on purpose. A curiosity card is input: the learner reads it
+    // and nothing about what they own changes. Declaring a target here would
+    // have the act of looking at a card count toward mastery of the item it
+    // mentions, which is exactly the semantics this layer must not touch.
+    // The guard caught the first version of this card doing it.
+    // targetItemIds: ["chunk-merci"],
+    payload: {
+      insightType: "culture-bite",
+      title: "Merci is not padding.",
+      body:
+        "It is how a French exchange signals that it is ending, before anyone says goodbye. " +
+        "Drop it and saying where you are going can read as breaking off rather than leaving well.",
+      examples: [
+        {
+          fr: "Merci. Je vais à la maison. Au revoir.",
+          en: "Thanks. I'm going home. Goodbye.",
+          note: "Three beats: close the exchange, say where you are going, then leave.",
+        },
+      ],
+    },
+  },
+
   activityChain({
     id: "s23-chain-closing-the-day",
     intro:

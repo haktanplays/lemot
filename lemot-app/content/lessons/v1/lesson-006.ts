@@ -235,15 +235,24 @@ const screens: LessonScreen[] = [
     type: "insight-card",
     targetItemIds: ["chunk-bonjour", "chunk-au-revoir"],
     payload: {
+      // REPURPOSED. This slot said "a small moment opens with bonjour and
+      // closes with au revoir, today you carry the whole arc" — the lesson's
+      // own plan, which its goal card and recap already state. The card that
+      // belongs here is the one thing about refusing that a learner cannot
+      // guess and will get wrong on their first day, and it was sitting
+      // collapsed on this lesson's own Showcase.
       insightType: "culture-bite",
-      title: "From bonjour to au revoir.",
+      title: "Merci on its own can mean yes.",
       body:
-        "In France, a small moment opens with bonjour and closes with au " +
-        "revoir. Today you carry the whole arc, using only the pieces you " +
-        "already built. No new rule.",
+        "Offered something at a counter, a nod and a merci is often taken as yes please. " +
+        "If you mean no, the merci needs a non in front of it. Non merci turns the offer down without sounding cold, which non on its own can.",
       examples: [
-        { fr: "Bonjour.", en: "Hello." },
-        { fr: "Au revoir.", en: "Goodbye." },
+        { fr: "Non merci.", en: "No thank you." },
+        {
+          fr: "Oui merci.",
+          en: "Yes please.",
+          note: "The merci does not change. The word in front of it decides.",
+        },
       ],
     },
   },

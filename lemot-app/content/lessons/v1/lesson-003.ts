@@ -621,9 +621,24 @@ const screens: LessonScreen[] = [
       "chunk-je-ne-comprends-pas",
     ],
     payload: {
+      // The ne-dropping nugget lands HERE and not on a card of its own.
+      //
+      // L3 is at the canon insight budget of three, and it should be: this
+      // lesson already carries the negation card and the oui/non contrast, and
+      // a fourth would turn the shortest thing in French into a topic. The
+      // reveal is the right home anyway — it is the screen that looks back at
+      // all three sentences, and the learner reaches it having written every
+      // one of them.
+      //
+      // One sentence, deliberately. The founder's rule was that the omission
+      // must be recognisable without becoming core grammar, so this says what
+      // to expect and nothing about how to write it; the long version stays in
+      // Look Closer on the Showcase. Writing both halves remains what the
+      // lesson asks for everywhere it grades.
       explanation:
         "Three different sentences. One move.\n" +
-        "ne went in front, pas went behind, and whatever was doing the work sat in the middle. You did it to where you are, to what something is, and to whether you followed. Nothing about the wrapping changed. Only what you wrapped.",
+        "ne went in front, pas went behind, and whatever was doing the work sat in the middle. You did it to where you are, to what something is, and to whether you followed. Nothing about the wrapping changed. Only what you wrapped.\n\n" +
+        "One thing to expect: in relaxed speech the ne often vanishes, and you will hear je suis pas ici. Both halves are still what you write.",
       naturalAlternatives: [
         "Je ne suis pas ici.",
         "Ce n'est pas ici.",

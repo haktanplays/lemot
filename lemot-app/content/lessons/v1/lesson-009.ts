@@ -319,13 +319,22 @@ const screens: LessonScreen[] = [
     type: "insight-card",
     targetItemIds: ["chunk-je-voudrais"],
     payload: {
+      // REPURPOSED. The old card restated what the lesson had just done. What
+      // a learner actually needs here is which of two true sentences to say
+      // out loud at work, and that note was collapsed on this lesson's own
+      // Showcase.
       insightType: "culture-bite",
-      title: "One engine, plenty to ask for.",
+      title: "Asking, or announcing.",
       body:
-        "Je voudrais now carries a thing or an action, and s'il vous plaît softens either one. That is enough to ask for most small things politely, without knowing a single rule.",
+        "Both of these are correct French and they do different things. " +
+        "Je fais une pause tells the room you are taking a break. Je voudrais faire une pause asks for one, which is the sayable version at work or with people you do not know well.",
       examples: [
-        { fr: "Je voudrais un café.", en: "I'd like a coffee." },
         { fr: "Je voudrais faire une pause.", en: "I'd like to take a break." },
+        {
+          fr: "Je fais une pause.",
+          en: "I'm taking a break.",
+          note: "True, and fine among friends. At work it announces rather than asks.",
+        },
       ],
     },
   },

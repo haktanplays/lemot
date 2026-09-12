@@ -127,14 +127,40 @@ describe("L7-L10 screen structure matches the Content Bible lesson shape", () =>
     // Counted in ACTIONS, not pages, since the chain rebuild: what would make
     // a lesson unbounded is how much it asks, and chaining changes only how
     // many pages it asks across. The page floor below is the other half.
-    test(`${l.id}: 11-20 learner actions`, () => {
+    test(`${l.id}: 11-21 learner actions`, () => {
       // Raised by the Showcase page, and again by L8, which now introduces two
       // architectures (c'est ou and est-ce que) and is legitimately the longest
       // doorway on the path.
+      //
+      // Raised once more, by exactly one, for the curiosity pass: the founder
+      // decided explicitly that screen count may grow where a screen earns it,
+      // and L8 is where the intonation card belongs because it is the only
+      // lesson in which the learner owns both C'est ici. and C'est ici ?.
+      //
+      // The band still exists so an unbounded lesson fails, and what it
+      // protects is guarded separately below: the thing that was added asks
+      // nothing.
       assert(
-        actions.length >= 11 && actions.length <= 20,
-        `expected 11-20 actions, got ${actions.length}`,
+        actions.length >= 11 && actions.length <= 21,
+        `expected 11-21 actions, got ${actions.length}`,
       );
+    });
+
+    test(`${l.id}: curiosity is watched, not asked`, () => {
+      // The guard on the band. If a future pass widens it again, this is what
+      // stops it being widened for another ASK — and specifically for this
+      // pass, it is what keeps a curiosity card from quietly becoming a quiz.
+      // An insight card carries no options, no expected answer and no input.
+      for (const screen of actions) {
+        if (screen.type !== "insight-card") continue;
+        const payload = screen.payload as Record<string, unknown>;
+        for (const asking of ["options", "expectedAnswers", "answer", "modelAnswer", "suggestedPieces"]) {
+          assert(
+            payload[asking] === undefined,
+            `${l.id}/${screen.id} is an insight card carrying "${asking}" — curiosity must not ask`,
+          );
+        }
+      }
     });
 
     test(`${l.id}: still paced across pages`, () => {

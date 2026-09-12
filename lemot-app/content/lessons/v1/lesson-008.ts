@@ -280,6 +280,40 @@ const screens: LessonScreen[] = [
     ],
   }),
 
+  {
+    // PROSODY, the family that was entirely missing from the normal path.
+    //
+    // The corpus holds a lot of sound content and every note of it was
+    // collapsed behind Look Closer. This one is the highest-value piece in it:
+    // the learner has just written C'est ici. as an answer and is about to ask
+    // C'est ici ? as a question, and the ONLY difference is what their voice
+    // does. Nothing else in ten lessons teaches that, and no amount of reading
+    // the two sentences reveals it.
+    //
+    // Placed here rather than earlier because it needs both halves to exist
+    // first. Sound content front-loaded is trivia; sound content at the moment
+    // the learner owns both sides is an explanation.
+    id: "s26-insight-voice-asks",
+    type: "insight-card",
+    // NO TARGETS, on purpose. A curiosity card is input: the learner reads it
+    // and nothing about what they own changes. Declaring a target here would
+    // have the act of looking at a card count toward mastery of the item it
+    // mentions, which is exactly the semantics this layer must not touch.
+    // The guard caught the first version of this card doing it.
+    // targetItemIds: ["chunk-c-est"],
+    payload: {
+      insightType: "sound-writing",
+      title: "The same three words. Your voice decides.",
+      body:
+        "French does not need to move anything around to ask this question. Let the end of the sentence fall and it settles into a statement; let it lift and it becomes a question. " +
+        "You have been doing this in English all your life without noticing.",
+      examples: [
+        { fr: "C'est ici.", en: "It's here.", note: "The voice falls at the end. It settles and closes." },
+        { fr: "C'est ici ?", en: "Is it here?", note: "The voice lifts at the end. It opens and asks." },
+      ],
+    },
+  },
+
   activityChain({
     id: "s21-chain-ask-it-back",
     intro:

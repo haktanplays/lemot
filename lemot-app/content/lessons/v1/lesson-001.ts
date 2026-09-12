@@ -175,18 +175,32 @@ const screens: LessonScreen[] = [
     // Reflection, not preamble: it lands AFTER the learner has re-produced the
     // café order, so it names what they just did instead of front-loading a
     // second explanation screen behind the goal card.
+    // REPURPOSED, not added. This slot held a card labelled culture-bite that
+    // was not culture: "a handful of polite words carries a whole exchange"
+    // is a summary of the lesson, and the lesson already has a goal card at
+    // the top and a recap at the bottom saying the same thing. Three
+    // statements of one idea, and the label promised something the learner
+    // never got — which is a large part of why the founder played the early
+    // lessons and met no culture, no cognates and no faux amis.
+    //
+    // The faux ami was the one the corpus already had, sitting collapsed
+    // behind Look Closer on this lesson's own Showcase. It is worth a screen:
+    // journée is frequent, bonne journée is said to the learner constantly,
+    // and an English speaker who reads it as "journey" will keep mis-hearing
+    // it for months. Protection, not trivia.
     id: "s01-insight-survival-kit",
     type: "insight-card",
-    targetItemIds: ["chunk-bonjour", "chunk-merci"],
+    // No targets. The slot used to hold a card about bonjour and merci and
+    // declared both; a faux ami about journée is input, and reading it must
+    // not count toward owning anything.
     payload: {
-      insightType: "culture-bite",
-      title: "A small kit goes a long way.",
+      insightType: "faux-ami",
+      title: "Journée is not journey.",
       body:
-        "A handful of polite words carries a whole exchange in French. " +
-        "Greet, ask softly, and thank. That kit is enough to handle a real first moment.",
+        "They came from the same old French word, for as much travelling or working as fits in one day. " +
+        "English kept the travelling. French kept the day. So bonne journée is have a good day, and it is what people say to you on the way out of almost anywhere.",
       examples: [
-        { fr: "Bonjour.", en: "Hello." },
-        { fr: "Merci.", en: "Thank you." },
+        { fr: "Bonne journée !", en: "Have a good day!" },
       ],
     },
   },

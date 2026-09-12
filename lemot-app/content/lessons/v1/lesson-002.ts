@@ -646,6 +646,31 @@ const screens: LessonScreen[] = [
 
 
   {
+    // USAGE, and the founder's §8 note: ça va's conversational job is bigger
+    // than any word-for-word English mapping of it.
+    //
+    // Placed AFTER s10b, where the learner has just recognised it as the answer
+    // to a check-in — so the card explains something they met a screen ago
+    // rather than preloading a word L17 will teach. It stays recognition: no
+    // target, no production, no chip, and L17 keeps every screen of its arc.
+    //
+    // The note it carries was collapsed on this lesson's own Showcase.
+    id: "s29-insight-ca-va",
+    type: "insight-card",
+    payload: {
+      insightType: "culture-bite",
+      title: "Ça va is a whole move, not two words.",
+      body:
+        "Asked with the voice going up it is how are you. Answered with the voice going down it is I'm fine. Same two words, and the tone does all of the work. " +
+        "It is probably the most-used exchange in spoken French, and it does not come apart: ça va travels whole.",
+      examples: [
+        { fr: "Ça va ?", en: "How's it going?" },
+        { fr: "Ça va.", en: "I'm fine.", note: "You will learn to answer it properly later. For now, recognise it when it arrives." },
+      ],
+    },
+  },
+
+  {
     id: "s07-sayit-arrive-locate",
     type: "say-it-your-way",
     targetItemIds: ["chunk-je-suis", "chunk-je-suis-ici"],

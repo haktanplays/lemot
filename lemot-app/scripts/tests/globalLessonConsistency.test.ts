@@ -551,9 +551,13 @@ describe("nothing identity-bearing moved", () => {
       // five tiers stopped claiming to withhold something the prompt was
       // already handing over. "Ask where it is" names a communicative job, not
       // a situation, and `mid` is the rung for that.
-      8: { screens: 12, tiers: "mid,mid,open,mid,open,open" },
+      8: { screens: 13, tiers: "mid,mid,open,mid,open,open" },
       9: { screens: 12, tiers: "mid,open,open,open" },
-      10: { screens: 12, tiers: "mid,open,open,open" },
+      // L8 and L10 each gained one page in the curiosity pass: the intonation
+      // card and the closing-merci card. Note what did NOT move — both TIER
+      // strings are identical, because a curiosity card is not a production.
+      // That is the property this snapshot is actually for.
+      10: { screens: 13, tiers: "mid,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;
