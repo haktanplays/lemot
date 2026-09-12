@@ -307,21 +307,45 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
     ["Usage", depth.usage],
   ];
   return (
+    /*
+      SPACING IS THE HIERARCHY HERE.
+
+      The founder likes this content and did not want it cut; what he read as a
+      documentation wall was the geometry. Every category was one gap apart from
+      the next, and each label sat one pixel above its own body, so six entries
+      arrived as a single block of small grey text with bold-ish words in it. A
+      reader could not tell where one point ended and the next began.
+
+      Two changes, no new system. The gap BETWEEN points is now larger than the
+      gap INSIDE one, which is the whole of what makes a list read as a list.
+      And the deeper layer gets a rule above it, so "In depth" is visibly a
+      different tier rather than a sixth paragraph.
+    */
     <View
       style={{
         marginTop: SPACE.sm,
         paddingLeft: SPACE.sm + 2,
         borderLeftWidth: 2,
         borderLeftColor: P.border,
-        gap: SPACE.sm,
+        gap: SPACE.md,
       }}
     >
       {shortPoints
         .filter(([, body]) => Boolean(body))
         .map(([label, body]) => (
           <View key={label}>
-            <Text style={{ fontSize: 11, lineHeight: 16, color: P.ink3, letterSpacing: 0.3 }}>{label}</Text>
-            <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: 1 }}>
+            <Text
+              style={{
+                fontSize: 11,
+                lineHeight: 16,
+                color: P.ink3,
+                letterSpacing: 0.3,
+                marginBottom: 3,
+              }}
+            >
+              {label}
+            </Text>
+            <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20 }}>
               {body}
             </Text>
           </View>
@@ -336,17 +360,25 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
             paddingVertical: SPACE.sm - 2,
           }}
         >
-          <Text style={{ fontSize: 11, lineHeight: 16, color: P.ink3, letterSpacing: 0.3 }}>
+          <Text
+            style={{
+              fontSize: 11,
+              lineHeight: 16,
+              color: P.ink3,
+              letterSpacing: 0.3,
+              marginBottom: 3,
+            }}
+          >
             Compare
           </Text>
-          <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: 1 }}>
+          <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20 }}>
             {depth.compare}
           </Text>
         </View>
       )}
 
       {Boolean(depth.inDepth) && (
-        <View>
+        <View style={{ borderTopWidth: 1, borderTopColor: P.border, paddingTop: SPACE.md }}>
           <Pressable
             onPress={() => setDeepOpen((v) => !v)}
             hitSlop={6}
@@ -361,7 +393,7 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
             </Text>
           </Pressable>
           {deepOpen && (
-            <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: SPACE.sm - 2 }}>
+            <Text style={{ fontSize: 13, color: P.ink2, lineHeight: 20, marginTop: SPACE.sm }}>
               {depth.inDepth}
             </Text>
           )}

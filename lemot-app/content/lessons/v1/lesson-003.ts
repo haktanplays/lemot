@@ -394,6 +394,59 @@ const screens: LessonScreen[] = [
         },
       },
       {
+        // CHUNK SEPARATION — what travels, and where else it goes.
+        //
+        // "Je ne comprends pas" is the largest thing L3 hands over, and the
+        // registry is explicit that it is owned as one whole with the negation
+        // "never split out of it at L1". L3 is where that stops being true: the
+        // lesson has now wrapped suis and est, so the learner is in a position
+        // to see that the big formula is not a fourth block to memorise.
+        //
+        // Deliberately NOT "which word sits in the middle" — s02 already asks
+        // that, and asking it again with a longer word would be the same
+        // operation a second time. This asks what the sentence is MADE of that
+        // can leave it, which is the thing a chunk-noticing screen is for.
+        //
+        // No new engine, and no word-by-word segmentation: the options are the
+        // frame itself and two fragments that only look like pieces. The chunk
+        // stays reusable as a whole.
+        id: "s17-fill-what-travels",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-je-ne-comprends-pas"],
+        weakPointTags: ["negation", "ne-pas"],
+        payload: {
+          prompt:
+            "Je ne comprends pas is the longest thing you have said today. Which part of it have you already used somewhere else?",
+          blankCount: 1,
+          options: [
+            { id: "opt-ne-pas", text: "ne ... pas", isCorrect: true },
+            {
+              id: "opt-je-ne-comprends",
+              text: "je ne comprends",
+              isCorrect: false,
+              learningErrorTag: "wrong_item",
+              trapReason:
+                "This stops halfway through the wrapping. Without pas the sentence is still waiting to be finished, and it never appears on its own.",
+            },
+            {
+              id: "opt-comprends-pas",
+              text: "comprends pas",
+              isCorrect: false,
+              learningErrorTag: "wrong_item",
+              trapReason:
+                "You will hear this in fast speech, where the ne quietly disappears. But it is half of the wrapping, not a piece you can carry to another sentence.",
+            },
+          ],
+          answer: ["opt-ne-pas"],
+          reveal: {
+            short: "ne ... pas",
+            explanation:
+              "You have put suis inside it, and est, and now comprends. Je ne comprends pas is not a fourth thing to remember; it is the same wrapping with a longer word in the middle.",
+            natural: "Je ne comprends pas.",
+          },
+        },
+      },
+      {
         id: "s08-weave-non-je-ne-suis-pas-ici",
         type: "weave",
         targetItemIds: ["chunk-non", "chunk-je-ne-suis-pas"],

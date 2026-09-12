@@ -156,3 +156,48 @@ describe("tapping a piece answers the question the chip raises", () => {
     );
   });
 });
+
+
+describe("Look Closer reads as a list, not a wall", () => {
+  // The founder likes this content and asked for none of it to be cut. What he
+  // read as documentation was the geometry: every category sat one gap from the
+  // next, and each label sat a single pixel above its own body, so six entries
+  // arrived as one block of small grey text.
+  //
+  // The rule that makes a list read as a list is that the space BETWEEN items
+  // exceeds the space INSIDE one. That is what these check, because it is the
+  // part a future edit can undo without noticing.
+  const depth = SHOWCASE.slice(SHOWCASE.indexOf("function Depth("));
+
+  test("the gap between points is larger than the gap inside one", () => {
+    const between = /gap: SPACE\.md/.test(depth);
+    assert(between, "depth entries must be separated by more than the inner label gap");
+    assert(
+      !/gap: SPACE\.sm,\s*\n\s*\}\}\s*\n\s*>\s*\n\s*\{shortPoints/.test(depth),
+      "the old single-gap stack must not come back",
+    );
+  });
+
+  test("a label sits above its body with room to be a label", () => {
+    assert(
+      !/letterSpacing: 0\.3 \}\}>\{label\}/.test(depth),
+      "the label must not be crushed against the text it names",
+    );
+    assert(/marginBottom: 3/.test(depth), "labels need a breath under them");
+  });
+
+  test("In depth is a different tier, not a sixth paragraph", () => {
+    const section = depth.slice(depth.indexOf("depth.inDepth"));
+    assert(
+      /borderTopWidth: 1/.test(section),
+      "the optional deeper layer must be separated from the short points",
+    );
+  });
+
+  test("nothing was cut to achieve it", () => {
+    // The founder's constraint, mechanised: all seven families still render.
+    for (const family of ["sound", "cognate", "notice", "structure", "usage", "compare", "inDepth"]) {
+      assert(depth.includes(`depth.${family}`), `Look Closer stopped rendering ${family}`);
+    }
+  });
+});
