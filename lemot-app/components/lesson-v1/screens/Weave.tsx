@@ -21,6 +21,7 @@ import {
   weaveTargetMeaning,
   shouldShowWeaveTargetLabel,
 } from "./weaveCopy";
+import { learnerVerdict } from "./verdictCopy";
 
 type WeavePiece = NonNullable<WeavePayload["suggestedPieces"]>[number];
 
@@ -63,8 +64,15 @@ const VERDICT_NOTES: Record<
   empty: { text: "Compare with the model.", tone: "soft", band: "compare" },
 };
 
-/** `Accepted.` is still the right word for an authored accepted variant. */
-const ACCEPTED_NOTE = { text: "Accepted.", tone: "warm" as const, band: "accepted" as FeedbackTone };
+/**
+ * An accepted answer is told apart by WHAT KIND of acceptance it was.
+ *
+ * "Accepted." used to cover both, and it is grader language for the one and
+ * inaccurate for the other: a learner who writes the model with a comma where
+ * it has a full stop has not had something tolerated, they have written the
+ * sentence. `learnerVerdict` decides, and the band stays `accepted` either way
+ * because the append-only log's presentation mapping is not what changed.
+ */
 
 export function Weave({
   screen,
@@ -181,9 +189,14 @@ export function Weave({
     });
   };
 
+  const spoken = learnerVerdict(
+    match ?? "none",
+    text,
+    payload.reveal.modelAnswer ?? payload.expectedAnswers[0] ?? null,
+  );
   const note =
-    match === "alternative"
-      ? ACCEPTED_NOTE
+    match === "alternative" && spoken !== null
+      ? { text: spoken.text, tone: spoken.tone, band: "accepted" as FeedbackTone }
       : verdict !== null
         ? VERDICT_NOTES[verdict]
         : null;

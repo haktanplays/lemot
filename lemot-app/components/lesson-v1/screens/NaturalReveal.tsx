@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
+import { Volume2 } from "lucide-react-native";
+import { useSpeech } from "@/hooks/useSpeech";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
@@ -46,6 +48,7 @@ export function NaturalRevealView({
   reveal: NaturalRevealPayload;
   mode?: NaturalRevealMode;
 }) {
+  const { say } = useSpeech();
   const alternatives = reveal.naturalAlternatives ?? [];
 
   let notices: string[];
@@ -142,20 +145,42 @@ export function NaturalRevealView({
           >
             A natural version
           </Text>
-          <Text
-            style={{
-              color: P.ink,
-              ...frenchSerif(19),
-            }}
-            // French breaks at spaces. Android's default high-quality strategy
-            // hyphenates and reflows to balance lines, which on a short italic
-            // French sentence produces ragged breaks mid-phrase; the model
-            // answer is the most-read line on the screen and should break where
-            // the sentence does.
-            textBreakStrategy="simple"
-          >
-            {reveal.modelAnswer}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "flex-start", gap: SPACE.sm }}>
+            <Text
+              style={{
+                flex: 1,
+                color: P.ink,
+                ...frenchSerif(19),
+              }}
+              // French breaks at spaces. Android's default high-quality strategy
+              // hyphenates and reflows to balance lines, which on a short italic
+              // French sentence produces ragged breaks mid-phrase; the model
+              // answer is the most-read line on the screen and should break where
+              // the sentence does.
+              textBreakStrategy="simple"
+            >
+              {reveal.modelAnswer}
+            </Text>
+            {/* THE MODEL IS SOMETHING TO HEAR, not only to read.
+                It is the one line on the screen that carries pronunciation,
+                rhythm, linking and the shape of a whole utterance, and until
+                now the learner could only look at it.
+
+                It plays EXACTLY the visible string, whole. A multi-sentence
+                model is one natural sequence, not a first sentence with the
+                rest dropped, and nothing hidden or older is substituted.
+
+                Present on a correct answer too. The value is not correction. */}
+            <Pressable
+              onPress={() => say(reveal.modelAnswer as string)}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel={`Listen to ${reveal.modelAnswer}`}
+              style={{ paddingTop: 4 }}
+            >
+              <Volume2 size={18} color={P.ink2} />
+            </Pressable>
+          </View>
         </View>
       )}
 
