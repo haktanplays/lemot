@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
+import { PieceChip } from "@/components/ui/PieceChip";
 import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
 import type {
   InsightCardScreen,
@@ -86,6 +87,14 @@ export function InsightCard({
             >
               {ex.frame ? (
                 <FrameLine frame={ex.frame} />
+              ) : ex.pieces && ex.pieces.length > 0 ? (
+                /* The same chips the lesson draws. A card that says words
+                   travel together has to show them travelling. */
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}>
+                  {ex.pieces.map((piece, k) => (
+                    <PieceChip key={`${piece}-${k}`} text={piece} />
+                  ))}
+                </View>
               ) : (
                 ex.fr && (
                   <Text

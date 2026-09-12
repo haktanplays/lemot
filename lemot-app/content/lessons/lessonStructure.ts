@@ -62,7 +62,8 @@ export type LessonStructureDiagnostic = {
     | "ITEM-REFERENCE"
     | "DOUBLED-NEGATION"
     | "SPLIT-FRAME-EMPTY"
-    | "SPLIT-FRAME-DRIFT";
+    | "SPLIT-FRAME-DRIFT"
+    | "PIECES-DRIFT";
   lessonId: string;
   screenId: string;
   message: string;
@@ -231,6 +232,26 @@ export function reviewSplitFrames(lesson: Lesson): LessonStructureDiagnostic[] {
           code: "SPLIT-FRAME-DRIFT",
           ...at,
           message: `${lesson.id}/${screen.id}: frame draws ${JSON.stringify(rebuilt)} but the example is ${JSON.stringify(example.fr ?? "")}`,
+        });
+      }
+    }
+
+    // Same rule for a package breakdown: the chips ARE what the learner reads,
+    // so they may not drift from the sentence the example claims to show. A
+    // card teaching that words travel together cannot afford to draw a unit
+    // that is not the one it named.
+    for (const example of screen.payload.examples ?? []) {
+      const pieces = example.pieces;
+      if (pieces === undefined || pieces.length === 0) continue;
+      const at = { lessonId: lesson.id, screenId: screen.id };
+      const rebuilt = pieces.join(" ");
+      const tight = (v: string) =>
+        fold(v).replace(/'\s+/g, "'").replace(/\s+([.,!?])/g, "$1");
+      if (example.fr === undefined || tight(rebuilt) !== tight(example.fr)) {
+        found.push({
+          code: "PIECES-DRIFT",
+          ...at,
+          message: `${lesson.id}/${screen.id}: pieces draw ${JSON.stringify(rebuilt)} but the example is ${JSON.stringify(example.fr ?? "")}`,
         });
       }
     }

@@ -52,6 +52,7 @@ import "./recapPieces.test";
 import "./orientation.test";
 import "./recapBridge.test";
 import "./monLexiqueBecoming.test";
+import "./hintPieces.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";
 import "./devApkCopyGuard.test";

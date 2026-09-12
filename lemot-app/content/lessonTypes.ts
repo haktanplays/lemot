@@ -346,6 +346,20 @@ export type InsightCardPayload = {
      * so the picture can never drift from the sentence it claims to be showing.
      */
     frame?: SplitFrame;
+    /**
+     * Draw this example as pieces instead of a flat line.
+     *
+     * For the lesson whose whole thesis is that words travel together, a card
+     * that SAYS "words come in small packages" and then prints four italic
+     * lines is arguing against itself. Declaring the pieces lets the card use
+     * the same chips the lessons draw, so "un café is one thing" is shown
+     * rather than asserted.
+     *
+     * Also carries the package INSIDE a sentence: ["Je voudrais", "un café"]
+     * renders two chips, which is where a learner actually needs to recognise
+     * the unit. Like `frame`, the parts must reconstruct `fr` exactly.
+     */
+    pieces?: string[];
   }[];
 };
 
@@ -413,6 +427,21 @@ export type WeavePayload = {
      * a UI-flow defect rather than credited.
      */
     supportRole?: "constitutive" | "optional_hint";
+    /**
+     * This piece is shown for CONTRAST and is not part of the answer.
+     *
+     * The hint ladder hands out tray pieces as help, in reverse order so a
+     * single piece is never copy-ready. A distractor sitting in the same array
+     * is therefore not merely unhelpful: it can be the first thing offered,
+     * under a label promising it is needed. That shipped on L5, where asking
+     * for help with "J'ai une idée." produced "une question".
+     *
+     * Marking it keeps the authoring intent visible and keeps it out of the
+     * rungs. A contrast piece is never a hint, and the guard in
+     * `hintPieces.test.ts` requires every UNMARKED piece to appear in an
+     * authored answer.
+     */
+    contrast?: boolean;
   }[];
   expectedAnswers: string[];
   acceptedAlternatives?: string[];

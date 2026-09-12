@@ -159,6 +159,7 @@ export function validateFactoryCandidate(args: {
     // whose halves have collapsed together into a chunk.
     "SPLIT-FRAME-EMPTY": "splitFrame",
     "SPLIT-FRAME-DRIFT": "splitFrame",
+    "PIECES-DRIFT": "splitFrame",
   } as const;
   for (const d of reviewLessonStructure(candidate, registry)) {
     blockingErrors.push({

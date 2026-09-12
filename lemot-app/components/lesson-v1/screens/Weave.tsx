@@ -114,7 +114,13 @@ export function Weave({
   // showing them costs no rung, and their presence permanently scopes the
   // attempt to Supported rather than counting as help the learner asked for.
   const constitutivePieces = allPieces.filter((p) => p.supportRole === "constitutive");
-  const pieces = allPieces.filter((p) => p.supportRole !== "constitutive");
+  // A contrast piece is shown to be compared against, never offered as help.
+  // The ladder reverses what it is given, so an unmarked distractor can be the
+  // FIRST thing a learner sees after asking for a hint — which is exactly how
+  // "une question" arrived on a screen whose answer is "J'ai une idée."
+  const pieces = allPieces.filter(
+    (p) => p.supportRole !== "constitutive" && p.contrast !== true,
+  );
   const hintPieces = orderHintPieces(pieces);
   // Rung 2 gives about half, never fewer than one and never the whole set when
   // more than one exists; rung 3 gives everything.

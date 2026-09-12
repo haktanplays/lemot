@@ -199,15 +199,40 @@ const screens: LessonScreen[] = [
     payload: {
       insightType: "grammar-nugget",
       title: "Words come in small packages.",
+      // SHOWN AS PACKAGES, not described as them. The card used to say words
+      // travel together and then print four italic lines, which argues against
+      // itself on the one screen where the visual language is the lesson.
+      //
+      // The body is also honest now. French nouns do have grammatical gender;
+      // pretending otherwise leaves the learner to invent a meaning-based rule
+      // and be wrong. It is named once, denied as a fact about the world, and
+      // handed straight back to the strategy: carry the package.
       body:
-        "Many French words travel with a little word in front. Café comes as " +
-        "un café. Question comes as une question. Learn the package, not a " +
-        "rule: un café, une question.",
+        "French nouns travel with a little word in front, and which one it is belongs to the noun rather than to you. " +
+        "Grammar calls this gender, which does not mean the thing itself is male or female, and you often cannot tell from the meaning.",
       examples: [
-        { fr: "un café", en: "a coffee" },
-        { fr: "une question", en: "a question" },
-        { fr: "Je voudrais un café.", en: "I would like a coffee." },
-        { fr: "J'ai une question.", en: "I have a question." },
+        { fr: "un café", en: "a coffee", pieces: ["un café"] },
+        { fr: "une question", en: "a question", pieces: ["une question"] },
+        // THE ANTI-PATTERN, and the reason it is here. Every other package in
+        // the early course is concrete-with-un or abstract-with-une, which is
+        // a false rule sitting in the inventory waiting to be inferred. A
+        // problem is as abstract as a question and takes the other word.
+        //
+        // Recognition only: it is shown, never asked for, and carries no
+        // itemId because the course does not teach it as a unit.
+        {
+          fr: "un problème",
+          en: "a problem",
+          pieces: ["un problème"],
+          note: "As abstract as a question, and it takes the other little word. Meaning does not decide this.",
+        },
+        // The package inside a sentence, which is where it has to be
+        // recognised.
+        {
+          fr: "Je voudrais un café.",
+          en: "I would like a coffee.",
+          pieces: ["Je voudrais", "un café"],
+        },
       ],
     },
   },
@@ -408,7 +433,7 @@ const screens: LessonScreen[] = [
   activityChain({
     id: "s21-chain-pick-the-package",
     intro:
-      "Every noun you have met carries its own small word. Choosing it is easy; saying it inside a sentence is the part that counts.",
+      "Every noun you have met carries its own small word. You will not always be able to guess which one it is, and that is fine: the little word belongs to the noun, so keep them together.",
     steps: [
         {
           // Corpus closure. L5's whole job is that un/une is a package distinction,
@@ -447,7 +472,7 @@ const screens: LessonScreen[] = [
             reveal: {
               short: "une idée",
               explanation:
-                "Two in the un family, two in the une family. Un café and un thé; une question and une idée. The little word belongs to the word.",
+                "Café arrives as un café. Question arrives as une question. Nothing about what they mean decides that, which is why there is nothing to work out in the moment: the little word belongs to the noun and travels with it.",
               // Was "J'ai une idée." -- the exact sentence the next step asks
               // the learner to produce. The package is what this screen teaches;
               // the sentence is the next screen's to earn.
@@ -469,9 +494,23 @@ const screens: LessonScreen[] = [
             prompt: "Say what you have, with the right little word in front of it.",
             context:
               "A way through has just occurred to you, and the room is waiting for someone to speak.",
+            // THE CONTRAST IS GONE FROM THE TRAY, and this is the founder's bug.
+            //
+            // "une question" was here as a deliberate distractor, labelled "the
+            // other package". But this weave is `open`, so no tray is shown up
+            // front: the two packages only ever appeared BEHIND a hint, which
+            // means the choice the screen was designed around never happened.
+            // What did happen is worse. The hint ladder reverses the tray so a
+            // single piece is never copy-ready, then shows the first one — so
+            // asking for help on "J'ai une idée." produced "une question",
+            // under a label reading "One of the pieces you need".
+            //
+            // Retrieval, not article-guessing, is what this screen is for: the
+            // situation should make the learner reach for une idée whole. The
+            // choosing operation already exists one screen earlier, where the
+            // options are visible and the contrast is real.
             suggestedPieces: [
               { text: "une idée", itemId: "noun-idee", label: "one package" },
-              { text: "une question", itemId: "chunk-une-question", label: "the other package" },
             ],
             hintCloze: "J'ai ___.",
             expectedAnswers: ["J'ai une idée."],
@@ -534,7 +573,7 @@ const screens: LessonScreen[] = [
     payload: {
       explanation:
         "Three packages, and none of them was a decision.\n" +
-        "un came with café and it came with thé. une came with question. You did not work any of that out in the moment; you carried each little word along with the word it belongs to, which is exactly how French speakers hold them. When a new noun arrives later, you will meet it the same way: with its little word already attached.",
+        "café arrived as un café. question arrived as une question. You carried each little word along with the word it belongs to, which is how French speakers hold them too.",
       naturalAlternatives: ["un café", "un thé", "une question"],
     },
   },
