@@ -62,6 +62,7 @@ import "./l7Destinations.test";
 import "./l8Questions.test";
 import "./lessonResume.test";
 import "./l9l10Founder.test";
+import "./piecesAndVariety.test";
 import "./verdictAndAudio.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";

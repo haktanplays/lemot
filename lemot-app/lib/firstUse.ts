@@ -108,3 +108,39 @@ export function markLexiqueIntroSeen(): void {
     console.warn("[FirstUse] Failed to save Mon Lexique intro flag:", e);
   }
 }
+
+/**
+ * Whether the learner has ever tapped a piece.
+ *
+ * ── WHY THIS FLAG EXISTS ────────────────────────────────────────────────────
+ *
+ * The founder reached L9 before discovering that pieces are tappable. The
+ * feature had been there the whole time, on every Showcase since L0, doing
+ * nothing for eight lessons because nothing ever said it was there. A capable
+ * affordance nobody finds is not a feature; it is a cost.
+ *
+ * So the first few lessons carry one quiet line inviting the tap, and the
+ * moment a piece is actually tapped the line is gone for good. Tutorial chrome
+ * that outlives its job becomes furniture, and Cairn does not keep furniture.
+ *
+ * Failure reads TRUE, deliberately, like every other first-use flag here: a
+ * store that cannot be read must not turn a one-time hint into the thing that
+ * never stops appearing.
+ */
+export const TAPPED_A_PIECE_KEY = "lm7_tapped_a_piece";
+
+export function hasTappedAPiece(): boolean {
+  try {
+    return kvStorage.getItem(TAPPED_A_PIECE_KEY) === "true";
+  } catch {
+    return true;
+  }
+}
+
+export function markPieceTapped(): void {
+  try {
+    kvStorage.setItem(TAPPED_A_PIECE_KEY, "true");
+  } catch (e) {
+    console.warn("[FirstUse] Failed to save piece-tap flag:", e);
+  }
+}

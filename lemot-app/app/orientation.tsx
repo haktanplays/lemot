@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { PrimaryAction, LinkAction } from "@/components/ui/actions";
 import { PieceChip } from "@/components/ui/PieceChip";
 import { P, SPACE, frenchSerif } from "@/constants/theme";
-import { markOrientationSeen } from "@/lib/firstUse";
+import { markOrientationSeen, markPieceTapped } from "@/lib/firstUse";
 import { useReduceMotion } from "@/hooks/useReduceMotion";
 
 /**
@@ -89,6 +89,20 @@ const BEATS: Beat[] = [
  * a word will be wrong about every chunk in the course.
  */
 const SENTENCE = "Je voudrais un café, s'il vous plaît.";
+
+/**
+ * What each piece says when it is opened.
+ *
+ * Three entries, authored here rather than read from the registry: this screen
+ * runs before any lesson and must not depend on a projection of learner state
+ * that does not exist yet. They are the registry's own meanings for the three
+ * pieces of the one sentence orientation uses.
+ */
+const MEANINGS: Record<string, string> = {
+  "je voudrais": "I would like",
+  "un café": "a coffee",
+  "s'il vous plaît": "please",
+};
 const PIECES = ["je voudrais", "un café", "s'il vous plaît"];
 const REUSE = ["un café", "un thé", "un croissant"];
 
@@ -98,6 +112,9 @@ function PiecesDemo({ reduceMotion }: { reduceMotion: boolean }) {
   // and a learner with reduce-motion on gets the same control rather than a
   // lesser version of the screen.
   const [opened, setOpened] = useState(reduceMotion);
+  // Which piece the learner opened. Null until they have tapped one, which is
+  // what the rest of this demo waits for.
+  const [tapped, setTapped] = useState<string | null>(null);
   return (
     <View style={{ marginTop: SPACE.lg }}>
       <Text style={{ color: P.ink, ...frenchSerif(19) }}>{SENTENCE}</Text>
@@ -110,26 +127,49 @@ function PiecesDemo({ reduceMotion }: { reduceMotion: boolean }) {
 
       {opened && (
         <View style={{ marginTop: SPACE.lg }}>
+          {/* THE TAP, TAUGHT BY BEING USED. The founder reached L9 before
+              discovering that pieces are tappable: the affordance had been on
+              every Showcase since L0 and nothing ever said so. Reading about
+              it here would repeat that mistake in a nicer font, so the pieces
+              on this screen are the real control and the rest of the demo
+              waits behind one. */}
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}>
             {PIECES.map((piece) => (
-              <PieceChip key={piece} text={piece} />
+              <Pressable
+                key={piece}
+                onPress={() => {
+                  setTapped(piece);
+                  markPieceTapped();
+                }}
+                accessibilityRole="button"
+                accessibilityState={{ selected: tapped === piece }}
+                accessibilityLabel={`What is ${piece}`}
+                hitSlop={4}
+              >
+                <PieceChip text={piece} label={tapped === piece ? MEANINGS[piece] : undefined} />
+              </Pressable>
             ))}
           </View>
 
-          <Text
-            style={{
-              color: P.ink2,
-              fontSize: 15,
-              lineHeight: 23,
-              marginTop: SPACE.lg,
-            }}
-          >
-            Three pieces. Keep the first two and change the last one, and you have
-            ordered something else.
-          </Text>
+          {tapped === null ? (
+            <Text
+              style={{ color: P.ink2, fontSize: 15, lineHeight: 23, marginTop: SPACE.lg }}
+            >
+              Tap one and it will tell you what it is. You can do that anywhere a
+              piece appears.
+            </Text>
+          ) : (
+            <Text
+              style={{ color: P.ink2, fontSize: 15, lineHeight: 23, marginTop: SPACE.lg }}
+            >
+              That works everywhere: any piece you meet will open like this.
+              Three pieces here. Keep the first two and change the last one, and
+              you have ordered something else.
+            </Text>
+          )}
 
           <View style={{ marginTop: SPACE.md, gap: SPACE.sm }}>
-            {REUSE.map((thing) => (
+            {tapped !== null && REUSE.map((thing) => (
               <View
                 key={thing}
                 style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}
@@ -140,16 +180,18 @@ function PiecesDemo({ reduceMotion }: { reduceMotion: boolean }) {
             ))}
           </View>
 
-          <Text
-            style={{
-              color: P.ink3,
-              fontSize: 13,
-              lineHeight: 19,
-              marginTop: SPACE.md,
-            }}
-          >
-            One piece stayed. One piece changed.
-          </Text>
+          {tapped !== null && (
+            <Text
+              style={{
+                color: P.ink3,
+                fontSize: 13,
+                lineHeight: 19,
+                marginTop: SPACE.md,
+              }}
+            >
+              One piece stayed. One piece changed.
+            </Text>
+          )}
         </View>
       )}
     </View>

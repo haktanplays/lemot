@@ -5,6 +5,7 @@ import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import { useSpeech } from "@/hooks/useSpeech";
+import { hasTappedAPiece, markPieceTapped } from "@/lib/firstUse";
 import {
   pieceItemId,
   pieceLabel,
@@ -42,6 +43,16 @@ export function Showcase({
 }) {
   const { say } = useSpeech();
   const { intro, clusters } = screen.payload;
+  // Read once on mount: whether this learner has ever opened a piece. The flag
+  // is the only learner state this screen touches, it is a one-time UI fact
+  // rather than a projection of anything they own, and it is written the first
+  // time they tap so the invitation never becomes furniture.
+  const [showTapHint, setShowTapHint] = useState(() => !hasTappedAPiece());
+  const notePieceTapped = () => {
+    if (!showTapHint) return;
+    markPieceTapped();
+    setShowTapHint(false);
+  };
 
   return (
     <LessonScreenFrame
@@ -87,6 +98,8 @@ export function Showcase({
                     // is first in its own block. Without this the caption gets
                     // a second hairline immediately beneath it.
                     first={si === 0 || opensExposure}
+                    showTapHint={showTapHint && ci === 0}
+                    onPieceTapped={notePieceTapped}
                     onSay={() => say(sentence.fr)}
                     onSayPiece={(text) => say(text)}
                   />
@@ -141,11 +154,16 @@ function ExposureBoundary({ first }: { first: boolean }) {
 function Line({
   sentence,
   first,
+  showTapHint,
+  onPieceTapped,
   onSay,
   onSayPiece,
 }: {
   sentence: ShowcaseSentence;
   first: boolean;
+  /** Whether this learner has yet to discover that pieces open. */
+  showTapHint: boolean;
+  onPieceTapped: () => void;
   onSay: () => void;
   onSayPiece: (text: string) => void;
 }) {
@@ -187,7 +205,10 @@ function Line({
         <View style={{ flex: 1 }}>
           {whole ? (
             <Pressable
-              onPress={() => setOpenPiece(openPiece === 0 ? null : 0)}
+              onPress={() => {
+                setOpenPiece(openPiece === 0 ? null : 0);
+                onPieceTapped();
+              }}
               accessibilityRole="button"
               accessibilityState={{ expanded: openPiece === 0 }}
               accessibilityLabel={`What is ${pieceLabel(whole.text)}`}
@@ -240,13 +261,29 @@ function Line({
               still owns the sentence; this owns the piece. */}
           {pieces.length >= 2 && (
             <View style={{ marginTop: SPACE.sm }}>
+              {/* ONE LINE, UNTIL THEY FIND IT. The founder reached L9 before
+                  discovering that these chips do anything: the affordance had
+                  been on every Showcase since L0 and nothing said so, which is
+                  a feature nobody finds and therefore a cost. The invitation
+                  shows on the FIRST breakdown of a screen only, and the moment
+                  any piece is tapped anywhere it never appears again. */}
+              {showTapHint && first && (
+                <Text
+                  style={{ color: P.ink3, fontSize: 11, lineHeight: 16, marginBottom: 6 }}
+                >
+                  Tap a piece to see what it is.
+                </Text>
+              )}
               <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
                 {pieces.map((piece, i) => {
                   const active = openPiece === i;
                   return (
                     <Pressable
                       key={`${piece.text}-${i}`}
-                      onPress={() => setOpenPiece(active ? null : i)}
+                      onPress={() => {
+                        setOpenPiece(active ? null : i);
+                        onPieceTapped();
+                      }}
                       accessibilityRole="button"
                       accessibilityState={{ expanded: active }}
                       accessibilityLabel={`What is ${pieceLabel(piece.text)}`}

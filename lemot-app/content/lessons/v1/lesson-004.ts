@@ -245,8 +245,15 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-j-ai-faim", "chunk-j-ai"],
         weakPointTags: ["avoir-vs-etre", "j-ai-vs-je-suis"],
         payload: {
-          weaveType: "mid",
-          prompt: "Say how you feel, the French way.",
+          // Supported on the locked ladder, because the meaning is given.
+          weaveType: "supported",
+          // MEANING TRANSFER, and the one sentence in L4 where it is the whole
+          // lesson. "I'm hungry" routed literally gives je suis, which is the
+          // exact mistake L4 exists to prevent; handing the learner the English
+          // thought and asking for the French is therefore not a translation
+          // drill but the contrast itself. L3-L10 had no meaning-transfer
+          // production at all, so every weave after L2 handed over a scene.
+          prompt: "Write it in French: I'm hungry.",
           context: "It is past noon and you have not eaten.",
           suggestedPieces: [
             { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
