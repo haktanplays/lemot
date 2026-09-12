@@ -22,6 +22,7 @@ import { MilestoneCard } from "@/components/MilestoneCard";
 import { Btn } from "@/components/Btn";
 import type { ReviewQuestion } from "@/components/DailyReviewOverlay";
 import { AnchorBlock, Kicker } from "@/components/ui/editorial";
+import { useContextCardDoor } from "@/hooks/useContextCardDoor";
 import {
   DailyReviewOverlay,
   genReviewItems,
@@ -221,6 +222,10 @@ export default function HomeScreen() {
   // Somewhere already open, read once on mount. A re-read on every render
   // would fight the learner's own paging the moment they walk back into the
   // lesson from here.
+  // How many Context Card sets the learner could actually open, asked through
+  // the DESTINATION's own derivation so the door and the room can never
+  // disagree. See the hook for why that is not two lines here.
+  const contextCardSetCount = useContextCardDoor();
   const [resumePoint] = useState(() =>
     resumePointFor(kvStorage.getItem(LESSON_CURSOR_KEY), V1_LESSONS),
   );
@@ -550,27 +555,33 @@ export default function HomeScreen() {
                 road ahead, because it is something to do WITH what you can
                 already say, not a competing path. One entry, in one place: the
                 brief is explicit that these must not be scattered as redundant
-                buttons around the app. */}
-            <Pressable
-              onPress={() => router.push("/context-cards" as never)}
-              accessibilityRole="button"
-              accessibilityLabel="Context Cards. Explore a little more French."
-              className="mb-6 border"
-              style={{
-                borderColor: P.border,
-                backgroundColor: P.paper,
-                borderRadius: 12,
-                paddingHorizontal: 14,
-                paddingVertical: 12,
-              }}
-            >
-              <Text className="text-sm" style={{ color: P.ink }}>
-                Context Cards
-              </Text>
-              <Text className="text-xs mt-0.5" style={{ color: P.ink3, lineHeight: 18 }}>
-                Explore a little more French. Nothing is tested.
-              </Text>
-            </Pressable>
+                buttons around the app.
+
+                DRAWN ONLY WHEN THERE IS SOMETHING BEHIND IT. A set appears once
+                its engine is genuinely the learner's, and a learner who has
+                reached none of the four engines opens this to "These open up as
+                your sentences do" — a door, offered in the product's own calm
+                voice, into an empty room. Offering it is worse than not
+                mentioning it yet, so the count decides, and it comes from the
+                same function the destination itself uses. Undefined while the
+                read is in flight, which means nothing is drawn: a door that
+                appears a moment late costs nothing, and one that opens on
+                nothing costs trust. */}
+            {contextCardSetCount > 0 && (
+              <Pressable
+                onPress={() => router.push("/context-cards" as never)}
+                accessibilityRole="button"
+                accessibilityLabel="Context Cards. Explore a little more French."
+                className="mb-6"
+              >
+                <AnchorBlock>
+                  <Kicker text="Context Cards" gap="sm" />
+                  <Text style={{ color: P.ink, fontSize: 15, lineHeight: 23 }}>
+                    Explore a little more French. Nothing is tested.
+                  </Text>
+                </AnchorBlock>
+              </Pressable>
+            )}
 
             {/* THE ROAD AHEAD — restrained. The path clearly continues, order
                 stays legible, locked rows cannot open, but future work does not

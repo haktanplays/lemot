@@ -66,6 +66,7 @@ import "./piecesAndVariety.test";
 import "./v4bPrimitives.test";
 import "./lessonStepPractice.test";
 import "./myFrenchCanDo.test";
+import "./contextCardDoor.test";
 import "./verdictAndAudio.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";

@@ -286,7 +286,13 @@ describe("blocks are hairlines, not cards", () => {
 
   test("the Journey's two offers are no longer boxed", () => {
     const home = codeOf(read("app/(tabs)/index.tsx"));
-    const path = home.slice(home.indexOf("Where you left off"), home.indexOf("The road ahead"));
+    // Bounded to the two OFFERS, not to everything above the road ahead: the
+    // Context Cards entry later moved into that span and became a third anchor
+    // block, which is correct and made a count over the wider slice wrong.
+    const path = home.slice(
+      home.indexOf("Where you left off"),
+      home.indexOf("{contextCardSetCount > 0 && ("),
+    );
     assert(path.split("<AnchorBlock").length - 1 === 2, "both offers are anchor blocks");
     assert(
       !/bg-lm-paper rounded-2xl border/.test(path),
