@@ -38,7 +38,20 @@ const screens: LessonScreen[] = [
             { fr: "Au revoir, bonne soirée !", en: "Goodbye, have a good evening!", role: "core", itemIds: ["chunk-bonne-soiree", "chunk-au-revoir"] },
             { fr: "Merci, bonne journée !", en: "Thanks, have a good day!", role: "supported", itemIds: ["chunk-bonne-journee", "chunk-merci"] },
             { fr: "Au revoir, à demain !", en: "Goodbye, see you tomorrow!", role: "supported", itemIds: ["chunk-a-demain", "adverb-demain", "chunk-au-revoir"] },
-            { fr: "À bientôt !", en: "See you soon!", role: "supported", itemIds: ["chunk-a-bientot"], flat: "formula" },
+            {
+              fr: "À bientôt !",
+              en: "See you soon!",
+              role: "supported",
+              itemIds: ["chunk-a-bientot"],
+              flat: "formula",
+              // §18 — THE EXPOSURE SYSTEM, CLOSING. L6 showed this line under a
+              // caption saying nothing was being asked of the learner. Meeting
+              // it here as though it were brand new would throw away the only
+              // thing that preview bought. Authored on this ONE line, because
+              // it is the only line in L7 whose prior exposure canon can prove;
+              // the guard refuses the claim anywhere it cannot.
+              seenBefore: "You have read this one already. Now it is yours to use.",
+            },
             { fr: "À tout à l'heure !", en: "See you later!", role: "supported", itemIds: ["chunk-a-tout-a-l-heure"], flat: "formula" },
           ],
         },
@@ -109,17 +122,49 @@ const screens: LessonScreen[] = [
     targetItemIds: ["chunk-je-vais"],
     payload: {
       insightType: "grammar-nugget",
-      title: "Take it whole.",
+      // IT WAS NOT ARBITRARY, AND THE CARD SAID IT WAS. The old body read
+      // "French picks one of three shapes" and "there is no rule you can hear
+      // your way to", then told the learner the shape "belongs to the place,
+      // not to you". Every part of that is false: à + le contracts to au, à +
+      // la does not contract at all, and l' is an article that has already
+      // elided before a vowel sound. A learner told there is no rule cannot
+      // apply one to a place the lesson never showed them, so the card was
+      // making the language bigger than it is.
+      //
+      // The destination is still ONE piece to reuse. Teaching the pattern
+      // inside it and handing out its halves as reusable pieces are different
+      // claims; only the first is true, which is why prepositions stopped being
+      // surface pieces in the same pass.
+      title: "Only the place changes.",
       body:
-        // Trimmed by one sentence in the curiosity pass. It used to close with
-        // both "take each destination whole, the way you took un café" AND
-        // "the shape belongs to the PLACE and never changes", which say the
-        // same thing twice at the end of an already dense card.
-        "Je vais = I'm going. Like je suis, it is one solid piece. The destination is one piece too, and French picks one of three shapes to carry it: au for some places, à la for others, à l' before a vowel sound. There is no rule you can hear your way to, so take each destination whole the way you took un café: the shape belongs to the place, not to you.",
+        "Je vais = I'm going, and like je suis it is one solid piece. What moves is the destination, and it moves by a rule you can use. French never says à le: à and le merge into au. With la nothing merges, so à la stays exactly as it is. And before a vowel sound, both le and la shorten to l'.",
       examples: [
-        { fr: "Je vais à la maison.", en: "I'm going home." },
-        { fr: "Je vais au café.", en: "I'm going to the café." },
-        { fr: "Je vais à l'hôtel.", en: "I'm going to the hotel." },
+        {
+          fr: "Je vais à la maison.",
+          en: "I'm going home.",
+          derivation: { from: "la maison", via: "à + la", to: "à la maison" },
+          note: "maison takes la, and à la is already sayable, so nothing merges.",
+        },
+        {
+          fr: "Je vais au café.",
+          en: "I'm going to the café.",
+          derivation: { from: "le café", via: "à + le", to: "au café" },
+          note: "café takes le. French does not say à le, so the two become au.",
+        },
+        {
+          // No sentence: this step is about the ARTICLE, before à is involved
+          // at all. Showing "le hôtel" is the point, because the learner has to
+          // see the form French refuses before l' looks like anything but a
+          // third arbitrary shape.
+          derivation: { from: "le hôtel", via: "before a vowel sound", to: "l'hôtel" },
+          note: "The h in hôtel is silent, so French hears a vowel at the front and le shortens to l'.",
+        },
+        {
+          fr: "Je vais à l'hôtel.",
+          en: "I'm going to the hotel.",
+          derivation: { from: "l'hôtel", via: "à + l'", to: "à l'hôtel" },
+          note: "The article is already l', so there is nothing left for à to merge with.",
+        },
       ],
     },
   },
@@ -134,7 +179,13 @@ const screens: LessonScreen[] = [
         type: "fill-with-traps",
         targetItemIds: ["chunk-a-la-gare"],
         payload: {
-          prompt: "The station takes one of the three shapes. Which one?",
+          // THE NOTICING MOMENT. The card explains the rule; this is where the
+          // learner runs it once, on a place the lesson has not shown them
+          // going to. The prompt therefore hands them the ARTICLE and asks
+          // what happens to it, rather than asking which of three shapes a
+          // station happens to own. Every reason below now names the rule
+          // rather than listing which places take which shape.
+          prompt: "It is la gare. So what happens when you put à in front?",
           sentenceBefore: "Je vais ",
           sentenceAfter: " gare.",
           blankCount: 1,
@@ -144,20 +195,20 @@ const screens: LessonScreen[] = [
               id: "b",
               text: "au",
               isCorrect: false,
-              trapReason: "Au is the shape for café, travail and restaurant. Gare does not take it.",
+              trapReason: "Au is what à + le becomes. This one is la, so there is nothing to merge.",
             },
             {
               id: "c",
               text: "à l'",
               isCorrect: false,
-              trapReason: "À l' is for places that start with a vowel sound, like hôtel.",
+              trapReason: "L' is what le or la become before a vowel sound. Gare starts with g.",
             },
           ],
           answer: ["a"],
           reveal: {
             short: "à la",
             explanation:
-              "Je vais à la gare. The station carries à la, the same shape as à la maison.",
+              "Je vais à la gare. à + la merges into nothing, so both words stay, exactly as in à la maison.",
           },
         },
       },
@@ -393,9 +444,19 @@ const screens: LessonScreen[] = [
           note: "Beaucoup is for when they actually did something. Merci on its own is for the small courtesies.",
         },
         {
+          // §7 — THE FAMILY, folded into the example that already owns leaving
+          // rather than added as a fifth. A card is not a table, and the guard
+          // that says so is right: the point here is one connection, not a
+          // catalogue.
+          //
+          // NOT A COGNATE CLAIM. partir and departure do share a Latin root,
+          // but the learner cannot check that and does not need it. What they
+          // need is a hook that stops je pars and je dois partir looking like
+          // two unrelated phrases, so the copy offers "departure" as something
+          // to THINK of and never says the words are the same word.
           fr: "Désolé, je dois partir.",
           en: "Sorry, I have to go.",
-          note: "Désolé is the apology that goes in front of an early exit. Without it, leaving first can read as leaving in a mood.",
+          note: "Désolé is the apology that goes in front of an early exit. The verb is partir, to leave: je pars is I'm leaving, and je dois partir is I have to leave. If it helps, think of the English departure.",
         },
       ],
     },
@@ -406,6 +467,50 @@ const screens: LessonScreen[] = [
     intro:
       "A French goodbye usually has two parts: the thanks, and a word about the hours ahead of them. Leaving early has two parts too, and the first one is an apology.",
     steps: [
+      {
+        // §8 — THE THREE WAYS OUT, told apart by what they DO.
+        //
+        // L7 hands the learner three ways to leave and never puts them side by
+        // side, so they read as three phrases to memorise rather than three
+        // different things to say. This is the smallest moment that makes the
+        // difference usable: one question, answered by meaning rather than by
+        // form. Inside the chain on purpose, so the lesson gains a beat and not
+        // a page.
+        id: "s32z-fill-which-one-explains",
+        type: "fill-with-traps",
+        targetItemIds: ["chunk-je-vais", "chunk-je-pars", "chunk-je-dois-partir"],
+        evidenceTargetItemIds: ["chunk-je-dois-partir"],
+        weakPointTags: ["natural-speech"],
+        payload: {
+          prompt:
+            "You are leaving before anyone expected you to. Which one tells them it is not your choice?",
+          blankCount: 1,
+          options: [
+            { id: "opt-dois", text: "Désolé, je dois partir.", isCorrect: true },
+            {
+              id: "opt-vais",
+              text: "Je vais à la maison.",
+              isCorrect: false,
+              trapReason:
+                "That says where you are going. True, but it does not explain why you are going now.",
+            },
+            {
+              id: "opt-pars",
+              text: "Je pars maintenant.",
+              isCorrect: false,
+              trapReason:
+                "That announces that you are leaving. It still leaves them wondering why.",
+            },
+          ],
+          answer: ["opt-dois"],
+          reveal: {
+            short: "Désolé, je dois partir.",
+            explanation:
+              "Three real ways out, and they are not spares for each other. Je vais names where. Je pars announces that you are off. Je dois partir says you have no choice, which is the one that explains an early exit.",
+            natural: "Désolé, je dois partir.",
+          },
+        },
+      },
       {
         // MEDIUM on the locked ladder: the communicative intention is named,
         // the wording is not.
@@ -532,24 +637,50 @@ const screens: LessonScreen[] = [
         weakPointTags: ["politeness", "natural-speech"],
         payload: {
           weaveType: "open",
+          // AN OPEN TASK THAT GRADED LIKE A CLOSED ONE. The scene said only
+          // that the learner was meeting someone elsewhere; the model required
+          // "au café". A learner who wrote "Non merci, je vais à la maison."
+          // answered the question they were asked and was told part of it was
+          // there. The rule is the one L6 established: if a task expects a
+          // specific fact, the scene has to give it.
+          //
+          // The fix is to let the task be as open as it reads. The scene no
+          // longer hints at a particular place, the destinations L7 actually
+          // teaches are all accepted, and the reveal still shows one so the
+          // learner meets a model. Authored, not resolved: the resolver swaps
+          // whole utterances for a communicative job, and what varies here is
+          // one slot inside a two-move sentence. Four destinations written out
+          // is smaller and safer than teaching the resolver to fill slots.
           prompt: "Turn the offer down, then say where you are actually going.",
           context:
-            "They are still holding the pot. You are meeting someone in twenty minutes, and not here.",
+            "They are still holding the pot. You are due somewhere else in twenty minutes.",
           suggestedPieces: [
             { text: "non merci", itemId: "chunk-non-merci", label: "turning it down" },
             { text: "je vais", itemId: "chunk-je-vais", label: "I'm going" },
-            { text: "au café", itemId: "chunk-au-cafe", label: "to the café" },
           ],
-          hintCloze: "Non merci. ___.",
+          // The tray used to hand over "au café" and the cloze used to hide the
+          // whole second half. Both answered a question the task deliberately
+          // leaves to the learner: where THEY are going. Help now gets them as
+          // far as the engine and stops there.
+          hintCloze: "Non merci. Je vais ___.",
           expectedAnswers: ["Non merci. Je vais au café."],
           acceptedAlternatives: [
             "Non merci, je vais au café.",
             "Non merci. Je vais au café",
+            "Non merci. Je vais au cafe.",
+            "Non merci. Je vais à la maison.",
+            "Non merci, je vais à la maison.",
+            "Non merci. Je vais à la gare.",
+            "Non merci, je vais à la gare.",
+            "Non merci. Je vais à l'hôtel.",
+            "Non merci, je vais à l'hôtel.",
+            "Non merci. Je vais au travail.",
+            "Non merci, je vais au travail.",
           ],
           reveal: {
             modelAnswer: "Non merci. Je vais au café.",
             ifCorrect:
-              "Two moves, and neither one is rude. The destination is yours to change.",
+              "Two moves, and neither one is rude. The destination was yours to pick, and any of the ones you own would have worked.",
             ifCorrectButFlat:
               "Right. Non merci softens it; the direction explains it.",
             ifUnderstandableButWrong:
@@ -651,11 +782,27 @@ const screens: LessonScreen[] = [
         { text: "au revoir", itemId: "chunk-au-revoir" },
       ],
       modelAnswer: "Merci. Je vais à la maison. Au revoir.",
+      // Same open-destination reading as s12, on the ungraded surface. The
+      // scene says a gathering is ending and asks where the learner is
+      // heading; it never says home. The comparison reveal reads the attempt
+      // against the authored answers, so without these a learner leaving for
+      // the station was told their meaning had not landed. The model stays
+      // what it was: one answer to show, not the only answer allowed.
+      acceptedAlternatives: [
+        "Merci. Je vais à la gare. Au revoir.",
+        "Merci. Je vais au café. Au revoir.",
+        "Merci. Je vais au travail. Au revoir.",
+        "Merci. Je vais à l'hôtel. Au revoir.",
+      ],
       reveal: {
         modelAnswer: "Merci. Je vais à la maison. Au revoir.",
+        // §16 — an alternative should differ in something that MATTERS. The
+        // short form drops the thanks, which is a real choice about the
+        // moment; a second destination would only be the same sentence with a
+        // different noun in it, and the acceptance list already covers that.
         naturalAlternatives: ["Je vais à la maison. Au revoir."],
         explanation:
-          "Both are natural. Merci thanks the moment; je vais à la maison says where you're off to; au revoir closes the door gently.",
+          "Both are natural. Merci thanks the moment; je vais à la maison says where you're off to; au revoir closes the door gently. The destination is yours: anywhere you can name works here.",
       },
       validationMode: "model-answer-only",
     },

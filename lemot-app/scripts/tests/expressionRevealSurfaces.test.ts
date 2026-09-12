@@ -290,7 +290,12 @@ describe("reflection and close stay calm", () => {
   test("Recap mirrors the lesson without counting it", () => {
     const src = read(RECAP);
     assert(src.includes("A small recap"), "recap kicker preserved");
-    assert(src.includes("Pieces you used"), "recap pieces copy preserved");
+    // The heading moved off a claim the screen cannot check: piecesUsed is
+    // authored per lesson, and the recap receives no learner state, so "you
+    // used" was asserting something nothing verified. What this pin is for —
+    // that the chips keep their own heading and do not merge into the lines
+    // above — is unchanged.
+    assert(src.includes("The pieces in this one"), "recap pieces keep their own heading");
     const code = codeOf(src);
     assert(
       !/\d+\s*\/\s*\d+/.test(code) && !code.includes(".length}"),

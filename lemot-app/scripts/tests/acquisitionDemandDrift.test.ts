@@ -199,7 +199,7 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
     assertEqual(shipped.filter((d) => d.code === "DD-003"), [], "no declared demand is non-active");
   });
 
-  test("current corpus findings are exactly the 16 recorded supported-vs-demand calls", () => {
+  test("current corpus findings are exactly the 17 recorded supported-vs-demand calls", () => {
     // These are real, deliberate founder decisions ("supported / composed, not a
     // demand") that today live only in each lesson's prose. The detector asking
     // about them is correct behaviour, not a bug — and they are NOT fixed here.
@@ -229,6 +229,12 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
       "DD-002 v1-lesson-007/chunk-bonne-soiree",
       "DD-002 v1-lesson-007/chunk-desole",
       "DD-002 v1-lesson-007/chunk-je-dois-partir",
+      // Added by the L7 founder pass, which put the three ways of leaving side
+      // by side so the learner can tell them apart. je pars is one of the three
+      // options there, which is its first WORKING in the lesson that already
+      // declares it supported. Same call as the six L7 entries around it:
+      // supported material doing its job, not a forgotten demand.
+      "DD-002 v1-lesson-007/chunk-je-pars",
       "DD-002 v1-lesson-007/chunk-merci-beaucoup",
         "DD-002 v1-lesson-008/adverb-ou-where",
         "DD-002 v1-lesson-011/chunk-m-aider",
@@ -238,6 +244,6 @@ describe("acquisitionDemandDrift — shipped corpus negative controls", () => {
       ],
       "current-v1 advisory baseline",
     );
-    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 16 }, "all advisory");
+    assertEqual(summarizeDrift(shipped), { warnings: 0, authorReviews: 17 }, "all advisory");
   });
 });

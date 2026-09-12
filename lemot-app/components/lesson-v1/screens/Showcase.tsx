@@ -215,6 +215,22 @@ function Line({
             {sentence.en}
           </Text>
 
+          {/* The other half of the exposure system, closing. A line the learner
+              was shown earlier and told nothing was being asked of them now
+              says so, once, quietly. The claim is checked against canon by
+              `reviewShowcaseProvenance`; nothing here can invent a memory. */}
+          {sentence.seenBefore ? (
+            // Upright, not italic. Italic is how Cairn marks French, and this
+            // line is English support prose about French; setting it in italic
+            // made the typography guard read it as a French surface, which was
+            // the guard being right about what italic means here.
+            <Text
+              style={{ color: P.ink3, fontSize: 12, lineHeight: 18, marginTop: 4 }}
+            >
+              {sentence.seenBefore}
+            </Text>
+          ) : null}
+
           {/* The chips look tappable because they are round, raised and sized
               like buttons. Until now they were not, which is an affordance
               writing a cheque the screen does not honour: a learner taps the

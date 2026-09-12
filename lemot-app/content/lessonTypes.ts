@@ -261,6 +261,23 @@ export type ShowcaseSentence = {
   /** Optional depth layer. Absent means this line needs none. */
   depth?: ShowcaseDepth;
   /**
+   * One quiet line saying the learner has met this before.
+   *
+   * For the moment where an earlier lesson's `exposure` line becomes a real
+   * one. The learner DID see "À bientôt !" on L6's showcase, under a caption
+   * telling them nothing was being asked of them; meeting it again at L7 as if
+   * it were new would waste the only thing that preview bought.
+   *
+   * NOT free text about the past. `reviewShowcaseProvenance` checks the claim
+   * against canon: a line may only say it was seen before if some EARLIER
+   * lesson really shows it at the exposure tier. An unearned "you've seen
+   * this" is worse than none, because the learner will believe it and wonder
+   * what they missed.
+   *
+   * Use it where provenance proves it and nowhere else.
+   */
+  seenBefore?: string;
+  /**
    * Registry ids this line exercises. Authoring metadata used by the corpus
    * guards; every id must resolve against the canonical registry. Absent means
    * "composed from owned pieces", which is normal for combinations.
@@ -360,6 +377,29 @@ export type InsightCardPayload = {
      * the unit. Like `frame`, the parts must reconstruct `fr` exactly.
      */
     pieces?: string[];
+    /**
+     * Draw this example as a derivation: where the French came from.
+     *
+     * Three steps, because some patterns are only visible as a sequence.
+     * "au café" looks like an arbitrary shape until you see
+     * `le café` → `à + le` → `au café`, at which point it is one rule the
+     * learner can apply to a place they have never met.
+     *
+     * Deliberately NOT `frame`, which models a structure that WRAPS something
+     * (`ne … pas`). A contraction is not a wrapper, and borrowing the frame
+     * renderer for it would draw a shape the French does not have.
+     *
+     * `to` must equal `fr` (or `fr` is omitted and `to` is the line), so the
+     * derivation can never claim to produce a sentence the card is not showing.
+     */
+    derivation?: {
+      /** The starting form. "le café" */
+      from: string;
+      /** What happens to it. "à + le" */
+      via: string;
+      /** What comes out. "au café" */
+      to: string;
+    };
   }[];
 };
 

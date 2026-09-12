@@ -159,6 +159,15 @@ export function validateFactoryCandidate(args: {
     // whose halves have collapsed together into a chunk.
     "SPLIT-FRAME-EMPTY": "splitFrame",
     "SPLIT-FRAME-DRIFT": "splitFrame",
+    // A derivation that produces a sentence the card is not showing, or one
+    // that produces its own input back. Same family: a picture of structure
+    // that has drifted from the French it claims to explain.
+    "DERIVATION-IDENTITY": "splitFrame",
+    "DERIVATION-DRIFT": "splitFrame",
+    // A line claiming the learner has met it before when no earlier lesson
+    // previews it. Corpus-scoped, so a single-candidate check cannot see the
+    // preview and never raises it.
+    "SEEN-BEFORE-UNEARNED": "splitFrame",
     "PIECES-DRIFT": "splitFrame",
   } as const;
   for (const d of reviewLessonStructure(candidate, registry)) {

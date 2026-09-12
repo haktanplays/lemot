@@ -86,10 +86,17 @@ export function RecapCard({
               marginBottom: SPACE.lg,
             }}
           />
+          {/* RENAMED, because the old heading made a claim this screen cannot
+              check. `piecesUsed` is authored per lesson: it is what the LESSON
+              worked, not what the learner produced, and the recap deliberately
+              receives no learner state (the wiring guard forbids it, for good
+              reasons). So a learner who skipped past a screen was still told
+              they had used its piece. The list is unchanged and still true;
+              only the sentence over it is, now, also true. */}
           <Text
             style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.md }}
           >
-            Pieces you used
+            The pieces in this one
           </Text>
           <View
             style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}

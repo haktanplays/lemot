@@ -36,8 +36,40 @@
  */
 import { ITEM_REGISTRY } from "../itemRegistry";
 
-/** Pieces a learner is never shown as a piece: meta, sound and contrast entries. */
-const NON_SURFACE_TYPES = new Set(["grammar-nugget", "sound-pattern", "micro-contrast"]);
+/**
+ * Pieces a learner is never shown as a piece.
+ *
+ * Meta, sound and contrast entries were always here — they are notes ABOUT
+ * French rather than French to reuse.
+ *
+ * PREPOSITIONS JOINED THEM, and the reason is the whole destination contract.
+ * `prep-au` ("au") and `prep-a-la` ("à la") are real entries the grammar needs,
+ * and they rebuilt "au café" exactly, so the breakdown split it into [au] and
+ * [café] — while "à la maison", "à la gare" and "à l'hôtel" stayed whole,
+ * purely because "maison", "gare" and "hôtel" happen not to be registry items.
+ * One destination shape decomposed and three did not, for no reason a learner
+ * could ever see.
+ *
+ * Worse, the piece it produced was wrong twice over. "au" alone is not
+ * something anyone says; and the other half resolved to `noun-cafe`, whose
+ * meaning is COFFEE. A learner reading "Je vais au café." got a chip that,
+ * followed into Mon Lexique, says the drink.
+ *
+ * So a destination is one piece: [je vais] [au café]. The grammar inside it is
+ * taught explicitly on L7's insight card — à + le → au, à + la → à la, le → l'
+ * before a vowel sound — which is where an internal pattern belongs. Teaching
+ * the pattern and handing out the halves as reusable pieces are different
+ * claims, and only the first one is true.
+ *
+ * This affects exactly one authored line in the shipped curriculum, measured:
+ * L7's "Je vais au café." Nothing else in L1-L10 rendered a bare preposition.
+ */
+const NON_SURFACE_TYPES = new Set([
+  "grammar-nugget",
+  "sound-pattern",
+  "micro-contrast",
+  "preposition",
+]);
 
 const fold = (s: string) =>
   s

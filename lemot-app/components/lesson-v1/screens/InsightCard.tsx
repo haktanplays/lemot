@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { PieceChip } from "@/components/ui/PieceChip";
-import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchLineHeight, frenchSerif } from "@/constants/theme";
 import type {
   InsightCardScreen,
   InsightType,
@@ -85,7 +85,9 @@ export function InsightCard({
                 borderTopColor: P.border,
               }}
             >
-              {ex.frame ? (
+              {ex.derivation ? (
+                <DerivationLine derivation={ex.derivation} />
+              ) : ex.frame ? (
                 <FrameLine frame={ex.frame} />
               ) : ex.pieces && ex.pieces.length > 0 ? (
                 /* The same chips the lesson draws. A card that says words
@@ -158,6 +160,38 @@ export function InsightCard({
  * survive a long `inside` and a large font scale, and a clipped negation would
  * be silent.
  */
+/**
+ * Where a piece of French came from, in three steps.
+ *
+ * `le café` → `à + le` → `au café`. The middle step is the whole point: it is
+ * the only place the learner sees that something HAPPENED, rather than that
+ * French chose a shape. It is drawn quietly (the outcome is what they will
+ * use), and the outcome takes the piece treatment, because that is what it is.
+ *
+ * Wraps rather than scrolls: three short French spans and two arrows fit on a
+ * phone, and a derivation that ran off the edge would hide its own conclusion.
+ */
+function DerivationLine({
+  derivation,
+}: {
+  derivation: { from: string; via: string; to: string };
+}) {
+  const arrow = { color: P.ink3, fontSize: 14, lineHeight: frenchLineHeight(14) };
+  return (
+    <View
+      style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: SPACE.sm }}
+    >
+      <Text style={{ color: P.ink2, ...frenchSerif(16) }}>{derivation.from}</Text>
+      <Text style={arrow}>→</Text>
+      {/* The operation, not French to reuse: upright and quiet, so it never
+          reads as a phrase the learner should be able to say. */}
+      <Text style={{ color: P.ink3, fontSize: 14, lineHeight: 20 }}>{derivation.via}</Text>
+      <Text style={arrow}>→</Text>
+      <PieceChip text={derivation.to} />
+    </View>
+  );
+}
+
 function FrameLine({ frame }: { frame: SplitFrame }) {
   const serif = frenchSerif(17);
   const half = { ...serif, color: P.ink, fontWeight: "600" as const };

@@ -63,6 +63,9 @@ export type LessonStructureDiagnostic = {
     | "DOUBLED-NEGATION"
     | "SPLIT-FRAME-EMPTY"
     | "SPLIT-FRAME-DRIFT"
+    | "DERIVATION-IDENTITY"
+    | "DERIVATION-DRIFT"
+    | "SEEN-BEFORE-UNEARNED"
     | "PIECES-DRIFT";
   lessonId: string;
   screenId: string;
@@ -236,6 +239,34 @@ export function reviewSplitFrames(lesson: Lesson): LessonStructureDiagnostic[] {
       }
     }
 
+    // Same rule for a derivation. It draws `to`, not `fr`, so the two can
+    // drift exactly as a frame can: change the sentence and the card keeps
+    // deriving the old one, convincingly. And a derivation whose outcome
+    // equals its input has derived nothing, which is a picture of a rule
+    // that did not happen.
+    for (const example of screen.payload.examples ?? []) {
+      const derivation = example.derivation;
+      if (derivation === undefined) continue;
+      const at = { lessonId: lesson.id, screenId: screen.id };
+      const tight = (v: string) => fold(v).replace(/'\s+/g, "'");
+
+      if (tight(derivation.from) === tight(derivation.to)) {
+        found.push({
+          code: "DERIVATION-IDENTITY",
+          ...at,
+          message: `${lesson.id}/${screen.id}: derivation from ${JSON.stringify(derivation.from)} produces the same thing back`,
+        });
+        continue;
+      }
+      if (example.fr !== undefined && tight(example.fr) !== tight(derivation.to)) {
+        found.push({
+          code: "DERIVATION-DRIFT",
+          ...at,
+          message: `${lesson.id}/${screen.id}: derivation produces ${JSON.stringify(derivation.to)} but the example is ${JSON.stringify(example.fr)}`,
+        });
+      }
+    }
+
     // Same rule for a package breakdown: the chips ARE what the learner reads,
     // so they may not drift from the sentence the example claims to show. A
     // card teaching that words travel together cannot afford to draw a unit
@@ -304,4 +335,78 @@ export function flattenLessonScreens<S extends { type: string }>(lesson: {
     out.push(screen);
   }
   return out;
+}
+
+/**
+ * GUARD E — a line may only claim the learner has seen it before if they have.
+ *
+ * `seenBefore` is the one piece of showcase copy that makes a claim about the
+ * learner's past, and it is the easiest to get wrong: an author moves a
+ * preview, or writes the note on the line they meant to preview rather than
+ * the one that previewed it, and the lesson tells a learner they missed
+ * something they never saw. So the claim is checked against the corpus rather
+ * than trusted.
+ *
+ * The bar is exactly the promise the note makes: SOME EARLIER lesson shows
+ * this same line at the `exposure` tier. Not "an earlier lesson mentions it",
+ * not "a piece of it appeared" — the preview the note refers to has to be a
+ * real preview, because that is what made it worth saying.
+ *
+ * Corpus-scoped, so it takes every lesson rather than one.
+ */
+export function reviewShowcaseProvenance(
+  lessons: readonly Lesson[],
+): LessonStructureDiagnostic[] {
+  const found: LessonStructureDiagnostic[] = [];
+  const fold = (v: string) => v.normalize("NFC").toLowerCase().replace(/\s+/g, " ").trim();
+
+  /** fold(fr) -> the lesson numbers that show it as exposure. */
+  const previews = new Map<string, number[]>();
+  for (const lesson of lessons) {
+    for (const screen of flattenLessonScreens(lesson)) {
+      if (screen.type !== "showcase") continue;
+      for (const cluster of screen.payload.clusters) {
+        for (const sentence of cluster.sentences) {
+          if (sentence.role !== "exposure") continue;
+          const key = fold(sentence.fr);
+          const at = previews.get(key);
+          if (at) at.push(lesson.number);
+          else previews.set(key, [lesson.number]);
+        }
+      }
+    }
+  }
+
+  for (const lesson of lessons) {
+    for (const screen of flattenLessonScreens(lesson)) {
+      if (screen.type !== "showcase") continue;
+      for (const cluster of screen.payload.clusters) {
+        for (const sentence of cluster.sentences) {
+          if (sentence.seenBefore === undefined) continue;
+          const at = { lessonId: lesson.id, screenId: screen.id };
+
+          if (sentence.role === "exposure") {
+            found.push({
+              code: "SEEN-BEFORE-UNEARNED",
+              ...at,
+              message: `${lesson.id}/${screen.id}: ${JSON.stringify(sentence.fr)} is still exposure here, so there is nothing to say it has become`,
+            });
+            continue;
+          }
+
+          const earlier = (previews.get(fold(sentence.fr)) ?? []).filter(
+            (n) => n < lesson.number,
+          );
+          if (earlier.length === 0) {
+            found.push({
+              code: "SEEN-BEFORE-UNEARNED",
+              ...at,
+              message: `${lesson.id}/${screen.id}: ${JSON.stringify(sentence.fr)} claims the learner has seen it, but no earlier lesson previews it`,
+            });
+          }
+        }
+      }
+    }
+  }
+  return found;
 }
