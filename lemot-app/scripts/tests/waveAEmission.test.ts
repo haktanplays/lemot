@@ -677,7 +677,7 @@ describe("open production: attempt then reveal, never a grade", () => {
     const { repo, controller } = makeSession();
     const { attempt, reveal } = openAttemptInteraction(lesson001, sayIt, {
       text: "Bonjour, je voudrais un café.",
-      ideaPiecesShown: false,
+      helpTaken: false,
       revisionCount: 0,
       modelAnswer: "Bonjour, je voudrais un café, s'il vous plaît.",
     });
@@ -745,7 +745,7 @@ describe("open production: attempt then reveal, never a grade", () => {
   test("PM-014 is never marked as self-correction (that is PM-015)", () => {
     const { attempt } = openAttemptInteraction(lesson001, sayIt, {
       text: "x",
-      ideaPiecesShown: true,
+      helpTaken: true,
       revisionCount: 2,
       modelAnswer: null,
     });

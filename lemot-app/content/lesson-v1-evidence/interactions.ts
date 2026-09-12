@@ -309,7 +309,7 @@ export type OpenAttemptFacts = {
   /** Exactly what the learner wrote. Preserved raw on the attempt event only. */
   text: string;
   /** Whether the learner opened the optional idea pieces before committing. */
-  ideaPiecesShown: boolean;
+  helpTaken: boolean;
   /** How many times they returned to edit before comparing. */
   revisionCount: number;
   /** The model answer shown afterwards. Never a correctness standard. */
@@ -347,8 +347,12 @@ export function openAttemptInteraction(
   const shared = context({
     lesson,
     assistance: cleanAssistance({
-      // Optional idea pieces the learner CHOSE to open are ordinary rung-1 help.
-      hintRung: facts.ideaPiecesShown ? 1 : 0,
+      // Help the learner CHOSE to open is ordinary rung-1 assistance. Was
+      // `ideaPiecesShown`, and renamed when Say It's one-tap dump became a
+      // ladder: its first rung points at the move and shows no French, so a
+      // field named for pieces would have recorded that rung as no help at all.
+      // Weave already records its equivalent shape cue as rung 1.
+      hintRung: facts.helpTaken ? 1 : 0,
       retryIndex: Math.max(0, Math.floor(facts.revisionCount)),
       selfCorrection: false,
       // The model is shown only AFTER Keep and compare, so nothing was exposed

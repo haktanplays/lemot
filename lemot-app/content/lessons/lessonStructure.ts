@@ -58,7 +58,11 @@ export const SUPPORTED_SCREEN_TYPES: ReadonlySet<string> = new Set(
 export const REPEATED_NEGATION = /\b(ne\s+ne|pas\s+pas|n'\s*n')\b/i;
 
 export type LessonStructureDiagnostic = {
-  code: "SCREEN-TYPE" | "ITEM-REFERENCE" | "DOUBLED-NEGATION";
+  code: "SCREEN-TYPE"
+    | "ITEM-REFERENCE"
+    | "DOUBLED-NEGATION"
+    | "SPLIT-FRAME-EMPTY"
+    | "SPLIT-FRAME-DRIFT";
   lessonId: string;
   screenId: string;
   message: string;
@@ -183,7 +187,58 @@ export function reviewDoubledNegation(lesson: Lesson): LessonStructureDiagnostic
   return found;
 }
 
-/** All three structural guards over one lesson, in a stable order. */
+/**
+ * GUARD D — a drawn split frame really is the sentence it claims to be.
+ *
+ * The frame renders its parts, not `fr`, so the two can drift: edit the sentence
+ * and the picture underneath keeps showing the old one, silently and
+ * convincingly. Reassembling the parts and comparing is the whole check.
+ *
+ * It also refuses a frame whose halves are adjacent. A frame with nothing
+ * between them is not a frame, it is a chunk drawn to look like one, and
+ * "je ne suis pas" as a single unit is precisely the misunderstanding this
+ * screen family exists to prevent.
+ */
+export function reviewSplitFrames(lesson: Lesson): LessonStructureDiagnostic[] {
+  const found: LessonStructureDiagnostic[] = [];
+  const fold = (v: string) =>
+    v.normalize("NFC").toLowerCase().replace(/\s+/g, " ").replace(/\s+([.,!?])/g, "$1").trim();
+
+  for (const screen of flattenLessonScreens(lesson)) {
+    if (screen.type !== "insight-card") continue;
+    for (const example of screen.payload.examples ?? []) {
+      const frame = example.frame;
+      if (frame === undefined) continue;
+      const at = { lessonId: lesson.id, screenId: screen.id };
+
+      if (frame.inside.trim().length === 0) {
+        found.push({
+          code: "SPLIT-FRAME-EMPTY",
+          ...at,
+          message: `${lesson.id}/${screen.id}: a frame with nothing inside it is a chunk, not a frame`,
+        });
+        continue;
+      }
+
+      const rebuilt = [frame.lead, frame.open, frame.inside, frame.close, frame.trail]
+        .filter((part): part is string => typeof part === "string" && part.length > 0)
+        .join(" ");
+      // The open half may elide onto what follows it (ce n' est -> ce n'est),
+      // so the comparison drops the space the parts are authored with.
+      const tight = (v: string) => fold(v).replace(/'\s+/g, "'");
+      if (example.fr === undefined || tight(rebuilt) !== tight(example.fr)) {
+        found.push({
+          code: "SPLIT-FRAME-DRIFT",
+          ...at,
+          message: `${lesson.id}/${screen.id}: frame draws ${JSON.stringify(rebuilt)} but the example is ${JSON.stringify(example.fr ?? "")}`,
+        });
+      }
+    }
+  }
+  return found;
+}
+
+/** All four structural guards over one lesson, in a stable order. */
 export function reviewLessonStructure(
   lesson: Lesson,
   registry?: Readonly<Record<string, LearningItem>>,
@@ -192,6 +247,7 @@ export function reviewLessonStructure(
     ...reviewSupportedScreenTypes(lesson),
     ...reviewLessonItemReferences(lesson, registry),
     ...reviewDoubledNegation(lesson),
+    ...reviewSplitFrames(lesson),
   ];
 }
 

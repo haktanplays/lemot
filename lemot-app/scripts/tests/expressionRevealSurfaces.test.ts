@@ -197,8 +197,34 @@ describe("Say-It stays open production, not a graded exercise", () => {
       `the free-production field is taller than the guided one (${open} vs ${guided})`,
     );
     assert(
-      !sayIt.includes("hintCloze") && !sayIt.includes("hintLevel"),
+      !sayIt.includes("hintCloze"),
       "no cloze ladder: Say-It is open expression",
+    );
+  });
+
+  test("help arrives a rung at a time, and the first rung has no French in it", () => {
+    // This used to be part of the assertion above, which banned `hintLevel`
+    // outright so Say It could not turn into Weave. The ban was too wide for
+    // the thing it was protecting: what makes Say It open production is the
+    // absence of a CLOZE and of a supplied answer shape, not the absence of a
+    // ladder. One tap used to put every suggested piece on screen, and on a
+    // screen whose pieces are "je ne suis pas" and "je ne comprends pas" that
+    // is two complete answers handed to a learner who wanted a nudge.
+    //
+    // So the cloze ban stays above, and this replaces the rest: pieces are
+    // gated behind the second rung, and the first one cannot show any.
+    const sayIt = codeOf(read(SAY_IT));
+    assert(
+      /const showPieces = hintLevel >= 2/.test(sayIt),
+      "suggested pieces must sit behind the second rung, not the first tap",
+    );
+    assert(
+      /hintLevel >= 3 \? ideaPieces : ideaPieces\.slice\(0, 1\)/.test(sayIt),
+      "the second rung shows one piece; the rest needs another ask",
+    );
+    assert(
+      /\[\.\.\.\(payload\.suggestedPieces \?\? \[\]\)\]\.reverse\(\)/.test(sayIt),
+      "hint order must not be the answer's order, so a single piece is never copy-ready",
     );
   });
 

@@ -155,6 +155,10 @@ export function validateFactoryCandidate(args: {
     "SCREEN-TYPE": "screenType",
     "ITEM-REFERENCE": "itemReference",
     "DOUBLED-NEGATION": "doubledNegation",
+    // A drawn negation frame that no longer matches its own sentence, or one
+    // whose halves have collapsed together into a chunk.
+    "SPLIT-FRAME-EMPTY": "splitFrame",
+    "SPLIT-FRAME-DRIFT": "splitFrame",
   } as const;
   for (const d of reviewLessonStructure(candidate, registry)) {
     blockingErrors.push({

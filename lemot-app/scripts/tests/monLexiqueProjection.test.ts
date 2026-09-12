@@ -535,7 +535,7 @@ describe("mon lexique exclusions (no blacklist — structure does the work)", ()
     const { runtime, controller } = session();
     const { attempt, reveal } = openAttemptInteraction(lesson001, sayItScreen, {
       text: "Bonjour, un café.",
-      ideaPiecesShown: false,
+      helpTaken: false,
       revisionCount: 0,
       modelAnswer: sayItScreen.payload.modelAnswer ?? null,
     });

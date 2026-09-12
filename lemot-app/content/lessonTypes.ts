@@ -297,6 +297,40 @@ export type MeetCardPayload = {
   tts?: boolean;
 };
 
+/**
+ * A negation made visible as what it is: two halves that open around a verb.
+ *
+ * French negation is the first thing in this course that is NOT a chunk. ne and
+ * pas are one move, they are never adjacent, and the thing between them changes
+ * every time. Shown as prose it reads as a rule to memorise; shown as
+ * "je ne suis pas" on a single pill it teaches the opposite of the truth, which
+ * is that the learner has a fourth block to store rather than a frame they can
+ * open around anything.
+ *
+ * So the pieces are authored apart and the renderer keeps them apart. `inside`
+ * is the only part that moves between examples, which is the entire lesson:
+ *
+ *   Je   ne [ suis ]      pas   ici.
+ *   Ce   n' [ est ]       pas   ici.
+ *   Je   ne [ comprends ] pas.
+ *
+ * `open` is authored rather than fixed as "ne" because elision is real: ce n'est
+ * pas is the same move wearing an apostrophe, and a renderer that hard-coded
+ * "ne" would have to lie about it.
+ */
+export type SplitFrame = {
+  /** What comes before the frame opens. "Je", "Ce". */
+  lead?: string;
+  /** The first half. "ne", or "n'" before a vowel. */
+  open: string;
+  /** What the frame closes around, and the only part that varies. */
+  inside: string;
+  /** The second half. "pas". */
+  close: string;
+  /** What follows the frame. "ici." — may be absent when the frame ends it. */
+  trail?: string;
+};
+
 export type InsightCardPayload = {
   insightType: InsightType;
   title: string;
@@ -305,6 +339,13 @@ export type InsightCardPayload = {
     fr?: string;
     en?: string;
     note?: string;
+    /**
+     * Draw this example as a split frame instead of a flat line.
+     *
+     * The parts must reconstruct `fr` exactly — `validateContent` checks it —
+     * so the picture can never drift from the sentence it claims to be showing.
+     */
+    frame?: SplitFrame;
   }[];
 };
 
@@ -391,12 +432,43 @@ export type SayItYourWayPayload = {
     itemId?: string;
     optional?: boolean;
   }[];
+  /**
+   * The first rung of help: where to aim, with no French in it.
+   *
+   * Say It's hint used to be one tap that put every suggested piece on screen
+   * at once. On a screen whose pieces include "je ne suis pas" and "je ne
+   * comprends pas", that is most of two complete answers handed over to a
+   * learner who only wanted a nudge — and free production is the one place
+   * where being handed the pieces changes what the exercise is.
+   *
+   * So this rung points at the MOVE and never at the words. Optional: when a
+   * screen does not author one, the ladder still starts with a piece count
+   * rather than the pieces, so no lesson has to change for the dump to stop.
+   */
+  hintDirection?: string;
   answerBands?: {
     minimalAcceptable?: string[];
     good?: string[];
     natural?: string[];
   };
   modelAnswer?: string;
+  /**
+   * Other answers that genuinely satisfy THIS situation, authored per screen.
+   *
+   * A Say It prompt can name two honest exits — "say no, or say you did not
+   * follow" — and then hold one model answer. The reveal used to read the
+   * learner's attempt against that single sentence, so a learner who took the
+   * second exit with a sentence the lesson itself teaches was told, in effect,
+   * that nothing of their meaning landed. That is not a grader defect: the
+   * shared component check is doing exactly what it is asked. It is a missing
+   * declaration.
+   *
+   * Authored, never inferred. Each entry must be a real answer to the authored
+   * scene, and acceptance is not equivalence: the reveal still shows what each
+   * one does differently, so "That works" never becomes "these all mean the
+   * same thing".
+   */
+  acceptedAlternatives?: string[];
   reveal: NaturalRevealPayload;
   validationMode?: ValidationMode;
 };

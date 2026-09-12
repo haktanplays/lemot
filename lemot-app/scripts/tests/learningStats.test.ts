@@ -818,7 +818,7 @@ describe("learning stats — connected proofs", () => {
     const { runtime, controller } = session();
     const { attempt, reveal } = openAttemptInteraction(statsLesson, sayItScreen, {
       text: "Bonjour, un café.",
-      ideaPiecesShown: false,
+      helpTaken: false,
       revisionCount: 0,
       modelAnswer: sayItScreen.payload.modelAnswer ?? null,
     });

@@ -1,10 +1,11 @@
 import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P, SPACE } from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchLineHeight } from "@/constants/theme";
 import type {
   InsightCardScreen,
   InsightType,
+  SplitFrame,
 } from "@/content/lessonTypes";
 
 const INSIGHT_LABELS: Record<InsightType, string> = {
@@ -82,18 +83,22 @@ export function InsightCard({
                 borderTopColor: P.border,
               }}
             >
-              {ex.fr && (
-                <Text
-                  style={{
-                    color: P.ink,
-                    fontFamily: "serif",
-                    fontStyle: "italic",
-                    fontSize: 17,
-                    lineHeight: 26,
-                  }}
-                >
-                  {ex.fr}
-                </Text>
+              {ex.frame ? (
+                <FrameLine frame={ex.frame} />
+              ) : (
+                ex.fr && (
+                  <Text
+                    style={{
+                      color: P.ink,
+                      fontFamily: "serif",
+                      fontStyle: "italic",
+                      fontSize: 17,
+                      lineHeight: frenchLineHeight(17),
+                    }}
+                  >
+                    {ex.fr}
+                  </Text>
+                )
               )}
               {ex.en && (
                 <Text
@@ -125,5 +130,61 @@ export function InsightCard({
       )}
 
     </LessonScreenFrame>
+  );
+}
+
+/**
+ * One sentence drawn as the move it is: two halves, and what they closed around.
+ *
+ * The learner's eye has to be able to do the comparison the body describes, so
+ * only three things are marked and everything else stays quiet. The halves take
+ * weight and colour; the thing between them takes a box; the words either side
+ * stay ordinary. Line them up under each other and the picture makes the
+ * argument on its own — the box moves, the halves never do.
+ *
+ * Deliberately NOT chips. A PieceChip means "this travels together and you can
+ * reuse it", which is exactly what ne and pas do not do: they only ever appear
+ * apart. Borrowing the chip's visual language here would say the opposite of
+ * what the screen is teaching, so the frame gets its own, quieter one.
+ *
+ * Wraps rather than scrolls. Je ne comprends pas is short, but the frame has to
+ * survive a long `inside` and a large font scale, and a clipped negation would
+ * be silent.
+ */
+function FrameLine({ frame }: { frame: SplitFrame }) {
+  const serif = {
+    fontFamily: "serif" as const,
+    fontStyle: "italic" as const,
+    fontSize: 17,
+    lineHeight: frenchLineHeight(17),
+  };
+  const half = { ...serif, color: P.ink, fontWeight: "600" as const };
+  const quiet = { ...serif, color: P.ink3 };
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        columnGap: 6,
+      }}
+    >
+      {frame.lead ? <Text style={quiet}>{frame.lead}</Text> : null}
+      <Text style={half}>{frame.open}</Text>
+      <View
+        style={{
+          borderWidth: 1,
+          borderColor: P.border,
+          backgroundColor: P.paper,
+          borderRadius: RADIUS.inner,
+          paddingHorizontal: 8,
+          paddingVertical: 2,
+        }}
+      >
+        <Text style={{ ...serif, color: P.ink }}>{frame.inside}</Text>
+      </View>
+      <Text style={half}>{frame.close}</Text>
+      {frame.trail ? <Text style={quiet}>{frame.trail}</Text> : null}
+    </View>
   );
 }

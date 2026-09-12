@@ -103,6 +103,11 @@ const screens: LessonScreen[] = [
       title: "The same shape, turned negative.",
       highlights: [
         { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas" },
+        // ici is a piece the learner has produced since L2, and the registry
+        // segments this sentence as two. Marking only the negative left the
+        // place word looking like part of it -- the founder found the same gap
+        // on the c'est card below.
+        { text: "ici", itemId: "word-ici" },
       ],
       tts: true,
     },
@@ -119,13 +124,34 @@ const screens: LessonScreen[] = [
       title: "Two pieces, one on each side.",
       body:
         "To make a sentence negative, French wraps the action. ne goes in " +
-        "front, pas goes after, and the verb sits between them. Je suis " +
-        "becomes je ne suis pas. Two pieces, one on each side.",
+        "front, pas goes after, and the verb sits between them. Watch what " +
+        "moves between the two pairs below, and what does not.",
+      // DRAWN, not described. The body used to make this argument in prose
+      // while the examples underneath sat as four flat italic lines, so the
+      // learner read that something wraps the verb and then saw nothing wrap
+      // anything. The frame puts the two halves either side of a box, and the
+      // box is the only thing that changes down the page: suis, then est.
+      //
+      // The affirmative stays flat above each negative on purpose. The contrast
+      // is the teaching, and marking both would leave nothing for the marks to
+      // mean.
       examples: [
         { fr: "Je suis ici.", en: "I am here." },
-        { fr: "Je ne suis pas ici.", en: "I am not here." },
+        {
+          fr: "Je ne suis pas ici.",
+          en: "I am not here.",
+          frame: { lead: "Je", open: "ne", inside: "suis", close: "pas", trail: "ici." },
+        },
         { fr: "C'est ici.", en: "It is here." },
-        { fr: "Ce n'est pas ici.", en: "It is not here." },
+        {
+          fr: "Ce n'est pas ici.",
+          en: "It is not here.",
+          // The same move wearing an apostrophe. ne elides before a vowel, which
+          // is why the opening half is authored rather than assumed: a renderer
+          // that hard-coded "ne" would have to lie about this line.
+          frame: { lead: "Ce", open: "n'", inside: "est", close: "pas", trail: "ici." },
+          note: "Same two halves. Before a vowel, ne loses its e and leans on the verb: n'est.",
+        },
       ],
     },
   },
@@ -260,6 +286,7 @@ const screens: LessonScreen[] = [
           title: "The same two pieces work on c'est.",
           highlights: [
             { text: "ce n'est pas", itemId: "chunk-ce-n-est-pas" },
+            { text: "ici", itemId: "word-ici" },
           ],
           tts: true,
         },
@@ -549,6 +576,11 @@ const screens: LessonScreen[] = [
         "You are at the wrong place. Someone is expecting you somewhere else, " +
         "and they are explaining where, quickly.",
       communicativeGoal: "Say no, or say you did not follow.",
+      // The first rung points at the decision, not at the words. Two of the
+      // pieces below are complete answers to this prompt, which is why they now
+      // sit two rungs down instead of arriving with the first tap.
+      hintDirection:
+        "Two honest answers here. Either tell them they have the wrong person, or tell them you did not catch it.",
       suggestedPieces: [
         { text: "Non", itemId: "chunk-non" },
         { text: "je ne suis pas", itemId: "chunk-je-ne-suis-pas" },
@@ -556,14 +588,32 @@ const screens: LessonScreen[] = [
         { text: "je ne comprends pas", itemId: "chunk-je-ne-comprends-pas" },
       ],
       modelAnswer: "Non, je ne suis pas ici.",
+      // THE SECOND EXIT, DECLARED. The goal line offers two honest answers and
+      // the lesson teaches both, but the reveal could only read the attempt
+      // against the model — so "Je ne comprends pas", produced two screens
+      // earlier in this same lesson, came back as if nothing had landed.
+      //
+      // Only answers that truly fit THIS scene are here. Someone is explaining
+      // where you should be, quickly, and you are in the wrong place: refusing
+      // and admitting you did not follow are both true, with or without the
+      // opening non. "Non, ce n'est pas ici." is NOT here — the question is
+      // about you, not about the place.
+      acceptedAlternatives: [
+        "Je ne suis pas ici.",
+        "Non, je ne comprends pas.",
+        "Je ne comprends pas.",
+      ],
       reveal: {
         modelAnswer: "Non, je ne suis pas ici.",
+        // Labelled, because acceptance is not equivalence. These are different
+        // answers to the same moment and the learner should leave knowing which
+        // one they chose, not with the impression that any of them would do.
         naturalAlternatives: [
-          "Je ne suis pas ici.",
-          "Non, je ne comprends pas.",
+          { when: "Shorter", fr: "Je ne suis pas ici." },
+          { when: "If you did not follow", fr: "Non, je ne comprends pas." },
         ],
         explanation:
-          "All three are real answers to this moment. Non answers the call first; je ne suis pas ici states the fact plainly; je ne comprends pas is the honest one when the explanation went past you. Same two pieces underneath each negative.",
+          "Non answers the call before you explain anything. Je ne suis pas ici states the fact on its own. Je ne comprends pas says something different and just as true: the explanation went past you. Same two pieces underneath each negative.",
       },
       validationMode: "model-answer-only",
     },

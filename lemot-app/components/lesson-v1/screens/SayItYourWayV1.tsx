@@ -8,7 +8,7 @@ import { P, RADIUS, SPACE } from "@/constants/theme";
 import { FEATURES } from "@/config/productStage";
 import { evaluateSayIt } from "@/lib/ai";
 import type { SayItYourWayScreen } from "@/content/lessonTypes";
-import { NaturalRevealView } from "./NaturalReveal";
+import { NaturalRevealView, type NaturalRevealMode } from "./NaturalReveal";
 import { componentEvidence } from "@/content/lesson-v1-evidence/answerComponents";
 
 type AiState =
@@ -16,6 +16,11 @@ type AiState =
   | { status: "loading" }
   | { status: "done"; feedback: string }
   | { status: "skipped" };
+
+/** Small numbers read better as words in a sentence. */
+function countWord(n: number): string {
+  return ["zero", "one", "two", "three", "four", "five"][n] ?? String(n);
+}
 
 export function SayItYourWayV1({
   screen,
@@ -35,7 +40,7 @@ export function SayItYourWayV1({
    */
   onOpenAttempt?: (facts: {
     text: string;
-    ideaPiecesShown: boolean;
+    helpTaken: boolean;
     revisionCount: number;
     modelAnswer: string | null;
   }) => void;
@@ -54,9 +59,28 @@ export function SayItYourWayV1({
   // Presentation only: a warm focus accent so the expression surface feels
   // owned, matching the working surface in Weave. Touches no input behaviour.
   const [focused, setFocused] = useState(false);
-  // Support, not assembly: suggested pieces stay hidden until the learner opts in
-  // via "Need a hint?", so the initial screen does not read as guided assembly.
-  const [showPieces, setShowPieces] = useState(false);
+  /**
+   * Support, not assembly — and now not all at once.
+   *
+   * 0 nothing asked for. 1 a direction, with no French in it. 2 one piece.
+   * 3 the rest. The founder opened the hint on L3's Say It and the screen put
+   * four pills up, two of which were complete answers to the prompt; the rung
+   * that was supposed to be the smallest help available was the largest.
+   *
+   * Same shape as Weave's ladder, and the same reason for it, so the two
+   * screens teach the learner one habit rather than two.
+   */
+  const [hintLevel, setHintLevel] = useState(0);
+  const showPieces = hintLevel >= 2;
+
+  /**
+   * Reversed, so rung 2's single piece is not the one the answer starts with.
+   * Same deterministic trick Weave uses: stable across renders and remounts, no
+   * randomness, and never copy-ready.
+   */
+  const ideaPieces = [...(payload.suggestedPieces ?? [])].reverse();
+  const hasIdeas = ideaPieces.length > 0;
+  const shownIdeas = hintLevel >= 3 ? ideaPieces : ideaPieces.slice(0, 1);
 
   const canCheck = text.trim().length > 0;
   const isInput = phase === "input";
@@ -86,7 +110,7 @@ export function SayItYourWayV1({
       reported.current = true;
       onOpenAttempt?.({
         text: text.trim(),
-        ideaPiecesShown: showPieces,
+        helpTaken: hintLevel > 0,
         revisionCount: revisions.current,
         modelAnswer: payload.modelAnswer ?? payload.reveal.modelAnswer ?? null,
       });
@@ -185,42 +209,59 @@ export function SayItYourWayV1({
         </Text>
       )}
 
-      {payload.suggestedPieces &&
-        payload.suggestedPieces.length > 0 &&
-        !showPieces &&
-        isInput && (
-          <View style={{ marginTop: SPACE.md }}>
-            <LinkAction
-              label="Need a hint?"
-              align="left"
-              onPress={() => setShowPieces(true)}
-            />
-          </View>
-        )}
+      {hasIdeas && isInput && !isRevealed && (
+        <View style={{ marginTop: hintLevel === 0 ? SPACE.md : SPACE.lg }}>
+          {hintLevel === 0 && (
+            <LinkAction label="Need a hint?" align="left" onPress={() => setHintLevel(1)} />
+          )}
 
-      {/* Support the learner asked for. Same PieceChip as Weave: these are the
-          same kind of thing, small pieces of French within reach. The old
-          red-tinted pills read as validation colour on a screen that grades
-          nothing. */}
-      {payload.suggestedPieces &&
-        payload.suggestedPieces.length > 0 &&
-        showPieces &&
-        !isRevealed && (
-          <View style={{ marginTop: SPACE.lg }}>
-            <Text
-              style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.sm }}
-            >
-              Ideas you can use.
-            </Text>
-            <View
-              style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}
-            >
-              {payload.suggestedPieces.map((p, i) => (
-                <PieceChip key={`${p.text}-${i}`} text={p.text} />
-              ))}
+          {/* RUNG 1 — where to aim. No French, so the smallest help available
+              really is small. */}
+          {hintLevel === 1 && (
+            <View>
+              <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 18 }}>
+                {payload.hintDirection ??
+                  `There are ${countWord(ideaPieces.length)} pieces here you already own.`}
+              </Text>
+              <View style={{ marginTop: SPACE.sm }}>
+                <LinkAction
+                  label="Show me a piece"
+                  align="left"
+                  onPress={() => setHintLevel(2)}
+                />
+              </View>
             </View>
-          </View>
-        )}
+          )}
+
+          {/* RUNGS 2 and 3 — pieces, and then the rest of them. Same PieceChip
+              as Weave: these are the same kind of thing, small pieces of French
+              within reach. The old red-tinted pills read as validation colour
+              on a screen that grades nothing. */}
+          {hintLevel >= 2 && (
+            <View>
+              <Text style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.sm }}>
+                {shownIdeas.length < ideaPieces.length
+                  ? "One you could start from."
+                  : "Ideas you can use."}
+              </Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}>
+                {shownIdeas.map((p, i) => (
+                  <PieceChip key={`${p.text}-${i}`} text={p.text} />
+                ))}
+              </View>
+              {shownIdeas.length < ideaPieces.length && (
+                <View style={{ marginTop: SPACE.sm }}>
+                  <LinkAction
+                    label="Show the rest"
+                    align="left"
+                    onPress={() => setHintLevel(3)}
+                  />
+                </View>
+              )}
+            </View>
+          )}
+        </View>
+      )}
 
       {/* THE EXPRESSION SURFACE. Say-It is free production, so it gets more
           room and less scaffolding than Weave: a taller field, no piece rail,
@@ -315,15 +356,29 @@ export function SayItYourWayV1({
               whatever the learner wrote. The same component check the graded
               path uses decides here too: notes that assert understanding are
               shown only when the pieces are actually present.
+
+              AGAINST EVERY AUTHORED ANSWER, not only the model. A Say It prompt
+              can name two honest exits — "say no, or say you did not follow" —
+              and a learner who takes the second one wrote a sentence the lesson
+              taught them. Read against the model alone, none of its components
+              are present, so the screen fell to `mismatch` and told them, in
+              effect, that nothing landed. The check is not wrong; it was being
+              handed one target when the screen has several. The best of them
+              decides, so taking any authored path reads as taking a path.
             */
             mode={(() => {
-              const e = componentEvidence(
-                text,
-                [payload.modelAnswer ?? payload.reveal.modelAnswer ?? ""].filter(Boolean),
-                false,
-              );
-              if (e.verdict !== "partial") return "mismatch";
-              return e.meaningEvidenced ? "understood" : "partial";
+              const targets = [
+                payload.modelAnswer ?? payload.reveal.modelAnswer ?? "",
+                ...(payload.acceptedAlternatives ?? []),
+              ].filter(Boolean);
+              const best = targets
+                .map((target) => componentEvidence(text, [target], false))
+                .reduce<NaturalRevealMode>((mode, e) => {
+                  if (mode === "understood") return mode;
+                  if (e.verdict !== "partial") return mode;
+                  return e.meaningEvidenced ? "understood" : "partial";
+                }, "mismatch");
+              return best;
             })()}
           />
         </View>

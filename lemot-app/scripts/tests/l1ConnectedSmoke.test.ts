@@ -180,7 +180,7 @@ async function runCumulativeHistory(kv: FakeKv) {
     // 5 · PM-014 open production: attempt then comparison reveal, in order.
     const { attempt, reveal } = openAttemptInteraction(lesson001, sayItScreen, {
       text: "Bonjour, un thé s'il vous plaît. Merci !",
-      ideaPiecesShown: false,
+      helpTaken: false,
       revisionCount: 0,
       modelAnswer: sayItScreen.payload.modelAnswer ?? null,
     });
