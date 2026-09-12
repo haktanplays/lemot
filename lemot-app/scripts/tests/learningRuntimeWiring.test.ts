@@ -885,15 +885,37 @@ describe("PR-05 is wiring only — nothing emits", () => {
       "snapshot={",
       "mastery",
       "monLexique",
+      // Added with the recap's Mon Lexique bridge. The first version of it
+      // passed the learner's reached item ids straight into RecapCard, which
+      // slipped past every name above while being exactly the thing they are
+      // there to stop. Naming it closes that.
+      "reachedItemIds={",
     ]) {
       assert(!src.includes(banned), `no screen may receive "${banned}"`);
     }
-    // The three non-Wave-A screens keep exactly the original two props.
-    for (const quiet of ["InsightCard", "NaturalReveal", "RecapCard"]) {
+    // Two of the three non-Wave-A screens keep exactly the original two props.
+    for (const quiet of ["InsightCard", "NaturalReveal"]) {
       assert(
         new RegExp(`<${quiet} screen=\\{screen\\} onContinue=\\{onContinue\\} />`).test(src),
         `${quiet} still receives exactly screen + onContinue`,
       );
+    }
+    // Recap gained two, and only two, when its chips became the lesson's
+    // bridge into Mon Lexique. Both are presentational: a list of display
+    // strings to draw as links, and what to call when one is tapped. It still
+    // emits nothing, still receives no controller, snapshot or mastery, and
+    // still cannot ask whether the learner owns anything — the resolution
+    // happens out here, which is why the reached set is banned above.
+    // Bounded to the element itself. A fixed-length slice ran past the closing
+    // tag into the next case, which mentions `session` for a screen that is
+    // entitled to it — the guard then reported a violation Recap had not made.
+    const recapStart = src.indexOf("<RecapCard");
+    const recap = src.slice(recapStart, src.indexOf("/>", recapStart));
+    for (const allowed of ["screen={screen}", "onContinue={onContinue}", "linkablePieces=", "onOpenPiece="]) {
+      assert(recap.includes(allowed), `RecapCard should receive ${allowed}`);
+    }
+    for (const banned of ["snapshot", "controller", "session", "reachedItemIds"]) {
+      assert(!recap.includes(banned), `RecapCard must not receive ${banned}`);
     }
   });
 

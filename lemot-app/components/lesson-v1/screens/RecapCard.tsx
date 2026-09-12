@@ -1,16 +1,29 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { PieceChip } from "@/components/ui/PieceChip";
 import { P, SPACE } from "@/constants/theme";
 import type { RecapScreen } from "@/content/lessonTypes";
 
+
 export function RecapCard({
   screen,
   onContinue,
+  linkablePieces,
+  onOpenPiece,
 }: {
   screen: RecapScreen;
   onContinue: () => void;
+  /**
+   * The chips that are tappable, as the display strings this screen already
+   * shows. PRESENTATIONAL ONLY, and deliberately so: an earlier version took
+   * the learner's reached item ids and resolved them here, which handed a
+   * screen that emits nothing a private view of Mon Lexique state. The wiring
+   * guard was right to refuse it. Whether a piece is kept is a question about
+   * the learner; this screen only needs to know which chips to draw as links.
+   */
+  linkablePieces?: readonly string[];
+  onOpenPiece?: (piece: string) => void;
 }) {
   const { payload } = screen;
   const pieces = payload.piecesUsed ?? [];
@@ -81,9 +94,25 @@ export function RecapCard({
           <View
             style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}
           >
-            {pieces.map((p, i) => (
-              <PieceChip key={`${p}-${i}`} text={p} />
-            ))}
+            {/* The bridge the founder asked for, and the restraint it needs.
+                A chip opens its Mon Lexique entry only when the string is a
+                real registry piece AND the learner has reached it. Everything
+                else stays exactly the chip it was: no affordance, no dead tap,
+                and no invented entry to make the row look uniform. */}
+            {pieces.map((p, i) => {
+              const linkable = Boolean(onOpenPiece) && (linkablePieces ?? []).includes(p);
+              if (!linkable) return <PieceChip key={`${p}-${i}`} text={p} />;
+              return (
+                <Pressable
+                  key={`${p}-${i}`}
+                  onPress={() => onOpenPiece?.(p)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Open ${p} in Mon Lexique`}
+                >
+                  <PieceChip text={p} label="kept" />
+                </Pressable>
+              );
+            })}
           </View>
         </View>
       )}

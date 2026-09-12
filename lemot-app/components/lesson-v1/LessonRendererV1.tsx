@@ -18,6 +18,8 @@ import { PrimaryAction, LinkAction } from "@/components/ui/actions";
 import { P, SPACE } from "@/constants/theme";
 import { markFirstTasteFinished } from "@/lib/firstUse";
 import { useApp } from "@/providers/AppProvider";
+import { useReachedItemIds } from "@/hooks/useReachedItemIds";
+import { itemIdForPiece, recapLinkTarget } from "@/content/lessons/recapBridge";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { ActivityChain } from "@/components/lesson-v1/screens/ActivityChain";
 import { Showcase } from "@/components/lesson-v1/screens/Showcase";
@@ -68,6 +70,18 @@ export function LessonRendererV1({ lesson }: { lesson: Lesson }) {
 
 function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
   const { mk } = useApp();
+  // What Mon Lexique would actually show this learner, so the recap can offer
+  // to open only the pieces that are really there. Undefined until it answers,
+  // which means nothing links — the safe direction.
+  const reachedItemIds = useReachedItemIds();
+  const linkablePieces =
+    reachedItemIds === undefined
+      ? undefined
+      : (
+          lesson.screens.find((s: LessonScreen) => s.type === "recap")?.payload as
+            | { piecesUsed?: string[] }
+            | undefined
+        )?.piecesUsed?.filter((piece) => recapLinkTarget(piece, reachedItemIds) !== null);
   const session = useLessonV1LearningSession();
   // Resume where the learner left off. Read once, on mount: a lesson that
   // re-read the cursor on every render would fight the learner's own paging.
@@ -189,8 +203,14 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
               The key only changes on step advance, so typing within a screen
               (screenIndex unchanged) preserves state. */}
           <View key={screenIndex} style={{ flex: 1 }}>
-            {pickScreen(screen, goNext, session, chainStep, setChainStep, () =>
-              setOrderLanded(true),
+            {pickScreen(
+              screen,
+              goNext,
+              session,
+              chainStep,
+              setChainStep,
+              () => setOrderLanded(true),
+              linkablePieces,
             )}
           </View>
         </View>
@@ -294,6 +314,12 @@ function pickScreen(
   onChainStep: (step: number) => void,
   /** Called when a typed production is graded as landing. Weave only. */
   onProductionLanded: () => void,
+  /**
+   * Which recap chips may be drawn as links, as display strings. The reached
+   * set itself stays out of here and out of the screen: what crosses this
+   * boundary is a presentational fact, not learner state.
+   */
+  linkablePieces?: readonly string[],
 ) {
   switch (screen.type) {
     // Orchestration only: it grades nothing and records nothing itself. Every
@@ -365,7 +391,22 @@ function pickScreen(
     case "natural-reveal":
       return <NaturalReveal screen={screen} onContinue={onContinue} />;
     case "recap":
-      return <RecapCard screen={screen} onContinue={onContinue} />;
+      return (
+        <RecapCard
+          screen={screen}
+          onContinue={onContinue}
+          linkablePieces={linkablePieces}
+          onOpenPiece={(piece) => {
+            // Resolved here, at the wiring layer, because it is a question
+            // about the learner and the screen must not be able to ask it.
+            const itemId = itemIdForPiece(piece);
+            if (itemId === null) return;
+            router.push(
+              `/(tabs)/mon-lexique?item=${encodeURIComponent(itemId)}` as never,
+            );
+          }}
+        />
+      );
     default: {
       const _exhaustive: never = screen;
       return null;

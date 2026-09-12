@@ -45,7 +45,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { P } from "@/constants/theme";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import {
@@ -112,7 +112,19 @@ export default function MonLexiqueRoute() {
   const [lessonId, setLessonId] = useState<string | null>(null);
   // One word open at a time: the detail answers a question about THAT word, and
   // a column of open panels is the list again, only longer.
-  const [openItemId, setOpenItemId] = useState<string | null>(null);
+  /**
+   * Which entry is expanded. Seeded from the route so a recap chip can open the
+   * piece it names rather than dropping the learner at the top of a list and
+   * leaving them to find it.
+   *
+   * A param naming something the learner has not reached simply opens nothing:
+   * `openItemId` is compared against entries that exist, so an unknown id is
+   * inert rather than an error state.
+   */
+  const { item: itemParam } = useLocalSearchParams<{ item?: string }>();
+  const [openItemId, setOpenItemId] = useState<string | null>(
+    typeof itemParam === "string" && itemParam.length > 0 ? itemParam : null,
+  );
   // Context Card exposure, read from ITS OWN store. Kept as a separate list
   // rather than folded into the bands, because the bands are about ownership
   // and this is about having seen something once.
