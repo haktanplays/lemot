@@ -141,8 +141,13 @@ describe("only acceptance is projected; everything else keeps its own words", ()
 
   test("the projection is reached only on an accepted answer", () => {
     const weave = codeOf(read("components/lesson-v1/screens/Weave.tsx"));
+    // Widened by the L8 writing pass to cover `exact` as well: a writing slip
+    // rides on an accepted answer of EITHER kind, and without this a learner
+    // who wrote the model with a lexical accent missing was told "Correct."
+    // and never saw the note. What the pin is actually for is unchanged — an
+    // answer the grader did not accept still keeps the verdict table's words.
     assert(
-      weave.includes('match === "alternative" && spoken !== null'),
+      weave.includes('(match === "alternative" || match === "exact") && spoken !== null'),
       "an unaccepted answer keeps the verdict table's words",
     );
     // And the function itself refuses everything else, whatever it is handed.

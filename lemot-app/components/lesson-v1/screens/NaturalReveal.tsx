@@ -296,6 +296,18 @@ export function NaturalRevealView({
           </Text>
         </RevealNote>
       )}
+
+      {/* HOW IT IS WRITTEN, at the one moment the learner has just written it.
+          Last, and smallest: the answer and the reason for it come first, and a
+          note about a hyphen has no business competing with either. A screen
+          that lectures after every correct answer stops being read. */}
+      {reveal.writing && (
+        <RevealNote kicker="Writing">
+          <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
+            {reveal.writing}
+          </Text>
+        </RevealNote>
+      )}
     </View>
   );
 }

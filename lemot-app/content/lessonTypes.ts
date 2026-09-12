@@ -151,6 +151,21 @@ export type NaturalRevealPayload = {
   ifBetterThanExpected?: string;
   naturalAlternatives?: (string | NaturalAlternative)[];
   explanation?: string;
+  /**
+   * How the French the learner already understands is WRITTEN.
+   *
+   * The founder typed "C'est ou", met "Excusez-moi" without ever being told
+   * about the hyphen, and met "Est-ce que" the same way. Cairn teaches French
+   * by meaning and sound and had almost nothing to say about orthography, so
+   * conventions that change a word (the accent on où) sat at the same level as
+   * conventions that are merely tidy.
+   *
+   * Deliberately a NOTE, never a screen. It appears where it explains something
+   * the learner just typed or just read, and a lesson that front-loads a page
+   * of writing rules has turned into a spelling course. One sentence, at the
+   * moment it is useful, or nothing.
+   */
+  writing?: string;
 };
 
 /**
@@ -186,6 +201,21 @@ export type ShowcaseDepth = {
   structure?: string;
   /** Register, naturalness, when a French speaker would actually say it. */
   usage?: string;
+  /**
+   * How the French the learner already understands is WRITTEN.
+   *
+   * The founder typed "C'est ou", met "Excusez-moi" without ever being told
+   * about the hyphen, and met "Est-ce que" the same way. Cairn teaches French
+   * by meaning and sound and had almost nothing to say about orthography, so
+   * conventions that change a word (the accent on où) sat at the same level as
+   * conventions that are merely tidy.
+   *
+   * Deliberately a NOTE, never a screen. It appears where it explains something
+   * the learner just typed or just read, and a lesson that front-loads a page
+   * of writing rules has turned into a spelling course. One sentence, at the
+   * moment it is useful, or nothing.
+   */
+  writing?: string;
   /** A useful contrast with another form the learner has already reached. */
   compare?: string;
   /**

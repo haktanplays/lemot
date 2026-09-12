@@ -279,11 +279,16 @@ const PATH = V1_LESSONS.filter((l) => l.number >= 1 && l.number <= 10);
     .map((s) => JSON.stringify((s as { payload: unknown }).payload))
     .join(" ");
   const all = depth + insight;
-  gate("SOUND", "est-ce teaching exists", /one small sound: ess|ess-kuh/i.test(all), "L8 teaches that est-ce is one sound, not four letters");
+  // THESE THREE GATES USED TO ASSERT ON THE RESPELLINGS THEMSELVES. That was
+  // fine while homemade respellings were house style, and wrong once they were
+  // removed: the gate would then report the TEACHING missing when only the
+  // transcription had gone. Each now looks for the phenomenon it actually
+  // cares about, which is what it was always trying to protect.
+  gate("SOUND", "est-ce teaching exists", /one small sound comes out|almost none of it survives/i.test(all), "L8 teaches that est-ce is four letters and almost nothing said");
   gate("SOUND", "accent teaching exists", /closed one|written è|plain e/i.test(all), "L1 teaches é / è / plain e; L7 teaches a / à");
-  gate("SOUND", "real liaison example exists", /z that nobody wrote|voo-za-VAY/i.test(all), "L8 teaches the vous avez liaison, with the before-a-vowel rule");
+  gate("SOUND", "real liaison example exists", /z that nobody wrote/i.test(all), "L8 teaches the vous avez liaison, with the before-a-vowel rule");
   gate("PROSODY", "C'est ici. / C'est ici ? contrast exists", /settles and closes/.test(all) && /lifts at the end/.test(all), "L8's Showcase depth carries the statement/question contour");
-  gate("PROSODY", "stress is taught", /bon-ZHOOR, not BON-zhoor/.test(all), "L1 states the end-of-group stress rule the cues have always implied");
+  gate("PROSODY", "stress is taught", /leans on the end of the group/i.test(all), "L1 states the end-of-group stress rule");
 }
 
 // ── LOOK CLOSER ────────────────────────────────────────────────────────────

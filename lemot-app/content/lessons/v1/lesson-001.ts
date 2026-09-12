@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "Opening a moment",
           sentences: [
-            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], depth: { sound: "bon-ZHOOR", notice: "The weight lands at the end: bon-ZHOOR, not BON-zhoor. French does not stress a chosen syllable inside a word the way English does. It leans on the end of the group, which is why every sound cue in this app puts its capitals last.", usage: "Not optional. Walking into a French shop without it reads as rude in a way English speakers rarely intend." }, flat: "formula" },
+            { fr: "Bonjour.", en: "Hello.", role: "core", itemIds: ["chunk-bonjour"], depth: { sound: "The weight lands on the second syllable, not the first. Listen for where the word leans.", notice: "French does not stress a chosen syllable inside a word the way English does. It leans on the end of the group, which is why an English instinct to lean on the first half always sounds slightly off.", usage: "Not optional. Walking into a French shop without it reads as rude in a way English speakers rarely intend." }, flat: "formula" },
             { fr: "Excusez-moi.", en: "Excuse me.", role: "core", itemIds: ["chunk-excusez-moi"], flat: "formula" },
             { fr: "Bonjour, madame.", en: "Hello, madam.", role: "exposure", pieces: ["Bonjour", "madame"] },
             { fr: "Bonjour, monsieur.", en: "Hello, sir.", role: "exposure", pieces: ["Bonjour", "monsieur"] },
@@ -32,7 +32,7 @@ const screens: LessonScreen[] = [
               en: "I would like a coffee, please.",
               role: "core",
               itemIds: ["chunk-je-voudrais", "noun-cafe", "chunk-sil-vous-plait"],
-              depth: { sound: "zhuh voo-DREH un ka-FAY, seel voo PLEH", structure: "Three pieces, each reusable: the polite ask, the thing, the softener. Swap the middle piece and you have ordered something else.", usage: "The safe register with anyone you do not know. Je veux (I want) is what a child says, and lands badly at a counter.", inDepth: "This line holds two different e sounds and it is worth knowing which is which. The é in café is the closed one: roughly the ay in day, but short, with none of the glide English puts on the end. The one you will meet later in très and problème is written è and opens the mouth again, closer to the e in bed. Then there is plain e, the unreliable one. It has no single sound: in je it is a soft uh that often disappears entirely in normal speech, which is why zhuh voo-DREH gets you closer than jeh voo-DRAY. The accent is not decoration. It is the only thing telling you which of the three you are looking at." },
+              depth: { sound: "Four words, one run: French does not leave gaps between them the way English does.", structure: "Three pieces, each reusable: the polite ask, the thing, the softener. Swap the middle piece and you have ordered something else.", usage: "The safe register with anyone you do not know. Je veux (I want) is what a child says, and lands badly at a counter.", inDepth: "This line holds two different e sounds and it is worth knowing which is which. The é in café is the closed one: roughly the ay in day, but short, with none of the glide English puts on the end. The one you will meet later in très and problème is written è and opens the mouth again, closer to the e in bed. Then there is plain e, the unreliable one. It has no single sound: in je it is a soft uh that often disappears entirely in normal speech, which is why leaning on it, the way an English speaker would, is what gives je away. The accent is not decoration. It is the only thing telling you which of the three you are looking at." },
             },
             {
               fr: "Je voudrais un thé.",
@@ -70,7 +70,7 @@ const screens: LessonScreen[] = [
           label: "Closing it well",
           sentences: [
             { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"], flat: "formula", depth: { cognate: "Meaning drift. Merci and mercy share one Latin ancestor meaning payment or favour. English kept the sense of showing pity; French kept the sense of thanking someone for a favour." } },
-            { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported", itemIds: ["chunk-merci-beaucoup"], depth: { sound: "mair-SEE bo-KOO", compare: "Merci closes an ordinary exchange. Merci beaucoup says they went out of their way." }, pieces: ["Merci", "beaucoup"] },
+            { fr: "Merci beaucoup.", en: "Thank you very much.", role: "supported", itemIds: ["chunk-merci-beaucoup"], depth: { sound: "The p in beaucoup is silent, as final consonants usually are.", compare: "Merci closes an ordinary exchange. Merci beaucoup says they went out of their way." }, pieces: ["Merci", "beaucoup"] },
             { fr: "Voilà.", en: "There you go.", role: "exposure", flat: "formula" },
             { fr: "Bonne journée !", en: "Have a good day!", role: "exposure", flat: "formula", depth: { cognate: "Faux ami. Journée looks like journey and is not: it means a day. Both come from the same old French word for a day's worth of travel or work, and the two languages kept different halves of it." } },
             { fr: "Au revoir.", en: "Goodbye.", role: "exposure", itemIds: ["chunk-au-revoir"], flat: "formula" },
@@ -496,7 +496,7 @@ const screens: LessonScreen[] = [
                 "Open with excusez-moi. Bonjour greets; excusez-moi interrupts, politely.",
             
               explanation:
-                "Croissant drops its final t, and the r is made at the back of the throat: krwa-SON.",
+                "Croissant drops its final t, the r is made at the back of the throat, and the an at the end is nasal.",
             },
             validationMode: "exact-or-alternative",
           },

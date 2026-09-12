@@ -15,12 +15,12 @@ const screens: LessonScreen[] = [
     type: "showcase",
     payload: {
       intro:
-        "Until now you could answer. Today you can ask. One small frame turns almost any sentence you already own into a question.",
+        "Until now you could answer. Today you can ask. Add où when the place is the missing piece, and later you will meet a frame that turns a whole statement into a question.",
       clusters: [
         {
           label: "Asking where",
           sentences: [
-            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "say-OO", structure: "Two pieces, and you already own one of them. c'est is the same c'est you use to answer; où is the part that turns it into a question about place. Swap où for something else and c'est goes on working.", compare: "où is one long oo. Not oh, and not ow." } },
+            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "Listen to the two together: C'est ici. runs as one word, and C'est où ? does not. The t in c'est only wakes up before a vowel, and où does not start with one.", structure: "Two pieces, and you already own one of them. c'est is the same c'est you use to answer; où is the part that turns it into a question about place. Swap où for something else and c'est goes on working.", compare: "où is one long oo. Not oh, and not ow." } },
             { fr: "Excusez-moi, c'est où ?", en: "Excuse me, where is it?", role: "core" },
             { fr: "Le café, c'est où ?", en: "The café, where is it?", role: "supported", pieces: ["Le café", "c'est", "où"] },
             { fr: "C'est loin ?", en: "Is it far?", role: "exposure", pieces: ["C'est", "loin"] },
@@ -34,12 +34,12 @@ const screens: LessonScreen[] = [
               en: "Is it here?",
               role: "core",
               itemIds: ["chunk-est-ce-que"],
-              depth: { sound: "ess-kuh say-t-ee-SEE", notice: "Four written letters in est-ce, one small sound: ess. Nobody pronounces the t or the e.", structure: "est-ce que is a ready-made opener. Put it in front of a statement and the statement becomes a question, with nothing else moved.", inDepth: "The spelling looks like it should be spelled out because it was once three separate words. In speech it has worn down to ess-kuh and runs straight into whatever follows. Hearing it as one lump is closer to the truth than reading it as three." },
+              depth: { sound: "est-ce que is four written words worth of letters and almost nothing said. Listen for how little of it survives.", notice: "Four written letters in est-ce, and one small sound comes out. Nobody says the t or the e.", structure: "est-ce que is a ready-made opener. Put it in front of a statement and the statement becomes a question, with nothing else moved.", inDepth: "The spelling looks like it should be spelled out because it was once three separate words. In speech almost none of it survives, and what is left runs straight into whatever follows. Hearing it as one lump is closer to the truth than reading it as three." },
             },
             // These three wrap SECOND-PERSON verbs the path does not own, so
             // they are exposure: heard and understood, never a graded answer.
             // The one wrap L8 can legitimately demand is the one above it.
-            { fr: "Est-ce que vous avez un café ?", en: "Do you have a coffee?", role: "exposure", depth: { sound: "ess-kuh voo-za-VAY un ka-FAY", notice: "Vous avez is where you hear a z that nobody wrote. The silent s at the end of vous wakes up in front of a vowel and links the two words into one run: voo-za-VAY.", inDepth: "This is liaison proper, and it has a rule: the sleeping consonant only wakes up before a vowel. Vous avez links because avez starts with one. Vous pouvez does not, because pouvez starts with p, and the s stays silent. Not every two words that run together are doing this. Most of the time French is simply not leaving gaps." } },
+            { fr: "Est-ce que vous avez un café ?", en: "Do you have a coffee?", role: "exposure", depth: { sound: "Listen between vous and avez: a z appears that nobody wrote.", notice: "Vous avez is where you hear a z that nobody wrote. The silent s at the end of vous wakes up in front of a vowel and links the two words into one run.", inDepth: "This is liaison proper, and it has a rule: the sleeping consonant only wakes up before a vowel. Vous avez links because avez starts with one. Vous pouvez does not, because pouvez starts with p, and the s stays silent. Not every two words that run together are doing this. Most of the time French is simply not leaving gaps." } },
             { fr: "Est-ce que vous comprenez ?", en: "Do you understand?", role: "exposure", pieces: ["Est-ce que", "vous comprenez"] },
             { fr: "Est-ce que c'est loin ?", en: "Is it far?", role: "exposure", pieces: ["Est-ce que", "c'est", "loin"] },
           ],
@@ -47,7 +47,7 @@ const screens: LessonScreen[] = [
         {
           label: "Answering someone else",
           sentences: [
-            { fr: "C'est ici.", en: "It's here.", role: "core", itemIds: ["chunk-c-est"], depth: { sound: "say-t-ee-SEE", notice: "The t in c'est is silent on its own, and wakes up before a vowel: say-t-ici, not say / ici.", compare: "C'est ici. ↓ settles and closes. C'est ici ? ↑ lifts at the end and asks. Same three words; the voice does the work." } },
+            { fr: "C'est ici.", en: "It's here.", role: "core", itemIds: ["chunk-c-est"], depth: { sound: "The silent t in c'est wakes up before ici and carries into it, so the two words run as one.", notice: "The t in c'est is silent on its own, and wakes up before a vowel. Listen for it arriving at the front of ici.", compare: "C'est ici. ↓ settles and closes. C'est ici ? ↑ lifts at the end and asks. Same three words; the voice does the work." } },
             { fr: "Oui, c'est ici.", en: "Yes, it's here.", role: "core" },
             { fr: "Non, ce n'est pas ici.", en: "No, it's not here.", role: "core", itemIds: ["chunk-ce-n-est-pas"] },
             { fr: "C'est par là.", en: "It's that way.", role: "exposure", pieces: ["C'est", "par là"] },
@@ -79,10 +79,17 @@ const screens: LessonScreen[] = [
     payload: {
       insightType: "lesson-goal",
       title: "Asking where",
+      // THE SPINE, not a materials list. L8 holds three question mechanisms
+      // and they are not spares for each other; a goal card that lists the
+      // pieces tells the learner what is in the box and nothing about what
+      // each one is for. Naming the three jobs here is what stops the lesson
+      // reading as three unrelated strings to memorise.
       body:
-        "Today: the smallest useful question, c'est où ?\n" +
-        "By the end: you can ask where something is, and answer.\n" +
-        "Main pieces: où, c'est, ici.",
+        "Three questions, three different jobs.\n" +
+        "c'est où ? asks for a place.\n" +
+        "c'est ici ? asks yes or no, and your voice does the asking.\n" +
+        "est-ce que c'est ici ? asks yes or no out loud, in words.\n" +
+        "By the end you will know which one you are reaching for.",
     },
   },
 
@@ -122,7 +129,7 @@ const screens: LessonScreen[] = [
               text: "ici",
               isCorrect: false,
               trapReason:
-                "Ici answers the question. It says here. It cannot ask where.",
+                "Ici answers a question about place. It cannot ask one.",
             },
             {
               id: "opt-oui",
@@ -166,6 +173,12 @@ const screens: LessonScreen[] = [
             ifUnderstandableButWrong:
               "Your meaning lands. Spoken French keeps it this short: C'est où ?",
             ifMissingTargetPiece: "Où is the word that asks. Put it after c'est.",
+            // §8/§9 — the two writing conventions this exact answer carries.
+            // One changes the word, one is a convention of the page; naming
+            // both here, once, is what stops the learner reading the accent as
+            // decoration.
+            writing:
+              "Two things to keep in writing. Où keeps its accent: without it, ou is the word for \"or\". And a written question ends with ?, with a space before it in French.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -183,7 +196,7 @@ const screens: LessonScreen[] = [
       insightType: "grammar-nugget",
       title: "It's... where?",
       body:
-        "Où = where. Spoken French loves this shape: C'est où ? Literally, \"it's where?\". You already own c'est. Take the question whole.",
+        "Où = where, and it is the word that asks for a PLACE. You already own c'est, so the whole question is one owned piece plus one new one: C'est où ? Literally, \"it's where?\". Whatever you put in front of où, the answer that comes back will be somewhere.",
       examples: [
         { fr: "C'est où ?", en: "Where is it?" },
         { fr: "Le café, c'est où ?", en: "The café, where is it?" },
@@ -360,7 +373,7 @@ const screens: LessonScreen[] = [
                 text: "C'est où",
                 isCorrect: false,
                 trapReason:
-                  "That asks them to find it for you. You already think you have found it; you want a yes or a no.",
+                  "That asks for a PLACE, and they would answer with one. You already think you have found the place; what you want back is a yes or a no.",
               },
               {
                 id: "opt-statement",
@@ -399,6 +412,10 @@ const screens: LessonScreen[] = [
             expectedAnswers: ["Est-ce que c'est ici ?"],
             acceptedAlternatives: ["Est-ce que c'est ici", "Excusez-moi, est-ce que c'est ici ?"],
             reveal: {
+              // §13 — the written shape, once. The learner does not need inversion
+              // or history; they need to know the hyphens are not decoration.
+              writing:
+                "Est-ce que is written with a hyphen between est and ce, and none before que. The hyphen is part of the form, not a typographic flourish.",
               modelAnswer: "Est-ce que c'est ici ?",
               ifCorrect:
                 "You asked a question you were never taught as a phrase. You built it out of a sentence you already had.",
@@ -525,12 +542,21 @@ const screens: LessonScreen[] = [
       ],
       hintCloze: "Excusez-moi, ___ ?",
       expectedAnswers: ["Excusez-moi, c'est où ?"],
+      // §9 — omitting the question mark is a WRITING slip, not wrong French,
+      // and it is a different class from writing ou for où. The answer is
+      // accepted and the reveal's Writing note teaches the convention.
       acceptedAlternatives: [
+        "Excusez-moi, c'est où",
         "Excusez-moi, c'est où",
         "Excusez-moi. C'est où ?",
         "Excusez-moi. C'est où",
       ],
       reveal: {
+        // §11 — the hyphen, explained where the learner has just typed it and
+        // nowhere else. Not an imperative-pronoun grammar lesson: one sentence
+        // about the shape they need to carry.
+        writing:
+          "Excusez-moi keeps its hyphen in writing. It holds the two halves together as one expression.",
         modelAnswer: "Excusez-moi, c'est où ?",
         ifCorrect:
           "The question travelled. Same two words, a room that was not waiting for you.",
@@ -599,8 +625,16 @@ const screens: LessonScreen[] = [
         targetItemIds: ["chunk-vous-pouvez-repeter"],
         weakPointTags: ["politeness"],
         payload: {
+          // §18 — THE TASK, NAMED. This scene is good and the choice is the kind
+          // of noticing Cairn wants more of, but the screen was grading
+          // "Je ne comprends pas." as wrong and then explaining that it was
+          // true. A learner cannot be marked down for real French that answers
+          // the situation; what they can be asked is which one gets the
+          // sentence repeated. So the prompt now says what is wanted, and the
+          // reason below says what the other one does rather than calling it a
+          // mistake.
           prompt:
-            "You asked where it was. The answer came back long, quick, and full of turns you did not catch.",
+            "You asked where it was. The answer came back long, quick, and full of turns you did not catch. You want them to say it again. What do you ask?",
           blankCount: 1,
           options: [
             { id: "opt-repeter", text: "Vous pouvez répéter ?", isCorrect: true },
@@ -609,7 +643,7 @@ const screens: LessonScreen[] = [
               text: "Je ne comprends pas.",
               isCorrect: false,
               trapReason:
-                "True, and it stops there. It names the problem without asking them to fix it.",
+                "Real French, and true here: it tells them it did not land. It is not a request, though, so they may simply nod. This scene asks for the one that gets the sentence repeated.",
             },
             {
               id: "opt-merci",

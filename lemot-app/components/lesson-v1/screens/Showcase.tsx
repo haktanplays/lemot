@@ -408,6 +408,10 @@ function Depth({ depth }: { depth: ShowcaseDepth }) {
   const [deepOpen, setDeepOpen] = useState(false);
   const shortPoints: [string, string | undefined][] = [
     ["Sound", depth.sound],
+    // Sits next to Sound, because they answer the two halves of the same
+    // question a learner has about a line they can already understand: how is
+    // it said, and how is it written.
+    ["Writing", depth.writing],
     ["Cognate", depth.cognate],
     ["Notice", depth.notice],
     ["Structure", depth.structure],

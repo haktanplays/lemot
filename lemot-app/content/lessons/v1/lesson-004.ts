@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "What your body is telling you",
           sentences: [
-            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"], depth: { sound: "zhay FA(n)", notice: "Literally I have hunger. The m at the end is not said at all, and the (n) is not a consonant either: it marks the vowel as nasal, so the sound carries through the nose and stops there. Say fan and close it with your tongue and you have said an English word, not this one.", compare: "Je suis for who and where you are; j'ai for hunger, thirst, cold. English uses to be for all of them, which is why this one has to be learned rather than translated." } },
+            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"], depth: { sound: "faim is one nasal vowel. The m is not said at all; it only marks the vowel as nasal.", notice: "Literally I have hunger. The m at the end is not said at all. It is there to mark the vowel as nasal, so the sound carries through the nose and stops there. Say the English word fan and close it with your tongue and you have said something else entirely.", compare: "Je suis for who and where you are; j'ai for hunger, thirst, cold. English uses to be for all of them, which is why this one has to be learned rather than translated." } },
             { fr: "J'ai soif.", en: "I'm thirsty.", role: "supported", itemIds: ["chunk-j-ai-soif"], pieces: ["J'ai", "soif"] },
             { fr: "J'ai froid.", en: "I'm cold.", role: "exposure", itemIds: ["chunk-j-ai-froid"], pieces: ["J'ai", "froid"] },
             { fr: "J'ai chaud.", en: "I'm hot.", role: "exposure", itemIds: ["chunk-j-ai-chaud"], pieces: ["J'ai", "chaud"] },
@@ -32,9 +32,9 @@ const screens: LessonScreen[] = [
               en: "I have a question.",
               role: "core",
               itemIds: ["chunk-j-ai-une-question"],
-              depth: { cognate: "Direct cognate. Question is spelled identically in both languages and does the same job. Only the sound changes: kess-tee-O(n), with the weight at the end.", sound: "zhay oon kess-tee-O(n)", structure: "j'ai plus a package. The package is une here, and that choice belongs to the word question, not to you." },
+              depth: { cognate: "Direct cognate. Question is spelled identically in both languages and does the same job. Only the sound changes: three syllables, the last one nasal, with the weight at the end.", sound: "Four syllables, and the last one is nasal. The t is said, the final n is not.", structure: "j'ai plus a package. The package is une here, and that choice belongs to the word question, not to you." },
             },
-            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"], pieces: ["J'ai", "une idée"], depth: { sound: "zhay oon ee-DAY", cognate: "Direct cognate. Idée is idea with a French ending. The é is doing real work here: it is what makes the last syllable audible rather than silent." } },
+            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"], pieces: ["J'ai", "une idée"], depth: { sound: "The é is what makes the last syllable audible. Without the accent it would fall silent.", cognate: "Direct cognate. Idée is idea with a French ending. The é is doing real work here: it is what makes the last syllable audible rather than silent." } },
             { fr: "Excusez-moi, j'ai une question.", en: "Excuse me, I have a question.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-j-ai-une-question"] },
             { fr: "J'ai un problème.", en: "I have a problem.", role: "exposure", pieces: ["J'ai", "un problème"] },
           ],

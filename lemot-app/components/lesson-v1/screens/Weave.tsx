@@ -210,8 +210,12 @@ export function Weave({
     text,
     payload.reveal.modelAnswer ?? payload.expectedAnswers[0] ?? null,
   );
+  // A writing slip rides on an ACCEPTED answer, exact or alternative alike, so
+  // the band it reads under is the accepted one either way. Without widening
+  // past `alternative` here, a learner who wrote the model with one lexical
+  // accent missing would be told "Correct." and never see the note.
   const note =
-    match === "alternative" && spoken !== null
+    (match === "alternative" || match === "exact") && spoken !== null && spoken !== undefined
       ? { text: spoken.text, tone: spoken.tone, band: "accepted" as FeedbackTone }
       : verdict !== null
         ? VERDICT_NOTES[verdict]

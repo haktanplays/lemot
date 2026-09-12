@@ -11,6 +11,7 @@ export function RecapCard({
   onContinue,
   linkablePieces,
   onOpenPiece,
+  usedPieces,
 }: {
   screen: RecapScreen;
   onContinue: () => void;
@@ -24,9 +25,25 @@ export function RecapCard({
    */
   linkablePieces?: readonly string[];
   onOpenPiece?: (piece: string) => void;
+  /**
+   * The French this learner actually produced or chose in this sitting,
+   * derived from the session's own events at the wiring layer.
+   *
+   * `undefined` means the derivation was not available, not that nothing was
+   * used, so the screen falls back to the lesson's authored list under a
+   * heading that claims nothing about the learner. Present and non-empty is
+   * the only case that may say "you used".
+   *
+   * Display strings, like `linkablePieces`: the screen still cannot ask what
+   * the learner owns, and still emits nothing.
+   */
+  usedPieces?: readonly string[];
 }) {
   const { payload } = screen;
-  const pieces = payload.piecesUsed ?? [];
+  // A learner who landed nothing gets the lesson's own inventory rather than an
+  // empty row — and, crucially, gets the heading that goes with it.
+  const derived = usedPieces !== undefined && usedPieces.length > 0;
+  const pieces = derived ? (usedPieces as readonly string[]) : (payload.piecesUsed ?? []);
   const buttonLabel = payload.nextLabel ?? "Continue";
 
   return (
@@ -86,17 +103,17 @@ export function RecapCard({
               marginBottom: SPACE.lg,
             }}
           />
-          {/* RENAMED, because the old heading made a claim this screen cannot
-              check. `piecesUsed` is authored per lesson: it is what the LESSON
-              worked, not what the learner produced, and the recap deliberately
-              receives no learner state (the wiring guard forbids it, for good
-              reasons). So a learner who skipped past a screen was still told
-              they had used its piece. The list is unchanged and still true;
-              only the sentence over it is, now, also true. */}
+          {/* THE HEADING FOLLOWS THE LIST, and never the other way round.
+              "Pieces you used" is a claim about the learner, so it may only
+              appear over pieces derived from what the learner actually did.
+              When the derivation is unavailable, or when they landed nothing,
+              the screen shows the lesson's authored inventory and says so. An
+              earlier version of this screen said "you used" over the authored
+              list unconditionally, which is the drift this split closes. */}
           <Text
             style={{ color: P.ink3, fontSize: 12, marginBottom: SPACE.md }}
           >
-            The pieces in this one
+            {derived ? "Pieces you used" : "The pieces in this one"}
           </Text>
           <View
             style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm }}

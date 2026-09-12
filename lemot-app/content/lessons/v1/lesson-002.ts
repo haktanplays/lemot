@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "Where you are",
           sentences: [
-            { fr: "Je suis ici.", en: "I'm here.", role: "core", itemIds: ["chunk-je-suis-ici"], depth: { sound: "zhuh swee ee-SEE", structure: "je suis is the engine, ici is what you hang off it. The engine does not change when the room does.", compare: "French puts states on je suis but hunger and thirst on j'ai. That split is the single most useful thing to notice early." } },
+            { fr: "Je suis ici.", en: "I'm here.", role: "core", itemIds: ["chunk-je-suis-ici"], depth: { sound: "Three syllables, with the weight on the last. The s in suis is not said.", structure: "je suis is the engine, ici is what you hang off it. The engine does not change when the room does.", compare: "French puts states on je suis but hunger and thirst on j'ai. That split is the single most useful thing to notice early." } },
             { fr: "Bonjour, je suis ici.", en: "Hello, I'm here.", role: "core", itemIds: ["chunk-bonjour", "chunk-je-suis-ici"] },
             { fr: "Excusez-moi, je suis ici.", en: "Excuse me, I'm here.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-je-suis-ici"] },
             { fr: "Je suis là.", en: "I'm here. (right here)", role: "exposure", pieces: ["Je suis", "là"] },
@@ -34,7 +34,7 @@ const screens: LessonScreen[] = [
             // once and like nothing the other time. The structure note is what
             // closes that gap honestly — it names ça va as the reusable whole
             // rather than faking a split inside it.
-            { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "sa-VA", structure: "Ça va is one piece, not two words you assemble. It travels whole, which is why it can be the entire answer here and still slot into a longer sentence underneath.", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." }, flat: "formula" },
+            { fr: "Ça va.", en: "I'm fine.", role: "supported", itemIds: ["chunk-ca-va"], depth: { sound: "Two syllables and nothing else. Both vowels are short and open.", structure: "Ça va is one piece, not two words you assemble. It travels whole, which is why it can be the entire answer here and still slot into a longer sentence underneath.", usage: "Question and answer with the same two words. Tone does all the work.", notice: "Probably the most-used exchange in spoken French." }, flat: "formula" },
             // Was "Ça va bien, merci." — a line L2 called its own and that no
             // screen in the corpus ever worked, in any lesson. L17 teaches the
             // positive answer and the string it actually uses is this one, so
@@ -60,7 +60,7 @@ const screens: LessonScreen[] = [
           label: "What people say to you",
           sentences: [
             { fr: "Comment ça va ?", en: "How are you doing?", role: "exposure", itemIds: ["adverb-comment", "chunk-ca-va"] },
-            { fr: "Vous êtes prêt ?", en: "Are you ready?", role: "exposure", itemIds: ["chunk-vous-etes-pret", "chunk-vous-etes", "pronoun-vous"], depth: { sound: "voo-z-ET preh", notice: "The silent s in vous wakes up before a vowel and links the words: vou-z-êtes, not vou / êtes." }, pieces: ["Vous êtes", "prêt"] },
+            { fr: "Vous êtes prêt ?", en: "Are you ready?", role: "exposure", itemIds: ["chunk-vous-etes-pret", "chunk-vous-etes", "pronoun-vous"], depth: { sound: "Listen between vous and etes: a z arrives that nobody wrote.", notice: "The silent s in vous wakes up before a vowel and links the words: vou-z-êtes, not vou / êtes." }, pieces: ["Vous êtes", "prêt"] },
             { fr: "Vous êtes là ?", en: "Are you there?", role: "exposure", itemIds: ["chunk-vous-etes"], pieces: ["Vous êtes", "là"] },
           ],
         },
@@ -636,7 +636,7 @@ const screens: LessonScreen[] = [
               ifMissingTargetPiece: "Je suis puts you somewhere. Ici says where.",
             
               explanation:
-                "Ici carries its weight at the end: ee-SEE. French leans on the end of a group rather than on a chosen syllable inside it.",
+                "Ici carries its weight on the second syllable. French leans on the end of a group rather than on a chosen syllable inside it.",
             },
             validationMode: "exact-or-alternative",
           },

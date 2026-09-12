@@ -1,4 +1,4 @@
-import { normalize, type MatchResult } from "./normalizeAnswer";
+import { normalize, writingSlip, type MatchResult } from "./normalizeAnswer";
 
 /**
  * What the learner reads after an answer. One source of truth.
@@ -74,6 +74,26 @@ export function learnerVerdict(
   answer: string,
   model: string | null | undefined,
 ): LearnerVerdict | null {
+  // A WRITING SLIP, on top of an accepted answer.
+  //
+  // The founder typed "C'est ou" for "C'est où ?" and read "Correct." They had
+  // in fact written a different real word: ou means "or". Telling them it was
+  // correct teaches that the accent is optional, which is the one thing it is
+  // not on this word.
+  //
+  // It stays ACCEPTED. The grader is untouched, the recorded evidence is
+  // untouched, and only the sentence the learner reads changes: the French
+  // landed, and one mark did not. Harsh failure for an accent would punish
+  // typing, and this list holds only accents where dropping the mark produces
+  // another real French word.
+  const slip = typeof model === "string" ? writingSlip(answer, model) : null;
+  if (slip !== null) {
+    return {
+      text: `Almost. ${slip.note}`,
+      tone: "warm",
+      approves: true,
+    };
+  }
   if (match === "exact") return CORRECT;
   if (match !== "alternative") return null;
   // An authored alternative that is the model in different clothes is not a

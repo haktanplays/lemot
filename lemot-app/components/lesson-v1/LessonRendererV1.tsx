@@ -20,6 +20,8 @@ import { markFirstTasteFinished } from "@/lib/firstUse";
 import { useApp } from "@/providers/AppProvider";
 import { useReachedItemIds } from "@/hooks/useReachedItemIds";
 import { useExpressionReuse } from "@/hooks/useExpressionReuse";
+import { piecesUsedInSession } from "@/content/lesson-v1-evidence/lessonUse";
+import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import type { SayItYourWayScreen, WeaveScreen } from "@/content/lessonTypes";
 import { itemIdForPiece, recapLinkTarget } from "@/content/lessons/recapBridge";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
@@ -89,6 +91,12 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
             | undefined
         )?.piecesUsed?.filter((piece) => recapLinkTarget(piece, reachedItemIds) !== null);
   const session = useLessonV1LearningSession();
+  // What the learner actually produced or chose in THIS sitting, for the recap.
+  // Derived here, at the wiring layer, from the session's own events: the recap
+  // may not ask what the learner did, so it is told, in display strings. An
+  // empty result is a real answer (they landed nothing) and is passed through
+  // as such, so the screen can choose a heading it can stand behind.
+  const usedPieces = piecesUsedInSession(session.state.events, ITEM_REGISTRY);
   // Resume where the learner left off. Read once, on mount: a lesson that
   // re-read the cursor on every render would fight the learner's own paging.
   const [screenIndex, setScreenIndex] = useState(() =>
@@ -217,6 +225,7 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
               setChainStep,
               () => setOrderLanded(true),
               linkablePieces,
+              usedPieces,
               derivedAlternativesFor,
             )}
           </View>
@@ -327,6 +336,8 @@ function pickScreen(
    * boundary is a presentational fact, not learner state.
    */
   linkablePieces?: readonly string[],
+  /** What the learner actually used this sitting, as display strings. */
+  usedPieces?: readonly string[],
   /**
    * Resolved expression reuse, as a lookup over screens. Same boundary as
    * `linkablePieces`: strings crossing into a screen, never learner state.
@@ -414,6 +425,7 @@ function pickScreen(
           screen={screen}
           onContinue={onContinue}
           linkablePieces={linkablePieces}
+          usedPieces={usedPieces}
           onOpenPiece={(piece) => {
             // Resolved here, at the wiring layer, because it is a question
             // about the learner and the screen must not be able to ask it.

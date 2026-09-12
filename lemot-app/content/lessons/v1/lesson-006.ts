@@ -65,7 +65,7 @@ const screens: LessonScreen[] = [
           label: "Leaving well",
           sentences: [
             { fr: "Merci.", en: "Thank you.", role: "core", itemIds: ["chunk-merci"], flat: "formula" },
-            { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "core", itemIds: ["chunk-au-revoir"], depth: { sound: "mair-SEE, oh ruh-VWAR", usage: "Said as one gesture on the way out, not as two separate remarks. The thanks and the goodbye travel together." } },
+            { fr: "Merci, au revoir.", en: "Thanks, goodbye.", role: "core", itemIds: ["chunk-au-revoir"], depth: { sound: "Said as one breath, with the weight falling at the end of each half.", usage: "Said as one gesture on the way out, not as two separate remarks. The thanks and the goodbye travel together." } },
             { fr: "Bonne journée !", en: "Have a good day!", role: "exposure", flat: "formula" },
             { fr: "À bientôt !", en: "See you soon!", role: "exposure", flat: "formula" },
           ],

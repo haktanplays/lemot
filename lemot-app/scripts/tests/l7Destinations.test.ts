@@ -393,9 +393,17 @@ describe("L7's reusable expressions look reusable", () => {
   test("the recap heading claims only what the screen can know", () => {
     // §21. `piecesUsed` is authored per lesson and the recap receives no
     // learner state, so "Pieces you used" asserted something nothing checked.
+    // The L8 pass went further than the rename: the recap now receives what
+    // the learner actually produced or chose, derived from the session's own
+    // events, so "Pieces you used" became a claim it CAN stand behind. The
+    // rule this pin protects is unchanged and now stated exactly — the heading
+    // follows the list, never the other way round.
     const recap = codeOf(read("components/lesson-v1/screens/RecapCard.tsx"));
-    assert(!recap.includes("Pieces you used"), "the unverifiable claim is back");
-    assert(recap.includes("The pieces in this one"), "and the truthful heading is gone");
+    assert(
+      recap.includes('derived ? "Pieces you used" : "The pieces in this one"'),
+      "the heading must be chosen by whether the list is derived",
+    );
+    assert(recap.includes("usedPieces"), "and the derivation must reach the screen");
   });
 
   test("the reveal keeps its audio and its canonical pieces", () => {

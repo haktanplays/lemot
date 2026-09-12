@@ -24,7 +24,7 @@ const screens: LessonScreen[] = [
               en: "No, I'm not here.",
               role: "core",
               itemIds: ["chunk-non", "chunk-je-ne-suis-pas"],
-              depth: { sound: "non, zhuh nuh swee pah-z-ee-SEE", structure: "ne and pas sit one on each side of the engine: je NE suis PAS ici. The two halves always travel together in writing.", inDepth: "In relaxed speech the ne often disappears and you hear je suis pas ici. Both halves are still correct to write, and it is worth recognising the sentence when only one of them arrives." },
+              depth: { sound: "The s at the end of pas is silent on its own, and links into ici here.", structure: "ne and pas sit one on each side of the engine: je NE suis PAS ici. The two halves always travel together in writing.", inDepth: "In relaxed speech the ne often disappears and you hear je suis pas ici. Both halves are still correct to write, and it is worth recognising the sentence when only one of them arrives." },
             },
             { fr: "Non merci.", en: "No thanks.", role: "core", itemIds: ["chunk-non-merci"] },
             { fr: "Oui, s'il vous plaît.", en: "Yes, please.", role: "supported", itemIds: ["chunk-oui", "chunk-sil-vous-plait"] },
@@ -52,7 +52,7 @@ const screens: LessonScreen[] = [
               en: "I don't understand.",
               role: "core",
               itemIds: ["chunk-je-ne-comprends-pas"],
-              depth: { cognate: "Word-family bridge. Comprends and comprehend come from the same Latin verb meaning to grasp. English keeps comprehend for the formal register and uses understand daily; French uses this one for both.", sound: "zhuh nuh kom-PRON pah", usage: "The single most useful sentence you own. Say it early rather than nodding along." },
+              depth: { cognate: "Word-family bridge. Comprends and comprehend come from the same Latin verb meaning to grasp. English keeps comprehend for the formal register and uses understand daily; French uses this one for both.", sound: "The end of comprends is nasal: the vowel carries through the nose and the d and s are not said.", usage: "The single most useful sentence you own. Say it early rather than nodding along." },
               flat: "formula",
             },
             {

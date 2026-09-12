@@ -29,7 +29,7 @@ const screens: LessonScreen[] = [
           label: "When it goes wrong",
           sentences: [
             { fr: "Je ne comprends pas.", en: "I don't understand.", role: "core", itemIds: ["chunk-je-ne-comprends-pas"], flat: "formula" },
-            { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core", depth: { sound: "zhuh nuh kom-PRAHN pah. say-OO", structure: "Admit it, then ask again. Two short sentences do more than one long apology." } },
+            { fr: "Je ne comprends pas. C'est où ?", en: "I don't understand. Where is it?", role: "core", depth: { sound: "Two nasal vowels in comprends, then où held long. Listen to both halves before you try them.", structure: "Admit it, then ask again. Two short sentences do more than one long apology." } },
             {
               fr: "Je ne comprends pas. Vous pouvez répéter ?",
               en: "I don't understand. Can you say that again?",
@@ -59,7 +59,7 @@ const screens: LessonScreen[] = [
           label: "Going home",
           sentences: [
             { fr: "Je vais à la maison.", en: "I'm going home.", role: "core", itemIds: ["chunk-je-vais"] },
-            { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core", depth: { sound: "zhuh vay a la may-ZON. oh ruh-VWAR", notice: "Two closings or one is a real choice, and it is made with the voice rather than with punctuation. Stopping fully after maison sounds calm and finished. Running straight on into au revoir sounds warm and quick, the way people leave when they are already halfway out. Neither is more correct." } },
+            { fr: "Je vais à la maison. Au revoir.", en: "I'm going home. Goodbye.", role: "core", depth: { sound: "Each half lands on its last syllable. That end-weight is what makes it sound French rather than translated.", notice: "Two closings or one is a real choice, and it is made with the voice rather than with punctuation. Stopping fully after maison sounds calm and finished. Running straight on into au revoir sounds warm and quick, the way people leave when they are already halfway out. Neither is more correct." } },
             { fr: "Merci. Je vais à la maison. Au revoir.", en: "Thanks. I'm going home. Goodbye.", role: "core", depth: { usage: "The merci is not padding. In French it is how you signal that the visit is ending, before you say where you are going." } },
             { fr: "Bonne soirée !", en: "Have a good evening!", role: "exposure", flat: "formula" },
           ],
