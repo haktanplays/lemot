@@ -696,3 +696,119 @@ describe("a card that describes a derivation draws one", () => {
     );
   });
 });
+
+describe("what the Showcase shows, the lesson goes on to work", () => {
+  /**
+   * ── THE MEASUREMENT, AND THE WRONG ONE THAT CAME FIRST ────────────────────
+   *
+   * The Showcase's claim is that its lines are not a gallery: they are material
+   * the lesson goes on to use. Checking that means comparing what is shown
+   * against what is later worked, and the first attempt compared the wrong two
+   * things — the PIECES a line decomposes into against the lesson's TARGETS.
+   *
+   * Those are different granularities. A lesson targets chunks; the segmenter
+   * decomposes a chunk into its registry constituents. So `noun-faim` inside
+   * `chunk-j-ai-faim` read as "shown and never worked", and the measurement
+   * reported that 41% of core material was abandoned. It was an artefact.
+   *
+   * At the granularity the content actually declares — a line's own `itemIds`,
+   * which is what the rest of the lesson targets at — 52 of 60 core lines are
+   * worked in their own lesson, the other 8 are reprises of earlier lessons,
+   * and none is shown and then abandoned.
+   *
+   * These pin that, so the lifecycle cannot quietly decay.
+   */
+  type Line = { fr: string; role?: string; itemIds?: string[] };
+
+  const flowOf = (lesson: { screens: unknown[] }): { type?: string; targetItemIds?: string[] }[] => {
+    const out: { type?: string; targetItemIds?: string[] }[] = [];
+    for (const screen of lesson.screens as { type?: string; payload?: { steps?: unknown[] } }[]) {
+      if (screen.type === "activity-chain") {
+        for (const step of screen.payload?.steps ?? []) out.push(step as { type?: string });
+      } else out.push(screen);
+    }
+    return out;
+  };
+  const coreLinesOf = (lesson: { screens: unknown[] }): Line[] => {
+    const out: Line[] = [];
+    for (const screen of lesson.screens as {
+      type?: string;
+      payload?: { clusters?: { sentences?: Line[] }[] };
+    }[]) {
+      if (screen.type !== "showcase") continue;
+      for (const cluster of screen.payload?.clusters ?? []) {
+        for (const sentence of cluster.sentences ?? []) {
+          if ((sentence.role ?? "core") === "core") out.push(sentence);
+        }
+      }
+    }
+    return out;
+  };
+
+  const corpus = V1_LESSONS as unknown as { id: string; number: number; screens: unknown[] }[];
+
+  /** The earliest lesson NUMBER in which each item is worked as a target. */
+  const firstWorkedIn = new Map<string, number>();
+  for (const lesson of corpus) {
+    for (const step of flowOf(lesson)) {
+      if (step.type === "showcase" || step.type === "pattern-reel") continue;
+      for (const id of step.targetItemIds ?? []) {
+        const seen = firstWorkedIn.get(id);
+        if (seen === undefined || seen > lesson.number) firstWorkedIn.set(id, lesson.number);
+      }
+    }
+  }
+
+  test("no core line is shown and then never worked anywhere", () => {
+    // The one that would be a real defect: the lesson puts a sentence in front
+    // of the learner as its own material and the product never asks for it.
+    const orphans: string[] = [];
+    for (const lesson of corpus) {
+      for (const line of coreLinesOf(lesson)) {
+        const ids = line.itemIds ?? [];
+        if (ids.length === 0) continue;
+        if (!ids.some((id) => firstWorkedIn.has(id))) {
+          orphans.push(`${lesson.id} "${line.fr}"`);
+        }
+      }
+    }
+    assert(orphans.length === 0, `shown and never worked: ${orphans.join("; ")}`);
+  });
+
+  test("a core line is worked in its own lesson, or is a reprise of an earlier one", () => {
+    // The third possibility — shown as core here, first worked LATER — is the
+    // one that would quietly turn a Showcase into a preview.
+    const premature: string[] = [];
+    for (const lesson of corpus) {
+      const workedHere = new Set<string>();
+      for (const step of flowOf(lesson)) {
+        if (step.type === "showcase" || step.type === "pattern-reel") continue;
+        for (const id of step.targetItemIds ?? []) workedHere.add(id);
+      }
+      for (const line of coreLinesOf(lesson)) {
+        const ids = line.itemIds ?? [];
+        if (ids.length === 0 || ids.some((id) => workedHere.has(id))) continue;
+        const firsts = ids
+          .map((id) => firstWorkedIn.get(id))
+          .filter((n): n is number => n !== undefined);
+        if (firsts.length > 0 && Math.min(...firsts) >= lesson.number) {
+          premature.push(`${lesson.id} "${line.fr}"`);
+        }
+      }
+    }
+    assert(premature.length === 0, `core but first worked later: ${premature.join("; ")}`);
+  });
+
+  test("most core lines say what they are", () => {
+    // A line with no declared itemIds is invisible to the two rules above, so
+    // the coverage is itself the guard's own floor. 60 of 78 today; a fall
+    // means the checks are silently seeing less of the corpus.
+    const all = corpus.flatMap((l) => coreLinesOf(l));
+    const declared = all.filter((l) => (l.itemIds ?? []).length > 0);
+    assert(all.length > 0, "no core showcase lines found at all");
+    assert(
+      declared.length >= 60,
+      `only ${declared.length} of ${all.length} core lines declare itemIds`,
+    );
+  });
+});
