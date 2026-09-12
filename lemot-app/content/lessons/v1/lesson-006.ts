@@ -12,8 +12,20 @@ const screens: LessonScreen[] = [
     id: "s20-showcase-a-small-moment",
     type: "showcase",
     payload: {
+      // AUDITED, and the claim was not quite true. "Nothing here is new" sat
+      // above three `exposure` lines — "Pardon, je n'ai pas compris.",
+      // "Bonne journée !", "À bientôt !" — which the learner genuinely has not
+      // met: all three are L7. The authoring role is deliberately not rendered,
+      // so nothing on screen told them apart from the twenty sentences they
+      // really do own.
+      //
+      // The preferred repair is to swap unreached French for reached French,
+      // and here there is none to swap TO: no reached expression says "see you
+      // soon" or softens a repair that way, and deleting the lines would cost
+      // real exposure that L7 then builds on. So the CLAIM moved instead of the
+      // content, and moved only as far as the truth required.
       intro:
-        "Nothing here is new. This is everything you have built so far, arranged the way a real small moment actually uses it, from the door to the goodbye.",
+        "Almost nothing here is new. This is everything you have built so far, arranged the way a real small moment actually uses it, from the door to the goodbye. A few lines you have not met yet sit in with them: read those, and let them go.",
       clusters: [
         {
           label: "Arriving",
@@ -153,8 +165,18 @@ const screens: LessonScreen[] = [
           // moment, so the arrival now carries the reason with it. Both halves
           // are owned, and the closing still belongs to s09.
           weaveType: "mid",
+          // THE SCENE NOW CARRIES THE REASON. It asked the learner to "say what
+          // you came for" and never told them what that was, so the model
+          // answer's third beat — J'ai une question. — was information the
+          // screen had withheld. A learner cannot produce a purpose nobody gave
+          // them, and the gap read as their failure rather than the scene's.
           prompt: "Greet them, say you have arrived, and say what you came for.",
-          context: "You are at the door. A voice from inside: « Bonjour ? »",
+          context:
+            "You are at the door with one small thing to ask. A voice from inside: « Bonjour ? »",
+          // Authored facts, not read out of the prose above. `purposeKnown` is
+          // what makes J'ai une question. a lawful ask on this screen at all.
+          intent: "state-purpose",
+          sceneFacts: ["purposeKnown", "formalRegister"],
           suggestedPieces: [
             { text: "Bonjour", itemId: "chunk-bonjour", required: true, label: "greeting" },
             { text: "je suis", itemId: "chunk-je-suis", required: true, label: "I am" },
@@ -308,6 +330,12 @@ const screens: LessonScreen[] = [
           // both beats together, which is what a person actually says.
           prompt: "Turn the coffee down and say what you came for, in one go.",
           context: "The cup is still in the air: « Un café ? » The thing you came to ask is still unsaid.",
+          // The purpose is established: the learner arrived with a question in
+          // s03 and the scene says it is still unsaid. Declaring it is what
+          // lets a guard prove the model answer asks for nothing the screen
+          // withheld. Two moves are asked for, so reuse stays off.
+          intent: "decline-politely",
+          sceneFacts: ["purposeKnown", "offerMade", "formalRegister"],
           suggestedPieces: [
             { text: "non merci", itemId: "chunk-non-merci", required: true, label: "polite refusal" },
             { text: "j'ai", itemId: "chunk-j-ai", required: true, label: "I have" },
@@ -395,6 +423,11 @@ const screens: LessonScreen[] = [
             prompt: "Reach them again, then say you did not follow.",
             context:
               "They have already moved on to the next thing.",
+            // Authored so the scene carries its facts structurally. Reuse stays
+            // OFF: the prompt asks for two moves, and accepting either alone
+            // would be the resolver overruling the task rather than widening it.
+            intent: "signal-not-understood",
+            sceneFacts: ["misunderstandingOccurred", "formalRegister"],
             suggestedPieces: [
               {
                 text: "Excusez-moi",
@@ -438,6 +471,10 @@ const screens: LessonScreen[] = [
           payload: {
             weaveType: "open",
             prompt: "Say it went past you, then ask for it again.",
+            // Same reasoning as s05c: two moves are genuinely asked for, so the
+            // facts are declared and reuse is not switched on.
+            intent: "ask-to-repeat",
+            sceneFacts: ["misunderstandingOccurred", "formalRegister"],
             context:
               "They answered your question and are waiting, friendly, for you to say something back.",
             suggestedPieces: [
@@ -506,6 +543,8 @@ const screens: LessonScreen[] = [
           situation:
             "You have just stepped in. Greet them, say you are here, and open your one small question.",
           communicativeGoal: "Greet, locate, and open your question.",
+          intent: "state-purpose",
+          sceneFacts: ["purposeKnown", "formalRegister"],
           suggestedPieces: [
             { text: "Bonjour", itemId: "chunk-bonjour" },
             { text: "je suis", itemId: "chunk-je-suis" },
@@ -545,8 +584,23 @@ const screens: LessonScreen[] = [
     weakPointTags: ["politeness"],
     payload: {
       weaveType: "open",
-      prompt: "Close the moment in French: thank them and say goodbye.",
-      context: "You are about to leave. Thank them, then close.",
+      // THE REUSE SLICE. The job here is one move — close the interaction — and
+      // the learner has owned merci since L1 and au revoir since this lesson.
+      // The prompt used to enumerate both beats, which made "Au revoir." a
+      // half-answer by instruction rather than by French; §20 says the first
+      // help must not contradict every other valid path, and a prompt that
+      // hard-codes the model does the same thing one step earlier. The model is
+      // unchanged and the reveal still teaches the fuller close.
+      prompt: "Close the moment in French.",
+      context: "You are about to leave. They gave you what you came for.",
+      intent: "close-interaction",
+      // What this scene actually establishes, and nothing more. It is a first
+      // meeting at someone's door: no one has said you will be back, and nobody
+      // was serving you. So `likelySeeAgainSoon` and `serviceEncounter` are
+      // absent, and À bientôt. / Bonne journée. do not fit here even for a
+      // learner who has finished L7 and owns them both.
+      sceneFacts: ["formalRegister"],
+      reuse: true,
       suggestedPieces: [
         { text: "merci", itemId: "chunk-merci", label: "thanks" },
         { text: "au revoir", itemId: "chunk-au-revoir", label: "closing" },
@@ -582,14 +636,25 @@ const screens: LessonScreen[] = [
         "have one small thing to ask, thank them, and leave. Use the French " +
         "pieces you already have.",
       communicativeGoal: "Carry the whole moment, from the door to goodbye.",
+      // The whole arc is not one communicative job, so there is no single
+      // intent that would make derivation honest here. The scene facts are
+      // still declared: they are what let a guard prove the purpose this
+      // screen asks the learner to state was actually given to them.
+      sceneFacts: ["purposeKnown", "formalRegister"],
       answerBands: {
         minimalAcceptable: ["Bonjour. J'ai une question. Merci. Au revoir."],
         good: ["Bonjour. Je suis ici. J'ai une question. Merci. Au revoir."],
         // Same repair as s07: the tier now differs in register rather than in
         // punctuation. The opener softens the ask and the thanks is sized to
         // what was actually given. Every piece is already owned.
+        // "Merci beaucoup." was here and is L7 French. It sat in the NATURAL
+        // tier of a lesson whose whole premise is that the learner already owns
+        // everything, so the one sentence held up as the best version of their
+        // own answer was the one sentence they could not have written. The lift
+        // that separates this tier is register, and excusez-moi already carries
+        // it: reached since L1, and doing the work beaucoup was only decorating.
         natural: [
-          "Bonjour. Je suis ici. Excusez-moi, j'ai une question. Merci beaucoup. Au revoir.",
+          "Bonjour. Je suis ici. Excusez-moi, j'ai une question. Merci. Au revoir.",
         ],
       },
       modelAnswer: "Bonjour. Je suis ici. J'ai une question. Merci. Au revoir.",
@@ -600,7 +665,7 @@ const screens: LessonScreen[] = [
           "You used more than the minimum. That is a real first exchange, start to finish.",
         naturalAlternatives: [
           "Bonjour. J'ai une question. Merci. Au revoir.",
-          "Bonjour. Je suis ici. Excusez-moi, j'ai une question. Merci beaucoup. Au revoir.",
+          "Bonjour. Je suis ici. Excusez-moi, j'ai une question. Merci. Au revoir.",
         ],
         explanation:
           "Every piece here is one you already built. Put together, they make a small French moment.",
@@ -619,7 +684,9 @@ const screens: LessonScreen[] = [
         "This was not a quiz. It was a small moment.",
         "You carried it in French, from bonjour to au revoir.",
         "It did not run perfectly straight, either. You told someone which room it was, and you said when you had not followed.",
-        "No new rule. Just the pieces you already built.",
+        // au revoir is taught in this lesson, so "just the pieces you already
+        // built" was one chunk short of true.
+        "No new rule. One new piece, au revoir, and the rest you already had.",
       ],
       piecesUsed: [
         "Bonjour",

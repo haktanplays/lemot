@@ -19,6 +19,8 @@ import { P, SPACE } from "@/constants/theme";
 import { markFirstTasteFinished } from "@/lib/firstUse";
 import { useApp } from "@/providers/AppProvider";
 import { useReachedItemIds } from "@/hooks/useReachedItemIds";
+import { useExpressionReuse } from "@/hooks/useExpressionReuse";
+import type { SayItYourWayScreen, WeaveScreen } from "@/content/lessonTypes";
 import { itemIdForPiece, recapLinkTarget } from "@/content/lessons/recapBridge";
 import type { Lesson, LessonScreen } from "@/content/lessonTypes";
 import { ActivityChain } from "@/components/lesson-v1/screens/ActivityChain";
@@ -74,6 +76,10 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
   // to open only the pieces that are really there. Undefined until it answers,
   // which means nothing links — the safe direction.
   const reachedItemIds = useReachedItemIds();
+  // Which reached French may lawfully answer a screen that opted in. Resolved
+  // here, at the wiring layer, because it is a question about the learner and
+  // the screen must not be able to ask it. Returns strings; nothing else.
+  const derivedAlternativesFor = useExpressionReuse(lesson);
   const linkablePieces =
     reachedItemIds === undefined
       ? undefined
@@ -211,6 +217,7 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
               setChainStep,
               () => setOrderLanded(true),
               linkablePieces,
+              derivedAlternativesFor,
             )}
           </View>
         </View>
@@ -320,6 +327,13 @@ function pickScreen(
    * boundary is a presentational fact, not learner state.
    */
   linkablePieces?: readonly string[],
+  /**
+   * Resolved expression reuse, as a lookup over screens. Same boundary as
+   * `linkablePieces`: strings crossing into a screen, never learner state.
+   */
+  derivedAlternativesFor?: (
+    screen: WeaveScreen | SayItYourWayScreen,
+  ) => readonly string[] | undefined,
 ) {
   switch (screen.type) {
     // Orchestration only: it grades nothing and records nothing itself. Every
@@ -332,6 +346,7 @@ function pickScreen(
           session={session}
           stepIndex={chainStep}
           onStepChange={onChainStep}
+          derivedAlternativesFor={derivedAlternativesFor}
         />
       );
     // Breadth surface: no evidence callback by design. See Showcase.tsx.
@@ -364,6 +379,7 @@ function pickScreen(
         <Weave
           screen={screen}
           onContinue={onContinue}
+          derivedAlternatives={derivedAlternativesFor?.(screen)}
           onTypedAttempt={(facts) => {
             // `full` is exact OR an authored accepted alternative, and nothing
             // less. A partial answer evidences meaning, which is enough to be
@@ -376,6 +392,7 @@ function pickScreen(
               text: facts.text,
               hintRung: facts.hintRung,
               constitutiveSupportRendered: facts.constitutiveSupportRendered,
+              derivedAlternatives: facts.derivedAlternatives,
             });
           }}
         />
@@ -385,6 +402,7 @@ function pickScreen(
         <SayItYourWayV1
           screen={screen}
           onContinue={onContinue}
+          derivedAlternatives={derivedAlternativesFor?.(screen)}
           onOpenAttempt={(facts) => session.recordOpenAttemptAndReveal(screen, facts)}
         />
       );

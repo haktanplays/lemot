@@ -399,7 +399,36 @@ export type WeaveType =
   | "context"
   | "open";
 
-export type WeavePayload = {
+/**
+ * What a production screen asks for, in terms a resolver can read.
+ *
+ * OPT-IN, ALWAYS. A screen without these fields behaves exactly as it did
+ * before: its authored answers are the only answers. Nothing is inferred from
+ * the English prompt, because inference is the one thing this layer must not
+ * do — a scene fact is true here because an author said so.
+ *
+ * The author keeps everything that matters: the objective, the primary model,
+ * the scene, and whether reuse happens at all. The resolver only widens what
+ * the existing grader will accept.
+ */
+export type ExpressionReusePayload = {
+  /** The communicative job. Without one, nothing is ever derived. */
+  intent?: import("./expression/communicativeIntent").CommunicativeIntent;
+  /**
+   * Facts the scene establishes. Absence means "not established", never
+   * "false", so an unstated fact refuses rather than admits.
+   */
+  sceneFacts?: readonly import("./expression/communicativeIntent").SceneFact[];
+  /**
+   * Off unless the author switches it on. A lesson that wants one exact
+   * sentence is entitled to keep asking for one exact sentence.
+   */
+  reuse?: boolean;
+  /** Expression ids ruled out for this screen, whatever the resolver thinks. */
+  excludeExpressionIds?: readonly string[];
+};
+
+export type WeavePayload = ExpressionReusePayload & {
   weaveType: WeaveType;
   prompt: string;
   context?: string;
@@ -453,7 +482,7 @@ export type WeavePayload = {
   validationMode?: ValidationMode;
 };
 
-export type SayItYourWayPayload = {
+export type SayItYourWayPayload = ExpressionReusePayload & {
   situation: string;
   communicativeGoal: string;
   suggestedPieces?: {

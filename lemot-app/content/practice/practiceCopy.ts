@@ -155,8 +155,14 @@ export const PRACTICE_UI_COPY = Object.freeze({
   browseRefresh: "Things to come back to",
   browseRefreshDetail: "French that has not settled yet.",
   browseRefreshEmpty: "Nothing is waiting here at the moment.",
-  browseBeyond: "A step further",
-  browseBeyondDetail: "A scene, and no English to lean on.",
+  // RENAMED, because the old name promised something the engine does not do.
+  // "A step further" reads as the next thing in the curriculum; what actually
+  // backs this route is the authored `hard` contract, which is the same French
+  // the learner already owns with the English crutch taken away. Naming it for
+  // the support it removes is the truthful version, and it leaves the word
+  // "further" free for the day a real frontier engine earns it.
+  browseBeyond: "With less help",
+  browseBeyondDetail: "French you already have, and no English to lean on.",
   browseBeyondEmpty: "Nothing here yet. It fills up as you go.",
   // "More" rather than a count. Breadth should be felt by scrolling into it,
   // not sold as a number on a badge.

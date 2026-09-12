@@ -78,6 +78,7 @@ export function Weave({
   screen,
   onContinue,
   onTypedAttempt,
+  derivedAlternatives,
   helper = WEAVE_HELPER,
 }: {
   screen: WeaveScreen;
@@ -98,7 +99,18 @@ export function Weave({
     evaluation: TypedEvaluation;
     hintRung: 0 | 1 | 2;
     constitutiveSupportRendered: boolean;
+    derivedAlternatives?: readonly string[];
   }) => void;
+  /**
+   * More French the grader should accept here, resolved OUTSIDE this screen.
+   *
+   * A surface fact and nothing more: a list of strings, indistinguishable from
+   * the ones the author wrote. The screen cannot tell which is which, does not
+   * know what an intent is, and cannot ask what the learner has reached — the
+   * resolution is a question about the learner, so it happens at the wiring
+   * layer, the same boundary the recap's Mon Lexique bridge respects.
+   */
+  derivedAlternatives?: readonly string[];
 }) {
   const { payload } = screen;
   const [text, setText] = useState("");
@@ -173,7 +185,7 @@ export function Weave({
     // ONE evaluation drives both the note below and the persisted event. Running
     // the UI matcher and the event grader separately would let the learner read
     // "Correct." while the append-only log recorded a miss.
-    const evaluation = evaluateWeaveAnswer(screen, text);
+    const evaluation = evaluateWeaveAnswer(screen, text, derivedAlternatives);
     setMatch(evaluation.match);
     setVerdict(evaluation.evidence.verdict);
     setEvidenced(evaluation.evidence.meaningEvidenced);
@@ -181,6 +193,10 @@ export function Weave({
     onTypedAttempt?.({
       text,
       evaluation,
+      // Reported back so the recorded grade is computed against exactly what
+      // was graded here. The event re-evaluates; this is what keeps the two
+      // evaluations one evaluation.
+      derivedAlternatives,
       hintRung: reportedRung,
       // Declared constitutive pieces ARE rendered by this screen (below), from
       // first paint. Reporting the real render state is what lets the admission

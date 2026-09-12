@@ -1,6 +1,11 @@
 import { View, Text } from "react-native";
 import { P, SPACE } from "@/constants/theme";
-import type { ActivityChainScreen, ActivityChainStep } from "@/content/lessonTypes";
+import type {
+  ActivityChainScreen,
+  ActivityChainStep,
+  SayItYourWayScreen,
+  WeaveScreen,
+} from "@/content/lessonTypes";
 import type { LessonV1LearningSession } from "@/components/lesson-v1/LessonV1LearningSessionProvider";
 import { MeetCard } from "@/components/lesson-v1/screens/MeetCard";
 import { FillWithTraps } from "@/components/lesson-v1/screens/FillWithTraps";
@@ -38,6 +43,7 @@ export function ActivityChain({
   session,
   stepIndex = 0,
   onStepChange,
+  derivedAlternativesFor,
 }: {
   screen: ActivityChainScreen;
   onContinue: () => void;
@@ -54,6 +60,15 @@ export function ActivityChain({
    */
   stepIndex?: number;
   onStepChange?: (stepIndex: number) => void;
+  /**
+   * Resolved OUTSIDE the chain, by the lesson player, and passed straight
+   * through. A chain step is a real screen with the same boundaries: it may
+   * receive French its grader will accept, and may not ask what the learner
+   * has reached.
+   */
+  derivedAlternativesFor?: (
+    step: WeaveScreen | SayItYourWayScreen,
+  ) => readonly string[] | undefined;
 }) {
   const steps = screen.payload.steps;
   const index = Math.min(Math.max(Math.trunc(stepIndex) || 0, 0), steps.length - 1);
@@ -100,7 +115,7 @@ export function ActivityChain({
         adjacent same-type steps, so this was never one sentence's bug.
       */}
       <View key={step.id} style={{ flex: 1 }}>
-        {renderStep(step, advance, session)}
+        {renderStep(step, advance, session, derivedAlternativesFor)}
       </View>
     </View>
   );
@@ -115,6 +130,9 @@ function renderStep(
   step: ActivityChainStep,
   onContinue: () => void,
   session: LessonV1LearningSession,
+  derivedAlternativesFor?: (
+    step: WeaveScreen | SayItYourWayScreen,
+  ) => readonly string[] | undefined,
 ) {
   switch (step.type) {
     case "meet-card":
@@ -138,11 +156,13 @@ function renderStep(
         <Weave
           screen={step}
           onContinue={onContinue}
+          derivedAlternatives={derivedAlternativesFor?.(step)}
           onTypedAttempt={(facts) =>
             session.recordTypedAttempt(step, {
               text: facts.text,
               hintRung: facts.hintRung,
               constitutiveSupportRendered: facts.constitutiveSupportRendered,
+              derivedAlternatives: facts.derivedAlternatives,
             })
           }
         />
@@ -152,6 +172,7 @@ function renderStep(
         <SayItYourWayV1
           screen={step}
           onContinue={onContinue}
+          derivedAlternatives={derivedAlternativesFor?.(step)}
           onOpenAttempt={(facts) => session.recordOpenAttemptAndReveal(step, facts)}
         />
       );

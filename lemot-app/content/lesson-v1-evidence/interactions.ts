@@ -244,6 +244,16 @@ export type TypedAttemptFacts = {
    * declared-but-unrendered package is a UI-flow defect, not a learner miss.
    */
   constitutiveSupportRendered: boolean;
+  /**
+   * Reached French the expression resolver judged a valid path for THIS scene.
+   *
+   * Plain strings, resolved at the wiring layer and reported back by the screen
+   * that graded against them. They travel with the attempt because the recorded
+   * grade is computed a SECOND time, here, from the screen and the text — so a
+   * set the screen accepted but the event did not know about would tell the
+   * learner "That works." and write down that they were wrong.
+   */
+  derivedAlternatives?: readonly string[];
 };
 
 /** Constitutive pieces this payload declares (visible from first render). */
@@ -257,11 +267,20 @@ export function declaredConstitutivePieces(screen: WeaveScreen) {
 export function evaluateWeaveAnswer(
   screen: WeaveScreen,
   text: string,
+  /**
+   * Extra accepted surfaces from the expression resolver. Appended AFTER the
+   * authored ones so author intent is never displaced: §16 — an explicit
+   * authored alternative outranks anything derived.
+   */
+  derivedAlternatives?: readonly string[],
 ): TypedEvaluation {
+  const authored = screen.payload.acceptedAlternatives ?? [];
+  const derived = derivedAlternatives ?? [];
   return evaluateTypedAnswer({
     userAnswer: text,
     expectedAnswers: screen.payload.expectedAnswers,
-    acceptedAlternatives: screen.payload.acceptedAlternatives,
+    acceptedAlternatives:
+      derived.length === 0 ? screen.payload.acceptedAlternatives : [...authored, ...derived],
     operation: "fill",
   });
 }
@@ -286,7 +305,7 @@ export function typedAttemptInteraction(
     },
     userAnswer: facts.text,
     expectedAnswer: screen.payload.expectedAnswers[0] ?? null,
-    gradeResult: evaluateWeaveAnswer(screen, facts.text).grade,
+    gradeResult: evaluateWeaveAnswer(screen, facts.text, facts.derivedAlternatives).grade,
     context: context({
       lesson,
       assistance: cleanAssistance({

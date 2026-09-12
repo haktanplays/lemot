@@ -26,9 +26,18 @@ export function SayItYourWayV1({
   screen,
   onContinue,
   onOpenAttempt,
+  derivedAlternatives,
 }: {
   screen: SayItYourWayScreen;
   onContinue: () => void;
+  /**
+   * More French that genuinely answers THIS situation, resolved outside this
+   * screen from what the learner has reached. Strings only: the screen cannot
+   * tell a derived path from an authored one and does not know what an intent
+   * is. Say It is ungraded (PM-014), so these widen only what the comparison
+   * reveal is willing to call a landing, never a score.
+   */
+  derivedAlternatives?: readonly string[];
   /**
    * UI FACTS only (PR-06), reported once on "Keep and compare" — the moment the
    * learner commits. Check (which only opens the confirm step), Try again, text
@@ -370,6 +379,7 @@ export function SayItYourWayV1({
               const targets = [
                 payload.modelAnswer ?? payload.reveal.modelAnswer ?? "",
                 ...(payload.acceptedAlternatives ?? []),
+                ...(derivedAlternatives ?? []),
               ].filter(Boolean);
               const best = targets
                 .map((target) => componentEvidence(text, [target], false))
