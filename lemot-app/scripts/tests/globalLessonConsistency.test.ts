@@ -618,3 +618,81 @@ describe("nothing identity-bearing moved", () => {
     );
   });
 });
+
+describe("a card that describes a derivation draws one", () => {
+  // From the six-behaviours duplicate audit: the Derivation Ladder had a
+  // field, a renderer and two validators, and was used in exactly one lesson
+  // out of twenty-five. Three insight-cards said "X becomes Y" in prose and
+  // then drew X and Y as two flat rows, leaving the becoming to the reader.
+  //
+  // This pins the two that are genuinely one form built from another. The
+  // others that matched the prose sweep are deliberately NOT here: L8's is
+  // intonation (nothing merges), L12's is a wrapper around an unchanged
+  // sentence, and L15's is two different constructions side by side. A
+  // derivation that derives nothing is a picture of a rule that did not happen.
+  const ELISIONS: readonly [string, string, string][] = [
+    ["v1-lesson-004", "s04-insight-jai-elision", "j'ai"],
+    ["v1-lesson-011", "s06-insight-m-aider", "m'aider"],
+  ];
+
+  for (const [lessonId, screenId, outcome] of ELISIONS) {
+    test(`${lessonId} shows the step that produces ${outcome}`, () => {
+      const lesson = (V1_LESSONS as unknown as { id: string; screens: unknown[] }[]).find(
+        (l) => l.id === lessonId,
+      );
+      assert(lesson !== undefined, `${lessonId} is missing`);
+      let found: { from: string; via: string; to: string } | undefined;
+      const walk = (node: unknown): void => {
+        if (Array.isArray(node)) {
+          for (const child of node) walk(child);
+          return;
+        }
+        if (node === null || typeof node !== "object") return;
+        const record = node as Record<string, unknown>;
+        if (record.id === screenId) {
+          const examples = (record.payload as { examples?: { derivation?: typeof found }[] })
+            ?.examples;
+          for (const example of examples ?? []) {
+            if (example.derivation !== undefined) found = example.derivation;
+          }
+        }
+        for (const value of Object.values(record)) walk(value);
+      };
+      walk(lesson!.screens);
+      assert(found !== undefined, `${lessonId}/${screenId} describes a step it does not draw`);
+      assert(found!.to === outcome, `it produces "${found!.to}" rather than "${outcome}"`);
+      assert(
+        found!.from !== found!.to,
+        "a derivation whose outcome equals its input has derived nothing",
+      );
+      assert(
+        /vowel/i.test(found!.via),
+        "the via must say what actually triggers the elision, not just name it",
+      );
+    });
+  }
+
+  test("the ladder is no longer a single lesson's trick", () => {
+    // The audit's finding, kept measurable: four instances, all in L7.
+    let lessonsWithADerivation = 0;
+    for (const lesson of V1_LESSONS as unknown as { screens: unknown[] }[]) {
+      let has = false;
+      const walk = (node: unknown): void => {
+        if (Array.isArray(node)) {
+          for (const child of node) walk(child);
+          return;
+        }
+        if (node === null || typeof node !== "object") return;
+        const record = node as Record<string, unknown>;
+        if (record.derivation !== undefined) has = true;
+        for (const value of Object.values(record)) walk(value);
+      };
+      walk(lesson.screens);
+      if (has) lessonsWithADerivation++;
+    }
+    assert(
+      lessonsWithADerivation >= 3,
+      `only ${lessonsWithADerivation} lesson(s) draw a derivation`,
+    );
+  });
+});

@@ -155,9 +155,19 @@ const screens: LessonScreen[] = [
       title: "One small squeeze.",
       body:
         "Aider = to help. To say help ME, French squeezes two small words into one: me + aider = m'aider. Take m'aider as one piece for now.",
+      // The same squeeze the card describes, drawn as a step rather than as
+      // two rows with the joining left to the reader. Same shape as L4's
+      // je + ai, which is the point: it is one rule, met twice.
       examples: [
         { fr: "aider", en: "to help" },
-        { fr: "m'aider", en: "to help me" },
+        {
+          derivation: {
+            from: "me aider",
+            via: "before a vowel, me drops its e",
+            to: "m'aider",
+          },
+          note: "The same squeeze that turns je into j'. Take m'aider as one piece for now.",
+        },
       ],
     },
   },

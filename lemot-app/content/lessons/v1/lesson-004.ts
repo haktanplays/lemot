@@ -227,9 +227,28 @@ const screens: LessonScreen[] = [
       body:
         "Before a vowel, je drops its e and joins the next word: je + ai " +
         "becomes j'ai. You hear and write one smooth piece, j'ai.",
+      // A LADDER, NOT TWO ROWS.
+      //
+      // The card's own sentence says je + ai becomes j'ai, and then it drew
+      // "je + ai" and "j'ai" as two flat lines and left the becoming to the
+      // reader. The derivation renderer already exists for exactly this — from,
+      // via, to, with the outcome as a piece — and it was being used in one
+      // lesson out of twenty-five. Nothing new is authored here: the same claim
+      // is drawn as the step it describes.
       examples: [
-        { fr: "je + ai", en: "I + have" },
-        { fr: "j'ai", en: "I have" },
+        {
+          derivation: {
+            from: "je ai",
+            via: "before a vowel, je drops its e",
+            to: "j'ai",
+          },
+          note: "French will not leave those two vowel sounds bumping together, so the e goes and the two words join into one.",
+        },
+        {
+          fr: "J'ai faim.",
+          en: "I'm hungry.",
+          note: "Said and written as one piece. There is no version of this with je ai in it.",
+        },
       ],
     },
   },
