@@ -5,7 +5,12 @@ import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import { useSpeech } from "@/hooks/useSpeech";
-import { pieceItemId, pieceLabel, showcasePieces } from "@/content/lessons/showcasePieces";
+import {
+  pieceItemId,
+  pieceLabel,
+  showcasePieces,
+  wholeSentencePiece,
+} from "@/content/lessons/showcasePieces";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import type { ShowcaseScreen, ShowcaseSentence, ShowcaseDepth } from "@/content/lessonTypes";
 
@@ -103,6 +108,17 @@ function Line({
   const pieces: { text: string; itemId?: string }[] = sentence.pieces
     ? sentence.pieces.map((text) => ({ text, itemId: pieceItemId(text) }))
     : showcasePieces(sentence.fr);
+  // A LINE THAT IS ITSELF ONE PIECE.
+  //
+  // "Bonjour.", "Merci.", "Au revoir." have no breakdown, so the chip row below
+  // is correctly empty for them — and the consequence, on a surface whose whole
+  // purpose is to show reusable material, was that the three expressions a
+  // beginner most needs to recognise as PIECES were the only three rendered as
+  // flat text. Repeating the line as a lone chip underneath would be noise, so
+  // the line itself takes the piece treatment instead: same pale pink, same
+  // tap, same reveal, one object rather than two.
+  const whole = pieces.length < 2 ? wholeSentencePiece(sentence.fr) : undefined;
+  const tappable: { text: string; itemId?: string }[] = whole ? [whole] : pieces;
   const depth = sentence.depth;
   const hasDepth = depth !== undefined && Object.values(depth).some(Boolean);
 
@@ -117,9 +133,32 @@ function Line({
     >
       <View style={{ flexDirection: "row", alignItems: "flex-start", gap: SPACE.sm }}>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: P.ink, fontFamily: "serif", fontSize: 17, lineHeight: 25 }}>
-            {sentence.fr}
-          </Text>
+          {whole ? (
+            <Pressable
+              onPress={() => setOpenPiece(openPiece === 0 ? null : 0)}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: openPiece === 0 }}
+              accessibilityLabel={`What is ${pieceLabel(whole.text)}`}
+              hitSlop={4}
+              style={{
+                alignSelf: "flex-start",
+                backgroundColor: openPiece === 0 ? P.rb : P.rl,
+                borderWidth: 1,
+                borderColor: P.rb,
+                borderRadius: 9999,
+                paddingHorizontal: 12,
+                paddingVertical: 3,
+              }}
+            >
+              <Text style={{ color: P.ink, fontFamily: "serif", fontSize: 17, lineHeight: 25 }}>
+                {sentence.fr}
+              </Text>
+            </Pressable>
+          ) : (
+            <Text style={{ color: P.ink, fontFamily: "serif", fontSize: 17, lineHeight: 25 }}>
+              {sentence.fr}
+            </Text>
+          )}
           <Text style={{ color: P.ink3, fontSize: 13, lineHeight: 19, marginTop: 2 }}>
             {sentence.en}
           </Text>
@@ -162,8 +201,8 @@ function Line({
                   );
                 })}
               </View>
-              {openPiece !== null && pieces[openPiece] !== undefined && (
-                <PieceReveal piece={pieces[openPiece]} onSay={onSayPiece} />
+              {openPiece !== null && tappable[openPiece] !== undefined && (
+                <PieceReveal piece={tappable[openPiece]} onSay={onSayPiece} />
               )}
             </View>
           )}

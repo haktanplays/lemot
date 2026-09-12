@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { View, Text, Pressable } from "react-native";
 import { Volume2 } from "lucide-react-native";
 import { useSpeech } from "@/hooks/useSpeech";
+import { PieceChip } from "@/components/ui/PieceChip";
+import { showcasePieces } from "@/content/lessons/showcasePieces";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
@@ -50,6 +52,8 @@ export function NaturalRevealView({
 }) {
   const { say } = useSpeech();
   const alternatives = reveal.naturalAlternatives ?? [];
+  // Canonical, or nothing. Never split on whitespace.
+  const modelPieces = reveal.modelAnswer ? showcasePieces(reveal.modelAnswer) : [];
 
   let notices: string[];
   let showIfCorrect: boolean;
@@ -181,6 +185,39 @@ export function NaturalRevealView({
               <Volume2 size={18} color={P.ink2} />
             </Pressable>
           </View>
+
+          {/* WHAT THE MODEL IS MADE OF, from the canonical segmentation and
+              from nowhere else.
+
+              The deferred half of the reveal. A learner who has just read
+              "Je ne comprends pas. Vous pouvez répéter ?" can see that it
+              worked; what they cannot see is that it is three pieces they
+              already own, two of which they will need again tomorrow in a
+              different order. The chips say so.
+
+              NOTHING IS INVENTED. `showcasePieces` returns a breakdown only
+              when the pieces are canonical items AND rebuild the sentence
+              exactly, so a model it cannot account for renders with no chips at
+              all rather than with a plausible-looking guess. That fallback is
+              also what keeps L3's split frames honest: `ne … pas` travels
+              inside its own chunk, and a model whose structure cannot be drawn
+              as contiguous pieces is simply not drawn as pieces. A false chip
+              teaches a boundary that does not exist, which costs more than an
+              absent one. */}
+          {modelPieces.length > 0 && (
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 6,
+                marginTop: SPACE.md,
+              }}
+            >
+              {modelPieces.map((piece, i) => (
+                <PieceChip key={`${piece.itemId}-${i}`} text={piece.text} />
+              ))}
+            </View>
+          )}
         </View>
       )}
 

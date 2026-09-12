@@ -475,8 +475,13 @@ const screens: LessonScreen[] = [
             // facts are declared and reuse is not switched on.
             intent: "ask-to-repeat",
             sceneFacts: ["misunderstandingOccurred", "formalRegister"],
+            // CONTINUITY. This used to read "They answered your question and are
+            // waiting, friendly, for you to say something back." — which
+            // un-happens s05c, where they had already moved on and the learner
+            // had to reach them again. The moment cannot run backwards between
+            // two steps of the same repair. It now picks up where s05c left it.
             context:
-              "They answered your question and are waiting, friendly, for you to say something back.",
+              "They have turned back to you. Now you can say what happened, and ask.",
             suggestedPieces: [
               {
                 text: "je ne comprends pas",
@@ -540,8 +545,15 @@ const screens: LessonScreen[] = [
         ],
         weakPointTags: ["natural-speech"],
         payload: {
+          // NOT A SECOND ARRIVAL. It used to say "You have just stepped in",
+          // three beats after the learner had arrived, been offered a coffee
+          // and repaired a misunderstanding — so the moment restarted, and the
+          // screen read as a card in a chain rather than as part of one lived
+          // thing. What it actually is, sitting here, is the arrival run once
+          // more from memory before the whole moment is asked for; the copy now
+          // says that instead of pretending time moved backwards.
           situation:
-            "You have just stepped in. Greet them, say you are here, and open your one small question.",
+            "Run the arrival again, from memory this time: greet them, say you are here, and open your one small question.",
           communicativeGoal: "Greet, locate, and open your question.",
           intent: "state-purpose",
           sceneFacts: ["purposeKnown", "formalRegister"],

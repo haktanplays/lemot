@@ -48,10 +48,14 @@ export type RejectionReason =
   | "intent"
   | "context"
   | "unreached"
-  | "beyond-lesson-scope"
   | "excluded"
   | "not-an-utterance"
   | "is-the-primary";
+// `beyond-lesson-scope` was a rejection until this pass and is deliberately
+// gone: being later than this lesson is no longer a reason to refuse French the
+// learner has, only a reason not to teach it. That outcome now has a list of
+// its own (`acceptanceOnly`) rather than a rejection reason, so no caller can
+// read "refused" where the answer is "accepted but not surfaced".
 
 export type ResolvedExpression = {
   readonly id: string;
@@ -71,8 +75,25 @@ export type ResolvedExpressions = {
   readonly primary: string | null;
   /** Author-declared alternatives, which always outrank anything derived. */
   readonly authored: readonly string[];
-  /** Reached French the resolver is confident fits this scene and this job. */
+  /**
+   * Reached, in-scope, context-valid French. SURFACEABLE: this lesson may
+   * hint it, suggest it, model it, and accept it.
+   */
   readonly derived: readonly ResolvedExpression[];
+  /**
+   * Reached, context-valid French the learner picked up AFTER this lesson.
+   *
+   * ACCEPTANCE ONLY, and the distinction is the whole point. A learner who has
+   * finished L7 and comes back to L6 has not forgotten "À bientôt.", and being
+   * marked wrong for using it correctly is Cairn pretending they did. But L6
+   * must still not TEACH it: it stays out of hints, out of suggestions, out of
+   * the model, out of the exposition. The lesson's curriculum is unchanged;
+   * only its willingness to recognise the learner's own French is.
+   *
+   * Surfacing this list is a bug. `surfaceableSurfaces` exists so a caller has
+   * to choose which question it is asking.
+   */
+  readonly acceptanceOnly: readonly ResolvedExpression[];
   /** Everything considered and refused, with the reason. Not learner-facing. */
   readonly rejected: readonly ResolvedRejection[];
 };
@@ -159,6 +180,7 @@ export function resolveEligibleExpressions(input: ResolveInput): ResolvedExpress
     primary,
     authored,
     derived: [],
+    acceptanceOnly: [],
     rejected: [],
   };
 
@@ -171,6 +193,7 @@ export function resolveEligibleExpressions(input: ResolveInput): ResolvedExpress
   const scene = new Set<SceneFact>(input.scene ?? []);
   const excluded = new Set(exclusions);
   const derived: ResolvedExpression[] = [];
+  const acceptanceOnly: ResolvedExpression[] = [];
   const rejected: ResolvedRejection[] = [];
 
   for (const capability of capabilities) {
@@ -205,35 +228,38 @@ export function resolveEligibleExpressions(input: ResolveInput): ResolvedExpress
       continue;
     }
 
-    // Lesson scope. Grammar and vocabulary from later in the path stay later,
-    // even for a learner who has already been there.
-    if (lessonScope !== undefined && firstLesson !== undefined) {
-      const tooLate = capability.itemIds.find((itemId) => {
-        const taught = firstLesson.get(itemId);
-        return taught === undefined || taught > lessonScope;
-      });
-      if (tooLate !== undefined) {
-        rejected.push({
-          id,
-          surface,
-          reason: "beyond-lesson-scope",
-          blockedBy: tooLate,
-        });
-        continue;
-      }
-    }
-
-    // Scene constraints last, so a rejection names the most specific cause.
+    // Scene constraints. Reached French does not override context: a learner
+    // who owns "À bientôt." and says it to someone they will never see again
+    // is still saying something untrue, whatever lesson they are in.
     const missing = (capability.requires ?? []).find((fact) => !scene.has(fact));
     if (missing !== undefined) {
       rejected.push({ id, surface, reason: "context" });
       continue;
     }
 
+    // Lesson scope, which is now a SURFACING ceiling rather than an acceptance
+    // one. This is the correction to the previous pass's over-conservative
+    // contract: it rejected French outright, which meant a learner replaying L6
+    // after L7 was marked wrong for a sentence L7 had taught them. Teaching and
+    // recognising are different acts, so they get different answers — the
+    // lesson still surfaces only its own curriculum, and the grader stops
+    // pretending the learner forgot.
+    const later =
+      lessonScope !== undefined && firstLesson !== undefined
+        ? capability.itemIds.find((itemId) => {
+            const taught = firstLesson.get(itemId);
+            return taught === undefined || taught > lessonScope;
+          })
+        : undefined;
+    if (later !== undefined) {
+      acceptanceOnly.push({ id, surface });
+      continue;
+    }
+
     derived.push({ id, surface });
   }
 
-  return { primary, authored, derived, rejected };
+  return { primary, authored, derived, acceptanceOnly, rejected };
 }
 
 /**
@@ -243,7 +269,22 @@ export function resolveEligibleExpressions(input: ResolveInput): ResolvedExpress
  * learns about intents, scenes or the learner. The screen cannot tell a derived
  * alternative from an authored one, which is the point: the resolver widens
  * what counts as a good answer and changes nothing about how one is judged.
+ *
+ * Includes the acceptance-only list, because ACCEPTING is what this is for.
  */
 export function derivedAlternativeSurfaces(resolved: ResolvedExpressions): string[] {
+  return [...resolved.derived, ...resolved.acceptanceOnly].map((d) => d.surface);
+}
+
+/**
+ * What this lesson may show the learner before they answer.
+ *
+ * The narrow half of the same resolution: hints, suggested pieces, exposition,
+ * anything proactive. It excludes `acceptanceOnly` by construction, so an
+ * earlier lesson can never start teaching a later one's French to a learner who
+ * happens to have gone ahead — and the two lists cannot be confused, because
+ * asking for one is a different function call than asking for the other.
+ */
+export function surfaceableSurfaces(resolved: ResolvedExpressions): string[] {
   return resolved.derived.map((d) => d.surface);
 }

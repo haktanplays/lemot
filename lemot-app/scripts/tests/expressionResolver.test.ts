@@ -27,6 +27,7 @@ import {
   firstLessonIndex,
   resolveEligibleExpressions,
   derivedAlternativeSurfaces,
+  surfaceableSurfaces,
 } from "../../content/expression/resolveExpressions";
 import type { Lesson, SayItYourWayScreen, WeaveScreen } from "../../content/lessonTypes";
 import { flattenLessonScreens } from "../../content/lessons/lessonStructure";
@@ -229,19 +230,6 @@ describe("CASE C — a daytime service departure", () => {
 });
 
 describe("reachability and scope are separate ceilings", () => {
-  test("a reached expression from a later lesson stays out of an earlier one", () => {
-    // A learner replaying L6 after finishing L7 HAS à bientôt. Offering it
-    // inside a lesson that claims to use nothing new would still be a lie
-    // about the lesson.
-    const replay = resolveEligibleExpressions({
-      ...L6_CLOSING,
-      reached: R10,
-      lessonScope: 6,
-      scene: ["formalRegister", "likelySeeAgainSoon"],
-    });
-    assert(!surfaces(replay).includes("À bientôt."), "scope holds even when reach does not");
-    assert(reasonFor(replay, "expr:a-bientot") === "beyond-lesson-scope", "and names the ceiling");
-  });
 
   test("unreached language is refused however well it fits the job", () => {
     const nothing = resolveEligibleExpressions({
@@ -250,6 +238,158 @@ describe("reachability and scope are separate ceilings", () => {
     });
     assert(surfaces(nothing).length === 0, "a learner with nothing is offered nothing");
     assert(reasonFor(nothing, "expr:au-revoir") === "unreached", "including the unmarked goodbye");
+  });
+});
+
+// ── first play vs replay ────────────────────────────────────────────────────
+
+/** L6's closing scene: a first meeting at a door. Nothing said about returning. */
+function closingAt(reached: ReadonlySet<string>, scene: readonly string[]) {
+  return resolveEligibleExpressions({
+    intent: "close-interaction",
+    scene: scene as never,
+    reached,
+    lessonScope: 6,
+    primary: "Merci, au revoir.",
+    reuse: true,
+    firstLesson: FIRST,
+  });
+}
+const shown = (r: ReturnType<typeof resolveEligibleExpressions>) =>
+  surfaceableSurfaces(r).sort();
+
+describe("FIRST PLAY — L6 teaches only what L6 may teach", () => {
+  const r = closingAt(R6, ["formalRegister"]);
+
+  test("À bientôt is neither surfaced nor accepted", () => {
+    assert(!shown(r).includes("À bientôt."), "not surfaced");
+    assert(!surfaces(r).includes("À bientôt."), "and not accepted either");
+    assert(reasonFor(r, "expr:a-bientot") === "unreached", "the learner simply does not have it");
+  });
+
+  test("even a scene that would fit it does not conjure it", () => {
+    const generous = closingAt(R6, ["formalRegister", "likelySeeAgainSoon", "serviceEncounter", "daytime"]);
+    assert(!surfaces(generous).includes("À bientôt."), "context cannot substitute for reach");
+    assert(!surfaces(generous).includes("Bonne journée."), "nor for the other one");
+  });
+
+  test("the French L6 did teach is both surfaced and accepted", () => {
+    assert(shown(r).includes("Au revoir."), "L6's own closing is surfaceable");
+    assert(surfaces(r).includes("Au revoir."), "and accepted");
+  });
+});
+
+describe("REPLAY AFTER L7 — Cairn does not pretend the learner forgot", () => {
+  test("À bientôt is accepted when the scene supports it", () => {
+    const r = closingAt(R10, ["formalRegister", "likelySeeAgainSoon"]);
+    assert(surfaces(r).includes("À bientôt."), `accepted: ${surfaces(r).join(" | ")}`);
+    assert(
+      r.acceptanceOnly.some((e) => e.surface === "À bientôt."),
+      "and it lands in the acceptance-only list, not the surfaceable one",
+    );
+  });
+
+  test("but L6 still does not teach it", () => {
+    const r = closingAt(R10, ["formalRegister", "likelySeeAgainSoon"]);
+    assert(!shown(r).includes("À bientôt."), "never hinted, suggested or modelled");
+    assert(shown(r).every((x) => x !== "Bonne journée."), "and neither is the other one");
+  });
+
+  test("and the scene still decides", () => {
+    // The rule this whole split exists to keep: reached French does not
+    // override context. A door you will not come back to is not a à bientôt.
+    const noReturn = closingAt(R10, ["formalRegister"]);
+    assert(!surfaces(noReturn).includes("À bientôt."), "nothing promised a next time");
+    assert(reasonFor(noReturn, "expr:a-bientot") === "context", "refused for context, not reach");
+  });
+
+  test("Bonne journée follows the same two rules, with its own facts", () => {
+    const shopByDay = closingAt(R10, ["serviceEncounter", "daytime"]);
+    assert(surfaces(shopByDay).includes("Bonne journée."), "both facts, so it is accepted");
+    assert(!shown(shopByDay).includes("Bonne journée."), "and still not taught by L6");
+    const shopByNight = closingAt(R10, ["serviceEncounter"]);
+    assert(!surfaces(shopByNight).includes("Bonne journée."), "half the requirement is not it");
+    const notAShop = closingAt(R10, ["daytime"]);
+    assert(!surfaces(notAShop).includes("Bonne journée."), "nor the other half");
+  });
+
+  test("the primary model is untouched by any of it", () => {
+    for (const r of [closingAt(R6, ["formalRegister"]), closingAt(R10, ["formalRegister", "likelySeeAgainSoon"])]) {
+      assert(r.primary === "Merci, au revoir.", "the anchor never moves");
+    }
+  });
+
+  test("nothing proactive in the app can reach the resolver at all", () => {
+    // §3, structurally rather than by review. Hints are built from the
+    // payload's own `suggestedPieces` and `hintCloze`; the resolved strings
+    // arrive on a separate prop that only the grader reads. There is no code
+    // path by which a later-learned expression could enter a hint ladder,
+    // because the hint ladder does not know the resolver exists.
+    for (const rel of [
+      "components/lesson-v1/screens/Weave.tsx",
+      "components/lesson-v1/screens/SayItYourWayV1.tsx",
+    ]) {
+      // Per LINE, not per neighbourhood. An earlier version of this guard read
+      // a 400-character window and failed on Weave, where the hintCloze check
+      // and the grading call are thirty lines apart and share nothing — which
+      // is a guard measuring proximity when the question is data flow.
+      const lines = codeOf(read(rel))
+        .split("\n")
+        .filter((l) => l.includes("derivedAlternatives"));
+      assert(lines.length > 0, `${rel} does not receive resolved alternatives at all`);
+      for (const line of lines) {
+        for (const proactive of ["suggestedPieces", "hintCloze", "hintDirection", "hintLevel", "PieceChip"]) {
+          assert(
+            !line.includes(proactive),
+            `${rel}: resolved alternatives reach ${proactive}: ${line.trim()}`,
+          );
+        }
+      }
+    }
+    // And the app wires only the grading accessor.
+    const hook = codeOf(read("hooks/useExpressionReuse.ts"));
+    assert(hook.includes("derivedAlternativeSurfaces"), "the hook feeds the grader");
+    assert(!hook.includes("surfaceableSurfaces"), "and nothing yet feeds a proactive surface");
+  });
+
+  test("the two lists are asked for separately, so they cannot be confused", () => {
+    // §3: acceptance is not teaching. A caller that wants hint candidates calls
+    // a different function than one that wants grading candidates, and the
+    // surfacing one cannot return an acceptance-only expression.
+    const r = closingAt(R10, ["formalRegister", "likelySeeAgainSoon"]);
+    for (const e of r.acceptanceOnly) {
+      assert(!shown(r).includes(e.surface), `${e.surface} leaked into the surfaceable list`);
+    }
+    assert(
+      surfaces(r).length > shown(r).length,
+      "acceptance is the wider of the two, which is the whole point",
+    );
+  });
+
+  test("accepting later French mutates nothing about the learner or the path", () => {
+    const before = R10.size;
+    const r = closingAt(R10, ["formalRegister", "likelySeeAgainSoon"]);
+    assert(R10.size === before, "the reached set is not written to");
+    assert(r.primary === "Merci, au revoir.", "no lesson content changed");
+    // The rule is about WRITES, not about local state: the hook holds the
+    // snapshot it read in a useState, which is how every read-only hook in this
+    // repo works. An earlier version of this guard banned `setReached(` and
+    // caught exactly that, which is a guard reading a name instead of an act.
+    const hook = codeOf(read("hooks/useExpressionReuse.ts"));
+    for (const banned of [
+      "recordEvent",
+      "recordGradedAttempt",
+      "appendEvent",
+      "markComplete",
+      "createSessionController",
+    ]) {
+      assert(!hook.includes(banned), `reuse must not ${banned}`);
+    }
+    const runtimeCalls = hook.match(/runtime\.\w+/g) ?? [];
+    assert(
+      runtimeCalls.every((c) => c === "runtime.readMasterySnapshot"),
+      `reuse touches the runtime beyond reading: ${runtimeCalls.join(", ")}`,
+    );
   });
 });
 

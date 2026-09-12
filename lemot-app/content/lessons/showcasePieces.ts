@@ -132,6 +132,34 @@ export function showcasePieces(fr: string): ShowcasePiece[] {
 }
 
 /**
+ * The single canonical piece a whole sentence IS, when it is one.
+ *
+ * A DIFFERENT QUESTION from `showcasePieces`, which asks "is there a breakdown
+ * worth showing" and rightly answers no for "Bonjour." — a lone chip under the
+ * line it repeats is noise. This asks "is this line itself a reusable piece",
+ * and for "Bonjour.", "Merci." and "Au revoir." the answer is yes.
+ *
+ * The distinction matters because of what the founder saw: on L6's synthesis
+ * surfaces, whose entire purpose is to show reusable material, the three
+ * expressions a beginner most needs to recognise as PIECES were the three that
+ * rendered as flat text, precisely because each is too small to break down.
+ * The suppression was correct about duplication and wrong about affordance, so
+ * the caller now has a third option: give the line itself the piece treatment,
+ * rather than repeating it underneath or leaving it bare.
+ *
+ * Returns undefined unless exactly one piece is found AND it accounts for the
+ * whole sentence — the same honesty bar `showcasePieces` applies, so a line
+ * with an unaccounted-for word never gets dressed up as a piece it is not.
+ */
+export function wholeSentencePiece(fr: string): ShowcasePiece | undefined {
+  const { pieces } = segment(fr, new Set(), true);
+  if (pieces.length !== 1) return undefined;
+  const only = pieces[0];
+  if (only === undefined) return undefined;
+  return fold(only.text) === fold(fr) ? only : undefined;
+}
+
+/**
  * The pieces of one item's own text, when it fully decomposes into others.
  *
  * Memoised, and computed under an ancestor set so a cycle in the registry
