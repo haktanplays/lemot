@@ -269,6 +269,9 @@ const screens: LessonScreen[] = [
             ifUnderstandableButWrong:
               "Your meaning lands. A native wraps the verb this way: ne suis pas.",
             ifMissingTargetPiece: "Keep ne and pas together around suis.",
+          
+            explanation:
+              "Ne and pas never touch. Whatever the sentence is doing goes between them.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -316,6 +319,9 @@ const screens: LessonScreen[] = [
             ifUnderstandableButWrong:
               "Your meaning lands. The negative wraps c'est the same way: ce n'est pas.",
             ifMissingTargetPiece: "Use the whole piece: ce n'est pas.",
+          
+            explanation:
+              "Before a vowel, ne drops its e and leans on the verb: ce n'est, not ce ne est. French avoids letting two vowels meet.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -380,6 +386,9 @@ const screens: LessonScreen[] = [
               "Your meaning lands. The whole thing travels together: je ne comprends pas.",
             ifMissingTargetPiece:
               "ne in front, pas behind, exactly as before, around a different word.",
+          
+            explanation:
+              "Comprends and comprehend come from the same Latin verb for grasping. English saves comprehend for formal writing; French uses this one all day.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -408,6 +417,9 @@ const screens: LessonScreen[] = [
             ifUnderstandableButWrong:
               "Your meaning lands. The answer comes first, then the sentence: Non, je ne suis pas ici.",
             ifMissingTargetPiece: "Start with Non, then je ne suis pas ici.",
+          
+            explanation:
+              "Non on its own can land hard. Putting the reason straight after it keeps the refusal from sounding like a door closing.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -493,6 +505,9 @@ const screens: LessonScreen[] = [
               ifUnderstandableButWrong:
                 "Your meaning lands. Answer first with oui, then say where you are.",
               ifMissingTargetPiece: "Oui answers the question. Je suis ici says the rest.",
+            
+              explanation:
+                "Oui answers the question that was asked. Je suis ici answers what they actually wanted to know.",
             },
             validationMode: "exact-or-alternative",
           },
@@ -528,6 +543,9 @@ const screens: LessonScreen[] = [
                 "Your meaning lands. A place takes ce n'est pas, not je ne suis pas.",
               ifMissingTargetPiece:
                 "Non answers them. Ce n'est pas ici says which place it is not.",
+            
+              explanation:
+                "The same two halves as je ne suis pas, around a different verb. The move does not change when the subject does.",
             },
             validationMode: "exact-or-alternative",
           },
@@ -613,7 +631,7 @@ const screens: LessonScreen[] = [
           { when: "If you did not follow", fr: "Non, je ne comprends pas." },
         ],
         explanation:
-          "Non answers the call before you explain anything. Je ne suis pas ici states the fact on its own. Je ne comprends pas says something different and just as true: the explanation went past you. Same two pieces underneath each negative.",
+          "Non answers the call before you explain anything. Je ne suis pas ici states the fact on its own. Je ne comprends pas says something different and just as true: the explanation went past you.",
       },
       validationMode: "model-answer-only",
     },

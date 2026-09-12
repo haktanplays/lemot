@@ -162,6 +162,9 @@ const screens: LessonScreen[] = [
           "Your meaning lands. The greeting and the order run as one line.",
         ifMissingTargetPiece:
           "Start with bonjour, then the request.",
+      
+        explanation:
+          "Bonjour is not optional in a French shop. Walking up and starting with what you want reads as rude in a way English speakers rarely intend.",
       },
       validationMode: "exact-or-alternative",
     },
@@ -246,6 +249,9 @@ const screens: LessonScreen[] = [
               "Your meaning lands. The please sits at the end, after the order.",
             ifMissingTargetPiece:
               "Add s'il vous plaît to soften the close. It costs nothing and changes the tone.",
+          
+            explanation:
+              "S'il vous plaît lands at the end, after the thing you asked for, rather than in front of it.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -290,6 +296,9 @@ const screens: LessonScreen[] = [
             ifCorrect: "That closes the exchange.",
             ifCorrectButFlat: "Right. One word is the whole reply here.",
             ifUnderstandableButWrong: "One word does it here: merci.",
+          
+            explanation:
+              "Merci and mercy come from one Latin word for a favour. English kept the pity in it; French kept the thanks.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -471,6 +480,9 @@ const screens: LessonScreen[] = [
                 "Your meaning lands. Excusez-moi goes first here, because it is what makes them turn around.",
               ifMissingTargetPiece:
                 "Open with excusez-moi. Bonjour greets; excusez-moi interrupts, politely.",
+            
+              explanation:
+                "Croissant drops its final t, and the r is made at the back of the throat: krwa-SON.",
             },
             validationMode: "exact-or-alternative",
           },
@@ -579,6 +591,9 @@ const screens: LessonScreen[] = [
             ifUnderstandableButWrong:
               "Your meaning lands. The drink keeps its little word: un thé.",
             ifMissingTargetPiece: "The drink piece is right there: un thé.",
+          
+            explanation:
+              "Thé is one syllable. The é is the closed one, short and flat, with none of the glide English puts on the end of tay.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -652,6 +667,9 @@ const screens: LessonScreen[] = [
               "Your meaning lands. Excusez-moi reaches them; the second half asks.",
             ifMissingTargetPiece:
               "Excusez-moi gets their attention. Vous pouvez répéter ? asks for the line again.",
+          
+            explanation:
+              "Répéter and repeat are the same word wearing different endings. Most French verbs ending in -er have an English relative like this.",
           },
           validationMode: "exact-or-alternative",
         },

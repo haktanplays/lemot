@@ -167,6 +167,9 @@ const screens: LessonScreen[] = [
               "Your meaning lands. Two words carry it: je suis ici.",
             ifMissingTargetPiece:
               "Start with je suis. That is the shape that does the work.",
+          
+            explanation:
+              "French hangs states on je suis, but hunger and thirst on j'ai. That split is the most useful thing to notice early.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -260,6 +263,9 @@ const screens: LessonScreen[] = [
               "Your meaning lands. The engine stays whole and the opener sits in front of it: Excusez-moi, je suis ici.",
             ifMissingTargetPiece:
               "Nobody called you here, so open with excusez-moi, then the same two words as before.",
+          
+            explanation:
+              "Excusez-moi buys attention you do not have yet. Bonjour greets attention you already have.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -351,6 +357,9 @@ const screens: LessonScreen[] = [
               "Your meaning lands. Say where you are, stop, then ask: Bonjour, je suis ici. Je voudrais un café, s'il vous plaît.",
             ifMissingTargetPiece:
               "Arrive before you order. Je suis ici comes first, then the request you already know.",
+          
+            explanation:
+              "Two short sentences rather than one long one. Arriving and ordering are separate moments, and French is content to let them stay separate.",
           },
           validationMode: "exact-or-alternative",
         },
@@ -625,6 +634,9 @@ const screens: LessonScreen[] = [
               ifUnderstandableButWrong:
                 "Your meaning lands. The answer to « Bonjour ? » from an unseen room is where you are.",
               ifMissingTargetPiece: "Je suis puts you somewhere. Ici says where.",
+            
+              explanation:
+                "Ici carries its weight at the end: ee-SEE. French leans on the end of a group rather than on a chosen syllable inside it.",
             },
             validationMode: "exact-or-alternative",
           },
@@ -653,7 +665,7 @@ const screens: LessonScreen[] = [
         modelAnswer: "Bonjour, je suis ici.",
         naturalAlternatives: ["Je suis ici.", "Excusez-moi, je suis ici."],
         explanation:
-          "All three are natural, and the engine is identical in each. Bonjour greets the room. Excusez-moi cuts through it. Je suis ici alone is enough when the moment is already clear.",
+          "All three are natural, and the engine is identical in each. Bonjour greets a room that has already seen you; excusez-moi cuts through one that has not. Je suis ici alone is enough when the moment is clear.",
       },
       validationMode: "model-answer-only",
     },
