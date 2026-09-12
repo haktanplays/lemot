@@ -54,6 +54,23 @@ export const PRACTICE_HUB_SURFACE: EventSurfaceResolver = (exercise) => ({
   sequence: null,
 });
 
+/**
+ * The same surface, for a seed served from inside a lesson.
+ *
+ * Identical in every respect but the placement, and that difference is the
+ * point: the exercise id stays under `practice/` so the attempt can never
+ * complete a lesson screen, while WHERE it happened stays true. A learner who
+ * took one more go at an item mid-lesson did not visit the Practice tab, and
+ * `learning-stats` counts practice_hub moments into a number they can see.
+ */
+export const LESSON_STEP_PRACTICE_SURFACE: EventSurfaceResolver = (exercise) => ({
+  placement: "lesson_step_practice",
+  evId: null,
+  payloadId: exercise.id,
+  sentenceId: null,
+  sequence: null,
+});
+
 /** Re-identify a lesson-built interaction as practice-origin. */
 function asPracticeOrigin(
   input: RecordGradedAttemptInput,

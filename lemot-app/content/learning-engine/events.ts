@@ -121,6 +121,13 @@ export type LearningEventPrimitive =
 export type LearningPlacement =
   | "lesson_path"
   | "practice_hub"
+  /**
+   * A practice seed served from inside a lesson, after a missed step. Its
+   * evidence is still practice-ORIGIN — the exercise id stays under
+   * `practice/`, so it can never complete a lesson screen — and only where it
+   * happened differs from `practice_hub`.
+   */
+  | "lesson_step_practice"
   | "return_review"
   | "audio_layer"
   | "flashcard_projection"
@@ -234,6 +241,20 @@ export const LEARNING_EVENT_PRIMITIVES = [
 export const LEARNING_PLACEMENTS = [
   "lesson_path",
   "practice_hub",
+  /**
+   * A practice seed served from inside a lesson, after a missed step.
+   *
+   * Additive, and deliberately NOT folded into `practice_hub`: a learner who
+   * takes one more go at an item mid-lesson has not visited the Practice tab,
+   * and `learning-stats` counts `practice_hub` moments into a number the
+   * learner can see. Stamping this as practice_hub would inflate it with
+   * something that never happened.
+   *
+   * The evidence is still practice-ORIGIN: the exercise id stays under the
+   * `practice/` namespace, so no amount of it can complete a lesson screen.
+   * Only where it happened is different.
+   */
+  "lesson_step_practice",
   "return_review",
   "audio_layer",
   "flashcard_projection",

@@ -21,6 +21,7 @@ import type {
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import { PRACTICE_SESSION_LESSON_ID } from "@/content/practice/practiceIdentity";
 import {
+  LESSON_STEP_PRACTICE_SURFACE,
   PRACTICE_HUB_SURFACE,
   practiceBuildAttempt,
   practiceChoiceAttempt,
@@ -53,14 +54,25 @@ export type PracticeEvidenceSession = {
   whenSettled(): Promise<void>;
 };
 
-export function usePracticeSession(sessionKey: string): PracticeEvidenceSession {
+/**
+ * Where the run is happening. Identity is unchanged either way — the exercise
+ * id stays under `practice/` — and only the placement stamped on the event
+ * differs, so a learner's one extra go inside a lesson is not counted as a
+ * visit to the Practice tab.
+ */
+export type PracticePlacement = "practice-hub" | "lesson-step";
+
+export function usePracticeSession(
+  sessionKey: string,
+  placement: PracticePlacement = "practice-hub",
+): PracticeEvidenceSession {
   const { runtime, generation } = useLearningEngineRuntime();
   const [state, setState] = useState<SessionState>(IDLE);
 
   // One controller per run. A new run is a new controller, so a session id is
   // never shared across two sittings; a privacy reset bumps `generation` and
   // the pre-reset controller's late callbacks are ignored by the token check.
-  const identity = `${generation}::${sessionKey}`;
+  const identity = `${generation}::${placement}::${sessionKey}`;
   const held = useRef<{ identity: string; controller: LearningSessionController } | null>(
     null,
   );
@@ -71,7 +83,10 @@ export function usePracticeSession(sessionKey: string): PracticeEvidenceSession 
       controller: runtime.createSessionController({
         lessonId: PRACTICE_SESSION_LESSON_ID,
         contentVersion: PRACTICE_CONTENT_VERSION,
-        resolveEventSurface: PRACTICE_HUB_SURFACE,
+        resolveEventSurface:
+          placement === "lesson-step"
+            ? LESSON_STEP_PRACTICE_SURFACE
+            : PRACTICE_HUB_SURFACE,
         onUpdate: (next) => {
           if (held.current?.identity === token) setState(next);
         },

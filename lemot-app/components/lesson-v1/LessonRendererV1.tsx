@@ -29,6 +29,9 @@ import { ActivityChain } from "@/components/lesson-v1/screens/ActivityChain";
 import { Showcase } from "@/components/lesson-v1/screens/Showcase";
 import { PatternReel } from "@/components/lesson-v1/screens/PatternReel";
 import { Kicker } from "@/components/ui/editorial";
+import { useLessonStepPractice } from "@/hooks/useLessonStepPractice";
+import { LessonStepPractice } from "@/components/lesson-v1/LessonStepPractice";
+import type { PracticeSeed } from "@/content/practice/practiceTypes";
 import { MeetCard } from "./screens/MeetCard";
 import { InsightCard } from "./screens/InsightCard";
 import { FillWithTraps } from "./screens/FillWithTraps";
@@ -111,9 +114,39 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
     if (!s || s.type !== "activity-chain") return 0;
     return resumeStepFor(s.id, s.payload.steps.length, c);
   });
-  const goNext = () => {
+  // ONE MORE GO AT A MISSED STEP.
+  //
+  // 632 practice seeds were authored for L1-L10 and none of them could be
+  // reached from inside a lesson: a learner who missed the thing the lesson
+  // exists to teach saw the model, tapped Continue, and never met the item
+  // again. The pure policy decides whether there is a lawful, different way at
+  // it; this only decides when to ask and what to draw.
+  //
+  // The ask happens on LEAVING the step, not on the wrong answer itself. A
+  // learner who has just been told they were wrong is reading the model, and
+  // putting a second offer on that screen competes with the one thing there
+  // worth reading.
+  const { offerFor, noteOffered } = useLessonStepPractice(lesson);
+  // Which screens were answered and did not land, this sitting. A ref, because
+  // recording a miss must not re-render the screen the learner is reading.
+  const missed = useRef<Set<string>>(new Set());
+  const [offer, setOffer] = useState<PracticeSeed | null>(null);
+  const advance = () => {
     setChainStep(0);
     setScreenIndex((n) => n + 1);
+  };
+  const goNext = () => {
+    const current = lesson.screens[screenIndex];
+    if (current !== undefined && missed.current.has(current.id)) {
+      missed.current.delete(current.id);
+      const seed = offerFor(current);
+      if (seed !== null) {
+        noteOffered(seed.id);
+        setOffer(seed);
+        return;
+      }
+    }
+    advance();
   };
   // Did the first taste's one production actually land?
   //
@@ -218,13 +251,23 @@ function LessonRendererV1Inner({ lesson }: { lesson: Lesson }) {
               The key only changes on step advance, so typing within a screen
               (screenIndex unchanged) preserves state. */}
           <View key={screenIndex} style={{ flex: 1 }}>
-            {pickScreen(
+            {offer !== null ? (
+              <LessonStepPractice
+                seed={offer}
+                lesson={lesson}
+                onDone={() => {
+                  setOffer(null);
+                  advance();
+                }}
+              />
+            ) : pickScreen(
               screen,
               goNext,
               session,
               chainStep,
               setChainStep,
               () => setOrderLanded(true),
+              () => missed.current.add(screen.id),
               linkablePieces,
               usedPieces,
               derivedAlternativesFor,
@@ -326,6 +369,8 @@ function pickScreen(
   onChainStep: (step: number) => void,
   /** Called when a typed production is graded as landing. Weave only. */
   onProductionLanded: () => void,
+  /** Called when a typed production is graded as NOT landing. Weave only. */
+  onProductionMissed: () => void,
   /**
    * Which recap chips may be drawn as links, as display strings. The reached
    * set itself stays out of here and out of the screen: what crosses this
@@ -378,7 +423,14 @@ function pickScreen(
         <FillWithTraps
           screen={screen}
           onContinue={onContinue}
-          onChoice={(facts) => session.recordChoiceAttempt(screen, facts)}
+          onChoice={(facts) => {
+            session.recordChoiceAttempt(screen, facts);
+            // Whether the option was the right one is a fact already sitting in
+            // the authored payload, so reading it here is not a second grader —
+            // and the screen still learns nothing about what happens next.
+            const chosen = screen.payload.options.find((o) => o.id === facts.optionId);
+            if (chosen?.isCorrect !== true) onProductionMissed();
+          }}
         />
       );
     case "weave":
@@ -394,6 +446,11 @@ function pickScreen(
             // ordered.
             if (facts.evaluation.evidence.verdict === "full") {
               onProductionLanded();
+            } else {
+              // A surface fact — this answer did not land — and nothing more.
+              // The screen still knows nothing about practice, about the pool,
+              // or about what the lesson will do next.
+              onProductionMissed();
             }
             session.recordTypedAttempt(screen, {
               text: facts.text,
