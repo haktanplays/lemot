@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { P, RADIUS, SPACE, frenchLineHeight } from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
 
 /**
  * PieceChip - a single French support piece within reach (UI Slice 3).
@@ -43,10 +43,7 @@ export function PieceChip({ text, label }: { text: string; label?: string }) {
       <Text
         style={{
           color: P.ink,
-          fontFamily: "serif",
-          fontStyle: "italic",
-          fontSize: 14,
-          lineHeight: frenchLineHeight(14),
+          ...frenchSerif(14),
         }}
         numberOfLines={1}
       >

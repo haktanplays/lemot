@@ -10,7 +10,7 @@
 import { describe, test, assert, assertEqual } from "./harness";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { frenchLineHeight } from "../../constants/theme";
+import { frenchLineHeight, frenchItalicLineHeight } from "../../constants/theme";
 
 const read = (rel: string) => readFileSync(join(process.cwd(), rel), "utf8");
 
@@ -23,6 +23,36 @@ const FRENCH_RENDERERS = [
   "components/lesson-v1/screens/PatternReel.tsx",
   "components/lesson-v1/screens/NaturalReveal.tsx",
   "components/ui/StandingSurface.tsx",
+  // Added by the L3 batch. The founder reported J clipping a SECOND time, and
+  // these four were where the sentences he named actually render: the meet
+  // card shows "Je ne suis pas ici." and "Je ne comprends pas." and was outside
+  // every check in this file. AnswerReveal was setting italic with no line
+  // height at all.
+  "components/lesson-v1/screens/MeetCard.tsx",
+  "components/lesson-v1/screens/FillWithTraps.tsx",
+  "components/lesson-v1/screens/AnswerReveal.tsx",
+  "components/ui/SceneCard.tsx",
+  "components/lesson-v1/screens/InsightCard.tsx",
+];
+
+/**
+ * Surfaces that must not assemble the italic-serif style by hand.
+ *
+ * The first pass fixed four renderers and the defect came back, because every
+ * renderer was building the same style from parts and each one could be wrong
+ * on its own. There is now one factory, and these are the files required to use
+ * it — which is what makes the NEXT Android finding a one-line change rather
+ * than another audit.
+ */
+const MUST_USE_SHARED = [
+  "components/ui/PieceChip.tsx",
+  "components/ui/SceneCard.tsx",
+  "components/ui/StandingSurface.tsx",
+  "components/lesson-v1/screens/MeetCard.tsx",
+  "components/lesson-v1/screens/FillWithTraps.tsx",
+  "components/lesson-v1/screens/AnswerReveal.tsx",
+  "components/lesson-v1/screens/NaturalReveal.tsx",
+  "components/lesson-v1/screens/InsightCard.tsx",
 ];
 
 describe("shared French renderers leave room for accents and descenders", () => {
@@ -167,12 +197,73 @@ describe("a line height that exists is not yet a line height that fits", () => {
 
   test("the model answer computes its line height rather than copying a number", () => {
     // It read 28, which happens to be right for 19px. Correct today is still a
-    // literal: it does not follow the rule when the rule changes.
+    // literal: it does not follow the rule when the rule changes. It now goes
+    // through the shared factory, which is the same requirement one level up.
     assert(
-      read("components/lesson-v1/screens/NaturalReveal.tsx").includes(
-        "lineHeight: frenchLineHeight(19)",
-      ),
+      read("components/lesson-v1/screens/NaturalReveal.tsx").includes("frenchSerif(19)"),
       "the largest French on the screen must follow the shared rule",
     );
+  });
+});
+
+
+// ── ONE STYLE, ONE PLACE ────────────────────────────────────────────────────
+
+describe("italic French is assembled in exactly one place", () => {
+  test("no watched renderer hand-rolls the italic serif style", () => {
+    const offenders = MUST_USE_SHARED.filter((rel) => read(rel).includes('fontStyle: "italic"'));
+    assert(
+      offenders.length === 0,
+      `these build the style from parts instead of calling frenchSerif:\n${offenders.join("\n")}`,
+    );
+  });
+
+  test("every one of them actually calls the factory", () => {
+    // The guard on the guard: a file that simply stopped rendering French would
+    // pass the check above for the wrong reason.
+    for (const rel of MUST_USE_SHARED) {
+      assert(
+        read(rel).includes("frenchSerif("),
+        `${rel} is listed as a French surface but never calls the shared style`,
+      );
+    }
+  });
+
+  test("italic gets a taller line box than upright", () => {
+    // The founder reported clipping again after every surface was already at
+    // 1.45x, which means the ratio was not the whole story. Italic serif swings
+    // furthest in both directions at once.
+    assert(
+      frenchItalicLineHeight(20) > frenchLineHeight(20),
+      "italic must reserve more vertical room than upright French",
+    );
+    assert(frenchItalicLineHeight(14) >= 21, "14pt italic French needs at least 21pt of line");
+  });
+
+  test("the Android knob is set explicitly, not left to the platform default", () => {
+    // includeFontPadding tells Android to reserve the font's own declared ascent
+    // and descent. The default is true today but differs across RN
+    // architectures, and a glyph this close to its bounds should not depend on
+    // which one is running.
+    assert(
+      read("constants/theme.ts").includes("includeFontPadding: true"),
+      "the shared French style must state includeFontPadding rather than inherit it",
+    );
+  });
+
+  test("no French surface sets a line height that a class silently owns", () => {
+    // MeetCard set className="text-lg" and lineHeight: 28 — the size lived in a
+    // class, the line box lived in a number, and nothing connected them. Change
+    // the class and the box stops fitting, silently.
+    for (const rel of MUST_USE_SHARED) {
+      const src = read(rel);
+      for (const m of src.matchAll(/className="[^"]*text-(sm|base|lg|xl)[^"]*"/g)) {
+        const after = src.slice(src.indexOf(m[0]), src.indexOf(m[0]) + 260);
+        assert(
+          !/lineHeight:\s*\d/.test(after),
+          `${rel}: a text-size class sits next to a literal line height (${m[0]})`,
+        );
+      }
+    }
   });
 });

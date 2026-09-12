@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P, RADIUS, SPACE, frenchLineHeight} from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
 import type {
   NaturalRevealPayload,
   NaturalRevealScreen,
@@ -145,10 +145,7 @@ export function NaturalRevealView({
           <Text
             style={{
               color: P.ink,
-              fontFamily: "serif",
-              fontStyle: "italic",
-              fontSize: 19,
-              lineHeight: frenchLineHeight(19),
+              ...frenchSerif(19),
             }}
             // French breaks at spaces. Android's default high-quality strategy
             // hyphenates and reflows to balance lines, which on a short italic
@@ -291,10 +288,7 @@ function VariantLine({
       <Text
         style={{
           color: P.ink2,
-          fontFamily: "serif",
-          fontStyle: "italic",
-          fontSize: 15,
-          lineHeight: frenchLineHeight(15),
+          ...frenchSerif(15),
         }}
       >
         {fr}

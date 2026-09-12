@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { View, Text } from "react-native";
-import { P, SPACE, frenchLineHeight} from "@/constants/theme";
+import { P, SPACE, frenchSerif} from "@/constants/theme";
 
 /**
  * The shared frame for the three standing surfaces (UI Slice 5).
@@ -61,15 +61,12 @@ export function SurfaceHeader({
         >
           {leading}
           {/* The French floor for 20px is 29, not 28. Below it, accents and the
-              tails of J and j get shaved — the exact defect frenchLineHeight
+              tails of J and j get shaved — the exact defect frenchSerif
               exists to prevent, on the one surface that had drifted under it. */}
           <Text
             style={{
               color: P.ink,
-              fontFamily: "serif",
-              fontStyle: "italic",
-              fontSize: 20,
-              lineHeight: frenchLineHeight(20),
+              ...frenchSerif(20),
               flexShrink: 1,
             }}
           >

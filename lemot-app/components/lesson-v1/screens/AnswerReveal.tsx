@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { P } from "@/constants/theme";
+import { P, frenchSerif } from "@/constants/theme";
 import type { AnswerRevealPayload } from "@/content/lessonTypes";
 
 type Variant = "neutral" | "correct" | "incorrect";
@@ -41,8 +41,11 @@ export function AnswerReveal({
       )}
       {reveal.natural && (
         <Text
-          className="text-sm mt-2"
-          style={{ color: P.ink2, fontStyle: "italic" }}
+          className="mt-2"
+          // Italic at 14px with NO line height at all: it inherited a default
+          // sized for unaccented Latin, which is the exact shape of the defect
+          // the founder keeps seeing on J.
+          style={{ color: P.ink2, ...frenchSerif(14) }}
         >
           {reveal.natural}
         </Text>

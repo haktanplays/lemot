@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P, RADIUS, SPACE, frenchLineHeight } from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
 import type {
   InsightCardScreen,
   InsightType,
@@ -40,6 +40,7 @@ export function InsightCard({
         style={{
           color: P.ink3,
           fontSize: 12,
+          lineHeight: 16,
           letterSpacing: 0.4,
           marginBottom: SPACE.sm,
         }}
@@ -90,10 +91,7 @@ export function InsightCard({
                   <Text
                     style={{
                       color: P.ink,
-                      fontFamily: "serif",
-                      fontStyle: "italic",
-                      fontSize: 17,
-                      lineHeight: frenchLineHeight(17),
+                      ...frenchSerif(17),
                     }}
                   >
                     {ex.fr}
@@ -152,12 +150,7 @@ export function InsightCard({
  * be silent.
  */
 function FrameLine({ frame }: { frame: SplitFrame }) {
-  const serif = {
-    fontFamily: "serif" as const,
-    fontStyle: "italic" as const,
-    fontSize: 17,
-    lineHeight: frenchLineHeight(17),
-  };
+  const serif = frenchSerif(17);
   const half = { ...serif, color: P.ink, fontWeight: "600" as const };
   const quiet = { ...serif, color: P.ink3 };
   return (

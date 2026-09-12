@@ -83,3 +83,45 @@ export const MOTIV = MOTIV_PROVERBS.flatMap((p, i) => [
 export function frenchLineHeight(fontSize: number): number {
   return Math.round(fontSize * 1.45);
 }
+
+/**
+ * The line box an ITALIC serif needs, which is not the same as upright.
+ *
+ * The founder reported clipping on "J" a second time after every French surface
+ * was already computing 1.45x, which means the ratio was not the whole story.
+ * Italic serif is the worst case in both directions at once: the slant carries
+ * the top of a capital J further up and its tail further down than the font's
+ * upright metrics suggest, so the ink can exceed a line box that is arithmetically
+ * correct. 1.55x buys that back.
+ *
+ * Upright French keeps 1.45x. This is not a global loosening: it applies where
+ * the product actually sets italic, which is the model answer, the chips, the
+ * reel and the reveal.
+ */
+export function frenchItalicLineHeight(fontSize: number): number {
+  return Math.round(fontSize * 1.55);
+}
+
+/**
+ * ONE italic-serif French style, so there is one place to fix it.
+ *
+ * Eight renderers were each hand-assembling fontFamily + fontStyle + fontSize +
+ * lineHeight, which is how the last typography pass could correct four of them
+ * and leave the defect alive. A shared factory makes the next Android finding a
+ * one-line change instead of an eight-file audit.
+ *
+ * `includeFontPadding` is the Android-specific half and is set explicitly rather
+ * than left to the platform default. It tells Android to reserve the font's own
+ * declared ascent and descent around the line; the default is true today, but it
+ * differs across RN architectures, and a glyph this close to its bounds should
+ * not depend on which one is running. It is ignored on iOS.
+ */
+export function frenchSerif(fontSize: number) {
+  return {
+    fontFamily: "serif" as const,
+    fontStyle: "italic" as const,
+    fontSize,
+    lineHeight: frenchItalicLineHeight(fontSize),
+    includeFontPadding: true,
+  };
+}

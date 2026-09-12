@@ -3,7 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import { Volume2 } from "lucide-react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P } from "@/constants/theme";
+import { P, frenchLineHeight, frenchSerif } from "@/constants/theme";
 import { useSpeech } from "@/hooks/useSpeech";
 import type { MeetCardScreen } from "@/content/lessonTypes";
 
@@ -58,12 +58,14 @@ export function MeetCard({
         <View className="flex-row items-start gap-3">
           <View className="flex-1">
             <Text
-              className="text-lg"
               style={{
                 color: P.ink,
-                fontFamily: "serif",
-                fontStyle: "italic",
-                lineHeight: 28,
+                // Was className="text-lg" plus a literal lineHeight of 28. The
+                // size lived in a class and the line box lived in a number, so
+                // nothing connected them: change the class and the line box
+                // silently stops fitting. The size is explicit now and the line
+                // box is computed from it.
+                ...frenchSerif(18),
               }}
             >
               {payload.fr}
@@ -119,7 +121,18 @@ export function MeetCard({
                   paddingVertical: 4,
                 }}
               >
-                <Text style={{ fontSize: 12, color: P.ink2 }}>
+                {/* French in a pill with 4px of vertical padding and, until
+                    now, no line box of its own: it inherited a default sized
+                    for unaccented Latin. These are the chips showing "je ne
+                    suis pas" and "ici", which is where the founder has been
+                    looking. Upright, so the upright floor applies. */}
+                <Text
+                  style={{
+                    fontSize: 12,
+                    lineHeight: frenchLineHeight(12),
+                    color: P.ink2,
+                  }}
+                >
                   {h.text}
                 </Text>
               </View>

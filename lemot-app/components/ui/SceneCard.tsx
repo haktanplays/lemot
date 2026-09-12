@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { P, RADIUS, SPACE } from "@/constants/theme";
+import { P, RADIUS, SPACE, frenchSerif } from "@/constants/theme";
 
 /**
  * SceneCard - the moment the learner has stepped into (UI Slice 4).
@@ -38,6 +38,7 @@ export function SceneCard({ kicker, text }: { kicker?: string; text: string }) {
           style={{
             color: P.ink3,
             fontSize: 12,
+            lineHeight: 16,
             letterSpacing: 0.4,
             marginBottom: SPACE.xs,
           }}
@@ -48,10 +49,7 @@ export function SceneCard({ kicker, text }: { kicker?: string; text: string }) {
       <Text
         style={{
           color: P.ink2,
-          fontFamily: "serif",
-          fontStyle: "italic",
-          fontSize: 15,
-          lineHeight: 24,
+          ...frenchSerif(15),
         }}
       >
         {text}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
 import { PrimaryAction } from "@/components/ui/actions";
-import { P } from "@/constants/theme";
+import { P, frenchLineHeight, frenchSerif } from "@/constants/theme";
 import type { FillWithTrapsScreen } from "@/content/lessonTypes";
 import { AnswerReveal } from "./AnswerReveal";
 
@@ -77,12 +77,9 @@ export function FillWithTraps({
         }}
       >
         <Text
-          className="text-base"
           style={{
             color: P.ink,
-            fontFamily: "serif",
-            fontStyle: "italic",
-            lineHeight: 26,
+            ...frenchSerif(16),
           }}
         >
           {payload.sentenceBefore ?? ""}
@@ -135,7 +132,17 @@ export function FillWithTraps({
                 opacity: selected !== undefined && !isThisSelected ? 0.6 : 1,
               }}
             >
-              <Text style={{ color: textColor, fontSize: 15 }}>
+              {/* Whole French sentences since the corpus-closure pass — "Je ne
+                  suis pas ici.", "Ça va.", "Désolé, je suis en retard." — and
+                  they had no line box of their own. Upright, so the upright
+                  floor applies. */}
+              <Text
+                style={{
+                  color: textColor,
+                  fontSize: 15,
+                  lineHeight: frenchLineHeight(15),
+                }}
+              >
                 {option.text}
               </Text>
             </Pressable>
