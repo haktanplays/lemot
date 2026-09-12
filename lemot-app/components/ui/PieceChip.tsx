@@ -34,21 +34,26 @@ export function PieceChip({ text, label }: { text: string; label?: string }) {
         paddingHorizontal: SPACE.md,
         paddingVertical: SPACE.sm,
         alignSelf: "flex-start",
+        // Width follows content, and never more than the row. Without the cap a
+        // long chunk pushes the pill past its container instead of wrapping,
+        // which is how a piece becomes a balloon.
+        maxWidth: "100%",
         // Never taller than its content needs, and never shorter: with both
         // texts capped at one line this is deterministic, so every chip in a
         // tray lands on the same baseline.
         flexShrink: 0,
       }}
     >
-      <Text
-        style={{
-          color: P.ink,
-          ...frenchSerif(14),
-        }}
-        numberOfLines={1}
-      >
-        {text}
-      </Text>
+      {/* FRENCH IS NEVER TRUNCATED.
+          It used to carry numberOfLines={1} like the label below it, and for a
+          French chunk that is not a cosmetic degradation: cut "je suis" and the
+          chip shows "je", which is a DIFFERENT piece the learner also owns. A
+          chip that can silently display the wrong chunk is teaching the wrong
+          boundary, and the founder read exactly that off a recap.
+
+          So it wraps instead. The chip grows downward in the rare case that
+          needs it, which costs a row of alignment and keeps the piece true. */}
+      <Text style={{ color: P.ink, ...frenchSerif(14) }}>{text}</Text>
       {label && (
         <Text
           style={{ color: P.ink3, fontSize: 11, lineHeight: 16, marginTop: 1 }}

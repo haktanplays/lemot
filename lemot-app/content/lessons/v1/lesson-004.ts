@@ -18,7 +18,7 @@ const screens: LessonScreen[] = [
         {
           label: "What your body is telling you",
           sentences: [
-            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"], depth: { sound: "zhay FAN", compare: "Je suis for who and where you are; j'ai for hunger, thirst, cold. English uses to be for all of them, which is why this one has to be learned rather than translated.", notice: "Literally I have hunger." } },
+            { fr: "J'ai faim.", en: "I'm hungry.", role: "core", itemIds: ["chunk-j-ai-faim"], depth: { sound: "zhay FA(n)", notice: "Literally I have hunger. The m at the end is not said at all, and the (n) is not a consonant either: it marks the vowel as nasal, so the sound carries through the nose and stops there. Say fan and close it with your tongue and you have said an English word, not this one.", compare: "Je suis for who and where you are; j'ai for hunger, thirst, cold. English uses to be for all of them, which is why this one has to be learned rather than translated." } },
             { fr: "J'ai soif.", en: "I'm thirsty.", role: "supported", itemIds: ["chunk-j-ai-soif"], pieces: ["J'ai", "soif"] },
             { fr: "J'ai froid.", en: "I'm cold.", role: "exposure", itemIds: ["chunk-j-ai-froid"], pieces: ["J'ai", "froid"] },
             { fr: "J'ai chaud.", en: "I'm hot.", role: "exposure", itemIds: ["chunk-j-ai-chaud"], pieces: ["J'ai", "chaud"] },
@@ -32,9 +32,9 @@ const screens: LessonScreen[] = [
               en: "I have a question.",
               role: "core",
               itemIds: ["chunk-j-ai-une-question"],
-              depth: { cognate: "Direct cognate. Question is spelled identically in both languages and does the same job. Only the sound changes: kess-tee-ON, with the weight at the end.", sound: "zhay oon kess-tee-ON", structure: "j'ai plus a package. The package is une here, and that choice belongs to the word question, not to you." },
+              depth: { cognate: "Direct cognate. Question is spelled identically in both languages and does the same job. Only the sound changes: kess-tee-O(n), with the weight at the end.", sound: "zhay oon kess-tee-O(n)", structure: "j'ai plus a package. The package is une here, and that choice belongs to the word question, not to you." },
             },
-            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"], pieces: ["J'ai", "une idée"], depth: { cognate: "Direct cognate. Idée is idea with a French ending. The é is doing real work here: it is what makes the last syllable audible rather than silent." } },
+            { fr: "J'ai une idée.", en: "I have an idea.", role: "core", itemIds: ["noun-idee"], pieces: ["J'ai", "une idée"], depth: { sound: "zhay oon ee-DAY", cognate: "Direct cognate. Idée is idea with a French ending. The é is doing real work here: it is what makes the last syllable audible rather than silent." } },
             { fr: "Excusez-moi, j'ai une question.", en: "Excuse me, I have a question.", role: "core", itemIds: ["chunk-excusez-moi", "chunk-j-ai-une-question"] },
             { fr: "J'ai un problème.", en: "I have a problem.", role: "exposure", pieces: ["J'ai", "un problème"] },
           ],
@@ -109,14 +109,16 @@ const screens: LessonScreen[] = [
       insightType: "micro-contrast",
       title: "French has hunger.",
       body:
-        "In English you are hungry. In French you have hunger: j'ai faim. " +
-        "French puts some feelings on have, not on be. Je suis names who or " +
-        "where you are; j'ai names what you feel or have: a feeling like " +
-        "j'ai faim, or a thing like j'ai une question.",
+        "In English you are hungry. In French you have hunger. Two tools, and English uses one word for both.",
+      // The paragraph used to carry the whole argument and the three examples
+      // underneath it were unlabelled, so the learner read the contrast rather
+      // than seeing it. The notes put the tool beside the sentence that uses
+      // it, and the middle line is the one that breaks the pattern an English
+      // speaker expects.
       examples: [
-        { fr: "Je suis ici.", en: "I am here." },
-        { fr: "J'ai faim.", en: "I am hungry." },
-        { fr: "J'ai une question.", en: "I have a question." },
+        { fr: "Je suis ici.", en: "I am here.", note: "je suis: who or where you are" },
+        { fr: "J'ai faim.", en: "I am hungry.", note: "j'ai: English says are here. French says have." },
+        { fr: "J'ai une question.", en: "I have a question.", note: "j'ai: and here English says have too" },
       ],
     },
   },

@@ -560,7 +560,11 @@ const screens: LessonScreen[] = [
         "Je voudrais carried an action for the first time, not just a thing.",
         "Faire une pause stayed one piece. The rest of faire can wait.",
       ],
-      piecesUsed: ["je voudrais", "faire une pause", "une pause", "s'il vous plaît"],
+      // "une pause" is not a piece the registry knows. faire une pause is the
+      // chunk this lesson teaches and pause is the word inside it; "une pause"
+      // is a slice of the chunk that travels nowhere on its own, and showing it
+      // back as a piece the learner used tells them a boundary that is not real.
+      piecesUsed: ["je voudrais", "faire une pause", "s'il vous plaît"],
       nextLabel: "Continue",
     },
   },
