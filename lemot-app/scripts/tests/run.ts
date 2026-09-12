@@ -57,6 +57,7 @@ import "./practiceCatalogue.test";
 import "./practiceBrowseUi.test";
 import "./expressionResolver.test";
 import "./l6PieceContract.test";
+import "./exposureTruth.test";
 import "./verdictAndAudio.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";

@@ -70,19 +70,71 @@ export function Showcase({
               overflow: "hidden",
             }}
           >
-            {cluster.sentences.map((sentence, si) => (
-              <Line
-                key={sentence.fr}
-                sentence={sentence}
-                first={si === 0}
-                onSay={() => say(sentence.fr)}
-                onSayPiece={(text) => say(text)}
-              />
-            ))}
+            {cluster.sentences.map((sentence, si) => {
+              // Where the lesson's own material ends and the breadth begins.
+              // Authored `exposure` lines are a trailing block in every cluster
+              // in the shipped curriculum (a guard proves it), so this is one
+              // boundary per cluster rather than a badge per line.
+              const opensExposure =
+                sentence.role === "exposure" &&
+                (si === 0 || cluster.sentences[si - 1]?.role !== "exposure");
+              return (
+                <View key={sentence.fr}>
+                  {opensExposure && <ExposureBoundary first={si === 0} />}
+                  <Line
+                    sentence={sentence}
+                    // The boundary already drew the rule, so the line under it
+                    // is first in its own block. Without this the caption gets
+                    // a second hairline immediately beneath it.
+                    first={si === 0 || opensExposure}
+                    onSay={() => say(sentence.fr)}
+                    onSayPiece={(text) => say(text)}
+                  />
+                </View>
+              );
+            })}
           </View>
         </View>
       ))}
     </LessonScreenFrame>
+  );
+}
+
+/**
+ * The line between what this lesson gives you and what it only shows you.
+ *
+ * WHAT `exposure` ACTUALLY MEANS, measured rather than assumed. It is the
+ * showcase's demand ceiling — "may be seen and heard, may NEVER be a required
+ * graded answer" — and 69 lines across L1-L10 carry it. It is NOT "taught in a
+ * later lesson": twenty-odd of those sentences contain canonical items no
+ * lesson ever declares, and several core lines DO contain later items. So the
+ * label promises nothing about arrival, because for most of these nothing is
+ * arriving. It says the one thing that is true of all sixty-nine.
+ *
+ * Restrained on purpose. Not a badge, not a lock, not disabled-grey, not a
+ * reward: the learner reads these lines exactly as before, and now knows why
+ * they are not being asked to hold on to them.
+ */
+function ExposureBoundary({ first }: { first: boolean }) {
+  return (
+    <View
+      style={{
+        paddingHorizontal: SPACE.md,
+        paddingTop: first ? SPACE.sm + 2 : SPACE.md,
+        paddingBottom: SPACE.xs,
+        borderTopWidth: first ? 0 : 1,
+        borderTopColor: P.border,
+      }}
+    >
+      <Text
+        style={{ color: P.ink3, fontSize: 11, lineHeight: 16, letterSpacing: 0.4 }}
+      >
+        Worth noticing
+      </Text>
+      <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 18, marginTop: 1 }}>
+        Nothing here is asked of you. Read them and move on.
+      </Text>
+    </View>
   );
 }
 
