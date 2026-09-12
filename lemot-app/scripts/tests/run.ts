@@ -65,6 +65,7 @@ import "./l9l10Founder.test";
 import "./piecesAndVariety.test";
 import "./v4bPrimitives.test";
 import "./lessonStepPractice.test";
+import "./myFrenchCanDo.test";
 import "./verdictAndAudio.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";

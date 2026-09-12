@@ -26,6 +26,7 @@ import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import { V1_LESSONS } from "@/content/lessons/v1";
 import { Kicker } from "@/components/ui/editorial";
+import { selectCanDoLines } from "@/content/my-french/canDo";
 import {
   FRENCH_CONTEXTS,
   FRENCH_CONTEXT_COPY,
@@ -68,7 +69,7 @@ export default function MyFrenchRoute() {
     setState({ phase: "loading" });
     runtime
       .readPracticeReach()
-      .then(({ snapshot, reachedLessonIds }) => {
+      .then(({ snapshot }) => {
         if (loadToken.current !== token) return;
         const items = Object.values(snapshot.items ?? {});
 
@@ -87,12 +88,18 @@ export default function MyFrenchRoute() {
           .filter((s) => s.fr.length > 0)
           .slice(0, 6);
 
-        const reached = new Set(reachedLessonIds);
-        const canDo = V1_LESSONS.filter(
-          (l) => l.number >= 1 && l.number <= 10 && reached.has(l.id),
-        )
-          .map((l) => String((l as { canDo?: string }).canDo ?? ""))
-          .filter((c) => c.length > 0);
+        // WHAT THE LEARNER CAN DO, not which lessons they have opened.
+        //
+        // This used to read `reachedLessonIds`, which is "lesson ids with real
+        // learner evidence" — one event is enough. A learner who opened Lesson
+        // 5, answered a single thing and closed the app was told, in the
+        // lesson's own confident words, that they could now do what Lesson 5
+        // promises. The rule is now the lesson's own: every item it declares it
+        // installs has actually been produced.
+        const canDo = selectCanDoLines({
+          lessons: V1_LESSONS.filter((l) => l.number >= 1 && l.number <= 10),
+          snapshot,
+        }).map((line) => line.text);
 
         setState({
           phase: "ready",
@@ -242,11 +249,11 @@ export default function MyFrenchRoute() {
 
           <Section
             label="My journey"
-            hint="What you can do now, in the words the lessons used."
+            hint="What you can do now, in the words the lessons used. A line appears once you have actually produced the French it is about."
           >
             {observed.canDo.length === 0 ? (
               <Text style={{ color: P.ink2, fontSize: 14, lineHeight: 21 }}>
-                This fills in as you finish lessons.
+                This fills in as you start using the French from your lessons.
               </Text>
             ) : (
               observed.canDo.map((line, i) => (
