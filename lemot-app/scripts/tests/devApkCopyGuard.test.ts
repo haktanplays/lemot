@@ -151,6 +151,8 @@ describe("dev-apk Practice copy guard", () => {
     const { join } = require("node:path") as typeof import("node:path");
     for (const rel of [
       "components/practice/PracticeStart.tsx",
+      "components/practice/PracticeBrowse.tsx",
+      "components/practice/PracticeCard.tsx",
       "components/practice/PracticeBuild.tsx",
       "components/practice/PracticeComplete.tsx",
       "components/practice/PracticeRunner.tsx",

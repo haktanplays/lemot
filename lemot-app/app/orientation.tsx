@@ -70,7 +70,7 @@ const BEATS: Beat[] = [
     kicker: "Practice",
     title: "Calling it back.",
     lines: [
-      "When something has been quiet for a while, Practice brings it back and asks you to use it again.",
+      "Practice is where you go back to French you have already met, and use it again.",
       "That is the whole loop: meet it, use it, keep it, use it again.",
     ],
   },

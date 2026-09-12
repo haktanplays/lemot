@@ -54,6 +54,7 @@ import "./recapBridge.test";
 import "./monLexiqueBecoming.test";
 import "./hintPieces.test";
 import "./practiceCatalogue.test";
+import "./practiceBrowseUi.test";
 import "./verdictAndAudio.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";

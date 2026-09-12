@@ -16,6 +16,7 @@ import type { PracticeMode } from "./practiceModes";
 import type { PracticeSessionAction } from "./practicePlanner";
 import { summaryLineOf } from "./practicePlanner";
 import { collectLearnerStrings } from "../lessons/learnerCopy";
+import type { BrowseMode, seedShape } from "./practiceBrowse";
 
 /**
  * Canonical item → the capability a learner would recognise.
@@ -114,10 +115,21 @@ export function territoryLabels(
  * it. (`weaveCopy.ts` applies the same pattern on the lesson side.)
  */
 export const PRACTICE_UI_COPY = Object.freeze({
-  startHeadline: "Keep the French moving.",
-  startBlurb: "This is built from the French you have already used. Nothing here is new.",
+  // THE ENTRY, reframed.
+  //
+  // It used to open "Keep the French moving. / 7 things to bring back. / Start
+  // practice." — which is Daily Review's sentence: a set already chosen, handed
+  // over, one tap. Practice is the other half of that pair. Cairn chooses the
+  // review; the learner chooses here, out of an inventory that runs to
+  // hundreds. The headline now asks rather than announces.
+  startHeadline: "Pick something to work on.",
+  startBlurb: "All of it is French you have already met. Nothing here is new.",
   startTodayLabel: "TODAY",
   startAction: "Start practice",
+  // Real cards on the entry, because "a step further" means nothing until you
+  // see what it would actually ask of you.
+  tasterLabel: "Something you could do right now",
+  browseAll: "See everything",
   // The two secondary entries. Freestyle stays the default action; these are
   // for a learner who arrived knowing what they want to work on.
   modesLabel: "Or work on something particular",
@@ -129,6 +141,43 @@ export const PRACTICE_UI_COPY = Object.freeze({
   modeLessonPrompt: "Which one?",
   modeFreestyle: "Anything and everything",
   modeFreestyleDetail: "A mixed set from all the French you have reached.",
+
+  // ── browse ────────────────────────────────────────────────────────────
+  //
+  // The four jobs, as the learner meets them. Internal names (byLesson,
+  // freestyle, refresh, justBeyond) stay internal; these are the only words
+  // that reach a screen.
+  browseLabel: "Where to look",
+  browseByLesson: "A lesson you have done",
+  browseByLessonDetail: "Everything that came out of one lesson.",
+  browseFreestyle: "Anything and everything",
+  browseFreestyleDetail: "Mixed, from across what you have reached.",
+  browseRefresh: "Things to come back to",
+  browseRefreshDetail: "French that has not settled yet.",
+  browseRefreshEmpty: "Nothing is waiting here at the moment.",
+  browseBeyond: "A step further",
+  browseBeyondDetail: "A scene, and no English to lean on.",
+  browseBeyondEmpty: "Nothing here yet. It fills up as you go.",
+  // "More" rather than a count. Breadth should be felt by scrolling into it,
+  // not sold as a number on a badge.
+  browseMore: "Keep going",
+  browseEnd: "That is all of it, for now.",
+  browseLessonPrompt: "Which one?",
+  browseBack: "Back to Practice",
+  browseOpen: "Start here",
+  // The bounded session, preserved as ONE option rather than as the whole of
+  // Practice. Named for what it does, so the learner can tell the two apart:
+  // here they pick, there Cairn picks.
+  browseSessionLabel: "Or let Cairn put a set together",
+  browseSessionDetail: "A short one, chosen from what is due.",
+
+  // What a card asks for, from the seed's authored surface. Never a level,
+  // never a difficulty badge: just the shape of the work.
+  shapeWrite: "Write it",
+  shapeSay: "Say it",
+  shapePiece: "Put it together",
+  shapeListen: "Listen first",
+  shapeChoose: "Pick one",
   // A narrowed mode can legitimately come back with nothing. That is not the
   // cold start, and it must never be described as one: the learner has done
   // the work, so the line says what THIS choice holds and leaves every other
@@ -347,4 +396,53 @@ export function practiceLearnerStrings(
   // Copy the learner sees but the repo never stores as a literal.
   out.push(...struggleCopySamples());
   return out;
+}
+
+/**
+ * What one browse mode is called, and what it holds.
+ *
+ * A lookup rather than four conditionals in the component, so the learner-
+ * facing words all live where the dev-apk copy guard can walk them and no
+ * screen can quietly invent a fifth name for a mode.
+ */
+export function browseModeCopy(mode: BrowseMode): {
+  label: string;
+  detail: string;
+  empty: string | null;
+} {
+  if (mode === "byLesson") {
+    return {
+      label: PRACTICE_UI_COPY.browseByLesson,
+      detail: PRACTICE_UI_COPY.browseByLessonDetail,
+      empty: PRACTICE_UI_COPY.browseLessonPrompt,
+    };
+  }
+  if (mode === "refresh") {
+    return {
+      label: PRACTICE_UI_COPY.browseRefresh,
+      detail: PRACTICE_UI_COPY.browseRefreshDetail,
+      empty: PRACTICE_UI_COPY.browseRefreshEmpty,
+    };
+  }
+  if (mode === "justBeyond") {
+    return {
+      label: PRACTICE_UI_COPY.browseBeyond,
+      detail: PRACTICE_UI_COPY.browseBeyondDetail,
+      empty: PRACTICE_UI_COPY.browseBeyondEmpty,
+    };
+  }
+  return {
+    label: PRACTICE_UI_COPY.browseFreestyle,
+    detail: PRACTICE_UI_COPY.browseFreestyleDetail,
+    empty: null,
+  };
+}
+
+/** The shape of the work on one card. Four words, no ladder, no badge. */
+export function shapeLabel(shape: ReturnType<typeof seedShape>): string {
+  if (shape === "write") return PRACTICE_UI_COPY.shapeWrite;
+  if (shape === "say") return PRACTICE_UI_COPY.shapeSay;
+  if (shape === "piece") return PRACTICE_UI_COPY.shapePiece;
+  if (shape === "listen") return PRACTICE_UI_COPY.shapeListen;
+  return PRACTICE_UI_COPY.shapeChoose;
 }

@@ -77,7 +77,24 @@ export function cataloguePage(
   cursor = 0,
   pageSize = 12,
 ): CataloguePage {
-  const ordered = catalogueOrder(lawful, key);
+  return cataloguePageOf(catalogueOrder(lawful, key), cursor, pageSize);
+}
+
+/**
+ * One page of a list that has ALREADY been ordered.
+ *
+ * The rotation must happen exactly once, and this is what makes that possible.
+ * A caller that orders a pool, then hands positions out of it — a browse surface
+ * where tapping the fourth card must start the fourth practice — cannot let a
+ * paginator rotate it a second time underneath, or the index it reports back
+ * names a different seed than the one on screen. Splitting the two halves means
+ * the ordering decision has one owner and the paging is pure arithmetic.
+ */
+export function cataloguePageOf(
+  ordered: readonly PracticeSeed[],
+  cursor = 0,
+  pageSize = 12,
+): CataloguePage {
   const from = Math.max(0, Math.trunc(cursor));
   const seeds = ordered.slice(from, from + Math.max(1, pageSize));
   const next = from + seeds.length;

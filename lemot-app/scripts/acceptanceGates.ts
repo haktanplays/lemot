@@ -217,10 +217,14 @@ const PATH = V1_LESSONS.filter((l) => l.number >= 1 && l.number <= 10);
   const lesson = PATH[6];
   const byLesson = seedsForMode("byLesson", { seeds: PRACTICE_SEEDS, snapshot, lessonId: lesson.id });
   const unchosen = seedsForMode("byLesson", { seeds: PRACTICE_SEEDS, snapshot, lessonId: null });
-  const startSrc = src("components/practice/PracticeStart.tsx");
+  // The picker moved from the entry to the browse surface when Practice became
+  // catalogue + session: choosing a lesson now opens that lesson's forty-odd
+  // practices rather than re-filtering an eight-item session. The gate follows
+  // the picker; what it asserts is unchanged.
+  const pickerSrc = src("components/practice/PracticeBrowse.tsx");
   gate("PRACTICE", "Freestyle", freestyle.length === PRACTICE_SEEDS.length, `${freestyle.length} seeds, the whole corpus`);
   gate("PRACTICE", "Errors", src("content/practice/practiceModes.ts").includes("weakItemIds"), "errors narrows to seeds working a weak item");
-  gate("PRACTICE", "actual By Lesson picker", startSrc.includes("reachedLessons.map") && startSrc.includes("selectedLessonId"), `picker renders reached lessons; unchosen lesson yields ${unchosen.length} seeds`);
+  gate("PRACTICE", "actual By Lesson picker", pickerSrc.includes("lessons.map") && pickerSrc.includes("selectedLessonId"), `picker renders reached lessons; unchosen lesson yields ${unchosen.length} seeds`);
   gate("PRACTICE", "eligibility preserved", byLesson.every((s) => s.originLessonId === lesson.id) && byLesson.length > 0, `${byLesson.length} seeds, all from ${lesson.id}`);
 }
 

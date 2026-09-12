@@ -1,10 +1,26 @@
 /**
  * Practice — a permanent standing surface (one of the three tabs).
  *
- * Practice Hub V1: one tap starts a good session. The learner is never asked to
- * pick a lesson, a difficulty, an exercise type or a bucket — deciding which of
- * those they need is exactly the part they cannot do, and the selector can. The
- * old list-of-cards Hub asked them to choose; this does not.
+ * THE PRODUCT DISTINCTION THIS SURFACE EXISTS TO HOLD:
+ *
+ *   DAILY REVIEW   Cairn chooses the session.
+ *   PRACTICE       You choose what to work on.
+ *
+ * Practice Hub V1 got the second half wrong, and the measurement said how
+ * wrong. A learner who had walked L0-L6 owned 251 lawful practices; the Hub
+ * served one planner session capped at eight, so they met 3.2% of what they
+ * were entitled to and reasonably concluded that was the whole of Practice. The
+ * routing was never broken — no authored seed anywhere is unreachable. What was
+ * missing was a DOOR.
+ *
+ * So this route now has two halves that both matter:
+ *
+ *   catalogue  →  browse       `practiceBrowse` narrows, `practiceCatalogue`
+ *                              orders and paginates, and the learner walks it
+ *   catalogue  →  session      `planPracticeSession`, unchanged, still bounded
+ *
+ * and not `Practice == bounded session`. TODAYS_SET_MAX is untouched: a session
+ * is still a session, it is simply no longer the definition of the tab.
  *
  * NOT built on the legacy v7 Practice route, which stays quarantined on
  * `useSRS` / legacy scenarios / legacy flashcards and is unreachable from the
@@ -14,15 +30,17 @@
  * P4.6 shape, and it carried a real defect: a reused screen keeps its lesson
  * exercise id, and `selectLessonProgress` matches on `exerciseId` while
  * ignoring `lessonId` — so one practice attempt marked an L1 screen attempted
- * and flipped that lesson to `started`. Practice now runs its own static seed
- * pool under the reserved `practice/` id namespace, so it cannot mark lesson
- * progress at all.
+ * and flipped that lesson to `started`. Practice runs its own static seed pool
+ * under the reserved `practice/` id namespace, so it cannot mark lesson
+ * progress at all. Browsing does not change that: opening a card starts a
+ * practice run, and reading a card starts nothing.
  *
- * Emission policy: opening Practice, starting a session, advancing and leaving
- * emit NOTHING. Only a graded action records, through the controller inside
- * `usePracticeSession`, with `placement: "practice_hub"`.
+ * Emission policy: opening Practice, browsing the catalogue, paging through it,
+ * starting a session, advancing and leaving all emit NOTHING. Only a graded
+ * action records, through the controller inside `usePracticeSession`, with
+ * `placement: "practice_hub"`.
  */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -40,12 +58,17 @@ import { PRACTICE_EMPTY_LINE } from "@/content/practice/practiceCopy";
 import { useLearningEngineRuntime } from "@/providers/LearningEngineProvider";
 import { PracticeStart } from "@/components/practice/PracticeStart";
 import {
-  hasErrorsToPractise,
-  seedsForMode,
-  type PracticeMode,
-} from "@/content/practice/practiceModes";
+  BROWSE_MODES,
+  browsePool,
+  browseRun,
+  browseTasters,
+  type BrowseMode,
+} from "@/content/practice/practiceBrowse";
+import { catalogueOrder } from "@/content/practice/practiceCatalogue";
+import { PracticeBrowse } from "@/components/practice/PracticeBrowse";
 import { PracticeRunner, type PracticeRunResult } from "@/components/practice/PracticeRunner";
 import { PracticeComplete } from "@/components/practice/PracticeComplete";
+import type { MasterySnapshot } from "@/content/learning-engine/mastery";
 
 /** Canon session budget. The selector clamps to 5-8 and may return fewer. */
 const PRACTICE_BUDGET = 6;
@@ -53,23 +76,17 @@ const PRACTICE_BUDGET = 6;
 type Ready = {
   phase: "ready";
   actions: PracticeSessionAction[];
+  snapshot: MasterySnapshot;
   reachedItems: Set<string>;
   reachedLessons: Set<string>;
-  /** Whether Errors has real material, so the entry can be honest about it. */
-  errorsAvailable: boolean;
-  /** Lessons the learner has reached, for the By lesson entry. */
-  reachedLessonNumbers: number[];
 };
 
-type HubState =
-  | { phase: "loading" }
-  | { phase: "error" }
-  | Ready;
+type HubState = { phase: "loading" } | { phase: "error" } | Ready;
 
 export default function PracticeRoute() {
   const { runtime, generation } = useLearningEngineRuntime();
   const [state, setState] = useState<HubState>({ phase: "loading" });
-  const [running, setRunning] = useState(false);
+  const [running, setRunning] = useState<PracticeSessionAction[] | null>(null);
   const [finished, setFinished] = useState<PracticeRunResult | null>(null);
   // A fresh key per run gives each sitting its own controller and session id.
   const [runKey, setRunKey] = useState(0);
@@ -77,22 +94,16 @@ export default function PracticeRoute() {
   // generation's screen, and an unmounted screen must not set state.
   const loadToken = useRef(0);
 
-  // Freestyle is the default: choosing what to practise is the selector's job.
-  // The other modes are for a learner who arrives with an intention.
-  //
-  // A learner arriving from Mon Lexique's "Practise this" has already stated
-  // one, so the route honours it: By lesson, opened on the lesson where they
-  // met that word. It is the same picker, arriving pre-answered rather than a
-  // second way in.
+  // A learner arriving from Mon Lexique's "Practise this" has already said what
+  // they want, so the route opens the browse door they asked for rather than
+  // making them find it. My French's "Work on these" arrives the same way.
   const { lesson: lessonParam, mode: modeParam } = useLocalSearchParams<{
     lesson?: string;
     mode?: string;
   }>();
   const arrivedWithLesson = typeof lessonParam === "string" && lessonParam.length > 0;
-  // My French's "Work on these" arrives here asking for the error pool by name.
-  const arrivedForErrors = modeParam === "errors";
-  const [mode, setMode] = useState<PracticeMode>(
-    arrivedWithLesson ? "byLesson" : arrivedForErrors ? "errors" : "freestyle",
+  const [browsing, setBrowsing] = useState<BrowseMode | null>(
+    arrivedWithLesson ? "byLesson" : modeParam === "errors" ? "refresh" : null,
   );
   const [lessonId, setLessonId] = useState<string | null>(
     arrivedWithLesson ? lessonParam : null,
@@ -110,38 +121,31 @@ export default function PracticeRoute() {
         // they have not just done rather than its one favourite exercise.
         const seedHistory = new Map(Object.entries(practiceSeedHistory));
         // The ONE orchestration-boundary clock read; the planner never reads one.
-        // One pool, narrowed. The planner still decides lawfulness, so a mode
-        // can only ever offer LESS than freestyle, never something untaught.
-        const pool = seedsForMode(mode, { seeds: PRACTICE_SEEDS, snapshot, lessonId });
         const plan = planPracticeSession({
           snapshot,
           reachedLessons,
           seedHistory,
           items: ITEM_REGISTRY,
           lessons: V1_LESSONS,
-          seeds: pool,
+          seeds: PRACTICE_SEEDS,
           now: Date.now(),
           budget: PRACTICE_BUDGET,
         });
         setState({
           phase: "ready",
           actions: plan.actions,
+          snapshot,
           reachedItems: reachedItemIds(snapshot),
           reachedLessons,
-          errorsAvailable: hasErrorsToPractise(snapshot, PRACTICE_SEEDS),
-          reachedLessonNumbers: (V1_LESSONS as { id: string; number: number }[])
-            .filter((l) => reachedLessons.has(l.id) && l.number >= 1 && l.number <= 10)
-            .map((l) => l.number)
-            .sort((a, b) => a - b),
         });
       })
       .catch(() => {
         if (loadToken.current === token) setState({ phase: "error" });
       });
-  }, [runtime, mode, lessonId]);
+  }, [runtime]);
 
   useEffect(() => {
-    setRunning(false);
+    setRunning(null);
     setFinished(null);
     load();
     return () => {
@@ -149,32 +153,105 @@ export default function PracticeRoute() {
     };
   }, [load, generation]);
 
+  const ready = state.phase === "ready" ? state : null;
+
+  // Lessons the learner has actually been inside, for the By lesson picker.
+  const reachedLessons = useMemo(
+    () =>
+      (V1_LESSONS as { id: string; number: number; title: string }[])
+        .filter((l) => ready?.reachedLessons.has(l.id) && l.number >= 1)
+        .sort((a, b) => a.number - b.number)
+        .map((l) => ({ id: l.id, title: l.title })),
+    [ready],
+  );
+  const lessonTitleOf = useCallback(
+    (id: string) =>
+      (V1_LESSONS as { id: string; title: string }[]).find((l) => l.id === id)?.title,
+    [],
+  );
+
+  // The rotation key. Stable for a learner so a list does not reshuffle under
+  // them, and moving as they reach more, so Practice does not open on the same
+  // card forever. Derived, never stored.
+  const rotationKey = useMemo(
+    () => `practice-${ready?.reachedLessons.size ?? 0}`,
+    [ready],
+  );
+
+  // Every mode's pool, ordered. Cheap — four filters over a frozen array — and
+  // the entry needs all four anyway to know which of them are honestly empty.
+  const pools = useMemo(() => {
+    const empty = {
+      byLesson: [] as ReturnType<typeof browsePool>,
+      freestyle: [],
+      refresh: [],
+      justBeyond: [],
+    } as Record<BrowseMode, ReturnType<typeof browsePool>>;
+    if (!ready) return empty;
+    const out = {} as Record<BrowseMode, ReturnType<typeof browsePool>>;
+    for (const mode of BROWSE_MODES) {
+      const pool = browsePool({
+        mode,
+        seeds: PRACTICE_SEEDS,
+        snapshot: ready.snapshot,
+        reachedItems: ready.reachedItems,
+        reachedLessons: ready.reachedLessons,
+        lessonId: mode === "byLesson" ? (lessonId ?? reachedLessons[0]?.id ?? null) : null,
+      });
+      out[mode] = catalogueOrder(pool, `${rotationKey}:${mode}`);
+    }
+    return out;
+  }, [ready, lessonId, reachedLessons, rotationKey]);
+
+  const poolSizes = useMemo(
+    () =>
+      ({
+        byLesson: pools.byLesson.length,
+        freestyle: pools.freestyle.length,
+        refresh: pools.refresh.length,
+        justBeyond: pools.justBeyond.length,
+      }) as Record<BrowseMode, number>,
+    [pools],
+  );
+
+  // Three real cards, from three different jobs. Freestyle last: it is the
+  // broadest and would otherwise crowd out the two that say something.
+  const tasters = useMemo(
+    () => browseTasters(pools, ["justBeyond", "refresh", "byLesson", "freestyle"]).slice(0, 3),
+    [pools],
+  );
+
   const leaveSession = () => {
-    setRunning(false);
+    setRunning(null);
     setFinished(null);
     load(); // re-plan from the shared log; no local completion state exists
   };
 
-  const startAnother = () => {
+  const startRun = (actions: PracticeSessionAction[]) => {
+    if (actions.length === 0) return;
     setRunKey((k) => k + 1);
     setFinished(null);
-    setRunning(false);
-    load();
+    setRunning(actions);
   };
 
-  if (state.phase === "ready" && running) {
+  const openBrowseCard = (mode: BrowseMode, index: number) => {
+    if (!ready) return;
+    startRun(browseRun(pools[mode], index, ready.snapshot));
+  };
+
+  if (ready && running !== null) {
     return (
       <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: P.bg }}>
         <PracticeRunner
           key={runKey}
           sessionKey={`practice-${runKey}`}
-          plannedActions={state.actions}
+          plannedActions={running}
           lessons={V1_LESSONS}
           seeds={PRACTICE_SEEDS}
-          reachedItems={state.reachedItems}
-          reachedLessons={state.reachedLessons}
+          reachedItems={ready.reachedItems}
+          reachedLessons={ready.reachedLessons}
           onFinish={(result) => {
-            setRunning(false);
+            setRunning(null);
             setFinished(result);
           }}
           onQuit={leaveSession}
@@ -190,7 +267,10 @@ export default function PracticeRoute() {
           actions={finished.worked}
           struggles={finished.struggles}
           onDone={leaveSession}
-          onAgain={startAnother}
+          onAgain={() => {
+            setFinished(null);
+            load();
+          }}
         />
       </SafeAreaView>
     );
@@ -215,31 +295,50 @@ export default function PracticeRoute() {
 
         {/*
           The cold start, and ONLY the cold start. Freestyle draws on everything
-          reached, so freestyle-with-nothing is the one case where "finish your
+          reached, so nothing lawful anywhere is the one case where "finish your
           first lesson" is true. A narrowed mode that comes back empty is not
-          that case, and swapping the screen for it used to strand the learner:
-          the mode rows went with it, so the choice the copy asked for had no
-          control left to make it.
+          that case and never replaces the screen: the doors stay on it.
         */}
-        {state.phase === "ready" && state.actions.length === 0 && mode === "freestyle" && (
+        {ready && poolSizes.freestyle === 0 && ready.actions.length === 0 && (
           <>
             <SurfaceHeader title="Practice" />
             <QuietState text={PRACTICE_EMPTY_LINE} />
           </>
         )}
 
-        {state.phase === "ready" && (state.actions.length > 0 || mode !== "freestyle") && (
+        {ready && poolSizes.freestyle > 0 && browsing === null && (
           <PracticeStart
-            actions={state.actions}
-            onStart={() => setRunning(true)}
-            mode={mode}
-            onModeChange={(next, lesson) => {
-              setLessonId(next === "byLesson" ? (lesson ?? null) : null);
-              setMode(next);
+            actions={ready.actions}
+            onStart={() => startRun(ready.actions)}
+            tasters={tasters}
+            poolSizes={poolSizes}
+            lessonTitleOf={lessonTitleOf}
+            onOpenMode={(mode) => {
+              if (mode === "byLesson" && lessonId === null) {
+                setLessonId(reachedLessons[0]?.id ?? null);
+              }
+              setBrowsing(mode);
             }}
-            errorsAvailable={state.errorsAvailable}
-            reachedLessonNumbers={state.reachedLessonNumbers}
+            onOpenTaster={(mode, seedId) =>
+              openBrowseCard(
+                mode,
+                pools[mode].findIndex((s) => s.id === seedId),
+              )
+            }
+          />
+        )}
+
+        {ready && poolSizes.freestyle > 0 && browsing !== null && (
+          <PracticeBrowse
+            mode={browsing}
+            pool={pools[browsing]}
+            poolId={`${rotationKey}:${browsing}:${lessonId ?? ""}`}
+            lessons={browsing === "byLesson" ? reachedLessons : []}
             selectedLessonId={lessonId}
+            lessonTitleOf={lessonTitleOf}
+            onSelectLesson={setLessonId}
+            onOpen={(index) => openBrowseCard(browsing, index)}
+            onBack={() => setBrowsing(null)}
           />
         )}
       </View>

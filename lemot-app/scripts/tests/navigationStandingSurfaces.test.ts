@@ -222,7 +222,10 @@ describe("standing surfaces are reachable without a lesson or a deep link", () =
     const code = codeOf(read(PRACTICE));
     assert(code.includes("onQuit={leaveSession}"), "the mid-session exit is wired");
     assert(code.includes("onDone={leaveSession}"), "finishing returns the same way");
-    assert(code.includes("setRunning(false)"), "leaving clears the running session");
+    // The running session became the QUEUE rather than a boolean when browse
+    // arrived: a run can now start from a browse card, so what is running is
+    // "these actions", not "yes". Clearing it is the same rule, one value later.
+    assert(code.includes("setRunning(null)"), "leaving clears the running session");
     assert(
       code.includes("PracticeRunner") && code.includes("PracticeComplete"),
       "the session renders inside Practice — leaving never leaves the tab",

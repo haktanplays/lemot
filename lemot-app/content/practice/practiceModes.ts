@@ -1,4 +1,17 @@
 /**
+ * NO LONGER ON THE LEARNER PATH. Read `practiceBrowse.ts` first.
+ *
+ * When Practice became catalogue + session, the narrowing a learner actually
+ * meets moved to `browsePool`, which serves four browse doors rather than three
+ * session filters. This module still holds the session-side narrowing and is
+ * exercised by the acceptance gates, the coverage diagnostic and its own tests,
+ * but NOTHING a learner taps routes through it any more. Two modules deciding
+ * "which seeds" is a drift risk; it is recorded here rather than quietly left
+ * for the next reader to wire up by mistake. Consolidating them is a separate
+ * change, deliberately not made inside the pass that created the second one.
+ *
+ * ── original note ──────────────────────────────────────────────────────────
+ *
  * Three ways into Practice, over ONE pool.
  *
  * Freestyle, Errors and By lesson are selection strategies, not three exercise

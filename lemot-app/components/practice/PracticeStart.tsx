@@ -1,52 +1,57 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
+import { ChevronRight } from "lucide-react-native";
 import { P, SPACE } from "@/constants/theme";
-import { PrimaryAction } from "@/components/ui/actions";
-import {
-  PRACTICE_UI_COPY,
-  narrowedEmptyLine,
-  previewLine,
-  territoryLine,
-} from "@/content/practice/practiceCopy";
+import { QuietAction } from "@/components/ui/actions";
+import { PRACTICE_UI_COPY, browseModeCopy } from "@/content/practice/practiceCopy";
 import type { PracticeSessionAction } from "@/content/practice/practicePlanner";
-import type { PracticeMode } from "@/content/practice/practiceModes";
-import { Pressable } from "react-native";
-import { V1_LESSONS } from "@/content/lessons/v1";
+import type { BrowseMode } from "@/content/practice/practiceBrowse";
+import { BROWSE_MODES } from "@/content/practice/practiceBrowse";
+import type { PracticeSeed } from "@/content/practice/practiceTypes";
+import { PracticeCard } from "./PracticeCard";
 
 /**
  * The Practice entry.
  *
- * One headline, one honest line about the session, one button. That original
- * reasoning stands and is why there is still no menu in front of the default
- * path: deciding what a learner needs is the selector's job, and asking them to
- * choose it is asking them to do the part they cannot do.
+ * WHAT IT USED TO SAY, and why that was the bug:
  *
- * What changed is that a learner sometimes arrives WITH an intention — "the
- * things I keep getting wrong", "the lesson I just did". Those are two quiet
- * secondary entries beneath the main action, not a fork placed before every
- * session. Errors names how much is actually waiting, and offers nothing when
- * nothing is.
+ *     Keep the French moving.
+ *     7 things to bring back.
+ *     Start practice.
+ *
+ * That is Daily Review's sentence. A set already chosen, its size announced,
+ * one tap to accept it. The two surfaces are meant to be a pair and had
+ * collapsed into one — Cairn chooses the review; the learner chooses HERE, out
+ * of an inventory that runs to two hundred and fifty-one lawful practices for a
+ * learner six lessons in. They were seeing eight of them and concluding that
+ * was Practice.
+ *
+ * So the entry asks instead of announcing, and it answers the question it asks
+ * with REAL CARDS rather than a menu of category names. "A step further" means
+ * nothing until you see the scene it would put you in.
+ *
+ * The bounded session is not deleted. It sits at the bottom, named for what it
+ * is, as ONE thing a learner may want rather than the definition of Practice.
  */
 export function PracticeStart({
   actions,
   onStart,
-  mode,
-  onModeChange,
-  errorsAvailable,
-  reachedLessonNumbers,
-  selectedLessonId,
+  tasters,
+  poolSizes,
+  lessonTitleOf,
+  onOpenMode,
+  onOpenTaster,
 }: {
+  /** The bounded planner session, still available, no longer the whole screen. */
   actions: readonly PracticeSessionAction[];
   onStart: () => void;
-  mode: PracticeMode;
-  onModeChange: (mode: PracticeMode, lessonId?: string) => void;
-  errorsAvailable: boolean;
-  reachedLessonNumbers: readonly number[];
-  /** Which lesson By-lesson is currently drawing from, if any. */
-  selectedLessonId: string | null;
+  /** One real, lawful card per mode that has anything in it. */
+  tasters: readonly { mode: BrowseMode; seed: PracticeSeed }[];
+  /** Which modes have material, so an empty one is honest rather than hidden. */
+  poolSizes: Readonly<Record<BrowseMode, number>>;
+  lessonTitleOf: (lessonId: string) => string | undefined;
+  onOpenMode: (mode: BrowseMode) => void;
+  onOpenTaster: (mode: BrowseMode, seedId: string) => void;
 }) {
-  const reachedLessons = (V1_LESSONS as { id: string; number: number; title: string }[])
-    .filter((l) => reachedLessonNumbers.includes(l.number))
-    .sort((a, b) => a.number - b.number);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -56,74 +61,37 @@ export function PracticeStart({
           paddingBottom: SPACE.xxl,
         }}
       >
-        <Text
-          style={{
-            color: P.ink,
-            fontFamily: "serif",
-            fontSize: 28,
-            lineHeight: 36,
-          }}
-        >
+        <Text style={{ color: P.ink, fontFamily: "serif", fontSize: 28, lineHeight: 36 }}>
           {PRACTICE_UI_COPY.startHeadline}
         </Text>
         <Text
-          style={{
-            color: P.ink2,
-            fontSize: 15,
-            lineHeight: 23,
-            marginTop: SPACE.md,
-          }}
+          style={{ color: P.ink2, fontSize: 15, lineHeight: 23, marginTop: SPACE.md }}
         >
           {PRACTICE_UI_COPY.startBlurb}
         </Text>
 
-        <View
-          style={{
-            marginTop: SPACE.xxl,
-            paddingTop: SPACE.lg,
-            borderTopWidth: 1,
-            borderTopColor: P.border,
-          }}
-        >
-          {actions.length > 0 && (
-            <Text style={{ color: P.ink3, fontSize: 12, letterSpacing: 0.3 }}>
-              {PRACTICE_UI_COPY.startTodayLabel}
+        {/* Live examples, drawn from different modes, so the first viewport is
+            things to do rather than a description of things to do. */}
+        {tasters.length > 0 && (
+          <View style={{ marginTop: SPACE.xxl }}>
+            <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 17, letterSpacing: 0.3 }}>
+              {PRACTICE_UI_COPY.tasterLabel}
             </Text>
-          )}
-          <Text
-            style={{
-              color: actions.length > 0 ? P.ink : P.ink2,
-              fontSize: actions.length > 0 ? 17 : 15,
-              lineHeight: actions.length > 0 ? 25 : 23,
-              marginTop: actions.length > 0 ? SPACE.sm : 0,
-            }}
-          >
-            {actions.length > 0 ? previewLine(actions) : narrowedEmptyLine(mode, selectedLessonId)}
-          </Text>
-          {/*
-            What the session is ABOUT, in capabilities rather than French — a
-            preview that printed the sentences would make the first half of
-            every session a reading exercise.
-          */}
-          {territoryLine(actions).length > 0 && (
-            <Text
-              style={{
-                color: P.ink2,
-                fontSize: 14,
-                lineHeight: 22,
-                marginTop: SPACE.md,
-              }}
-            >
-              {territoryLine(actions)}
-            </Text>
-          )}
-        </View>
+            <View style={{ gap: SPACE.md, marginTop: SPACE.md }}>
+              {tasters.map(({ mode, seed }) => (
+                <PracticeCard
+                  key={seed.id}
+                  seed={seed}
+                  lessonTitle={lessonTitleOf(seed.originLessonId)}
+                  onPress={() => onOpenTaster(mode, seed.id)}
+                />
+              ))}
+            </View>
+          </View>
+        )}
 
-        {/*
-          Two quiet ways in for a learner who arrived with an intention. Not a
-          fork before every session: the main action below is still the default
-          path, and these sit under it in secondary type.
-        */}
+        {/* The four jobs. Rows, not tiles: no colour blocks, no icons, no
+            counts. A mode with nothing in it still shows, greyed, saying so. */}
         <View
           style={{
             marginTop: SPACE.xxl,
@@ -133,114 +101,62 @@ export function PracticeStart({
           }}
         >
           <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 17, letterSpacing: 0.3 }}>
-            {PRACTICE_UI_COPY.modesLabel}
+            {PRACTICE_UI_COPY.browseLabel}
           </Text>
+          {BROWSE_MODES.map((mode) => {
+            const copy = browseModeCopy(mode);
+            const empty = poolSizes[mode] === 0 && mode !== "byLesson";
+            return (
+              <ModeRow
+                key={mode}
+                label={copy.label}
+                detail={empty ? (copy.empty ?? copy.detail) : copy.detail}
+                disabled={empty}
+                onPress={() => onOpenMode(mode)}
+              />
+            );
+          })}
+        </View>
 
-          <ModeRow
-            label={PRACTICE_UI_COPY.modeErrors}
-            detail={
-              errorsAvailable
-                ? PRACTICE_UI_COPY.modeErrorsDetail
-                : PRACTICE_UI_COPY.modeErrorsEmpty
-            }
-            selected={mode === "errors"}
-            disabled={!errorsAvailable}
-            onPress={() => onModeChange("errors")}
-          />
-
-          <ModeRow
-            label={PRACTICE_UI_COPY.modeLesson}
-            detail={
-              reachedLessons.length > 0
-                ? PRACTICE_UI_COPY.modeLessonPrompt
-                : PRACTICE_UI_COPY.modeLessonEmpty
-            }
-            selected={mode === "byLesson"}
-            disabled={reachedLessons.length === 0}
-            onPress={() => {
-              // Opening the mode does NOT pick for the learner. Until they
-              // choose, By lesson has no lesson, which is why the copy asks
-              // rather than announcing a count nobody can act on.
-              onModeChange("byLesson", selectedLessonId ?? undefined);
-            }}
-          />
-
-          {mode === "byLesson" && reachedLessons.length > 0 && (
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: SPACE.sm, marginTop: SPACE.sm }}>
-              {reachedLessons.map((l) => {
-                const active = l.id === selectedLessonId;
-                return (
-                  <Pressable
-                    key={l.id}
-                    onPress={() => onModeChange("byLesson", l.id)}
-                    accessibilityRole="button"
-                    accessibilityState={{ selected: active }}
-                    accessibilityLabel={`Practise ${l.title}`}
-                    style={{
-                      backgroundColor: active ? P.rl : P.paper,
-                      borderWidth: 1,
-                      borderColor: active ? P.rb : P.border,
-                      borderRadius: 9999,
-                      paddingHorizontal: 12,
-                      paddingVertical: 6,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 13,
-                        lineHeight: 19,
-                        color: active ? P.ink : P.ink2,
-                        fontWeight: active ? "600" : "400",
-                      }}
-                    >
-                      {l.title}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          )}
-
-          {mode !== "freestyle" && (
-            <ModeRow
-              label={PRACTICE_UI_COPY.modeFreestyle}
-              detail={PRACTICE_UI_COPY.modeFreestyleDetail}
-              selected={false}
-              disabled={false}
-              onPress={() => onModeChange("freestyle")}
+        {/* The bounded session, preserved and demoted. */}
+        <View
+          style={{
+            marginTop: SPACE.xxl,
+            paddingTop: SPACE.lg,
+            borderTopWidth: 1,
+            borderTopColor: P.border,
+          }}
+        >
+          <Text style={{ color: P.ink2, fontSize: 15, lineHeight: 23 }}>
+            {PRACTICE_UI_COPY.browseSessionLabel}
+          </Text>
+          <Text
+            style={{ color: P.ink3, fontSize: 13, lineHeight: 19, marginTop: 2 }}
+          >
+            {PRACTICE_UI_COPY.browseSessionDetail}
+          </Text>
+          <View style={{ marginTop: SPACE.md }}>
+            <QuietAction
+              label={PRACTICE_UI_COPY.startAction}
+              onPress={onStart}
+              disabled={actions.length === 0}
             />
-          )}
+          </View>
         </View>
       </ScrollView>
-
-      <View
-        style={{
-          paddingHorizontal: SPACE.xl,
-          paddingBottom: SPACE.xl,
-          paddingTop: SPACE.md,
-        }}
-      >
-        <PrimaryAction
-          label={PRACTICE_UI_COPY.startAction}
-          onPress={onStart}
-          disabled={actions.length === 0}
-        />
-      </View>
     </View>
   );
 }
 
-/** One quiet secondary entry. Calm, never a reward tile. */
+/** One quiet way in. Calm, never a reward tile. */
 function ModeRow({
   label,
   detail,
-  selected,
   disabled,
   onPress,
 }: {
   label: string;
   detail: string;
-  selected: boolean;
   disabled: boolean;
   onPress: () => void;
 }) {
@@ -248,26 +164,23 @@ function ModeRow({
     <Pressable
       onPress={disabled ? undefined : onPress}
       accessibilityRole="button"
-      accessibilityState={{ selected, disabled }}
+      accessibilityState={{ disabled }}
       style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: SPACE.md,
         marginTop: SPACE.md,
         paddingVertical: SPACE.sm,
         opacity: disabled ? 0.45 : 1,
       }}
     >
-      <Text
-        style={{
-          color: selected ? P.red : P.ink,
-          fontSize: 16,
-          lineHeight: 23,
-          fontWeight: selected ? "600" : "400",
-        }}
-      >
-        {label}
-      </Text>
-      <Text style={{ color: P.ink3, fontSize: 13, lineHeight: 19, marginTop: 1 }}>
-        {detail}
-      </Text>
+      <View style={{ flex: 1 }}>
+        <Text style={{ color: P.ink, fontSize: 16, lineHeight: 23 }}>{label}</Text>
+        <Text style={{ color: P.ink3, fontSize: 13, lineHeight: 19, marginTop: 1 }}>
+          {detail}
+        </Text>
+      </View>
+      {disabled ? null : <ChevronRight size={18} color={P.ink3} />}
     </Pressable>
   );
 }

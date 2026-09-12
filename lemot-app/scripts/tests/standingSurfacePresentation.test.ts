@@ -114,13 +114,22 @@ describe("Practice reads as material returning, not as a queue", () => {
     }
   });
 
-  test("the entry offers one session and never asks the learner to configure it", () => {
-    // Practice Hub V1 replaced the card list with a single session, so what is
-    // worth pinning changed with it. The old rule was "a row shows French and
-    // no internals"; the new one is stronger and covers the same ground — the
-    // whole surface shows no internals, and the learner is asked for one tap.
+  test("the entry lets the learner choose without exposing a single internal", () => {
+    // THE PIN MOVED, DELIBERATELY. Practice Hub V1 pinned "one session, never
+    // asks the learner to configure it", on the reasoning that choosing what to
+    // practise is the selector's job. The measurement overturned the premise,
+    // not the reasoning: a learner six lessons in owns 251 lawful practices and
+    // was served eight, so "do not make them choose" had become "do not let
+    // them", and Practice had collapsed into Daily Review. They may now choose
+    // WHERE TO LOOK.
+    //
+    // What never changed is the half of the old rule that was actually load
+    // bearing, and it is asserted below unaltered: the engine's vocabulary —
+    // tiers, difficulties, weakness, due dates — stays on the engine's side of
+    // the line. A browse door is not a settings panel.
     const code = codeOf(read(PRACTICE));
-    assert(code.includes("PracticeStart"), "the entry is the session start");
+    assert(code.includes("PracticeStart"), "the entry is the Practice entry");
+    assert(code.includes("PracticeBrowse"), "and it opens onto the catalogue");
     for (const banned of [
       "practiceEligibility",
       "weakTags",
