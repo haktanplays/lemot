@@ -46,7 +46,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useLocalSearchParams } from "expo-router";
-import { P } from "@/constants/theme";
+import { P, RADIUS } from "@/constants/theme";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import {
   selectMonLexiqueEntries,
@@ -67,6 +67,8 @@ import { allContextCards } from "@/content/context-cards/cards";
 import { readContextCardExposure } from "@/lib/contextCardExposure";
 import { useSpeech } from "@/hooks/useSpeech";
 import { MonLexiqueEntryDetail } from "@/components/learning-engine/MonLexiqueEntryDetail";
+import { sentencesForPiece } from "@/content/learning-engine/pieceSentences";
+import { hasSeenLexiqueIntro, markLexiqueIntroSeen } from "@/lib/firstUse";
 import {
   MON_LEXIQUE_FILTERS,
   MON_LEXIQUE_FILTER_COPY,
@@ -172,6 +174,40 @@ export default function MonLexiqueRoute() {
     () => new Set(entries.map((e) => e.entry.itemId)),
     [entries],
   );
+
+  /**
+   * Lessons the learner has actually been in, by the same rule the By-lesson
+   * filter already uses: a lesson counts once one of the pieces it teaches has
+   * an entry. It bounds which sentences a piece may show, so Mon Lexique stays
+   * a record of where the learner has been rather than a preview of what is
+   * coming.
+   */
+  /**
+   * The one-time arrival line. Read once at first render so it cannot appear
+   * after the learner has already started scrolling, and written on dismissal
+   * rather than on display — a tip that records itself as seen while the
+   * learner is still looking at the loading state has not been seen.
+   */
+  const [showIntro, setShowIntro] = useState(() => {
+    try {
+      return !hasSeenLexiqueIntro();
+    } catch {
+      return false;
+    }
+  });
+  const dismissIntro = useCallback(() => {
+    markLexiqueIntroSeen();
+    setShowIntro(false);
+  }, []);
+
+  const reachedLessonIds = useMemo(() => {
+    const ids = new Set<string>();
+    for (const e of entries) {
+      const lesson = LESSON_OF_ITEM.get(e.entry.itemId);
+      if (lesson) ids.add(lesson.id);
+    }
+    return ids;
+  }, [entries]);
   // Lessons the learner has met something from. The picker offers no lesson
   // whose words are not in here, so it can never come back empty by accident.
   const lessonsWithEntries = useMemo(
@@ -220,6 +256,46 @@ export default function MonLexiqueRoute() {
           </Pressable>
         }
       />
+
+      {/* THE PROMISE, REDEEMED ON ARRIVAL.
+          Orientation says the French you meet and use is kept here. That is a
+          claim made on a card, several lessons before it is true; this is the
+          one line that pays it off at the moment the learner is looking at a
+          piece they recognise from the lesson they just finished.
+
+          Shown only once there is something to point at — a tip above an empty
+          list explains a room with nothing in it — and dismissed for good on
+          the first tap. It is a line with an X, not a modal: it blocks nothing
+          and the learner can ignore it entirely. */}
+      {showIntro && entries.length > 0 && (
+        <View
+          style={{
+            marginHorizontal: SPACE.xl,
+            marginTop: SPACE.md,
+            padding: SPACE.md,
+            borderWidth: 1,
+            borderColor: P.border,
+            borderRadius: RADIUS.card,
+            backgroundColor: P.paper,
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: SPACE.sm,
+          }}
+        >
+          <Text style={{ flex: 1, color: P.ink2, fontSize: 13, lineHeight: 20 }}>
+            This is where your French is kept. Open a piece to see where you met it
+            and what you have seen it in.
+          </Text>
+          <Pressable
+            onPress={dismissIntro}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel="Dismiss"
+          >
+            <Text style={{ color: P.ink3, fontSize: 13, lineHeight: 20 }}>Got it</Text>
+          </Pressable>
+        </View>
+      )}
 
       {state.phase === "loading" && (
         <QuietState tone="waiting" text={"Gathering what you’ve used…"} />
@@ -413,6 +489,7 @@ export default function MonLexiqueRoute() {
                         <MonLexiqueEntryDetail
                           entry={entry}
                           metIn={met?.title}
+                          sentences={sentencesForPiece(entry.fr, reachedLessonIds)}
                           reachedItemIds={reachedItemIds}
                           onSay={(text) => say(text)}
                           onPractise={

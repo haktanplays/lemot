@@ -73,3 +73,38 @@ export function markOrientationSeen(): void {
     console.warn("[FirstUse] Failed to save orientation flag:", e);
   }
 }
+
+/**
+ * The first time Mon Lexique is opened — a third fact, and the last one.
+ *
+ * Orientation promised that the French the learner meets and uses is kept
+ * here. The promise is made on a card; it has to be redeemed on arrival, when
+ * they are looking at a piece they recognise from the lesson they just
+ * finished. One line, once, at the moment it is true.
+ *
+ * Separate from orientation because they answer different questions and a
+ * learner can reach either one first: someone who skipped orientation should
+ * still get the line when they land here, and someone who read orientation
+ * three lessons ago should not be assumed to remember it.
+ */
+export const SEEN_LEXIQUE_INTRO_KEY = "lm7_seen_lexique_intro";
+
+/** True once the learner has been shown what this place is. */
+export function hasSeenLexiqueIntro(): boolean {
+  try {
+    return kvStorage.getItem(SEEN_LEXIQUE_INTRO_KEY) === "true";
+  } catch {
+    // A tip is the smallest thing in the product. An unreadable store must
+    // never make it the thing that keeps reappearing.
+    return true;
+  }
+}
+
+/** Record that the tip has been shown and dismissed. */
+export function markLexiqueIntroSeen(): void {
+  try {
+    kvStorage.setItem(SEEN_LEXIQUE_INTRO_KEY, "true");
+  } catch (e) {
+    console.warn("[FirstUse] Failed to save Mon Lexique intro flag:", e);
+  }
+}

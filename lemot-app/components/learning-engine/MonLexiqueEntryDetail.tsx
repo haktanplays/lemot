@@ -17,7 +17,7 @@
  */
 import { View, Text, Pressable } from "react-native";
 import { Volume2 } from "lucide-react-native";
-import { P, SPACE, frenchLineHeight } from "@/constants/theme";
+import { P, SPACE, frenchLineHeight, frenchSerif } from "@/constants/theme";
 import { ITEM_REGISTRY } from "@/content/itemRegistry";
 import type { MonLexiqueEntry } from "@/content/learning-engine/mon-lexique";
 
@@ -37,6 +37,7 @@ const NON_SURFACE = new Set(["grammar-nugget", "sound-pattern", "micro-contrast"
 export function MonLexiqueEntryDetail({
   entry,
   metIn,
+  sentences,
   reachedItemIds,
   onSay,
   onPractise,
@@ -44,6 +45,16 @@ export function MonLexiqueEntryDetail({
   entry: MonLexiqueEntry;
   /** Learner-facing title of the lesson that teaches this piece, if known. */
   metIn?: string;
+  /**
+   * Sentences from lessons the learner has reached that really contain this
+   * piece. Authored, never assembled, and resolved by the route — this
+   * component renders a record, it does not decide what belongs in one.
+   *
+   * Absent or empty renders nothing at all. A learner three pieces into their
+   * first lesson should see a short card that grows, not a set of headings with
+   * nothing under them.
+   */
+  sentences?: readonly { fr: string; en: string; lessonTitle: string }[];
   /** Everything the learner has reached, so related pieces cannot leak ahead. */
   reachedItemIds: ReadonlySet<string>;
   onSay: (text: string) => void;
@@ -115,6 +126,29 @@ export function MonLexiqueEntryDetail({
         <View>
           <Text style={{ color: P.ink3, fontSize: 11, letterSpacing: 0.3 }}>Where you met it</Text>
           <Text style={{ color: P.ink2, fontSize: 13, lineHeight: 19, marginTop: 1 }}>{metIn}</Text>
+        </View>
+      )}
+
+      {/* WHERE IT HAS BEEN.
+          "Where you met it" gives the lesson and "Travels with" gives the
+          neighbours, and both were true without ever showing the learner the
+          thing they actually remember: the sentence they were looking at. This
+          is the half that makes a piece feel met rather than listed. */}
+      {(sentences ?? []).length > 0 && (
+        <View>
+          <Text style={{ color: P.ink3, fontSize: 11, letterSpacing: 0.3 }}>
+            You have seen it here
+          </Text>
+          <View style={{ marginTop: 6, gap: SPACE.sm }}>
+            {(sentences ?? []).map((s, i) => (
+              <View key={`${s.fr}-${i}`}>
+                <Text style={{ color: P.ink, ...frenchSerif(15) }}>{s.fr}</Text>
+                <Text style={{ color: P.ink3, fontSize: 12, lineHeight: 18, marginTop: 1 }}>
+                  {s.en} · {s.lessonTitle}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
       )}
 
