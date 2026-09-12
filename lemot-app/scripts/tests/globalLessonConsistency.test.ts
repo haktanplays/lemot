@@ -552,12 +552,23 @@ describe("nothing identity-bearing moved", () => {
       // already handing over. "Ask where it is" names a communicative job, not
       // a situation, and `mid` is the rung for that.
       8: { screens: 13, tiers: "mid,mid,open,mid,open,open" },
-      9: { screens: 12, tiers: "mid,open,open,open" },
+      // L9's first production became a MEANING TRANSFER in the founder UX
+      // pass: L3-L10 contained none at all, so every weave after L2 handed the
+      // learner a scene and asked them to produce. Giving the meaning makes it
+      // supported on the locked ladder. The screen count is unchanged, which
+      // is the property this snapshot is for: the operation changed, not the
+      // shape of the lesson.
+      9: { screens: 12, tiers: "supported,open,open,open" },
       // L8 and L10 each gained one page in the curiosity pass: the intonation
       // card and the closing-merci card. Note what did NOT move — both TIER
       // strings are identical, because a curiosity card is not a production.
       // That is the property this snapshot is actually for.
-      10: { screens: 13, tiers: "mid,open,open,open" },
+      // L10 lost ONE page in the founder UX pass: the whole-day textbox, whose
+      // model concatenated five sentences the learner had already produced
+      // beat by beat in their own scenes. Removing it is the capstone fix, not
+      // a trim. The tier string is unchanged, which is the property this
+      // snapshot is for: the remaining productions did not move.
+      10: { screens: 12, tiers: "mid,open,open,open" },
     };
     for (const [n, exp] of Object.entries(EXPECTED)) {
       const l = V1_LESSONS.find((x) => x.number === Number(n))!;

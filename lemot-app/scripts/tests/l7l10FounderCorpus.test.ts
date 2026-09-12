@@ -145,8 +145,7 @@ describe("an answer-band ladder never shows one sentence under two labels", () =
       [
         "v1-lesson-006/s07-sayit-step-in",
         "v1-lesson-006/s09-sayit-whole-moment",
-        "v1-lesson-010/s13-sayit-the-whole-day",
-      ],
+        ],
       "the ladder is used exactly where the two payoff lessons ask for the whole thing",
     );
   });
@@ -329,20 +328,61 @@ describe("L7-L10 keep the screens that make them different from each other", () 
     );
   });
 
-  test("L10 ends by asking for the whole day at once", () => {
+  test("L10 walks the day beat by beat, and never asks for it in one box", () => {
+    // REVERSED BY FOUNDER OVERRIDE, deliberately. This used to REQUIRE a final
+    // screen whose model was five sentences concatenated — "Bonjour. C'est où ?
+    // Je voudrais faire une pause. Je vais à la maison. Au revoir." — and the
+    // founder's reading of it on device was that it is cheesy and
+    // pedagogically weak. They are right, and the reason is in the model: it
+    // showed the learner five sentences they had not written, in a box that
+    // asked for all of them at once, after the lesson had already had them
+    // produce each beat in its own scene.
+    //
+    // What this pin protects now is the thing that was always the point: the
+    // arc is real and the learner walks it. Each beat is its own production,
+    // with its own context, and the assembled reflection comes after they have
+    // done the work rather than instead of it.
     const l10 = byNumber(10);
-    const wholeDay = screenById(l10, "s13-sayit-the-whole-day");
-    assert(wholeDay !== undefined, "L10 keeps the whole-day production");
-    assertEqual(wholeDay!.type, "say-it-your-way", "open production, nothing supplied");
-    const model = String((wholeDay!.payload as Record<string, unknown>).modelAnswer ?? "");
-    // The arc, not a slogan: greeting, question, request and departure.
-    for (const beat of ["Bonjour", "où", "faire une pause", "Je vais"]) {
-      assert(model.includes(beat), `the whole-day model must carry ${beat}`);
-    }
+    const flat = flattenLessonScreens(l10);
     assert(
-      (model.match(/[.?]/g) ?? []).length >= 4,
-      "the day is several sentences held at once, not one line",
+      flat.every((s) => s.id !== "s13-sayit-the-whole-day"),
+      "the whole-day textbox is back",
     );
+    // Each beat, produced in its own scene.
+    const beats: [string, string][] = [
+      ["s02-weave-arrive-ask-where", "où"],
+      ["s04-weave-midday-break", "faire une pause"],
+      ["s12-weave-say-so-and-ask-again", "comprends"],
+      ["s05-weave-close-the-day", "Je vais"],
+    ];
+    for (const [id, french] of beats) {
+      const screen = screenById(l10, id);
+      assert(screen !== undefined, `L10 lost the beat ${id}`);
+      const payload = screen!.payload as Record<string, unknown>;
+      const answers = (payload.expectedAnswers as string[] | undefined) ?? [];
+      assert(
+        answers.some((a) => a.includes(french)),
+        `${id} no longer produces ${french}`,
+      );
+      const context = String(payload.context ?? "");
+      assert(context.trim().length > 0, `${id} has no scene of its own`);
+    }
+    // And no single answer anywhere in L10 concatenates the whole day.
+    for (const screen of flat) {
+      const payload = screen.payload as Record<string, unknown>;
+      for (const answer of [
+        ...((payload.expectedAnswers as string[] | undefined) ?? []),
+        String(payload.modelAnswer ?? ""),
+      ]) {
+        const arc = ["Bonjour", "où", "faire une pause", "Je vais"].filter((b) =>
+          answer.includes(b),
+        );
+        assert(
+          arc.length < 3,
+          `${screen.id} asks for ${arc.length} beats of the day in one answer`,
+        );
+      }
+    }
   });
 });
 

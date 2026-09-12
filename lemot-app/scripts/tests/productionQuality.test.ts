@@ -279,7 +279,11 @@ describe("productionQuality — shipped v1", () => {
     // lesson had only ever displayed.
     assertEqual(
       V1_LESSONS.map((l) => countProductionActions(l)),
-      [3, 7, 5, 7, 5, 5, 7, 8, 7, 5, 6, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
+      // L10 moved 6 -> 5 when the founder UX pass removed the whole-day
+      // textbox. It was a real production action and its removal is the point:
+      // it asked for five sentences at once that the learner had already
+      // produced, one beat at a time, in four scenes that remain.
+      [3, 7, 5, 7, 5, 5, 7, 8, 7, 5, 5, 4, 4, 4, 3, 3, 4, 5, 4, 4, 3, 4, 4, 5, 3],
       "L0-L24 meaningful production actions",
     );
     for (const l of V1_LESSONS) {

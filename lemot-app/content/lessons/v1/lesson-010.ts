@@ -13,8 +13,11 @@ const screens: LessonScreen[] = [
     id: "s20-showcase-a-small-day",
     type: "showcase",
     payload: {
+      // "Everything here is yours already" was not true: m'aider arrives in
+      // this lesson as recognition-only preview. The claim is now sized to the
+      // truth, which costs the sentence nothing and keeps the lesson honest.
       intro:
-        "Everything here is yours already. Read it as one day: you arrive somewhere new, you ask your way, something goes past you, you need a break, and you go home.",
+        "Almost all of this is already yours. Read it as one day: you arrive somewhere new, you ask your way, something goes past you, you need a break, and you go home. One line near the end is a preview, and it is marked.",
       clusters: [
         {
           label: "Arriving and asking",
@@ -88,10 +91,14 @@ const screens: LessonScreen[] = [
     payload: {
       insightType: "lesson-goal",
       title: "A full small day",
+      // THE ARC, not a materials list, and not a claim that nothing is new.
+      // L10 closes the L0-L10 stretch, so it is allowed to feel like an
+      // occasion; it is not allowed to congratulate the learner before they
+      // have done anything, or to celebrate at them.
       body:
-        "Today: nothing new.\n" +
-        "By the end: you'll have lived a whole small day in French, from pieces you already own.\n" +
-        "Main pieces: c'est où, faire une pause, je vais.",
+        "Arrive. Ask. Pause. Leave.\n" +
+        "Four moments, and you already own the French for each one.\n" +
+        "Almost everything today is yours. One piece is new, and it is only there to be recognised.",
     },
   },
 
@@ -169,25 +176,31 @@ const screens: LessonScreen[] = [
     type: "fill-with-traps",
     targetItemIds: ["chunk-je-vais"],
     payload: {
-      prompt: "You want to say you're going home. Which word moves you?",
-      sentenceBefore: "Je ",
+      // THE ENGINES, CHOSEN BY JOB. This asked "which word moves you?" with
+      // the destination already printed after the blank, so the sentence
+      // answered its own question. The three engines are only worth naming if
+      // the learner picks between them on what they are FOR, so the scene now
+      // states the intention and the sentence does not give the shape away.
+      prompt:
+        "It is the end of the day and you want to tell them where you are headed. Which engine does that job?",
+      sentenceBefore: "",
       sentenceAfter: " à la maison.",
       blankCount: 1,
       options: [
-        { id: "opt-vais", text: "vais", isCorrect: true },
+        { id: "opt-vais", text: "Je vais", isCorrect: true },
         {
           id: "opt-suis",
-          text: "suis",
+          text: "Je suis",
           isCorrect: false,
           trapReason:
-            "Je suis à la maison says you are already there. You want the moving engine: je vais.",
+            "That is the engine for where you ARE. Je suis à la maison says you are already home, which is not what you are telling them.",
         },
         {
           id: "opt-voudrais",
-          text: "voudrais",
+          text: "Je voudrais",
           isCorrect: false,
           trapReason:
-            "Je voudrais wishes for something. It cannot take you home by itself.",
+            "That is the engine for what you WANT. It would ask for home rather than say you are heading there.",
         },
       ],
       answer: ["opt-vais"],
@@ -395,6 +408,14 @@ const screens: LessonScreen[] = [
       // them. This sentence is never produced, never a suggested piece, and
       // never a recap chip.
       title: "Just listen. This one arrives next.",
+      // WHERE IT COMES FROM, in three lines and no further. The founder met
+      // this sentence as an unfamiliar whole and had no way in, which wastes
+      // the one thing a preview is for. aider is the verb; me + aider elides
+      // to m'aider; vous pouvez is already theirs. That is the entire lesson
+      // here: not object pronouns, not elision as a system, just enough to
+      // recognise a sentence they are not being asked to say.
+      note:
+        "aider means to help. me + aider becomes m'aider. You already own vous pouvez, so most of this is language you have. You do not need to use it yet: notice how much of it you can already follow.",
       highlights: [
         { text: "vous pouvez", itemId: "chunk-vous-pouvez" },
         { text: "m'aider", itemId: "chunk-m-aider" },
@@ -477,6 +498,13 @@ const screens: LessonScreen[] = [
         acceptedAlternatives: ["Je vais à la maison, au revoir."],
         reveal: {
           modelAnswer: "Je vais à la maison. Au revoir.",
+          // THE ASSEMBLED REFLECTION, and it belongs HERE rather than in a
+          // whole-day textbox: this is the last beat, so by the time the
+          // learner reads it they have actually produced every beat it names.
+          // A model that dumps the day in one box shows them five sentences
+          // they never wrote; this shows them four they did.
+          explanation:
+            "That is the day closed. You greeted someone at a door you had never used, asked where to go, said so when the answer went past you, asked for a break when the afternoon ran long, and said where you were heading. Four different engines, one day.",
           ifCorrect: "You opened the day with bonjour. Now you can close it.",
           ifCorrectButFlat: "Right. The day closes the way it opened.",
           ifUnderstandableButWrong:
@@ -521,61 +549,6 @@ const screens: LessonScreen[] = [
 
 
 
-  {
-    // The payoff. Every screen before this one produced a piece of the day;
-    // this one asks for the day. Nothing is supplied, nothing is prompted line
-    // by line, and the bands say plainly that a shorter day still counts.
-    // The three bands are deliberately DIFFERENT strings: a ladder whose rungs
-    // read identically teaches nothing, which is the defect this pass repaired
-    // in L6.
-    id: "s13-sayit-the-whole-day",
-    type: "say-it-your-way",
-    targetItemIds: [
-      "chunk-bonjour",
-      "chunk-c-est-ou",
-      "chunk-faire-une-pause",
-      "chunk-je-vais",
-      "chunk-au-revoir",
-    ],
-    weakPointTags: ["natural-speech"],
-    payload: {
-      situation:
-        "Run the day again, start to finish. You arrive somewhere new and greet them, you ask where to go, you ask for a break when the afternoon runs long, and you head home at the end.",
-      communicativeGoal: "Carry a whole day in French, from bonjour to au revoir.",
-      answerBands: {
-        minimalAcceptable: ["Bonjour. C'est où ? Merci. Au revoir."],
-        good: [
-          "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
-        ],
-        // Moving two full stops to commas is not a tier. What separates a
-        // correct day from a natural one is the politeness the learner has been
-        // carrying since L1 and tends to drop the moment the sentence gets
-        // long: the opener on the question, the softener on the request, the
-        // thanks before the goodbye. Nothing new, and it is the difference a
-        // French speaker would actually hear.
-        natural: [
-          "Bonjour. Excusez-moi, c'est où ? Je voudrais faire une pause, s'il vous plaît. Merci. Je vais à la maison. Au revoir.",
-        ],
-      },
-      modelAnswer:
-        "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
-      reveal: {
-        modelAnswer:
-          "Bonjour. C'est où ? Je voudrais faire une pause. Je vais à la maison. Au revoir.",
-        ifCorrect:
-          "That is a whole day, carried in French, with nothing in it you were taught today.",
-        ifBetterThanExpected:
-          "You went past the minimum. What you just wrote is a day someone could actually have.",
-        naturalAlternatives: [
-          "Bonjour. Excusez-moi, c'est où ? Je voudrais faire une pause, s'il vous plaît. Merci. Je vais à la maison. Au revoir.",
-          "Bonjour. C'est où ? Je voudrais faire une pause. Merci. Au revoir.",
-        ],
-        explanation:
-          "Ten lessons, and every piece of this came from one of them. The only thing that is new is how many of them you held at once.",
-      },
-      validationMode: "model-answer-only",
-    },
-  },
 
 
 
@@ -583,11 +556,15 @@ const screens: LessonScreen[] = [
     id: "s08-recap-full-day",
     type: "recap",
     payload: {
-      title: "You lived a day in French.",
+      title: "A small day, put together.",
+      // TONE. It read "You lived a day in French" over "Nothing was new.
+      // Everything was yours already." The first is the product congratulating
+      // itself and the second is false: m'aider was new. What is left is what
+      // actually happened, in the order it happened.
       lines: [
-        "You arrived, asked where, took a break, and left well.",
+        "You arrived, asked where, took a break, and left.",
         "It did not run clean, either. Something went past you, and you said so and asked again instead of nodding.",
-        "Nothing was new. Everything was yours already.",
+        "One piece was new today, and you only had to recognise it.",
         "Next: a small new engine, for asking if you can.",
       ],
       piecesUsed: [

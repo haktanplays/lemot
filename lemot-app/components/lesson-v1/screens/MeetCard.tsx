@@ -99,6 +99,17 @@ export function MeetCard({
           )}
         </View>
 
+        {/* A way in, for the cards that need one. Below the sentence and its
+            audio, above the pieces: the learner hears it, then reads why they
+            can already follow most of it, then sees which parts they own. */}
+        {payload.note ? (
+          <Text
+            style={{ color: P.ink2, fontSize: 14, lineHeight: 21, marginTop: 14 }}
+          >
+            {payload.note}
+          </Text>
+        ) : null}
+
         {highlights.length > 0 && (
           <View
             style={{

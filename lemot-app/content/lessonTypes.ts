@@ -337,6 +337,19 @@ export type MeetCardPayload = {
   fr: string;
   en?: string;
   title?: string;
+  /**
+   * One quiet paragraph under the sentence, for a card that needs it.
+   *
+   * Added for recognition-only PREVIEWS, which are the cards where a learner
+   * most needs a way in and least has one: they are shown a sentence, told
+   * nothing is being asked of them, and left to stare at it. A preview whose
+   * parts are never named is a wall with a label on it.
+   *
+   * Ordinary meet cards do not take one. The sentence and its highlights are
+   * the card, and a paragraph under every one of them would turn the first
+   * encounter into a reading exercise.
+   */
+  note?: string;
   highlights?: {
     text: string;
     itemId?: string;

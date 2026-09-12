@@ -88,10 +88,15 @@ const screens: LessonScreen[] = [
     payload: {
       insightType: "lesson-goal",
       title: "Taking a pause",
+      // THE THESIS, not a materials list. L9's whole expansion is that one
+      // engine the learner already owns starts carrying a different KIND of
+      // cargo, and a goal card that names the pieces hides exactly that.
       body:
-        "Today: one small action, faire une pause.\n" +
-        "By the end: you can ask for a break, politely.\n" +
-        "Main pieces: faire une pause, une pause, je voudrais.",
+        "You already know how to ask for a thing.\n" +
+        "Je voudrais un café.\n" +
+        "Today the same engine carries an action.\n" +
+        "Je voudrais faire une pause.\n" +
+        "Nothing about je voudrais changes. Only what comes after it.",
     },
   },
 
@@ -118,32 +123,39 @@ const screens: LessonScreen[] = [
     type: "fill-with-traps",
     targetItemIds: ["chunk-faire-une-pause"],
     payload: {
-      prompt: "You want to ask for a break. Which word carries the action?",
+      // THE SUBSTITUTION, DONE RATHER THAN READ. This asked which WORD carries
+      // the action and offered faire / vais / suis, which is a word-picking
+      // exercise about conjugation the lesson does not teach. The thesis is
+      // that the engine holds still while the cargo changes, so the learner
+      // now swaps the cargo in a sentence they already own and watches je
+      // voudrais stay exactly where it was.
+      prompt:
+        "You already own Je voudrais un café. Keep the front of it and change what follows: ask for a break instead.",
       sentenceBefore: "Je voudrais ",
-      sentenceAfter: " une pause.",
+      sentenceAfter: ".",
       blankCount: 1,
       options: [
-        { id: "opt-faire", text: "faire", isCorrect: true },
+        { id: "opt-faire-une-pause", text: "faire une pause", isCorrect: true },
         {
-          id: "opt-vais",
-          text: "vais",
+          id: "opt-une-pause",
+          text: "une pause",
           isCorrect: false,
           trapReason:
-            "Je vais moves you somewhere. After je voudrais, the action keeps its dictionary shape: faire.",
+            "That asks for a break the way you ask for a coffee, as a thing. French wants the action here: faire une pause.",
         },
         {
-          id: "opt-suis",
-          text: "suis",
+          id: "opt-je-fais",
+          text: "je fais une pause",
           isCorrect: false,
           trapReason:
-            "Suis says what you are. It cannot take a pause for you.",
+            "That is a second engine inside the first. Je voudrais is already doing that job; what follows it stays in its plain form.",
         },
       ],
-      answer: ["opt-faire"],
+      answer: ["opt-faire-une-pause"],
       reveal: {
-        short: "faire",
+        short: "faire une pause",
         explanation:
-          "Faire une pause = take a break. One package, carried by je voudrais.",
+          "Same engine, a different thing after it. Je voudrais un café asks for a thing; Je voudrais faire une pause asks for an action. Nothing about je voudrais moved.",
         natural: "Je voudrais faire une pause.",
       },
     },
@@ -161,9 +173,22 @@ const screens: LessonScreen[] = [
       title: "Same engine, a new job.",
       body:
         "Until now, je voudrais asked for a thing. It can also carry a small action: faire une pause. Take faire une pause as one piece. The wider faire universe waits.",
+      // Drawn as pieces, because the claim is about what travels with what.
+      // A card that says words come in packages and then prints two flat
+      // italic lines is arguing against itself.
       examples: [
-        { fr: "Je voudrais une pause.", en: "I'd like a break. (a thing)" },
-        { fr: "Je voudrais faire une pause.", en: "I'd like to take a break. (an action)" },
+        {
+          fr: "Je voudrais un café.",
+          en: "I'd like a coffee.",
+          pieces: ["Je voudrais", "un café"],
+          note: "What comes after it is a thing.",
+        },
+        {
+          fr: "Je voudrais faire une pause.",
+          en: "I'd like to take a break.",
+          pieces: ["Je voudrais", "faire une pause"],
+          note: "What comes after it is an action. The words in front did not move.",
+        },
       ],
     },
   },
@@ -174,10 +199,14 @@ const screens: LessonScreen[] = [
     type: "weave",
     targetItemIds: ["chunk-faire-une-pause", "chunk-je-voudrais"],
     payload: {
-      // Medium on the locked ladder: the prompt names the communicative job,
-      // not the situation, so the tier says mid. Pieces stay behind the hint.
-      weaveType: "mid",
-      prompt: "Say you'd like to take a break.",
+      // MEANING TRANSFER, and the first one since L2. A learner who has just
+      // watched the cargo change should carry that exact meaning into French
+      // once before being handed a scene: "I have a thought, put it in French"
+      // is a different operation from "here is a situation, produce something
+      // that fits", and L3-L10 contained none of the first kind at all.
+      // Supported on the locked ladder, because the meaning is given.
+      weaveType: "supported",
+      prompt: "Write it in French: I'd like to take a break.",
       context: "The afternoon has been long, and your head is getting heavy.",
       suggestedPieces: [
         {
@@ -232,7 +261,16 @@ const screens: LessonScreen[] = [
         type: "fill-with-traps",
         targetItemIds: ["chunk-sil-vous-plait"],
         payload: {
-          prompt: "You are asking for something, not thanking anyone. Which piece softens the ask?",
+          // ASKING vs ANNOUNCING, operated on. This was "which piece softens the
+          // ask?" with s'il vous plaît / merci / au revoir, which is a word-
+          // picking exercise about three pieces that do obviously different
+          // jobs: nobody reaches for au revoir mid-request. The real
+          // distinction L9 owns is that je voudrais ASKS where je fais
+          // ANNOUNCES, and the softener only matters because one of them is a
+          // request. So the scene now makes the room's permission the thing at
+          // stake, and the softener is chosen for a reason.
+          prompt:
+            "It is their meeting, not yours, and you need them to agree rather than just hear you. Which piece makes this a request?",
           sentenceBefore: "Je voudrais faire une pause, ",
           sentenceAfter: ".",
           blankCount: 1,
@@ -257,7 +295,7 @@ const screens: LessonScreen[] = [
           reveal: {
             short: "s'il vous plaît",
             explanation:
-              "S'il vous plaît softens a request. It costs nothing and changes the tone.",
+              "Je voudrais already asks rather than announces: Je fais une pause would tell them it is happening. S'il vous plaît puts the decision in their hands, which is what you want when the room is not yours.",
             // Was the whole polite line, which the very next step -- an OPEN
             // production, the least-scaffolded rung there is -- then asked the
             // learner to type. This screen teaches the softener; assembling the
