@@ -20,7 +20,7 @@ const screens: LessonScreen[] = [
         {
           label: "Asking where",
           sentences: [
-            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "Listen to the two together: C'est ici. runs as one word, and C'est où ? does not. The t in c'est only wakes up before a vowel, and où does not start with one.", structure: "Two pieces, and you already own one of them. c'est is the same c'est you use to answer; où is the part that turns it into a question about place. Swap où for something else and c'est goes on working.", compare: "où is one long oo. Not oh, and not ow." } },
+            { fr: "C'est où ?", en: "Where is it?", role: "core", itemIds: ["chunk-c-est-ou"], depth: { sound: "Listen to the join. In C'est ici. you can hear the t link into the next word. In C'est où ? you do not hear that same link. Let the audio carry the difference.", structure: "Two pieces, and you already own one of them. c'est is the same c'est you use to answer; où is the part that turns it into a question about place. Swap où for something else and c'est goes on working.", compare: "où is one long oo. Not oh, and not ow." } },
             { fr: "Excusez-moi, c'est où ?", en: "Excuse me, where is it?", role: "core" },
             { fr: "Le café, c'est où ?", en: "The café, where is it?", role: "supported", pieces: ["Le café", "c'est", "où"] },
             { fr: "C'est loin ?", en: "Is it far?", role: "exposure", pieces: ["C'est", "loin"] },

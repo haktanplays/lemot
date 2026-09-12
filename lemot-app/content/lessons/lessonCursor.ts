@@ -150,3 +150,49 @@ export function resumeStepFor(
   if (step <= 0 || step >= stepCount) return 0;
   return step;
 }
+
+/**
+ * A cursor the learner can actually be offered, or null.
+ *
+ * ── THE GAP THIS CLOSES ─────────────────────────────────────────────────────
+ *
+ * The cursor already worked. It is written on every move, cleared exactly on
+ * completion, and the lesson route resumes from it correctly — which is why
+ * the founder found that re-entering a lesson put them back in the right
+ * place. What nothing did was READ it from outside the lesson. Leave the app
+ * mid-lesson, come back, and the learner lands on Home with no sign that
+ * anything is open; the position was never lost, only unmentioned.
+ *
+ * So this is deliberately NOT an auto-navigator. A cold start has no evidence
+ * that the learner still wants to be where they were three days ago, and
+ * dropping them into a lesson they had walked away from is a worse failure
+ * than the one being fixed. It answers one question — is there somewhere to
+ * continue, and where — and the surface decides what to offer.
+ *
+ * Pure: the caller supplies the stored string and the lesson, so this can be
+ * tested without a device and cannot reach storage on its own.
+ */
+export type ResumePoint = {
+  readonly lessonId: string;
+  /** 1-based, for a learner-facing "Part 4 of 12". Never the raw index. */
+  readonly part: number;
+  readonly partCount: number;
+};
+
+export function resumePointFor(
+  raw: string | null | undefined,
+  lessons: readonly { id: string; screens: readonly unknown[] }[],
+): ResumePoint | null {
+  const cursor = parseCursor(raw);
+  if (cursor === null) return null;
+  const lesson = lessons.find((l) => l.id === cursor.lessonId);
+  if (lesson === undefined) return null;
+  const partCount = lesson.screens.length;
+  // The same three refusals `resumeIndexFor` makes, for the same reasons: a
+  // cursor at or past the end is a finished lesson whose removal did not land,
+  // and offering to continue INTO a completion screen is the one thing worse
+  // than offering nothing.
+  const index = resumeIndexFor(cursor.lessonId, partCount, cursor);
+  if (index <= 0) return null;
+  return { lessonId: cursor.lessonId, part: index + 1, partCount };
+}

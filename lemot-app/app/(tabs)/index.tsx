@@ -12,6 +12,8 @@ import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { FEATURES, PRODUCT_STAGE, V1_PATH_MAX_LESSON, isV1LessonInStageScope } from "@/config/productStage";
 import { supabaseReady } from "@/lib/supabase";
 import { hasFinishedFirstTaste, hasSeenOrientation } from "@/lib/firstUse";
+import { kvStorage } from "@/lib/storage";
+import { LESSON_CURSOR_KEY, resumePointFor } from "@/content/lessons/lessonCursor";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
 import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
@@ -215,6 +217,14 @@ export default function HomeScreen() {
   // Presentation tiers over the SAME linear-unlock state — no new progression
   // logic. The next step is the one dominant anchor; everything else is quiet.
   const nextState = v1PathState.find(({ lesson }) => lesson.id === nextLessonId);
+  // Somewhere already open, read once on mount. A re-read on every render
+  // would fight the learner's own paging the moment they walk back into the
+  // lesson from here.
+  const [resumePoint] = useState(() =>
+    resumePointFor(kvStorage.getItem(LESSON_CURSOR_KEY), V1_LESSONS),
+  );
+  const resumeTitle =
+    V1_LESSONS.find((l) => l.id === resumePoint?.lessonId)?.title ?? "";
   const crossedStates = v1PathState.filter(({ done }) => done);
   // Ahead = everything not done and not the anchor. A row that is `available`
   // here is the rare seeded-gap case (a later lesson finished out of order): it
@@ -418,6 +428,52 @@ export default function HomeScreen() {
             public-beta keeps it hidden. No reward / unlock ceremony language. */}
         {showV1Path && v1PathState.length > 0 && (
           <View className="mt-2 mb-3">
+            {/* CONTINUE WHERE YOU LEFT OFF — above "your next step", because a
+                lesson already open outranks the next one to open.
+
+                The cursor always worked: it is written on every move and
+                cleared on completion, and the lesson route resumes from it
+                correctly. Nothing outside the lesson READ it, so a learner who
+                left mid-lesson came back to Home with no sign that anything
+                was open. Deliberately an offer and not a redirect: a cold
+                start has no evidence the learner still wants to be where they
+                were, and dropping them into an abandoned lesson is worse than
+                the silence it replaces. */}
+            {resumePoint !== null && (
+              <View className="mb-6">
+                <Text
+                  className="text-xs mb-2"
+                  style={{ color: P.ink3, letterSpacing: 0.4 }}
+                >
+                  Where you left off
+                </Text>
+                <Pressable
+                  onPress={() =>
+                    router.push(`/v1-lesson/${resumePoint.lessonId}` as never)
+                  }
+                  accessibilityRole="button"
+                  accessibilityLabel={`Continue ${resumeTitle}, part ${resumePoint.part} of ${resumePoint.partCount}`}
+                  className="bg-lm-paper rounded-2xl border"
+                  style={{ borderColor: P.red + "55", borderWidth: 1.5, padding: 18 }}
+                >
+                  <Text
+                    className="text-lg"
+                    style={{
+                      color: P.ink,
+                      fontFamily: "serif",
+                      fontStyle: "italic",
+                      lineHeight: 26,
+                    }}
+                  >
+                    {resumeTitle}
+                  </Text>
+                  <Text className="text-sm mt-1" style={{ color: P.ink3 }}>
+                    {`Continue · part ${resumePoint.part} of ${resumePoint.partCount}`}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
+
             {/* WHAT DO I DO NEXT — the single dominant focal element, derived
                 from the same lesson the linear logic already flags as next. */}
             {nextState && (

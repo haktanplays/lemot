@@ -121,11 +121,31 @@ describe("audio is the authority, not English letters", () => {
   });
 
   test("the connected-speech point between C'est où ? and C'est ici is reachable", () => {
-    // §5. The founder noticed these do not flow alike, and they do not: the
-    // silent t in c'est only wakes before a vowel, and où has none.
+    // §5. The founder noticed these do not flow alike, and they do not. The
+    // note describes what is audible and leaves the rule alone.
     const all = allDepthText().filter((r) => r.lesson === 8).map((r) => r.text).join(" ");
-    assert(/wakes up before/i.test(all), "the liaison condition is not explained");
-    assert(/où does not start with one|does not start with a vowel/i.test(all), "and the contrast is not drawn");
+    assert(/Listen to the join/i.test(all), "the contrast is not drawn at all");
+    assert(/hear the t link/i.test(all), "and what to listen for is not named");
+  });
+
+  test("no note claims où begins with a consonant", () => {
+    // THE FACTUAL ERROR THE LAST PASS SHIPPED. It read "the t in c'est only
+    // wakes up before a vowel, and où does not start with one". où is /u/: it
+    // begins with a vowel, and the sentence was teaching the opposite of the
+    // truth while sounding like a rule. The liaison in c'est où ? is variable
+    // rather than forbidden, which is exactly why the note now describes what
+    // is audible and lets the audio be the authority.
+    const everything = JSON.stringify(V1_LESSONS);
+    for (const falsehood of [
+      "où does not start with one",
+      "où does not start with a vowel",
+      "où begins with a consonant",
+      "only wakes up before a vowel, and où",
+    ]) {
+      assert(!everything.includes(falsehood), `a lesson claims: "${falsehood}"`);
+    }
+    // And the true statement about où's vowel is still somewhere reachable.
+    assert(/one long vowel|one long oo/i.test(everything), "où's vowel is no longer described at all");
   });
 });
 
