@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { View, Text, Animated, Easing, AccessibilityInfo } from "react-native";
 import { LessonScreenFrame } from "@/components/ui/LessonScreenFrame";
+import { useReduceMotion } from "@/hooks/useReduceMotion";
 import { PrimaryAction } from "@/components/ui/actions";
 import { P, SPACE, frenchLineHeight } from "@/constants/theme";
 import type { PatternReelRow, PatternReelScreen } from "@/content/lessonTypes";
@@ -69,24 +70,6 @@ function ReelFade({ edge }: { edge: "top" | "bottom" }) {
   );
 }
 
-/** Honour the OS reduce-motion setting, and keep honouring it if it changes. */
-function useReduceMotion(): boolean {
-  const [reduceMotion, setReduceMotion] = useState(false);
-  useEffect(() => {
-    let active = true;
-    AccessibilityInfo.isReduceMotionEnabled().then((v) => {
-      if (active) setReduceMotion(v);
-    });
-    const sub = AccessibilityInfo.addEventListener("reduceMotionChanged", (v) =>
-      setReduceMotion(v),
-    );
-    return () => {
-      active = false;
-      sub.remove();
-    };
-  }, []);
-  return reduceMotion;
-}
 
 // Both carry a line height on purpose. French runs accents above and
 // descenders below, and a Text with none inherits a default sized for

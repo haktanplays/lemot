@@ -11,7 +11,7 @@ import { V1_LESSONS } from "@/content/lessons/v1";
 import { MILESTONES, FREE_LESSON_IDS } from "@/data/milestones";
 import { FEATURES, PRODUCT_STAGE, V1_PATH_MAX_LESSON, isV1LessonInStageScope } from "@/config/productStage";
 import { supabaseReady } from "@/lib/supabase";
-import { hasFinishedFirstTaste } from "@/lib/firstUse";
+import { hasFinishedFirstTaste, hasSeenOrientation } from "@/lib/firstUse";
 import { MOTIV, P } from "@/constants/theme";
 import { SECS } from "@/constants/sections";
 import { getJourneyImage, getJourneyPhase } from "@/constants/journey";
@@ -53,6 +53,26 @@ export default function HomeScreen() {
     }
   });
 
+  /**
+   * Orientation comes AFTER the first taste, never instead of it.
+   *
+   * Read once, at first render, like the flag above and for the same reason:
+   * the spinner below hides Home while the router moves, so neither redirect
+   * flashes the tab it is leaving.
+   *
+   * The two are deliberately ordered rather than combined. A learner who has
+   * not finished L0 goes to L0 and is asked nothing about the product; the
+   * question "has this been explained?" is only worth asking of someone who
+   * has something to have it explained about.
+   */
+  const [needsOrientation] = useState(() => {
+    try {
+      return hasFinishedFirstTaste() && !hasSeenOrientation();
+    } catch {
+      return false;
+    }
+  });
+
   useEffect(() => {
     // expo-router's typed-routes union regenerates on `expo start`; the cast
     // bypasses the stale literal check until Metro picks up the new files.
@@ -61,8 +81,12 @@ export default function HomeScreen() {
     // reachable at /how-weave-works).
     if (needsLessonZero) {
       router.replace("/lesson-zero" as never);
+      return;
     }
-  }, [needsLessonZero]);
+    if (needsOrientation) {
+      router.replace("/orientation" as never);
+    }
+  }, [needsLessonZero, needsOrientation]);
 
   // Account modal state
   const [showAccount, setShowAccount] = useState(false);
@@ -73,7 +97,7 @@ export default function HomeScreen() {
   const [drAns, setDrAns] = useState<string | null>(null);
   const [drItems, setDrItems] = useState<ReviewQuestion[]>([]);
 
-  if (!loaded || needsLessonZero) {
+  if (!loaded || needsLessonZero || needsOrientation) {
     return (
       <SafeAreaView className="flex-1 bg-lm-bg items-center justify-center">
         <ActivityIndicator size="small" color={P.red} />

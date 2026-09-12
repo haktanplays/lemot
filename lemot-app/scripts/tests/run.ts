@@ -49,6 +49,7 @@ import "./resultMicroInsight.test";
 import "./l3Negation.test";
 import "./lessonCuriosity.test";
 import "./recapPieces.test";
+import "./orientation.test";
 import "./practiceModes.test";
 import "./distractorQuality.test";
 import "./devApkCopyGuard.test";
